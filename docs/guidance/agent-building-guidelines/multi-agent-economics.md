@@ -2,7 +2,7 @@
 
 When a skill dispatches agents via the `Agent` tool, each agent adds latency and token cost. This doc provides the decision framework for when adding agents is justified and when it's wasteful.
 
-This doc is about **whether to add more agents**. For choosing which model tier (opus/sonnet/haiku) a given agent should use, see [Model Selection](./agent-model-selection.md) — that decision is about matching capability to task complexity, and cost is not a factor there. Here, cost is a factor: multiplying agents multiplies token spend, and each additional agent must clear a quality bar to justify that spend.
+This doc is about **whether to add more agents**. For choosing which model tier (opus/sonnet/haiku) a given agent should use, see [Model Selection](./agent-model-selection.md). That decision is about matching capability to task complexity, and cost is not a factor there. Here, cost is a factor: multiplying agents multiplies token spend, and each additional agent must clear a quality bar to justify that spend.
 
 ## The Escalation Cascade
 
@@ -16,13 +16,13 @@ A single well-prompted agent with access to the right tools handles roughly 70% 
 
 ### Level 1: Worker + Specialist Reviewer
 
-Add a second agent when a single agent cannot reliably self-validate. The worker generates output; the reviewer evaluates it from a different perspective. This is motivated by [self-evaluation bias](./agent-domain-focus.md) — agents cannot reliably evaluate their own work because generator biases replicate in evaluation.
+Add a second agent when a single agent cannot reliably self-validate. The worker generates output. The reviewer evaluates it from a different perspective. This is motivated by [self-evaluation bias](./agent-domain-focus.md): agents cannot reliably evaluate their own work because generator biases replicate in evaluation.
 
 **When to escalate here:** The single agent's output consistently fails a specific quality dimension (security, accessibility, domain accuracy) that requires specialist knowledge the worker agent doesn't activate.
 
 ### Level 2: Agent Team (3-5 Agents)
 
-Add a team only when the review problem is genuinely multi-dimensional — the output needs evaluation from multiple independent specialist perspectives that cannot be combined into one reviewer without diluting each domain's vocabulary activation.
+Add a team only when the review problem is genuinely multi-dimensional. The output needs evaluation from multiple independent specialist perspectives that cannot be combined into one reviewer without diluting each domain's vocabulary activation.
 
 **When to escalate here:** The worker + reviewer pattern produces good results on one dimension but misses others, and combining review domains into one agent degrades each (the generalist trap described in [Domain Focus](./agent-domain-focus.md)).
 
@@ -33,11 +33,12 @@ Add a team only when the review problem is genuinely multi-dimensional — the o
 Before adding another agent, ask: does the current architecture achieve more than 45% of optimal quality on the dimension you're trying to improve? If yes, improve the existing agent's instructions, vocabulary, or tool access first. Adding an agent is justified only when a single agent has been optimized and still falls short.
 
 Multi-agent teams only outperform single agents when:
-- Tasks decompose into **independent subtasks** with clear interfaces
-- Each subtask activates a **distinct domain** that benefits from separate vocabulary routing
-- The coordination overhead is **less than** the quality improvement
 
-Sequential reasoning tasks — where each step depends on the previous step's full context — can degrade 39-70% in multi-agent setups because handoffs lose context.
+- Tasks decompose into **independent subtasks** with clear interfaces.
+- Each subtask activates a **distinct domain** that benefits from separate vocabulary routing.
+- The coordination overhead is **less than** the quality improvement.
+
+Sequential reasoning tasks (where each step depends on the previous step's full context) can degrade 39-70% in multi-agent setups because handoffs lose context.
 
 ## Scaling Reality
 
@@ -50,7 +51,7 @@ Research on multi-agent scaling (DeepMind, 2025) shows diminishing returns:
 | 5 agents | ~7x | ~3.1x | 0.44 |
 | 7+ agents | ~12x+ | Often less than 4-agent | < 0.3 |
 
-Each additional agent must produce a measurable quality improvement to justify its cost. The efficiency ratio (quality gained / tokens spent) drops with every agent added. Team effectiveness plateaus around 4 agents; beyond this, coordination costs actively harm output.
+Each additional agent must produce a measurable quality improvement to justify its cost. The efficiency ratio (quality gained / tokens spent) drops with every agent added. Team effectiveness plateaus around 4 agents. Beyond this, coordination costs actively harm output.
 
 ## Practical Implications for Skills
 
@@ -64,14 +65,15 @@ When designing a skill that dispatches agents:
 
 ## Summary Checklist
 
-1. Start with one well-prompted agent — it handles most tasks
-2. Add a reviewer only when a single agent consistently fails a specific quality dimension
-3. Escalate to a team only when review is genuinely multi-dimensional
-4. Cap teams at 5 agents — beyond this, coordination costs exceed benefits
-5. Apply the 45% threshold: optimize existing agents before adding new ones
-6. Dispatch independent agents in parallel; avoid long sequential chains
+1. Start with one well-prompted agent. It handles most tasks.
+2. Add a reviewer only when a single agent consistently fails a specific quality dimension.
+3. Escalate to a team only when review is genuinely multi-dimensional.
+4. Cap teams at 5 agents. Beyond this, coordination costs exceed benefits.
+5. Apply the 45% threshold: optimize existing agents before adding new ones.
+6. Dispatch independent agents in parallel. Avoid long sequential chains.
 
 Cross-references:
-- [Model Selection](./agent-model-selection.md) — Choosing which model tier for a given agent (separate from whether to add agents)
-- [Domain Focus](./agent-domain-focus.md) — Vocabulary routing, self-evaluation bias, and the generalist trap
-- [Skill Decomposition](../skill-building-guidance/skill-decomposition.md) — When to split skills vs. when to add agents within a skill
+
+- [Model Selection](./agent-model-selection.md). Choosing which model tier for a given agent (separate from whether to add agents).
+- [Domain Focus](./agent-domain-focus.md). Vocabulary routing, self-evaluation bias, and the generalist trap.
+- [Skill Decomposition](../skill-building-guidance/skill-decomposition.md). When to split skills vs. when to add agents within a skill.

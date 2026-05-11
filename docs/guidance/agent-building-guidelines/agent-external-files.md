@@ -1,6 +1,6 @@
 # External File References in Agent Definitions
 
-Agent definitions are self-contained markdown files. Unlike skills, agents do not support external file references — no `references/` folders, no `scripts/` folders, and no context injection commands. All content must be inlined directly in the agent `.md` file.
+Agent definitions are self-contained markdown files. Unlike skills, agents do not support external file references. No `references/` folders, no `scripts/` folders, and no context injection commands. All content must be inlined directly in the agent `.md` file.
 
 ## The Rule
 
@@ -10,7 +10,7 @@ Agent `.md` files must be entirely self-contained. Do not create subdirectories,
 
 Four independent pieces of evidence confirm this limitation:
 
-### 1. Directory structure — flat vs. nested
+### 1. Directory structure: flat vs. nested
 
 Agents live as flat files in a shared directory:
 
@@ -64,17 +64,17 @@ The [Context Injection Commands](../skill-building-guidance/context-injection-co
 | `references/` folder | Yes | No |
 | `scripts/` folder | Yes | No |
 | Context injection (`` !`command` ``) | Yes | No |
-| Frontmatter: `allowed-tools` | Yes | No — uses `tools` |
+| Frontmatter: `allowed-tools` | Yes | No (uses `tools`) |
 | Frontmatter: `argument-hint` | Yes | No |
 | Frontmatter: `model` | No | Yes |
 | Directory structure | Own subdirectory (`skills/{name}/`) | Flat file (`agents/{name}.md`) |
 
 ## Existing Agents as Evidence
 
-Agents in the han plugin demonstrate this pattern — each is fully self-contained with all content inlined. For example:
+Agents in the han plugin demonstrate this pattern. Each is fully self-contained with all content inlined. For example:
 
-- **evidence-based-investigator.md** — Defines 5 investigation protocols entirely inline (Search for Direct Evidence, Trace Code Paths, Check Git History, Examine Test Coverage, Map Dependencies). No external references.
-- **codebase-explorer.md** — Defines exploration strategy, universal checklist, and feature-type-specific checklists entirely inline. No external references.
+- **evidence-based-investigator.md.** Defines 5 investigation protocols entirely inline (Search for Direct Evidence, Trace Code Paths, Check Git History, Examine Test Coverage, Map Dependencies). No external references.
+- **codebase-explorer.md.** Defines exploration strategy, universal checklist, and feature-type-specific checklists entirely inline. No external references.
 
 No agent references external files, scripts, or uses context injection commands.
 
@@ -82,19 +82,19 @@ No agent references external files, scripts, or uses context injection commands.
 
 When building agents that need substantial reference content:
 
-1. **Inline the content** — Write protocols, strategies, and reference material directly in the agent `.md` file. Both existing agents demonstrate this pattern effectively.
-2. **Keep agents focused** — Agents should orchestrate and make judgment calls. If an agent needs complex procedural steps or reference data, that work likely belongs in a skill.
-3. **Delegate to skills** — Agents can dispatch skills for operations that need `references/`, `scripts/`, or context injection. This follows the composition rule: "agents orchestrate, skills execute."
+1. **Inline the content.** Write protocols, strategies, and reference material directly in the agent `.md` file. Both existing agents demonstrate this pattern effectively.
+2. **Keep agents focused.** Agents should orchestrate and make judgment calls. If an agent needs complex procedural steps or reference data, that work likely belongs in a skill.
+3. **Delegate to skills.** Agents can dispatch skills for operations that need `references/`, `scripts/`, or context injection. This follows the composition rule: *"agents orchestrate, skills execute."*
 
 ## Summary Checklist
 
-1. Agent `.md` files are self-contained — no companion folders or subdirectories
-2. Do not use `` !`command` `` context injection syntax in agent definitions
-3. Do not create `references/` or `scripts/` folders under `agents/`
-4. Inline all protocols, strategies, and reference material directly in the agent file
-5. Delegate complex file-dependent operations to skills
+1. Agent `.md` files are self-contained. No companion folders or subdirectories.
+2. Do not use `` !`command` `` context injection syntax in agent definitions.
+3. Do not create `references/` or `scripts/` folders under `agents/`.
+4. Inline all protocols, strategies, and reference material directly in the agent file.
+5. Delegate complex file-dependent operations to skills.
 
 ## Cross-References
 
-- [Entity Taxonomy](../plugin-entity-taxonomy.md) — Defines agents as the "Thinking Layer" with no mention of companion folders
-- [Context Injection Commands](../skill-building-guidance/context-injection-commands.md) — Documents `` !`command` `` syntax for SKILL.md files only
+- [Entity Taxonomy](../plugin-entity-taxonomy.md). Defines agents as the "Thinking Layer" with no mention of companion folders.
+- [Context Injection Commands](../skill-building-guidance/context-injection-commands.md). Documents `` !`command` `` syntax for SKILL.md files only.
