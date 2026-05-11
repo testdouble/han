@@ -1,18 +1,18 @@
 # Domain Focus in Agent Definitions
 
-Agents perform better when they target a narrow domain with precise vocabulary. A focused agent activates deep expertise in the model; a broad generalist activates shallow, averaged knowledge across competing domains.
+Agents perform better when they target a narrow domain with precise vocabulary. A focused agent activates deep expertise in the model. A broad generalist activates shallow, averaged knowledge across competing domains.
 
 ## Why Domain Focus Matters
 
 ### Vocabulary Routing
 
-LLMs organize knowledge in embedding clusters activated by specific terminology. When an agent definition uses precise domain vocabulary — the terms a 15-year practitioner would use with peers — the model routes to expert-level training data. Generic language ("review this code for issues") routes to introductory material and blog posts.
+LLMs organize knowledge in embedding clusters activated by specific terminology. When an agent definition uses precise domain vocabulary (the terms a 15-year practitioner would use with peers) the model routes to expert-level training data. Generic language (*"review this code for issues"*) routes to introductory material and blog posts.
 
 This is the **15-year practitioner test**: for every key term in the agent definition, ask whether a senior domain expert would use that exact term in conversation with another expert. If not, the term is too generic and the model will activate shallow knowledge.
 
 ### Persona Length and Attention
 
-Research indicates that accuracy degrades with elaborate persona descriptions. The optimal range for the Role Identity — the "You are a..." opening paragraph in the agent body — is **under 50 tokens**. This is enough context to route to the right domain without wasting attention on self-description rather than task performance.
+Research indicates that accuracy degrades with elaborate persona descriptions. The optimal range for the Role Identity (the "You are a..." opening paragraph in the agent body) is **under 50 tokens**. This is enough context to route to the right domain without wasting attention on self-description rather than task performance.
 
 The frontmatter `description` field is separate from the Role Identity. It is triggering metadata that tells Claude when to spawn the agent, and is not subject to the 50-token budget.
 
@@ -20,7 +20,7 @@ Detailed protocols, checklists, anti-patterns, and procedures that follow the Ro
 
 ### Self-Evaluation Bias
 
-Agents cannot reliably evaluate their own work. Generator biases replicate in evaluation, creating systematic blind spots. This means a single agent should not both generate output and evaluate it — separate agents with fresh perspectives catch what originators miss.
+Agents cannot reliably evaluate their own work. Generator biases replicate in evaluation, creating systematic blind spots. This means a single agent should not both generate output and evaluate it. Separate agents with fresh perspectives catch what originators miss.
 
 An agent should have a single role: generate **or** evaluate, not both.
 
@@ -28,7 +28,7 @@ An agent should have a single role: generate **or** evaluate, not both.
 
 ### 1. Write a Clear Frontmatter Description
 
-The `description` field in frontmatter is triggering metadata — it tells Claude when to spawn the agent. It is **not** the agent's persona and is **not** subject to the 50-token budget. The description should clearly state what the agent does and when to invoke it.
+The `description` field in frontmatter is triggering metadata. It tells Claude when to spawn the agent. It is **not** the agent's persona and is **not** subject to the 50-token budget. The description should clearly state what the agent does and when to invoke it.
 
 **Example:**
 ```yaml
@@ -38,13 +38,13 @@ description: "Research analyst for gathering, evaluating, and synthesizing
   credibility assessment, or triangulation of findings."
 ```
 
-This description is well over 50 tokens — and that is fine. Its job is to help Claude decide when to use the agent, not to set the model's persona.
+This description is well over 50 tokens, and that is fine. Its job is to help Claude decide when to use the agent, not to set the model's persona.
 
 ### 2. Write a Concise Role Identity (Under 50 Tokens)
 
-The Role Identity is the opening "You are a..." paragraph in the agent body. This is the persona statement that routes the model to expert-level knowledge. Keep it **under 50 tokens** — state the domain, the task, and the perspective, nothing more.
+The Role Identity is the opening "You are a..." paragraph in the agent body. This is the persona statement that routes the model to expert-level knowledge. Keep it **under 50 tokens**. State the domain, the task, and the perspective, nothing more.
 
-Some agents use a formal `## Role Identity` heading for this section; others place it as the opening paragraph of the body. Both patterns work.
+Some agents use a formal `## Role Identity` heading for this section. Others place it as the opening paragraph of the body. Both patterns work.
 
 **Before (78 tokens):**
 ```markdown
@@ -92,7 +92,7 @@ Apply the 15-year practitioner test to each term: would a senior expert use this
 
 ### 4. List Named Anti-Patterns with Detection Signals
 
-Each specialist agent should list 5-10 named anti-patterns relevant to its domain. Each anti-pattern needs a name and detection signals — what to look for in the code or output.
+Each specialist agent should list 5-10 named anti-patterns relevant to its domain. Each anti-pattern needs a name and detection signals: what to look for in the code or output.
 
 **Example for a test engineering agent:**
 ```markdown
@@ -108,12 +108,12 @@ Anti-patterns make the agent's expertise concrete and auditable. They also prime
 
 ### 5. Avoid Flattery and Motivational Framing
 
-Flattery and superlatives ("you are the world's best," "your expertise is unmatched") activate motivational and inspirational content in the model's embeddings rather than technical expertise. They consume tokens without improving — and often degrading — output quality.
+Flattery and superlatives (*"you are the world's best," "your expertise is unmatched"*) activate motivational and inspirational content in the model's embeddings rather than technical expertise. They consume tokens without improving (and often degrading) output quality.
 
 **Avoid:**
-- "You are an expert..." / "You are the best..."
-- "Your analysis is always thorough and insightful"
-- "You take pride in finding every issue"
+- *"You are an expert..."* / *"You are the best..."*
+- *"Your analysis is always thorough and insightful"*
+- *"You take pride in finding every issue"*
 
 **Instead:** Let domain vocabulary and precise task framing do the routing work. A concise role statement with the right terminology outperforms an elaborate motivational preamble.
 
@@ -125,21 +125,21 @@ Do not ask a single agent to both produce output and judge its quality. Self-eva
 - Use one agent to generate (investigate, explore, draft)
 - Use a separate agent to evaluate (validate, audit, challenge)
 
-Existing agents in this repo already follow this pattern. For example, `evidence-based-investigator` generates evidence and `adversarial-validator` evaluates it — they are separate agents with separate perspectives.
+Existing agents in this repo already follow this pattern. For example, `evidence-based-investigator` generates evidence and `adversarial-validator` evaluates it. They are separate agents with separate perspectives.
 
 ## Summary Checklist
 
-1. Write a clear frontmatter `description` that states what the agent does and when to invoke it
-2. Keep the Role Identity under 50 tokens — state domain, task, and perspective only
-3. Include a domain vocabulary section with 15-30 precise terms that pass the 15-year practitioner test
-4. List 5-10 named anti-patterns with detection signals relevant to the agent's domain
-5. No flattery, superlatives, or motivational framing — let vocabulary do the routing
-6. Assign a single role per agent — generate or evaluate, not both
-7. All vocabulary, anti-patterns, and protocols must be inlined in the agent file (see [External File References](agent-external-files.md))
+1. Write a clear frontmatter `description` that states what the agent does and when to invoke it.
+2. Keep the Role Identity under 50 tokens. State domain, task, and perspective only.
+3. Include a domain vocabulary section with 15-30 precise terms that pass the 15-year practitioner test.
+4. List 5-10 named anti-patterns with detection signals relevant to the agent's domain.
+5. No flattery, superlatives, or motivational framing. Let vocabulary do the routing.
+6. Assign a single role per agent. Generate or evaluate, not both.
+7. All vocabulary, anti-patterns, and protocols must be inlined in the agent file (see [External File References](agent-external-files.md)).
 
 ## Cross-References
 
-- [External File References](agent-external-files.md) — All content must be inlined in the agent file; vocabulary and anti-pattern sections are no exception
-- [Model Selection](agent-model-selection.md) — A well-specialized agent with precise vocabulary may perform well with a faster model, because domain terms activate expert knowledge even in smaller models
-- [Specialization and Model Selection](../specialization-and-model-selection.md) — Evidence base for why specialization shifts work from inference-time compute to prompt-time design
-- Source: [The Specialized Review Principle](https://jdforsythe.github.io/10-principles/principles/specialized-review/) — Research-backed principle on vocabulary routing, persona length, and self-evaluation bias
+- [External File References](agent-external-files.md). All content must be inlined in the agent file. Vocabulary and anti-pattern sections are no exception.
+- [Model Selection](agent-model-selection.md). A well-specialized agent with precise vocabulary may perform well with a faster model, because domain terms activate expert knowledge even in smaller models.
+- [Specialization and Model Selection](../specialization-and-model-selection.md). Evidence base for why specialization shifts work from inference-time compute to prompt-time design.
+- Source: [The Specialized Review Principle](https://jdforsythe.github.io/10-principles/principles/specialized-review/). Research-backed principle on vocabulary routing, persona length, and self-evaluation bias.
