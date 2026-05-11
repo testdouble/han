@@ -1,91 +1,87 @@
 # Skills
 
-All skills in the han plugin, grouped by purpose. Each entry is a one-sentence scent line plus a link to the canonical long-form doc (or the SKILL.md definition when no long-form exists).
+All skills in the han plugin, grouped by purpose. Each entry is a one-sentence scent line plus a link to the canonical long-form doc.
 
-> See also: [Plugin landing page — han](../../README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md) · [All agents](../agents/README.md) · [Sizing](../sizing.md) · [YAGNI](../yagni.md)
+> See also: [Plugin landing page](../../README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md) · [All agents](../agents/README.md) · [Sizing](../sizing.md) · [YAGNI](../yagni.md)
 
 ## New here?
 
-Start on the [Quickstart](../quickstart.md) — it picks the right skill for what you are trying to do right now. If the skill/agent split is fuzzy, read [Concepts](../concepts.md) first.
+Start on the [Quickstart](../quickstart.md). It picks the right skill for what you are trying to do right now. If the skill / agent split is fuzzy, read [Concepts](../concepts.md) first.
 
 ## Planning
 
 Skills for specifying *what* a feature does, planning *how* to build it, and stress-testing plans before you commit.
 
-- **[`/plan-a-feature`](./plan-a-feature.md)** — Build a feature specification from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
-- **[`/plan-implementation`](./plan-implementation.md)** — Turn a feature specification into an implementation plan through a project-manager-led team conversation.
-- **[`/plan-a-phased-build`](./plan-a-phased-build.md)** — Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
-- **[`/iterative-plan-review`](./iterative-plan-review.md)** — Stress-test an already-written plan through multiple codebase-grounded review passes.
+- **[`/plan-a-feature`](./plan-a-feature.md).** Build a feature specification from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
+- **[`/plan-implementation`](./plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
+- **[`/plan-a-phased-build`](./plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
+- **[`/iterative-plan-review`](./iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
 
 ## Investigation & root cause
 
 Skills for finding out *why* something is broken, with evidence to back it.
 
-- **[`/investigate`](./investigate.md)** — Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
+- **[`/investigate`](./investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 
 ## Review & analysis
 
 Skills for getting a second set of eyes on code that already exists.
 
-- **[`/code-review`](./code-review.md)** — Run a comprehensive code review on the current branch or specified files; always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
-- **[`/gh-pr-review`](./gh-pr-review.md)** — Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
-- **[`/architectural-analysis`](./architectural-analysis.md)** — Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment.
-- **[`/gap-analysis`](./gap-analysis.md)** — Compare two artifacts (current state vs. desired state — e.g., spec vs. implementation, PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis; optionally dispatches a swarm of validators and augmenters (`adversarial-validator`, `evidence-based-investigator`, plus domain specialists) when the user opts in.
-- **[`/test-planning`](./test-planning.md)** — Produce a prioritized test plan for a branch or directory; dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
+- **[`/code-review`](./code-review.md).** Run a comprehensive code review on the current branch or specified files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
+- **[`/gh-pr-review`](./gh-pr-review.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
+- **[`/architectural-analysis`](./architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment.
+- **[`/gap-analysis`](./gap-analysis.md).** Compare two artifacts (current state vs. desired state, for example spec vs. implementation, or PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis. Optionally dispatches a swarm of validators and augmenters (`adversarial-validator`, `evidence-based-investigator`, plus domain specialists) when you opt in.
+- **[`/test-planning`](./test-planning.md).** Produce a prioritized test plan for a branch or directory. Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
 
 ## Discovery & context
 
 Skills that produce context every other skill benefits from.
 
-- **[`/project-discovery`](./project-discovery.md)** — Scan the repository for languages, frameworks, tooling, and structure; write a static reference for other skills.
-- **[`/project-documentation`](./project-documentation.md)** — Create and maintain documentation for features, systems, and components.
+- **[`/project-discovery`](./project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a static reference for other skills.
+- **[`/project-documentation`](./project-documentation.md).** Create and maintain documentation for features, systems, and components.
 
 ## Conventions & decisions
 
 Skills for recording how the team works.
 
-- **[`/coding-standard`](./coding-standard.md)** — Create and update coding standards from existing patterns or evidence-based research.
-- **[`/architectural-decision-record`](./architectural-decision-record.md)** — Create, extract, or convert architectural decision records.
+- **[`/coding-standard`](./coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
+- **[`/architectural-decision-record`](./architectural-decision-record.md).** Create, extract, or convert architectural decision records.
 
 ## Reporting
 
 Skills for turning the work back into something sharable.
 
-- **[`/update-pr-description`](./update-pr-description.md)** — Generate a PR description from the current branch's changes.
+- **[`/update-pr-description`](./update-pr-description.md).** Generate a PR description from the current branch's changes.
 
 ---
 
 ## How dispatch scales: sizing
 
-Five of these skills — [`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), and [`/plan-implementation`](./plan-implementation.md) — classify the work as **small**, **medium**, or **large** before dispatching agents and scale the team or swarm size to the chosen band. The default is always small; pass `small`, `medium`, or `large` as the first positional argument to override.
+Five of these skills ([`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
 
-See [Sizing](../sizing.md) for the cross-skill model and per-skill bands; each sizing-aware skill's long-form doc has its own **Sizing** section with the skill-specific signals and caps.
+See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each sizing-aware skill's long-form doc has its own **Sizing** section with the skill-specific signals and caps.
 
 ## What survives a review: YAGNI
 
-Every planning, review, and standards skill in the plugin applies an evidence-based YAGNI rule before committing items to its artifact. Items without acceptable evidence move to a `## Deferred (YAGNI)` section with a named *reopen-when* trigger — never silently dropped. The rule applies to:
+Every planning, review, and standards skill in the plugin applies an evidence-based YAGNI rule before committing items to its artifact. Items without acceptable evidence move to a `## Deferred (YAGNI)` section with a named *reopen-when* trigger. Never silently dropped. The rule applies to:
 
-- **Planning** — [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/plan-a-phased-build`](./plan-a-phased-build.md), [`/iterative-plan-review`](./iterative-plan-review.md).
-- **Review and standards** — [`/code-review`](./code-review.md) (advisory-only), [`/coding-standard`](./coding-standard.md), [`/test-planning`](./test-planning.md), [`/architectural-decision-record`](./architectural-decision-record.md) (forcing-function requirement).
+- **Planning.** [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/plan-a-phased-build`](./plan-a-phased-build.md), [`/iterative-plan-review`](./iterative-plan-review.md).
+- **Review and standards.** [`/code-review`](./code-review.md) (advisory-only), [`/coding-standard`](./coding-standard.md), [`/test-planning`](./test-planning.md), [`/architectural-decision-record`](./architectural-decision-record.md) (forcing-function requirement).
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 
 ## How skills compose
 
-Most han skills dispatch agents to do their judgment-heavy work. The [Concepts](../concepts.md) page explains the split; the long-form doc for each skill names the specific agents it dispatches.
+Most han skills dispatch agents to do their judgment-heavy work. The [Concepts](../concepts.md) page explains the split. The long-form doc for each skill names the specific agents it dispatches.
 
 A few common compositions:
 
-- **Plan → implement → iterate** — `/plan-a-feature` → `/plan-implementation` → `/iterative-plan-review`.
-- **Discover → document → standardize** — `/project-discovery` → `/project-documentation` → `/coding-standard`.
-- **Review locally → post to PR** — `/code-review` → `/gh-pr-review`.
-- **Investigate → iterate on the fix** — `/investigate` → `/iterative-plan-review`.
-- **Compare → plan the remediation** — `/gap-analysis` → `/plan-implementation` (the gap report's `G-NNN` IDs become work items in the implementation plan).
-- **Compare → phase the build → plan implementation per phase** — `/gap-analysis` → `/plan-a-phased-build` → `/plan-implementation` (the gap report orders `G-NNN` IDs into vertical slices, then each phase gets its own implementation plan once greenlit).
-
-## Missing a long-form doc?
-
-If you click through and a skill does not yet have a long-form doc, you have hit the [coverage-rule](../templates/coverage-rule.md) edge: the team is still deciding whether that skill qualifies. Read the `SKILL.md` directly in the meantime, and open an issue if the long-form would help.
+- **Plan → implement → iterate.** `/plan-a-feature` → `/plan-implementation` → `/iterative-plan-review`.
+- **Discover → document → standardize.** `/project-discovery` → `/project-documentation` → `/coding-standard`.
+- **Review locally → post to PR.** `/code-review` → `/gh-pr-review`.
+- **Investigate → iterate on the fix.** `/investigate` → `/iterative-plan-review`.
+- **Compare → plan the remediation.** `/gap-analysis` → `/plan-implementation` (the gap report's `G-NNN` IDs become work items in the implementation plan).
+- **Compare → phase the build → plan implementation per phase.** `/gap-analysis` → `/plan-a-phased-build` → `/plan-implementation` (the gap report orders `G-NNN` IDs into vertical slices, then each phase gets its own implementation plan once greenlit).
 
 ## Adding a skill?
 
