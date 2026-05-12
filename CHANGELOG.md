@@ -1,5 +1,34 @@
 # Han Release Notes
 
+## v2.2.0
+
+The `/gap-analysis` swarm flips from opt-in to opt-out, `junior-developer` is promoted to a required swarm role at every size to run an explicit actor-perspective sweep, and `project-manager` joins the swarm at medium and large to consolidate Section 4 of the report.
+
+### Default-on swarm
+
+The validator-and-augmenter swarm now runs by default at every size. Reply `no swarm` to opt out and fall back to the lightweight gap-analyzer-only pass; reply `lightweight` to drop to the minimum two required roles without domain specialists.
+
+- **Small** *(default)*: 2–3 agents — `adversarial-validator` and `junior-developer` always, plus `evidence-based-investigator` when the current state is concrete. No PM at small.
+- **Medium**: 4–6 agents — the required three plus 1–2 domain specialists plus `project-manager` for Section 4 synthesis.
+- **Large**: 6–8 agents — the required three plus 2–4 domain specialists plus `project-manager`.
+
+### Actor-perspective sweep
+
+`junior-developer` is now a required swarm member at every size. Its job in `/gap-analysis` is to enumerate every actor the desired state addresses or implies (human end users and sub-roles, API callers, AI agents, integration partners, batch processes, internal services), check whether each gap holds for every actor type, and surface gaps the analyzer missed because it only considered one actor.
+
+### Conditional second round
+
+When the first-round swarm surfaces ≥ 3 `proposed_new_gap` entries (Trigger A) or contradictions on ≥ 20% of the analyzer's original gaps (Trigger B), the skill runs one additional `gap-analyzer` pass with the new actor context and merges the delta into the source file. Bounded to one extra round.
+
+### Section 4 default-on; augmentations inline into Section 2
+
+Section 4 (Swarm Findings) is now rendered by default and is omitted only when the user passed `no swarm`. Swarm augmentations (added risks, secondary effects, refined framing, actor-perspective notes from `junior-developer`) inline into Section 2 entries as `Additional context (swarm):` lines so they land where the gap lives, while Section 4 retains the audit-trail listing.
+
+### Documentation
+
+- [`docs/skills/gap-analysis.md`](./docs/skills/gap-analysis.md) — updated TL;DR, key concepts, sizing table, cost-and-latency model, "In more detail" section, and Sources / Related Documentation to reflect the opt-out posture.
+- Cross-references updated in [`docs/concepts.md`](./docs/concepts.md), [`docs/quickstart.md`](./docs/quickstart.md), [`docs/sizing.md`](./docs/sizing.md), [`docs/skills/README.md`](./docs/skills/README.md), and the agent docs for `adversarial-validator`, `evidence-based-investigator`, `junior-developer`, `project-manager`, and `gap-analyzer`.
+
 ## v2.0.1
 
 The "this codebase is a startup" framing is removed from the YAGNI rule and every skill and agent that inherits it. The evidence-based YAGNI mechanic is unchanged — only the rationale prose is reframed so the rule reads as project-agnostic guidance rather than advice contingent on company stage.

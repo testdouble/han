@@ -186,6 +186,7 @@ URLs: https://www.atlassian.com/work-management/project-management/acceptance-cr
 - [Agents Index](./README.md). All 21 agents, grouped by role.
 - [`junior-developer`](./junior-developer.md). The generalist stress-tester the PM leans on for plain-language reframing when specialist input gets entangled.
 - [`/plan-a-feature`](../skills/plan-a-feature.md) and [`/plan-implementation`](../skills/plan-implementation.md). Skills that dispatch this agent as coordinator and synthesizer.
+- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent in synthesis mode at medium and large swarm sizes to consolidate swarm output into Section 4 of the report.
 - [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise project-management vocabulary (RAID, disagree-and-commit, revisit criterion, servant leader) and named anti-patterns.
 - [agent-model-selection.md](../guidance/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier on a synthesis-heavy coordination agent.
 - [graceful-degradation.md](../guidance/agent-building-guidelines/graceful-degradation.md). Why the agent handles missing git, missing standards documents, and missing ADRs inline rather than failing.

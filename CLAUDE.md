@@ -2,7 +2,7 @@
 
 Han is a Claude Code plugin: a suite of skills and agents for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work.
 
-Current version: **2.1.0** (see [CHANGELOG.md](./CHANGELOG.md)).
+Current version: **2.2.0** (see [CHANGELOG.md](./CHANGELOG.md)).
 
 ## Repository layout
 

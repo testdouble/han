@@ -7,7 +7,7 @@ Operator documentation for the `evidence-based-investigator` agent in the han pl
 ## TL;DR
 
 - **What it does.** Gathers concrete, verifiable evidence about a codebase issue. File paths, line numbers, code snippets, error messages, git history, test coverage. Every claim is backed by an artifact you can open and read.
-- **When to dispatch it.** A bug, failure, or unexpected behavior needs evidence-based root-cause work. Always dispatched by `/investigate` (often two or more in parallel from different angles). Dispatched by `/gap-analysis` swarms to verify each gap against current state. Dispatched by `/iterative-plan-review` team mode for codebase grounding.
+- **When to dispatch it.** A bug, failure, or unexpected behavior needs evidence-based root-cause work. Always dispatched by `/investigate` (often two or more in parallel from different angles). Dispatched by `/gap-analysis` swarms (which run by default) to verify each gap against current state, whenever the current state is concrete. Dispatched by `/iterative-plan-review` team mode for codebase grounding.
 - **What you get back.** Numbered `E#` evidence items, each with source (path, line, or git commit), verbatim code or error in a fenced block, and a relevance note connecting the evidence to the issue.
 
 ## Key concepts
@@ -23,7 +23,7 @@ Operator documentation for the `evidence-based-investigator` agent in the han pl
 **Dispatch when:**
 
 - `/investigate` is running. The skill dispatches this agent (usually two or more in parallel) as its primary evidence-gathering step.
-- `/gap-analysis` is running with the swarm. The skill dispatches this agent to verify each gap against the current state with file-level evidence.
+- `/gap-analysis` is running with the swarm (the default). The skill dispatches this agent to verify each gap against the current state with file-level evidence whenever the current state is concrete (codebase, document on disk, fetchable URL).
 - `/iterative-plan-review` is in team mode. The skill dispatches this agent for codebase grounding of assumptions in the plan.
 - You want a structured evidence pass on a specific bug, integration failure, or unexpected behavior independent of a full investigation skill.
 - An incident postmortem needs evidence-grounded reconstruction of what happened in the code.
@@ -96,5 +96,5 @@ URL: https://www.etsy.com/codeascraft/blameless-postmortems
 - [`adversarial-validator`](./adversarial-validator.md). The canonical pairing. Investigator gathers, validator attacks.
 - [`codebase-explorer`](./codebase-explorer.md). Sibling agent for general codebase discovery (not bug-focused).
 - [`/investigate`](../skills/investigate.md). Always dispatches this agent (usually two or more in parallel).
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent when the swarm runs.
+- [`/gap-analysis`](../skills/gap-analysis.md). Required swarm role when the current state is concrete. The swarm runs by default.
 - [`/iterative-plan-review`](../skills/iterative-plan-review.md). Dispatches this agent in team mode.

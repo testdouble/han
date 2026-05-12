@@ -8,7 +8,7 @@ sections_included:
   - executive_summary
   - indexed_gaps
   - technical_details   # remove this line if section 3 was not requested
-  - swarm_findings      # remove this line if no swarm was run
+  - swarm_findings      # remove this line only if user passed `no swarm` (the swarm runs by default)
 ---
 
 # Gap Analysis: {{source_artifact_name}} vs {{target_artifact_name}}
@@ -85,6 +85,7 @@ Every gap has a stable ID. Sections 3 and 4 reference those IDs. If a gap appear
 - **Expected ({{target_artifact_name}}):** {{plain_language_description_of_what_target_calls_for}}
 - **Current ({{source_artifact_name}}):** {{plain_language_description_of_what_source_actually_does_or_omits}}
 - **Why it matters:** {{one_to_three_sentences_plain_language_consequence_for_users_or_the_business}}
+- **Additional context (swarm):** {{optional_plain_language_augmentation_e_g_actor_perspective_note_from_junior_developer_or_secondary_effect_from_a_domain_specialist; omit this line entirely when no swarm augmentation applies to this gap}}
 - **Confidence:** {{High | Medium | Low}} — {{one_sentence_reason_e_g_directly_stated_in_both_artifacts_or_inferred_from_context}}
 
 {{repeat_block_for_each_gap_G-002_G-003_etc}}

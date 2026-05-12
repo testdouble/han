@@ -74,7 +74,7 @@ When the size is overridden with `$size`:
 | Skill | What gets sized | Small | Medium | Large |
 |---|---|---|---|---|
 | [`/code-review`](./skills/code-review.md) | Agent roster + finding calibration | 1–3 files, single subsystem | 3–10 files, one cross-cutting concern | More than 10 files, multiple subsystems |
-| [`/gap-analysis`](./skills/gap-analysis.md) | Optional swarm size | 0–3 gaps, single domain (no swarm by default) | 4–10 gaps, two or three domains (3–4 agents) | 11+ gaps or cross-cutting domains (4–5 agents) |
+| [`/gap-analysis`](./skills/gap-analysis.md) | Default-on swarm size | 0–3 gaps, single domain (2–3 agents, no PM) | 4–10 gaps, two or three domains (4–6 agents with PM) | 11+ gaps or cross-cutting domains (6–8 agents with PM) |
 | [`/iterative-plan-review`](./skills/iterative-plan-review.md) | Lightweight vs team mode + team size + round cap | 2–3 files, single system (lightweight, 1 round) | 3–5 files, one cross-cutting concern (team, 3–4, 2 rounds) | More than 5 files, multiple systems (team, 4–5, 3 rounds) |
 | [`/plan-a-feature`](./skills/plan-a-feature.md) | Review-team size cap | Single subsystem (team cap 2) | Two to three subsystems (team cap 3–4) | Cross-service or security-sensitive (team cap 4–5) |
 | [`/plan-implementation`](./skills/plan-implementation.md) | Implementation-team size + round cap | Single subsystem (team cap 3, 1 round) | Two to three subsystems (team cap 4–5, 2 rounds) | Cross-service or security-sensitive (team cap 6–8, 3 rounds) |

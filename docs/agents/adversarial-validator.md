@@ -7,7 +7,7 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 ## TL;DR
 
 - **What it does.** Assumes investigation evidence is wrong and the planned fix will fail. Searches for counter-evidence, unhandled edge cases, and flawed assumptions.
-- **When to dispatch it.** An investigation has produced a root cause and a fix plan, and you want the analysis adversarially validated before code lands. Always dispatched by `/investigate`. Used by `/gap-analysis` swarms and by `/iterative-plan-review` team mode.
+- **When to dispatch it.** An investigation has produced a root cause and a fix plan, and you want the analysis adversarially validated before code lands. Always dispatched by `/investigate`. Required by `/gap-analysis` swarms at every size (which run by default) and by `/iterative-plan-review` team mode.
 - **What you get back.** Numbered `V#` validation items, each with a strategy, hypothesis, investigation steps, result (Confirmed / Refuted / Partially Refuted), and an impact statement. Plus a confidence assessment and remaining risks.
 
 ## Key concepts
@@ -23,7 +23,7 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 **Dispatch when:**
 
 - An investigation has produced a root cause analysis and a planned fix, and you want it challenged before code is written. `/investigate` dispatches this agent automatically.
-- A gap analysis has produced gaps with claimed evidence and you want each gap challenged for confirmability. `/gap-analysis` dispatches this agent when the swarm runs.
+- A gap analysis has produced gaps with claimed evidence and you want each gap challenged for confirmability. `/gap-analysis` dispatches this agent by default at every swarm size.
 - An iterative plan review is in team mode and you want the plan's assumptions attacked. `/iterative-plan-review` dispatches this agent in team mode.
 - A team member has proposed a fix or change and you want a second adversarial opinion before merging.
 - A high-stakes incident response is winding down and you want to confirm the post-mortem's root cause and remediation hold up under challenge.
@@ -99,7 +99,7 @@ URL: https://en.wikipedia.org/wiki/Red_team
 - [Agents Index](./README.md). All 21 agents, grouped by role.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). The sibling agent the validator usually attacks. Investigators gather, validators falsify.
 - [`/investigate`](../skills/investigate.md). Always dispatches this agent after the fix plan is drafted.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent when the swarm runs.
+- [`/gap-analysis`](../skills/gap-analysis.md). Required swarm role at every size. The swarm runs by default.
 - [`/iterative-plan-review`](../skills/iterative-plan-review.md). Dispatches this agent in team mode.
 - [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise falsification vocabulary and named anti-patterns.
 - [multi-agent-economics.md](../guidance/agent-building-guidelines/multi-agent-economics.md). Why this agent is the canonical second-opinion pattern across the plugin.

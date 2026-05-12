@@ -1,6 +1,6 @@
 {
   "name": "han",
   "description": "Evidence-based investigation and documentation skills for software projects. Includes deep-dive investigations with root cause analysis, iterative plan refinement, architectural decision records (ADRs), project and feature documentation, coding standards, code reviews, test planning, PR descriptions, PR code reviews, and adversarial security vulnerability analysis.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "skills": "./skills"
 }
