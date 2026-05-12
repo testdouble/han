@@ -24,6 +24,10 @@ When the first-round swarm surfaces ≥ 3 `proposed_new_gap` entries (Trigger A)
 
 Section 4 (Swarm Findings) is now rendered by default and is omitted only when the user passed `no swarm`. Swarm augmentations (added risks, secondary effects, refined framing, actor-perspective notes from `junior-developer`) inline into Section 2 entries as `Additional context (swarm):` lines so they land where the gap lives, while Section 4 retains the audit-trail listing.
 
+### Report template
+
+[`gap-analysis-report-template.md`](./plugin/skills/gap-analysis/references/gap-analysis-report-template.md) gains an optional `Additional context (swarm):` field on every Section 2 gap entry, and the `swarm_findings` front-matter marker is now removed only when the user passes `no swarm` rather than on every non-swarm run.
+
 ### Documentation
 
 - [`docs/skills/gap-analysis.md`](./docs/skills/gap-analysis.md) — updated TL;DR, key concepts, sizing table, cost-and-latency model, "In more detail" section, and Sources / Related Documentation to reflect the opt-out posture.
