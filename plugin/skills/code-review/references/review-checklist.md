@@ -1,6 +1,14 @@
 ### Review Checklist
 
 **YAGNI** (apply [../../../references/yagni-rule.md](../../../references/yagni-rule.md); these become `YAGNI-###` items in the separate YAGNI section, never CRIT/WARN/SUGG)
+
+Apply YAGNI in two passes for every change in the diff. Severity calibration is governed by SKILL.md Step 3.3 (the authoritative home), but YAGNI findings are advisory regardless of size and run at every change size.
+
+1. **Pass 1, evidence test.** For each new abstraction, configuration knob, defensive guard, observability hook, runbook, SLO, index, audit column, feature flag, or speculative addition, ask whether the diff contains evidence of need from one of the acceptable evidence types in [`yagni-rule.md`](../../../references/yagni-rule.md) Gate 1. If yes, do not flag.
+2. **Pass 2, anti-pattern check.** Only for items that fail Pass 1, match against the named anti-patterns below. Items that match any anti-pattern become `YAGNI-###` findings. The body of the finding must name (a) the failing evidence type from Pass 1, (b) the matched anti-pattern from this list, and (c) the simpler form considered.
+
+Named anti-patterns to match in Pass 2:
+
 - New abstraction (interface, base class, port, adapter) introduced for code with one current concrete implementation and no churn history
 - Configuration knob, env var, or feature flag added with no caller setting a non-default value, no documented rollout strategy, or no expiration criterion
 - Defensive guard (null check, type check, validation) added at a trusted internal boundary the caller fully controls

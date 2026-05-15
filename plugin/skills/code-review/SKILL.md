@@ -3,7 +3,7 @@ name: code-review
 description: "Run a comprehensive code review on local source files. Use this skill when the user asks to review, audit, inspect, evaluate, or check code — or when they ask to make sure, verify, or validate that code follows good coding standards, is free of errors or bugs, has sufficient test coverage, or meets best practices, even if they never use the word \"review.\" Triggers for any request to assess code quality, correctness, or security of specific files, directories, or the current branch. Also use when the user invokes /code-review directly. Works on git branches (reviewing changed files against the default branch) or on specified files and directories when git is not available. Does not post comments to GitHub pull requests — use gh-pr-review for that. Does not analyze architectural structure or module boundaries — use architectural-analysis for that."
 arguments: size
 argument-hint: "[size: small | medium | large] [optional context about changes or areas to focus on]"
-allowed-tools: Bash(git *), Bash(make *), Bash(npm *), Read, Grep, Glob, Agent
+allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Grep, Glob, Agent
 ---
 
 When running a code review, follow the process outlined here.
@@ -21,13 +21,13 @@ Severity levels:
 - **Warning** — Should fix. Bugs that don't corrupt data, significant performance issues, missing required tests, missing error handling.
 - **Suggestion** — Consider improving. Style improvements, optional performance gains, documentation gaps, refactoring opportunities.
 
-When uncertain, choose the **higher** severity. Include `file_path:line_number` references and code examples for suggested fixes.
+Severity calibration is governed by **Step 3.3** (the authoritative home for size-based demotion). Manual findings from Steps 4 to 6 follow the same size-based rules as agent findings classified at Step 7: Small changes escalate only Critical findings and default uncertain ones to the lower severity, Medium changes escalate Critical and Warning, Large changes prefer the higher severity when in doubt. Read `{size}` from Step 3.1. Include `file_path:line_number` references and code examples for suggested fixes.
 
 **Finding caps:** Manual review findings (Steps 4-6) and agent findings (Step 7) are each capped at 30 items. Prioritize by severity: all CRIT first, then WARN, then SUGG. If either cap is exceeded, note that additional items were omitted and another code review is recommended after addressing current items. Security findings are not capped (see classification rubric).
 
 **Project pattern deference:** A pattern that differs from general best practices but is consistent within the project is not a review finding. Only flag deviations from the project's own conventions.
 
-**YAGNI findings are a separate, non-correcting class.** Apply the evidence-based YAGNI rule from [../../references/yagni-rule.md](../../references/yagni-rule.md) to every change in the diff. A YAGNI finding identifies code introduced by this change that has no evidence of being needed *now* — a new abstraction with one implementation, a configuration knob no caller sets, a defensive guard at a trusted internal boundary, a runbook for an alert that has never fired, an observability hook for telemetry that isn't flowing, an SLO for absent traffic, an index for a query that doesn't run, an audit column nobody reads, a feature flag wrapping a single code path with no rollout strategy, code added "for future flexibility" or symmetry. **YAGNI findings are listed in their own `### 🟡 YAGNI` section, separate from Critical / Warning / Suggestion**, and **do not appear under CRIT / WARN / SUGG**. The YAGNI section opens with this exact statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* Each YAGNI finding records what was found, which gate or named anti-pattern from the rule applies, and the trigger that would justify keeping it. Severity calibration (the calibration directive in Step 3.3) does NOT apply to YAGNI — these findings are surfaced regardless of change size, but they are advisory, not corrective.
+**YAGNI findings are a separate, non-correcting class.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](references/review-checklist.md) (Pass 1 runs the evidence test from [../../references/yagni-rule.md](../../references/yagni-rule.md) Gate 1; Pass 2 matches against the named anti-patterns) to every change in the diff. **YAGNI findings are listed in their own `### 🟡 YAGNI` section, separate from Critical / Warning / Suggestion**, and **do not appear under CRIT / WARN / SUGG**. The YAGNI section opens with this exact statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* Each YAGNI finding records (a) the failing evidence type from Pass 1, (b) the matched anti-pattern from Pass 2, and (c) the simpler form considered. Severity calibration (the directive in Step 3.3, the authoritative home) does NOT apply to YAGNI; these findings are surfaced regardless of change size and are advisory, not corrective.
 
 **Automated tool boundary:** If the project has a linter or formatter, trust it. Only flag style issues that automated tools can't catch.
 
@@ -73,7 +73,24 @@ Use the script output to determine the review mode. If the script reports `git-a
 - Present the discovered files and ask the user to confirm the review scope
 - Note: In Mode C, review files by reading them in full rather than comparing against a diff (no diff is available)
 
-If the user provided focus areas in their arguments, note them for use in Step 4.
+**Bind `$focus_areas`.** Read the user's free-form argument string from the invocation (everything after the optional `$size` positional). If non-empty, bind `$focus_areas` to that string verbatim. If empty, bind `$focus_areas` to the literal string `none provided`. This binding is consumed by every Step 3.5 agent prompt and by the Step 4 manual review.
+
+## Step 1.5: Load Branch Context
+
+Load PR-level and branch-level context that the agents at Step 3.5 will need. Skip this step in **Mode C** (no git); for Mode A and Mode B, attempt the four sources below in order and combine what loads into a single `$branch_context` binding.
+
+1. **PR description (Mode A only).** If `gh` is available, run `gh pr view --json title,body,headRefName,baseRefName 2>/dev/null` for the current branch and capture the body. If `gh` is not available or no PR exists for this branch, skip to source 2.
+2. **Local `pr-body` file.** Look for a file named `pr-body`, `PR_BODY.md`, or `.pr-body` at the repo root. If present, read it.
+3. **Branch commit messages.** Run `git log {default-branch}..HEAD --pretty=format:%B` (Mode A) or `git log -n 20 --pretty=format:%B` (Mode B) and capture the messages.
+4. **Implementation plan in the planning directory.** Resolve the planning directory using this order:
+   - Read CLAUDE.md's `## Project Discovery` section for a `plans:` or `planning:` key naming the directory (e.g., `plans: docs/plans/`). Use that path if present.
+   - If no key, Glob `docs/plans/*/feature-implementation-plan.md` and `plans/*/feature-implementation-plan.md`.
+   - When the Glob returns multiple matches, pick the directory whose name matches the current branch name (treat `-` and `_` as interchangeable). If no directory matches, log `no planning artifact found for branch {branch}` and skip this source.
+   - Read the matched plan file if found.
+
+**Summarize loaded content into a Branch Context block of at most 200 words** covering: scope of the change, deferred items the team named, premises the team has already locked in, focus areas the author called out. Bind the summary to `$branch_context`.
+
+**Fail-open behavior.** When none of the four sources returns content, emit this single-line warning to the orchestrator's output: `Branch Context: no PR or planning artifact found; agents will run without branch-level context.` Bind `$branch_context` to the literal string `none provided` and proceed.
 
 ## Step 2: Automated Quality Checks
 
@@ -100,6 +117,8 @@ Determine the output directory for agent reports: if the project has an existing
 **Size override.** If `$size` is non-empty (the user passed `small`, `medium`, or `large` as the first argument), use that value as the size and skip the signal-based classification. If `$size` is empty, classify from the signals above. Anywhere else in this skill body that mentions a "user override" of size, this argument is the override.
 
 State the chosen size in one line with the justification (e.g., "Medium: 6 files touched, adds one index and a query for it" or "Medium: passed via `$size`"). Also draft a one-line summary of what the change does — this is reused in agent briefs below.
+
+**This step is the authoritative source for `{size}`.** Every later consumer reads `{size}` from here: the Review Constraints rule above, the Step 3.3 calibration directive, the Step 3.5 agent prompts, the Step 7.2 demotion gate, and the rubric in `references/agent-finding-classification.md`. Do not re-derive size at any of those sites.
 
 ### Step 3.2: Select agents
 
@@ -130,6 +149,8 @@ State the selected roster to the user in one line per agent before launching.
 
 ### Step 3.3: Scope every agent brief to the change
 
+**Step 3.3 is the authoritative home for size-based demotion.** Every other site that needs the size-based rule references this step by name rather than restating it: the Review Constraints rule for manual findings, the Step 7.2 demotion gate for agent findings, the rubric in `references/agent-finding-classification.md`, and the YAGNI two-pass procedure in `references/review-checklist.md`.
+
 Every dispatched agent receives — alongside its domain-specific prompt — the following calibration directive verbatim. This directive overrides the default review-wide "prefer the higher severity" rule for agent-dispatched findings:
 
 > **Calibrate findings to the change being reviewed.** This is a **{size}** change touching {N} files. The change does the following: {one-line summary from Step 3.1}.
@@ -151,7 +172,7 @@ Every dispatched agent receives — alongside its domain-specific prompt — the
 >
 > When uncertain about severity, prefer the **lower** severity. If the worst-case impact is "an operator sees an error and retries," that is not Critical.
 >
-> **YAGNI findings are separate from severity.** Apply [../../references/yagni-rule.md](../../references/yagni-rule.md) to every change in the diff regardless of size. A YAGNI finding identifies code introduced by this change that has no evidence of being needed now: a new abstraction with one implementation, configuration knob no caller sets, defensive guard at a trusted internal boundary, runbook for never-fired alert, observability for non-flowing telemetry, SLO for absent traffic, index for unrun query, audit column with no consumer, feature flag wrapping a single code path with no rollout plan, code added "for future flexibility" or symmetry. Raise YAGNI findings as `Category: YAGNI candidate` regardless of change size — they are advisory, listed in a separate section, and not corrected unless the user explicitly requests it. Cite the simpler form that would satisfy the same evidence and the trigger that would justify keeping the larger form.
+> **YAGNI findings are separate from severity.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](references/review-checklist.md) (Pass 1: evidence test against [`../../references/yagni-rule.md`](../../references/yagni-rule.md) Gate 1; Pass 2: named anti-pattern match) to every change in the diff regardless of size. The size-based demotion in this Step 3.3 directive does NOT apply to YAGNI findings; they are advisory at every size, listed in a separate section, and not corrected unless the user explicitly requests it. Each finding's body must name (a) the failing evidence type, (b) the matched anti-pattern, and (c) the simpler form considered.
 
 ### Step 3.4: Domain-scoped file lists
 
@@ -171,7 +192,23 @@ Pass each agent only the slice of the file list relevant to its domain:
 
 ### Step 3.5: Dispatch
 
-Launch all selected agents **in parallel** using the `Agent` tool with `run_in_background: true`, in a single message so they run concurrently. Each agent's prompt has three parts: the domain-specific question, the calibration directive verbatim from Step 3.3, and the domain-scoped file list from Step 3.4. Include the branch name only if one was detected (Mode A or Mode B). Do not wait for results — continue immediately to Step 4.
+Launch all selected agents **in parallel** using the `Agent` tool with `run_in_background: true`, in a single message so they run concurrently. Each agent's prompt has four parts: the domain-specific question, the calibration directive verbatim from Step 3.3, the domain-scoped file list from Step 3.4, and two named-binding blocks for user focus areas and branch context. Include the branch name only if one was detected (Mode A or Mode B). Do not wait for results; continue immediately to Step 4.
+
+**Two named-binding blocks ship with every agent prompt.** Append the following to every prompt below, after the calibration directive and before the domain-specific instructions:
+
+> **Focus areas from the user.** $focus_areas.
+>
+> **PR / branch context.** $branch_context.
+>
+> Findings in the focus area receive extra scrutiny and additional detail. Findings outside the focus area must still satisfy the calibration directive above; do not raise minor findings outside the focus area when a focus area is provided. Use the branch context to avoid re-raising items the PR description or implementation plan has already deferred or resolved.
+
+Substitute the values of `$focus_areas` (bound at Step 1) and `$branch_context` (bound at Step 1.5) literally. Do not paraphrase or summarize either binding inside the prompt.
+
+**Per-agent dispatcher directives.** Add the following directive to each named agent's prompt in addition to the shared blocks above. Other agents do not receive these directives.
+
+- **`structural-analyst` and `behavioral-analyst`.** Add: *"Default the severity of every finding you raise to SUGG. Escalate to WARN only when the change actively introduces or worsens the issue described, and to CRIT only when the issue is critical irrespective of who introduced it. A false positive at SUGG is cheaper than a missed real issue; a false positive at WARN erodes trust."* This dispatcher directive is the `/code-review` skill's tailoring; it does not modify the agent's general behavior outside `/code-review`.
+- **`junior-developer`.** Add: *"Outward reads (adjacent code, callers) are for context only; findings must concern code on the scoped file list above. A finding about code outside the file list is permitted only when it directly demonstrates that the changed code on the file list cannot be safely interpreted without the out-of-scope context. Otherwise, omit the finding."* This dispatcher directive is the `/code-review` skill's tailoring; it does not modify the agent's general behavior outside `/code-review`.
+- **`edge-case-explorer`.** Add: *"Findings must ultimately trace to a failure mode in code on the scoped file list above, even when callers outside the file list provide the evidence for that failure mode. Read callers as evidence per your Protocol 1, but the failure-mode target of every finding stays on the file list."* This narrower wording preserves the agent's caller-read protocol; it is the `/code-review` skill's tailoring and does not modify the agent's general behavior outside `/code-review`.
 
 Domain-specific prompts (the `{size}`, `{N}`, `{change summary}`, `{file list}`, and `{branch}` placeholders are filled from earlier steps):
 
@@ -204,7 +241,13 @@ Review each file from the Step 1 file list **in alphabetical order**. For each f
 4. **Examine the diff** to understand what changed. If no diff is available (Mode B uncommitted review or Mode C non-git review from Step 1), skip this sub-step — the full file read from sub-step 3 provides all necessary context. Apply the review checklist to the entire file content.
 5. **Apply the review checklist** at [review-checklist.md](references/review-checklist.md)
 
-If the user provided focus areas in their arguments, apply extra scrutiny to those areas and include additional detail in findings for matching categories.
+If the user provided focus areas in their arguments (the `$focus_areas` binding from Step 1), apply extra scrutiny to those areas and include additional detail in findings for matching categories.
+
+**Mode B and Mode C scope note.** In Mode B (uncommitted changes) and Mode C (no git), the skill cannot distinguish introduced code from pre-existing code; the diff signal that drives the calibration directive is absent. In these modes, apply the review checklist conservatively:
+
+- Raise findings only for items the user explicitly named in the focus areas (`$focus_areas`), items in source files (skip generated and vendored content), and items at file boundaries (imports, exports, public API).
+- **Skip the YAGNI checklist entirely in Mode B and Mode C unless the user explicitly requests it in `$focus_areas`.** YAGNI requires distinguishing introduced code from pre-existing code; without a diff, every speculative addition predating the change would surface as if introduced now.
+- The size-based demotion in Step 3.3 still applies, but treat the change as Small unless the user passed `$size`.
 
 ## Step 5: Documentation Compliance Analysis
 
@@ -222,8 +265,9 @@ For each source where Step 1's project config lookup returned a path:
 
 1. Scan filenames in the directory to identify documents relevant to the changed files
 2. Read each relevant document in full
-3. Evaluate whether the changes contradict, circumvent, deviate from, or are inconsistent with the document
-4. Report violations as review items using the category prefix from the table above
+3. **Verify the standard's premise applies before raising a "violates standard X" finding.** Read at least one architectural file in this codebase that demonstrates the standard's premise: an entry-point file for runtime-shape standards, a router or navigation surface for routing standards, a config file for configuration standards, an integration boundary for cross-service standards. When the architectural file confirms the premise, proceed with the violation analysis. When the file does not confirm the premise (e.g., the standard assumes SPA-style company switching but the codebase uses full-page redirects; the standard assumes rich-error API responses but the codebase uses type-system-closed contracts), do not raise the finding. Log a single line in the orchestrator's notes: `premise not verified for {standard}; finding omitted`. The "infer the premise from the standard's own examples" path is not a forward path; it is a reason to omit the finding.
+4. Evaluate whether the changes contradict, circumvent, deviate from, or are inconsistent with the document
+5. Report violations as review items using the category prefix from the table above
 
 #### Compliance severity guidance
 
@@ -252,7 +296,11 @@ Documentation freshness findings merge into the same output sections as the othe
 
 ## Step 7: Collect and Classify Agent Results
 
-Wait for all agents dispatched in Step 3 to complete. Each agent returns a summary with finding counts and a file path.
+Wait for all agents dispatched in Step 3 to complete. Each agent returns a summary with finding counts and a file path. **Skip this step if no agents were dispatched in Step 3.**
+
+This step runs in three numbered sub-steps. Order matters: read the agent output, then apply the reachability demotion gate, then apply the size-aware rubric.
+
+### Step 7.1: Read agent output files
 
 Read only the output files for agents that were actually dispatched in Step 3. Skip the read for any agent that was not selected:
 
@@ -266,11 +314,30 @@ Read only the output files for agents that were actually dispatched in Step 3. S
 - `{output_directory}/data-analysis.md` — data-engineer findings (D-series)
 - `{output_directory}/devops-analysis.md` — devops-engineer findings (DV-series)
 
-Extract the items from the Findings sections of each file that was read. Then classify them as follows:
+Extract the items from the Findings sections of each file that was read.
 
-**Skip this step if no agents were dispatched in Step 3.**
+### Step 7.2: Apply the reachability phrase-match demotion gate
 
-Classify agent findings using the rubrics at [agent-finding-classification.md](references/agent-finding-classification.md). Continue task ID numbering sequentially from Steps 4-6 (see Task ID Assignment above).
+For each finding read at Step 7.1, scan the rationale text (the agent's own explanation of why the finding matters) for any of these reachability phrases:
+
+- `theoretical`
+- `hypothetical`
+- `defense-in-depth`
+- `effectively impossible`
+- `in case the upstream`
+- `could happen`
+- `should never happen`
+- `edge case that does not occur`
+
+When a finding's rationale contains any of these phrases, the agent itself signaled that the failure mode is not reachable in production. Demote the finding by one severity: CRIT becomes WARN, WARN becomes SUGG, SUGG is omitted entirely. Apply the demotion exactly once per finding regardless of how many phrases match.
+
+This gate is the merged form of the reachability and "directly introduced" filters; the size-aware rubric in Step 7.3 is the single later pass and does not re-demote on these phrases. The phrase list is the only signal the gate uses; do not infer reachability from other text.
+
+Security findings (SEC-series) are exempt from this gate because the security agent's evidence standard already requires a demonstrated exploit path or CVE reference before any finding is raised.
+
+### Step 7.3: Classify with the size-aware rubric
+
+Classify the surviving findings using the rubrics at [agent-finding-classification.md](references/agent-finding-classification.md). The rubric defines what each severity means in each agent category; Step 3.3's size-based demotion (read `{size}` from Step 3.1) governs which findings escalate to those bands. Continue task ID numbering sequentially from Steps 4-6 (see Task ID Assignment above).
 
 ### Deferred tests
 
@@ -284,7 +351,22 @@ Use the template at [template.md](references/template.md) for the output structu
 
 ## Step 9: Verify Review Output
 
-Before presenting the review, verify:
+Before presenting the review, run the self-consistency check first, then verify the structural items below.
+
+### Step 9.0: Self-consistency check
+
+Detect contradictory recommendations on overlapping code. Run two passes:
+
+1. **Extraction pass.** For every finding (manual and agent), extract a tuple: `{task-id, file-path, line-range, recommended-action-summary}`. The recommended-action-summary is a one-line summary of what the finding tells the developer to do (e.g., "remove the className.toMatch assertion", "add a className.toMatch assertion", "wrap the call in try/catch", "remove the try/catch wrapper"). Skip findings that have no actionable recommendation.
+2. **Comparison pass.** For every pair of tuples on the same `file-path` whose `line-range` overlaps, check whether the two `recommended-action-summary` values prescribe opposite actions on the same code (one says add X, the other says remove X; one says split, the other says merge; one says inline, the other says extract). For each contradictory pair found:
+   - Demote both findings by one severity (CRIT → WARN, WARN → SUGG, SUGG stays at SUGG and is annotated rather than dropped).
+   - Append a `Tension with {other-task-id}:` note to each finding's body, naming the contradicting task ID and the opposite action it prescribes. The human reviewer must adjudicate.
+
+Scope is overlapping line ranges in a single file only. Cross-file semantic contradictions are out of scope for this check.
+
+### Step 9.1: Structural verification
+
+Then verify:
 
 1. Task IDs are sequential within each category (CRIT-001, CRIT-002, ...; WARN-001, WARN-002, ...)
 2. Agent findings from every dispatched agent (testing, edge-case, structural, behavioral, concurrency, data, devops, junior-developer) have valid task IDs continuing from manual review IDs. Findings from agents that were not dispatched in Step 3 must not appear.
@@ -298,4 +380,5 @@ Before presenting the review, verify:
 10. Junior-developer findings that overlap with a specialist agent's finding reference the specialist finding instead of duplicating it
 11. The review output is the COMPLETE and FINAL response. Do not append a trailing summary, commentary, sign-off, or follow-up message after the review. The structured review document IS the deliverable — nothing follows it.
 12. The `### 🟡 YAGNI` section, when present, opens with the verbatim statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* YAGNI findings appear ONLY in this section — they are not duplicated under CRIT/WARN/SUGG and are not included in the Review Summary table.
+13. Any `Tension with {other-task-id}:` notes added by Step 9.0 appear on both members of each contradictory pair.
 

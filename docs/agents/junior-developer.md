@@ -17,6 +17,7 @@ Operator documentation for the `junior-developer` agent in the han plugin. This 
 - **Adversarial toward the artifact, never toward people.** Every clarifying question traces back to a location in the artifact, the conversation, or the codebase.
 - **Defers to specialists.** Flags where UX, DevOps, security, architecture, or testing depth is needed and names the specialist to dispatch. This agent does not claim their expertise.
 - **Open Questions as first-class output.** The questions the team has not yet answered are surfaced before specialists are dispatched so the specialists can aim their review.
+- **`/code-review` adds a file-list scoping dispatcher directive at Step 3.5.** When dispatched from `/code-review` (version 2.3.0+), the skill appends an instruction that outward reads (adjacent code, callers) are for context only and findings must concern code on the scoped file list. A finding about code outside the file list is permitted only when it directly demonstrates that the changed code on the file list cannot be safely interpreted without the out-of-scope context. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
 
 ## Summary
 
@@ -138,7 +139,7 @@ URL: https://www.edge.org/conversation/daniel_kahneman-adversarial-collaboration
 
 ### Hunt and Thomas: The Pragmatic Programmer (Rubber-Duck Debugging)
 
-Andy Hunt and Dave Thomas introduced the "rubber duck" practice: explaining a problem out loud in plain language to surface the gaps in your own reasoning. The agent's Plain-Language Reframing protocol (Protocol 7) is the rubber duck applied to plans, designs, and standards documents. Restating the artifact in the thirty-second-whiteboard version often exposes the load-bearing jargon, the missing step, or the hidden assumption that the author could not see.
+Andy Hunt and Dave Thomas introduced the "rubber duck" practice: explaining a problem out loud in plain language to surface the gaps in your own reasoning. The agent's Plain-Language Reframing protocol (Protocol 8) is the rubber duck applied to plans, designs, and standards documents. Restating the artifact in the thirty-second-whiteboard version often exposes the load-bearing jargon, the missing step, or the hidden assumption that the author could not see.
 
 URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/
 

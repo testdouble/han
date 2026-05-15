@@ -1,5 +1,55 @@
 # Han Release Notes
 
+## v2.3.0
+
+The `/code-review` skill is recalibrated so its first pass produces the output the user has been getting only by running a manual second-pass reclassification: severity inflation is removed at the structural level, user-provided focus areas and branch-level context reach every dispatched sub-agent, and contradictory same-file findings are detected internally rather than landing for the human to adjudicate without a flag.
+
+### Calibration
+
+- The agent-finding classification rubric in `plugin/skills/code-review/references/agent-finding-classification.md` no longer carries a "Most findings land here" WARN floor across seven of the nine agent rubrics. The rubric defines each severity; size-based demotion is governed by `SKILL.md` Step 3.3, the new authoritative home.
+- `SKILL.md` Step 3.3 is now the single source of truth for size-based demotion. The Review Constraints rule for manual findings (line 24), the Step 7.2 demotion gate for agent findings, the size-aware rubric, and the YAGNI two-pass procedure all reference Step 3.3 by name rather than restating its content.
+- `SKILL.md` Step 7 is restructured into three numbered sub-steps. 7.1 reads agent output; 7.2 applies the merged reachability phrase-match demotion gate (CRIT → WARN → SUGG → omitted) when a finding's rationale contains `theoretical`, `hypothetical`, `defense-in-depth`, `effectively impossible`, `in case the upstream`, `could happen`, `should never happen`, or `edge case that does not occur`; 7.3 classifies the surviving findings using the size-aware rubric. Security findings are exempt from the gate because the security agent's evidence standard already requires a demonstrated exploit path.
+
+### Context plumbing
+
+- New `Step 1.5: Load Branch Context` runs after Step 1 (Mode A and Mode B only). It attempts the PR description via `gh pr view`, local `pr-body` files, branch commit messages, and an implementation plan from the planning directory (resolved via the `plans:` key in CLAUDE.md or by Glob fallback). The loaded summary binds to `$branch_context`. When nothing loads, the skill warns once and binds `$branch_context` to `none provided`.
+- `$focus_areas` and `$branch_context` are explicit named bindings. Step 1 binds the user's free-form argument to `$focus_areas` (defaulting to `none provided` when empty); Step 1.5 binds the loader output to `$branch_context`. Every Step 3.5 agent prompt includes both bindings verbatim so the agents can deprioritize work the team has already deferred or resolved.
+- `Bash(gh *)` is added to the skill's `allowed-tools` frontmatter so Step 1.5 can call `gh pr view`.
+
+### Per-agent dispatcher tailoring at Step 3.5
+
+- `structural-analyst` and `behavioral-analyst` receive a default-SUGG dispatcher directive: every finding starts at SUGG; escalation to WARN or CRIT requires the change to actively introduce or worsen the issue. The agents' general behavior outside `/code-review` is unchanged.
+- `junior-developer` receives a file-list scoping directive: outward reads are for context only; findings must concern code on the scoped file list. The agents' general behavior outside `/code-review` is unchanged.
+- `edge-case-explorer` receives a narrower file-list directive that preserves Protocol 1's caller-read pattern: callers can be read as evidence, but the failure-mode target of every finding stays on the file list.
+
+### YAGNI two-pass procedure
+
+- `references/review-checklist.md`, the Step 3.3 calibration directive's YAGNI block, and the Review Constraints YAGNI rule are all rewritten to run YAGNI in two passes: Pass 1 evidence test against `yagni-rule.md` Gate 1, then Pass 2 named anti-pattern match. Each YAGNI finding's body names the failing evidence type, the matched anti-pattern, and the simpler form considered. The YAGNI section's verbatim opening statement is preserved.
+- In Mode B (uncommitted changes) and Mode C (no git), the YAGNI checklist is skipped unless the user explicitly requests it via `$focus_areas`, since the diff signal that separates introduced code from pre-existing code is absent.
+
+### Self-consistency check
+
+- New `Step 9.0: Self-consistency check` runs before structural verification. An extraction pass collects `{task-id, file-path, line-range, recommended-action-summary}` tuples for every finding, then a comparison pass flags overlapping-line-range pairs whose recommendations prescribe opposite actions on the same code. Both findings are demoted by one severity and each receives a `Tension with {other-task-id}:` note for the human reviewer. Cross-file semantic contradictions are out of scope.
+
+### Premise verification before standards-compliance findings
+
+- Step 5 now requires reading at least one architectural file in the codebase that demonstrates a standard's premise before raising a "violates standard X" finding. When the file does not confirm the premise (e.g., the standard assumes SPA-style company switching but the codebase uses full-page redirects), the finding is omitted with a logged note. The "infer the premise from the standard's own examples" path is now a reason to omit, not a forward path to raise.
+
+### Documentation
+
+- [`docs/skills/code-review.md`](./docs/skills/code-review.md) is updated to mirror the new step structure (Step 1.5, the Step 7 sub-steps, Step 9.0), the per-agent dispatcher tailoring, the size-based demotion model, the YAGNI two-pass procedure, the full agent task ID format set, and the new YAGNI section in the output description.
+- The four affected agent docs ([`docs/agents/structural-analyst.md`](./docs/agents/structural-analyst.md), [`docs/agents/behavioral-analyst.md`](./docs/agents/behavioral-analyst.md), [`docs/agents/junior-developer.md`](./docs/agents/junior-developer.md), [`docs/agents/edge-case-explorer.md`](./docs/agents/edge-case-explorer.md)) each carry a one-paragraph note explaining the `/code-review` Step 3.5 dispatcher tailoring and confirming the agents' default behavior in other skills is unchanged.
+- [`docs/yagni.md`](./docs/yagni.md) `/code-review` table row is updated to reflect the two-pass procedure and the Mode B / Mode C YAGNI skip.
+- [`docs/skills/gh-pr-review.md`](./docs/skills/gh-pr-review.md) gains a Key Concept noting that the wrapped `/code-review` Step 1.5 plumbs the PR description into every agent's `$branch_context`.
+
+### Deferred (YAGNI)
+
+- A dedicated S12 mode flag for default-SUGG suppression is deferred. The size-aware rubric (Pair A) plus the merged Step 7.2 demotion gate (Pair B) plus the rewritten Review Constraints rule subsume the workaround the user has been running manually.
+- A structured "directly introduced" field in agent output formats is deferred in favor of phrase-matching at Step 7.2.
+- Cross-file semantic contradiction detection in Step 9.0 is deferred; only single-file overlapping-line-range contradictions are checked.
+- An automated test harness, per-agent unit tests, and Mode C standalone tests are deferred. Validation runs against three real PR bundles in `tmp/gearjot-v2-web-pr-{299,307,339}/`.
+- Edits to the four affected agent definition files are deferred; `/code-review`'s tailoring lives in Step 3.5 dispatcher directives so the agents remain general-purpose for other callers.
+
 ## v2.2.0
 
 The `/gap-analysis` swarm flips from opt-in to opt-out, `junior-developer` is promoted to a required swarm role at every size to run an explicit actor-perspective sweep, and `project-manager` joins the swarm at medium and large to consolidate Section 4 of the report.

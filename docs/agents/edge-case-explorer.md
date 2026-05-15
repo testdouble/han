@@ -17,6 +17,7 @@ Operator documentation for the `edge-case-explorer` agent in the han plugin. Thi
 - **Trace inputs to the immediate caller, deeper at boundaries.** Internal function-to-function chains are trusted unless a clear external-data or type-coercion signal appears. Exhaustive mode traces to origin.
 - **Code location per finding.** Every `EC#` cites the affected `file:line` and references the input it touches. Untraceable edge cases are dropped.
 - **Discovers and catalogs, does not write tests.** Output is a prioritization plan. `test-engineer` or your team writes the tests.
+- **`/code-review` adds a failure-mode-target dispatcher directive at Step 3.5.** When dispatched from `/code-review` (version 2.3.0+), the skill appends an instruction that findings must ultimately trace to a failure mode in code on the scoped file list, even when callers outside the file list provide the evidence for that failure mode. The agent's Protocol 1 caller-read still applies; the file-list scope is on the failure-mode target, not the evidence source. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
 
 ## When to use it
 
