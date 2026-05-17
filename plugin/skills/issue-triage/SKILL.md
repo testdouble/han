@@ -1,7 +1,7 @@
 | name | issue-triage |
 | --- | --- |
 | description | Triage a raw, vague issue or bug report into a structured document that names what is known, what is missing, and what to do next. Use when an incoming issue, bug report, or problem description is too vague or incomplete for investigation or planning: classify the issue type, identify missing information, assess severity and reproducibility, and recommend the right next han skill. Does not investigate root causes or trace code paths; use investigate for debugging, diagnosis, and root cause analysis. Does not plan features or build solutions; use plan-a-feature or plan-implementation for that. |
-| allowed-tools | Read, Glob, Write |
+| allowed-tools | Read, Write |
 
 ## Project Context
 
@@ -29,7 +29,7 @@ Determine the issue type from the report text:
 - **Feature Request** — something new is being asked for
 - **Performance** — the system is too slow, uses too much memory, or degrades under load
 - **Security** — a vulnerability, exposure, or access control concern
-- **Regression** — something that used to work has stopped working
+- **Regression** — the reporter explicitly says it used to work and no longer does
 - **Question** — the reporter is asking how something works, not reporting a problem
 - **Other** — none of the above apply
 
@@ -39,7 +39,7 @@ From the report, identify:
 
 - **Summary** — one sentence describing the problem in plain terms
 - **Reported Behavior** — what the reporter said happened, in their words or close paraphrase
-- **Expected Behavior** — what should have happened (infer if obvious; mark Unknown if not)
+- **Expected Behavior** — what the reporter said should happen; if not stated, mark Unknown
 
 ## Step 4: Identify Missing Information
 
@@ -116,7 +116,7 @@ Use this structure:
 
 # Recommended Next Step
 
-{/investigate | /plan-a-feature | /plan-implementation | "Clarify with reporter before proceeding"}
+{If any critical reproduction or scope details are missing, write "Clarify with reporter before proceeding". Otherwise choose the single most appropriate skill: /investigate, /plan-a-feature, or /plan-implementation.}
 ```
 
 Present the triage report to the user.

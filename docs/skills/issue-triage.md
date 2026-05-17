@@ -1,8 +1,8 @@
 # /issue-triage
 
-Operator documentation for the `/issue-triage` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/issue-triage/SKILL.md`](https://github.com/testdouble/han/blob/main/plugin/skills/issue-triage/SKILL.md).
+Operator documentation for the `/issue-triage` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/issue-triage/SKILL.md`](../../plugin/skills/issue-triage/SKILL.md).
 
-> See also: [Plugin landing page](https://github.com/testdouble/han/blob/main/README.md) · [All skills](https://github.com/testdouble/han/blob/main/docs/skills/README.md) · [All agents](https://github.com/testdouble/han/blob/main/docs/agents/README.md) · [YAGNI](https://github.com/testdouble/han/blob/main/docs/yagni.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 
 ## TL;DR
 
@@ -60,12 +60,12 @@ A triage report file with these sections:
 - **Summary.** One sentence naming the problem in plain terms.
 - **Issue Type.** One of: Bug, Feature Request, Performance, Security, Regression, Question, Other.
 - **Reported Behavior.** What the reporter said happened, in their words or close paraphrase.
-- **Expected Behavior.** What should have happened, or Unknown if not inferable.
-- **Missing Information.** A list of what is absent from the report but needed to proceed. States "None — report has enough to proceed" when nothing is missing.
+- **Expected Behavior.** What the reporter said should happen, or Unknown if not stated.
+- **Missing Information.** A list of what is absent from the report but needed to proceed. States "None. Report has enough to proceed." when nothing is missing.
 - **Suspected Areas.** Code or system areas the issue plausibly touches, based on the report and project context. Omitted when nothing is inferable.
 - **Severity.** An estimate: Critical, High, Medium, Low, or Unknown.
 - **Reproducibility.** An estimate: Always, Intermittent, Rare, or Unknown.
-- **Recommended Next Step.** The single most appropriate han skill to run next, or "Clarify with reporter before proceeding" when the report is too thin to route confidently.
+- **Recommended Next Step.** The single most appropriate han skill to run next, or "Clarify with reporter before proceeding" when critical reproduction or scope details are missing.
 
 
 ## How to get the most out of it
@@ -78,14 +78,14 @@ A triage report file with these sections:
 
 ## Cost and latency
 
-The skill dispatches no sub-agents. It reads the report and the project context (CLAUDE.md if present), then produces the triage document in a single pass. Expect fast turnaround relative to investigation or planning skills. Use it freely at the start of any incoming issue before deciding which deeper skill to run.
+The skill dispatches no sub-agents. It reads the report and the project context (CLAUDE.md if present), then produces the triage document in a single pass. Expect fast turnaround relative to investigation or planning skills. Use it at the start of any incoming issue before deciding which deeper skill to run.
 
 
 ## Related documentation
 
-- [Plugin landing page](https://github.com/testdouble/han/blob/main/README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](https://github.com/testdouble/han/blob/main/docs/skills/README.md). All 16 skills, grouped by purpose.
-- [`/investigate`](https://github.com/testdouble/han/blob/main/docs/skills/investigate.md). The natural next skill when the issue is a bug or failure with enough context to trace.
-- [`/plan-a-feature`](https://github.com/testdouble/han/blob/main/docs/skills/plan-a-feature.md). The natural next skill when the issue is a feature request with enough context to spec.
-- [`/plan-implementation`](https://github.com/testdouble/han/blob/main/docs/skills/plan-implementation.md). The next skill when triage confirms a well-defined problem and a spec already exists.
-- [`SKILL.md` for /issue-triage](https://github.com/testdouble/han/blob/main/plugin/skills/issue-triage/SKILL.md). The internal process definition.
+- [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
+- [Skills Index](./README.md). All 16 skills, grouped by purpose.
+- [`/investigate`](./investigate.md). The natural next skill when the issue is a bug or failure with enough context to trace.
+- [`/plan-a-feature`](./plan-a-feature.md). The natural next skill when the issue is a feature request with enough context to spec.
+- [`/plan-implementation`](./plan-implementation.md). The next skill when triage confirms a well-defined problem and a spec already exists.
+- [`SKILL.md` for /issue-triage](../../plugin/skills/issue-triage/SKILL.md). The internal process definition.
