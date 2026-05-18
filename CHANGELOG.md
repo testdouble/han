@@ -1,5 +1,44 @@
 # Han Release Notes
 
+## v2.4.0
+
+Three new plugin skills ship, taking the catalog from 15 to 18: `/issue-triage` for turning a vague report into a structured triage document, `/tdd` for a BDD-framed red-green-refactor loop, and `/plan-work-items` for breaking a trusted implementation plan into grabbable work items. `/architectural-analysis` is rebuilt as the sixth sizing-aware swarming skill, and three synthesis agents move to the opus tier so their shipped frontmatter matches the documented design intent.
+
+### New skills
+
+- `/issue-triage` classifies a vague issue or bug report into a structured document covering issue type, missing information, severity, reproducibility, and the recommended next han skill. Single pass, no sub-agents. (PR #5)
+- `/tdd` drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. It is the plugin's only execution skill: it writes code, applies coding standards and ADRs during green and refactor, enforces YAGNI during refactor, and ships a `plugin/skills/tdd/scripts/detect-tdd-context.sh` discovery script. It runs autonomously after the initial request. (PR #7)
+- `/plan-work-items` breaks a trusted implementation plan into independently-grabbable, atomic work items in a single `work-items.md` file, dispatching `project-manager` once and running autonomously without confirmation gates. (PR #2) The skill was developed under the working name `implementation-plan-to-issues` and renamed to `plan-work-items` before it ever shipped, so there is no breaking rename for v2.3.0 users.
+
+### Architectural analysis rebuild
+
+`/architectural-analysis` is rebuilt as a signal-selected, sizing-aware agent swarm. A synthesis spine (`structural-analyst`, `behavioral-analyst`, `risk-analyst`, `software-architect`) always runs; signal-selected specialists (`concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, `system-architect`) are added by signal and size band; and the report is rendered from an extracted `plugin/skills/architectural-analysis/references/architectural-analysis-report-template.md`. This makes it the sixth sizing-aware swarming skill alongside `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation`, and the shared sizing docs are updated to register it. (PR #6)
+
+### Agent model tiers
+
+`junior-developer`, `information-architect`, and `user-experience-designer` move from `model: sonnet` to `model: opus` in their agent frontmatter. All three perform synthesis over unbounded input, and `docs/guidance/specialization-and-model-selection.md` already listed them under "Keep opus" with an opus rationale in their long-form docs, but their frontmatter had shipped as `sonnet` since the initial repo extraction. This aligns the implementation with the documented design intent. It is a real behavior and cost change whenever any of these three agents is dispatched.
+
+### Documentation
+
+- [`docs/skills/issue-triage.md`](./docs/skills/issue-triage.md): output-contract block now mirrors `plugin/skills/issue-triage/references/template.md` (an H1 summary title with H2 section headers), and the cost-and-latency note now reflects that the skill reads both `CLAUDE.md` and `project-discovery.md` to sharpen Suspected Areas.
+- [`docs/skills/plan-work-items.md`](./docs/skills/plan-work-items.md): adds the missing `reference-artifact-inventory.md` link.
+- `README.md`: the "Maintenance" heading typo is fixed.
+- `plugin/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`: descriptions synced; they now mention planning and issue triage.
+- `CLAUDE.md`: the "Current version" line is corrected.
+
+### Repository tooling
+
+- A repo-maintenance skill `/han-release` is added at `.claude/skills/han-release/` for cutting Han releases. It is internal to this repository and is not one of the 18 shipped plugin skills.
+
+### Pull requests in this release
+
+- Add /issue-triage skill (#5) — @spken
+- Rebuild architectural-analysis skill: sizing-aware agent swarm (#6) — @mxriverlynn
+- Add a /tdd skill (#7) — @mxriverlynn
+- Add the plan-work-items skill (#2) — @kadams54
+
+Full changelog: https://github.com/testdouble/han/blob/v2.4.0/CHANGELOG.md#v240
+
 ## v2.3.0
 
 The `/code-review` skill is recalibrated so its first pass produces the output the user has been getting only by running a manual second-pass reclassification: severity inflation is removed at the structural level, user-provided focus areas and branch-level context reach every dispatched sub-agent, and contradictory same-file findings are detected internally rather than landing for the human to adjudicate without a flag.
