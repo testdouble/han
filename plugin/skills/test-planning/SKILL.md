@@ -5,7 +5,8 @@ description: >
   edge cases. Use when you need to create, generate, or draft a test plan for a
   branch, need to analyze test coverage, or need to identify what tests to write
   for specific files or directories. Does not write test code — produces a plan
-  document only. Does not refine or iterate on existing plans — use
+  document only; use tdd to implement behavior test-first through a
+  red-green-refactor loop. Does not refine or iterate on existing plans — use
   iterative-plan-review to improve a previously drafted work plan. Does not review
   code quality, security, or style — use code-review for full code review.
   Does not evaluate architectural testability or structural coupling — use

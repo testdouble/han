@@ -17,6 +17,12 @@ Skills for specifying *what* a feature does, planning *how* to build it, and str
 - **[`/plan-a-phased-build`](./plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
 - **[`/iterative-plan-review`](./iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
 
+## Building
+
+Write the code itself, test-first, through a disciplined loop.
+
+- **[`/tdd`](./tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). The plugin's only execution skill: it writes code, not a document.
+
 ## Investigation & root cause
 
 Skills for finding out *why* something is broken, with evidence to back it.
@@ -68,6 +74,7 @@ Every planning, review, and standards skill in the plugin applies an evidence-ba
 
 - **Planning.** [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/plan-a-phased-build`](./plan-a-phased-build.md), [`/iterative-plan-review`](./iterative-plan-review.md).
 - **Review and standards.** [`/code-review`](./code-review.md) (advisory-only), [`/coding-standard`](./coding-standard.md), [`/test-planning`](./test-planning.md), [`/architectural-decision-record`](./architectural-decision-record.md) (forcing-function requirement).
+- **Building.** [`/tdd`](./tdd.md) (enforcing in the refactor step and the test list).
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 

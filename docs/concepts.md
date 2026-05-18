@@ -66,7 +66,7 @@ Every skill that dispatches an agent swarm classifies the work as **small**, **m
 
 - **Default is small.** Every sizing-aware skill starts the classification at small and only escalates when concrete signals require it.
 - **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
-- **Five sizing-aware skills.** [`/code-review`](./skills/code-review.md), [`/gap-analysis`](./skills/gap-analysis.md), [`/iterative-plan-review`](./skills/iterative-plan-review.md), [`/plan-a-feature`](./skills/plan-a-feature.md), [`/plan-implementation`](./skills/plan-implementation.md).
+- **Six sizing-aware skills.** [`/architectural-analysis`](./skills/architectural-analysis.md), [`/code-review`](./skills/code-review.md), [`/gap-analysis`](./skills/gap-analysis.md), [`/iterative-plan-review`](./skills/iterative-plan-review.md), [`/plan-a-feature`](./skills/plan-a-feature.md), [`/plan-implementation`](./skills/plan-implementation.md).
 
 Read the full [Sizing](./sizing.md) reference for the bands, the auto-classification process, and the per-skill rules.
 
@@ -92,7 +92,7 @@ Direct invocation uses the `Agent` tool with `subagent_type: han:{agent-name}` (
 
 ## What does the plugin include?
 
-- **15 skills.** The [skills index](./skills/README.md) groups them by purpose (planning, investigation, review, discovery, conventions, reporting).
+- **17 skills.** The [skills index](./skills/README.md) groups them by purpose (planning, building, investigation, review, discovery, conventions, reporting).
 - **21 agents.** The [agents index](./agents/README.md) groups them by role (planning and facilitation, adversarial reviewers, investigation, architecture, testing, gap and content).
 
 Skim the indexes after you read this page. Pick the one skill you need right now. Come back later to learn the rest.
@@ -108,6 +108,6 @@ Skim the indexes after you read this page. Pick the one skill you need right now
 
 ## Related reading
 
-- [`docs/plugin-entity-taxonomy.md`](./guidance/plugin-entity-taxonomy.md). The taxonomy this plugin follows. Applies across all plugins in this repo.
+- [`docs/guidance/plugin-entity-taxonomy.md`](./guidance/plugin-entity-taxonomy.md). The taxonomy this plugin follows. Applies across all plugins in this repo.
 - [Claude Code Skills reference](https://code.claude.com/docs/en/skills). How skills are defined and invoked in Claude Code itself.
 - [Claude Code Subagents reference](https://code.claude.com/docs/en/sub-agents). How agents are dispatched from inside skills.

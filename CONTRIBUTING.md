@@ -29,7 +29,8 @@ Read these once:
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{name}.md` and fill it in. Every skill gets a long-form doc.
 4. Add the skill to the [Skills Index](./docs/skills/README.md) with a one-sentence scent line and a link.
-5. Update the marketplace registry at [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) if needed.
+5. Update the skill counts and catalog so they stay accurate: the skill catalog and "Counts to verify when editing indexes" line in [Root CLAUDE.md](./CLAUDE.md), the count in [Concepts](./docs/concepts.md) ("What does the plugin include?"), and the counts in the [README](./README.md). If the skill belongs to a new category, add it to the category lists too.
+6. Update the marketplace registry at [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) if needed.
 
 ## Adding an agent
 

@@ -1,12 +1,12 @@
 # Quickstart
 
-New to the han plugin? Pick the path that matches what you are trying to do right now. Each path is a short sequence (two or three skills) that compose into a useful result. You can follow one path end to end, or jump off at any step.
+New to the han plugin? Pick the path that matches what you are trying to do right now. Each path is a short sequence (a few skills) that compose into a useful result. You can follow one path end to end, or jump off at any step.
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [Skills](./skills/README.md) · [Agents](./agents/README.md) · [Sizing](./sizing.md) · [YAGNI](./yagni.md)
 
 ## Which path are you on?
 
-- **[Plan a new feature](#path-a--plan-a-new-feature).** You have an idea for a feature and need to figure out what it should do and how to build it.
+- **[Plan a new feature](#path-a--plan-a-new-feature).** You have an idea for a feature and need to figure out what it should do, how to build it, and then build it test-first.
 - **[Investigate a bug or failure](#path-b--investigate-a-bug-or-failure).** Something is broken or behaving oddly and you need a root cause.
 - **[Review code or architecture](#path-c--review-code-or-architecture).** You want a second set of eyes on a branch, a PR, or an existing module.
 - **[Set up a project for everything else](#path-d--set-up-a-project-for-everything-else).** You want to document your project, formalize standards, and give every other skill richer context.
@@ -23,8 +23,9 @@ You have a feature idea and want a specification grounded in evidence, then a pl
 2. **[`/plan-a-phased-build`](./skills/plan-a-phased-build.md)** *(optional).* When the feature is large enough to ship in slices rather than all at once, split the spec into a numbered sequence of vertical-slice phases, each independently demoable to a real person.
 3. **[`/plan-implementation`](./skills/plan-implementation.md).** Turn the specification (or a single phase from the phased build) into an implementation plan through a project-manager-led team conversation.
 4. **[`/iterative-plan-review`](./skills/iterative-plan-review.md)** *(optional).* Stress-test either plan through multiple codebase-grounded review passes before committing to it.
+5. **[`/tdd`](./skills/tdd.md)** *(when you build it).* Implement the plan test-first through a BDD-framed red-green-refactor loop. The specification becomes the behavior test list; the skill enforces an observed-failure gate and applies your coding standards and ADRs in green and refactor.
 
-**You are done when:** you have a `feature-specification.md` and a `feature-implementation-plan.md` in the same folder, each with a cross-referenced decision log and review findings. If the feature was large enough to phase, you also have a `build-phase-outline.md` that orders the work into demoable vertical slices.
+**You are done when:** you have a `feature-specification.md` and a `feature-implementation-plan.md` in the same folder, each with a cross-referenced decision log and review findings. If the feature was large enough to phase, you also have a `build-phase-outline.md` that orders the work into demoable vertical slices. When you build it, the code lands behavior by behavior through `/tdd`, with tests leading.
 
 ---
 
@@ -78,12 +79,13 @@ You can reference multiple skills in one prompt and Claude runs them in sequence
 - *"Scan this repo, document the auth system, and create a coding standard for how we handle tokens."* → [`/project-discovery`](./skills/project-discovery.md) → [`/project-documentation`](./skills/project-documentation.md) → [`/coding-standard`](./skills/coding-standard.md).
 - *"Review my branch, then create an ADR for any architectural decisions in the diff."* → [`/code-review`](./skills/code-review.md) → [`/architectural-decision-record`](./skills/architectural-decision-record.md).
 - *"Plan the retry feature, then plan the implementation, then create a test plan for it."* → [`/plan-a-feature`](./skills/plan-a-feature.md) → [`/plan-implementation`](./skills/plan-implementation.md) → [`/test-planning`](./skills/test-planning.md).
+- *"Spec the discount engine, then build it test-first."* → [`/plan-a-feature`](./skills/plan-a-feature.md) → [`/tdd`](./skills/tdd.md) → [`/code-review`](./skills/code-review.md).
 - *"Compare the auth implementation to the auth spec, then plan how to close the gaps."* → [`/gap-analysis`](./skills/gap-analysis.md) → [`/plan-implementation`](./skills/plan-implementation.md).
 - *"Compare the share v1 implementation to the share v2 spec, split the gaps into a phased rollout, then plan implementation for the first phase."* → [`/gap-analysis`](./skills/gap-analysis.md) → [`/plan-a-phased-build`](./skills/plan-a-phased-build.md) → [`/plan-implementation`](./skills/plan-implementation.md).
 
 ## A note on sizing
 
-Five skills (`/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`) classify the work as **small**, **medium**, or **large** before dispatching agents, default to small, and scale the team and iteration depth to the chosen band. Pass the size as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See [Sizing](./sizing.md) for the full model.
+Six skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`) classify the work as **small**, **medium**, or **large** before dispatching agents, default to small, and scale the team and iteration depth to the chosen band. Pass the size as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See [Sizing](./sizing.md) for the full model.
 
 ## A note on YAGNI
 

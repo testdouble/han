@@ -2,28 +2,28 @@
 
 <img src="images/han-banner.png">
 
-Han is a suite of AI skills and agents for solo (or small-team) product engineers. It combines evidence-based planning, full documentation maintenance, deep code review, and architectural analysis into a team of specialists you can dispatch from Claude Code.
+Han is a suite of AI skills and agents for solo (or small-team) product engineers. It combines evidence-based planning, test-driven implementation, full documentation maintenance, deep code review, and architectural analysis into a team of specialists you can dispatch from Claude Code.
 
 ## What this plugin does
 
-Han turns planning, review, and documentation work that would normally take a team into a set of deterministic skills you run from Claude Code. Each skill dispatches specialist agents (project managers, adversarial reviewers, investigators, architectural analysts, testing and security specialists) to do the judgment-heavy work, then folds their findings into an artifact you can trust.
+Han turns planning, implementation, review, and documentation work that would normally take a team into a set of deterministic skills you run from Claude Code. Each skill dispatches specialist agents (project managers, adversarial reviewers, investigators, architectural analysts, testing and security specialists) to do the judgment-heavy work, then folds their findings into an artifact you can trust.
 
-The skills are designed to compose. You can plan a feature, then plan its implementation, then iterate on the plan, then review the resulting code, then write the PR description. All through named skills that hand off to each other cleanly.
+The skills are designed to compose. You can plan a feature, then plan its implementation, then iterate on the plan, then build it test-first, then review the resulting code, then write the PR description. All through named skills that hand off to each other cleanly.
 
 Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs through the whole plugin.
 
 ## Which path are you on?
 
 - **New to han?** → Start with [Concepts](./docs/concepts.md), then the [Quickstart](./docs/quickstart.md).
-- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). 16 skills grouped by purpose.
+- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). 17 skills grouped by purpose.
 - **Looking for a specific agent?** → [Agents Index](./docs/agents/README.md). 21 agents grouped by role.
-- **Wondering how the agent swarms scale?** → [Sizing](./docs/sizing.md). The small / medium / large dispatch model used by `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation`.
+- **Wondering how the agent swarms scale?** → [Sizing](./docs/sizing.md). The small / medium / large dispatch model used by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation`.
 - **Wondering why a skill said "YAGNI"?** → [YAGNI](./docs/yagni.md). The evidence-based rule every planning, review, and architecture skill applies before committing items to an artifact.
 - **Writing or editing a skill or agent?** → [Contributing](./CONTRIBUTING.md).
 
 ## Skills
 
-Sixteen skills, grouped by the moment you reach for them. Each category links to the full long-form docs through the [Skills Index](./docs/skills/README.md).
+Seventeen skills, grouped by the moment you reach for them. Each category links to the full long-form docs through the [Skills Index](./docs/skills/README.md).
 
 ### Planning
 
@@ -34,11 +34,17 @@ Spec what to build, plan how to build it, sequence it into phases, and stress-te
 - **[`/plan-a-phased-build`](./docs/skills/plan-a-phased-build.md).** Split a body of work into a numbered sequence of vertical-slice phases, each independently demoable.
 - **[`/iterative-plan-review`](./docs/skills/iterative-plan-review.md).** Stress-test an existing plan through multiple codebase-grounded review passes.
 
+### Building
+
+Write the code, test-first, through a disciplined red-green-refactor loop.
+
+- **[`/tdd`](./docs/skills/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate, applying coding standards and ADRs in green and refactor.
+
 ### Investigation & root cause
 
 Find out *why* something is broken, with evidence to back it.
 
-- **[`/issue-triage`](docs/skills/issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill.
+- **[`/issue-triage`](./docs/skills/issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill.
 - **[`/investigate`](./docs/skills/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 
 ### Review & analysis
@@ -86,7 +92,7 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
 - [Quickstart](./docs/quickstart.md). Four paths for four common situations. Each path is a short sequence of skills.
-- [Skills Index](./docs/skills/README.md). All 16 skills, grouped by purpose.
+- [Skills Index](./docs/skills/README.md). All 17 skills, grouped by purpose.
 - [Agents Index](./docs/agents/README.md). All 21 agents, grouped by role.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies.
