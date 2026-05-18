@@ -30,7 +30,7 @@ Skills for getting a second set of eyes on code that already exists.
 
 - **[`/code-review`](./code-review.md).** Run a comprehensive code review on the current branch or specified files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
 - **[`/gh-pr-review`](./gh-pr-review.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
-- **[`/architectural-analysis`](./architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment.
+- **[`/architectural-analysis`](./architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment. Always dispatches the `structural-analyst` / `behavioral-analyst` / `risk-analyst` / `software-architect` spine, and adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` by signal. Roster scales with [size](../sizing.md).
 - **[`/gap-analysis`](./gap-analysis.md).** Compare two artifacts (current state vs. desired state, for example spec vs. implementation, or PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default — `adversarial-validator` and `junior-developer` (actor-perspective sweep) always, plus `evidence-based-investigator` when the current state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` for the lightweight pass.
 - **[`/test-planning`](./test-planning.md).** Produce a prioritized test plan for a branch or directory. Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
 
@@ -58,7 +58,7 @@ Skills for turning the work back into something sharable.
 
 ## How dispatch scales: sizing
 
-Five of these skills ([`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
+Six of these skills ([`/architectural-analysis`](./architectural-analysis.md), [`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
 
 See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each sizing-aware skill's long-form doc has its own **Sizing** section with the skill-specific signals and caps.
 
