@@ -16,6 +16,8 @@ Skills for specifying *what* a feature does, planning *how* to build it, and str
 - **[`/plan-implementation`](./plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
 - **[`/plan-a-phased-build`](./plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
 - **[`/iterative-plan-review`](./iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
+- **[`/plan-work-items`](./plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
+
 
 ## Building
 
@@ -85,7 +87,8 @@ Most han skills dispatch agents to do their judgment-heavy work. The [Concepts](
 A few common compositions:
 
 - **Triage → investigate.** `/issue-triage` → `/investigate`.
-- **Plan → implement → iterate.** `/plan-a-feature` → `/plan-implementation` → `/iterative-plan-review`.
+- **Create specs → plan implementation → iterate → break into work items.** `/plan-a-feature` → `/plan-implementation` → `/iterative-plan-review` → `/plan-work-items`.
+- **Plan implementation → break into work items.** `/plan-implementation` → `/plan-work-items`.
 - **Discover → document → standardize.** `/project-discovery` → `/project-documentation` → `/coding-standard`.
 - **Review locally → post to PR.** `/code-review` → `/gh-pr-review`.
 - **Investigate → iterate on the fix.** `/investigate` → `/iterative-plan-review`.

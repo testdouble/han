@@ -200,7 +200,7 @@ URLs: https://hbr.org/2007/09/performing-a-project-premortem and https://en.wiki
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 16 skills, grouped by purpose.
+- [Skills Index](./README.md). All 18 skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`gap-analyzer`](../agents/gap-analyzer.md). The agent that performs the underlying gap analysis. The skill always dispatches it once and reads its full output.
 - [`adversarial-validator`](../agents/adversarial-validator.md). Required swarm role at every size. Attacks each gap with counter-evidence to produce per-gap `confirmed` / `contradicted` / `inconclusive` verdicts.

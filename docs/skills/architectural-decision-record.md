@@ -120,7 +120,7 @@ URL: https://www.thoughtworks.com/radar/techniques/lightweight-architecture-deci
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 16 skills, grouped by purpose.
+- [Skills Index](./README.md). All 18 skills, grouped by purpose.
 - [`/coding-standard`](./coding-standard.md). For rules that come out of a decision. Link the standard to the ADR.
 - [`/architectural-analysis`](./architectural-analysis.md). Often produces decisions worth recording as ADRs.
 - [`/project-documentation`](./project-documentation.md). For feature docs that reference the ADR.

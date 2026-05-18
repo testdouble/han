@@ -118,7 +118,7 @@ URL: https://sre.google/sre-book/
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 16 skills, grouped by purpose.
+- [Skills Index](./README.md). All 18 skills, grouped by purpose.
 - [`/architectural-decision-record`](./architectural-decision-record.md). For decisions rather than rules. Link the standard to the ADR when the rule embeds a choice.
 - [`/project-documentation`](./project-documentation.md). For system and feature documentation that is not a rule.
 - [`/code-review`](./code-review.md). Reads standards during every review. Violations become findings.

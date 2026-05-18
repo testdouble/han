@@ -19,6 +19,8 @@ description: >
   stress-test an already-written plan — use iterative-plan-review. Does not
   investigate bugs or failures — use investigate. Does not perform file-level code
   review — use code-review. Does not record architectural decisions — use architectural-decision-record.
+  Typically paired with plan-work-items downstream to break the
+  plan into work items after it's complete.
 arguments: size
 argument-hint: "[size: small | medium | large] [feature specification path, optional: additional context]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *)

@@ -15,6 +15,8 @@ description: >
   (round-by-round record of specialists engaged and plan changes applied). Do NOT use for implementing plan
   steps, generating new plans from scratch, writing test plans, code review, or
   bug investigation.
+  Can be paired with plan-work-items downstream to break the plan
+  into work items after the plan has been refined.
 arguments: size
 argument-hint: "[size: small | medium | large] [context or path to plan file]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)

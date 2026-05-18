@@ -115,7 +115,7 @@ URL: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 16 skills, grouped by purpose.
+- [Skills Index](./README.md). All 18 skills, grouped by purpose.
 - [`/project-discovery`](./project-discovery.md). Run first. The documentation skill reads the discovery reference to find the docs directory and stack language.
 - [`/architectural-decision-record`](./architectural-decision-record.md). Use for decisions rather than system documentation.
 - [`/coding-standard`](./coding-standard.md). Use for rules rather than descriptions.

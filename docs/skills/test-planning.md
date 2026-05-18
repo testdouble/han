@@ -115,7 +115,7 @@ URL: https://www.wiley.com/en-us/Testing+Computer+Software%2C+2nd+Edition-p-9780
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 16 skills, grouped by purpose.
+- [Skills Index](./README.md). All 18 skills, grouped by purpose.
 - [`/code-review`](./code-review.md). Dispatches the same agents plus `adversarial-security-analyst`. Use when you want correctness findings too.
 - [`/architectural-analysis`](./architectural-analysis.md). For structural testability concerns.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Use to stress-test an already-written test plan.

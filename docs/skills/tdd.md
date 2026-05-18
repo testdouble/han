@@ -126,6 +126,7 @@ URL: https://growing-object-oriented-software.com/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
+- [Skills Index](./README.md). All 18 skills, grouped by purpose.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule the refactor step and test list apply. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [`/test-planning`](./test-planning.md). Plan what to test without writing code. Use it before `/tdd` to enumerate behaviors, or instead of it when you want analysis rather than implementation.
 - [`/plan-a-feature`](./plan-a-feature.md). Specify behavior first; the spec becomes the test list `/tdd` builds from.

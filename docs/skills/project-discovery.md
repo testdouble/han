@@ -98,7 +98,7 @@ URL: https://research.google/pubs/why-google-stores-billions-of-lines-of-code-in
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 16 skills, grouped by purpose.
+- [Skills Index](./README.md). All 18 skills, grouped by purpose.
 - [`/project-documentation`](./project-documentation.md). For feature and system docs. Reads the discovery reference to find the right directory and language.
 - [`/coding-standard`](./coding-standard.md). For coding rules. Reads the discovery reference to find the standards directory.
 - [`/architectural-decision-record`](./architectural-decision-record.md). For architectural decisions. Reads the discovery reference to find the ADR directory.

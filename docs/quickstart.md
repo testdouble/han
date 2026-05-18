@@ -23,7 +23,8 @@ You have a feature idea and want a specification grounded in evidence, then a pl
 2. **[`/plan-a-phased-build`](./skills/plan-a-phased-build.md)** *(optional).* When the feature is large enough to ship in slices rather than all at once, split the spec into a numbered sequence of vertical-slice phases, each independently demoable to a real person.
 3. **[`/plan-implementation`](./skills/plan-implementation.md).** Turn the specification (or a single phase from the phased build) into an implementation plan through a project-manager-led team conversation.
 4. **[`/iterative-plan-review`](./skills/iterative-plan-review.md)** *(optional).* Stress-test either plan through multiple codebase-grounded review passes before committing to it.
-5. **[`/tdd`](./skills/tdd.md)** *(when you build it).* Implement the plan test-first through a BDD-framed red-green-refactor loop. The specification becomes the behavior test list; the skill enforces an observed-failure gate and applies your coding standards and ADRs in green and refactor.
+5. **[`/plan-work-items`](./skills/plan-work-items.md)** *(optional).* Divide an implementation plan into individual, independently-grabbable work items.
+6. **[`/tdd`](./skills/tdd.md)** *(when you build it).* Implement the plan test-first through a BDD-framed red-green-refactor loop. The specification becomes the behavior test list; the skill enforces an observed-failure gate and applies your coding standards and ADRs in green and refactor.
 
 **You are done when:** you have a `feature-specification.md` and a `feature-implementation-plan.md` in the same folder, each with a cross-referenced decision log and review findings. If the feature was large enough to phase, you also have a `build-phase-outline.md` that orders the work into demoable vertical slices. When you build it, the code lands behavior by behavior through `/tdd`, with tests leading.
 
@@ -80,8 +81,8 @@ You can reference multiple skills in one prompt and Claude runs them in sequence
 - *"Review my branch, then create an ADR for any architectural decisions in the diff."* → [`/code-review`](./skills/code-review.md) → [`/architectural-decision-record`](./skills/architectural-decision-record.md).
 - *"Plan the retry feature, then plan the implementation, then create a test plan for it."* → [`/plan-a-feature`](./skills/plan-a-feature.md) → [`/plan-implementation`](./skills/plan-implementation.md) → [`/test-planning`](./skills/test-planning.md).
 - *"Spec the discount engine, then build it test-first."* → [`/plan-a-feature`](./skills/plan-a-feature.md) → [`/tdd`](./skills/tdd.md) → [`/code-review`](./skills/code-review.md).
-- *"Compare the auth implementation to the auth spec, then plan how to close the gaps."* → [`/gap-analysis`](./skills/gap-analysis.md) → [`/plan-implementation`](./skills/plan-implementation.md).
-- *"Compare the share v1 implementation to the share v2 spec, split the gaps into a phased rollout, then plan implementation for the first phase."* → [`/gap-analysis`](./skills/gap-analysis.md) → [`/plan-a-phased-build`](./skills/plan-a-phased-build.md) → [`/plan-implementation`](./skills/plan-implementation.md).
+- *"Compare the auth implementation to the auth spec, then plan how to close the gaps, finishing with splitting that work up into task-sized units."* → [`/gap-analysis`](./skills/gap-analysis.md) → [`/plan-implementation`](./skills/plan-implementation.md) → [`/plan-work-items`](./skills/plan-work-items.md).
+- *"Compare the share v1 implementation to the share v2 spec, split the gaps into a phased rollout, then plan implementation for the first phase, finally laying out individual tasks based on that plan."* → [`/gap-analysis`](./skills/gap-analysis.md) → [`/plan-a-phased-build`](./skills/plan-a-phased-build.md) → [`/plan-implementation`](./skills/plan-implementation.md) → [`/plan-work-items`](./skills/plan-work-items.md).
 
 ## A note on sizing
 
