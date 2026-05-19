@@ -17,7 +17,10 @@ either stated behaviorally in the spec or discoverable from the repo (the
 
 - D12: Slash command name — the skill is invoked as `/research`, per the user's request. — Referenced in spec: title, Actors and Triggers, User Interactions.
 - D13: Durable report output — `/research` writes a report file, matching the `/investigate` analog where the investigation is written to a plan file rather than only answered in channel. — Referenced in spec: Outcome, Primary Flow.
-- D14: Invocation surface — `/research <question> [output path]`, mirroring `/investigate`'s invocation shape. — Referenced in spec: User Interactions, Primary Flow.
+
+### D14: Invocation surface
+
+`/research <question> [output path]`, mirroring `/investigate`'s invocation shape. — Referenced in spec: User Interactions, Primary Flow.
 
 ## Full decisions
 
