@@ -272,21 +272,24 @@ standard, a gap report, or an architecture assessment
 
 ## Open Items
 
-OI-1 and OI-2 are resolved by user decision:
-[D20](artifacts/decision-log.md#d20-rollout-plan) settles the rollout plan and
-its ~14+ file cost (owned by `plan-implementation`);
-[D21](artifacts/decision-log.md#d21-skills-index-grouping) settles the
-skills-index grouping.
+All open items are resolved.
 
-- **OI-3:** The source recommendation's housekeeping note flagged an unresolved
-  contradiction between `skill-composition.md` and `skill-decomposition.md`
-  over whether skills may call skills. Under investigation via `/investigate`;
-  its conclusion resolves this item and the recommendation's V3 housekeeping
-  note. See [artifacts/skills-calling-skills-investigation.md](artifacts/skills-calling-skills-investigation.md).
-  - **Resolves when:** the skills-calling-skills investigation completes and its
-    conclusion is folded back here.
-  - **Blocks implementation:** No — but it is a known trap for the implementer
-    until resolved.
+- **OI-1 and OI-2** — resolved by user decision:
+  [D20](artifacts/decision-log.md#d20-rollout-plan) settles the rollout plan
+  and its ~14+ file cost (owned by `plan-implementation`);
+  [D21](artifacts/decision-log.md#d21-skills-index-grouping) settles the
+  skills-index grouping.
+- **OI-3** — resolved by investigation
+  ([D22](artifacts/decision-log.md#d22-skills-calling-skills)). The
+  skills-calling-skills question was investigated with adversarial validation
+  ([artifacts/skills-calling-skills-investigation.md](artifacts/skills-calling-skills-investigation.md)).
+  Outcome: `/research` invokes no skills — it dispatches agents via the Agent
+  tool and "routes to a sibling" by naming it, not calling it — so it already
+  complies with the safe pattern and OI-3 poses essentially zero risk to this
+  skill. The broader six-file guidance contradiction is real but is a separate
+  Han maintenance item (ADR-worthy), not a blocker for this build. One
+  build-time check remains: the eventual SKILL.md `allowed-tools` must not
+  include `Skill`.
 
 ## Summary
 
@@ -298,4 +301,4 @@ skills-index grouping.
 - **Decisions settled by user input:** 5 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** junior-developer, gap-analyzer, edge-case-explorer, adversarial-security-analyst — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** added untrusted-web-source handling (data-not-instruction, context isolation, corroboration, trust labeling), defined research-specific sizing signals, made option-comparison conditional, dropped `gap-analyzer` from the roster, and added compound-question, hybrid-routing, post-validation-rewrite, and output-collision behaviors — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 1 (OI-3, non-blocking, under investigation)
+- **Remaining open items:** 0 (OI-1/OI-2 settled by user as D20/D21; OI-3 resolved by investigation as D22)

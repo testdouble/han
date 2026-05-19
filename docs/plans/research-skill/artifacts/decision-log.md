@@ -273,3 +273,18 @@ either stated behaviorally in the spec or discoverable from the repo (the
 - **Driven by findings:** F19
 - **Dependent decisions:** —
 - **Referenced in spec:** Open Items, Summary
+
+### D22: Skills calling skills
+
+- **Question:** Does the skills-calling-skills guidance contradiction affect `/research`, and what is the recommended pattern (OI-3 / recommendation V3)?
+- **Decision:** `/research` invokes no skills: it dispatches agents via the Agent tool and "routes to a sibling skill" by naming the sibling in its output, not by calling it via the Skill tool. It therefore already complies with the recommended consistent pattern (Agent-tool dispatch + inline discovery, never Skill-tool sub-calls), and OI-3 poses essentially zero risk to this skill. The eventual SKILL.md `allowed-tools` must not include `Skill` — the single build-time check. The broader six-file guidance contradiction is real and unresolved but is a separate Han maintenance item (ADR-worthy, evidence-led: keep the well-evidenced data-fetch ban; orchestration is underdetermined, not proven broken), and does not block this build.
+- **Rationale:** A full `/investigate` run with adversarial validation found the data-fetch sub-skill failure well-evidenced, the orchestration ban unsupported, and — decisively for this spec — that `/research`'s routing is naming, not invoking (validation V8). The safe pattern is recommended for the positive reason that 17/18 skills already use Agent dispatch with no open reliability question, not because orchestration is proven to fail.
+- **Evidence:** [skills-calling-skills-investigation.md](skills-calling-skills-investigation.md) (E1–E9, V1–V8); user request (resolve OI-3 via `/investigate`, this conversation); [../recommendation.md](../recommendation.md) V3 housekeeping note.
+- **Rejected alternatives:**
+  - Treat `skill-composition.md`'s blanket ban as authoritative as-is — rejected: adversarial validation showed the orchestration half is an unsupported assertion contradicted by three same-commit statements (V1, V4).
+  - Recommend migrating `gh-pr-review` off the Skill tool as a known-broken pattern — rejected: no documented failure exists; the keep-vs-migrate call is handed to maintainers (V5).
+  - Leave OI-3 open as a blocker — rejected: the `/research`-relevant answer is robust (V8); the residual contradiction is a separate, non-blocking maintenance item.
+- **Linked technical notes:** —
+- **Driven by findings:** F20
+- **Dependent decisions:** —
+- **Referenced in spec:** Open Items, Summary
