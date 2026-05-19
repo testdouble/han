@@ -13,7 +13,7 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 ## Key concepts
 
 - **Default posture: everything is wrong until proven right.** The agent assumes the investigation reached the wrong conclusion and the fix will fail. The work is to *try to disprove* the analysis, not confirm it.
-- **Three required strategies.** Challenge the evidence, challenge the fix, challenge the assumptions. The agent must attempt all three. Skipping a strategy makes the validation incomplete.
+- **Four strategies, three always required.** Challenge the evidence, challenge the fix, challenge the assumptions — the agent must attempt all three. A fourth, challenge the evidence-gathering integrity, applies whenever the inputs include gathered evidence, external sources, or research artifacts (always for an investigation evidence summary or a research run): was any item planted, injected, astroturfed, stale, or single-sourced. Skipping an applicable strategy makes the validation incomplete.
 - **Counter-evidence has the same rigor as evidence.** A refutation requires the same `file_path:line_number` plus snippet plus reasoning that the original investigation required. *"Looks wrong"* is not a refutation.
 - **Stale-evidence check is mandatory.** The agent verifies that cited files and line numbers still match the codebase. Evidence from an old branch is not evidence.
 - **Confidence assessment is not optional.** Every run closes with a High / Medium / Low confidence level and a rationale grounded in what the validation found.
@@ -53,7 +53,7 @@ Example prompts:
 
 ## What you get back
 
-- A minimum of 5 numbered `V#` validation items spread across the three strategies (Challenge the Evidence, Challenge the Fix, Challenge the Assumptions). Each item names the strategy, the hypothesis under test, what was investigated (files read, commands run, greps performed), the result (Confirmed / Refuted / Partially Refuted), and the impact.
+- A minimum of 5 numbered `V#` validation items spread across the applicable strategies (Challenge the Evidence, Challenge the Fix, Challenge the Assumptions, and — when the inputs include gathered or external evidence — Challenge the Evidence-Gathering Integrity). Each item names the strategy, the hypothesis under test, what was investigated (files read, commands run, greps performed), the result (Confirmed / Refuted / Partially Refuted), and the impact.
 - A **Confidence Assessment** (High / Medium / Low) with a rationale that points at the validation items behind the call.
 - A **Remaining Risks** section listing known unknowns, areas not fully validated, and assumptions the agent could not verify.
 

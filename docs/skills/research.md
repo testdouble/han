@@ -56,6 +56,18 @@ Example prompts:
 - `/research large`. *"Survey the state of the art for vector search; what are the viable options and where does each break down?"*
 - `/research docs/research/queue-options.md`. Research and write the report into that path.
 
+## Sizing
+
+Size sets how many `research-analyst` angles run in parallel and how wide each one casts. The skill reads the question's conceptual scope — not its text length — and defaults to small, escalating only when a signal clearly requires it. Pass `small`, `medium`, or `large` as the first positional argument to override. See [Sizing](../sizing.md) for the cross-skill model.
+
+| Size | Scope signals | Roster |
+|---|---|---|
+| **Small** *(default)* | One domain, few or no competing options, narrow reach (a focused "how does X work" or "is A or B better for this one thing"). | One `research-analyst`, plus `codebase-explorer` when a repo bears on the question, then `adversarial-validator`. 2–3 agents. |
+| **Medium** | Two to three domains, several competing options, or codebase-plus-web reach. | Two to three parallel `research-analyst` angles split by domain or option cluster, plus `codebase-explorer` when relevant, then `adversarial-validator`. 3–5 agents. |
+| **Large** | Many options across multiple domains, or an explicit request for full breadth. | A `research-analyst` per major domain or option cluster, plus `codebase-explorer`, then `adversarial-validator`. 5–8 agents. |
+
+The option-comparison angle is skipped entirely for questions with no discrete alternatives (a plain "how does X work"). The chosen size and the scope it reflects are announced before any agent is dispatched, so a misclassification is catchable.
+
 ## What you get back
 
 A research report file, plus an in-channel summary. Every report has the same fixed structure, top to bottom:

@@ -66,7 +66,7 @@ Runs on `sonnet`. Research synthesis is judgment-heavy, so the model tier matche
 
 `research-analyst` exists because no prior han agent fit open-ended, idea-space research. `evidence-based-investigator` is built around bug vocabulary — root cause, regression, reproduction — and `codebase-explorer` is scoped to discovering implementation inside a repo. Forcing either into "what are the options out there" produced a vocabulary mismatch that degraded the work. The agent's protocols, anti-patterns, and output format are built around options, prior art, source provenance, and corroboration instead.
 
-The isolation from codebase context is deliberate and load-bearing. Because the agent fetches arbitrary web content, letting it also hold repository contents would create an exfiltration path: a crafted page could ask the agent to include codebase material in its output. The brief contract — web angle gets no repo context, codebase evidence comes only from a separate `codebase-explorer` — closes that path. The rationale is recorded in [`docs/plans/research-skill/artifacts/skills-calling-skills-investigation.md`](../plans/research-skill/artifacts/) and the spec's security findings.
+The isolation from codebase context is deliberate and load-bearing. Because the agent fetches arbitrary web content, letting it also hold repository contents would create an exfiltration path: a crafted page could ask the agent to include codebase material in its output. The brief contract — web angle gets no repo context, codebase evidence comes only from a separate `codebase-explorer` — closes that path. The rationale is recorded in [`skills-calling-skills-investigation.md`](../plans/research-skill/artifacts/skills-calling-skills-investigation.md) and the spec's security findings.
 
 ## Sources
 
@@ -87,5 +87,6 @@ URL: https://en.wikipedia.org/wiki/Stephen_Toulmin#The_Toulmin_model_of_argument
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Agents Index](./README.md). All 22 agents, grouped by role.
 - [`adversarial-validator`](./adversarial-validator.md). The agent that attacks this agent's landscape and recommendation; they pair in `/research`.
+- [`codebase-explorer`](./codebase-explorer.md). Runs in parallel with this agent on a `/research` run when a codebase bears on the question; it owns the codebase angle so this agent stays web-isolated.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). The symptom-shaped counterpart for codebase bug evidence.
 - [`/research`](../skills/research.md). The skill that dispatches this agent.

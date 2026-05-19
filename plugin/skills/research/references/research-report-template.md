@@ -86,8 +86,9 @@ rewritten into the "No clear winner" form. -->
 <!--
 An indexed registry of EVERY information source used that is relevant to the
 results. ALWAYS present, even for a minimal run — never omitted. Each artifact
-is cross-referenced by its ID (A#) from the Summary's solidity phrase, Research
-Results, Options, and Recommendation, so every conclusion traces to its sources.
+is cross-referenced by its ID (A#) from Research Results, Options, and the
+Recommendation, so every conclusion traces to its sources. The Summary stays
+ID-free.
 -->
 
 ### A1: {short title of the source}

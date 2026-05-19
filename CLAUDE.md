@@ -51,7 +51,7 @@ The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form 
 
 - **[docs/concepts.md](./docs/concepts.md).** The skill-vs-agent model that runs through the whole plugin. Read once before doing anything else. Every other doc assumes this vocabulary.
 - **[docs/quickstart.md](./docs/quickstart.md).** Four path-based recipes (plan a feature, investigate a bug, review code, set up a project). Use when picking which skill to run for a specific situation.
-- **[docs/sizing.md](./docs/sizing.md).** The small / medium / large dispatch model used by the six swarming skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`). Use when a swarming skill needs to decide team size, or when a user asks what `medium` / `large` mean.
+- **[docs/sizing.md](./docs/sizing.md).** The small / medium / large dispatch model used by the seven swarming skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`). Use when a swarming skill needs to decide team size, or when a user asks what `medium` / `large` mean.
 - **[docs/yagni.md](./docs/yagni.md).** The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies before committing items to its artifact. Use when explaining why an item was deferred or rejected from a plan / review / ADR.
 
 ### Skill catalog (`docs/skills/`)
