@@ -1,5 +1,44 @@
 # Han Release Notes
 
+## v2.5.0
+
+A new `/research` skill and its `research-analyst` agent ship, taking the catalog to 19 skills and 22 agents. `/coding-standard` now writes its output as path-scoped Claude Code rules under `.claude/rules/` rather than a freestanding document, and the same path-scoped-rules pattern is applied repo-wide so contributor guidance under `docs/guidance/` reaches Claude Code automatically. A GitHub pull request template lands with a review checklist that hands off to `/update-pr-description`, and the README drops its duplicated skills list in favor of the canonical catalog under `docs/skills/`.
+
+### New skill
+
+`/research` answers open-ended questions (options, prior art, trade-offs, how something works) and produces a durable, evidence-backed, adversarially-validated report that recommends an option without committing the team to any artifact. It reaches the codebase, the open web, and any material the operator provides, and ships with `plugin/skills/research/SKILL.md` and a fixed report structure rendered from `plugin/skills/research/references/research-report-template.md`. The skill operates in an evidence mode that forces every recommendation to carry traceable citations (decision D23), and the report layout is fixed rather than freeform (decision D24). YAGNI is intentionally not applied inside `/research` or `research-analyst`: research surfaces options the operator may or may not pursue, so the deferral rule that gates planning and review skills would cut signal rather than noise. `/research` is the question-shaped sibling of `/investigate`: `/investigate` diagnoses a known failure, `/research` surveys an open question. Neighbor routing is wired bidirectionally across `/architectural-analysis`, `/gap-analysis`, `/investigate`, and `/plan-a-feature`, and the long-form catalog at `docs/skills/research.md` documents when to reach for it. (PR #8)
+
+### New agent
+
+`research-analyst` is the specialist `/research` dispatches for codebase, web, and operator-supplied evidence gathering. It ships at `plugin/agents/research-analyst.md` with a long-form doc at `docs/agents/research-analyst.md`, and is cross-referenced from every neighboring agent's "Related Documentation" section. (PR #8)
+
+### Coding standards as path-scoped rules
+
+`/coding-standard` now writes its output as a path-scoped Claude Code rule under `.claude/rules/` and symlinks the canonical document from `docs/` rather than producing a standalone markdown file. `plugin/skills/coding-standard/SKILL.md` and `plugin/skills/coding-standard/references/template.md` are updated to the new output contract, and `docs/skills/coding-standard.md` documents the canonical-doc + rules-symlink layout in plain language so operators can read the rule in either location. A step-count error in the operator doc is fixed in the same pass. (PR #9)
+
+### Contributor guidance as Claude Code rules
+
+A new `.claude/rules/` directory contains roughly 28 symlinks mirroring `docs/guidance/skill-building-guidance/*.md`, `docs/guidance/agent-building-guidelines/*.md`, and `docs/guidance/plugin-entity-taxonomy.md`. Path-scoped rules let Claude Code load the relevant guidance automatically when an operator edits a skill or agent under `plugin/`, so contributor conventions reach the model without the operator pasting them into context.
+
+### Pull request template
+
+`.github/pull_request_template.md` adds a review checklist for new pull requests against the Han repo and hands off to `/update-pr-description` for generating the body. The template is internal to this repository and does not change plugin behavior.
+
+### Documentation
+
+- `README.md`: the duplicated skills list is removed; the canonical catalog at `docs/skills/README.md` is now the single source.
+- `CLAUDE.md`: project map updated for the 19-skill, 22-agent counts and the new `/research` entry.
+- `docs/concepts.md`, `docs/quickstart.md`, `docs/sizing.md`: cross-reference updates for `/research`.
+- All 22 long-form agent docs under `docs/agents/` and 18 long-form skill docs under `docs/skills/` gain neighbor-routing entries pointing at `/research` and `research-analyst` where the relationship is real.
+- `plugin/agents/adversarial-validator.md` is updated alongside the cross-skill cross-referencing pass.
+
+### Pull requests in this release
+
+- Add a /research skill (#8) — @mxriverlynn
+- Coding standards skill update: symlink as rules (#9) — @mxriverlynn
+
+Full changelog: https://github.com/testdouble/han/blob/v2.5.0/CHANGELOG.md#v250
+
 ## v2.4.0
 
 Three new plugin skills ship, taking the catalog from 15 to 18: `/issue-triage` for turning a vague report into a structured triage document, `/tdd` for a BDD-framed red-green-refactor loop, and `/plan-work-items` for breaking a trusted implementation plan into grabbable work items. `/architectural-analysis` is rebuilt as the sixth sizing-aware swarming skill, and three synthesis agents move to the opus tier so their shipped frontmatter matches the documented design intent.
