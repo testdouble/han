@@ -86,11 +86,11 @@ Plain-language version of the design choice, for anyone who reads a new standard
 
 ## Cost and latency
 
-The skill dispatches two `codebase-explorer` agents in parallel during Step 4 (evidence gathering) and two review agents in parallel during Step 8 (`junior-developer` + `information-architect`). All four run on their default models. Cost scales with codebase size and how many documents the explorers have to read. Typical runs are a few minutes.
+The skill dispatches two `codebase-explorer` agents in parallel during Step 4 (evidence gathering) and two review agents in parallel during Step 9 (`junior-developer` + `information-architect`). All four run on their default models. Cost scales with codebase size and how many documents the explorers have to read. Typical runs are a few minutes.
 
 ## In more detail
 
-The skill walks a nine-step process:
+The skill walks a ten-step process:
 
 1. **Determine mode.** Creating new / Converting existing / Updating existing.
 2. **Evaluate appropriateness.** Should this be tooling instead? If yes, warn and ask.
@@ -99,8 +99,9 @@ The skill walks a nine-step process:
 5. **Convert source document** (conversion mode only). Map sections using the ADR-conversion-mapping reference; handle the source file (delete if fully subsumed, link if partial).
 6. **Write the coding standard.** Hierarchically-prefixed filename (top-level subsystem/framework, optional second level), fill the template with real code examples and actual project language identifiers. Propose a `paths:` glob list scoped to what the standard governs, get user approval, and write it as YAML frontmatter at the top of the file.
 7. **Integration.** Create the symlink at `.claude/rules/coding-standards/{filename}` pointing back to the canonical doc with a relative target; ensure the memory file's pointer paragraph exists (added once if missing, never enumerating individual standards); add cross-references in both directions.
-8. **Adversarial review.** Dispatch `junior-developer` for ambiguity and assumption checks and `information-architect` for findability and structure. Apply actionable edits.
-9. **Verification.** Re-read the file, confirm metadata, template structure, `paths:` frontmatter, working symlink, real file paths, distinct Correct-vs-Avoid examples, and that Step 8 edits were applied.
+8. **Adoption-bias audit.** Six structural checks against over-application: primary-rationale visibility, a decision tree near the top, a substantive *When NOT to Apply* section, surfaced (not buried) exceptions, code-example comments that match the primary rationale, and a verification step for defensive adoptions.
+9. **Adversarial review.** Dispatch `junior-developer` for ambiguity and assumption checks and `information-architect` for findability and structure. Apply actionable edits.
+10. **Verification.** Re-read the file, confirm metadata, template structure, `paths:` frontmatter, a working symlink, real file paths, distinct Correct-vs-Avoid examples, that no enumerated entry was added to the memory file, and that Step 8 and Step 9 edits were applied.
 
 ## YAGNI
 
