@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Context Injection Commands in Skill Files
 
 Context injection commands use the `` !`command` `` syntax to execute a shell command at skill load time and inject its stdout into the skill as runtime context. The command runs **once when the skill loads**, not during each step. This gives skill steps access to dynamic information about the current environment without hardcoding values.
@@ -217,9 +222,10 @@ Real examples organized by purpose, with source file references:
 
 **File/directory discovery:**
 - `` !`find . -maxdepth 1 -name "CLAUDE.md" -type f` `` — check for file (`code-review`, `coding-standard`, `architectural-decision-record`, `investigate`, `iterative-plan-review`, `project-discovery`, `project-documentation`, `test-planning`)
-- `` !`find . -maxdepth 1 -name "AGENTS.md" -type f` `` — check for file (`project-discovery`)
+- `` !`find . -maxdepth 1 -name "AGENTS.md" -type f` `` — check for file (`coding-standard`, `project-discovery`)
 - `` !`find . -maxdepth 1 -name "README*" -type f` `` — check for file (`project-discovery`)
 - `` !`find . -maxdepth 3 -name "project-discovery.md" -type f` `` — find discovery output (`code-review`, `coding-standard`, `architectural-decision-record`, `investigate`, `iterative-plan-review`, `project-documentation`, `test-planning`)
+- `` !`find . -maxdepth 4 -type d -path "*/.claude/rules/coding-standards"` `` — check for path-scoped rules directory (`coding-standard`)
 
 **Tool availability:**
 - `` !`which gh` `` — check for gh CLI (`update-pr-description`, `gh-pr-review`)

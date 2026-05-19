@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Use Case Planning
 
 Before writing a SKILL.md, define 2-3 concrete use cases the skill should handle. Use cases ground the skill in real user workflows rather than abstract capabilities, and they become the test cases you run after building.

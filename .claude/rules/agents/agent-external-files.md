@@ -1,0 +1,1 @@
+../../../docs/guidance/agent-building-guidelines/agent-external-files.md

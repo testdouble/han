@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Hardening: Fuzzy vs. Deterministic Steps
 
 Other guidance docs tell you to extract deterministic operations to scripts ([Progressive Disclosure](./progressive-disclosure.md), [Writing Effective Instructions](./writing-effective-instructions.md)). This doc provides the decision framework for recognizing which steps are candidates and classifying them correctly.

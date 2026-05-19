@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Writing Effective Instructions
 
 The SKILL.md body — everything below the YAML frontmatter — is where you tell Claude *how* to execute the skill. These instructions load when the skill triggers (Level 2 in the progressive disclosure model) and guide Claude through the workflow step by step.

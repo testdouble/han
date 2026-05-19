@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/agents/**/*.md"
+---
+
 # Multi-Agent Economics
 
 When a skill dispatches agents via the `Agent` tool, each agent adds latency and token cost. This doc provides the decision framework for when adding agents is justified and when it's wasteful.

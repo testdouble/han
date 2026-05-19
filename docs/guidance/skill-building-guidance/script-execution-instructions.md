@@ -1,3 +1,9 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+  - "plugin/skills/**/scripts/**"
+---
+
 # Script Execution Instructions in SKILL.md
 
 When a skill needs to run shell scripts during its steps, the SKILL.md body must describe the invocation as numbered prose instructions — not fenced code blocks.

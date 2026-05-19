@@ -1,3 +1,9 @@
+---
+paths:
+  - "{glob-1}"
+  - "{glob-2}"
+---
+
 # {Title}
 
 - **Status:** {proposed | accepted | deprecated}

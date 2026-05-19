@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Troubleshooting
 
 This guide covers common problems encountered when building and using skills, organized by symptom. Each section describes the symptom, explains the likely cause, and provides a concrete fix.

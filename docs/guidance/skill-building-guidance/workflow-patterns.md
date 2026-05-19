@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Workflow Patterns
 
 Skills encode workflows — multi-step processes that Claude executes in a specific order with specific tools. This guide documents four structural patterns that appear across well-built skills. Each pattern solves a different workflow shape, and most real skills combine two or more.

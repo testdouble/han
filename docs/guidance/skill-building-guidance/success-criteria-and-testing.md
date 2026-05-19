@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Success Criteria and Testing
 
 How do you know a skill is working? Without defined success criteria, "it seems fine" becomes the bar — and that bar shifts with each conversation. This guide defines three test types that cover whether a skill triggers correctly, executes its workflow, and actually improves outcomes compared to working without it.

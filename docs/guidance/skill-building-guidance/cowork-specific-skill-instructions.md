@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Claude Cowork — Complete Reference
 
 ## What is Cowork?

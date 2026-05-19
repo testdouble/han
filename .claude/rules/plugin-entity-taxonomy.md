@@ -1,0 +1,1 @@
+../../docs/guidance/plugin-entity-taxonomy.md

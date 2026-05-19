@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Progressive Disclosure
 
 Skills use a three-level information architecture that balances context availability with token efficiency. Each level loads only when needed, keeping Claude's context window focused on what matters for the current task.
