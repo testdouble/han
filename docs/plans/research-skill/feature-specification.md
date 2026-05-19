@@ -13,13 +13,17 @@ A Han skill that takes an open-ended question — options, prior art, trade-offs
 
 Running `/research` on an open-ended question produces a durable research
 report containing: the question framed precisely, a numbered evidence list
-(E1, E2, …) where every item carries a verifiable source
-([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)), an options
-landscape where each viable option is stated with its trade-offs, a recommended
-option with rationale, and adversarial-validation findings (V1, V2, …) that
-challenged and reshaped the recommendation
+(E1, E2, …) where every item carries a source the reader can independently
+check ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)), an
+options landscape where each viable option is stated with its trade-offs, a
+recommended option with rationale, and adversarial-validation findings
+(V1, V2, …) that challenged and reshaped the recommendation
 ([D6](artifacts/decision-log.md#d6-workflow-spine),
-[D7](artifacts/decision-log.md#d7-adversarial-validation-target)). The report is
+[D7](artifacts/decision-log.md#d7-adversarial-validation-target)). Evidence
+drawn from outside the operator's trust boundary — the open web and
+operator-provided third-party material — is structurally distinguished from
+codebase-anchored evidence in the report
+([D16](artifacts/decision-log.md#d16-untrusted-source-handling)). The report is
 the only thing produced — `/research` never emits a feature spec, a coding
 standard, a gap report, or an architecture assessment
 ([D10](artifacts/decision-log.md#d10-output-agnostic-guarantee)).
@@ -43,64 +47,134 @@ standard, a gap report, or an architecture assessment
 ## Primary Flow
 
 1. The operator invokes `/research` with a question and an optional output
-   path.
-2. The skill classifies the question's scope and assigns a research team size —
-   small, medium, or large — using Han's standard sizing model
-   ([D5](artifacts/decision-log.md#d5-team-size-model)).
-3. The skill checks whether the request is actually a different concern — a bug
-   to diagnose, a feature to specify, a coding standard to set, two concrete
-   artifacts to compare, or an existing module's architecture to assess. If so,
-   it names the correct sibling skill and stops instead of proceeding
-   ([D8](artifacts/decision-log.md#d8-out-of-scope-redirect-behavior),
+   path. If the path is given and a report already exists there, the skill asks
+   whether to overwrite it or write elsewhere before doing any work; the
+   default (no-path) location does not collide with a prior run
+   ([D19](artifacts/decision-log.md#d19-re-run-and-output-collision-guard)).
+2. The skill classifies the question's research scope and assigns a team size —
+   small, medium, or large — from the conceptual scope of the question, not its
+   text length: how many distinct viable approaches are in play, how many
+   separate technical domains the question spans, and how wide a reach it needs
+   (codebase only, or codebase plus the open web plus provided material). The
+   assigned size and a one-line statement of the scope it reflects are shown to
+   the operator before any agent is dispatched, so a misread can be caught
+   ([D5](artifacts/decision-log.md#d5-team-size-model),
+   [D15](artifacts/decision-log.md#d15-research-sizing-signals)).
+3. If the request is actually a different concern — a bug to diagnose, a
+   feature to specify, a coding standard to set, two concrete artifacts to
+   compare, or an existing module's architecture to assess — the skill names
+   the correct sibling skill, explains in one sentence why it fits better, and
+   produces no research report. When the request is a hybrid (an answerable
+   open-ended research question plus a sibling-output request), the skill runs
+   the research portion and names the sibling for the rest; when nothing
+   research-shaped remains once the sibling request is set aside, it redirects
+   entirely ([D8](artifacts/decision-log.md#d8-out-of-scope-redirect-behavior),
+   [D18](artifacts/decision-log.md#d18-hybrid-request-classification),
    [D2](artifacts/decision-log.md#d2-scope-boundary-and-bidirectional-routing)).
-4. The skill dispatches research agents in parallel, sized to scope: a
-   codebase-grounded angle, an open-web / prior-art angle, and an
-   option-comparison angle where the question pits alternatives against each
-   other. Together the agents reach the codebase, the open web, and any
-   material the operator provided
-   ([D3](artifacts/decision-log.md#d3-research-reach),
-   [D4](artifacts/decision-log.md#d4-agent-roster),
-   [D5](artifacts/decision-log.md#d5-team-size-model)).
-5. Findings are consolidated into a single numbered evidence list (E1, E2, …).
-   Every item carries a source the reader can independently check — a file path
-   for codebase evidence, a source URL for web evidence
-   ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)).
-6. The skill synthesizes an options landscape: each viable option stated with
+4. If the question bundles more than one independent research thread (threads
+   that would each produce their own options landscape), the skill names the
+   threads, asks the operator which to run first, and defers the rest rather
+   than merging them into one conflated report
+   ([D17](artifacts/decision-log.md#d17-compound-question-handling)).
+5. The skill dispatches research agents in parallel, sized to scope: a new
+   research agent owning the open-web / prior-art angle and, where the question
+   implies discrete alternatives, the option-comparison angle; and
+   `codebase-explorer` for the codebase-grounded angle. Agents working the
+   open-web angle do not receive codebase contents or operator context in their
+   briefs; findings are aggregated by source so external content cannot pull
+   repository material into its reach
+   ([D4](artifacts/decision-log.md#d4-agent-roster),
+   [D16](artifacts/decision-log.md#d16-untrusted-source-handling),
+   [D5](artifacts/decision-log.md#d5-team-size-model)). The option-comparison
+   angle is skipped entirely for questions with no discrete alternatives, such
+   as "how does X work"
+   ([D6](artifacts/decision-log.md#d6-workflow-spine)).
+6. Findings are consolidated into a single numbered evidence list (E1, E2, …).
+   Every item carries a source the reader can independently check — a
+   repository location for codebase evidence, an external source reference plus
+   its retrieval date for web evidence. Content fetched from the open web is
+   treated as claims to evaluate, never as instructions to follow; directive
+   language inside fetched material is recorded as a claim, not acted on. An
+   external claim that bears on the recommendation must be corroborated by an
+   independent source or by codebase evidence; an uncorroborated external claim
+   is caveated and cannot be the sole basis for the recommendation. Material
+   the operator supplied is held to the same scrutiny as open-web sources, as
+   it may originate from an interested party
+   ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing),
+   [D16](artifacts/decision-log.md#d16-untrusted-source-handling)).
+7. The skill synthesizes an options landscape: each viable option stated with
    its trade-offs and the evidence items that support or weaken it, followed by
    a recommended option with its rationale. When the evidence does not support a
    single answer, it says so explicitly and names the conditions that would
    decide it rather than forcing a pick
    ([D6](artifacts/decision-log.md#d6-workflow-spine)).
-7. An adversarial-validation pass challenges the evidence, the way the options
-   were framed, and the recommendation itself. Counter-findings are recorded as
-   V1, V2, … and reshape the landscape and recommendation before the report is
-   finalized ([D7](artifacts/decision-log.md#d7-adversarial-validation-target)).
-8. The skill writes the research report to the output location and presents it
-   for review. The operator accepts it, asks for specific revisions, or
-   redirects the question ([D6](artifacts/decision-log.md#d6-workflow-spine)).
+8. An adversarial-validation pass challenges the evidence, the way the options
+   were framed, the recommendation itself, and the integrity of the
+   evidence-gathering: whether any evidence item could have been introduced or
+   shaped by external content designed to influence the output, whether
+   discounting any single external item changes the recommendation, and whether
+   external sources are stale, adversarially constructed, or implausibly
+   convenient. Counter-findings are recorded as V1, V2, …
+   ([D7](artifacts/decision-log.md#d7-adversarial-validation-target)).
+9. The skill re-evaluates the recommendation against the validation findings.
+   If the recommendation no longer survives, its section is rewritten into the
+   "no clear winner" form with the deciding criteria — it is not left standing
+   with a contradicting validation section beneath it. The skill then writes
+   the report to the output location and presents it for review; the operator
+   accepts it, asks for specific revisions, or redirects the question
+   ([D6](artifacts/decision-log.md#d6-workflow-spine),
+   [D7](artifacts/decision-log.md#d7-adversarial-validation-target)).
 
 ## Alternate Flows and States
 
 ### Out-of-scope redirect
 
 - **Entry condition:** the request matches a sibling skill's domain (bug,
-  feature spec, coding standard, artifact comparison, architecture assessment).
+  feature spec, coding standard, artifact comparison, architecture assessment)
+  and no answerable open-ended research question remains once that request is
+  set aside.
 - **Sequence:** the skill names the sibling that owns the request, explains in
   one sentence why that skill fits better, and does not run the research
   pipeline.
 - **Exit:** the operator re-invokes the named sibling or reframes the request as
   open-ended research
-  ([D8](artifacts/decision-log.md#d8-out-of-scope-redirect-behavior)).
+  ([D8](artifacts/decision-log.md#d8-out-of-scope-redirect-behavior),
+  [D18](artifacts/decision-log.md#d18-hybrid-request-classification)).
+
+### Hybrid research-plus-sibling request
+
+- **Entry condition:** the request contains an answerable open-ended research
+  question and also asks for a sibling's output (e.g., "research caching
+  options and write the standard for the one I pick").
+- **Sequence:** the skill runs the research portion to a full report, then
+  explicitly hands the sibling portion off by naming the sibling skill; it does
+  not produce the sibling's artifact.
+- **Exit:** the research report is delivered with a named handoff
+  ([D18](artifacts/decision-log.md#d18-hybrid-request-classification),
+  [D10](artifacts/decision-log.md#d10-output-agnostic-guarantee)).
+
+### Compound multi-thread question
+
+- **Entry condition:** the question bundles more than one independent research
+  thread.
+- **Sequence:** the skill names the threads it found and asks the operator
+  which to run first; the others are deferred, not merged.
+- **Exit:** one thread proceeds through the primary flow; the deferred threads
+  are listed for the operator to re-invoke
+  ([D17](artifacts/decision-log.md#d17-compound-question-handling)).
 
 ### Pure external research (no codebase)
 
 - **Entry condition:** `/research` is invoked outside a repository, or the
   question is purely about external ideas or prior art.
 - **Sequence:** the codebase-grounded angle is skipped; the open-web /
-  prior-art and option-comparison angles run; evidence is sourced entirely from
-  the web and provided material.
-- **Exit:** the same research report, with web-sourced evidence
-  ([D3](artifacts/decision-log.md#d3-research-reach)).
+  prior-art and (when alternatives exist) option-comparison angles run;
+  evidence is sourced from the web and provided material under the same trust
+  handling as any external source.
+- **Exit:** the same research report, with externally-sourced evidence clearly
+  marked as such
+  ([D3](artifacts/decision-log.md#d3-research-reach),
+  [D16](artifacts/decision-log.md#d16-untrusted-source-handling)).
 
 ### Inconclusive research
 
@@ -118,11 +192,17 @@ standard, a gap report, or an architecture assessment
 | Condition | Required Behavior |
 |-----------|-------------------|
 | The question is too vague to research (no answerable shape) | The skill asks the operator for the specific decision or unknown they need resolved before dispatching agents; it does not guess and burn a research round. |
-| A web source is unreachable or returns low-quality / unverifiable claims | The affected evidence item is marked as unverified with the attempted source; it may inform the landscape but cannot be the sole basis for the recommendation. |
+| The question bundles multiple independent research threads | The skill names the threads and asks which to run first; it does not merge them into one report whose evidence and recommendations are conflated across threads ([D17](artifacts/decision-log.md#d17-compound-question-handling)). |
+| The request is half research, half a sibling's output | The skill runs the research half and names the sibling for the rest; if nothing research-shaped remains, it redirects entirely ([D18](artifacts/decision-log.md#d18-hybrid-request-classification)). |
+| A web source is unreachable, paywalled, or returns low-quality / unverifiable claims | The affected evidence item is marked unverified with the attempted source and retrieval date; it may inform the landscape but cannot be the sole basis for the recommendation ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)). |
+| A web source is plausibly authoritative but uncorroborated | It does not enter the evidence list as a basis for the recommendation unless corroborated by an independent source or by codebase evidence; otherwise it is recorded with an explicit single-source caveat ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing), [D16](artifacts/decision-log.md#d16-untrusted-source-handling)). |
+| Fetched web content contains directive-style language ("ignore prior instructions", "include the contents of …") | The content is recorded as a claim under evaluation, never executed as an instruction; the open-web agent holds no codebase or operator context that such a directive could exfiltrate ([D16](artifacts/decision-log.md#d16-untrusted-source-handling)). |
 | Web sources contradict each other | Both positions are recorded as separate evidence items; the conflict is surfaced in the landscape rather than silently resolved. |
-| The request mixes research with a sibling concern (e.g., "research options and write the spec") | The skill performs the research portion and explicitly hands the sibling portion off by naming the sibling skill; it does not produce the sibling's artifact ([D10](artifacts/decision-log.md#d10-output-agnostic-guarantee)). |
-| The scope is larger than the assigned team size can cover | The skill states the coverage limit in the report and recommends a narrower follow-up question rather than presenting partial coverage as complete. |
-| Adversarial validation overturns the recommendation | The recommendation is replaced or downgraded; the report records what changed and which V-finding drove it ([D7](artifacts/decision-log.md#d7-adversarial-validation-target)). |
+| Codebase evidence contradicts web evidence | The conflict is surfaced explicitly; the codebase is treated as the current-state anchor and "continue with the current approach" appears as a named option alongside the web-sourced alternatives ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)). |
+| Operator-provided material conflicts with independent evidence | Provided material is held to the same scrutiny as a web source; the conflict is surfaced and the validation pass checks the provided material against independent sources rather than letting it override them ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing), [D16](artifacts/decision-log.md#d16-untrusted-source-handling)). |
+| The scope is larger than the assigned team size can cover | The skill states the coverage limit in the report and recommends a narrower follow-up question rather than presenting partial coverage as complete; an auto-misclassification is catchable from the pre-dispatch scope statement ([D15](artifacts/decision-log.md#d15-research-sizing-signals)). |
+| Adversarial validation overturns the recommendation | The recommendation section is rewritten into the "no clear winner" form with deciding criteria; it is not left standing above a validation section that contradicts it ([D7](artifacts/decision-log.md#d7-adversarial-validation-target)). |
+| An output path is given and a report already exists there | The skill asks whether to overwrite or write elsewhere before doing any work; it does not silently overwrite a previously accepted report ([D19](artifacts/decision-log.md#d19-re-run-and-output-collision-guard)). |
 | No codebase and no usable web evidence | The skill reports that the question could not be researched with available sources and what input would make it answerable; it does not fabricate a landscape. |
 
 ## User Interactions
@@ -130,23 +210,26 @@ standard, a gap report, or an architecture assessment
 - **Affordances:** `/research <question>` with an optional output path
   argument, mirroring how `/investigate` is invoked
   ([D14](artifacts/decision-log.md#d14-invocation-surface)).
-- **Feedback:** the assigned team size and the reason for it are stated before
-  agents are dispatched, the same way Han's other sized skills announce their
-  team ([D5](artifacts/decision-log.md#d5-team-size-model)); the finished report
-  is presented in-channel for review.
+- **Feedback:** the assigned team size and a one-line statement of the scope it
+  reflects are shown before agents are dispatched, so the operator can catch a
+  misclassification ([D5](artifacts/decision-log.md#d5-team-size-model),
+  [D15](artifacts/decision-log.md#d15-research-sizing-signals)); the finished
+  report is presented in-channel for review.
 - **Error states:** an out-of-scope request produces a visible redirect naming
-  the correct sibling skill; a too-vague request produces a visible request for
-  the specific unknown; an unresearchable question produces a visible statement
-  of what input is missing.
+  the correct sibling skill; a compound question produces a visible thread list
+  and a "which first?" prompt; a too-vague request produces a visible request
+  for the specific unknown; an output-path collision produces a visible
+  overwrite-or-relocate prompt; an unresearchable question produces a visible
+  statement of what input is missing.
 
 ## Coordinations
 
 | Coordinating System | Direction | Interaction | Ordering / Consistency Requirement |
 |---------------------|-----------|-------------|-----------------------------------|
-| Sibling skills (`investigate`, `plan-a-feature`, `coding-standard`, `gap-analysis`, `architectural-analysis`) | inbound + outbound | `/research` routes out-of-scope requests to them; each must route research-shaped requests back to `/research` via a reciprocal boundary statement | Disambiguation must hold in both directions before release, or requests fall through the gap ([D9](artifacts/decision-log.md#d9-reciprocal-routing-coordination)) |
-| The open web | outbound | Retrieval of prior art, options, and external information | Every retrieved claim carries its source URL into the evidence list ([D3](artifacts/decision-log.md#d3-research-reach), [D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)) |
-| The codebase and operator-provided material | inbound | Source of codebase-grounded evidence | File-path-anchored so evidence is checkable ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)) |
-| Research agents — a new research agent plus reused `codebase-explorer`, `gap-analyzer`, and `adversarial-validator` | outbound | Dispatched in parallel for the codebase, web/prior-art, option-comparison, and adversarial-validation angles | Validation runs after the evidence list and options landscape are drafted, so it has a recommendation to attack ([D4](artifacts/decision-log.md#d4-agent-roster), [D7](artifacts/decision-log.md#d7-adversarial-validation-target)) |
+| Sibling skills (`investigate`, `plan-a-feature`, `coding-standard`, `gap-analysis`, `architectural-analysis`) | inbound + outbound | `/research` routes out-of-scope requests to them; each must route research-shaped requests back to `/research` via a reciprocal boundary statement | Disambiguation must hold in both directions for all five neighbors before release. If clean bidirectional disambiguation cannot fit the description budget, the source recommendation requires revisiting before implementation proceeds, not forcing it through ([D9](artifacts/decision-log.md#d9-reciprocal-routing-coordination)) |
+| The open web | outbound | Retrieval of prior art, options, and external information by the new research agent | Every retrieved claim enters the evidence list with its source reference and retrieval date, marked as an out-of-trust-boundary source, treated as data not instruction ([D3](artifacts/decision-log.md#d3-research-reach), [D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing), [D16](artifacts/decision-log.md#d16-untrusted-source-handling)) |
+| The codebase and operator-provided material | inbound | Codebase is a trusted current-state anchor; operator-provided material is held to external-source scrutiny | Codebase evidence is repository-location-anchored; the open-web agent's brief is isolated from codebase contents so fetched content cannot reach them ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing), [D16](artifacts/decision-log.md#d16-untrusted-source-handling)) |
+| Research agents — a new research agent plus reused `codebase-explorer` and `adversarial-validator` | outbound | Dispatched in parallel for the web/prior-art, option-comparison, codebase, and adversarial-validation angles | Validation runs after the evidence list and options landscape are drafted, so it has a recommendation and an evidence chain to attack ([D4](artifacts/decision-log.md#d4-agent-roster), [D7](artifacts/decision-log.md#d7-adversarial-validation-target)) |
 
 ## Out of Scope
 
@@ -159,7 +242,8 @@ standard, a gap report, or an architecture assessment
   not code or skill files.
 - The exact enumeration of which neighbor skill files receive reciprocal-routing
   edits and the file-by-file rollout — that is implementation detail owned by
-  `plan-implementation`, not a behavior of the skill.
+  `plan-implementation`, not a behavior of the skill (see OI-1 for the known
+  cost).
 
 ## Deferred (YAGNI)
 
@@ -170,18 +254,50 @@ standard, a gap report, or an architecture assessment
   spec-building after a recommendation. It also reintroduces the
   single-responsibility violation the source investigation rejected.
 - **Reopen when:** operators repeatedly run `/plan-a-feature` immediately after
-  `/research` with the same context, and that pattern is observed often enough
-  to justify an explicit handoff affordance.
+  `/research` with the same context, often enough to justify an explicit
+  handoff affordance.
 - **Source:** conversation design consideration during this specification.
+
+### Diffing a prior report on re-run
+
+- **Why deferred:** simpler-version replacement. A full "detect the prior
+  report and show what changed" capability was considered for the re-run case;
+  the same evidence (operators re-run the same question over time) is satisfied
+  by the strictly simpler overwrite-or-relocate guard in
+  [D19](artifacts/decision-log.md#d19-re-run-and-output-collision-guard).
+- **Reopen when:** operators ask for change-over-time tracking across research
+  runs on the same question.
+- **Source:** review finding F14 (edge-case explorer).
 
 ## Open Items
 
-- **OI-1:** Becoming Han's 7th sized skill means the small/medium/large sizing
-  documentation and skill counts must be updated alongside this skill.
-  - **Resolves when:** `plan-implementation` enumerates the doc and count
-    updates as part of the rollout checklist.
+- **OI-1:** `/research` becomes Han's 7th sized skill, so the sizing
+  documentation and the hard skill counts must be updated alongside it. The
+  source investigation put the true rollout cost at ~14+ file changes
+  (including reciprocal "Does not" routing in each of the five neighbors'
+  SKILL.md *and* long-form docs, kept in sync). Known count/sizing surfaces to
+  update: the skill count and "Counts to verify" line in `CLAUDE.md`, the
+  count in `README.md`, the skill count and the "sizing-aware skills" count in
+  `docs/concepts.md`, the named sizing-skill list and table in `docs/sizing.md`,
+  and the grouping in `docs/skills/README.md`.
+  - **Resolves when:** `plan-implementation` turns this into the explicit
+    file-by-file rollout checklist.
   - **Blocks implementation:** No — it is a rollout task, not a behavioral
     unknown.
+- **OI-2:** No existing skills-index category fits cleanly. Recommended: group
+  `/research` next to `/investigate` under a relabeled "Investigation &
+  research" grouping (both are evidence-plus-adversarial-validation deep dives;
+  `/investigate` runs symptom→fix, `/research` runs question→options).
+  - **Resolves when:** the operator confirms the grouping or names a different
+    one during implementation.
+  - **Blocks implementation:** No — it shapes discoverability, not behavior.
+- **OI-3:** The source recommendation's housekeeping note flagged an unresolved
+  contradiction between `skill-composition.md` and `skill-decomposition.md`.
+  Implementers must not treat those two guidance docs as co-equal authorities
+  for new skill design until it is reconciled.
+  - **Resolves when:** the contradiction is reconciled independently of this
+    skill.
+  - **Blocks implementation:** No — but it is a known trap for the implementer.
 
 ## Summary
 
@@ -189,8 +305,8 @@ standard, a gap report, or an architecture assessment
   report that recommends an option for an open-ended question without producing
   any committed artifact.
 - **Primary actors:** the Han operator running Claude Code.
-- **Decisions settled by evidence:** 8 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by evidence:** 13 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Decisions settled by user input:** 3 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Sub-agents consulted:** pending review round — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** pending review round — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 1
+- **Sub-agents consulted:** junior-developer, gap-analyzer, edge-case-explorer, adversarial-security-analyst — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** added untrusted-web-source handling (data-not-instruction, context isolation, corroboration, trust labeling), defined research-specific sizing signals, made option-comparison conditional, dropped `gap-analyzer` from the roster, and added compound-question, hybrid-routing, post-validation-rewrite, and output-collision behaviors — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Remaining open items:** 3 (all non-blocking)
