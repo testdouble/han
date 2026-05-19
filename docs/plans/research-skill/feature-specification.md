@@ -19,11 +19,25 @@ options landscape where each viable option is stated with its trade-offs, a
 recommended option with rationale, and adversarial-validation findings
 (V1, V2, …) that challenged and reshaped the recommendation
 ([D6](artifacts/decision-log.md#d6-workflow-spine),
-[D7](artifacts/decision-log.md#d7-adversarial-validation-target)). Evidence
+[D7](artifacts/decision-log.md#d7-adversarial-validation-target)). Every claim
+is explicitly labeled by evidence status — corroborated, single-source, or
+unevidenced reasoning — and the recommendation states its evidence basis;
+evidence is required by default, and the operator may opt into an exploratory
+mode that trades rigor for research freedom while keeping that labeling
+intact ([D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling)).
+Evidence
 drawn from outside the operator's trust boundary — the open web and
 operator-provided third-party material — is structurally distinguished from
 codebase-anchored evidence in the report
-([D16](artifacts/decision-log.md#d16-untrusted-source-handling)). The report is
+([D16](artifacts/decision-log.md#d16-untrusted-source-handling)). The report
+follows one fixed structure every run: a plain-language Summary at the very
+top, then Research Results with minimal technical detail, then indexed Options
+to Consider when the question implies alternatives, then the Recommendation
+with its evidence basis, then Validation, then an indexed Artifacts registry of
+every source used (link plus a short summary), and finally a References section
+at the very bottom — with artifact IDs cross-referenced inline throughout so
+every conclusion traces to its sources
+([D24](artifacts/decision-log.md#d24-report-output-structure)). The report is
 the only thing produced — `/research` never emits a feature spec, a coding
 standard, a gap report, or an architecture assessment
 ([D10](artifacts/decision-log.md#d10-output-agnostic-guarantee)).
@@ -51,6 +65,12 @@ standard, a gap report, or an architecture assessment
    whether to overwrite it or write elsewhere before doing any work; the
    default (no-path) location does not collide with a prior run
    ([D19](artifacts/decision-log.md#d19-re-run-and-output-collision-guard)).
+   Evidence is required by default. If the operator explicitly opts into
+   exploratory mode (a phrase such as "evidence optional", "allow unsourced",
+   or "exploratory"), the run is allowed to include unevidenced reasoning; the
+   skill records the mode and the report still labels every claim's evidence
+   status either way
+   ([D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling)).
 2. The skill classifies the question's research scope and assigns a team size —
    small, medium, or large — from the conceptual scope of the question, not its
    text length: how many distinct viable approaches are in play, how many
@@ -101,13 +121,21 @@ standard, a gap report, or an architecture assessment
    the operator supplied is held to the same scrutiny as open-web sources, as
    it may originate from an interested party
    ([D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing),
-   [D16](artifacts/decision-log.md#d16-untrusted-source-handling)).
+   [D16](artifacts/decision-log.md#d16-untrusted-source-handling)). Every item
+   is labeled by evidence status — corroborated, single-source (caveated), or
+   unevidenced reasoning. In the default strict mode, unevidenced reasoning is
+   excluded from the recommendation basis; in exploratory mode it may appear
+   and inform the recommendation, but only when explicitly labeled as reasoning
+   ([D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling)).
 7. The skill synthesizes an options landscape: each viable option stated with
    its trade-offs and the evidence items that support or weaken it, followed by
-   a recommended option with its rationale. When the evidence does not support a
-   single answer, it says so explicitly and names the conditions that would
-   decide it rather than forcing a pick
-   ([D6](artifacts/decision-log.md#d6-workflow-spine)).
+   a recommended option with its rationale and an explicit statement of its
+   evidence basis — which parts rest on corroborated evidence, which on single
+   sources, and (exploratory mode only) which on unevidenced reasoning. When the
+   evidence does not support a single answer, it says so explicitly and names
+   the conditions that would decide it rather than forcing a pick
+   ([D6](artifacts/decision-log.md#d6-workflow-spine),
+   [D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling)).
 8. An adversarial-validation pass challenges the evidence, the way the options
    were framed, the recommendation itself, and the integrity of the
    evidence-gathering: whether any evidence item could have been introduced or
@@ -119,11 +147,17 @@ standard, a gap report, or an architecture assessment
 9. The skill re-evaluates the recommendation against the validation findings.
    If the recommendation no longer survives, its section is rewritten into the
    "no clear winner" form with the deciding criteria — it is not left standing
-   with a contradicting validation section beneath it. The skill then writes
-   the report to the output location and presents it for review; the operator
-   accepts it, asks for specific revisions, or redirects the question
+   with a contradicting validation section beneath it. The skill then renders
+   the report in the one fixed structure — plain-language Summary, Research
+   Results, indexed Options to Consider (when applicable), Recommendation with
+   evidence basis, Validation, the indexed Artifacts registry, and a References
+   section at the very bottom — with artifact IDs cross-referenced inline
+   throughout, writes it to the output location, and presents it for review;
+   the operator accepts it, asks for specific revisions, or redirects the
+   question
    ([D6](artifacts/decision-log.md#d6-workflow-spine),
-   [D7](artifacts/decision-log.md#d7-adversarial-validation-target)).
+   [D7](artifacts/decision-log.md#d7-adversarial-validation-target),
+   [D24](artifacts/decision-log.md#d24-report-output-structure)).
 
 ## Alternate Flows and States
 
@@ -204,17 +238,26 @@ standard, a gap report, or an architecture assessment
 | Adversarial validation overturns the recommendation | The recommendation section is rewritten into the "no clear winner" form with deciding criteria; it is not left standing above a validation section that contradicts it ([D7](artifacts/decision-log.md#d7-adversarial-validation-target)). |
 | An output path is given and a report already exists there | The skill asks whether to overwrite or write elsewhere before doing any work; it does not silently overwrite a previously accepted report ([D19](artifacts/decision-log.md#d19-re-run-and-output-collision-guard)). |
 | No codebase and no usable web evidence | The skill reports that the question could not be researched with available sources and what input would make it answerable; it does not fabricate a landscape. |
+| The operator opts into exploratory mode | Unevidenced reasoning is permitted and may inform the recommendation, but every such claim is explicitly labeled as reasoning and the recommendation's evidence basis names what rests on reasoning versus evidence ([D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling)). |
+| Strict mode (default) and only unevidenced reasoning supports a candidate answer | The skill does not present it as the recommendation; it surfaces "insufficient evidence" with the evidence that would settle it, and notes the operator can re-run in exploratory mode to get a reasoned (clearly labeled) take ([D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling), [D11](artifacts/decision-log.md#d11-verifiable-evidence-sourcing)). |
 
 ## User Interactions
 
 - **Affordances:** `/research <question>` with an optional output path
   argument, mirroring how `/investigate` is invoked
-  ([D14](artifacts/decision-log.md#d14-invocation-surface)).
+  ([D14](artifacts/decision-log.md#d14-invocation-surface)). Evidence is
+  required by default; the operator opts into exploratory (evidence-optional)
+  mode per invocation with an explicit phrase such as "evidence optional",
+  "allow unsourced", or "exploratory"
+  ([D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling)).
 - **Feedback:** the assigned team size and a one-line statement of the scope it
   reflects are shown before agents are dispatched, so the operator can catch a
   misclassification ([D5](artifacts/decision-log.md#d5-team-size-model),
   [D15](artifacts/decision-log.md#d15-research-sizing-signals)); the finished
-  report is presented in-channel for review.
+  report is presented in-channel for review; the report's per-claim evidence
+  labels and the recommendation's evidence-basis statement make visible what
+  does and does not have evidence
+  ([D23](artifacts/decision-log.md#d23-evidence-requirement-override-and-explicit-evidence-labeling)).
 - **Error states:** an out-of-scope request produces a visible redirect naming
   the correct sibling skill; a compound question produces a visible thread list
   and a "which first?" prompt; a too-vague request produces a visible request
@@ -298,7 +341,7 @@ All open items are resolved.
   any committed artifact.
 - **Primary actors:** the Han operator running Claude Code.
 - **Decisions settled by evidence:** 13 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 5 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 7 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** junior-developer, gap-analyzer, edge-case-explorer, adversarial-security-analyst — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** added untrusted-web-source handling (data-not-instruction, context isolation, corroboration, trust labeling), defined research-specific sizing signals, made option-comparison conditional, dropped `gap-analyzer` from the roster, and added compound-question, hybrid-routing, post-validation-rewrite, and output-collision behaviors — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 0 (OI-1/OI-2 settled by user as D20/D21; OI-3 resolved by investigation as D22)

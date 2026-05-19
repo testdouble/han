@@ -35,7 +35,7 @@ either stated behaviorally in the spec or discoverable from the repo (the
   - Two-mode "deep-dive" skill — rejected for the same reason ([../recommendation.md](../recommendation.md) Option C).
 - **Linked technical notes:** —
 - **Driven by findings:** —
-- **Dependent decisions:** D2, D6, D10
+- **Dependent decisions:** D2, D6, D10, D24
 - **Referenced in spec:** Actors and Triggers
 
 ### D2: Scope boundary and bidirectional routing
@@ -170,12 +170,12 @@ either stated behaviorally in the spec or discoverable from the repo (the
 - **Rationale:** The skill's value is evidence-based, like `/investigate` whose E# items are file-anchored; web reach introduces unverifiable, stale, and astroturfed claims, so a bare "has a URL" test is trivially satisfied by an attacker. Corroboration, retrieval date, and equal scrutiny of provided material are the behavioral controls that keep the report trustworthy. Source-format wording is kept behavioral ("a source the reader can independently check") rather than naming file-path-vs-URL mechanics.
 - **Evidence:** `/investigate` analog (E# items keyed to file paths and line numbers, `plugin/skills/investigate/SKILL.md`); [../recommendation.md](../recommendation.md) emphasis on evidence-based output; F5 (URL-only test too weak / report laundering); F12 (codebase-vs-web conflict unhandled); F13 (interested-party provided material); F15 (stale source needs retrieval date); F22 (mechanics phrasing).
 - **Rejected alternatives:**
-  - Allow unsourced synthesized claims — rejected because it makes the report unfalsifiable and defeats the adversarial-validation step.
+  - Allow unsourced synthesized claims by default — rejected because it makes the report unfalsifiable and defeats the adversarial-validation step. ([D23](#d23-evidence-requirement-override-and-explicit-evidence-labeling) later added a controlled exception: unsourced reasoning is permitted only when the operator explicitly opts into exploratory mode, only when explicitly labeled as unevidenced, and never as the basis of the recommendation in the default strict mode.)
   - Treat "carries a source URL" as sufficient verification — rejected because a crafted page satisfies it trivially and launders a false claim into an authoritative recommendation (F5).
   - Trust operator-provided material above independent sources — rejected because it turns the report into a laundered version of what the operator already believed (F13).
 - **Linked technical notes:** —
 - **Driven by findings:** F5, F12, F13, F15, F22
-- **Dependent decisions:** D16
+- **Dependent decisions:** D16, D23
 - **Referenced in spec:** Outcome, Primary Flow, Edge Cases and Failure Modes, Coordinations
 
 ### D15: Research sizing signals
@@ -288,3 +288,33 @@ either stated behaviorally in the spec or discoverable from the repo (the
 - **Driven by findings:** F20
 - **Dependent decisions:** —
 - **Referenced in spec:** Open Items, Summary
+
+### D23: Evidence requirement, override, and explicit evidence labeling
+
+- **Question:** "Research" implies evidence-based. Should evidence be a hard requirement, and can the operator trade rigor for freedom?
+- **Decision:** Evidence is required by default ("strict" mode): the [D11](#d11-verifiable-evidence-sourcing) corroboration rule governs, and unevidenced reasoning may not be the basis of the recommendation. The operator may explicitly opt into an "exploratory" mode (evidence-optional) that lets the skill include reasoned or speculative analysis not tied to a source, giving it more freedom in its research. In **both** modes the report must explicitly state what does and does not have evidence: every claim is labeled as corroborated evidence, single-source (caveated), or unevidenced reasoning; and the recommendation explicitly states its evidence basis — which parts rest on corroborated evidence, which on single sources, and which (exploratory mode only) on reasoning. The default is strict; the operator opts out per invocation with an explicit phrase such as "evidence optional", "allow unsourced", or "exploratory".
+- **Rationale:** The word "research" carries an evidence-based expectation, so evidence is the default requirement, not an option. But an operator may consciously want broader, more speculative exploration and can trade rigor for freedom — provided the report never blurs which conclusions are evidenced and which are reasoned. The labeling requirement is unconditional precisely so the trade is always visible.
+- **Evidence:** User input (this conversation, evidence-requirement-and-override directive); builds on [D11](#d11-verifiable-evidence-sourcing) (verifiable sourcing) and [D7](#d7-adversarial-validation-target) (validation attacks evidence integrity).
+- **Rejected alternatives:**
+  - Evidence always mandatory with no override — rejected by the user, who wants the option of more research freedom when consciously chosen.
+  - Evidence always optional (no default requirement) — rejected: "research" implies evidence-based; rigor is the default, not an opt-in.
+  - Allow exploratory mode without explicit labeling — rejected: the report must never blur evidenced vs. reasoned conclusions, regardless of mode.
+- **Linked technical notes:** —
+- **Driven by findings:** —
+- **Dependent decisions:** —
+- **Referenced in spec:** Outcome, Primary Flow, Edge Cases and Failure Modes, User Interactions, Summary
+
+### D24: Report output structure
+
+- **Question:** What is the fixed output structure of a research report, so every run is consistent and the evidence is fully traceable?
+- **Decision:** Every research report follows one fixed structure, top to bottom: (1) a plain-language **Summary** at the very top — the answer in brief, no jargon; (2) **Research Results** — the relevant findings with minimal technical detail, every claim cross-referencing the artifacts it rests on by ID; (3) **Options to Consider** — present only when the question implies discrete alternatives, an indexed list (`O1, O2, …`) with each option's trade-offs, evidence-status label, and artifact cross-references; (4) **Recommendation** — the recommended option (or "no clear winner" with deciding criteria) and its explicit evidence basis per [D23](#d23-evidence-requirement-override-and-explicit-evidence-labeling); (5) **Validation** — the `V#` adversarial findings; (6) **Artifacts** — an indexed registry (`A1, A2, …`) of every information source used that is relevant to the results, each entry carrying a link or repository location, retrieval date for web sources, a short plain-language summary, its trust class per [D16](#d16-untrusted-source-handling), and its corroboration/evidence status per [D11](#d11-verifiable-evidence-sourcing)/[D23](#d23-evidence-requirement-override-and-explicit-evidence-labeling); (7) a **References** section at the very bottom that points to every artifact and its original source for full traceability. Artifact IDs (`A#`) are cross-referenced inline throughout Results, Options, and Recommendation so every conclusion traces to its sources. All research includes the Artifacts and References sections — they are never omitted, even for a minimal run.
+- **Rationale:** "Research" output is only trustworthy if a reader can see the conclusion in plain language first, then trace every claim back to a summarized, linked source and finally to the original. A single fixed structure makes every run consistent and the evidence auditable end to end. This mirrors the progressive-disclosure information architecture already proven in `/gap-analysis` (plain-language summary first, indexed stable IDs, technical fidelity quarantined lower down).
+- **Evidence:** User input (this conversation, output-format directive); `/gap-analysis` report IA precedent (`plugin/skills/gap-analysis/references/gap-analysis-report-template.md`, four-section progressive disclosure with stable `G-NNN` IDs); builds on [D11](#d11-verifiable-evidence-sourcing), [D16](#d16-untrusted-source-handling), [D23](#d23-evidence-requirement-override-and-explicit-evidence-labeling).
+- **Rejected alternatives:**
+  - Free-form report shape per run — rejected: the user requires a consistent output format with guaranteed traceability.
+  - Sources listed only once at the bottom — rejected: the user requires both an inline-cross-referenced Artifacts registry with summaries and a formal References section at the very bottom.
+  - Omit Artifacts/References for small runs — rejected: all research must include artifacts and references, regardless of size.
+- **Linked technical notes:** —
+- **Driven by findings:** —
+- **Dependent decisions:** —
+- **Referenced in spec:** Outcome, Primary Flow, User Interactions, Summary
