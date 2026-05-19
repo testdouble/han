@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/agents/**/*.md"
+---
+
 # External File References in Agent Definitions
 
 Agent definitions are self-contained markdown files. Unlike skills, agents do not support external file references. No `references/` folders, no `scripts/` folders, and no context injection commands. All content must be inlined directly in the agent `.md` file.

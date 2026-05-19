@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Skill Reference Files
 
 Skills can include reference documents — templates, checklists, examples, and other supporting content — in a `references/` subdirectory within the skill folder. These files are loaded into the skill's context on demand when a step explicitly references them.

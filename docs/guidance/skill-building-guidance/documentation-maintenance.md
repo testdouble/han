@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Documentation Maintenance
 
 A skill that worked last month can silently degrade if its SKILL.md or references describe things that have changed. The model follows stale instructions faithfully — stale documentation is active poison, not passive neglect.

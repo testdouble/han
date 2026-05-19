@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Naming Conventions
 
 Consistent naming across plugins, skills, and directories helps users discover and understand what a skill does from its name alone.

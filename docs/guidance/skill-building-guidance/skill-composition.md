@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Skill Composition
 
 Skills should not call other skills via the Skill tool. Sub-skill calls have

@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Security Restrictions
 
 Skill frontmatter appears in Claude's system prompt. This privileged position means malicious or malformed frontmatter could inject instructions into the system prompt, bypass skill boundaries, or cause silent failures. These restrictions prevent those risks.

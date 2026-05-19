@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Dynamic Project Discovery
 
 Skills run in whatever repository the user invokes them from. They must discover the project's structure, branch names, and tool availability dynamically rather than hardcoding assumptions.

@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/agents/**/*.md"
+---
+
 # Graceful Degradation
 
 Agent definitions are self-contained and dispatched by skills. When a skill operates in degraded mode (for example, no git), the agents it dispatches may include steps that depend on git history, branch context, or other tools that may be absent. Without this guidance, agents that fail or produce errors when a tool is missing force the orchestrating skill to add defensive guards around every agent dispatch. An agent that checks tool availability inline and skips gracefully self-adapts to degraded environments.

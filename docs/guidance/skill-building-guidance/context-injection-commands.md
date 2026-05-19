@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Context Injection Commands in Skill Files
 
 Context injection commands use the `` !`command` `` syntax to execute a shell command at skill load time and inject its stdout into the skill as runtime context. The command runs **once when the skill loads**, not during each step. This gives skill steps access to dynamic information about the current environment without hardcoding values.

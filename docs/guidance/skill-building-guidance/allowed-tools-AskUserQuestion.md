@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # `AskUserQuestion` in Skill `allowed-tools`
 
 The `allowed-tools` frontmatter in a SKILL.md file defines which tools are auto-approved without user permission prompts when the skill is active. Due to a bug in Claude Code's permission evaluator, `AskUserQuestion` must not be listed in `allowed-tools` — doing so silently breaks the tool's interactive prompt.

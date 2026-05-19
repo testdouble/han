@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Bash Permission Patterns in `allowed-tools`
 
 The `allowed-tools` frontmatter in a SKILL.md file declares which Bash commands are auto-approved without user permission prompts. Bash permissions use a glob pattern syntax: `Bash(command prefix *)`. Getting the syntax or granularity wrong causes skills to either stall on permission prompts or silently auto-approve unintended commands.

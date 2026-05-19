@@ -1,0 +1,1 @@
+../../../docs/guidance/skill-building-guidance/dynamic-project-discovery.md

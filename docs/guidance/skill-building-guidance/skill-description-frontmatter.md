@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Skill Description Frontmatter
 
 The `description` field in SKILL.md frontmatter is the primary mechanism Claude uses to decide when to invoke a skill. Every installed skill's description is always loaded into Claude's context, where descriptions compete against each other for selection. A thin description means missed triggers — users ask for something the skill handles, but Claude doesn't recognize the match. An overbroad description means false triggers — Claude invokes the wrong skill because descriptions overlap without clear boundaries.

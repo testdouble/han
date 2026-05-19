@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/agents/**/*.md"
+---
+
 # Domain Focus in Agent Definitions
 
 Agents perform better when they target a narrow domain with precise vocabulary. A focused agent activates deep expertise in the model. A broad generalist activates shallow, averaged knowledge across competing domains.

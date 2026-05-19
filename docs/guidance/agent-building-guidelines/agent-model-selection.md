@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/agents/**/*.md"
+---
+
 # Choosing the Right Model for Agent Definitions
 
 Agents support a `model` frontmatter field that skills do not. Choosing the right model is about matching capability and speed to the task the agent performs. **Cost is not a factor in model selection for our agents.** Choose based on what the task demands, not price.

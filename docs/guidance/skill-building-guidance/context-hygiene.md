@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Context Hygiene
 
 Context hygiene is the discipline of keeping a skill's context footprint minimal, well-positioned, and free of stale or irrelevant tokens. Several other guidance docs contain rules that serve this goal — progressive disclosure, frontmatter conciseness, extracting to references/, position-aware ordering, stale-doc audits. This doc explains the mechanisms behind those rules: why they work and what happens when they're violated. It is based on the [Context Hygiene principle](https://jdforsythe.github.io/10-principles/principles/context-hygiene/), adapted for skill-building concerns.

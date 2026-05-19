@@ -1,3 +1,8 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+---
+
 # Optional Git Repositories
 
 Skills that analyze code should treat git as optional. Hard-requiring git breaks skills in common, legitimate scenarios — and the moments when git is *not* fully set up are often the most valuable times to run an analysis skill.

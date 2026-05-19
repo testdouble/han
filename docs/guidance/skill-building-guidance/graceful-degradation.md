@@ -1,3 +1,9 @@
+---
+paths:
+  - "plugin/skills/**/*.md"
+  - "plugin/skills/**/scripts/**"
+---
+
 # Graceful Degradation
 
 **Differentiation from `dynamic-project-discovery.md`:** That doc covers hard prerequisites — tools or capabilities the skill cannot function without at all; when they're missing, the skill stops with a message to the user. This doc covers *partial context* — situations where the environment is usable but some data (a git history, project config, docs directory) is absent. Graceful degradation means detecting what is available, selecting a named execution mode, and continuing to produce useful output.
