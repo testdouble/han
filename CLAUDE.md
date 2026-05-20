@@ -25,7 +25,7 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 │   ├── sizing.md
 │   ├── yagni.md
 │   ├── agents/         # Long-form docs for all 22 agents, plus README
-│   ├── skills/         # Long-form docs for all 19 skills, plus README
+│   ├── skills/         # Long-form docs for all 20 skills, plus README
 │   ├── guidance/       # Contributor-facing authoring guidance
 │   └── templates/      # Templates and coverage rule for long-form docs
 └── images/             # Banner and graphics for README
@@ -54,10 +54,11 @@ The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form 
 
 ### Skill catalog (`docs/skills/`)
 
-- **[docs/skills/README.md](./docs/skills/README.md).** Index of all 19 skills grouped by purpose (planning, building, investigation and research, review, discovery, conventions, reporting). Start here when looking for the right slash command.
+- **[docs/skills/README.md](./docs/skills/README.md).** Index of all 20 skills grouped by purpose (planning, building, investigation and research, review, discovery, conventions, reporting). Start here when looking for the right slash command.
 - **[docs/skills/plan-a-feature.md](./docs/skills/plan-a-feature.md).** Spec a feature from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
 - **[docs/skills/plan-implementation.md](./docs/skills/plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
 - **[docs/skills/plan-a-phased-build.md](./docs/skills/plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc) into a numbered sequence of vertical-slice phases, each independently demoable.
+- **[docs/skills/stakeholder-summary.md](./docs/skills/stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams, for non-technical feedback before implementation kicks off.
 - **[docs/skills/iterative-plan-review.md](./docs/skills/iterative-plan-review.md).** Stress-test an existing plan through multiple codebase-grounded review passes. Edits the plan in place and records every finding.
 - **[docs/skills/plan-work-items.md](./docs/skills/plan-work-items.md).** Break a trusted implementation plan into independently-grabbable, atomic work items in a single work-items file.
 - **[docs/skills/tdd.md](./docs/skills/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. The plugin's only execution skill: it writes code, applying coding standards and ADRs in green and refactor.
@@ -125,4 +126,4 @@ Subdirectories:
 - **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the README at the repo root.
 - **Voice is uniform.** Every doc follows [docs/writing-voice.md](./docs/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
 - **YAGNI applies to docs too.** Don't add speculative sections, for-future-flexibility warnings, or examples for behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
-- **Counts to verify when editing indexes.** 22 agents in `plugin/agents/`; 19 skills in `plugin/skills/`; 22 long-form agent docs in `docs/agents/`; 19 long-form skill docs in `docs/skills/`.
+- **Counts to verify when editing indexes.** 22 agents in `plugin/agents/`; 20 skills in `plugin/skills/`; 22 long-form agent docs in `docs/agents/`; 19 long-form skill docs in `docs/skills/`.

@@ -15,7 +15,7 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 ## Which path are you on?
 
 - **New to han?** → Start with [Concepts](./docs/concepts.md), then the [Quickstart](./docs/quickstart.md).
-- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). 19 skills grouped by purpose.
+- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). 20 skills grouped by purpose.
 - **Looking for a specific agent?** → [Agents Index](./docs/agents/README.md). 22 agents grouped by role.
 - **Wondering how the agent swarms scale?** → [Sizing](./docs/sizing.md). The small / medium / large dispatch model used by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, and `/research`.
 - **Wondering why a skill said "YAGNI"?** → [YAGNI](./docs/yagni.md). The evidence-based rule every planning, review, and architecture skill applies before committing items to an artifact.
@@ -34,7 +34,7 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
 - [Quickstart](./docs/quickstart.md). Four paths for four common situations. Each path is a short sequence of skills.
-- [Skills Index](./docs/skills/README.md). All 19 skills, grouped by purpose.
+- [Skills Index](./docs/skills/README.md). All 20 skills, grouped by purpose.
 - [Agents Index](./docs/agents/README.md). All 22 agents, grouped by role.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies.

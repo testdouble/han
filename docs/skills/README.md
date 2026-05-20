@@ -17,6 +17,7 @@ Skills for specifying *what* a feature does, planning *how* to build it, and str
 - **[`/plan-a-phased-build`](./plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
 - **[`/iterative-plan-review`](./iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
 - **[`/plan-work-items`](./plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
+- **[`/stakeholder-summary`](./stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams for user experience and data flow — for getting non-technical feedback before implementation kicks off.
 
 
 ## Building
