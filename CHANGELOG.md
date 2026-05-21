@@ -1,5 +1,44 @@
 # Han Release Notes
 
+## v2.6.0
+
+A new `/stakeholder-summary` skill ships, taking the shipped catalog from 19 to 20 skills with agents holding at 22. A repo-local `/han-update-documentation` skill is added under `.claude/skills/` for keeping Han's own documentation in sync with shipped entities, mirroring the internal-only framing of `/han-release`. Completed planning artifacts under `docs/guidance/plans/`, `docs/guidance/rfcs/`, and `docs/plans/` are removed: roughly 4,470 lines of historical scratch material that has served its purpose.
+
+### New skill
+
+`/stakeholder-summary` turns a feature specification into a plain-language summary intended for non-technical stakeholders to read and react to before implementation kicks off. The output is structured for business and product readers, leans on Mermaid diagrams to communicate flows visually, and is governed by two enforced self-check passes so the resulting document stays grounded in the source specification. The skill ships at `plugin/skills/stakeholder-summary/SKILL.md` with the output structure rendered from `plugin/skills/stakeholder-summary/references/stakeholder-summary-template.md`, and the long-form operator doc lands at `docs/skills/stakeholder-summary.md`. Neighbor routing is wired across the existing long-form skill docs so `/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and the rest of the catalog point at `/stakeholder-summary` when a non-technical readout is the right next step. (PR #10)
+
+### Repository tooling
+
+A repo-maintenance skill `/han-update-documentation` is added at `.claude/skills/han-update-documentation/` for keeping Han's documentation current with the shipped skills, agents, indexes, and cross-references. It ships with `SKILL.md`, two reference files (`references/audit-checklist.md` and `references/scope-mapping.md`), and a context-detection script at `scripts/detect-doc-update-context.sh` that scopes the pass to entities the current branch touched on non-default branches and runs a full sweep on the default branch. Like `/han-release`, this skill is internal to this repository and is not one of the 20 shipped plugin skills.
+
+### Documentation
+
+- `docs/skills/README.md` gains the `/stakeholder-summary` entry in the catalog index.
+- Long-form skill docs across `docs/skills/` receive cross-reference updates registering `/stakeholder-summary` as a neighbor where the routing applies.
+- `docs/quickstart.md` and `docs/concepts.md` are touched to thread `/stakeholder-summary` through the operator-facing mental model.
+- `README.md` receives a small touch tied to the new skill.
+- The banner image at `images/han-banner.png` is refreshed.
+- The "Current version" line is removed from `CLAUDE.md` so the project-map document does not drift against `plugin/.claude-plugin/plugin.json` on every bump.
+
+### Repository cleanup
+
+Completed planning artifacts are deleted from the repo now that the work they tracked has shipped or been superseded:
+
+- `docs/guidance/plans/agentic-plugin-support/research.md`
+- `docs/guidance/plans/han/planning-token-burn-reduction.md`
+- `docs/guidance/rfcs/rename-plugin-marketplace-dist.md`
+- `docs/plans/code-review-guardrails/` (full directory)
+- `docs/plans/research-skill/` (full directory)
+
+These were internal scratch material, not operator-facing documentation, and their removal cuts roughly 4,470 lines of stale context from the repository.
+
+### Pull requests in this release
+
+- Add /stakeholder-summary skill (#10) — @afrerich
+
+Full changelog: https://github.com/testdouble/han/blob/v2.6.0/CHANGELOG.md#v260
+
 ## v2.5.0
 
 A new `/research` skill and its `research-analyst` agent ship, taking the catalog to 19 skills and 22 agents. `/coding-standard` now writes its output as path-scoped Claude Code rules under `.claude/rules/` rather than a freestanding document, and the same path-scoped-rules pattern is applied repo-wide so contributor guidance under `docs/guidance/` reaches Claude Code automatically. A GitHub pull request template lands with a review checklist that hands off to `/update-pr-description`, and the README drops its duplicated skills list in favor of the canonical catalog under `docs/skills/`.
