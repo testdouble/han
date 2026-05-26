@@ -143,6 +143,12 @@ Pick exactly one item from the list. Choose one that teaches you something and
 that you are confident you can implement in one cycle (Beck's "one step
 test"). Then run these three phases in order. Do not collapse them.
 
+**Read once, don't reread.** Within a single loop iteration, do not reread a
+file you have already read in this iteration unless you have edited it. When
+`grep` returns a line number, use `Read` with `offset` and `limit` to read
+20-40 lines around the target — not the entire file. Rereading whole source
+files between Red and Green of the same behavior is overhead, not discipline.
+
 ### Red
 
 Write exactly one test for the chosen behavior. Name it for the behavior in the
