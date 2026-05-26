@@ -1,5 +1,27 @@
 # Han Release Notes
 
+## v2.6.1
+
+The plugin skill loader is fixed so all 20 shipped skills register correctly again. The pull request template gains explicit instructions for documentation sync and version ownership, and the banner image is refreshed for the white Test Double logo.
+
+### Skill loading fix
+
+`plugin/.claude-plugin/plugin.json` previously declared `"skills": "./skills"`. In newer Claude Code loader versions that field is treated as a directory containing `SKILL.md` directly, so the loader looked for `plugin/skills/SKILL.md`, found nothing, and registered zero skills. Agents were unaffected because the manifest never declared an `agents` field, so default `agents/` auto-discovery ran normally. Removing the redundant `skills` field puts skill loading on the same default auto-discovery footing as agents, and all 20 shipped skills register again. Closes issue #11. (PR #12)
+
+### Pull request template updates
+
+`.github/pull_request_template.md` gains two additions. Contributors are now instructed to run `/han-update-documentation` before opening a PR so documentation stays in sync with branch changes before reviewers see the PR. The template also states explicitly that the plugin version in `plugin/.claude-plugin/plugin.json` and the contents of `CHANGELOG.md` are owned by `/han-release`, not by feature PRs, which prevents pre-bumps and conflicting changelog edits from landing on `main`.
+
+### Banner refresh
+
+`images/han-banner.png` is updated to match the new white Test Double logo.
+
+### Pull requests in this release
+
+- Fix/issue 11 skills not loading (#12) — @mxriverlynn
+
+Full changelog: https://github.com/testdouble/han/blob/v2.6.1/CHANGELOG.md#v261
+
 ## v2.6.0
 
 A new `/stakeholder-summary` skill ships, taking the shipped catalog from 19 to 20 skills with agents holding at 22. A repo-local `/han-update-documentation` skill is added under `.claude/skills/` for keeping Han's own documentation in sync with shipped entities, mirroring the internal-only framing of `/han-release`. Completed planning artifacts under `docs/guidance/plans/`, `docs/guidance/rfcs/`, and `docs/plans/` are removed: roughly 4,470 lines of historical scratch material that has served its purpose.
