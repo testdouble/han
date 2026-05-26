@@ -79,11 +79,13 @@ If no accepted evidence applies, recommend deferring the standard with the trigg
    - **From project context:** Read CLAUDE.md and project-discovery.md (paths from project context above) to identify the project's languages, frameworks, runtimes, and major subsystems. Each of these is a candidate top-level hierarchy (e.g., `svelte`, `rails`, `postgres`, `terraform`, `api`, `worker`).
    - **Carry forward to Step 6:** the discovered top-level prefixes (existing + candidate) and any second-level prefixes already in use under each.
 
-7. **Discover the project's primary file-type globs.** The `paths:` frontmatter in Step 6 needs file globs scoped to the languages and directories the new standard governs. Build the candidate glob set now so Step 6 has it on hand.
+7. **Discover the project's primary file-type globs and group them into index-file buckets.** The `paths:` frontmatter in Step 6 needs file globs scoped to the languages and directories the new standard governs. The Step 7 integration then routes the new standard into one or more **per-file-type index files** under `.claude/rules/coding-standards/`, where each index file owns a single file-type bucket (for example, `svelte.md` owns `**/*.svelte`; `typescript.md` owns `**/*.ts` and `**/*.tsx`; `ruby.md` owns `**/*.rb` and `app/**/*.rb`). Build the candidate glob set and its bucket grouping now so Steps 6 and 7 have them on hand.
    - **From CLAUDE.md and project-discovery.md:** extract every language, file extension, and major source directory the project actually uses (e.g., `**/*.go`, `**/*.ts`, `**/*.tsx`, `**/*.py`, `**/*.rb`, `app/**/*.rb`, `services/**/*.go`).
    - **From existing standards' `paths:` frontmatter:** if any existing standard already carries `paths:`, collect its globs as candidate glob prefixes — they reflect the project's accepted scoping vocabulary.
-   - **Fallback:** if neither source yields globs, glob the project root for the dominant file extensions (`**/*.{ext}` for each extension seen in more than a handful of files) and surface what you found.
-   - **Carry forward to Step 6:** the resolved candidate glob set, grouped by language or subsystem.
+   - **From existing index files under `.claude/rules/coding-standards/`:** if the rules directory was found in the project context, enumerate the index files already present and read each one's `paths:` frontmatter. Each existing file defines an established bucket; reuse it rather than introducing a parallel bucket for the same file type.
+   - **Fallback:** if no source yields globs, glob the project root for the dominant file extensions (`**/*.{ext}` for each extension seen in more than a handful of files) and surface what you found.
+   - **Group into buckets:** organize the resolved candidate glob set into file-type buckets, one per index file. Reuse an existing bucket whenever one fits; introduce a new bucket only when no existing index file's `paths:` covers the new glob. Name new buckets after the language, framework, or subsystem they cover (e.g., `svelte`, `typescript`, `ruby`, `sql`) — the bucket name becomes the index file's filename in Step 7.
+   - **Carry forward to Steps 6 and 7:** the candidate glob set grouped by bucket, plus the list of existing index files and the globs each one owns.
 
 ## Step 4: Gather Context
 
