@@ -9,11 +9,9 @@ description: >
   behavior-by-behavior with tests leading. This skill writes and changes code;
   it does not produce a test plan document (use test-planning), review or audit
   existing code (use code-review), specify what a feature should do (use
-  plan-a-feature), or find the root cause of a bug (use investigate). It applies
-  the project's coding standards and ADRs during the green and refactor steps,
-  and enforces YAGNI during refactor.
+  plan-a-feature), or find the root cause of a bug (use investigate).
 argument-hint: "[what to build, a behavior to drive, or a path to a spec/plan]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *), Bash(pytest *), Bash(python3 *), Bash(go *), Bash(cargo *), Bash(make *), Bash(bundle *), Bash(rake *), Bash(mix *), Bash(dotnet *), Bash(gradle *), Bash(mvn *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *), Bash(pytest *), Bash(python3 *), Bash(go *), Bash(cargo *), Bash(make *), Bash(bundle *), Bash(rake *)
 ---
 
 ## Project Context
@@ -29,27 +27,28 @@ This skill writes production and test code in your working tree. It is an
 execution skill, not a document generator. These constraints shape every step
 and override any instinct to move faster.
 
-- **The observed-failure gate is load-bearing.** You may not write or change a
-  line of production code unless a test has been run and you have *seen it
-  fail for the intended reason* in this loop. A test that passes the first time
-  it is ever run means red was never observed: stop and diagnose, do not
-  proceed. This single rule is what separates real TDD from TDD-flavored
-  code. The verbatim Three Laws and Canon TDD steps this rule comes from are in
-  [references/tdd-loop.md](references/tdd-loop.md) — read that file before
-  Step 3.
-- **Two hats, never worn at once.** Making a test pass (green) and improving
-  structure (refactor) are different jobs. Never refactor while any test is
-  red. Make it run, then make it right.
+- **The observed-failure gate is load-bearing.** No production-code change
+  until a test has been run and observed to fail for the intended reason in
+  this loop. A test that passes on first run is a stop-and-diagnose signal,
+  not progress. This single rule is what separates real TDD from TDD-flavored
+  code. The verbatim Three Laws and Canon TDD steps it derives from are in
+  [references/tdd-loop.md](references/tdd-loop.md); pull that reference when a
+  step needs the canon or the implementation gears.
+- **Two hats.** Never refactor while any test is red. See
+  [references/tdd-loop.md](references/tdd-loop.md) for the canonical statement.
 - **One behavior at a time.** Exactly one test list item becomes one runnable
   test per loop. Newly discovered scenarios are written to the list and
   deferred, never implemented in the current loop.
 - **BDD framing.** Tests describe observable behavior, named in the project's
   existing test-naming convention, asserting outcomes through the public
-  interface — never private state. The protocol is in
-  [references/bdd-framing.md](references/bdd-framing.md).
+  interface — never private state. The behavior-naming and Given/When/Then
+  protocol is in [references/bdd-framing.md](references/bdd-framing.md); pull
+  it when Step 2 needs it.
 - **You will be tempted to fake this.** The specific ways an agent fakes TDD,
   and the discipline that catches each, are in
-  [references/failure-modes.md](references/failure-modes.md). Read it.
+  [references/failure-modes.md](references/failure-modes.md); pull it when a
+  loop feels off (a test passes on first run, no red is shown, the
+  implementation has outrun the test, refactor is being skipped).
 - **YAGNI governs the refactor step and the test list.** Apply the rule in
   [../../references/yagni-rule.md](../../references/yagni-rule.md): remove
   duplication, but do not add abstractions, configuration, or indirection
@@ -73,9 +72,13 @@ build commands for use in every later step.
 ADR directory the same way: read CLAUDE.md's `## Project Discovery` section;
 fall back to `project-discovery.md`; fall back to Glob defaults (`docs/`,
 `docs/adr/`, `docs/coding-standards/`, `docs/decisions/`). Also check
-`CLAUDE.md` and `AGENTS.md` for inline standards. Read what you find — these
-govern the green and refactor steps. If none exist, state that plainly and plan
-to infer conventions from the surrounding code instead.
+`CLAUDE.md` and `AGENTS.md` for inline standards. **Read the standards and
+ADRs whose titles, paths, or one-line summaries indicate they govern the area
+being built. Cap at five documents; if more than five look relevant, list them
+and read only the five with the strongest apparent relevance — defer the rest
+until refactor surfaces a need.** These govern the green and refactor steps.
+If none exist, state that plainly and plan to infer conventions from the
+surrounding code instead.
 
 **Report scope, then proceed (no gate).** This skill runs autonomously after
 the initial request: it does not stop for confirmation. State to the user, in a
@@ -136,6 +139,12 @@ Pick exactly one item from the list. Choose one that teaches you something and
 that you are confident you can implement in one cycle (Beck's "one step
 test"). Then run these three phases in order. Do not collapse them.
 
+**Read once, don't reread.** Within a single loop iteration, do not reread a
+file you have already read in this iteration unless you have edited it. When
+`grep` returns a line number, use `Read` with `offset` and `limit` to read
+20-40 lines around the target — not the entire file. Rereading whole source
+files between Red and Green of the same behavior is overhead, not discipline.
+
 ### Red
 
 Write exactly one test for the chosen behavior. Name it for the behavior in the
@@ -144,10 +153,11 @@ project's convention. Assert an observable outcome through the public interface
 assert the observable result). Write no more of the test than is sufficient to
 fail; a compilation failure is a failure.
 
-Run the resolved test command directly with Bash. **Paste the actual runner
-output into your response.** Confirm the test fails, and that it fails for the
-reason you intended (the assertion or the missing symbol you expect, not an
-unrelated error).
+Run the resolved test command directly with Bash. **Paste the failing
+assertion plus enough surrounding output (5-10 lines) to confirm the failure
+reason** — the assertion text or the missing symbol you expect, not an
+unrelated error. If the test passed on its first run, paste only the runner's
+summary line and stop to diagnose: the observed-failure gate has tripped.
 
 If the test passes on its first run, the observed-failure gate has tripped.
 Stop. Diagnose: the test is not exercising the behavior, or the behavior
@@ -170,9 +180,11 @@ code. Do **not** apply stylistic or structural polish here (naming sweeps,
 extraction, formatting passes). That is the refactor hat, and wearing it now
 violates "no more code than is sufficient to pass the test."
 
-Run the full test suite with Bash and paste the output. The gate to leave green
-is: the new test passes and every previously passing test still passes. If a
-prior test broke, you are not green — fix it before refactoring.
+Run the full test suite with Bash. **Paste the runner's summary line (pass
+and fail counts).** Paste full output only if a previously passing test broke
+or something unexpected appears. The gate to leave green is: the new test
+passes and every previously passing test still passes. If a prior test broke,
+you are not green — fix it before refactoring.
 
 ### Refactor (non-skippable)
 
@@ -185,18 +197,15 @@ Eliminate the duplication you just created. Bring the code into full
 conformance with the resolved coding standards and ADRs — this is the home for
 the stylistic and structural standards you deliberately skipped in green.
 
-Apply YAGNI here as a first-class concern, per
-[../../references/yagni-rule.md](../../references/yagni-rule.md). Removing
-duplication is the job; adding speculative abstraction is not. One concrete
-implementation beats an interface with one implementation. "Duplication is a
-hint, not a command" — abstract only when two or more concrete examples force
-it (the Rule of Three). Structure added for future flexibility with no evidence
-is a YAGNI candidate: defer it with the trigger that would reopen it, and tell
-the user. Never silently add it, never silently drop it.
+Apply YAGNI per [../../references/yagni-rule.md](../../references/yagni-rule.md):
+remove duplication, do not add speculative abstraction. Defer speculative
+structure with the trigger that would reopen it; never add silently, never
+drop silently.
 
-Change no behavior. Re-run the full suite after the refactor and paste the
-output; it must stay green. If a refactor reddened a test, revert it — a
-refactor that changes behavior is a defect, not a refactor.
+Change no behavior. Re-run the full suite after the refactor. **Paste the
+runner's summary line** — paste full output only if something unexpected
+appears. The suite must stay green. If a refactor reddened a test, revert it —
+a refactor that changes behavior is a defect, not a refactor.
 
 ### Close the cycle
 
@@ -222,9 +231,10 @@ going green is the signal the user-facing behavior is actually delivered.
 ## Step 5: Final Verification and Summary
 
 Run the full test suite, then the lint command, then the build command, using
-the resolved commands from Step 1. Paste the results. If lint or build fails,
-that is in scope — fix it (a lint or build break is not a "pre-existing
-error" to wave off) and re-run.
+the resolved commands from Step 1. **Paste the summary line from each.** Paste
+full output only when one of them fails. If lint or build fails, that is in
+scope — fix it (a lint or build break is not a "pre-existing error" to wave
+off) and re-run.
 
 Summarize for the user:
 
