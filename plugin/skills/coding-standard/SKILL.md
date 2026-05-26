@@ -153,31 +153,59 @@ When converting an existing document into a coding standard:
 
 ## Step 7: Integration
 
-The standard is now consumed by Claude Code as a [path-scoped rule](https://code.claude.com/docs/en/memory) via a symlink under `.claude/rules/coding-standards/`. The canonical file remains in the project's coding-standards documentation directory; the symlink gives Claude a second access path without duplicating content. **Do not add the new standard as an enumerated link in `CLAUDE.md` (or `AGENTS.md`).** Rules are discovered through the `.claude/rules/` surface, not through the memory file, and enumerating them in the memory file is the failure mode this integration replaces.
+The standard is consumed by Claude Code through a small set of per-file-type **index files** under `.claude/rules/coding-standards/`. Each index file is itself a [path-scoped rule](https://code.claude.com/docs/en/memory) that carries `paths:` frontmatter for one file type (or a closely-related group), a brief load-on-demand instruction paragraph, and a list of entries pointing to the canonical standards in the project's coding-standards directory. When Claude Code reads a file matching an index file's globs, Claude loads only that small index, then decides which (if any) of the listed standards to open with the Read tool. The full text of a standard is never loaded automatically. This replaces the prior one-symlink-per-standard layout, which forced every standard whose `paths:` matched the current file into context at once. **Do not add the new standard as an enumerated link in `CLAUDE.md` (or `AGENTS.md`).** Rules are discovered through the `.claude/rules/` surface, not through the memory file, and enumerating them in the memory file is the failure mode this integration replaces.
 
-1. **Create the symlink.**
-   - Ensure `.claude/rules/coding-standards/` exists: `mkdir -p .claude/rules/coding-standards`
-   - Symlink the canonical standard into it with a **relative** target so the link survives moving the repo:
-     ```
-     ln -s ../../../{relative-path-to-canonical-file} .claude/rules/coding-standards/{filename}
-     ```
-     The target path must be relative to the symlink's directory (`.claude/rules/coding-standards/`). For a canonical file at `docs/coding-standards/{filename}.md`, the target is `../../../docs/coding-standards/{filename}.md`. Adjust the `../` depth when the docs directory is nested differently.
-   - If the symlink already exists (update mode), verify with `readlink` that it points to the canonical file. If not, remove it and recreate with the correct target.
-2. **Ensure the pointer paragraph exists in `CLAUDE.md` (or `AGENTS.md`).** The memory file should mention the rules surface exactly once; the skill never adds an enumerated entry for the new standard.
+1. **Determine which index file(s) the new standard belongs in.** Using the buckets carried forward from Step 3.7, map each glob in the standard's approved `paths:` to a bucket. The set of matching buckets is the set of index files the standard will be listed in. A standard whose `paths:` spans multiple buckets (a cross-cutting standard, e.g., `"app/**/*.rb"` plus `"services/**/*.go"`) will be listed in each matching index — the canonical standards file is still only ever in one place; only the index entries are repeated.
+
+2. **Ensure `.claude/rules/coding-standards/` exists.** Run `mkdir -p .claude/rules/coding-standards`.
+
+3. **For each matching index file, create or update it.**
+
+   - **If the index file does not exist yet**, copy the template at [index-file-template.md](references/index-file-template.md) to `.claude/rules/coding-standards/{bucket-name}.md` and fill it in:
+     - Replace the placeholder globs in `paths:` with the bucket's globs (each double-quoted; see the YAML rule in Step 6.5).
+     - Replace `{File-type}` in the heading with the bucket name (e.g., `Svelte`, `TypeScript`, `Ruby`). Use the capitalization that matches the language/framework's own conventions.
+     - Leave the entire instruction paragraph (everything between the heading and the `## Available standards` heading) verbatim. It is what tells Claude to make a relevance decision before opening any standard.
+     - Replace the example bullet under `## Available standards` with a single entry for the new standard (see entry format below).
+
+   - **If the index file already exists**, edit it in place:
+     - Append a new entry for this standard under `## Available standards`, in alphabetical order by standard title (or by the existing hierarchy already in use in that index).
+     - Do not modify the existing `paths:`, the instruction paragraph, or any other entries unless this is update-mode and the change explicitly requires it (see step 5 below).
+
+4. **Entry format.** Each entry under `## Available standards` is a single bullet of the form:
+
+   ```
+   - [{Standard title}]({relative-path-to-canonical-file}) — {1-3 sentence description}
+   ```
+
+   - **Title:** use the standard's `# {Title}` heading verbatim.
+   - **Relative path:** the path to the canonical standard from `.claude/rules/coding-standards/`. For a canonical file at `docs/coding-standards/{filename}.md`, the target is `../../../docs/coding-standards/{filename}.md`. Adjust the `../` depth when the docs directory is nested differently.
+   - **Description (1-3 sentences):** name what the standard covers AND when a reader should pull the full file. This is bait for a relevance decision, not a summary of the standard. Examples: *"Naming rules for Svelte components, including file names, exported types, and slot conventions. Read when creating or renaming a component."* / *"Transaction boundaries in repository methods. Read when writing a new repository method or changing the call sites of an existing one."* Vague descriptions (*"covers component conventions"*) cause Claude to either over-load or skip relevant standards.
+
+5. **Update-mode delta handling.** If the skill is in "Updating existing" mode and the standard's `paths:` changed:
+   - **Removed buckets.** For each index file that previously listed this standard but whose `paths:` no longer overlaps the standard's `paths:`, remove the standard's entry from that index. Leave the rest of the index untouched.
+   - **Added buckets.** For each newly-matching index file, follow step 3 above (create or update) to add the entry.
+   - **Same buckets.** If the matching index files did not change but the standard's title or description should change (e.g., the standard's scope shifted), update the entry text in place — title, link, and description — without disturbing surrounding entries.
+
+6. **Ensure the pointer paragraph exists in `CLAUDE.md` (or `AGENTS.md`).** The memory file should mention the rules surface exactly once; the skill never adds an enumerated entry for the new standard.
    - Check whether the memory file already references `.claude/rules/coding-standards/`. If yes, leave it alone.
-   - If not, append a short pointer paragraph under a "Coding Standards" heading. Adapt the wording to the project's voice, but keep the four load-bearing facts:
+   - If not, append a short pointer paragraph under a "Coding Standards" heading. Adapt the wording to the project's voice, but keep the load-bearing facts:
      ```
-     Coding standards live in `{docs-directory}` and are also exposed to Claude
-     Code as path-scoped rules via symlinks under `.claude/rules/coding-standards/`.
-     Each rule carries a `paths:` field in its YAML frontmatter, so Claude only
-     loads the standard into context when it reads a file matching the glob.
-     Standards do not appear in the available-skills picker. Humans continue to
-     browse `{docs-directory}` for the canonical readable form.
+     Coding standards live in `{docs-directory}`. They are exposed to Claude
+     Code through a small set of per-file-type index files under
+     `.claude/rules/coding-standards/`. Each index file is a path-scoped rule
+     that lists the standards relevant to one file type, with a short
+     description of each. When Claude reads a file matching an index's
+     `paths:` glob, Claude loads only the index and then decides which (if
+     any) standards to open. The full text of a standard is never loaded
+     automatically. Standards do not appear in the available-skills picker.
+     Humans continue to browse `{docs-directory}` for the canonical readable
+     form.
      ```
    - Do not touch any pre-existing enumerated coding-standard entries in the memory file. Migrating those out is a separate operation, not this skill's responsibility.
-3. Search for related documentation (other coding standards, ADRs, feature docs).
-4. Add cross-references in the new coding standard's "Additional Resources" section.
-5. Add back-references from related docs where they add value.
+
+7. Search for related documentation (other coding standards, ADRs, feature docs).
+8. Add cross-references in the new coding standard's "Additional Resources" section.
+9. Add back-references from related docs where they add value.
 
 ## Step 8: Adoption-Bias Audit
 
