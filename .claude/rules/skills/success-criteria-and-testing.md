@@ -1,1 +1,0 @@
-../../../docs/guidance/skill-building-guidance/success-criteria-and-testing.md

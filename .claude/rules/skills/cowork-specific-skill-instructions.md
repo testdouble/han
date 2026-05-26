@@ -1,1 +1,0 @@
-../../../docs/guidance/skill-building-guidance/cowork-specific-skill-instructions.md

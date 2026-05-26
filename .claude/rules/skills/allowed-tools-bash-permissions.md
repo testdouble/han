@@ -1,1 +1,0 @@
-../../../docs/guidance/skill-building-guidance/allowed-tools-bash-permissions.md

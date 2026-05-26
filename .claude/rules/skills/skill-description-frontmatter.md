@@ -1,1 +1,0 @@
-../../../docs/guidance/skill-building-guidance/skill-description-frontmatter.md
