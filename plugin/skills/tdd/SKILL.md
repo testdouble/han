@@ -35,8 +35,8 @@ and override any instinct to move faster.
   it is ever run means red was never observed: stop and diagnose, do not
   proceed. This single rule is what separates real TDD from TDD-flavored
   code. The verbatim Three Laws and Canon TDD steps this rule comes from are in
-  [references/tdd-loop.md](references/tdd-loop.md) — read that file before
-  Step 3.
+  [references/tdd-loop.md](references/tdd-loop.md); pull that reference when a
+  step needs the verbatim canon or the implementation gears.
 - **Two hats, never worn at once.** Making a test pass (green) and improving
   structure (refactor) are different jobs. Never refactor while any test is
   red. Make it run, then make it right.
@@ -45,11 +45,14 @@ and override any instinct to move faster.
   deferred, never implemented in the current loop.
 - **BDD framing.** Tests describe observable behavior, named in the project's
   existing test-naming convention, asserting outcomes through the public
-  interface — never private state. The protocol is in
-  [references/bdd-framing.md](references/bdd-framing.md).
+  interface — never private state. The behavior-naming and Given/When/Then
+  protocol is in [references/bdd-framing.md](references/bdd-framing.md); pull
+  it when Step 2 needs it.
 - **You will be tempted to fake this.** The specific ways an agent fakes TDD,
   and the discipline that catches each, are in
-  [references/failure-modes.md](references/failure-modes.md). Read it.
+  [references/failure-modes.md](references/failure-modes.md); pull it when a
+  loop feels off (a test passes on first run, no red is shown, the
+  implementation has outrun the test, refactor is being skipped).
 - **YAGNI governs the refactor step and the test list.** Apply the rule in
   [../../references/yagni-rule.md](../../references/yagni-rule.md): remove
   duplication, but do not add abstractions, configuration, or indirection
