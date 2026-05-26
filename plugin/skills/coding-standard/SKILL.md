@@ -11,7 +11,7 @@ description: >
   open-ended options or prior art that is not destined for a standard — use
   research.
 argument-hint: [standard-topic or document-path]
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *), Bash(ln *), Bash(test *), Bash(readlink *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *)
 ---
 
 ## Project Context
