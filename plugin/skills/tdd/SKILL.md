@@ -29,17 +29,15 @@ This skill writes production and test code in your working tree. It is an
 execution skill, not a document generator. These constraints shape every step
 and override any instinct to move faster.
 
-- **The observed-failure gate is load-bearing.** You may not write or change a
-  line of production code unless a test has been run and you have *seen it
-  fail for the intended reason* in this loop. A test that passes the first time
-  it is ever run means red was never observed: stop and diagnose, do not
-  proceed. This single rule is what separates real TDD from TDD-flavored
-  code. The verbatim Three Laws and Canon TDD steps this rule comes from are in
+- **The observed-failure gate is load-bearing.** No production-code change
+  until a test has been run and observed to fail for the intended reason in
+  this loop. A test that passes on first run is a stop-and-diagnose signal,
+  not progress. This single rule is what separates real TDD from TDD-flavored
+  code. The verbatim Three Laws and Canon TDD steps it derives from are in
   [references/tdd-loop.md](references/tdd-loop.md); pull that reference when a
-  step needs the verbatim canon or the implementation gears.
-- **Two hats, never worn at once.** Making a test pass (green) and improving
-  structure (refactor) are different jobs. Never refactor while any test is
-  red. Make it run, then make it right.
+  step needs the canon or the implementation gears.
+- **Two hats.** Never refactor while any test is red. See
+  [references/tdd-loop.md](references/tdd-loop.md) for the canonical statement.
 - **One behavior at a time.** Exactly one test list item becomes one runnable
   test per loop. Newly discovered scenarios are written to the list and
   deferred, never implemented in the current loop.
