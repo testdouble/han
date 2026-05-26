@@ -147,10 +147,11 @@ project's convention. Assert an observable outcome through the public interface
 assert the observable result). Write no more of the test than is sufficient to
 fail; a compilation failure is a failure.
 
-Run the resolved test command directly with Bash. **Paste the actual runner
-output into your response.** Confirm the test fails, and that it fails for the
-reason you intended (the assertion or the missing symbol you expect, not an
-unrelated error).
+Run the resolved test command directly with Bash. **Paste the failing
+assertion plus enough surrounding output (5-10 lines) to confirm the failure
+reason** — the assertion text or the missing symbol you expect, not an
+unrelated error. If the test passed on its first run, paste only the runner's
+summary line and stop to diagnose: the observed-failure gate has tripped.
 
 If the test passes on its first run, the observed-failure gate has tripped.
 Stop. Diagnose: the test is not exercising the behavior, or the behavior
@@ -173,9 +174,11 @@ code. Do **not** apply stylistic or structural polish here (naming sweeps,
 extraction, formatting passes). That is the refactor hat, and wearing it now
 violates "no more code than is sufficient to pass the test."
 
-Run the full test suite with Bash and paste the output. The gate to leave green
-is: the new test passes and every previously passing test still passes. If a
-prior test broke, you are not green — fix it before refactoring.
+Run the full test suite with Bash. **Paste the runner's summary line (pass
+and fail counts).** Paste full output only if a previously passing test broke
+or something unexpected appears. The gate to leave green is: the new test
+passes and every previously passing test still passes. If a prior test broke,
+you are not green — fix it before refactoring.
 
 ### Refactor (non-skippable)
 
@@ -197,9 +200,10 @@ it (the Rule of Three). Structure added for future flexibility with no evidence
 is a YAGNI candidate: defer it with the trigger that would reopen it, and tell
 the user. Never silently add it, never silently drop it.
 
-Change no behavior. Re-run the full suite after the refactor and paste the
-output; it must stay green. If a refactor reddened a test, revert it — a
-refactor that changes behavior is a defect, not a refactor.
+Change no behavior. Re-run the full suite after the refactor. **Paste the
+runner's summary line** — paste full output only if something unexpected
+appears. The suite must stay green. If a refactor reddened a test, revert it —
+a refactor that changes behavior is a defect, not a refactor.
 
 ### Close the cycle
 
@@ -225,9 +229,10 @@ going green is the signal the user-facing behavior is actually delivered.
 ## Step 5: Final Verification and Summary
 
 Run the full test suite, then the lint command, then the build command, using
-the resolved commands from Step 1. Paste the results. If lint or build fails,
-that is in scope — fix it (a lint or build break is not a "pre-existing
-error" to wave off) and re-run.
+the resolved commands from Step 1. **Paste the summary line from each.** Paste
+full output only when one of them fails. If lint or build fails, that is in
+scope — fix it (a lint or build break is not a "pre-existing error" to wave
+off) and re-run.
 
 Summarize for the user:
 
