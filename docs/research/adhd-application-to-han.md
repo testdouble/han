@@ -12,6 +12,20 @@ After validation, the analysis does not support a confident recommendation to re
 
 **Bottom line: no clear winner.** The principles the article advocates are sound and Han already implements them where they fit (A11). The specific mechanisms the article proposes are not independently validated at Han's scale and would, in most candidate insertion points, conflict with Han's existing architecture in ways the evidence does not say are worth the cost. The recommendation rests on academic prior art that supports general parallel divergent ideation at large K (A3, A4, A8, A9), plus a single-source article whose Han-specific applicability is contested (A1, contradicted by A5, A7).
 
+## Prompt Used
+
+The following prompt was used to generate the report:
+
+> read https://uditakhourii.github.io/adhd/ and look at the Han plugin skills and agents in this project. /research how this article can benefit the Han plugin - how we
+  can modify parts of han to work in this manner, what benefit there would be and when, etc. i want a plain language analysis of where this would benefit han, with
+  reasoning on why.
+
+The `/research` skill comes from the Han plugin, in this repository.
+
+A second prompt was also used, to cross-reference the source material into the report, after the initial report was written:
+
+> cross-reference the A1 through A11 sources in the research content, so i know where each claim in the content came from. commit and push when you're done 
+
 ## Research Results
 
 ### What the article argues
