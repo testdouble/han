@@ -4,8 +4,6 @@ Han is built out of two kinds of things: **skills** and **agents**. If you read 
 
 > See also: [Plugin landing page](../README.md) · [Quickstart](./quickstart.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
 
-> **Sizing question first.** Han is built for solo product engineers and small teams, not for large teams or enterprise. If you are evaluating it against an org-wide AI tooling decision, read [Why solo and small teams, and not large teams or enterprise?](./why-solo-and-small-teams.md) before going further. It answers the obvious sizing question honestly so you can self-select.
-
 ## TL;DR
 
 - A **skill** is a deterministic process you run with a slash command (like `/code-review`). Think: flowchart.
@@ -16,6 +14,8 @@ Han is built out of two kinds of things: **skills** and **agents**. If you read 
 - **Evidence** decides how confident you are in what survives. Once YAGNI passes an item through, the evidence rule names the trust class of the citation (codebase, web, provided), applies a corroboration gate to web sources, and labels claims with no evidence at any tier as a distinct deferred state. See [Evidence](./evidence.md).
 
 That is the whole model. Everything else is vocabulary.
+
+> **Evaluating Han for a larger org?** Han is built for solo product engineers and small teams, not for large teams or enterprise. Read [Why solo and small teams, and not large teams or enterprise?](./why-solo-and-small-teams.md) for the honest fit answer before going further.
 
 ## Skills: the process layer
 
