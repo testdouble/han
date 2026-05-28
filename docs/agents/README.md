@@ -1,12 +1,14 @@
 # Agents
 
-All agents in the han plugin, grouped by role. Each entry is a one-sentence scent line and a link to the agent's long-form doc.
+All 23 agents in the han plugin, grouped by role. Each entry is a one-sentence scent line and a link to the agent's long-form doc.
 
 > See also: [Plugin landing page](../../README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md) · [All skills](../skills/README.md) · [Sizing](../sizing.md) · [YAGNI](../yagni.md)
 
 ## New here?
 
 Most agents are dispatched *for you* by skills. You do not usually invoke them directly. Read [Concepts](../concepts.md) for the skill-vs-agent model before browsing this list. If you are looking to dispatch one directly, use the `Agent` tool with `subagent_type: han:{agent-name}`.
+
+Counts to verify when editing this index: 23 agent definitions in `plugin/agents/`, 23 long-form docs in `docs/agents/`.
 
 ## Planning & facilitation
 
@@ -22,6 +24,7 @@ Specialist reviewers whose default posture is adversarial toward the artifact un
 - **[`adversarial-security-analyst`](./adversarial-security-analyst.md).** Assumes all code is insecure. Produces exploit-path evidence, not theoretical risks. Dispatched by `/code-review`.
 - **[`adversarial-validator`](./adversarial-validator.md).** Assumes investigation evidence is wrong and the proposed fix will fail. Searches for counter-evidence and unhandled edge cases. Dispatched by `/investigate` and by planning skills.
 - **[`devops-engineer`](./devops-engineer.md).** Assumes the code will break in production. Audits against DORA, Twelve-Factor, Four Golden Signals, SLO discipline, and named production failure modes.
+- **[`on-call-engineer`](./on-call-engineer.md).** A 20+ year on-call veteran. Reads application source for the named code-level resilience anti-patterns that wake on-call engineers at 3am (missing timeouts, retries without jitter, catch-and-swallow, unbounded queues, blocking I/O in async, missing idempotency, schema migrations co-deployed with dependent code, ODD-gate failure). Adversarial to the code and the pattern, never to the engineer. Hard boundary against `devops-engineer`: this agent reads application source only.
 - **[`data-engineer`](./data-engineer.md).** Assumes the data design is over-normalized, under-normalized, and indexed for the wrong workload. Audits schemas, migrations, queries, and pipelines.
 - **[`information-architect`](./information-architect.md).** Assumes the documentation is harder to find, orient in, and comprehend than it needs to be. Audits documentation sets against established IA frameworks. Dispatched by [`/plan-a-phased-build`](../skills/plan-a-phased-build.md) at runtime against every rendered build-phase outline. Can be dispatched directly when any documentation surface needs an IA audit.
 - **[`user-experience-designer`](./user-experience-designer.md).** Adversarial UX review against Nielsen heuristics, WCAG 2.2, universal design, and dark-pattern detection.
@@ -77,7 +80,7 @@ See [Concepts](../concepts.md) for more on skill/agent composition.
 
 ## What survives a review: YAGNI
 
-Several agents apply an evidence-based YAGNI rule to the artifacts they review or produce: `project-manager` (the Evidence Gate protocol), `junior-developer` (the Evidence Sweep protocol), `software-architect` and `system-architect` (architectural recommendations require change-history or seam-crossing evidence), `test-engineer` (the Speculative Test rule), `edge-case-explorer` (the Speculative Edge Case rule), `data-engineer` (the Speculative Data Machinery rule), and `devops-engineer` (the Premature Operational Machinery rule).
+Several agents apply an evidence-based YAGNI rule to the artifacts they review or produce: `project-manager` (the Evidence Gate protocol), `junior-developer` (the Evidence Sweep protocol), `software-architect` and `system-architect` (architectural recommendations require change-history or seam-crossing evidence), `test-engineer` (the Speculative Test rule), `edge-case-explorer` (the Speculative Edge Case rule), `data-engineer` (the Speculative Data Machinery rule), `devops-engineer` (the Premature Operational Machinery rule), and `on-call-engineer` (the Premature Operability Machinery rule, applied at the application source line).
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the per-agent application table.
 

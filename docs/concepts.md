@@ -93,7 +93,7 @@ Direct invocation uses the `Agent` tool with `subagent_type: han:{agent-name}` (
 ## What does the plugin include?
 
 - **20 skills.** The [skills index](./skills/README.md) groups them by purpose (planning, building, investigation and research, review, discovery, conventions, reporting).
-- **22 agents.** The [agents index](./agents/README.md) groups them by role (planning and facilitation, adversarial reviewers, investigation, architecture, testing, gap and content).
+- **23 agents.** The [agents index](./agents/README.md) groups them by role (planning and facilitation, adversarial reviewers, investigation, architecture, testing, gap and content).
 
 Skim the indexes after you read this page. Pick the one skill you need right now. Come back later to learn the rest.
 

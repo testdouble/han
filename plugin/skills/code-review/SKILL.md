@@ -138,6 +138,7 @@ State the chosen size in one line with the justification (e.g., "Medium: 6 files
 | `concurrency-analyst` | the file list touches threads, async/await, goroutines, actors, shared mutable state across requests, timers, locks, or message queues |
 | `data-engineer` | the change touches a schema definition, migration file, query, ORM model, index definition, document shape, stream contract, or data-access module |
 | `devops-engineer` | the change touches Dockerfiles, IaC (Terraform/Pulumi/CloudFormation), Kubernetes manifests, CI/CD pipeline files, deployment scripts, observability config, feature-flag config, or rollout-affecting code paths |
+| `on-call-engineer` | the change adds or modifies application source that runs in production with runtime resilience surface — outbound calls (HTTP, RPC, database, cache, queue, lock), retry logic, queue or buffer handling, async/await or goroutine/thread-pool code, error-handling on the failure path, fan-out loops, idempotency checks, schema migrations co-deployed with dependent application code, or new production code paths. Skip for pure config, docs, generated files, and `devops-engineer`-territory changes (Dockerfiles, IaC, manifests, pipeline files, observability platform config) — the hard boundary lives at the application source line. |
 
 **Selection rules:**
 
@@ -189,6 +190,7 @@ Pass each agent only the slice of the file list relevant to its domain:
 | `concurrency-analyst` | source files matching the concurrency signal |
 | `data-engineer` | schema, migration, query, ORM, and data-access files only |
 | `devops-engineer` | infra, deploy, CI/CD, observability files only |
+| `on-call-engineer` | application source files only (no Dockerfiles, IaC, manifests, pipeline files, observability platform config) |
 
 ### Step 3.5: Dispatch
 
@@ -229,6 +231,8 @@ Domain-specific prompts (the `{size}`, `{N}`, `{change summary}`, `{file list}`,
 8. `data-engineer` — "Audit the following data-related files{if branch available: ' on branch {branch}'}: {file list}. Focus on the data-engineering principles violated by what this change actually introduces — schema-design fit, index strategy, migration safety, query correctness, data-contract evolution. Apply the calibration directive: do not raise findings for benign-outcome concerns like duplicate-create-index attempts where the storage layer is naturally idempotent. Write your output to {output_directory}/data-analysis.md"
 
 9. `devops-engineer` — "Audit the following infrastructure and deployment files{if branch available: ' on branch {branch}'}: {file list}. Focus on production-readiness concerns this change actually introduces — rollout safety, observability coverage, scale and cost impact, secret handling. Apply the calibration directive: do not raise findings for theoretical scale problems the project does not currently have. Write your output to {output_directory}/devops-analysis.md"
+
+10. `on-call-engineer` — "Audit the following application source files{if branch available: ' on branch {branch}'} for the named code-level resilience anti-patterns that wake on-call engineers at 3am: {file list}. Focus on what the change actually introduces — missing timeouts, retries without backoff and jitter, non-idempotent operations in retry paths, catch-and-swallow exceptions, unbounded queues or buffers, blocking I/O in async execution contexts, missing bulkheads, missing correlation-id propagation, assuming dependencies are always available, ODD-gate failures (no observable signal on the new path), schema migrations co-deployed with dependent code, eventual-consistency violations, data integrity hazards. Hard boundary: application source only — defer infrastructure, pipeline, IaC, observability platform, and alert configuration concerns to `devops-engineer`. Apply the calibration directive. Run the four named tone anti-pattern sweeps against your own findings before emitting (sugarcoated criticism, thin blame, tourist citation, bibliographic empathy). Write your output to {output_directory}/on-call-analysis.md"
 
 Continue to Step 4 immediately. Results will be collected in Step 7.
 
@@ -313,6 +317,9 @@ Read only the output files for agents that were actually dispatched in Step 3. S
 - `{output_directory}/concurrency-analysis.md` — concurrency-analyst findings (C-series)
 - `{output_directory}/data-analysis.md` — data-engineer findings (D-series)
 - `{output_directory}/devops-analysis.md` — devops-engineer findings (DV-series)
+- `{output_directory}/on-call-analysis.md` — on-call-engineer findings (OCE-series)
+
+
 
 Extract the items from the Findings sections of each file that was read.
 

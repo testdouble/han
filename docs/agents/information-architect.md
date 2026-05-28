@@ -147,7 +147,7 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`/plan-a-phased-build`](../skills/plan-a-phased-build.md). Dispatches the agent at runtime against every rendered build-phase outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension before presenting the document to you.
 - [`user-experience-designer`](./user-experience-designer.md). The sibling agent for live UI surfaces. Dispatch both in parallel when a docs site blends content and interactive navigation.
 - [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why this agent uses precise IA vocabulary and named anti-patterns instead of sharing the user-experience-designer's UI vocabulary.

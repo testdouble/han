@@ -183,7 +183,7 @@ URLs: https://www.atlassian.com/work-management/project-management/acceptance-cr
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this agent applies. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`junior-developer`](./junior-developer.md). The generalist stress-tester the PM leans on for plain-language reframing when specialist input gets entangled.
 - [`/plan-a-feature`](../skills/plan-a-feature.md) and [`/plan-implementation`](../skills/plan-implementation.md). Skills that dispatch this agent as coordinator and synthesizer.
 - [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent in synthesis mode at medium and large swarm sizes to consolidate swarm output into Section 4 of the report.

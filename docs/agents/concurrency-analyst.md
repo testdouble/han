@@ -90,7 +90,7 @@ URL: https://go.dev/talks/2012/waza.slide
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`structural-analyst`](./structural-analyst.md). Sibling analyst for static structure.
 - [`behavioral-analyst`](./behavioral-analyst.md). Sibling analyst for runtime behavior.
 - [`risk-analyst`](./risk-analyst.md). Consumes this agent's findings.

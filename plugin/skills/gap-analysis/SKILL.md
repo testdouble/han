@@ -95,6 +95,7 @@ Add domain specialists up to the size cap based on what the gaps actually touch.
 - `user-experience-designer` — gaps touching user-facing flows, UI, interaction, accessibility.
 - `data-engineer` — gaps touching schemas, migrations, data movement, analytics.
 - `devops-engineer` — gaps touching deployment, observability, rollout, scale, SLO impact, cost.
+- `on-call-engineer` — gaps where the current application source is missing the named code-level resilience patterns the desired state implies: timeouts, retry safety, idempotency, backpressure, kill switches, correlation-id propagation, observability of failure paths. Application source only — defer infrastructure and pipeline gaps to `devops-engineer`.
 - `system-architect` — gaps crossing service or bounded-context boundaries, integration patterns, data ownership.
 - `software-architect` — gaps inside a single codebase touching module boundaries, abstractions, SOLID concerns.
 - `content-auditor` — gaps where the desired state is documentation and content preservation is in question.

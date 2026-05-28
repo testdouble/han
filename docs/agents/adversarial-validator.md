@@ -96,7 +96,7 @@ URL: https://en.wikipedia.org/wiki/Red_team
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). The sibling agent the validator usually attacks. Investigators gather, validators falsify.
 - [`/investigate`](../skills/investigate.md). Always dispatches this agent after the fix plan is drafted.
 - [`/gap-analysis`](../skills/gap-analysis.md). Required swarm role at every size. The swarm runs by default.

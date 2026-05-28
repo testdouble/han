@@ -85,7 +85,7 @@ URL: https://en.wikipedia.org/wiki/Stephen_Toulmin#The_Toulmin_model_of_argument
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`adversarial-validator`](./adversarial-validator.md). The agent that attacks this agent's landscape and recommendation; they pair in `/research`.
 - [`codebase-explorer`](./codebase-explorer.md). Runs in parallel with this agent on a `/research` run when a codebase bears on the question; it owns the codebase angle so this agent stays web-isolated.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). The symptom-shaped counterpart for codebase bug evidence.

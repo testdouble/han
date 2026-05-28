@@ -149,7 +149,7 @@ URL: https://www.nngroup.com/articles/personas-jobs-be-done/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`information-architect`](./information-architect.md). Sibling agent for documentation / content-structure IA. Dispatch in parallel when a surface blends an interactive UI with a content-heavy docs surface.
 - [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../guidance/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.

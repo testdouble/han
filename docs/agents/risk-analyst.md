@@ -87,7 +87,7 @@ URL: https://www.howtomeasureanything.com/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`structural-analyst`](./structural-analyst.md), [`behavioral-analyst`](./behavioral-analyst.md), [`concurrency-analyst`](./concurrency-analyst.md). The upstream agents whose findings this one consumes.
 - [`software-architect`](./software-architect.md). Consumes this agent's risk ratings alongside the upstream findings to produce recommendations.
 - [`/architectural-analysis`](../skills/architectural-analysis.md). Always dispatches this agent.

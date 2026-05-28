@@ -84,6 +84,20 @@ Reject findings that violate the calibration directive — particularly hypothet
 
 Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which devops findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
 
+### Processing on-call-engineer results (only if dispatched)
+
+For each on-call-engineer finding (OCE1, OCE2, ...), assign category **[On-Call]** and classify severity:
+
+- **CRIT**: A code-level resilience anti-pattern the change actively introduces that maps to a named production failure mode with a wakes-someone-up production impact — a retryable handler with a non-idempotent side effect and no idempotency key, a missing timeout on an outbound call on a hot path with a slow-prone dependency, catch-and-swallow on a path that produces wrong answers silently (gray failure), an unbounded queue or buffer with no backpressure, a schema migration co-deployed with dependent application code in the same diff, a fan-out loop with no concurrency cap, an integrity bug (truncation, overflow, encoding) on a financial or regulated path.
+- **WARN**: Code-level resilience patterns this change introduces or worsens that degrade reliability but are unlikely to produce a wakes-someone-up failure on their own — retry logic without jitter, blocking I/O in an async context on a low-traffic path, missing correlation-id propagation on a new handler, missing kill-switch wiring on a risky new code path, ODD-gate failure on a new code path (no observable signal in the diff), eventual-consistency assumption without a guard.
+- **SUGG**: Resilience-pattern polish on code the change touches — named error types over generic strings, structured-field log lines, more specific exception catches, helper extraction for repeated timeout-and-retry patterns.
+
+Reject findings that cross the hard boundary into `devops-engineer` territory (Dockerfile, IaC, manifest, pipeline file, observability platform config, alert rule, dashboard, runbook-as-document). If a finding can only be expressed in those files, it belongs to DV-series, not OCE-series.
+
+Apply the agent's own tone-anti-pattern sweep as a classification check: a finding that reads as sugarcoated criticism, thin blame, tourist citation, or bibliographic empathy should be either rewritten or omitted before being carried into the rollup.
+
+Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which on-call findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
+
 ### Processing junior-developer results
 
 For each junior-developer finding (JD1, JD2, ...) from the junior-developer, assign category **[Clarity]** and classify severity:

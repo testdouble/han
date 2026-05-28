@@ -102,7 +102,7 @@ URL: http://www.growing-object-oriented-software.com/
 
 - [Plugin landing page](../../README.md). The front door.
 - [YAGNI](../yagni.md). The Speculative Test rule.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`edge-case-explorer`](./edge-case-explorer.md). Sibling agent for boundary values and failure modes. `/test-planning` runs both in parallel.
 - [`/test-planning`](../skills/test-planning.md). Always dispatches this agent.
 - [`/code-review`](../skills/code-review.md). Conditionally dispatches this agent.

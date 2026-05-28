@@ -102,7 +102,7 @@ URL: https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-softwa
 
 - [Plugin landing page](../../README.md). The front door.
 - [YAGNI](../yagni.md). The Speculative Edge Case rule.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`test-engineer`](./test-engineer.md). Sibling agent. `/test-planning` runs both in parallel.
 - [`/test-planning`](../skills/test-planning.md). Always dispatches this agent.
 - [`/code-review`](../skills/code-review.md). Conditionally dispatches this agent.

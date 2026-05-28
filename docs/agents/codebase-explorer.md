@@ -84,7 +84,7 @@ URL: https://pragprog.com/titles/atevol/software-design-x-rays/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Sibling for bug-focused investigation.
 - [`project-scanner`](./project-scanner.md). Sibling for stack and tooling detection.
 - [`/project-documentation`](../skills/project-documentation.md). Always dispatches this agent.

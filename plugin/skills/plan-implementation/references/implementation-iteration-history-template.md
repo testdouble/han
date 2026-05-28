@@ -28,7 +28,7 @@ files stay in sync.
 
 ## R1: {Short round title — e.g., "Parallel specialist review"}
 
-- **Specialists engaged:** <!-- e.g., test-engineer, adversarial-security-analyst, devops-engineer, junior-developer, project-manager -->
+- **Specialists engaged:** <!-- e.g., test-engineer, adversarial-security-analyst, devops-engineer, on-call-engineer, junior-developer, project-manager -->
 - **New input provided:** <!-- For re-engagement rounds: what new context, resolved questions, or user answers were handed back to the specialists. For R1, typically "initial feature specification and discovery notes." -->
 - **Claim ledger:** <!-- From the project-manager's facilitation output. Each row is one claim with its state: Evidenced (citation that resolves), Anecdotal (no citation), or Disputed (specialists disagree). Use a compact table or bullet list. -->
 - **Open Questions raised:** <!-- OQ-N items the specialists or project-manager surfaced this round. Reference the decisions they ultimately became (D# IDs) if known at write time; otherwise leave the linkage to be filled during synthesis. -->

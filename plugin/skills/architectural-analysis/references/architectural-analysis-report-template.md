@@ -14,6 +14,7 @@ sections_included:
   - security_analysis           # remove this line if adversarial-security-analyst was not dispatched
   - data_engineering_analysis   # remove this line if data-engineer was not dispatched
   - devops_readiness            # remove this line if devops-engineer was not dispatched
+  - on_call_resilience          # remove this line if on-call-engineer was not dispatched
   - codebase_map                # remove this line if codebase-explorer was not dispatched
   - risk_assessment
   - software_architecture_recommendations
@@ -28,7 +29,7 @@ sections_included:
 This report analyzes the architecture of **{{focus_area}}**. It is layered: each analysis section is the verbatim output of one specialist agent, and the Executive Summary is the only synthesized prose.
 
 - **Executive Summary.** The shape of the architecture, the few findings that matter most, and the highest-impact recommendations. Read this if you have two minutes.
-- **Analysis sections** (Structural, Behavioral, and any of Concurrency / Security / Data-Engineering / DevOps / Codebase Map that were part of this run). Each is a specialist's full findings with file paths and verbatim code. Findings carry stable IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`) you can cite in tickets and follow-up work.
+- **Analysis sections** (Structural, Behavioral, and any of Concurrency / Security / Data-Engineering / DevOps / On-Call Resilience / Codebase Map that were part of this run). Each is a specialist's full findings with file paths and verbatim code. Findings carry stable IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`, `OCE-###`) you can cite in tickets and follow-up work.
 - **Risk Assessment.** `R#` items scoring the structural / behavioral / concurrency findings by likelihood, severity, blast radius, and reversibility.
 - **Software-Architecture Recommendations.** `A#` recommendations, each cross-referencing the findings that drove it and the SOLID / cohesion / coupling concern it addresses, with pseudocode sketches.
 - **System-Architecture Recommendations** *(only when a cross-service / bounded-context seam was present and `system-architect` was dispatched)* **or** **System-level concerns deferred** *(otherwise)*.
@@ -121,6 +122,16 @@ This report analyzes the architecture of **{{focus_area}}**. It is layered: each
 
 ---
 
+## On-Call Resilience
+
+> Verbatim output from `on-call-engineer`. `OCE-###` findings at the application source line, naming the code-level resilience anti-pattern, the named production failure mode it leads to, and the production impact at 3am. Application source only — infrastructure and pipeline concerns live in DevOps Readiness above.
+>
+> Remove this entire section, its `sections_included` line, and its "How to Read" mention if `on-call-engineer` was not dispatched.
+
+{{on_call_engineer_verbatim_output}}
+
+---
+
 ## Codebase Map
 
 > Verbatim output from `codebase-explorer`. Entry points, core logic, data models, configuration, and tests for the focus area — the discovery map the analysts and architects worked from.
@@ -172,4 +183,4 @@ To get recommendations at that altitude, dispatch `system-architect` separately 
 
 ---
 
-*End of report. Finding IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`, `R#`, `A#`, `SA#`) are stable for the life of this report — cite them in tickets, ADRs, and follow-up work.*
+*End of report. Finding IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`, `OCE-###`, `R#`, `A#`, `SA#`) are stable for the life of this report — cite them in tickets, ADRs, and follow-up work.*

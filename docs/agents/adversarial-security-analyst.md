@@ -106,7 +106,7 @@ URL: https://cwe.mitre.org/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`/code-review`](../skills/code-review.md). The skill that always dispatches this agent for security coverage.
 - [`/test-planning`](../skills/test-planning.md). Dispatches this agent for negative security test planning when the files touch auth, input handling, isolation, crypto, uploads, or SQL/ORM.
 - [`devops-engineer`](./devops-engineer.md). Pair on regulated changes. Security analyst covers exploit paths. `devops-engineer` covers operational posture.

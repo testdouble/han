@@ -92,7 +92,7 @@ URL: https://www.etsy.com/codeascraft/blameless-postmortems
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`adversarial-validator`](./adversarial-validator.md). The canonical pairing. Investigator gathers, validator attacks.
 - [`codebase-explorer`](./codebase-explorer.md). Sibling agent for general codebase discovery (not bug-focused).
 - [`/investigate`](../skills/investigate.md). Always dispatches this agent (usually two or more in parallel).

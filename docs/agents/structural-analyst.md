@@ -86,7 +86,7 @@ URL: https://martinfowler.com/books/refactoring.html
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`behavioral-analyst`](./behavioral-analyst.md). Sibling analyst for runtime behavior.
 - [`concurrency-analyst`](./concurrency-analyst.md). Sibling analyst for concurrency hazards.
 - [`risk-analyst`](./risk-analyst.md). Consumes this agent's findings for risk prioritization.

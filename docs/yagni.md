@@ -95,6 +95,7 @@ YAGNI applies in two postures: **producing** (when a skill drafts an artifact) a
 | [`edge-case-explorer`](./agents/edge-case-explorer.md) | The Speculative Edge Case rule. Edge cases for code paths that don't exist or for inputs that internal callers fully control are flagged. |
 | [`data-engineer`](./agents/data-engineer.md) | The Speculative Data Machinery rule. Indexes for queries that don't run, audit columns nobody reads, denormalization for read patterns that don't exist. |
 | [`devops-engineer`](./agents/devops-engineer.md) | The Premature Operational Machinery rule. Runbooks for alerts that have never fired, SLOs for traffic that doesn't yet exist, multi-region infrastructure for unproven single-region workloads. |
+| [`on-call-engineer`](./agents/on-call-engineer.md) | The Premature Operability Machinery rule, applied at the application source line. Circuit breakers, bulkheads, idempotency tables, kill switches, dead-letter queues, and custom error types are deferred when no evidence shows the system needs them now (named upstream finding, existing code path that breaks, three current uses, measured incident, applicable regulation). |
 
 ## The Deferred (YAGNI) section format
 

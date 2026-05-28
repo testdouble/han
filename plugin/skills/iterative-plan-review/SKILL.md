@@ -123,6 +123,7 @@ When `evidence-based-investigator` is not included, state to the user in one lin
 - `user-experience-designer` — user-facing flows, UI, interaction models, accessibility.
 - `adversarial-security-analyst` — authentication, authorization, PII, untrusted input, secrets, supply chain.
 - `devops-engineer` — deployment, observability, rollout, feature flags, scale, SLO impact, cost.
+- `on-call-engineer` — application-source resilience patterns named in the plan: timeouts, retry strategy, idempotency, backpressure, kill switches, observability of new code paths. Hard boundary against `devops-engineer`: defer infrastructure and pipeline concerns to it.
 - `structural-analyst` — module boundaries, coupling, dependency direction, duplication.
 - `behavioral-analyst` — runtime behavior, data flow, error propagation, state transitions.
 - `concurrency-analyst` — concurrent access, race conditions, async coordination, ordering.
@@ -148,7 +149,7 @@ When `evidence-based-investigator` is not included, state to the user in one lin
 - Do NOT include `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `software-architect`, `system-architect`, or `data-engineer` in the default roster. These specialists are named after mechanic-level analysis that belongs in `plan-implementation`, not in a behavioral spec review.
 - If the user explicitly names one of the excluded specialists, honor the request — but issue a one-line warning that the specialist may surface implementation-level findings the spec will not absorb. Such findings get deferred to `plan-implementation` rather than edited into the spec.
 - The required agents are `junior-developer` and `adversarial-validator`; `evidence-based-investigator` is conditionally mandatory by the codebase-claims heuristic above. All three are generalist and evidence-oriented and serve the spec-review use case without modification.
-- Remaining available specialists in spec mode: `user-experience-designer`, `adversarial-security-analyst`, `devops-engineer`, `edge-case-explorer`, `test-engineer`, `gap-analyzer`, `risk-analyst` (no structural/behavioral/concurrency upstream dependency), `content-auditor`, `codebase-explorer`.
+- Remaining available specialists in spec mode: `user-experience-designer`, `adversarial-security-analyst`, `devops-engineer`, `on-call-engineer` (scoped to spec-level resilience commitments — idempotency, retry behavior, kill switches, graceful degradation — not file-and-line mechanics), `edge-case-explorer`, `test-engineer`, `gap-analyzer`, `risk-analyst` (no structural/behavioral/concurrency upstream dependency), `content-auditor`, `codebase-explorer`.
 
 Present the proposed team to the user briefly — the required agents (and whether `evidence-based-investigator` was included or skipped, with the reason) plus the chosen specialists, each with a one-line justification — and proceed. If the user corrects the composition, adjust and continue.
 
@@ -188,6 +189,7 @@ Run 2 to 4 rounds. Each round:
    | `user-experience-designer` | Sections touching user-facing flow, UI, interaction, accessibility |
    | `adversarial-security-analyst` | Sections touching auth, authorization, PII, secrets, supply chain |
    | `devops-engineer` | Sections touching deployment, observability, rollout, feature flags, scale, SLO impact, cost |
+   | `on-call-engineer` | Sections naming outbound calls, retry behavior, queue or buffer handling, async work, error handling on failure paths, idempotency, kill switches, and observability of new code paths at the application source line |
    | `structural-analyst` | Sections naming module boundaries, coupling, dependency direction |
    | `behavioral-analyst` | Sections describing runtime behavior, data flow, error propagation, state |
    | `concurrency-analyst` | Sections touching concurrent access, race conditions, async coordination |

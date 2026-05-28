@@ -96,7 +96,7 @@ URL: https://standards.ieee.org/ieee/829/3787/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`adversarial-validator`](./adversarial-validator.md). Used by `/gap-analysis` swarms to attack each gap with counter-evidence.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Used by `/gap-analysis` swarms to verify each gap against the current state.
 - [`content-auditor`](./content-auditor.md). Sibling for before-and-after content preservation (different problem).

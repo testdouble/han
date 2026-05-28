@@ -179,6 +179,7 @@ Choose sub-agents to review the draft spec in parallel based on the size cap fro
 - `user-experience-designer` — any user-facing flow, UI, or interaction model.
 - `adversarial-security-analyst` — authentication, authorization, PII, untrusted input, secrets — at the behavioral attack-surface level (deep exploit-path work moves to `plan-implementation`).
 - `devops-engineer` — rollout, feature flags, observability, SLO behavior, operational affordances.
+- `on-call-engineer` — resilience commitments the spec must make to keep the on-call rotation healthy: idempotency on retried operations, timeout and deadline behavior, graceful-degradation paths when a dependency is down, kill-switch availability on risky new code paths, named failure-mode coverage. Spec-level only — file-and-line resilience review belongs to `plan-implementation`.
 - `edge-case-explorer` — boundary values, input messiness, state-dependent failures.
 - `test-engineer` — what observable behaviors the spec commits the system to making testable (test-double and collaborator-boundary framing is deferred to `plan-implementation`).
 - `gap-analyzer` — if a PRD or reference spec exists, compare the draft against it.
@@ -193,6 +194,7 @@ Choose sub-agents to review the draft spec in parallel based on the size cap fro
 | `user-experience-designer` | Outcome, Primary Flow, User Interactions, Edge Cases (UX-relevant rows only) |
 | `adversarial-security-analyst` | Outcome, Coordinations, Edge Cases, any sections touching auth/PII/secrets |
 | `devops-engineer` | Outcome, Coordinations, Out of Scope, Open Items |
+| `on-call-engineer` | Outcome, Primary Flow, Alternate Flows, Edge Cases, Coordinations (sections touching idempotency, retries, timeouts, kill switches, graceful degradation) |
 | `edge-case-explorer` | Outcome, Primary Flow, Alternate Flows, Edge Cases |
 | `test-engineer` | Outcome, Primary Flow, Alternate Flows, Edge Cases |
 | `gap-analyzer` | Source PRD or reference spec + the draft spec under review |

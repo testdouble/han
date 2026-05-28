@@ -213,7 +213,7 @@ URL: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Che
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this agent applies. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`devops-engineer`](./devops-engineer.md). Pair on production migrations. This agent covers the schema-level expand-and-contract; `devops-engineer` covers the rollout-level progressive delivery.
 - [`adversarial-security-analyst`](./adversarial-security-analyst.md). Pair on regulated data changes. This agent covers data-level governance; the security analyst covers exploit paths.
 - [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.

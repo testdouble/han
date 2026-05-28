@@ -79,6 +79,6 @@ URL: https://research.google/pubs/why-google-stores-billions-of-lines-of-code-in
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`codebase-explorer`](./codebase-explorer.md). Sibling for feature-level implementation discovery.
 - [`/project-discovery`](../skills/project-discovery.md). Always dispatches four of these agents.

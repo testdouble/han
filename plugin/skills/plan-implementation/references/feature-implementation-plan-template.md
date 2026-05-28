@@ -128,6 +128,22 @@ Inline decision references:
 - **Rollback:** <!-- exact procedure and decision criterion -->
 - **Cost and scale:** …
 
+## On-Call Resilience Posture
+
+<!-- If `on-call-engineer` contributed, capture the application-source resilience commitments this plan makes. Each row maps to a named anti-pattern the agent flagged. Application source level only; infrastructure and pipeline concerns live in Operational Readiness above. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the commitment reflects a non-obvious decision. -->
+
+- **Timeouts and deadlines:** <!-- which outbound calls get which timeouts; deadline propagation through the chain -->
+- **Retry strategy:** <!-- backoff, jitter, total cap; coordination with retries elsewhere in the chain -->
+- **Idempotency:** <!-- which retried side effects are guarded, and by what mechanism (caller-provided key, unique constraint, conditional update) -->
+- **Bulkheads and concurrency caps:** <!-- which dependencies get isolated resource pools; what limits fan-out -->
+- **Queue and backpressure:** <!-- bounded vs. unbounded; producer slowdown signal; visibility timeout; DLQ -->
+- **Kill switches:** <!-- which risky new code paths are flag-gated; operator can flip without a redeploy -->
+- **Graceful degradation:** <!-- what happens when each dependency is unavailable -->
+- **Observability of failure paths:** <!-- log lines, metrics, spans, and SLI contributions that make new code paths observable per the ODD gate -->
+- **Data integrity:** <!-- column lengths, integer types on monetary or rate-counter values, encoding boundaries, partial-write recovery -->
+- **Migration safety:** <!-- expand/contract sequencing for any schema change; never co-deployed with dependent code -->
+
+
 ## Definition of Done
 
 <!-- Testable, unambiguous, agreed across specialists. Cite the decisions each criterion satisfies. -->

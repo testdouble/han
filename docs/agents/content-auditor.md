@@ -82,7 +82,7 @@ URL: https://standards.ieee.org/ieee/1063/2554/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door.
-- [Agents Index](./README.md). All 22 agents, grouped by role.
+- [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`gap-analyzer`](./gap-analyzer.md). Sibling agent for comparing two distinct artifacts (spec vs. implementation).
 - [`information-architect`](./information-architect.md). Sibling agent for IA structure of the new doc.
 - [`/project-documentation`](../skills/project-documentation.md). Always dispatches this agent in update mode.
