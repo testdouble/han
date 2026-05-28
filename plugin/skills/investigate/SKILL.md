@@ -25,6 +25,7 @@ allowed-tools: Read, Glob, Grep, Agent
 - Launch parallel `evidence-based-investigator` agents for different angles simultaneously — one for the error path, one for the data flow, one for recent changes.
 - Add one or more specialist analysts **in parallel with** the investigators when the bug type calls for it (concurrency, data flow across boundaries, database or query behavior). Specialist analysts find root causes generalists miss.
 - The `adversarial-validator` agent handles all three validation strategies (challenge evidence, challenge fix, challenge assumptions) internally.
+- Apply the evidence rule from [../../references/evidence-rule.md](../../references/evidence-rule.md) to every finding. Codebase findings (file path, line number, log line, test output) carry the trust-class label "codebase" and stand on their citation. Web-source context (RFCs, vendor docs, Stack Overflow, blog posts) carries the trust-class label "web" and is subject to the corroboration gate when it drives the proposed fix. When the investigation hits a point where no evidence at any tier resolves a question, label the no-evidence state rather than guessing.
 
 # Investigate
 

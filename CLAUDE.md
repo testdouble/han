@@ -53,6 +53,7 @@ The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form 
 - **[docs/quickstart.md](./docs/quickstart.md).** Four path-based recipes (plan a feature, investigate a bug, review code, set up a project). Use when picking which skill to run for a specific situation.
 - **[docs/sizing.md](./docs/sizing.md).** The small / medium / large dispatch model used by the seven swarming skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`). Use when a swarming skill needs to decide team size, or when a user asks what `medium` / `large` mean.
 - **[docs/yagni.md](./docs/yagni.md).** The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies before committing items to its artifact. Use when explaining why an item was deferred or rejected from a plan / review / ADR.
+- **[docs/evidence.md](./docs/evidence.md).** The three structural principles (proximity to origin, corroboration, explicit no-evidence labeling) that define what "evidence-based" means in Han, plus the trust-class vocabulary (codebase / web / provided) that grounds the corroboration gate. Use when a skill, agent, or operator asks what counts as valid evidence, how to label uncorroborated claims, or what to do when no evidence exists at all.
 
 ### Skill catalog (`docs/skills/`)
 

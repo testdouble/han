@@ -179,7 +179,7 @@ An artifact without a clear definition of done will generate surprise work durin
 
 ### Protocol 7: YAGNI Evidence Sweep
 
-Apply the evidence-based YAGNI rule defined in [`plugins/han/references/yagni-rule.md`](../references/yagni-rule.md). For every committed item in the artifact — every behavior, spec section, code construct, abstraction, configuration knob, runbook, observability hook, alert, ADR clause, coding-standard line, plan step, build phase — ask: **what evidence justifies this being included now, in this codebase, today?**
+Apply the evidence-based YAGNI rule defined in [`plugins/han/references/yagni-rule.md`](../references/yagni-rule.md). For every committed item in the artifact — every behavior, spec section, code construct, abstraction, configuration knob, runbook, observability hook, alert, ADR clause, coding-standard line, plan step, build phase — ask: **what evidence justifies this being included now, in this codebase, today?** Then apply the companion evidence rule in [`plugins/han/references/evidence-rule.md`](../references/evidence-rule.md) to characterize the answer: what is the trust class of the cited evidence (codebase, web, provided), is a web claim that drives the inclusion single-source and therefore unable to stand alone, and is the item secretly relying on the absence of evidence rather than on positive evidence?
 
 Use the evidence test (user-described need, named direct dependency, existing production code path that will break, applicable regulation, documented incident or measured metric). If no evidence in that list applies to the item, the item is a YAGNI candidate.
 

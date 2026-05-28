@@ -164,7 +164,7 @@ If git is available, run `git log --since="90 days ago" --name-only --pretty=for
 
 ### Protocol 8: YAGNI Evidence Gate
 
-Apply the evidence-based YAGNI rule defined in [`plugins/han/references/yagni-rule.md`](../references/yagni-rule.md) to every item the team is proposing to commit — every decision in the RAID log, every plan item, every recommendation a specialist has surfaced, every dependency, every operational machinery item (runbook, SLO, alert, dashboard, feature flag, infrastructure component), every test category, every abstraction, every configuration knob.
+Apply the evidence-based YAGNI rule defined in [`plugins/han/references/yagni-rule.md`](../references/yagni-rule.md) to every item the team is proposing to commit — every decision in the RAID log, every plan item, every recommendation a specialist has surfaced, every dependency, every operational machinery item (runbook, SLO, alert, dashboard, feature flag, infrastructure component), every test category, every abstraction, every configuration knob. Alongside the YAGNI gate, apply the companion evidence rule in [`plugins/han/references/evidence-rule.md`](../references/evidence-rule.md) to characterize the quality of the evidence each surviving item rests on: name the trust class of the citation (codebase, web, provided), mark single-source web claims that cannot stand alone, and label claims with no evidence at any tier as a distinct deferred state rather than weak evidence.
 
 **Two gates apply:**
 

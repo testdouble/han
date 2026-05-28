@@ -105,13 +105,9 @@ The `codebase-explorer` brief carries the codebase-bearing part of the question,
 
 ## Step 6: Compile the Artifacts
 
-Collect the full verbatim output from every agent. Consolidate every information source used that is relevant to the results into a single indexed Artifacts registry (`A1, A2, …`), merging duplicates. Each artifact entry carries: a link or repository location the reader can independently check (a source URL for web, `repo/path:line` for codebase, a precise reference for provided material); a retrieval date for web sources; a trust class (codebase = trusted current-state anchor, web = outside the trust boundary, provided = operator-supplied, interested-party scrutiny); a short plain-language summary of what the source says that is relevant; and an evidence status.
+Collect the full verbatim output from every agent. Consolidate every information source used that is relevant to the results into a single indexed Artifacts registry (`A1, A2, …`), merging duplicates. Each artifact entry carries: a link or repository location the reader can independently check (a source URL for web, `repo/path:line` for codebase, a precise reference for provided material); a retrieval date for web sources; the trust class (codebase, web, or provided) per the canonical evidence rule in [`../../references/evidence-rule.md`](../../references/evidence-rule.md); a short plain-language summary of what the source says that is relevant; and an evidence status.
 
-- A web claim that bears on the recommendation and has no independent corroboration is marked single-source and cannot be the sole basis for the recommendation (strict mode). In exploratory mode an unevidenced reasoning step may inform the recommendation but is recorded as its own labeled entry, never disguised as a sourced artifact.
-- When web sources contradict each other, record both as separate artifacts and surface the conflict.
-- When codebase evidence contradicts web evidence, surface the conflict explicitly; treat the codebase as the current-state anchor and add "continue with the current approach" as a named option.
-- Operator-provided material is held to the same scrutiny as a web source.
-- Every artifact gets an ID that Research Results, Options, and the Recommendation cross-reference inline, so every conclusion traces to its sources. The Artifacts registry is always produced, even for a minimal run.
+Apply the evidence rule defined in [`../../references/evidence-rule.md`](../../references/evidence-rule.md) for the trust-class vocabulary, the web-source corroboration gate, conflict surfacing between sources, the codebase-as-current-state-anchor rule, and the no-evidence labeling pattern. In exploratory mode an unevidenced reasoning step may inform the recommendation but is recorded as its own labeled entry, never disguised as a sourced artifact. Every artifact gets an ID that Research Results, Options, and the Recommendation cross-reference inline, so every conclusion traces to its sources. The Artifacts registry is always produced, even for a minimal run.
 
 ## Step 7: Synthesize, then Validate
 

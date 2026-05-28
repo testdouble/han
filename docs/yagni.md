@@ -11,6 +11,7 @@ YAGNI (*You Aren't Gonna Need It*) is the second foundational mechanic of the ha
 - **Default is defer.** When no evidence applies, items move to a `## Deferred (YAGNI)` section in the artifact with a named *reopen-when* trigger. They are never silently dropped.
 - **You always win.** Skills and agents make the cost of inclusion visible; you can direct an item to be kept against the rule. The point is conscious choice, not bureaucratic exclusion.
 - **The canonical rule lives in [`plugin/references/yagni-rule.md`](../plugin/references/yagni-rule.md).** Every YAGNI-aware skill and agent loads that file at runtime. This page is the operator-facing summary.
+- **See also [`docs/evidence.md`](./evidence.md).** YAGNI's evidence test answers *is there any evidence at all to justify including this item?* The companion evidence rule answers *once an item passes that test, how strong is the evidence and what do you do when no evidence exists?* The two rules work together.
 
 ## Why YAGNI matters
 

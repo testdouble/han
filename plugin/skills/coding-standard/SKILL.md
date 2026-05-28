@@ -51,7 +51,7 @@ If the proposed coding standard does not fall into these categories, proceed to 
 
 ### YAGNI check
 
-Apply the evidence-based YAGNI rule from [../../references/yagni-rule.md](../../references/yagni-rule.md). A coding standard is worth writing only when the project actually does the thing the standard governs *today* and the standard solves a real, concrete problem the team is currently hitting. Standards about patterns the project doesn't use yet, "for future flexibility", "best practice says we should…", or symmetry with other standards ("we have one for backend, so we should have one for frontend" when the frontend codebase is a single file) are YAGNI candidates. Acceptable evidence the standard is needed *now*:
+Apply the evidence-based YAGNI rule from [../../references/yagni-rule.md](../../references/yagni-rule.md) alongside the companion evidence rule in [../../references/evidence-rule.md](../../references/evidence-rule.md). A coding standard is worth writing only when the project actually does the thing the standard governs *today* and the standard solves a real, concrete problem the team is currently hitting. Standards about patterns the project doesn't use yet, "for future flexibility", "best practice says we should…", or symmetry with other standards ("we have one for backend, so we should have one for frontend" when the frontend codebase is a single file) are YAGNI candidates. Acceptable evidence the standard is needed *now*:
 
 - The pattern the standard governs is actively used in the codebase today (cite at least three examples), and inconsistency between examples is causing real friction (review churn, bugs, onboarding cost).
 - A documented incident or recurring code-review finding the standard would prevent.
