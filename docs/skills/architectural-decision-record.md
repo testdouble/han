@@ -2,7 +2,7 @@
 
 Operator documentation for the `/architectural-decision-record` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/architectural-decision-record/SKILL.md`](../../plugin/skills/architectural-decision-record/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -95,6 +95,8 @@ When the forcing function isn't there, the candidate ADR moves to a `## Deferred
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
+The companion [evidence rule](../evidence.md) applies to the citations that justify the chosen option and the rejected alternatives. Name the trust class of each citation (codebase, web, provided); mark single-source web claims that drive the chosen option; when no evidence at any tier supports a claimed trade-off, label it rather than presenting it as a weak preference.
+
 ## Sources
 
 The skill's practice is grounded in established architectural-decision-record convention.
@@ -121,6 +123,7 @@ URL: https://www.thoughtworks.com/radar/techniques/lightweight-architecture-deci
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [Evidence](../evidence.md). The companion rule the skill applies to the ADR's citations: trust classes, the corroboration gate for web sources, and the no-evidence label.
 - [Skills Index](./README.md). All 21 skills, grouped by purpose.
 - [`/coding-standard`](./coding-standard.md). For rules that come out of a decision. Link the standard to the ADR.
 - [`/architectural-analysis`](./architectural-analysis.md). Often produces decisions worth recording as ADRs.

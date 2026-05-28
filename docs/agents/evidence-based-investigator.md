@@ -2,7 +2,7 @@
 
 Operator documentation for the `evidence-based-investigator` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/evidence-based-investigator.md`](../../plugin/agents/evidence-based-investigator.md).
 
-> See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md)
+> See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -13,6 +13,7 @@ Operator documentation for the `evidence-based-investigator` agent in the han pl
 ## Key concepts
 
 - **Evidence, not solutions.** The agent gathers facts. It does not propose fixes. That separation keeps investigation honest: the fix is designed against the gathered evidence, not built around a pre-decided answer.
+- **Canonical evidence rule applies.** The agent reads the canonical [evidence rule](../evidence.md) at runtime. Codebase findings carry the trust-class label "codebase" and stand on their citation. Web-source context (RFCs, vendor docs, third-party explanations) carries the trust-class label "web" and is subject to the corroboration gate before driving a conclusion. When the investigation hits a question no evidence at any tier resolves, the agent labels the no-evidence state rather than fabricating an answer.
 - **Multi-angle by design.** `/investigate` typically dispatches two or more investigators in parallel, each from a different angle (the error path, the data flow, recent commits). Their evidence merges into a unified `E#` list.
 - **Negative results count.** When an angle is searched and finds nothing, the agent reports *"searched X, found no evidence."* That signal is part of the investigation.
 - **All five protocols are required.** Direct evidence search, code-path tracing, related-system identification, git history check, test-coverage examination. Skipping a protocol makes the investigation incomplete.
@@ -98,3 +99,4 @@ URL: https://www.etsy.com/codeascraft/blameless-postmortems
 - [`/investigate`](../skills/investigate.md). Always dispatches this agent (usually two or more in parallel).
 - [`/gap-analysis`](../skills/gap-analysis.md). Required swarm role when the current state is concrete. The swarm runs by default.
 - [`/iterative-plan-review`](../skills/iterative-plan-review.md). Dispatches this agent in team mode.
+- [Evidence](../evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes, the corroboration gate for web sources, and the no-evidence label.

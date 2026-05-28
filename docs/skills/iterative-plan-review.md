@@ -2,7 +2,7 @@
 
 Operator documentation for the `/iterative-plan-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/iterative-plan-review/SKILL.md`](../../plugin/skills/iterative-plan-review/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -141,6 +141,8 @@ YAGNI is a first-class review pillar alongside correctness, completeness, risk, 
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 
+Evidence quality is a first-class review pillar alongside YAGNI. The companion [evidence rule](../evidence.md) characterizes how strong the evidence is once YAGNI has gated inclusion: name the trust class of each citation a plan item rests on (codebase, web, provided); apply the corroboration gate to web-source claims that drive a recommendation (single-source web claims get marked and cannot stand alone); label claims with no evidence at any tier as a distinct state rather than treating them as weak evidence. The proximity-to-origin principle is a heuristic, not a strict tier list; findings should not be raised purely because a plan item cites docs instead of running code.
+
 ## Sources
 
 The skill's posture and protocols draw on established practice in iterative refinement, adversarial review, and evidence-based planning. Each source below is cited because the skill draws specific, named artifacts from it. Not as a reading list, but as the provenance of the stance the skill takes.
@@ -191,6 +193,7 @@ URLs: https://asana.com/resources/raid-log and https://projectmanagementcompass.
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [Evidence](../evidence.md). The companion review pillar. Trust classes, the corroboration gate for web-source claims, and the no-evidence label.
 - [Skills Index](./README.md). All 21 skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`/plan-a-feature`](./plan-a-feature.md). The upstream skill for producing a feature specification from scratch. This skill can iterate on that spec, but the typical handoff is spec → `/plan-implementation` → this skill.

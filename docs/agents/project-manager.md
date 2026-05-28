@@ -2,7 +2,7 @@
 
 Operator documentation for the `project-manager` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/project-manager.md`](../../plugin/agents/project-manager.md).
 
-> See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [YAGNI](../yagni.md)
+> See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [YAGNI](../yagni.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -127,6 +127,8 @@ The agent applies the **YAGNI Evidence Gate** protocol during facilitation and s
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
+Alongside the YAGNI gate, the agent applies the companion [evidence rule](../evidence.md) to characterize the quality of evidence each surviving item rests on: name the trust class of the citation (codebase, web, provided), mark single-source web claims that cannot stand alone, and label claims with no evidence at any tier as a distinct deferred state rather than weak evidence.
+
 ## Sources
 
 The agent's posture and protocols draw on established project-management practice and research. Each source below is cited because the agent draws specific, named artifacts from it.
@@ -183,6 +185,7 @@ URLs: https://www.atlassian.com/work-management/project-management/acceptance-cr
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this agent applies. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [Evidence](../evidence.md). The companion rule the agent applies alongside YAGNI. Trust classes, the corroboration gate, and the no-evidence label.
 - [Agents Index](./README.md). All 23 agents, grouped by role.
 - [`junior-developer`](./junior-developer.md). The generalist stress-tester the PM leans on for plain-language reframing when specialist input gets entangled.
 - [`/plan-a-feature`](../skills/plan-a-feature.md) and [`/plan-implementation`](../skills/plan-implementation.md). Skills that dispatch this agent as coordinator and synthesizer.

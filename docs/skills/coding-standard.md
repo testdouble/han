@@ -2,7 +2,7 @@
 
 Operator documentation for the `/coding-standard` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/coding-standard/SKILL.md`](../../plugin/skills/coding-standard/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -112,6 +112,8 @@ A coding standard is justified only when the project does the thing the standard
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
+The companion [evidence rule](../evidence.md) applies to the citations that support the standard: name the trust class of each cited example (codebase, web, provided); apply the corroboration gate when the supporting evidence comes from outside the project; label claims with no evidence at any tier rather than presenting them as weak preferences.
+
 ## Sources
 
 The skill's practice is grounded in established engineering conventions and documentation norms.
@@ -144,6 +146,7 @@ URL: https://code.claude.com/docs/en/memory
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [Evidence](../evidence.md). The companion rule the skill applies to the standard's supporting evidence: trust classes, the corroboration gate for web sources, and the no-evidence label.
 - [Skills Index](./README.md). All 21 skills, grouped by purpose.
 - [`/architectural-decision-record`](./architectural-decision-record.md). For decisions rather than rules. Link the standard to the ADR when the rule embeds a choice.
 - [`/project-documentation`](./project-documentation.md). For system and feature documentation that is not a rule.

@@ -19,6 +19,7 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 - **Looking for a specific agent?** → [Agents Index](./docs/agents/README.md). 23 agents grouped by role.
 - **Wondering how the agent swarms scale?** → [Sizing](./docs/sizing.md). The small / medium / large dispatch model used by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, and `/research`.
 - **Wondering why a skill said "YAGNI"?** → [YAGNI](./docs/yagni.md). The evidence-based rule every planning, review, and architecture skill applies before committing items to an artifact.
+- **Wondering what counts as evidence?** → [Evidence](./docs/evidence.md). The three principles (proximity, corroboration, no-evidence labeling) and the trust-class vocabulary every evidence-aware skill and agent applies.
 - **Writing or editing a skill or agent?** → [Contributing](./CONTRIBUTING.md).
 
 ## Installation
@@ -38,6 +39,7 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 - [Agents Index](./docs/agents/README.md). All 23 agents, grouped by role.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies.
+- [Evidence](./docs/evidence.md). What counts as evidence in Han, how to characterize how strong it is, and what to do when no evidence exists at all.
 - [Contributing](./CONTRIBUTING.md). Adding or editing skills, agents, and documentation.
 - [Changelog](./CHANGELOG.md). What's new in each version of the plugin.
 

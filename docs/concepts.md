@@ -11,6 +11,7 @@ Han is built out of two kinds of things: **skills** and **agents**. If you read 
 - Skills dispatch agents. The skill follows its flowchart, sends the agent off to do a judgment-heavy subtask (investigate a bug, review architecture, critique a plan), then folds the finding back into its output.
 - **Sizing** decides how many agents get dispatched. The skills that fan out to a swarm classify the work as small, medium, or large first, default to small, and scale the team and the iteration depth from there. See [Sizing](./sizing.md) for the full model.
 - **YAGNI** decides what survives. Every skill that produces an artifact and every agent that reviews one applies an evidence-based rule before committing items: features, plan steps, code recommendations, ADRs, coding standards, runbooks, alerts, indexes, tests, abstractions. Items without evidence get deferred (recorded for later, not silently dropped). See [YAGNI](./yagni.md).
+- **Evidence** decides how confident you are in what survives. Once YAGNI passes an item through, the evidence rule names the trust class of the citation (codebase, web, provided), applies a corroboration gate to web sources, and labels claims with no evidence at any tier as a distinct deferred state. See [Evidence](./evidence.md).
 
 That is the whole model. Everything else is vocabulary.
 
@@ -78,6 +79,14 @@ YAGNI applies to the planning skills (`/plan-a-feature`, `/plan-implementation`,
 
 Read the full [YAGNI](./yagni.md) reference for the gates, the acceptable-evidence list, the named anti-patterns, and the per-skill / per-agent application table.
 
+## Evidence: the confidence layer
+
+Once YAGNI has gated inclusion, the evidence rule characterizes the quality of the evidence each surviving item rests on. Three principles ground the rule: evidence closer to the originating event or data carries more weight than evidence at greater remove (proximity, applied as a heuristic, not a ranked ladder); two independent sources beat one source (corroboration, scoped to web sources); the absence of evidence is its own state with a name and a response (no-evidence labeling). The vocabulary of trust classes (codebase, web, provided) and the corroboration gate originated in [`/research`](./skills/research.md) and are now extracted into a canonical rule that every evidence-aware skill and agent reads at runtime.
+
+Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`), the planning and review skills (`/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`), the conventions skills (`/coding-standard`, `/architectural-decision-record`), the operational skills (`/runbook`), and to the agents that review artifacts (`project-manager`, `junior-developer`, `evidence-based-investigator`, `gap-analyzer`).
+
+Read the full [Evidence](./evidence.md) reference for the three principles, the trust-class vocabulary, the corroboration gate, the no-evidence response, and the per-skill / per-agent application table.
+
 ## When would you invoke an agent directly?
 
 Most of the time you will not. A skill calling an agent is the typical flow.
@@ -104,6 +113,7 @@ Skim the indexes after you read this page. Pick the one skill you need right now
 - **Want a specific agent?** → [Agents Index](./agents/README.md).
 - **Want to know how dispatch scales?** → [Sizing](./sizing.md).
 - **Want to know what survives a review?** → [YAGNI](./yagni.md).
+- **Want to know how confident to be in what survives?** → [Evidence](./evidence.md).
 - **Writing your own skill or agent?** → [Contributing](../CONTRIBUTING.md).
 
 ## Related reading

@@ -2,7 +2,7 @@
 
 Operator documentation for the `/gap-analysis` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/gap-analysis/SKILL.md`](../../plugin/skills/gap-analysis/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -203,6 +203,7 @@ URLs: https://hbr.org/2007/09/performing-a-project-premortem and https://en.wiki
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](./README.md). All 21 skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
+- [Evidence](../evidence.md). The canonical evidence rule the skill applies when characterizing each gap's evidence pair. Trust classes, the corroboration gate for web-source claims, and the no-evidence label for silent desired-state evidence.
 - [`gap-analyzer`](../agents/gap-analyzer.md). The agent that performs the underlying gap analysis. The skill always dispatches it once and reads its full output.
 - [`adversarial-validator`](../agents/adversarial-validator.md). Required swarm role at every size. Attacks each gap with counter-evidence to produce per-gap `confirmed` / `contradicted` / `inconclusive` verdicts.
 - [`junior-developer`](../agents/junior-developer.md). Required swarm role at every size. Runs the actor-perspective sweep — enumerates every actor the desired state addresses or implies, checks each gap against every actor type, surfaces gaps the analyzer missed because it only considered one actor.

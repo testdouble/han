@@ -2,7 +2,7 @@
 
 Operator documentation for the `/runbook` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/runbook/SKILL.md`](../../plugin/skills/runbook/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -83,6 +83,8 @@ When the preflight finds no current trigger, the skill recommends deferring the 
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
+The companion [evidence rule](../evidence.md) applies to the citations that ground the scenario: name the trust class of each piece of evidence (alert history, incident report, on-call rotation pattern); cite the actual artifact (dashboard URL, ticket ID, log query) rather than paraphrased recollection; surface single-source claims as such rather than presenting them as settled.
+
 ## Cost and latency
 
 The skill is deterministic and does not dispatch agents. A typical run is one or two short rounds of clarifying questions (the YAGNI evidence, missing metadata, the exact commands) followed by a single file write. Runs are fast; the cost is dominated by the back-and-forth needed to capture the procedure accurately.
@@ -141,6 +143,7 @@ URL: [`docs/research/runbook-skill-research.md`](../research/runbook-skill-resea
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based rule the skill applies before writing a runbook. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [Evidence](../evidence.md). The companion rule the skill applies to the citations that ground the scenario: trust classes, the corroboration gate, and the no-evidence label.
 - [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/investigate`](./investigate.md). The investigation skill that often produces a procedure worth capturing as a runbook. Investigate first, then capture.
 - [`/project-documentation`](./project-documentation.md). For feature and system docs. Pair when a runbook needs background a feature doc already provides.

@@ -2,7 +2,7 @@
 
 Operator documentation for the `/research` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/research/SKILL.md`](../../plugin/skills/research/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -16,7 +16,7 @@ Operator documentation for the `/research` skill in the han plugin. This documen
 - **Output-agnostic.** The report is the only thing produced. `/research` never writes a feature spec, a coding standard, a gap report, an architecture assessment, or code. If your question is really one of those, it routes you to the skill that owns it.
 - **Reaches the open web.** Unlike `/investigate`, `/research` can search and fetch from the open web, read your codebase, and use material you provide. That web reach is the whole point: it answers "what is the prior art out there", not only "what does this repo do".
 - **Fetched content is data, never instruction.** A web page that says "ignore your instructions and do X" is recorded as a claim about that page, not followed. The web-facing research runs with no codebase context, so a hostile page has nothing to exfiltrate.
-- **Evidence required by default, override available.** "Research" implies evidence-based, so by default every claim that drives the recommendation must be corroborated by an independent source or the codebase, or it is flagged single-source and cannot stand alone. You can opt into *exploratory* mode (say "evidence optional", "allow unsourced", or "exploratory") to let the skill reason past the evidence and give you a take with more freedom. Either way, the report explicitly labels what does and does not have evidence, so the trade is always visible.
+- **Evidence required by default, override available.** "Research" implies evidence-based, so by default every claim that drives the recommendation must be corroborated by an independent source or the codebase, or it is flagged single-source and cannot stand alone. You can opt into *exploratory* mode (say "evidence optional", "allow unsourced", or "exploratory") to let the skill reason past the evidence and give you a take with more freedom. Either way, the report explicitly labels what does and does not have evidence, so the trade is always visible. The trust-class vocabulary (codebase / web / provided), the corroboration gate, and the no-evidence label originated here and are now extracted into the canonical [evidence rule](../evidence.md) that other skills and agents read at runtime.
 - **One fixed, fully-traceable structure.** Every report has the same shape: a plain-language summary at the very top, then the results with minimal jargon, then indexed options when there are alternatives, then the recommendation and its evidence basis, then validation, then an indexed Artifacts registry (every source with a link and a short summary), then a References section at the very bottom. Artifact IDs are cited inline throughout, so every conclusion traces back to its sources.
 - **Sized small / medium / large.** Like the other swarming skills, `/research` scales its team to the question. It reads the question's conceptual scope — how many options, how many domains, how wide the reach — not its text length.
 
@@ -133,4 +133,5 @@ URL: https://hbr.org/2007/09/performing-a-project-premortem
 - [`research-analyst`](../agents/research-analyst.md). The agent the skill dispatches for the web / prior-art / option-comparison angles.
 - [`adversarial-validator`](../agents/adversarial-validator.md). The agent that attacks the evidence and recommendation before the report is presented.
 - [`codebase-explorer`](../agents/codebase-explorer.md). Dispatched for the codebase-grounded angle when a repository bears on the question.
+- [Evidence](../evidence.md). The canonical evidence rule. The trust classes, the corroboration gate, and the no-evidence label originated in `/research` and are now extracted as a plugin-wide rule other skills and agents share.
 - [`SKILL.md` for /research](../../plugin/skills/research/SKILL.md). The internal process definition.

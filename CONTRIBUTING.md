@@ -2,7 +2,7 @@
 
 This page is for contributors: anyone adding, editing, or restructuring skills, agents, or documentation in the han plugin. If you just want to use the plugin, start with the [Plugin landing page](./README.md) or the [Quickstart](./docs/quickstart.md).
 
-> See also: [Plugin landing page](./README.md) · [Concepts](./docs/concepts.md) · [Sizing](./docs/sizing.md) · [YAGNI](./docs/yagni.md)
+> See also: [Plugin landing page](./README.md) · [Concepts](./docs/concepts.md) · [Sizing](./docs/sizing.md) · [YAGNI](./docs/yagni.md) · [Evidence](./docs/evidence.md)
 
 ## TL;DR
 
@@ -86,5 +86,6 @@ Before opening the PR, run through this checklist:
 - [Concepts](./docs/concepts.md). Skill vs. agent mental model.
 - [Sizing](./docs/sizing.md). How the swarming skills classify work and scale dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based rule for what survives a review.
+- [Evidence](./docs/evidence.md). The three principles, the trust-class vocabulary, and the corroboration gate every evidence-aware skill and agent applies.
 - [`docs/guidance/skill-building-guidance/`](./docs/guidance/skill-building-guidance/). Skill-authoring guidance.
 - [`docs/guidance/agent-building-guidelines/`](./docs/guidance/agent-building-guidelines/). Agent-authoring guidance.

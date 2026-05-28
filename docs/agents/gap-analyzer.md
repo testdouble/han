@@ -2,7 +2,7 @@
 
 Operator documentation for the `gap-analyzer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/gap-analyzer.md`](../../plugin/agents/gap-analyzer.md).
 
-> See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md)
+> See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -15,6 +15,7 @@ Operator documentation for the `gap-analyzer` agent in the han plugin. This docu
 - **Adversarial: gaps exist until proven otherwise.** The agent's default stance is that the current state fails to satisfy the desired state somewhere. The work is to find every gap and back each with evidence from both inputs.
 - **Four-category taxonomy.** Missing (no correspondence in current state), Partial (correspondence exists but coverage is incomplete), Divergent (both states address the concern in incompatible ways), Implicit (desired state assumes a capability the current state neither confirms nor denies).
 - **Evidence pair per finding.** Every gap requires a citation from the desired state and a citation from the current state (or an explicit *"not found, searched X"*). A finding without a pair is not valid.
+- **Canonical evidence rule applies.** The agent reads the canonical [evidence rule](../evidence.md) at runtime. Each citation in an evidence pair carries a trust class (codebase, web, provided). When a current-state citation is a single web source, the corroboration gate applies before that gap can drive a recommendation. When the desired-state side is silent ("the spec does not address X"), the gap is recorded as Implicit with the no-evidence label rather than inferring intent.
 - **Behavior over implementation.** The agent compares features and behaviors. Technology differences are noted but not investigated unless asked. Implementation-level comparisons across mismatched abstraction levels are an anti-pattern.
 - **Adversarial self-check before reporting.** For every gap, the agent tries to disprove it by searching for evidence the gap is covered elsewhere. Only findings that survive the challenge are reported.
 
@@ -101,3 +102,4 @@ URL: https://standards.ieee.org/ieee/829/3787/
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Used by `/gap-analysis` swarms to verify each gap against the current state.
 - [`content-auditor`](./content-auditor.md). Sibling for before-and-after content preservation (different problem).
 - [`/gap-analysis`](../skills/gap-analysis.md). Always dispatches this agent.
+- [Evidence](../evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes for evidence pairs, the corroboration gate for single-source web claims, and the no-evidence label for silent desired-state evidence.

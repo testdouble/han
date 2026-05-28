@@ -2,7 +2,7 @@
 
 Operator documentation for the `/investigate` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/investigate/SKILL.md`](../../plugin/skills/investigate/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md)
+> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [Evidence](../evidence.md)
 
 ## TL;DR
 
@@ -127,6 +127,7 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`/research`](./research.md). The question-shaped sibling. Use it when nothing is broken and you want options, prior art, or how something works before committing.
 - [`evidence-based-investigator`](../agents/evidence-based-investigator.md). The agent the skill dispatches in parallel for multi-angle evidence gathering.
 - [`adversarial-validator`](../agents/adversarial-validator.md). The agent that challenges evidence and fix after the plan is drafted.
+- [Evidence](../evidence.md). The canonical evidence rule the skill applies to every finding. Codebase findings stand on their citation; web-source context is subject to the corroboration gate when it drives the proposed fix; no-evidence states are labeled rather than guessed at.
 - [`concurrency-analyst`](../agents/concurrency-analyst.md), [`behavioral-analyst`](../agents/behavioral-analyst.md), [`data-engineer`](../agents/data-engineer.md). Specialist analysts dispatched alongside the investigators when the symptom classification calls for them.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
