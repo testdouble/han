@@ -76,6 +76,7 @@ The plan is presented for approval before any code is written. Approve to trigge
 - **Let the validator push back.** The adversarial validation step is not ceremony. It frequently reshapes the root cause analysis. Treat validation findings as first-class input.
 - **Pair with `/iterative-plan-review`** if the fix plan needs further stress-testing before implementation, especially when the fix touches cross-cutting concerns.
 - **Re-run after the fix.** Once the fix has shipped, re-run against the incident context with *"did this fix hold?"* framing. Validation findings from the new run confirm or falsify the hypothesis under production conditions.
+- **For the full end-to-end bug-handling workflow**, including when to triage instead of investigating now and how to bring in production logs and browser integrations, see [How to triage and investigate a bug](../how-to/triage-and-investigate-a-bug.md).
 
 ## Cost and latency
 

@@ -89,6 +89,7 @@ The report is presented for review. Accept it, ask for specific revisions, or re
 - **Let the validator reshape the answer.** The adversarial pass is not ceremony. It frequently downgrades a single-source recommendation or surfaces a stale benchmark. Treat validation findings as first-class input.
 - **Size up for breadth, not depth.** Use `large` when the question spans several domains or many options, not when one option needs more detail. A narrower follow-up question beats an over-sized run.
 - **Pair with `/plan-a-feature` next.** Once `/research` has recommended an option, `/plan-a-feature` turns that decision into a behavioral spec. The skills are deliberately separate; `/research` decides *what*, `/plan-a-feature` specifies it.
+- **For the full end-to-end research-and-ADR workflow**, including how to capture the recommendation so the team has a single canonical record of the decision, see [How to research a decision and capture it](../how-to/research-a-decision.md).
 
 ## Cost and latency
 

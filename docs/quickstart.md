@@ -2,7 +2,9 @@
 
 New to the han plugin? Pick the path that matches what you are trying to do right now. Each path is a short sequence (a few skills) that compose into a useful result. You can follow one path end to end, or jump off at any step.
 
-> See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [Skills](./skills/README.md) · [Agents](./agents/README.md) · [Sizing](./sizing.md) · [YAGNI](./yagni.md)
+> See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [How-to guides](./how-to/README.md) · [Skills](./skills/README.md) · [Agents](./agents/README.md) · [Sizing](./sizing.md) · [YAGNI](./yagni.md)
+
+If you want the full end-to-end recipe for one of these paths (specific prompts, what to do between steps, what to expect at each one), the [how-to guides](./how-to/README.md) cover planning, bug triage, and research workflows in depth. The quickstart points you at the right path; the how-to walks you through it.
 
 ## Which path are you on?
 
@@ -20,13 +22,9 @@ Not sure which? Start with the [Concepts](./concepts.md) page, then come back.
 
 You have a feature idea and want a specification grounded in evidence, then a plan for how to build it.
 
-1. **[`/plan-a-feature`](./skills/plan-a-feature.md).** Run a relentless, evidence-based interview that walks the design tree, dispatches specialist reviewers, and produces `feature-specification.md` plus a decision log and team findings.
-2. **[`/stakeholder-summary`](./skills/stakeholder-summary.md)** *(optional).* When the spec needs sign-off from non-technical stakeholders (leadership, product, customer-facing reviewers) before the team commits to building it, turn the spec into a plain-language summary with Mermaid diagrams and share that.
-3. **[`/plan-a-phased-build`](./skills/plan-a-phased-build.md)** *(optional).* When the feature is large enough to ship in slices rather than all at once, split the spec into a numbered sequence of vertical-slice phases, each independently demoable to a real person.
-4. **[`/plan-implementation`](./skills/plan-implementation.md).** Turn the specification (or a single phase from the phased build) into an implementation plan through a project-manager-led team conversation.
-5. **[`/iterative-plan-review`](./skills/iterative-plan-review.md)** *(optional).* Stress-test either plan through multiple codebase-grounded review passes before committing to it.
-6. **[`/plan-work-items`](./skills/plan-work-items.md)** *(optional).* Divide an implementation plan into individual, independently-grabbable work items.
-7. **[`/tdd`](./skills/tdd.md)** *(when you build it).* Implement the plan test-first through a BDD-framed red-green-refactor loop. The specification becomes the behavior test list; the skill enforces an observed-failure gate and applies your coding standards and ADRs in green and refactor.
+The full walkthrough, with prompts, decision points, and what to expect at each step, lives in **[How to plan a feature, end to end](./how-to/plan-a-feature.md)**. The skills in the loop, in order:
+
+[`/plan-a-feature`](./skills/plan-a-feature.md) → [`/stakeholder-summary`](./skills/stakeholder-summary.md) *(optional)* → [`/plan-a-phased-build`](./skills/plan-a-phased-build.md) *(optional)* → [`/plan-implementation`](./skills/plan-implementation.md) → [`/iterative-plan-review`](./skills/iterative-plan-review.md) *(optional)* → [`/plan-work-items`](./skills/plan-work-items.md) *(optional)* → [`/tdd`](./skills/tdd.md) *(when you build it)*.
 
 **You are done when:** you have a `feature-specification.md` and a `feature-implementation-plan.md` in the same folder, each with a cross-referenced decision log and review findings. If the feature was large enough to phase, you also have a `build-phase-outline.md` that orders the work into demoable vertical slices. When you build it, the code lands behavior by behavior through `/tdd`, with tests leading.
 
@@ -36,9 +34,9 @@ You have a feature idea and want a specification grounded in evidence, then a pl
 
 Something is broken. You want a root cause, not a guess.
 
-1. **[`/issue-triage`](./skills/issue-triage.md)** *(as needed).* If the report is vague or incomplete, classify the issue, identify missing information, and capture the next step before you investigate.
-2. **[`/investigate`](./skills/investigate.md).** Evidence-based investigation: file paths, line numbers, git history, test coverage. Produces an investigation report with the root cause and a proposed fix that an `adversarial-validator` has already tried to falsify.
-3. **[`/iterative-plan-review`](./skills/iterative-plan-review.md)** *(optional).* If the investigation produced a fix plan you do not trust, iterate on it before writing code.
+The full walkthrough, including how to bring in production logs and when to triage instead of investigating right away, lives in **[How to triage and investigate a bug](./how-to/triage-and-investigate-a-bug.md)**. The skills in the loop:
+
+[`/issue-triage`](./skills/issue-triage.md) *(as needed)* → [`/investigate`](./skills/investigate.md) → [`/iterative-plan-review`](./skills/iterative-plan-review.md) *(optional)*.
 
 **You are done when:** you have a report that names the root cause with file-level evidence, and a fix plan that has survived adversarial review.
 
@@ -78,10 +76,11 @@ Every other path works better when the plugin has rich context about your projec
 
 You have a question, not a bug and not yet a feature. You want the options, the prior art, and a recommendation you can trust before you pick a direction.
 
-1. **[`/research`](./skills/research.md).** Research the open-ended question across the codebase, the open web, and any material you provide. Produces a report: the framed question, numbered evidence each with a checkable source, an options landscape with trade-offs, a recommended option, and `adversarial-validator` findings that already tried to break the recommendation. Scales with [size](./sizing.md), defaulting to small.
-2. **[`/plan-a-feature`](./skills/plan-a-feature.md)** *(optional).* Once `/research` recommends an option, turn that decision into a behavioral specification.
+The full walkthrough, including how to capture the recommendation as an ADR so the team has a single canonical record, lives in **[How to research a decision and capture it](./how-to/research-a-decision.md)**. The skills in the loop:
 
-**You are done when:** you have a research report whose recommendation survived an adversarial pass, with every claim tied to a source you can check yourself. If the request was really a bug, a spec, a standard, an artifact comparison, or an architecture assessment, `/research` routes you to the skill that owns it instead.
+[`/research`](./skills/research.md) → [`/architectural-decision-record`](./skills/architectural-decision-record.md) → [`/plan-a-feature`](./skills/plan-a-feature.md) *(optional next step)*.
+
+**You are done when:** you have a research report whose recommendation survived an adversarial pass, with every claim tied to a source you can check yourself, and the decision captured as an ADR. If the request was really a bug, a spec, a standard, an artifact comparison, or an architecture assessment, `/research` routes you to the skill that owns it instead.
 
 ---
 
@@ -110,6 +109,7 @@ Every planning, review, and standards skill applies an evidence-based YAGNI rule
 ## Where to go next
 
 - Pick a skill from the [Skills Index](./skills/README.md).
+- Follow a how-to guide from the [How-to index](./how-to/README.md) when you want the full end-to-end recipe for one of the paths above.
 - Skim the [Agents Index](./agents/README.md) to understand the specialists the skills dispatch.
 - Read [Concepts](./concepts.md) if the skill/agent split is still fuzzy.
 - Read [Sizing](./sizing.md) to understand how the swarming skills decide how many agents to dispatch.

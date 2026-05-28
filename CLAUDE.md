@@ -26,6 +26,7 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 │   ├── yagni.md
 │   ├── agents/         # Long-form docs for all 23 agents, plus README
 │   ├── skills/         # Long-form docs for all 21 skills, plus README
+│   ├── how-to/         # End-to-end workflow guides (planning, bugs, research)
 │   ├── guidance/       # Contributor-facing authoring guidance
 │   ├── templates/      # Templates and coverage rule for long-form docs
 │   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
@@ -50,7 +51,8 @@ The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form 
 ### Core mental model (`docs/`)
 
 - **[docs/concepts.md](./docs/concepts.md).** The skill-vs-agent model that runs through the whole plugin. Read once before doing anything else. Every other doc assumes this vocabulary.
-- **[docs/quickstart.md](./docs/quickstart.md).** Four path-based recipes (plan a feature, investigate a bug, review code, set up a project). Use when picking which skill to run for a specific situation.
+- **[docs/quickstart.md](./docs/quickstart.md).** Five path-based recipes (plan a feature, investigate a bug, review code, set up a project, research your options). Use when picking which skill to run for a specific situation. For the full end-to-end recipe for planning, bugs, or research, the quickstart points into the how-to guides below.
+- **[docs/how-to/README.md](./docs/how-to/README.md).** Three end-to-end workflow guides (plan a feature, triage and investigate a bug, research a decision) that walk the whole loop with specific prompts, decision points, and what to expect at each step. Use when the operator wants the full recipe and not just a path-picker. The quickstart is canonical for picking a path; a how-to is canonical for running it.
 - **[docs/sizing.md](./docs/sizing.md).** The small / medium / large dispatch model used by the seven swarming skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`). Use when a swarming skill needs to decide team size, or when a user asks what `medium` / `large` mean.
 - **[docs/yagni.md](./docs/yagni.md).** The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies before committing items to its artifact. Use when explaining why an item was deferred or rejected from a plan / review / ADR.
 - **[docs/evidence.md](./docs/evidence.md).** The three structural principles (proximity to origin, corroboration, explicit no-evidence labeling) that define what "evidence-based" means in Han, plus the trust-class vocabulary (codebase / web / provided) that grounds the corroboration gate. Use when a skill, agent, or operator asks what counts as valid evidence, how to label uncorroborated claims, or what to do when no evidence exists at all.
