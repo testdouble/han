@@ -1,5 +1,51 @@
 # Han Release Notes
 
+## v2.7.0
+
+This release adds a new operational runbook skill, a new adversarial on-call agent wired into six existing skills, and a canonical evidence rule extracted out of `/research` into a plugin-wide reference that long-form docs and agent prompts now point at. The shipped catalog moves from 20 skills and 22 agents (v2.6.2) to 21 skills and 23 agents. Operators should notice three concrete things: `/runbook` is available for the first time, six review and planning skills (`/code-review`, `/architectural-analysis`, `/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`, `/gap-analysis`) now include `on-call-engineer` in their swarm rosters, and `/research` reports now end in a single indexed `Sources` registry instead of separate `Artifacts` and `References` sections. The release also lands a new how-to guide set, a "why solo and small teams" intro doc, and a documentation drift sweep across long-form docs.
+
+### New `on-call-engineer` agent
+
+A new adversarial-review agent ships at `plugin/agents/on-call-engineer.md`, modeled on a veteran on-call engineer who has been paged at 3am for the failure modes most reviewers miss: silent retries, partial writes, unbounded queues, missing timeouts, log lines that lie, and recovery paths that have never been exercised. The long-form operator doc lives at `docs/agents/on-call-engineer.md`. The agent is wired into six skills as a swarm member: `/code-review`, `/architectural-analysis`, `/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`, and `/gap-analysis`. Each of those skills now dispatches `on-call-engineer` alongside its existing roster so code-level resilience and operability concerns are surfaced during review and planning, not after the first incident. Counts in `README.md`, `CLAUDE.md`, `docs/concepts.md`, `docs/agents/README.md`, and `docs/yagni.md` are updated to reflect 23 agents. (PRs #16, #17)
+
+### New `/runbook` skill
+
+A new `/runbook` skill ships at `plugin/skills/runbook/SKILL.md` with a companion `plugin/skills/runbook/references/runbook-template.md`. The skill creates or updates a runbook for a single operational scenario: an alert that has fired, an incident, a recurring scheduled task, or a known failure mode on a live service. It applies a YAGNI preflight before writing: the scenario must be real (the alert has fired, the task recurs, or the failure mode exists on a service that receives traffic) before the skill produces the document. Each invocation produces one runbook. Sibling skill docs gain cross-links to `/runbook` where the handoff is natural, and the long-form operator doc at `docs/skills/runbook.md` describes the YAGNI preflight, the template structure, and how the skill differs from `/project-documentation` and `/architectural-decision-record`. Counts in `README.md`, `CLAUDE.md`, `docs/concepts.md`, `docs/skills/README.md`, and `docs/yagni.md` are updated to reflect 21 skills. (PR #21)
+
+### Canonical evidence rule extracted
+
+A new plugin-wide reference ships at `plugin/references/evidence-rule.md`. It defines the three structural principles every evidence-bearing skill and agent now applies (proximity to origin, corroboration across independent sources, explicit labeling when no evidence exists) and the trust-class vocabulary (codebase, web, provided) that grounds the corroboration gate. The trust-class vocabulary originated inside `/research` and is now extracted so other skills and agents share one source of truth instead of restating it inline. The canonical operator-facing summary lives at `docs/evidence.md`, and the rule is threaded through long-form docs for `/research`, `/investigate`, `/gap-analysis`, `/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`, `/coding-standard`, `/architectural-decision-record`, and `/runbook`, plus the `evidence-based-investigator`, `gap-analyzer`, `junior-developer`, and `project-manager` agents. The `on-call-engineer` long-form doc also gains the previously-missing Evidence cross-link. (PR #22)
+
+### `/research` output structure: single `Sources` registry
+
+`/research` reports previously ended in two separate sections, `Artifacts` and `References`, which forced the same source to be listed twice when it functioned as both. The two sections are now merged into a single indexed `Sources` registry at the bottom of the report, with stable IDs (A1, A2, ...) and one entry per source carrying link, retrieval date, trust class, plain-language summary, and corroboration status in one place. Implemented in `plugin/skills/research/SKILL.md` and `plugin/skills/research/references/research-report-template.md`. This is an output-shape change in the report `/research` produces; operators reading older research artifacts will still see the old two-section layout, while new runs produce the merged registry. (PR #26)
+
+### End-to-end how-to guides
+
+A new `docs/how-to/` folder ships with four documents: `docs/how-to/README.md`, `docs/how-to/plan-a-feature.md`, `docs/how-to/triage-and-investigate-a-bug.md`, and `docs/how-to/research-a-decision.md`. Each guide walks one complete workflow loop with the specific prompts to run, the decision points along the way, and what to expect from each skill at each step. The quickstart at `docs/quickstart.md` is re-scoped as a path-picker that hands off to the right how-to instead of trying to describe the full workflow itself. `CLAUDE.md` gains a doc-map entry pointing operators at the how-to set when they want the full recipe and not just a path-picker. (PR #24)
+
+### New "why solo and small teams" intro doc
+
+A new introductory document ships at `docs/why-solo-and-small-teams.md`. It gives the honest fit answer for teams evaluating Han: the plugin is built for solo product engineers and small teams, not for large teams or enterprise. The doc is linked from `README.md` and `docs/concepts.md` so a prospective operator can find the fit answer before installing. `CLAUDE.md` gains a doc-map entry for it. (PR #27)
+
+### Documentation drift sweep
+
+A pass across the long-form docs corrects several specific drifts. `docs/skills/update-pr-description.md` is corrected so the description is authored by the `junior-developer` agent in Step 4 rather than reviewed in a separate Step 6 pass, and the step count drops from seven to six. `docs/skills/iterative-plan-review.md` is corrected so iteration caps scale with sizing (small=1, medium=2, large=3) instead of the previously-stated "five iterations for lightweight" claim. `docs/skills/plan-a-feature.md` updates its TL;DR and "What you get back" section to reflect the optional fourth `feature-technical-notes.md` artifact that `/plan-a-feature` already produces. `docs/skills/gap-analysis.md` makes the downstream pairing with `/plan-a-phased-build` explicit so operators know what to run next when the gap analysis is in hand.
+
+Research artifacts backing the changes in this release land in `docs/research/`: `evidence-hierarchy.md`, `runbook-skill-research.md`, `on-call-engineer-research.md`, `artifacts-references-dedupe.md`, `how-to-docs-structure.md`, `enterprise-ai-tooling-integration.md`, `adhd-application-to-han.md`, and `adhd-application-to-han.with-disambiguation.md`.
+
+### Pull requests in this release
+
+- "ADHD" swarm research (#16) — @mxriverlynn
+- Add on-call-engineer custom agent, integrated into agent swarm (#17) — @mxriverlynn
+- Runbook skill (#21) — @mxriverlynn
+- Evidence and hierarchy (issue #19) (#22) — @mxriverlynn
+- Add how-to guides for planning, bugs, research (Issue #20) (#24) — @mxriverlynn
+- Research skill: Artifacts vs References dedupe (#23) (#26) — @mxriverlynn
+- Docs: Why a focus on solo and small teams? (#27) — @mxriverlynn
+
+Full changelog: https://github.com/testdouble/han/blob/v2.7.0/CHANGELOG.md#v270
+
 ## v2.6.2
 
 This release bundles three refactors that tighten how shipped skills and the repo's own guidance load context. No new skills or agents ship, none are renamed or removed, and no user-visible skill behavior changes. Operators should notice `/tdd` consuming less context per invocation, `/coding-standard` writing index files instead of symlinks, and the repo's own `.claude/rules/` layout matching the index-file shape the skill now produces.

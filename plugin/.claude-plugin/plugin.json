@@ -1,5 +1,5 @@
 {
   "name": "han",
   "description": "Evidence-based planning, investigation, and documentation skills for software projects. Includes issue triage, deep-dive investigations with root cause analysis, iterative plan refinement, architectural decision records (ADRs), project and feature documentation, coding standards, code reviews, test planning, PR descriptions, PR code reviews, and adversarial security vulnerability analysis.",
-  "version": "2.6.2"
+  "version": "2.7.0"
 }
