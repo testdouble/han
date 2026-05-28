@@ -15,6 +15,8 @@ Han is built out of two kinds of things: **skills** and **agents**. If you read 
 
 That is the whole model. Everything else is vocabulary.
 
+> **Evaluating Han for a larger org?** Han is built for solo product engineers and small teams, not for large teams or enterprise. Read [Why solo and small teams, and not large teams or enterprise?](./why-solo-and-small-teams.md) for the honest fit answer before going further.
+
 ## Skills: the process layer
 
 A skill is a fixed sequence of steps that Claude Code runs when you type its slash command.
