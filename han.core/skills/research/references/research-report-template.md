@@ -10,9 +10,12 @@ PLAIN LANGUAGE. AT THE VERY TOP. NO jargon, no file paths, no URLs, no IDs.
 A reader who stops here has the answer: what the research found and what is
 recommended, in a few sentences. Close with one phrase on how solid it is
 (for example: "well-corroborated", "rests on a single source", "reasoned, not
-evidenced — exploratory mode"). This is the only section a non-technical reader
-needs.
+evidenced — exploratory mode"), then the formal confidence rating on its own
+labeled line so a reader who stops here sees it. The supporting risk reasoning
+stays in Validation. This is the only section a non-technical reader needs.
 -->
+
+- **Confidence:** High / Medium / Low
 
 ## Research Results
 
@@ -86,29 +89,30 @@ rewritten into the "No clear winner" form. -->
 <!--
 AT THE VERY BOTTOM. An indexed registry of EVERY information source used that
 is relevant to the results. ALWAYS present, even for a minimal run — never
-omitted. Each entry is cross-referenced by its ID (A#) from Research Results,
-Options, and the Recommendation, so every conclusion traces to its sources.
-The Summary stays ID-free.
+omitted. Every A# cited inline in Research Results, Options, or the
+Recommendation must RESOLVE to an entry here; that resolvability is the
+traceability invariant. The Summary stays ID-free.
 
-Each entry carries the citation pointer (title, link, retrieval date) and the
-structured evaluation (trust class, summary, evidence status) in one place —
-there is no separate bibliography section.
+Render the registry as a COMPACT TABLE by default — one row per source with its
+ID, title/source, link or location, retrieval date (web only), trust class,
+one-line summary, and evidence status. Reserve a full prose summary (the "A#
+detail" blocks below) for the sources the RECOMMENDATION rests on; every other
+source stays a single table row. Entry depth scales with the band; the section
+itself is always present.
 -->
 
-### A1: {short title of the source}
+| ID | Source | Link / location | Retrieved | Trust class | Summary (one line) | Evidence status |
+|---|---|---|---|---|---|---|
+| A1 | {short title} | {URL / `repo/path.ext:line` / `provided: …`} | {YYYY-MM-DD or n/a} | codebase / web / provided | {one line on what it says} | corroborated by {A#} / single source (caveated) / contradicted by {A#} |
+| A2 | … | … | … | … | … | … |
+
+<!-- Full prose detail ONLY for sources the recommendation rests on. Every other
+source stays in the table above. Number in the order discovered. -->
+
+### A1: {short title of the source} — recommendation-bearing
 
 - **Link / location:** {full URL — or `repo/path.ext:line` — or `provided: {reference}`}
 - **Retrieved:** {YYYY-MM-DD for web sources; "n/a" for codebase or provided material}
 - **Trust class:** codebase (trusted current-state anchor) | web (outside the trust boundary) | provided (operator-supplied — interested-party scrutiny)
 - **Summary:** {one short paragraph: what this source says that is relevant to the results}
 - **Evidence status:** corroborated by {A#} | single source (caveated) | contradicted by {A#}
-
-### A2: {short title of the source}
-
-- **Link / location:** ...
-- **Retrieved:** ...
-- **Trust class:** ...
-- **Summary:** ...
-- **Evidence status:** ...
-
-<!-- Add more entries as needed. Number in the order discovered. -->
