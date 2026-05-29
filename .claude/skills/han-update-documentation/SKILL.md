@@ -73,7 +73,7 @@ Enumerate the full set:
 6. **All templates** under `docs/templates/`.
 7. **Root files** (`README.md`, `CONTRIBUTING.md`, `CLAUDE.md`).
 
-Sweep mode always audits the counts in `README.md`, `CLAUDE.md`, and `docs/concepts.md` against the actual entity counts found in this step.
+Sweep mode always audits that `README.md`, `CLAUDE.md`, and `docs/concepts.md` reference the skills and agents without a hardcoded count, and that every entity found in this step appears in the indexes and the CLAUDE.md catalog.
 
 ### Out-of-scope files (both modes)
 
@@ -103,7 +103,7 @@ After Step 3, look across entities, not just within them.
 2. **Bidirectional pairings.** For every skill or agent in `INV` whose long-form Related documentation names another, verify the other side links back where the link adds value. One-direction pairings without a reason are findings.
 3. **Indexes are consistent with reality.** Use Grep to confirm every skill in `plugin/skills/` appears in `docs/skills/README.md` exactly once, and every agent in `plugin/agents/` appears in `docs/agents/README.md` exactly once. Stray entries pointing at non-existent files are findings.
 4. **CLAUDE.md catalog completeness.** Every entity in `INV` (skills and agents) has a one-line entry in the CLAUDE.md doc map. Missing entries are findings.
-5. **Counts.** Compare the actual count of `plugin/skills/*` directories and `plugin/agents/*.md` files against the numeric claims in `README.md`, `CLAUDE.md` (the "Counts to verify when editing indexes" line), and `docs/concepts.md`. Mismatches are findings. Sweep mode always runs this check; branch mode runs it only if the branch added or removed skills or agents.
+5. **Count-free references.** Confirm `README.md`, `CLAUDE.md` (the "Indexes stay complete, not counted" line), and `docs/concepts.md` describe the skills and agents without a hardcoded total. A reintroduced count (for example "21 skills" or "23 agents") is a finding. Sweep mode always runs this check; branch mode runs it only if the branch added or removed skills or agents.
 6. **The `## How skills compose` block in `docs/skills/README.md`** references current skill names only. References to renamed or removed skills are findings.
 
 Add each finding to the working list with the same shape as Step 3.
@@ -130,7 +130,7 @@ Re-read every file that was edited or created. Confirm:
 
 1. **Every finding from Steps 3 and 4 was either applied or surfaced as needing operator judgment.**
 2. **No new internal links are broken.** Run a Grep across the edited files for `](../` and `](./` and spot-check a few resolved paths.
-3. **Counts in `README.md`, `CLAUDE.md`, and `docs/concepts.md`** match the actual counts after the pass.
+3. **`README.md`, `CLAUDE.md`, and `docs/concepts.md` stay count-free** — no hardcoded entity total was introduced during the pass.
 4. **No em-dashes were introduced** in any edited file.
 5. **No `{placeholder}` braces from templates remain** in any newly-created long-form doc.
 
@@ -140,7 +140,6 @@ Then report to the operator:
 - **Entities audited**, grouped by type (skills audited, agents audited, etc.).
 - **Findings applied**, one bullet per fix, with the file path.
 - **Findings surfaced for operator judgment**, with the recommended resolution.
-- **Counts before and after**, when sweep mode or when counts changed.
 - **Files changed**, as a list of paths the operator can pass to `git diff` for review.
 
 Do not commit, push, or open a PR — those decisions are the operator's. The skill stops at this report.

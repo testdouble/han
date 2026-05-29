@@ -147,7 +147,7 @@ URL: https://code.claude.com/docs/en/memory
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Evidence](../evidence.md). The companion rule the skill applies to the standard's supporting evidence: trust classes, the corroboration gate for web sources, and the no-evidence label.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/architectural-decision-record`](./architectural-decision-record.md). For decisions rather than rules. Link the standard to the ADR when the rule embeds a choice.
 - [`/project-documentation`](./project-documentation.md). For system and feature documentation that is not a rule.
 - [`/code-review`](./code-review.md). Reads standards during every review. Violations become findings.

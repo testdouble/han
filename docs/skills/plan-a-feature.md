@@ -188,7 +188,7 @@ URLs: https://asana.com/resources/raid-log and https://projectmanagementcompass.
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Evidence](../evidence.md). The companion rule that characterizes how strong each surviving commitment's evidence is. Trust classes, the corroboration gate, and the no-evidence label.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative, project-manager-led team conversation.
 - [`/stakeholder-summary`](./stakeholder-summary.md). The optional sibling for non-technical feedback. Takes the `feature-specification.md` produced here and turns it into a plain-language stakeholder summary with Mermaid diagrams, for sharing with leadership, product, or customer-facing reviewers before implementation kicks off.

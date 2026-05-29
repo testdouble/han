@@ -115,7 +115,7 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule. This skill does not gate on it; enforcement belongs upstream.
 - [`project-manager`](../agents/project-manager.md). Dispatched in Step 5 to draft the work item breakdown.
 - [`/plan-implementation`](./plan-implementation.md). Pair upstream to produce the implementation plan this skill breaks down.

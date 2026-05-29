@@ -200,7 +200,7 @@ URL: https://ieeexplore.ieee.org/document/1204375
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`/plan-a-feature`](./plan-a-feature.md). The prior step. Produces the `feature-specification.md` this skill consumes. Running the two in sequence is the intended flow: *what* first, *how* second.
 - [`/stakeholder-summary`](./stakeholder-summary.md). The optional intermediate step. Turns the `feature-specification.md` into a plain-language summary for non-technical stakeholders before this skill runs, so the implementation plan starts from a shape stakeholders have already greenlit.

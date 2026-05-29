@@ -123,7 +123,7 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/issue-triage`](./issue-triage.md). Run before investigation when the incoming report is too vague to trace; triage produces the sharp problem statement investigation needs.
 - [`/research`](./research.md). The question-shaped sibling. Use it when nothing is broken and you want options, prior art, or how something works before committing.
 - [`evidence-based-investigator`](../agents/evidence-based-investigator.md). The agent the skill dispatches in parallel for multi-angle evidence gathering.

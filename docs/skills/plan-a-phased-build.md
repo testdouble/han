@@ -195,7 +195,7 @@ URL: see [`information-architect` agent definition](../../plugin/agents/informat
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [`information-architect`](../agents/information-architect.md). The agent the skill dispatches at runtime to review the rendered outline. Also the agent that reviewed the output template before the skill shipped.
 - [`/gap-analysis`](./gap-analysis.md). Pair upstream when the source artifact is a comparison between current and desired state. Run `/gap-analysis` first to produce the gap report, then point this skill at the report. `G-NNN` gap IDs become source citations on the phase entries that close them.
 - [`/plan-a-feature`](./plan-a-feature.md). Pair upstream when the source artifact is a single feature that needs a phased rollout. Run `/plan-a-feature` first to produce the spec, then point this skill at the spec when the feature is large enough to ship in slices rather than all at once.

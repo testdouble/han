@@ -36,9 +36,9 @@ A single changed file can pull multiple entities into scope. Always add every en
 
 Some path changes drag additional entities into scope even when those entities' own files were not edited.
 
-- **A new skill added** under `plugin/skills/{name}/`: also audit `docs/skills/README.md` (must list it), `CLAUDE.md` (catalog entry and counts), `README.md` (counts), `docs/concepts.md` (counts).
+- **A new skill added** under `plugin/skills/{name}/`: also audit `docs/skills/README.md` (must list it), `CLAUDE.md` (catalog entry), `README.md`, `docs/concepts.md` (all must reference it without a hardcoded count).
 - **A skill removed or renamed** under `plugin/skills/`: same as added, plus every other skill or agent doc whose Related Documentation section linked to the old name.
-- **A new agent added** under `plugin/agents/`: also audit `docs/agents/README.md`, `CLAUDE.md` (catalog and counts), `README.md` (counts).
+- **A new agent added** under `plugin/agents/`: also audit `docs/agents/README.md`, `CLAUDE.md` (catalog entry), `README.md` (must reference it without a hardcoded count).
 - **An agent removed or renamed**: same as added, plus every skill doc that mentions dispatching the agent.
 - **A skill description (frontmatter) changed**: also audit `docs/skills/README.md` scent line, the skill's long-form `docs/skills/{name}.md` TL;DR, and the `CLAUDE.md` catalog entry. Sibling skills named in the boundary may need their reverse-boundary statement checked.
 - **An agent description (frontmatter) changed**: also audit `docs/agents/README.md` scent line, the agent's long-form `docs/agents/{name}.md` TL;DR.

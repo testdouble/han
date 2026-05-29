@@ -168,7 +168,7 @@ URL: https://www.nngroup.com/articles/5-whys/
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this agent applies. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Evidence](../evidence.md). The companion rule the agent applies alongside YAGNI. Trust classes, the corroboration gate, and the no-evidence label.
-- [Agents Index](./README.md). All 23 agents, grouped by role.
+- [Agents Index](./README.md). All agents, grouped by role.
 - [`project-manager`](./project-manager.md). The coordinator this agent pairs with in planning skill review rounds.
 - [`/plan-a-feature`](../skills/plan-a-feature.md) and [`/plan-implementation`](../skills/plan-implementation.md). Skills that always include this agent in their review rounds.
 - [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns even when the domain is "being a generalist."

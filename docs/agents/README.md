@@ -1,6 +1,6 @@
 # Agents
 
-All 23 agents in the han plugin, grouped by role. Each entry is a one-sentence scent line and a link to the agent's long-form doc.
+All agents in the han plugin, grouped by role. Each entry is a one-sentence scent line and a link to the agent's long-form doc.
 
 > See also: [Plugin landing page](../../README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md) · [All skills](../skills/README.md) · [Sizing](../sizing.md) · [YAGNI](../yagni.md)
 
@@ -8,7 +8,7 @@ All 23 agents in the han plugin, grouped by role. Each entry is a one-sentence s
 
 Most agents are dispatched *for you* by skills. You do not usually invoke them directly. Read [Concepts](../concepts.md) for the skill-vs-agent model before browsing this list. If you are looking to dispatch one directly, use the `Agent` tool with `subagent_type: han:{agent-name}`.
 
-Counts to verify when editing this index: 23 agent definitions in `plugin/agents/`, 23 long-form docs in `docs/agents/`.
+When editing this index, verify every agent definition in `plugin/agents/` has a long-form doc in `docs/agents/` and an entry below.
 
 ## Planning & facilitation
 

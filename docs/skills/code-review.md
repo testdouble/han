@@ -171,7 +171,7 @@ URL: https://itrevolution.com/product/accelerate/
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/gh-pr-review`](./gh-pr-review.md). Wraps this skill and posts the review to a GitHub PR.
 - [`/investigate`](./investigate.md). Next step when a CRIT finding hides a bug whose root cause needs deeper analysis.
 - [`/architectural-analysis`](./architectural-analysis.md). Run alongside when the change touches module boundaries.

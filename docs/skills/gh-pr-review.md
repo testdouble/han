@@ -98,7 +98,7 @@ URL: https://google.github.io/eng-practices/review/reviewer/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/code-review`](./code-review.md). The skill this one wraps. Use directly for local review without GitHub posting.
 - [`/update-pr-description`](./update-pr-description.md). For writing the PR description.
 - [`/investigate`](./investigate.md). Next step when a Critical finding hides a bug.

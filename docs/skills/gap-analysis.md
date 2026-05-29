@@ -202,7 +202,7 @@ URLs: https://hbr.org/2007/09/performing-a-project-premortem and https://en.wiki
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [Evidence](../evidence.md). The canonical evidence rule the skill applies when characterizing each gap's evidence pair. Trust classes, the corroboration gate for web-source claims, and the no-evidence label for silent desired-state evidence.
 - [`gap-analyzer`](../agents/gap-analyzer.md). The agent that performs the underlying gap analysis. The skill always dispatches it once and reads its full output.

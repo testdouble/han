@@ -32,10 +32,10 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 1. **`docs/skills/README.md` lists the skill** with a one-sentence scent line under the right group. If the skill's purpose changed groups, move it.
 2. **`docs/skills/README.md` scent matches current behavior.** A scent line that names a removed agent, a removed sub-skill, or an outdated capability is a finding.
 3. **CLAUDE.md skill catalog entry is present** and the one-liner matches current behavior.
-4. **CLAUDE.md "Counts to verify when editing indexes"** matches the actual count when entities were added or removed.
+4. **CLAUDE.md "Indexes stay complete, not counted" convention holds.** The skill has a long-form doc and a skills-index entry, and no removed skill is still listed. Verify completeness, not a count.
 5. **Bidirectional boundary statements.** If skill A's frontmatter says "use B instead," skill B's frontmatter mentions A in the reverse direction. Same for long-form `Do not invoke for` sections.
 6. **Bidirectional Related documentation links.** If `/foo` pairs with `/bar`, both long-form docs name the pairing.
-7. **README.md count** matches actual skill count, when sweep mode (or when this branch changed the count).
+7. **README.md skill references stay count-free.** The Skills Index links resolve and the surrounding text names no hardcoded skill count.
 
 ## Agents (`plugin/agents/{name}.md` + `docs/agents/{name}.md`)
 
@@ -61,13 +61,13 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 1. **`docs/agents/README.md` lists the agent** with a one-sentence scent line under the right role group.
 2. **Scent line matches current agent behavior.**
 3. **CLAUDE.md agent catalog list** (the by-role grouping) includes the agent.
-4. **CLAUDE.md "Counts to verify when editing indexes"** matches actual agent count when counts changed.
-5. **README.md count** matches actual agent count when counts changed.
+4. **CLAUDE.md "Indexes stay complete, not counted" convention holds.** The agent has a long-form doc and an agents-index entry, and no removed agent is still listed. Verify completeness, not a count.
+5. **README.md agent references stay count-free.** The Agents Index links resolve and the surrounding text names no hardcoded agent count.
 6. **Skills that dispatch this agent** name it in their long-form Related documentation section.
 
 ## Top-level concept docs (`docs/concepts.md`, `docs/quickstart.md`, `docs/sizing.md`, `docs/yagni.md`, `docs/writing-voice.md`)
 
-1. **Counts within the doc match reality.** `docs/concepts.md` quotes the skill and agent count.
+1. **`docs/concepts.md` stays count-free.** The "What does the plugin include?" bullets reference the skills and agents through their index links, not a hardcoded count.
 2. **Named skills/agents still exist** under those names. No mention of removed skills, no missing mention of skills added to relevant categories.
 3. **Cross-references resolve.** Every internal link points at a real file.
 4. **No stale protocols.** A claim like "the swarming skills are A, B, C, D, E, F, G" must list the actual seven sizing-aware skills.
@@ -89,13 +89,13 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 ## Templates (`docs/templates/**`)
 
 1. **Templates reflect the current expected shape of long-form docs.** If most long-form docs added a section the template lacks, propose adding it to the template (or treat the new section as drift to remove).
-2. **`coverage-rule.md`'s counts and rules are still accurate.**
+2. **`coverage-rule.md`'s rules are still accurate.** Verify the coverage rule (every skill and agent has a long-form doc) holds; do not track a count.
 
 ## Root files (`README.md`, `CONTRIBUTING.md`, `CLAUDE.md`)
 
 ### README.md
 
-1. **Counts in install/intro paragraphs are accurate.** "20 skills" and "22 agents" change when the actual count changes.
+1. **Install/intro paragraphs stay count-free.** The intro references the skills and agents without a hardcoded count, and the Skills Index and Agents Index links resolve.
 2. **Links to docs resolve.**
 3. **Maintainer list, license, and install instructions are still correct.**
 
@@ -109,7 +109,7 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 
 1. **Repository layout section reflects the actual on-disk structure.**
 2. **Doc map ("When to use which doc") lists every skill and agent long-form doc with a one-line description.**
-3. **Counts to verify when editing indexes line is accurate.**
+3. **"Indexes stay complete, not counted" convention line is accurate.** It describes the completeness check (every entity has a doc and an index entry), not a running total.
 4. **Conventions section matches what the docs actually do.**
 
 ## Reporting findings

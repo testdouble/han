@@ -186,7 +186,7 @@ URL: https://danluu.com/postmortem-lessons/
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this agent applies. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Agents Index](./README.md). All 23 agents, grouped by role.
+- [Agents Index](./README.md). All agents, grouped by role.
 - [`devops-engineer`](./devops-engineer.md). The sibling agent on the infrastructure side of the line. This agent reads application source; `devops-engineer` reads Dockerfiles, IaC, pipelines, manifests, observability platform config, and alert rules. The boundary is hard; the two agents are designed to be dispatched together for any ship-readiness pass.
 - [`concurrency-analyst`](./concurrency-analyst.md). Pair on async-heavy code. This agent flags blocking-I/O-in-async; the concurrency analyst goes deeper into races, locks, and deadlocks.
 - [`behavioral-analyst`](./behavioral-analyst.md). Pair on changes that cross module boundaries. This agent operates at the call site; behavioral-analyst operates at the module-boundary altitude.

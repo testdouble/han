@@ -166,7 +166,7 @@ URL: https://www.domainlanguage.com/ddd/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 21 skills, grouped by purpose.
+- [Skills Index](./README.md). All skills, grouped by purpose.
 - [Sizing](../sizing.md). The small / medium / large dispatch model this skill shares with the other swarming skills.
 - [`structural-analyst`](../agents/structural-analyst.md), [`behavioral-analyst`](../agents/behavioral-analyst.md), [`concurrency-analyst`](../agents/concurrency-analyst.md). The discovery analysts.
 - [`adversarial-security-analyst`](../agents/adversarial-security-analyst.md), [`data-engineer`](../agents/data-engineer.md), [`devops-engineer`](../agents/devops-engineer.md), [`on-call-engineer`](../agents/on-call-engineer.md), [`codebase-explorer`](../agents/codebase-explorer.md). The signal-selected specialists added at medium and large.
