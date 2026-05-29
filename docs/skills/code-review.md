@@ -1,6 +1,6 @@
 # /code-review
 
-Operator documentation for the `/code-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/code-review/SKILL.md`](../../plugin/skills/code-review/SKILL.md).
+Operator documentation for the `/code-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/code-review/SKILL.md`](../../han.core/skills/code-review/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 
@@ -139,7 +139,7 @@ The skill walks a ten-step process (Step 1.5 is a context loader inserted betwee
 
 ## YAGNI
 
-YAGNI in `/code-review` is **advisory-only** and runs as a two-pass procedure. **Pass 1, evidence test:** for every speculative addition (defensive code, single-implementation interfaces, configuration knobs no caller sets, instrumentation for non-flowing telemetry), check whether the diff contains evidence of need from one of the acceptable evidence types in [`yagni-rule.md`](../../plugin/references/yagni-rule.md). When evidence is present, do not flag. **Pass 2, anti-pattern check:** only items that fail Pass 1 are matched against the named anti-patterns; matches become `YAGNI-###` findings whose body names the failing evidence type, the matched anti-pattern, and the simpler form considered.
+YAGNI in `/code-review` is **advisory-only** and runs as a two-pass procedure. **Pass 1, evidence test:** for every speculative addition (defensive code, single-implementation interfaces, configuration knobs no caller sets, instrumentation for non-flowing telemetry), check whether the diff contains evidence of need from one of the acceptable evidence types in [`yagni-rule.md`](../../han.core/references/yagni-rule.md). When evidence is present, do not flag. **Pass 2, anti-pattern check:** only items that fail Pass 1 are matched against the named anti-patterns; matches become `YAGNI-###` findings whose body names the failing evidence type, the matched anti-pattern, and the simpler form considered.
 
 A YAGNI finding alone does not block a clean review; the posture is *make the cost of inclusion visible*, not *reject the change*. Critical-path correctness, security, and data-integrity findings are unaffected by this advisory posture and follow the standard severity rules. In Mode B and Mode C, the YAGNI checklist is skipped unless the user explicitly requests it, since the diff signal that distinguishes introduced code from pre-existing code is absent.
 
@@ -180,4 +180,4 @@ URL: https://itrevolution.com/product/accelerate/
 - [`test-engineer`](../agents/test-engineer.md), [`edge-case-explorer`](../agents/edge-case-explorer.md), [`structural-analyst`](../agents/structural-analyst.md), [`behavioral-analyst`](../agents/behavioral-analyst.md), [`concurrency-analyst`](../agents/concurrency-analyst.md). Conditional dispatches that join the roster when their signal appears in the file list.
 - [`data-engineer`](../agents/data-engineer.md), [`devops-engineer`](../agents/devops-engineer.md). Conditional dispatches for changes touching schemas/migrations/queries (data) or infra/CI/observability (devops).
 - [`on-call-engineer`](../agents/on-call-engineer.md). Conditional dispatch when the change adds or modifies application source with runtime resilience surface (outbound calls, retry logic, queue/buffer handling, async/await code, error-handling on failure paths, idempotency, schema migrations co-deployed with dependent code, new production code paths). Hard boundary against `devops-engineer`: this agent reads application source only.
-- [`SKILL.md` for /code-review](../../plugin/skills/code-review/SKILL.md). The internal process definition.
+- [`SKILL.md` for /code-review](../../han.core/skills/code-review/SKILL.md). The internal process definition.

@@ -1,6 +1,6 @@
 # /gh-pr-review
 
-Operator documentation for the `/gh-pr-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/gh-pr-review/SKILL.md`](../../plugin/skills/gh-pr-review/SKILL.md).
+Operator documentation for the `/gh-pr-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.github/skills/gh-pr-review/SKILL.md`](../../han.github/skills/gh-pr-review/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md)
 
@@ -103,4 +103,4 @@ URL: https://google.github.io/eng-practices/review/reviewer/
 - [`/update-pr-description`](./update-pr-description.md). For writing the PR description.
 - [`/investigate`](./investigate.md). Next step when a Critical finding hides a bug.
 - [`junior-developer`](../agents/junior-developer.md). Runs the pre-post clarity check against the drafted review body.
-- [`SKILL.md` for /gh-pr-review](../../plugin/skills/gh-pr-review/SKILL.md). The internal process definition.
+- [`SKILL.md` for /gh-pr-review](../../han.github/skills/gh-pr-review/SKILL.md). The internal process definition.

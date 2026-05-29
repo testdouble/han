@@ -1,6 +1,6 @@
 # user-experience-designer
 
-Operator documentation for the `user-experience-designer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/user-experience-designer.md`](../../plugin/agents/user-experience-designer.md).
+Operator documentation for the `user-experience-designer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/user-experience-designer.md`](../../han.core/agents/user-experience-designer.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md)
 

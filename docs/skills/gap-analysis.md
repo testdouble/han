@@ -1,6 +1,6 @@
 # /gap-analysis
 
-Operator documentation for the `/gap-analysis` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/gap-analysis/SKILL.md`](../../plugin/skills/gap-analysis/SKILL.md).
+Operator documentation for the `/gap-analysis` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/gap-analysis/SKILL.md`](../../han.core/skills/gap-analysis/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [Evidence](../evidence.md)
 
@@ -19,7 +19,7 @@ Operator documentation for the `/gap-analysis` skill in the han plugin. This doc
 - **The swarm runs by default.** A minimum viable team ships at every size and you opt out with `no swarm` if you want the lightweight pass. The swarm's job is to corroborate, contradict, and enrich what `gap-analyzer` produced — and to surface gaps the analyzer missed because it only thought about one actor type.
 - **Actor-perspective sweep is built in.** `junior-developer` is a required swarm member and runs an explicit actor sweep across every gap: enumerate every actor the desired state addresses or implies (human users and sub-roles, API callers, AI agents, integration partners, batch processes, internal services), check whether the gap holds for each, and raise `proposed_new_gap` whenever the analyzer's gap is correct for one actor but a *different* gap exists for another.
 - **Four sections, progressively disclosed.** Executive Summary → Indexed Gaps → optional Technical Details → Swarm Findings (default-on). Reading stops anywhere; what came before stands on its own. Optional sections are physically omitted when not requested, not collapsed.
-- **IA-designed template.** The report template was designed by `information-architect` against Rosenfeld & Morville's four IA systems, DITA topic typing, LATCH, Mark Baker's "Every Page is Page One", John Carroll's minimalism, JoAnn Hackos's audience-task mapping, and Dan Brown's 8 Principles of IA. The template lives at [`gap-analysis-report-template.md`](../../plugin/skills/gap-analysis/references/gap-analysis-report-template.md).
+- **IA-designed template.** The report template was designed by `information-architect` against Rosenfeld & Morville's four IA systems, DITA topic typing, LATCH, Mark Baker's "Every Page is Page One", John Carroll's minimalism, JoAnn Hackos's audience-task mapping, and Dan Brown's 8 Principles of IA. The template lives at [`gap-analysis-report-template.md`](../../han.core/skills/gap-analysis/references/gap-analysis-report-template.md).
 
 ## When to use it
 
@@ -155,7 +155,7 @@ The skill draws on two distinct provenance lines: the gap-analysis vocabulary it
 
 The four-category taxonomy (Missing / Partial / Divergent / Implicit) and the evidence-pair requirement come from the `gap-analyzer` agent's protocol, which is itself grounded in software-engineering specification practice. The taxonomy is the agent's own vocabulary. The skill renders gap entries using that taxonomy verbatim because translating *"Missing"* or *"Partial"* into looser language would degrade the precision a stakeholder needs to decide what kind of remediation each gap requires.
 
-URL: see [`gap-analyzer` agent definition](../../plugin/agents/gap-analyzer.md)
+URL: see [`gap-analyzer` agent definition](../../han.core/agents/gap-analyzer.md)
 
 ### Rosenfeld & Morville: *Information Architecture* (4th edition)
 
@@ -215,4 +215,4 @@ URLs: https://hbr.org/2007/09/performing-a-project-premortem and https://en.wiki
 - [`/plan-implementation`](./plan-implementation.md). Pair downstream when the gap report will drive remediation work. The gap report's Section 2 IDs become work items. Section 3 (when present) feeds the implementation plan's Implementation Approach.
 - [`/investigate`](./investigate.md). The sibling skill for runtime bug investigation. Use `/investigate` when the question is *"why is this broken"*. Use `/gap-analysis` when the question is *"how does this compare to what was specified."*
 - [`/code-review`](./code-review.md). The sibling skill for code-level quality review. Use `/code-review` when the question is about correctness, style, or security. Use `/gap-analysis` when the question requires a comparison against a specification.
-- [Report template](../../plugin/skills/gap-analysis/references/gap-analysis-report-template.md). The IA-designed template the skill renders. The template's front matter, "How to Read This Report" frame, and section structure are the canonical reference for the report's shape.
+- [Report template](../../han.core/skills/gap-analysis/references/gap-analysis-report-template.md). The IA-designed template the skill renders. The template's front matter, "How to Read This Report" frame, and section structure are the canonical reference for the report's shape.

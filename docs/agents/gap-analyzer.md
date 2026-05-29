@@ -1,6 +1,6 @@
 # gap-analyzer
 
-Operator documentation for the `gap-analyzer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/gap-analyzer.md`](../../plugin/agents/gap-analyzer.md).
+Operator documentation for the `gap-analyzer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/gap-analyzer.md`](../../han.core/agents/gap-analyzer.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [Evidence](../evidence.md)
 

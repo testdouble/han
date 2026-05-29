@@ -23,7 +23,7 @@ A skill is a fixed sequence of steps that Claude Code runs when you type its sla
 
 - You invoke it: `/code-review`, `/plan-a-feature`, `/investigate`.
 - It follows a defined protocol. Every reader who runs the same skill gets the same shape of output.
-- It is documented by a `SKILL.md` file inside `plugin/skills/{name}/`.
+- It is documented by a `SKILL.md` file inside `han.core/skills/{name}/` (or `han.github/skills/{name}/` for the GitHub skills).
 - It may dispatch one or more agents for the steps that need judgment.
 
 **The test:** could you draw the whole thing as a flowchart? If yes, it is a skill.
@@ -34,7 +34,7 @@ An agent is a specialist teammate. A model with a persona, a narrow domain, and 
 
 - An agent has a name like `adversarial-security-analyst`, `project-manager`, or `junior-developer`.
 - An agent applies contextual judgment. *Is this finding really a problem? Does the plan address the risk? Should we ask another specialist?*
-- An agent is documented by a single `.md` file inside `plugin/agents/`.
+- An agent is documented by a single `.md` file inside `han.core/agents/`.
 - You can dispatch an agent directly with the `Agent` tool, but most agents get dispatched *for you* when a skill needs their input.
 
 **The test:** does this require reasoning about context rather than following a script? If yes, it is an agent.

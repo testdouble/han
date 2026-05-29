@@ -1,6 +1,6 @@
 ---
 paths:
-  - "plugin/agents/**/*.md"
+  - "han.core/agents/**/*.md"
 ---
 
 # Multi-Agent Economics

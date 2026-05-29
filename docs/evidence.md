@@ -13,7 +13,7 @@ This page supplements [YAGNI](./yagni.md). YAGNI's evidence test answers *is the
 - **Proximity is a heuristic, not a ranked ladder.** Running code beats documentation in many situations, but not all. Formal-methods contexts, specification-compliance contexts, and regulatory contexts invert the ordering. The rule names the principle and walks you through the inversions. It does not hand you a numbered list to apply blindly.
 - **The corroboration gate is scoped to web sources.** A single web claim that drives a recommendation gets marked single-source and cannot stand alone. Codebase evidence at a specific file path and line is not weakened by being a single citation. That asymmetry is intentional and matches how `/research` already behaves.
 - **No evidence is a state with a name and a response.** When a claim has no evidence at any tier, the response is to label it, defer the dependent decision, and name the trigger that would reopen it. The same defer-with-trigger pattern YAGNI uses.
-- **The canonical rule lives in [`plugin/references/evidence-rule.md`](../plugin/references/evidence-rule.md).** Every skill and agent that loads the rule at runtime reads that file. This page is the operator-facing summary.
+- **The canonical rule lives in [`han.core/references/evidence-rule.md`](../han.core/references/evidence-rule.md).** Every skill and agent that loads the rule at runtime reads that file. This page is the operator-facing summary.
 
 ## Why evidence-based matters
 
@@ -121,7 +121,7 @@ Most artifacts will not need this section. Skills that produce one are typically
 
 ## Related reading
 
-- [`plugin/references/evidence-rule.md`](../plugin/references/evidence-rule.md). The canonical rule that every evidence-aware skill and agent loads at runtime.
+- [`han.core/references/evidence-rule.md`](../han.core/references/evidence-rule.md). The canonical rule that every evidence-aware skill and agent loads at runtime.
 - [YAGNI](./yagni.md). The evidence test that gates inclusion. This rule and YAGNI work together: YAGNI asks *is there any evidence?* and this rule asks *how strong is the evidence?*
 - [Concepts](./concepts.md). The skill / agent split. Evidence is a property of skills that produce judgments and agents that review them.
 - [Sizing](./sizing.md). The other foundational mechanic. Sizing decides *how much review* an artifact gets; YAGNI decides *what survives*; evidence decides *how confident you are in what survives*.

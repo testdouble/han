@@ -1,6 +1,7 @@
 ---
 paths:
-  - "plugin/skills/**/*.md"
+  - "han.core/skills/**/*.md"
+  - "han.github/skills/**/*.md"
 ---
 
 # Hardening: Fuzzy vs. Deterministic Steps

@@ -1,6 +1,6 @@
 # /project-discovery
 
-Operator documentation for the `/project-discovery` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/project-discovery/SKILL.md`](../../plugin/skills/project-discovery/SKILL.md).
+Operator documentation for the `/project-discovery` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/project-discovery/SKILL.md`](../../han.core/skills/project-discovery/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md)
 
@@ -104,4 +104,4 @@ URL: https://research.google/pubs/why-google-stores-billions-of-lines-of-code-in
 - [`/architectural-decision-record`](./architectural-decision-record.md). For architectural decisions. Reads the discovery reference to find the ADR directory.
 - [`/code-review`](./code-review.md). Reads the discovery reference for lint/build/test commands and for standards and ADR compliance checks.
 - [`project-scanner`](../agents/project-scanner.md). The agent this skill dispatches.
-- [`SKILL.md` for /project-discovery](../../plugin/skills/project-discovery/SKILL.md). The internal process definition.
+- [`SKILL.md` for /project-discovery](../../han.core/skills/project-discovery/SKILL.md). The internal process definition.

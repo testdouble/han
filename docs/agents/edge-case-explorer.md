@@ -1,6 +1,6 @@
 # edge-case-explorer
 
-Operator documentation for the `edge-case-explorer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/edge-case-explorer.md`](../../plugin/agents/edge-case-explorer.md).
+Operator documentation for the `edge-case-explorer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/edge-case-explorer.md`](../../han.core/agents/edge-case-explorer.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [YAGNI](../yagni.md)
 

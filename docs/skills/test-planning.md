@@ -1,6 +1,6 @@
 # /test-planning
 
-Operator documentation for the `/test-planning` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/test-planning/SKILL.md`](../../plugin/skills/test-planning/SKILL.md).
+Operator documentation for the `/test-planning` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/test-planning/SKILL.md`](../../han.core/skills/test-planning/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 
@@ -81,7 +81,7 @@ The skill walks a four-step process:
 1. **Determine scope.** Resolve project config; detect git mode (A/B/C) via `detect-test-context.sh`; build a file list.
 2. **Dispatch testing agents.** Launch `test-engineer` and `edge-case-explorer` always. Add `concurrency-analyst` when the file list touches async or shared state. Add `adversarial-security-analyst` when it touches auth, input handling, isolation, crypto, uploads, or SQL/ORM. All run in parallel in the background. The skill waits for every dispatched agent.
 3. **Merge and prioritize.** Classify findings into the four-tier priority scheme (security items auto-CRIT). Assign unified IDs. Interleave by priority. Cap non-security items at 40.
-4. **Generate output.** Fill the template at [`references/template.md`](../../plugin/skills/test-planning/references/template.md) with scope, test plan, deferred, dropped, and coverage summary.
+4. **Generate output.** Fill the template at [`references/template.md`](../../han.core/skills/test-planning/references/template.md) with scope, test plan, deferred, dropped, and coverage summary.
 
 ## YAGNI
 
@@ -122,4 +122,4 @@ URL: https://www.wiley.com/en-us/Testing+Computer+Software%2C+2nd+Edition-p-9780
 - [`test-engineer`](../agents/test-engineer.md), [`edge-case-explorer`](../agents/edge-case-explorer.md). Always dispatched.
 - [`concurrency-analyst`](../agents/concurrency-analyst.md). Dispatched when the file list touches async, threads, or shared state.
 - [`adversarial-security-analyst`](../agents/adversarial-security-analyst.md). Dispatched when the file list touches auth, input handling, isolation, crypto, uploads, or SQL/ORM.
-- [`SKILL.md` for /test-planning](../../plugin/skills/test-planning/SKILL.md). The internal process definition.
+- [`SKILL.md` for /test-planning](../../han.core/skills/test-planning/SKILL.md). The internal process definition.
