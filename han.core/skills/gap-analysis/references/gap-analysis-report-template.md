@@ -17,10 +17,10 @@ sections_included:
 
 This report compares **{{source_artifact_name}}** (what exists today) against **{{target_artifact_name}}** (what is expected). It is layered, so you can stop at any section and still have a complete picture at that level of detail:
 
-- **Section 1 — Executive Summary.** The shape and magnitude of the gap in plain language. Read this if you have two minutes.
+- **Section 1 — Executive Summary.** The shape and magnitude of the gap in plain language. Read this if you have two minutes. When a purpose for the comparison was given, this section also opens with a short "Where to start" view: the skill's judgment of which gaps most block that purpose.
 - **Section 2 — Indexed Gaps.** Every gap, individually titled and explained in plain language, with a stable ID (e.g., `G-007`) you can cite in tickets, threads, and follow-up work. Read this if you need to discuss specific gaps.
 - **Section 3 — Technical Details** *(included only if requested).* Engineering-grade fidelity for each gap: where it lives, what would need to change, and how to act on it. Read this if you are implementing the fix.
-- **Section 4 — Swarm Findings** *(included only if a validator/augmenter swarm was run).* Confidence signals, contradictions, and augmentations from a panel of secondary analyses. Read this if you want to know which gaps are most certain.
+- **Section 4 — Swarm Findings** *(included only if a validator/augmenter swarm was run).* Confidence signals, contradictions, and augmentations from a panel of secondary analyses. Read this if you want to know which gaps are most certain. When the analysis carries a whole-report caveat (for example, the inputs were provisional), it appears once here under "Analysis caveats."
 
 Every gap has a stable ID. Sections 3 and 4 reference those IDs. If a gap appears in section 2 as `G-007`, you will find its technical detail under `G-007` in section 3 and any swarm commentary under `G-007` in section 4.
 
@@ -47,6 +47,16 @@ Every gap has a stable ID. Sections 3 and 4 reference those IDs. If a gap appear
 | Divergent   | {{n}} | Things that exist but behave differently than expected.                 |
 | Implicit    | {{n}} | Expectations that were never made explicit and need a decision.         |
 | **Total**   | {{n}} |                                                                         |
+
+{{include_only_if_a_purpose_was_captured:
+**Where to start (skill judgment for your stated purpose: {{stated_purpose}}):**
+
+> This is the skill's own prioritization judgment for your stated purpose, layered on top of the neutral gap list below. It is not part of the analyzer's findings and does not change any gap's category or confidence. Up to five gaps; fewer if fewer qualify.
+
+- **{{G-NNN}}** — {{one_line_plain_language_reason_this_gap_blocks_the_stated_purpose}}
+- {{repeat_for_up_to_five_most_blocking_gaps}}
+
+}}
 
 **The shape of the gap (3-5 bullets, plain language):**
 
@@ -159,6 +169,16 @@ Entries are grouped by the kind of signal the swarm produced. Each entry referen
 | High       | {{G-001, G-004, ...}}            | Confirmed by multiple swarm agents; safe to act on.         |
 | Medium     | {{G-002, ...}}                   | Confirmed by some, augmented by others; minor refinement.   |
 | Low        | {{G-003, ...}}                   | Contradicted or only partially supported; adjudicate first. |
+
+{{include_only_if_an_analysis_caveat_was_raised:
+### Analysis caveats
+
+> *These are analysis caveats that apply to the whole report, not gaps.* They are observations about the comparison itself — most often a provenance note about the inputs — surfaced once here rather than repeated on every gap, and they do not affect any gap's confidence above.
+
+- {{plain_language_artifact_level_caveat_e_g_the_desired_state_is_a_provided_uncommitted_same_session_source_so_treat_the_gap_set_as_provisional_until_it_is_committed}}
+- {{repeat_for_each_distinct_caveat}}
+
+}}
 
 ---
 

@@ -73,6 +73,8 @@ For each comparison area, map **correspondences** between **features** and **beh
 
 Elements with no correspondence are candidates for Missing gaps. Elements with correspondence are candidates for Partial, Divergent, or Implicit gaps. Record what was checked and what correspondences were found.
 
+While reading the desired state's surface area here, also note the actor types and modes it names or implies (named roles and sub-roles, interactive vs. batch/automated modes, API / agent / integration surfaces). Record these for the "Actors and Modes Observed" section of the output. This is a neutral observation of who and what the desired state addresses — not a prioritization or impact assessment.
+
 ### Step 4: Classify Gaps
 
 For each unmatched or partially matched element, classify using the gap taxonomy:
@@ -114,6 +116,10 @@ Current state: [description or path]. Desired state: [description or path].
 ## Scope
 
 [Comparison areas analyzed. What was excluded and why.]
+
+## Actors and Modes Observed
+
+[The actor types and modes the desired state names or implies, as a neutral observation — named roles and sub-roles (e.g., customer, admin, auditor, support agent), interactive vs. batch/automated modes, and API / agent / integration surfaces. List what you saw while building the correspondence map; write "none observed" if the desired state names or implies no distinct actors or modes. This is an observation of the desired state's surface area, not a prioritization, classification, or impact assessment.]
 
 ## Summary
 
