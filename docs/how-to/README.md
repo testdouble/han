@@ -1,6 +1,6 @@
 # How-To Guides
 
-End-to-end recipes for the workflows the han plugin was built around. Each guide walks the whole loop: what to type, what decisions you make between steps, and what you should expect along the way.
+End-to-end recipes that walk a whole loop: what to type, what decisions you make between steps, and what you should expect along the way. Two kinds live here. Most guides are workflow recipes for *using* Han on a real piece of work. A second set covers *extending* Han by building a plugin on top of it.
 
 > See also: [Plugin landing page](../../README.md) · [Quickstart](../quickstart.md) · [Concepts](../concepts.md)
 
@@ -10,9 +10,16 @@ The skill long-form docs in [docs/skills/](../skills/README.md) are canonical fo
 
 ## Which guide do you need?
 
-- **[Plan a feature, end to end](./plan-a-feature.md).** You have a feature idea and want a behavioral spec, an implementation plan, and a list of independently grabbable work items, grounded in evidence rather than your best guess. The longest of the three; covers most of the planning skills.
+### Using Han on a real piece of work
+
+- **[Plan a feature, end to end](./plan-a-feature.md).** You have a feature idea and want a behavioral spec, an implementation plan, and a list of independently grabbable work items, grounded in evidence rather than your best guess. The longest of these; covers most of the planning skills.
 - **[Triage and investigate a bug](./triage-and-investigate-a-bug.md).** Something is broken or behaving oddly and you want a root cause backed by evidence, not a guess. Or the work is queued rather than immediate, and you want a structured triage document instead.
 - **[Research a decision and capture it](./research-a-decision.md).** Nothing is broken; you have a question (a new library, a hosting move, a build-vs-buy call) and want the options, prior art, and a recommendation, then record the chosen direction as an ADR.
+
+### Extending Han with a plugin of your own
+
+- **[Extend Han with plugin dependencies](./extend-han-with-plugin-dependencies.md).** You want to understand how one plugin builds on another through the `dependencies` field, using Han's own `han.core` / `han.github` / `han` split as the worked example. The conceptual half: how the mechanism works and why Han is built this way.
+- **[Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md).** You are ready to stand up a new plugin that depends on `han.core`, add a skill that builds on it, and confirm a clean install pulls Han in alongside it. The hands-on half, with both the suite-internal and own-marketplace paths.
 
 ## Where to go next
 
