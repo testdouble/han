@@ -1,5 +1,19 @@
 # Han Release Notes
 
+## v2.8.0
+
+This release adds a new feedback skill for capturing post-session observations on Han skill runs and routing them to testdouble/han as GitHub issues. The shipped catalog moves from 23 skills to 24 skills. Operators should notice one thing: `/han-feedback` is available for the first time, giving you a structured way to submit observations, ratings, and improvement ideas at the end of any session where `han:` skills ran.
+
+### New `/han-feedback` skill
+
+A new `/han-feedback` skill ships at `han.core/skills/han-feedback/SKILL.md`. The skill identifies `han:` skill invocations from the current session's context window, synthesizes structured feedback (what worked, what didn't, an overall summary, and a rating table), writes a dated markdown file to `~/.claude/han-feedback/`, and walks through a sensitive-content review before optionally posting the file as a GitHub issue to testdouble/han. The long-form operator doc lives at `docs/skills/han-feedback.md`. The skills index gains a new "Feedback" group for skills about the Han plugin itself.
+
+### Pull requests in this release
+
+- Add /han-feedback skill (PR #TBD) — @mikejansen and Claude Sonnet 4.6
+
+Full changelog: https://github.com/testdouble/han/blob/v2.8.0/CHANGELOG.md#v280
+
 ## v2.7.0
 
 This release adds a new operational runbook skill, a new adversarial on-call agent wired into six existing skills, and a canonical evidence rule extracted out of `/research` into a plugin-wide reference that long-form docs and agent prompts now point at. The shipped catalog moves from 20 skills and 22 agents (v2.6.2) to 21 skills and 23 agents. Operators should notice three concrete things: `/runbook` is available for the first time, six review and planning skills (`/code-review`, `/architectural-analysis`, `/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`, `/gap-analysis`) now include `on-call-engineer` in their swarm rosters, and `/research` reports now end in a single indexed `Sources` registry instead of separate `Artifacts` and `References` sections. The release also lands a new how-to guide set, a "why solo and small teams" intro doc, and a documentation drift sweep across long-form docs.

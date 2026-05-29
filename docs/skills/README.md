@@ -72,6 +72,12 @@ Skills for capturing operational knowledge in artifacts the next on-call enginee
 
 - **[`/runbook`](./runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Symptom-first template with imperative-voice procedure, expected output per step, escalation conditions, and rollback. Applies a YAGNI preflight that requires real evidence before writing.
 
+## Feedback
+
+Skills for capturing observations about the Han plugin itself.
+
+- **[`/han-feedback`](./han-feedback.md).** Capture structured post-session feedback on Han skills you used and optionally post it as a GitHub issue to testdouble/han.
+
 ---
 
 ## How dispatch scales: sizing

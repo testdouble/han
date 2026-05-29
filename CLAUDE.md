@@ -96,6 +96,7 @@ The plugins are shipped from `han.core/`, `han.github/`, and `han.reporting/`; t
 - **[docs/skills/update-pr-description.md](./docs/skills/update-pr-description.md).** Generate a PR description from the current branch's changes.
 - **[docs/skills/work-items-to-issues.md](./docs/skills/work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked and no label or assignee by default.
 - **[docs/skills/runbook.md](./docs/skills/runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Applies a YAGNI preflight that requires real evidence before writing.
+- **[docs/skills/han-feedback.md](./docs/skills/han-feedback.md).** Capture structured post-session feedback on Han skills and optionally post it as a GitHub issue to testdouble/han.
 
 ### Agent catalog (`docs/agents/`)
 
