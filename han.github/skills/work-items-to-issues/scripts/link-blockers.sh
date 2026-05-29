@@ -6,6 +6,16 @@
 # blocked_by relationship per blocker via the GitHub Issue Dependencies
 # API (within-repo only).
 #
+# API contract (GA since 2025-08-21, no preview header required):
+#   POST /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by
+#   body: { "issue_id": <blocker's global database id> }
+# The body field is the blocker's global `id` (unique across GitHub), not
+# its repo-local issue number. GitHub links up to 50 issues per relationship
+# type; a slice with more blockers than that fails loudly on the 51st POST
+# (set -e), which is acceptable: a work item with 50+ blockers is a planning
+# smell to fix upstream, not silently truncate here.
+# Docs: https://docs.github.com/en/rest/issues/issue-dependencies
+#
 # Errors if a blocker SYM has no #NNN mapping in this file — that means
 # either the slice wasn't created yet (run create-issues.sh first) or the
 # Depends on line references a cross-repo SYM, which is forbidden by the
@@ -77,6 +87,8 @@ while IFS= read -r line; do
         exit 1
       fi
 
+      # `.id` is the blocker's global database id (what the API's issue_id
+      # field expects), not `.number`. `-F` sends it as a JSON integer.
       blocker_id=$(gh api "repos/$TARGET_REPO/issues/$blocker_num" --jq .id)
       gh api --method POST \
         "repos/$TARGET_REPO/issues/$blocked_num/dependencies/blocked_by" \

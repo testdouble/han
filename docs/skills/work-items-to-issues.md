@@ -110,7 +110,13 @@ The screenshot upload step writes each PNG into the target repo through the repo
 
 URL: https://docs.github.com/en/rest/repos/contents
 
-<!-- TODO: human review. Confirm the canonical docs URL for the issue-dependencies (blocked_by) endpoint that link-blockers.sh uses, and add it here as a source. -->
+### GitHub REST API: Issue dependencies
+
+The within-repo `blocked_by` links come from the issue-dependencies API. `link-blockers.sh` posts `POST /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by` with the blocking issue's global `issue_id` (its database `id`, not its repo-local number). The feature reached general availability on 2025-08-21, needs no preview header, and links up to 50 issues per relationship type.
+
+URL: https://docs.github.com/en/rest/issues/issue-dependencies
+
+GA announcement: https://github.blog/changelog/2025-08-21-dependencies-on-issues/
 
 ## Related documentation
 
