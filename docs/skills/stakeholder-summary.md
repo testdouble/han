@@ -61,6 +61,7 @@ One file: `stakeholder-summary.md`, written in the same directory as the source 
 - **Name your audience.** Leadership, customers, and product reviewers read for different things. Tell the skill who will receive it.
 - **Confirm the "intentionally not in this slice" list.** That section is where stakeholder pushback usually happens — make sure it matches what the spec actually defers.
 - **Pair with `/plan-a-phased-build` next.** Once stakeholders greenlight the shape, sequence the build.
+- **Render it to HTML with `/html-summary`.** When you want an executive-styled, self-contained HTML version of the summary to open in a browser or hand off, run [`/html-summary`](./html-summary.md) on the `stakeholder-summary.md` this skill produces.
 - **Cross-repo planning folders are supported.** If the source spec lives outside the current working directory (for example, a planning folder for a different project), the skill reads that project's `CLAUDE.md` to pick up its vocabulary and naming conventions — not the cwd's.
 
 ## Cost and latency
@@ -73,3 +74,4 @@ Single-pass authoring with no sub-agent dispatch. Reads the source spec, drafts 
 - [`/plan-a-feature`](./plan-a-feature.md). Produces the feature specification this skill consumes.
 - [`/plan-a-phased-build`](./plan-a-phased-build.md). The natural next step once the summary lands stakeholder feedback.
 - [`/plan-implementation`](./plan-implementation.md). Turns the spec into an implementation plan after stakeholders sign off.
+- [`/html-summary`](./html-summary.md). Converts the `stakeholder-summary.md` this skill produces into a self-contained HTML executive report.

@@ -1,0 +1,595 @@
+<!doctype html>
+<!--
+  CANONICAL HTML TEMPLATE for the html-summary skill.
+  This is a fully-rendered reference example (a "Filters and Saved Views"
+  executive report for a generic SaaS app). Imitate its structure, class names,
+  CSS, and entity conventions verbatim when producing a new report — adapt only
+  the content.
+
+  Required structural anchors, in order:
+    <header class="top">    h1 = the summary subject (primary title, .highlight span);
+                            .subtitle = the literal string "Han: Stakeholder Summary"
+    <div class="tldr">      purple-accented bottom-line card (REQUIRED)
+    <div class="ask-block"> orange-accented stakeholder asks (OMIT if no asks)
+    <section> blocks        problem, opens-up, walkthrough, data-flow, out-of-scope
+    <script id="mermaid-bundle"><!-- MERMAID_BUNDLE_INLINE_HERE --></script>
+    <script>mermaid.initialize({...})</script>
+
+  Hard rules:
+    - All CSS lives in <style> in <head>. No <link>, no <script src=...> pointing
+      at a CDN. Inlined libraries (mermaid.js) are added by the inline-mermaid script.
+    - Use &mdash; for em-dashes in body content.
+    - The h1 is the summary subject (feature name) on every report. The literal
+      string "Han: Stakeholder Summary" is the subtitle beneath it.
+    - Green is background-only; never a text color (use --green-deep for green text).
+    - Data-flow cards stack one-per-row; do not wrap them in .grid-2.
+    - No superlatives in user-visible text — see references/writing-conventions.md.
+
+  See SKILL.md and the references/ folder for full rules. The palette derives from
+  the Test Double brand palette (testdouble.com); see references/report-style.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filters and Saved Views — Stakeholder Summary</title>
+<style>
+  :root {
+    /* Neutrals — page chrome */
+    --bg: #ffffff;
+    --surface: #f4f2ed;
+    --paper: #ffffff;
+    --ink: #131413;
+    --ink-soft: #4f4f4f;
+    --ink-muted: #758696;
+    --rule: #e6e6e6;
+    --rule-strong: #c5c5c5;
+
+    /* Test Double purple — primary accent */
+    --purple: #4d0aed;
+    --purple-soft: #ece6fe;
+    --purple-light: #a580f9;
+
+    /* Test Double green — positive / after-change outcomes */
+    --green: #75fe04;
+    --green-deep: #2f6b00;
+    --green-soft: #eefbe0;
+
+    /* Test Double orange — stakeholder-ask accent */
+    --orange: #d63c00;
+    --orange-soft: #ffe2d6;
+    --orange-deep: #b03000;
+
+    /* Today-state / problem nodes */
+    --rust-bad: #b03000;
+    --rust-soft: #ffe2d6;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 28px 96px;
+  }
+
+  /* Header */
+  header.top {
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 22px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  h1 {
+    font-size: 34px;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  h1 .highlight {
+    background: var(--green);
+    padding: 0 6px;
+    border-radius: 3px;
+  }
+  .subtitle {
+    color: var(--ink-soft);
+    font-size: 16px;
+    max-width: 780px;
+  }
+
+  /* TL;DR */
+  .tldr {
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 15px;
+    padding: 26px 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tldr::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background: var(--purple);
+  }
+  .tldr h2 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .tldr .lead {
+    font-size: 20px;
+    line-height: 1.45;
+    margin: 0 0 18px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .tldr ul {
+    margin: 0;
+    padding-left: 18px;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .tldr li {
+    margin-bottom: 8px;
+    break-inside: avoid;
+    color: var(--ink);
+  }
+  .tldr li b { color: var(--ink); }
+
+  /* Asks */
+  .ask-block {
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 15px;
+    padding: 26px 28px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ask-block::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background: var(--orange);
+  }
+  .ask-block h2 {
+    margin: 0 0 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--orange-deep);
+    font-weight: 700;
+  }
+  .ask-block .ask-lead {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  .ask {
+    background: var(--surface);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+  }
+  .ask:last-child { margin-bottom: 0; }
+  .ask-title {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ask-question {
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  .ask-question b { color: var(--ink); }
+  .ask-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--orange);
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Sections */
+  section {
+    margin-bottom: 40px;
+  }
+  section > h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule-strong);
+    font-weight: 700;
+  }
+  h3 {
+    font-size: 18px;
+    margin: 26px 0 10px;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  p { margin: 0 0 12px; color: var(--ink); }
+  p.muted { color: var(--ink-soft); }
+  ul.spaced li { margin-bottom: 8px; }
+  ul.spaced li b { color: var(--ink); }
+
+  /* Cards */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 15px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .card h4 {
+    margin: 0 0 12px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+  }
+  .card.today { border-top: 4px solid var(--rust-bad); }
+  .card.after { border-top: 4px solid var(--green-deep); }
+  .card p { color: var(--ink-soft); font-size: 14px; }
+
+  /* Walkthrough */
+  .walk {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .walk li {
+    counter-increment: step;
+    position: relative;
+    padding: 14px 16px 14px 52px;
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .walk li::before {
+    content: counter(step);
+    position: absolute;
+    left: 14px;
+    top: 13px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--purple);
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    line-height: 26px;
+    font-size: 13px;
+  }
+  .walk li b { color: var(--ink); }
+
+  /* Out of scope */
+  .out-of-scope {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .out-of-scope li {
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-left: 3px solid var(--rule-strong);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .out-of-scope li b { color: var(--ink); }
+  .footnote {
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-style: italic;
+    margin-top: 12px;
+  }
+
+  /* Chips */
+  .chip {
+    display: inline-block;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    margin-right: 4px;
+    border: 1px solid var(--rule-strong);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .chip.good { background: var(--green-soft); color: var(--green-deep); border-color: var(--green-deep); }
+  .chip.bad { background: var(--rust-soft); color: var(--rust-bad); border-color: var(--rust-bad); }
+
+  /* Mermaid blocks */
+  .mermaid {
+    background: transparent;
+    border: 0;
+    margin: 12px 0 4px;
+    padding: 0;
+    font-family: inherit;
+    text-align: center;
+    overflow-x: auto;
+  }
+  .mermaid svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 720px) {
+    .tldr ul { columns: 1; }
+    h1 { font-size: 26px; }
+    .wrap { padding: 32px 18px 64px; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .wrap { max-width: none; padding: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Filters and <span class="highlight">Saved Views</span></h1>
+    <div class="subtitle">Han: Stakeholder Summary</div>
+  </header>
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h2>The bottom line</h2>
+    <p class="lead">Users can find the rows they care about in the customers, orders, and shipments lists without scrolling, paging, or re-applying the same filters every visit &mdash; and the shipments map shows what the shipments list was showing.</p>
+    <ul>
+      <li><b>Filter pills</b> on the busiest lists (customers, orders, shipments).</li>
+      <li><b>Saved views</b> &mdash; named tabs that recall a filter combination in one click.</li>
+      <li><b>Bookmarkable and shareable</b> &mdash; the web address captures the filtered state.</li>
+      <li><b>Shipments list &rarr; shipments map</b> carries filters across, so the map matches the list.</li>
+      <li><b>Removes the dead Filters button</b> on the reports list. No more controls that do nothing.</li>
+      <li><b>Reusable foundation</b> &mdash; future lists can plug into the same saved-views surface.</li>
+    </ul>
+  </div>
+
+  <!-- The asks -->
+  <div class="ask-block">
+    <h2>Four decisions we need from stakeholders</h2>
+    <div class="ask-lead">Each item below is a scope boundary we&rsquo;ve picked. Confirm or push back before kickoff.</div>
+
+    <div class="ask">
+      <div class="ask-title"><span class="ask-num">1</span>Single-value filters as the v1 ceiling</div>
+      <div class="ask-question">Every pill takes one value (e.g. &ldquo;Region is West,&rdquo; not &ldquo;West OR Central&rdquo;). Multi-value selection waits until a user reports being blocked by it. <b>Confirm ship single-value first?</b></div>
+    </div>
+
+    <div class="ask">
+      <div class="ask-title"><span class="ask-num">2</span>Saved views are private per user, per organization</div>
+      <div class="ask-question">No user sees another user&rsquo;s views; no &ldquo;org default view.&rdquo; The earlier product carried a sharing flag for years without shipping the sharing UX, which we read as low demand. <b>Confirm private-only for v1, or plan org-wide sharing into the same release?</b></div>
+    </div>
+
+    <div class="ask">
+      <div class="ask-title"><span class="ask-num">3</span>Desktop and laptop only for v1</div>
+      <div class="ask-question">No mobile bottom-sheet, no tablet-optimized layout, no touch-first interaction. No planning document identifies filter management as a tablet workflow today. <b>Confirm desktop-only is acceptable, or is tablet parity inside this release?</b></div>
+    </div>
+
+    <div class="ask">
+      <div class="ask-title"><span class="ask-num">4</span>Remove the reports-list Filters button rather than wire it up</div>
+      <div class="ask-question">The reports list&rsquo;s Filters button does nothing today because the underlying data has nothing meaningful to filter reports by yet. Choice is remove (honest) vs. leave visible but broken. <b>Confirm removal is the right call?</b></div>
+    </div>
+  </div>
+
+  <!-- Problem -->
+  <section>
+    <h2>What problem are we solving?</h2>
+    <p>When a user opens the customers list, orders list, or shipments list, there is no good way to narrow rows down to the ones they care about right now. To find &ldquo;the open orders over $10,000 assigned to me&rdquo; or &ldquo;the shipments headed to the West region,&rdquo; they scroll, page through results, or rely on browser find-on-page.</p>
+    <p>Common filter combinations have to be re-applied by hand on every visit because there is nowhere to save them. On the shipments map, every shipment is shown regardless of what the user was just looking at in the list, so the map and the list feel disconnected. And on the reports list there is a Filters button that does nothing when clicked &mdash; a broken control sitting there visibly.</p>
+  </section>
+
+  <!-- What this opens up -->
+  <section>
+    <h2>What this opens up</h2>
+    <ul class="spaced">
+      <li><b>A direct path to the rows that matter.</b> Users get to the customers, orders, or shipments they need without scrolling or paging, on the three lists they use most.</li>
+      <li><b>Bookmarkable and shareable list states.</b> Active filters live in the page&rsquo;s web address; refresh, bookmark, or paste a link into chat and the same filtered list reopens.</li>
+      <li><b>Personal saved views.</b> Each user builds their own library of filter combinations that follow them between sessions but do not leak between organizations or between users.</li>
+      <li><b>A single filtering pattern across lists.</b> Customers, orders, and shipments behave the same way. Learn one, you have learned all three.</li>
+      <li><b>A reusable saved-views foundation.</b> Future lists (other surfaces, sub-lists inside a record page) can plug into the same surface without rebuilding it.</li>
+      <li><b>An honest interface.</b> The reports list no longer shows a control that does nothing.</li>
+    </ul>
+  </section>
+
+  <!-- User experience -->
+  <section>
+    <h2>What the user experience looks like</h2>
+    <ol class="walk">
+      <li>The user opens any of the three in-scope lists and sees a familiar toolbar with a <b>Filters</b> control and, once at least one filter is active, a <b>Save view as</b> control.</li>
+      <li>Clicking Filters opens a horizontal strip of pills below the toolbar &mdash; one pill per available filter for that list.</li>
+      <li>Clicking a pill opens a small panel where the user picks one value from a searchable list. As soon as a value is picked, the list narrows.</li>
+      <li>The user can save the current pill combination as a named tab that appears above the list and is one click away on every future visit.</li>
+      <li>On the shipments list, clicking <b>View on map</b> carries the same filters across so the map shows the same shipments the list was showing.</li>
+    </ol>
+
+    <div class="card">
+      <pre class="mermaid">
+flowchart TD
+    A[User opens the customers, orders, or shipments list] --> B[Clicks Filters]
+    B --> C[Pill strip appears, one pill per available filter]
+    C --> D[Clicks a pill, picks a value]
+    D --> E[List narrows to matching rows]
+    E --> F{Want to reuse this combination?}
+    F -->|No, one-off lookup| G[Done &mdash; the web address captures the state]
+    F -->|Yes, I use this often| H[Clicks Save view as and names it]
+    H --> I[A named tab appears above the list]
+    I --> J[On a future visit, clicks the tab to recall the same filters]
+    E --> K{On the shipments list?}
+    K -->|Yes| L[Clicks View on map]
+    L --> M[Map opens showing the same shipments]
+    K -->|No| G
+    style A fill:#ece6fe,stroke:#4d0aed,color:#4d0aed
+    style E fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+    style I fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+    style M fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+      </pre>
+    </div>
+  </section>
+
+  <!-- Today vs After (stacked, one card per row) -->
+  <section>
+    <h2>Data flow &mdash; today vs. after this change</h2>
+
+    <div class="card today">
+      <h4><span class="chip bad">Today</span></h4>
+      <p>Across all three lists in scope, the user opens the list and has no way to narrow it down, no way to save the filters they use often, and no way to carry a filtered view across to the shipments map.</p>
+      <pre class="mermaid">
+flowchart LR
+    U([User]) -->|opens a list| L[Customers, orders, or shipments list]
+    L --> A[Every row in the organization is shown]
+    A -.->|no way to filter| P1[Scroll or page through to find rows]
+    U -.->|same filters every visit| P2[No way to save a common combination]
+    U -.->|wants map of the same shipments| M[Shipments map shows all shipments, ignoring the list]
+    style U fill:#ece6fe,stroke:#4d0aed,color:#4d0aed
+    style P1 fill:#ffe2d6,stroke:#b03000,color:#b03000
+    style P2 fill:#ffe2d6,stroke:#b03000,color:#b03000
+    style M fill:#ffe2d6,stroke:#b03000,color:#b03000
+      </pre>
+    </div>
+
+    <div class="card after">
+      <h4><span class="chip good">After &mdash; the everyday path</span></h4>
+      <p>The user opens any of the three lists, clicks Filters to reveal the pill strip, and picks values. The list narrows as each value is picked, and the web address updates &mdash; refresh, bookmark, or share the link, and the same filtered list reopens.</p>
+      <pre class="mermaid">
+flowchart LR
+    U([User]) -->|opens a list| L[Customers, orders, or shipments list]
+    L -->|clicks Filters| P[Pill strip opens]
+    P -->|picks a value in a pill| F[List narrows to matching rows]
+    F --> Z[Web address captures the filters so a refresh, bookmark, or shared link recalls the same view]
+    style U fill:#ece6fe,stroke:#4d0aed,color:#4d0aed
+    style F fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+    style Z fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+      </pre>
+    </div>
+
+    <div class="card after">
+      <h4><span class="chip good">After &mdash; save the current filters as a named tab</span></h4>
+      <p>Clicking <b>Save view as</b> (only available when at least one filter is active) names the current combination. The system records it privately for the current user, inside the current organization, on the current list, and immediately adds a tab above the list. On a future visit, one click recalls the same filters. Renaming, updating, or deleting the view is done from a menu next to the tab strip.</p>
+      <pre class="mermaid">
+flowchart LR
+    U([User]) -->|filters are active| F[Filtered list]
+    F -->|clicks Save view as, names it| N[System records the named view for this user, this organization, this list]
+    N --> T[A new tab appears in the tab strip above the list]
+    T -->|on a future visit, clicks the tab| R[Same filters re-applied in one click]
+    style U fill:#ece6fe,stroke:#4d0aed,color:#4d0aed
+    style T fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+    style R fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+      </pre>
+    </div>
+
+    <div class="card after">
+      <h4><span class="chip good">After &mdash; carry the shipments list&rsquo;s filters across to the map</span></h4>
+      <p>On the shipments list, clicking <b>View on map</b> while filters are active carries the same filter values into the map&rsquo;s web address. The map renders the matching shipments with known locations &mdash; the same West-region shipments the user was looking at, not every shipment in the organization. Navigating back returns the user to the same filtered list they left.</p>
+      <pre class="mermaid">
+flowchart LR
+    U([User]) -->|on the filtered shipments list| F[Filtered shipments list]
+    F -->|clicks View on map| M[Shipments map opens with the same filters]
+    M --> S[Map renders the same shipments the list was showing]
+    style U fill:#ece6fe,stroke:#4d0aed,color:#4d0aed
+    style S fill:#eefbe0,stroke:#2f6b00,color:#2f6b00
+      </pre>
+    </div>
+  </section>
+
+  <!-- Intentionally not in scope -->
+  <section>
+    <h2>What is intentionally <i>not</i> in this slice</h2>
+    <ul class="out-of-scope">
+      <li><b>Multiple values inside a single filter.</b> Pills take one value at a time. &ldquo;West or Central in one pill&rdquo; is deferred until a user reports needing it.</li>
+      <li><b>Sharing saved views with the organization.</b> Saved views are private to the creating user. Org-wide views and &ldquo;make this the org default&rdquo; are deferred.</li>
+      <li><b>Date-range and custom-field pills.</b> Lists in scope have no date-range column today and the custom-field surface is still partial.</li>
+      <li><b>Sort, column visibility, and column ordering inside a saved view.</b> A saved view captures filters only. These join the shape when the underlying table supports them.</li>
+      <li><b>Page size as part of a view.</b> Stays as a separate per-user setting.</li>
+      <li><b>A persistent &ldquo;Clear all filters&rdquo; button.</b> Each pill has its own clear control; a context-specific &ldquo;Clear all&rdquo; appears in the empty state when filters reduce the list to zero rows.</li>
+      <li><b>Filter pills on the reports list.</b> The dead Filters button is removed instead. Pills return when the underlying data supports a filter relationship.</li>
+      <li><b>Other lists in the app.</b> The components list already has working column-level filtering and is the reference. Audit-log, draft, and archive lists are not in scope.</li>
+      <li><b>Tablet- and touch-specific layouts.</b> Designed for laptop and desktop in this version. No mobile bottom-sheet or tablet-optimized layout.</li>
+    </ul>
+    <p class="footnote">If any of these cuts would block your team, flag it before kickoff.</p>
+  </section>
+
+</div>
+
+<script id="mermaid-bundle"><!-- MERMAID_BUNDLE_INLINE_HERE --></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+      fontSize: '14px',
+      background: '#ffffff',
+      primaryColor: '#f4f2ed',
+      primaryTextColor: '#131413',
+      primaryBorderColor: '#c5c5c5',
+      secondaryColor: '#ece6fe',
+      secondaryTextColor: '#131413',
+      secondaryBorderColor: '#4d0aed',
+      tertiaryColor: '#ffe2d6',
+      tertiaryTextColor: '#131413',
+      tertiaryBorderColor: '#d63c00',
+      lineColor: '#4f4f4f',
+      textColor: '#131413',
+      mainBkg: '#f4f2ed',
+      nodeBorder: '#c5c5c5',
+      clusterBkg: '#ffffff',
+      clusterBorder: '#c5c5c5',
+      titleColor: '#131413',
+      edgeLabelBackground: '#ffffff'
+    },
+    flowchart: {
+      htmlLabels: true,
+      curve: 'basis',
+      padding: 18
+    }
+  });
+</script>
+</body>
+</html>

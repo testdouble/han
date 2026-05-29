@@ -25,10 +25,10 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   └── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
-├── han.reporting/      # Reporting plugin: stakeholder-summary
+├── han.reporting/      # Reporting plugin: stakeholder-summary, html-summary
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Reporting skill directories, each with SKILL.md + references/
+│   └── skills/         # Reporting skill directories, each with SKILL.md + references/ (html-summary adds scripts/ + assets/)
 ├── docs/               # Operator-facing documentation
 │   ├── writing-voice.md   # Voice profile every doc follows
 │   ├── concepts.md
@@ -77,6 +77,7 @@ The plugins are shipped from `han.core/`, `han.github/`, and `han.reporting/`; t
 - **[docs/skills/plan-implementation.md](./docs/skills/plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
 - **[docs/skills/plan-a-phased-build.md](./docs/skills/plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc) into a numbered sequence of vertical-slice phases, each independently demoable.
 - **[docs/skills/stakeholder-summary.md](./docs/skills/stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams, for non-technical feedback before implementation kicks off.
+- **[docs/skills/html-summary.md](./docs/skills/html-summary.md).** Convert a stakeholder summary markdown file into a single self-contained HTML executive report (Test Double-derived palette, inlined Mermaid diagrams). Produces the HTML file only; does not publish it.
 - **[docs/skills/iterative-plan-review.md](./docs/skills/iterative-plan-review.md).** Stress-test an existing plan through multiple codebase-grounded review passes. Edits the plan in place and records every finding.
 - **[docs/skills/plan-work-items.md](./docs/skills/plan-work-items.md).** Break a trusted implementation plan into independently-grabbable, atomic work items in a single work-items file.
 - **[docs/skills/tdd.md](./docs/skills/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. The plugin's only execution skill: it writes code, applying coding standards and ADRs in green and refactor.

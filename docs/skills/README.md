@@ -62,6 +62,7 @@ Skills for recording how the team works.
 
 Skills for turning the work back into something sharable.
 
+- **[`/html-summary`](./html-summary.md).** Convert a `stakeholder-summary.md` (from [`/stakeholder-summary`](./stakeholder-summary.md)) into a single self-contained HTML executive report — bottom line and asks up front, mermaid diagrams inlined, styled with a Test Double-derived palette. Produces the HTML file only; does not publish it.
 - **[`/update-pr-description`](./update-pr-description.md).** Generate a PR description from the current branch's changes.
 - **[`/work-items-to-issues`](./work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
 
