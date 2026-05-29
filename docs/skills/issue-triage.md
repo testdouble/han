@@ -63,9 +63,9 @@ A triage report file with these sections:
 - **Expected Behavior.** What the reporter said should happen, or Unknown if not stated.
 - **Missing Information.** A list of what is absent from the report but needed to proceed. States "None - report has enough to proceed." when nothing is missing.
 - **Suspected Areas.** Code or system areas the issue plausibly touches, based on the report and project context. Omitted when nothing is inferable.
-- **Severity.** An estimate: Critical, High, Medium, Low, or Unknown.
-- **Reproducibility.** An estimate: Always, Intermittent, Rare, or Unknown.
-- **Recommended Next Step.** The single most appropriate han skill to run next, or "Clarify with reporter before proceeding" when critical reproduction or scope details are missing.
+- **Severity.** An estimate: Critical, High, Medium, Low, or Unknown. Omitted entirely for a feature request, question, or other issue when it is not inferable, rather than rendering Unknown noise.
+- **Reproducibility.** An estimate: Always, Intermittent, Rare, or Unknown. Omitted on the same rule as Severity.
+- **Recommended Next Step.** The single most appropriate han skill to run next, or "Clarify with reporter before proceeding" when critical reproduction or scope details are missing. When the gap is a problem-space unknown — which options are in play, prior art, build-vs-buy, or which direction to take — the recommendation routes to `/research` so the problem can be researched before it is specified.
 
 ## Output contract
 
@@ -96,22 +96,24 @@ This is the exact output contract the skill follows. It is intentionally strict 
 
 ## Severity
 
+<!-- Omitted entirely for a Feature Request, Question, or Other issue when not inferable (Step 4) -->
 {Critical | High | Medium | Low | Unknown}
 
 ## Reproducibility
 
+<!-- Omitted entirely for a Feature Request, Question, or Other issue when not inferable (Step 4) -->
 {Always | Intermittent | Rare | Unknown}
 
 ## Recommended Next Step
 
-{"Clarify with reporter before proceeding", "Answer the question directly; no han skill needed", or one of: /investigate, /plan-a-feature, /plan-implementation}
+{"Clarify with reporter before proceeding", "Answer the question directly; no han skill needed", or one of: /investigate, /research, /plan-a-feature, /plan-implementation}
 ```
 
 
 ## How to get the most out of it
 
 - **Paste the raw text.** The skill is designed to work on incomplete, messy input. Editing the report before passing it in changes what counts as missing information.
-- **Use the output as a handoff document.** The triage report is the input for the next skill. Pass it to `/investigate` or `/plan-a-feature` rather than re-summarizing the issue from scratch.
+- **Use the output as a handoff document.** The triage report is the input for the next skill. Pass it to the recommended skill — `/investigate`, `/research`, `/plan-a-feature`, or `/plan-implementation` — rather than re-summarizing the issue from scratch. The skill says so explicitly when the recommendation is a han skill; there is no separate brief to produce.
 - **Run it before `/investigate` on ambiguous issues.** Investigation works best with a sharp problem statement. Triage produces one. A few seconds of triage avoids a wasted investigation run on a problem that was not yet well-defined.
 - **Follow the Recommended Next Step.** When the report still has critical gaps, the recommendation will say so explicitly. That is the signal to go back to the reporter before running the next skill.
 
@@ -172,6 +174,7 @@ The skill dispatches no sub-agents. It reads the report and, only to sharpen the
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/investigate`](./investigate.md). The natural next skill when the issue is a bug or failure with enough context to trace.
+- [`/research`](./research.md). The natural next skill when the gap is a problem-space unknown — options, prior art, build-vs-buy, or which direction to take — rather than a missing user-supplied fact.
 - [`/plan-a-feature`](./plan-a-feature.md). The natural next skill when the issue is a feature request with enough context to spec.
 - [`/plan-implementation`](./plan-implementation.md). The next skill when triage confirms a well-defined problem and a spec already exists.
 - [`SKILL.md` for /issue-triage](../../han.core/skills/issue-triage/SKILL.md). The internal process definition.
