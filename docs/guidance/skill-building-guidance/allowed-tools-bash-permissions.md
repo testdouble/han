@@ -50,7 +50,7 @@ allowed-tools: Bash(git branch *), Bash(git diff *)
 ```
 Narrower prefixes prevent auto-approving commands the skill doesn't need (like `git push` or `git reset --hard`).
 
-However, skills that use many git subcommands across their steps (branch, diff, log, config, symbolic-ref, etc.) may use `Bash(git *)` to avoid an unwieldy list of narrow prefixes. Several Han skills use this pattern — see `code-review`, `gh-pr-review`, and `update-pr-description`. The tradeoff is acceptable when the skill's workflow genuinely requires broad git access.
+However, skills that use many git subcommands across their steps (branch, diff, log, config, symbolic-ref, etc.) may use `Bash(git *)` to avoid an unwieldy list of narrow prefixes. Several Han skills use this pattern — see `code-review`, `post-code-review-to-pr`, and `update-pr-description`. The tradeoff is acceptable when the skill's workflow genuinely requires broad git access.
 
 **Too narrow / missing:**
 ```yaml

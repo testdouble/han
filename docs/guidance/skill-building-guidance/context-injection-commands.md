@@ -14,7 +14,7 @@ Format: `` - label: !`command` ``
 
 Multiple commands per line: `` - Git user: !`git config user.name` (!`git config user.email`) ``
 
-Several Han plugin skills use this pattern, including `code-review`, `architectural-decision-record`, `coding-standard`, `update-pr-description`, `gh-pr-review`, `investigate`, `iterative-plan-review`, `project-discovery`, `project-documentation`, and `test-planning`.
+Several Han plugin skills use this pattern, including `code-review`, `architectural-decision-record`, `coding-standard`, `update-pr-description`, `post-code-review-to-pr`, `investigate`, `iterative-plan-review`, `project-discovery`, `project-documentation`, and `test-planning`.
 
 ## When to Use
 
@@ -101,7 +101,7 @@ Shell scripts can safely use pipes, redirects, subcommands, and complex logic be
 
 Use `which {command}` as the preferred way to determine if an executable tool is installed.
 
-**Evidence:** The current working `gh-pr-review/SKILL.md` uses:
+**Evidence:** The current working `post-code-review-to-pr/SKILL.md` uses:
 ```
 - gh CLI: !`which gh`
 - jq: !`which jq`
@@ -184,7 +184,7 @@ The skill loader scans the **raw text** of the SKILL.md body for context injecti
 
 1. **Refer to the label** — "If `default branch` is empty" (see `update-pr-description/SKILL.md` Step 1)
 2. **Handle empty output** — check for emptiness, ask user or skip (see `architectural-decision-record/SKILL.md` Step 2: "If git user or email is **empty**")
-3. **Pre-requisite gates** — if tool not found, inform user and stop immediately (see `gh-pr-review/SKILL.md` Pre-requisites)
+3. **Pre-requisite gates** — if tool not found, inform user and stop immediately (see `post-code-review-to-pr/SKILL.md` Pre-requisites)
 
 ## Relationship to `allowed-tools`
 
@@ -207,14 +207,14 @@ See also: [allowed-tools: AskUserQuestion](./allowed-tools-AskUserQuestion.md) f
 Real examples organized by purpose, with source file references:
 
 **Git state:**
-- `` !`git branch --show-current` `` — current branch (`update-pr-description`, `gh-pr-review`)
-- `` !`git symbolic-ref --short refs/remotes/origin/HEAD` `` — default branch (`update-pr-description`, `gh-pr-review`)
+- `` !`git branch --show-current` `` — current branch (`update-pr-description`, `post-code-review-to-pr`)
+- `` !`git symbolic-ref --short refs/remotes/origin/HEAD` `` — default branch (`update-pr-description`, `post-code-review-to-pr`)
 - `` !`git log origin/HEAD..HEAD --oneline` `` — branch summary (`update-pr-description`)
 - `` !`git diff origin/HEAD...HEAD --stat` `` — branch stats (`update-pr-description`)
 - `` !`git diff origin/HEAD...HEAD` `` — branch changes (`update-pr-description`)
 
 **Git diffs/logs (via gh CLI):**
-- `` !`gh pr diff --name-only` `` — PR changed files (`gh-pr-review`)
+- `` !`gh pr diff --name-only` `` — PR changed files (`post-code-review-to-pr`)
 
 **User identity:**
 - `` !`git config user.name` `` — git user name (`architectural-decision-record`, `coding-standard`, `project-documentation`)
@@ -229,8 +229,8 @@ Real examples organized by purpose, with source file references:
 - `` !`find . -maxdepth 4 -type d -path "*/.claude/rules/coding-standards"` `` — check for path-scoped rules directory (`coding-standard`)
 
 **Tool availability:**
-- `` !`which gh` `` — check for gh CLI (`update-pr-description`, `gh-pr-review`)
-- `` !`which jq` `` — check for jq (`gh-pr-review`)
+- `` !`which gh` `` — check for gh CLI (`update-pr-description`, `post-code-review-to-pr`)
+- `` !`which jq` `` — check for jq (`post-code-review-to-pr`)
 - `` !`which git` `` — check for git (`code-review`)
 
 ## Summary Checklist

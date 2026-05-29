@@ -21,7 +21,7 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
-├── han.github/         # GitHub plugin: gh-pr-review, update-pr-description, work-items-to-issues
+├── han.github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   └── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
@@ -80,7 +80,7 @@ The plugins are shipped from `han.core/` and `han.github/`; the `han/` meta-plug
 - **[docs/skills/investigate.md](./docs/skills/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 - **[docs/skills/research.md](./docs/skills/research.md).** Research an open-ended question (options, prior art, how something works) across the codebase and the open web, ending at an adversarially-validated recommendation. The question-shaped sibling of investigate.
 - **[docs/skills/code-review.md](./docs/skills/code-review.md).** Comprehensive code review of the current branch or specified files. Dispatches a domain-aware roster that scales with sizing.
-- **[docs/skills/gh-pr-review.md](./docs/skills/gh-pr-review.md).** Run `/code-review` against a GitHub PR and post the review as comments after a clarity check.
+- **[docs/skills/post-code-review-to-pr.md](./docs/skills/post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments after a clarity check.
 - **[docs/skills/architectural-analysis.md](./docs/skills/architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment.
 - **[docs/skills/gap-analysis.md](./docs/skills/gap-analysis.md).** Compare two artifacts (spec vs. implementation, PRD vs. shipped feature) and produce a plain-language report indexed by stable gap IDs.
 - **[docs/skills/test-planning.md](./docs/skills/test-planning.md).** Produce a prioritized test plan for a branch or directory.

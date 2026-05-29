@@ -32,7 +32,7 @@ Operator documentation for the `/work-items-to-issues` skill in the han plugin. 
 **Do not invoke for:**
 
 - **Producing the work-items file.** Use [`/plan-work-items`](./plan-work-items.md) to break a trusted plan into work items first. This skill publishes that file; it does not create it.
-- **Reviewing code or posting PR comments.** Use [`/gh-pr-review`](./gh-pr-review.md) to post a review to a pull request, or [`/code-review`](./code-review.md) for a local review.
+- **Reviewing code or posting PR comments.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md) to post a review to a pull request, or [`/code-review`](./code-review.md) for a local review.
 - **Writing a PR description.** Use [`/update-pr-description`](./update-pr-description.md).
 - **Writing the code for an item.** Use [`/tdd`](./tdd.md) to implement a work item test-first.
 
@@ -124,7 +124,7 @@ GA announcement: https://github.blog/changelog/2025-08-21-dependencies-on-issues
 - [Skills Index](./README.md). All skills, grouped by purpose.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule. This skill does not gate on it; enforcement belongs upstream.
 - [`/plan-work-items`](./plan-work-items.md). Pair upstream to produce the work-items file this skill publishes.
-- [`/gh-pr-review`](./gh-pr-review.md). The sibling GitHub skill for posting a code review to a pull request.
+- [`/post-code-review-to-pr`](./post-code-review-to-pr.md). The sibling GitHub skill for posting a code review to a pull request.
 - [`/update-pr-description`](./update-pr-description.md). The sibling GitHub skill for writing a PR description.
 - [Slice issue format](../../han.github/skills/work-items-to-issues/references/issue-template.md). The per-issue body format and the invariants the publish scripts parse.
 - [Work-items file format](../../han.github/skills/work-items-to-issues/references/work-items-file-format.md). The source-file and per-repo-file shapes the skill reads and writes.

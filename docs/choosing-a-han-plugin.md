@@ -13,7 +13,7 @@ The rest of this page explains the three plugins, the one dependency that surpri
 Han ships as three plugins in one marketplace. `han.core` and `han.github` carry components; `han` is a convenience wrapper.
 
 - **`han.core`.** The heart of the suite. It carries the planning, investigation, review, and documentation skills, plus every agent the skills dispatch. If you install only this, you have the full set of specialists and almost every skill. See the [Skills Index](./skills/README.md) for the complete list.
-- **`han.github`.** The GitHub layer. It adds the skills that talk to GitHub through the `gh` CLI: [`gh-pr-review`](./skills/gh-pr-review.md), which posts a code review as comments on a pull request; [`update-pr-description`](./skills/update-pr-description.md), which writes a PR description from the branch's changes; and [`work-items-to-issues`](./skills/work-items-to-issues.md), which publishes a work-items file as GitHub issues. This plugin depends on `han.core`.
+- **`han.github`.** The GitHub layer. It adds the skills that talk to GitHub through the `gh` CLI: [`post-code-review-to-pr`](./skills/post-code-review-to-pr.md), which posts a code review as comments on a pull request; [`update-pr-description`](./skills/update-pr-description.md), which writes a PR description from the branch's changes; and [`work-items-to-issues`](./skills/work-items-to-issues.md), which publishes a work-items file as GitHub issues. This plugin depends on `han.core`.
 - **`han`.** A meta-plugin with no components of its own. It exists to pull in both of the others. Installing it is how you ask for the whole suite in one command.
 
 ## The one thing that surprises people

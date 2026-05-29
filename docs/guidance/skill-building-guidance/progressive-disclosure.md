@@ -27,7 +27,7 @@ name: "code-review"
 description: >
   Run a full code review on the current git branch's changes against the default
   branch. Use when reviewing, auditing, or checking code quality on local changes
-  before or after pushing. Does not post to GitHub — use gh-pr-review to post
+  before or after pushing. Does not post to GitHub — use post-code-review-to-pr to post
   review comments to a pull request.
 allowed-tools: Read, Grep, Glob, Agent, ExitPlanMode
 ---
@@ -172,7 +172,7 @@ description: >
 description: >
   Run a full code review on the current git branch's changes against the default
   branch. Use when reviewing, auditing, or checking code quality on local changes
-  before or after pushing. Does not post to GitHub — use gh-pr-review to post
+  before or after pushing. Does not post to GitHub — use post-code-review-to-pr to post
   review comments to a pull request.
 ```
 

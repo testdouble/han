@@ -35,14 +35,14 @@ Minimum 3 sentences. Typically 3-5 sentences. Skills in crowded spaces (multiple
 ```yaml
 description: Run a full code review on the current git branch's changes
 ```
-Missing when-to-use triggers, no boundary distinguishing it from `gh-pr-review`, no trigger breadth.
+Missing when-to-use triggers, no boundary distinguishing it from `post-code-review-to-pr`, no trigger breadth.
 
 **After (3 sentences):**
 ```yaml
 description: >
   Run a full code review on the current git branch's changes against the default
   branch. Use when reviewing, auditing, or checking code quality on local changes
-  before or after pushing. Does not post to GitHub — use gh-pr-review to post
+  before or after pushing. Does not post to GitHub — use post-code-review-to-pr to post
   review comments to a pull request.
 ```
 
@@ -58,7 +58,7 @@ description: >
   PR, using the gh CLI. Use when writing, drafting, or updating pull request
   descriptions, PR summaries, or PR bodies. Requires the gh CLI to be installed
   and a PR to already exist for the current branch. Does not review code or post
-  review comments — use code-review for local review or gh-pr-review for posting
+  review comments — use code-review for local review or post-code-review-to-pr for posting
   a review to GitHub.
 ```
 
@@ -88,14 +88,14 @@ The trigger words ("draft," "edit," "rewrite," "summarize," "outline") are still
 
 When sibling skills exist in the same plugin, name them explicitly in the boundary statement. When no siblings exist, describe the scope limit so Claude knows where the skill stops.
 
-Disambiguation must work in **both directions**. If `code-review` says "use `gh-pr-review` for GitHub posting," then `gh-pr-review` must also say "use `code-review` for local review without GitHub." One-way disambiguation leaves a gap that Claude can fall through.
+Disambiguation must work in **both directions**. If `code-review` says "use `post-code-review-to-pr` for GitHub posting," then `post-code-review-to-pr` must also say "use `code-review` for local review without GitHub." One-way disambiguation leaves a gap that Claude can fall through.
 
 **Commonly confused skill pairs and their boundary statements:**
 
 | Skill A | Skill B | How to disambiguate |
 |---------|---------|---------------------|
-| `code-review` | `gh-pr-review` | Local analysis vs. GitHub integration |
-| `update-pr-description` | `gh-pr-review` | PR body/summary vs. review comments |
+| `code-review` | `post-code-review-to-pr` | Local analysis vs. GitHub integration |
+| `update-pr-description` | `post-code-review-to-pr` | PR body/summary vs. review comments |
 | `project-documentation` | `architectural-decision-record` | Feature/system docs vs. architectural decisions |
 | `project-documentation` | `coding-standard` | Feature/system docs vs. coding standards |
 | `coding-standard` | `architectural-decision-record` | Enforceable rules vs. decision records |
@@ -125,7 +125,7 @@ description: >
 
 ### Rule: Mention external requirements when they affect triggering
 
-If a skill requires external tools (gh CLI, jq), specific preconditions (a PR must already exist), or a particular environment state, mention these in the description. This helps Claude choose between skills with different prerequisites — for example, choosing `code-review` (no dependencies) over `gh-pr-review` (requires gh CLI and an open PR) when the prerequisites aren't met.
+If a skill requires external tools (gh CLI, jq), specific preconditions (a PR must already exist), or a particular environment state, mention these in the description. This helps Claude choose between skills with different prerequisites — for example, choosing `code-review` (no dependencies) over `post-code-review-to-pr` (requires gh CLI and an open PR) when the prerequisites aren't met.
 
 **Before:**
 ```yaml

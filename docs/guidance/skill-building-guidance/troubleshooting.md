@@ -159,10 +159,10 @@ If skill A mentions skill B in its boundary, skill B must also mention skill A.
 ```yaml
 # code-review description:
 description: >
-  ...Does not post to GitHub — use gh-pr-review to post review comments
+  ...Does not post to GitHub — use post-code-review-to-pr to post review comments
   to a pull request.
 
-# gh-pr-review description:
+# post-code-review-to-pr description:
 description: >
   ...For local code review without posting to GitHub, use code-review instead.
 ```

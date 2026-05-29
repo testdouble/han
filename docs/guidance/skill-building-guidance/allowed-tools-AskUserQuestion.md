@@ -46,7 +46,7 @@ Han plugin skills that use `AskUserQuestion` and their current `allowed-tools` s
 
 | Skill | `AskUserQuestion` in `allowed-tools`? | Status |
 |-------|---------------------------------------|--------|
-| `gh-pr-review` | No | Removed (commit `dcf36e7`) |
+| `post-code-review-to-pr` | No | Removed (commit `dcf36e7`) |
 | `update-pr-description` | No | Removed |
 | `project-documentation` | No | Removed |
 | `investigation` | No | Removed |

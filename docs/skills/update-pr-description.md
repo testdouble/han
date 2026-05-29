@@ -29,7 +29,7 @@ Operator documentation for the `/update-pr-description` skill in the han plugin.
 
 **Do not invoke for:**
 
-- **Posting a code review to the PR.** Use [`/gh-pr-review`](./gh-pr-review.md).
+- **Posting a code review to the PR.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md).
 - **Running a local code review without touching the PR.** Use [`/code-review`](./code-review.md).
 - **Writing the initial feature specification.** Use [`/plan-a-feature`](./plan-a-feature.md).
 
@@ -65,7 +65,7 @@ A PR description rendered in-channel, optionally pushed to the open PR. Sections
 - **Surface the central mechanism in a context hint.** Feature flag name, migration phases, state-machine combinations. If you name these in the prompt, the Summary leads with them. Otherwise the skill infers from the diff (usually correctly, but a hint helps).
 - **Per-environment values matter.** *"Default off in prod, on in staging, toggle `billing_v2_enabled`"* is a better PR description than *"added feature flag."*
 - **Skip for doc-only branches.** The skill handles documentation-only branches correctly (omits Test Plan) but still writes a Summary. For pure formatting changes, a handwritten one-liner is probably faster.
-- **Pair with `/gh-pr-review`.** Description first, review second, both posted to the same PR.
+- **Pair with `/post-code-review-to-pr`.** Description first, review second, both posted to the same PR.
 
 ## Cost and latency
 
@@ -100,7 +100,7 @@ URL: https://martinfowler.com/articles/feature-toggles.html
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](./README.md). All skills, grouped by purpose.
-- [`/gh-pr-review`](./gh-pr-review.md). Post a code review to the same PR.
+- [`/post-code-review-to-pr`](./post-code-review-to-pr.md). Post a code review to the same PR.
 - [`/code-review`](./code-review.md). Local code review without touching GitHub.
 - [`junior-developer`](../agents/junior-developer.md). Authors the PR description with a fresh-reviewer perspective.
 - [`SKILL.md` for /update-pr-description](../../han.github/skills/update-pr-description/SKILL.md). The internal process definition.

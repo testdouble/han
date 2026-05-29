@@ -52,7 +52,7 @@ Problems:
 
 ## How `${CLAUDE_SKILL_DIR}` Works
 
-Claude Code expands `${CLAUDE_SKILL_DIR}` to the absolute path of the skill's directory at runtime. This means `${CLAUDE_SKILL_DIR}/scripts/my-script.sh` resolves to something like `/Users/name/.claude/plugins/testdouble-han/han.github/skills/gh-pr-review/scripts/my-script.sh`.
+Claude Code expands `${CLAUDE_SKILL_DIR}` to the absolute path of the skill's directory at runtime. This means `${CLAUDE_SKILL_DIR}/scripts/my-script.sh` resolves to something like `/Users/name/.claude/plugins/testdouble-han/han.github/skills/post-code-review-to-pr/scripts/my-script.sh`.
 
 Use `${CLAUDE_SKILL_DIR}` for all script paths in the SKILL.md body. Never use bare relative paths like `scripts/my-script.sh`.
 

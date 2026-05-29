@@ -38,7 +38,7 @@ Operator documentation for the `/code-review` skill in the han plugin. This docu
 
 **Do not invoke for:**
 
-- **Posting the review to a GitHub PR.** Use [`/gh-pr-review`](./gh-pr-review.md). It delegates to this skill and then posts the review as PR comments.
+- **Posting the review to a GitHub PR.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md). It delegates to this skill and then posts the review as PR comments.
 - **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment across a module.
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial validation.
 - **Test planning in isolation.** Use [`/test-planning`](./test-planning.md) when you want a prioritized test plan without a full correctness review.
@@ -86,7 +86,7 @@ Finding caps are 30 items each for the manual review pass and the agent pass; se
 - **Pair with `/investigate` when findings reveal a bug.** If the review surfaces a CRIT finding whose root cause needs deeper analysis, dispatch `/investigate` next. It produces a fix plan with adversarial validation.
 - **Pair with `/architectural-analysis` when findings reveal coupling or structural issues.** The review runs per-file; the architectural analysis runs per-module. Use both when the branch touches boundaries.
 - **Re-run after fixes.** The skill is cheap to re-dispatch. Fix the findings, run again, confirm the count drops.
-- **Use `/gh-pr-review` if you want it posted to the PR.** `/gh-pr-review` invokes this skill end-to-end, then posts the review to GitHub. If you already ran this one locally, you can run `/gh-pr-review` next to publish.
+- **Use `/post-code-review-to-pr` if you want it posted to the PR.** `/post-code-review-to-pr` invokes this skill end-to-end, then posts the review to GitHub. If you already ran this one locally, you can run `/post-code-review-to-pr` next to publish.
 
 ## Sizing
 
@@ -172,7 +172,7 @@ URL: https://itrevolution.com/product/accelerate/
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Skills Index](./README.md). All skills, grouped by purpose.
-- [`/gh-pr-review`](./gh-pr-review.md). Wraps this skill and posts the review to a GitHub PR.
+- [`/post-code-review-to-pr`](./post-code-review-to-pr.md). Wraps this skill and posts the review to a GitHub PR.
 - [`/investigate`](./investigate.md). Next step when a CRIT finding hides a bug whose root cause needs deeper analysis.
 - [`/architectural-analysis`](./architectural-analysis.md). Run alongside when the change touches module boundaries.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.

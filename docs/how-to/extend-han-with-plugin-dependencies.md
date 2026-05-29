@@ -47,7 +47,7 @@ Han is its own worked example. It ships as three plugins in one marketplace, wir
       "version": "1.0.0"
     }
 
-`han.github` is a layer on top of core. It adds the GitHub-facing skills (`gh-pr-review`, `update-pr-description`, `work-items-to-issues`), and several of them build directly on core skills. The `gh-pr-review` skill, for example, runs core's `/code-review` and then posts the result to a pull request. Because it cannot do its job without core, it declares core as a dependency:
+`han.github` is a layer on top of core. It adds the GitHub-facing skills (`post-code-review-to-pr`, `update-pr-description`, `work-items-to-issues`), and several of them build directly on core skills. The `post-code-review-to-pr` skill, for example, runs core's `/code-review` and then posts the result to a pull request. Because it cannot do its job without core, it declares core as a dependency:
 
     {
       "name": "han.github",
@@ -87,7 +87,7 @@ The split is not decoration. It buys three things, and naming them tells you whe
 
 First, **a reader can take a smaller slice.** Someone who never touches GitHub can install `han.core` on its own and get the planning, investigation, and review skills without the PR-facing ones. Bundling everything into a single plugin would have taken that choice away. Dependencies let the pieces ship separately and still compose.
 
-Second, **the dependency is honest about what it needs.** `han.github` declares `han.core` because it genuinely cannot run without it. The `gh-pr-review` skill runs core's `/code-review` as a step before it posts anything. Declaring the dependency means installing `han.github` guarantees core is present and enabled alongside it, so the skill never reaches for a `han.core` agent that is not there. The declaration is documentation and a load-time guarantee at the same time.
+Second, **the dependency is honest about what it needs.** `han.github` declares `han.core` because it genuinely cannot run without it. The `post-code-review-to-pr` skill runs core's `/code-review` as a step before it posts anything. Declaring the dependency means installing `han.github` guarantees core is present and enabled alongside it, so the skill never reaches for a `han.core` agent that is not there. The declaration is documentation and a load-time guarantee at the same time.
 
 Third, **the meta-plugin gives one install command for the whole suite.** `han` carries no components. Its only job is to depend on the other two so that `/plugin install han@han` delivers everything. A plugin with no components and nothing but a `dependencies` array is a pattern worth naming, because it is how you bundle a set of plugins under a single install. The canonical docs describe what install does with dependencies but do not name this zero-component meta-plugin shape on its own, so treat it as observed practice that Han relies on rather than a documented construct, and check the [canonical docs](https://code.claude.com/docs/en/plugin-dependencies) if install behavior ever surprises you.
 

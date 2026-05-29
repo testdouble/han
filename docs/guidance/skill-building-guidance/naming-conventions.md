@@ -77,8 +77,8 @@ The `name` field in the SKILL.md frontmatter must match the skill's directory na
 
 ```
 skills/
-  gh-pr-review/
-    SKILL.md       # name: "gh-pr-review"
+  post-code-review-to-pr/
+    SKILL.md       # name: "post-code-review-to-pr"
 ```
 
 This ensures the skill is invoked with the same name the user sees in the file system.

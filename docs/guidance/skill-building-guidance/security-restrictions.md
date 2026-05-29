@@ -72,7 +72,7 @@ This limit reinforces the progressive disclosure principle — descriptions shou
 description: >
   Run a full code review on the current git branch's changes against the default
   branch. Use when reviewing, auditing, or checking code quality on local changes
-  before or after pushing. Does not post to GitHub — use gh-pr-review to post
+  before or after pushing. Does not post to GitHub — use post-code-review-to-pr to post
   review comments to a pull request. This skill analyzes all changed files,
   applies the OWASP top 10 security checklist, checks for common code smells,
   evaluates test coverage, reviews documentation changes, verifies naming
@@ -90,7 +90,7 @@ description: >
 description: >
   Run a full code review on the current git branch's changes against the default
   branch. Use when reviewing, auditing, or checking code quality on local changes
-  before or after pushing. Does not post to GitHub — use gh-pr-review to post
+  before or after pushing. Does not post to GitHub — use post-code-review-to-pr to post
   review comments to a pull request.
 ```
 

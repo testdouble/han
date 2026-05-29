@@ -1,6 +1,6 @@
-# /gh-pr-review
+# /post-code-review-to-pr
 
-Operator documentation for the `/gh-pr-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.github/skills/gh-pr-review/SKILL.md`](../../han.github/skills/gh-pr-review/SKILL.md).
+Operator documentation for the `/post-code-review-to-pr` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.github/skills/post-code-review-to-pr/SKILL.md`](../../han.github/skills/post-code-review-to-pr/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md)
 
@@ -13,7 +13,7 @@ Operator documentation for the `/gh-pr-review` skill in the han plugin. This doc
 ## Key concepts
 
 - **Wraps `/code-review`.** The skill delegates the actual review to `/code-review`, adds a pre-post clarity check from `junior-developer`, then handles the GitHub-posting step.
-- **Branch context flows automatically.** Because the wrapped `/code-review` runs Step 1.5 (branch context loading) on the same branch, the PR description fetched via `gh pr view` is summarized into a `$branch_context` block and plumbed to every dispatched agent. Agents avoid re-raising items the PR description has already deferred or resolved. No extra dependency for `/gh-pr-review` users — `gh` is already required to post the review.
+- **Branch context flows automatically.** Because the wrapped `/code-review` runs Step 1.5 (branch context loading) on the same branch, the PR description fetched via `gh pr view` is summarized into a `$branch_context` block and plumbed to every dispatched agent. Agents avoid re-raising items the PR description has already deferred or resolved. No extra dependency for `/post-code-review-to-pr` users — `gh` is already required to post the review.
 - **Self-authored PR handling.** GitHub rejects formal reviews from PR authors, so when the author and the current gh user match, the skill posts as a PR comment rather than a review. When they differ, it posts as a formal review.
 - **Review event type chosen from severity.** `REQUEST_CHANGES` when any CRIT or WARN finding exists; `COMMENT` when only SUGG findings exist. Self-authored PRs always post as comments.
 - **Optional fix plan.** After the review lands, the skill offers to create an implementation plan for every Critical and Warning item, ordered by severity, with file paths and line numbers.
@@ -36,7 +36,7 @@ Operator documentation for the `/gh-pr-review` skill in the han plugin. This doc
 
 ## How to invoke it
 
-Run `/gh-pr-review` in Claude Code. Optionally pass focus areas.
+Run `/post-code-review-to-pr` in Claude Code. Optionally pass focus areas.
 
 Give it:
 
@@ -46,9 +46,9 @@ Give it:
 
 Example prompts:
 
-- `/gh-pr-review`. Run a full code review on the current PR.
-- `/gh-pr-review`. *"Focus on the security implications of the new auth endpoints."*
-- `/gh-pr-review`. *"Review with extra attention to the database migration changes."*
+- `/post-code-review-to-pr`. Run a full code review on the current PR.
+- `/post-code-review-to-pr`. *"Focus on the security implications of the new auth endpoints."*
+- `/post-code-review-to-pr`. *"Review with extra attention to the database migration changes."*
 
 ## What you get back
 
@@ -103,4 +103,4 @@ URL: https://google.github.io/eng-practices/review/reviewer/
 - [`/update-pr-description`](./update-pr-description.md). For writing the PR description.
 - [`/investigate`](./investigate.md). Next step when a Critical finding hides a bug.
 - [`junior-developer`](../agents/junior-developer.md). Runs the pre-post clarity check against the drafted review body.
-- [`SKILL.md` for /gh-pr-review](../../han.github/skills/gh-pr-review/SKILL.md). The internal process definition.
+- [`SKILL.md` for /post-code-review-to-pr](../../han.github/skills/post-code-review-to-pr/SKILL.md). The internal process definition.

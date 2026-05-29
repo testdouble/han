@@ -35,7 +35,7 @@ Operator documentation for the `/iterative-plan-review` skill in the han plugin.
 - **Implementing plan steps.** This skill refines and stress-tests plans. It does not execute them. When the plan is ready, hand it to the implementation phase.
 - **Generating new plans from scratch.** Use `/plan-a-feature` for a new behavioral specification or `/plan-implementation` for a new implementation plan. This skill improves a plan that already exists.
 - **Writing test plans.** Use `/test-planning` to produce a standalone test plan. This skill does not generate one, though it may surface test gaps when iterating on a plan that fails to address testing.
-- **Code review.** Use `/code-review` for correctness, style, and maintainability review of committed or pending code, or `/gh-pr-review` to post the review to a GitHub PR. This skill reviews plans, not code diffs.
+- **Code review.** Use `/code-review` for correctness, style, and maintainability review of committed or pending code, or `/post-code-review-to-pr` to post the review to a GitHub PR. This skill reviews plans, not code diffs.
 - **Bug investigation.** Use `/investigate` for evidence-based root-cause work on a bug or failure. This skill iterates on a plan that might come out of an investigation, not on the investigation itself.
 - **Architectural analysis of existing code.** Use `/architectural-analysis` to assess coupling, cohesion, data flow, concurrency, and SOLID alignment of an already-built module. This skill iterates on a forward-looking plan, not on retrospective architectural assessment.
 

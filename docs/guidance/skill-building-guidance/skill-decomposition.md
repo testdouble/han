@@ -70,7 +70,7 @@ Use the `Skill` tool to compose skills. The calling skill orchestrates while the
 
 Two composition patterns exist with different requirements:
 
-- **Orchestration.** Delegating a self-contained task (for example, `gh-pr-review` → `code-review`). Works inline.
+- **Orchestration.** Delegating a self-contained task (for example, `post-code-review-to-pr` → `code-review`). Works inline.
 - **Data-fetch.** Retrieving specific values for immediate use. Prefer inline discovery (context injection + Read) over forked sub-skill calls to avoid early-exit failures. See `writing-effective-instructions.md` for details.
 
 See [Skill Composition](./skill-composition.md) for the full pattern.
