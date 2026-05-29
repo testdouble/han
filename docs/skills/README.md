@@ -1,6 +1,6 @@
 # Skills
 
-All skills in the han plugin, grouped by purpose. Each entry is a one-sentence scent line plus a link to the canonical long-form doc.
+All skills in the Han suite, grouped by the plugin that ships them. `han.core` carries enough skills to group by purpose, so it has sub-categories; the smaller plugins are flat lists. Each entry is a one-sentence scent line plus a link to the canonical long-form doc.
 
 > See also: [Plugin landing page](../../README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md) · [All agents](../agents/README.md) · [Sizing](../sizing.md) · [YAGNI](../yagni.md)
 
@@ -8,7 +8,11 @@ All skills in the han plugin, grouped by purpose. Each entry is a one-sentence s
 
 Start on the [Quickstart](../quickstart.md). It picks the right skill for what you are trying to do right now. If the skill / agent split is fuzzy, read [Concepts](../concepts.md) first.
 
-## Planning
+## han.core
+
+The base plugin. It carries the planning, investigation, review, documentation, and operations skills, plus every agent those skills dispatch. Grouped by purpose below.
+
+### Planning
 
 Skills for specifying *what* a feature does, planning *how* to build it, and stress-testing plans before you commit.
 
@@ -17,16 +21,14 @@ Skills for specifying *what* a feature does, planning *how* to build it, and str
 - **[`/plan-a-phased-build`](./plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
 - **[`/iterative-plan-review`](./iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
 - **[`/plan-work-items`](./plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
-- **[`/stakeholder-summary`](./stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams for user experience and data flow — for getting non-technical feedback before implementation kicks off.
 
-
-## Building
+### Building
 
 Write the code itself, test-first, through a disciplined loop.
 
 - **[`/tdd`](./tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). The plugin's only execution skill: it writes code, not a document.
 
-## Investigation & research
+### Investigation & research
 
 Skills for finding out *why* something is broken or *what* your options are, with evidence to back it.
 
@@ -34,43 +36,55 @@ Skills for finding out *why* something is broken or *what* your options are, wit
 - **[`/investigate`](./investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 - **[`/research`](./research.md).** Research an open-ended question — options, possible solutions, prior art, or how something works — across the codebase and the open web, ending at an adversarially-validated recommendation without committing the team to any artifact. The question-shaped sibling of `/investigate`; scales with [size](../sizing.md).
 
-## Review & analysis
+### Review & analysis
 
 Skills for getting a second set of eyes on code that already exists.
 
 - **[`/code-review`](./code-review.md).** Run a comprehensive code review on the current branch or specified files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
-- **[`/post-code-review-to-pr`](./post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
 - **[`/architectural-analysis`](./architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment. Always dispatches the `structural-analyst` / `behavioral-analyst` / `risk-analyst` / `software-architect` spine, and adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` by signal. Roster scales with [size](../sizing.md).
 - **[`/gap-analysis`](./gap-analysis.md).** Compare two artifacts (current state vs. desired state, for example spec vs. implementation, or PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default — `adversarial-validator` and `junior-developer` (actor-perspective sweep) always, plus `evidence-based-investigator` when the current state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` for the lightweight pass.
 - **[`/test-planning`](./test-planning.md).** Produce a prioritized test plan for a branch or directory. Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
 
-## Discovery & context
+### Discovery & context
 
 Skills that produce context every other skill benefits from.
 
 - **[`/project-discovery`](./project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a static reference for other skills.
 - **[`/project-documentation`](./project-documentation.md).** Create and maintain documentation for features, systems, and components.
 
-## Conventions & decisions
+### Conventions & decisions
 
 Skills for recording how the team works.
 
 - **[`/coding-standard`](./coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
 - **[`/architectural-decision-record`](./architectural-decision-record.md).** Create, extract, or convert architectural decision records.
 
-## Reporting
-
-Skills for turning the work back into something sharable.
-
-- **[`/html-summary`](./html-summary.md).** Convert a `stakeholder-summary.md` (from [`/stakeholder-summary`](./stakeholder-summary.md)) into a single self-contained HTML executive report — bottom line and asks up front, mermaid diagrams inlined, styled with a Test Double-derived palette. Produces the HTML file only; does not publish it.
-- **[`/update-pr-description`](./update-pr-description.md).** Generate a PR description from the current branch's changes.
-- **[`/work-items-to-issues`](./work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
-
-## Operations
+### Operations
 
 Skills for capturing operational knowledge in artifacts the next on-call engineer can use.
 
 - **[`/runbook`](./runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Symptom-first template with imperative-voice procedure, expected output per step, escalation conditions, and rollback. Applies a YAGNI preflight that requires real evidence before writing.
+
+## han.github
+
+GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han.core`.
+
+- **[`/post-code-review-to-pr`](./post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
+- **[`/update-pr-description`](./update-pr-description.md).** Generate a PR description from the current branch's changes.
+- **[`/work-items-to-issues`](./work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
+
+## han.reporting
+
+Skills for turning the work back into something sharable with non-technical stakeholders. Depends on `han.core`.
+
+- **[`/stakeholder-summary`](./stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams for user experience and data flow — for getting non-technical feedback before implementation kicks off.
+- **[`/html-summary`](./html-summary.md).** Convert a `stakeholder-summary.md` (from [`/stakeholder-summary`](./stakeholder-summary.md)) into a single self-contained HTML executive report — bottom line and asks up front, mermaid diagrams inlined, styled with a Test Double-derived palette. Produces the HTML file only; does not publish it.
+
+## han.feedback
+
+The opt-in feedback plugin. It captures observations about the Han suite itself. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.feedback@han`. Depends on `han.core`.
+
+- **[`/han-feedback`](./han-feedback.md).** Capture structured post-session feedback on Han skills you used and optionally post it as a GitHub issue to testdouble/han.
 
 ---
 

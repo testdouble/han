@@ -36,6 +36,7 @@ Operator documentation for the `/research` skill in the han plugin. This documen
 - **Creating or updating a coding standard.** Use [`/coding-standard`](./coding-standard.md).
 - **Comparing two concrete artifacts for gaps.** Use [`/gap-analysis`](./gap-analysis.md).
 - **Assessing an existing module's architecture.** Use [`/architectural-analysis`](./architectural-analysis.md).
+- **Feedback on Han's own skills.** Use [`/han-feedback`](./han-feedback.md) to capture post-session feedback on the Han skills you ran.
 
 ## How to invoke it
 

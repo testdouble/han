@@ -35,6 +35,7 @@ Operator documentation for the `/investigate` skill in the han plugin. This docu
 - **Test planning.** Use [`/test-planning`](./test-planning.md) when the gap is coverage, not a bug.
 - **Plan review.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for multi-pass review of an existing plan.
 - **Open-ended research.** Use [`/research`](./research.md) when nothing is broken and you want options, prior art, or how something works before committing to a direction.
+- **Feedback on Han's own skills.** Use [`/han-feedback`](./han-feedback.md) to capture post-session feedback on the Han skills you ran.
 
 ## How to invoke it
 

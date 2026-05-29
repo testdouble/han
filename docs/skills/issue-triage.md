@@ -177,4 +177,5 @@ The skill dispatches no sub-agents. It reads the report and, only to sharpen the
 - [`/research`](./research.md). The natural next skill when the gap is a problem-space unknown — options, prior art, build-vs-buy, or which direction to take — rather than a missing user-supplied fact.
 - [`/plan-a-feature`](./plan-a-feature.md). The natural next skill when the issue is a feature request with enough context to spec.
 - [`/plan-implementation`](./plan-implementation.md). The next skill when triage confirms a well-defined problem and a spec already exists.
+- [How to provide feedback on Han](../how-to/provide-feedback.md). Uses this skill to shape an idea or vague observation about Han into a postable GitHub issue.
 - [`SKILL.md` for /issue-triage](../../han.core/skills/issue-triage/SKILL.md). The internal process definition.

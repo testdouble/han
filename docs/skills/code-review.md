@@ -43,6 +43,7 @@ Operator documentation for the `/code-review` skill in the han plugin. This docu
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial validation.
 - **Test planning in isolation.** Use [`/test-planning`](./test-planning.md) when you want a prioritized test plan without a full correctness review.
 - **Plan review.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for reviewing a work plan, not code.
+- **Feedback on Han's own skills.** Use [`/han-feedback`](./han-feedback.md) to capture post-session feedback on the Han skills you ran.
 
 ## How to invoke it
 

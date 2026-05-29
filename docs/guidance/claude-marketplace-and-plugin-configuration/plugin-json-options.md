@@ -85,7 +85,7 @@ Other plugins this plugin requires. Each entry is either a plain plugin name or 
 
 Behavior, in brief: installing a plugin auto-installs its dependencies and reports what it added; enabling a plugin enables its dependencies at the same scope, and a plugin cannot be disabled while another enabled plugin still depends on it. A dependency in another marketplace is refused unless that marketplace appears in the installing marketplace's `allowCrossMarketplaceDependenciesOn` list (see [marketplace.json reference](./marketplace-json-options.md)), and a dependency from a marketplace the user has not added stays unresolved. The full resolution, versioning, and error-handling rules are in the [canonical Claude Code documentation](https://code.claude.com/docs/en/plugin-dependencies).
 
-See also: [Extend Han with Plugin Dependencies](../../how-to/extend-han-with-plugin-dependencies.md) for how the field works with Han's own four plugins as the worked example, and [Build a plugin that depends on Han](../../how-to/build-a-plugin-that-depends-on-han.md) for the hands-on walkthrough.
+See also: [Extend Han with Plugin Dependencies](../../how-to/extend-han-with-plugin-dependencies.md) for how the field works with Han's own five plugins as the worked example, and [Build a plugin that depends on Han](../../how-to/build-a-plugin-that-depends-on-han.md) for the hands-on walkthrough.
 
 ## Environment Variables
 

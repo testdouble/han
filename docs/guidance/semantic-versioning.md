@@ -80,11 +80,11 @@ After bumping (or not bumping), sync the current `plugin.json` version to that p
 
 ## Suite Versioning: Parent and Child Plugins
 
-Han ships as a suite: a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.github`, `han.reporting`, and any future `han.*` extension). The parent has no skills or agents of its own; it installs the children through its `dependencies`. Each plugin carries its own independent version line, and the git tag for a release tracks the **parent** version (the release `vX.Y.Z` is the parent `han` version).
+Han ships as a suite: a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.github`, `han.reporting`, `han.feedback`, and any future `han.*` extension). The parent has no skills or agents of its own; it installs its **bundled** children (`han.core`, `han.github`, `han.reporting`) through its `dependencies`. Not every child is bundled: `han.feedback` ships in the same marketplace and depends on `han.core`, but the parent deliberately does not depend on it, so it is opt-in and installed on its own. Each plugin carries its own independent version line, and the git tag for a release tracks the **parent** version (the release `vX.Y.Z` is the parent `han` version).
 
 Three rules govern how a release versions the suite:
 
-1. **The parent always bumps on every release.** Every release is a release of the suite, so the parent `han` version increments even when only a single child changed. The parent's bump level is the highest level across the whole release: if any child has a major change (or a child was removed from the suite), the parent is major; if a child has a minor change or a brand-new child plugin is introduced, the parent is at least minor; otherwise (only child patches or repo-level doc and config fixes) the parent is patch. A change reaches the parent because anyone who installed the meta-plugin receives that child.
+1. **The parent always bumps on every release.** Every release is a release of the suite, so the parent `han` version increments even when only a single child changed. The parent's bump level is the highest level across the whole release: if any bundled child has a major change (or a bundled child was removed from the parent's `dependencies`), the parent is major; if a bundled child has a minor change or a brand-new bundled child plugin is introduced, the parent is at least minor; otherwise (only child patches or repo-level doc and config fixes) the parent is patch. A change reaches the parent because anyone who installed the meta-plugin receives that child. An opt-in child the parent does not depend on (such as `han.feedback`) does not by itself force a parent minor or major bump, because installing `han` never delivers it; its own changes still bump its own version line, and the release that introduces it still bumps the parent at least patch like any other release.
 
 2. **A child bumps only when its own directory changed.** Apply the major/minor/patch rules above to the changes inside that child's own directory (`han.core/`, `han.github/`, and so on). A child with no changes in a release keeps its version. Children version independently of each other: `han.github` going to `2.0.0` says nothing about `han.core`, which stays wherever its own changes put it.
 
@@ -94,13 +94,14 @@ Repo-root changes that do not live inside any plugin directory (`docs/`, `README
 
 ### Example: a release that touches one child
 
-`main` is at parent `han` v3.0.0, `han.core` v1.0.0, `han.github` v1.0.0, `han.reporting` v1.0.0. A branch adds one new skill to `han.github` and fixes a typo in a `han.core` prompt.
+`main` is at parent `han` v3.0.0, `han.core` v1.0.0, `han.github` v1.0.0, `han.reporting` v1.0.0, `han.feedback` v1.0.0. A branch adds one new skill to `han.github` and fixes a typo in a `han.core` prompt.
 
 | Plugin | Change | New version | Why |
 |--------|--------|-------------|-----|
 | `han.github` | New skill (minor) | **v1.1.0** | Minor bump from its own baseline. |
 | `han.core` | Typo fix (patch) | **v1.0.1** | Patch bump from its own baseline. |
 | `han.reporting` | None | **v1.0.0** | Unchanged, no bump. |
+| `han.feedback` | None | **v1.0.0** | Unchanged, no bump. |
 | `han` (parent) | Suite release | **v3.1.0** | Always bumps; highest child level is minor, so the parent is minor. |
 
 The release is tagged `v3.1.0` (the parent version). The changelog records each changed plugin under its own sub-heading with its new version.
