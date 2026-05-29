@@ -7,7 +7,7 @@ description: >
   implementation tickets that can be worked on and tracked on GitHub. Requires the gh CLI
   to be installed and authenticated. Does not produce the work-items file itself — use
   plan-work-items to break a plan into work items first. Does not review code or post pull
-  request comments — use gh-pr-review for that.
+  request comments — use post-code-review-to-pr for that.
 argument-hint: [path to work-items.md] [target repo(s), e.g. org/repo] [--label <name> (optional)] [--assignee <user> (optional)]
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(gh *), Bash(git *), Bash(find *)
 ---

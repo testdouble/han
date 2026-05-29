@@ -1,5 +1,5 @@
 ---
-name: gh-pr-review
+name: post-code-review-to-pr
 description: >
   Run a full pull request review and post review comments directly to the current
   branch's GitHub PR. Requires the gh CLI to be installed and a PR to already
@@ -48,7 +48,7 @@ If the user accepts:
 
 Because the review body will be publicly visible on the PR, run a clarity pass on the draft before posting.
 
-1. Write the draft review body to a temporary file (e.g., `/tmp/gh-pr-review-draft.md`) using the Write tool.
+1. Write the draft review body to a temporary file (e.g., `/tmp/post-code-review-to-pr-draft.md`) using the Write tool.
 2. Launch a single `junior-developer` agent in artifact-review mode with the prompt: "You are reviewing the text of a code review that is about to be posted publicly on a GitHub pull request. The review is at {draft_path}. Do not re-review the code — review the review. Flag findings whose wording is unclear, severity is mis-assigned (CRIT used where WARN would be accurate, or vice versa), language is accusatory or blaming rather than evidence-based, or `file_path:line_number` references are missing or invalid. Return a short list of specific edits with before/after text; return an empty list if the review reads well as-is."
 3. Apply every actionable edit the agent returns. If the agent raises a severity-assignment issue, adjust the finding's task ID and the Review Summary table to match.
 4. Generate a unique temp file path by running `${CLAUDE_SKILL_DIR}/scripts/create-review-tempfile.sh`. Write the final, edited review body to that path using the Write tool (not Bash).

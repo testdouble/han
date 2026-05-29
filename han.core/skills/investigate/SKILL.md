@@ -7,7 +7,7 @@ description: >
   figure out why something is broken — especially when in-depth analysis of the
   reasons and an adversarial validation of the proposed solution are needed. Does
   not review code for quality or style — use code-review for auditing changes or
-  gh-pr-review for posting review feedback to GitHub. Does not assess
+  post-code-review-to-pr for posting review feedback to GitHub. Does not assess
   architectural health or structural risk — use architectural-analysis for
   architectural concerns. Does not research open-ended options, prior art, or
   how something works when nothing is broken — use research for that.

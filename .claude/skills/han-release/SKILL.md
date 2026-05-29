@@ -10,7 +10,7 @@ description: >
   the latest tag yet, it proposes a semantic-versioning bump and confirms it
   before continuing. Requires the gh CLI, jq, and a clean git checkout. This is
   a repository-maintenance skill for the Han repo itself, not a general review
-  or PR skill — use code-review for local review, gh-pr-review to post a PR
+  or PR skill — use code-review for local review, post-code-review-to-pr to post a PR
   review, and update-pr-description for PR bodies.
 argument-hint: "[pause before publishing] [draft] [optional release context]"
 allowed-tools: Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, Bash(git *), Bash(gh *), Bash(jq *)
