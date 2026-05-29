@@ -97,6 +97,7 @@ Most han skills dispatch agents to do their judgment-heavy work. The [Concepts](
 A few common compositions:
 
 - **Triage → investigate.** `/issue-triage` → `/investigate`.
+- **Triage → research → spec.** `/issue-triage` → `/research` → `/plan-a-feature` (when triage finds a problem-space unknown, research the options first, then specify the chosen one).
 - **Create specs → plan implementation → iterate → break into work items.** `/plan-a-feature` → `/plan-implementation` → `/iterative-plan-review` → `/plan-work-items`.
 - **Plan implementation → break into work items.** `/plan-implementation` → `/plan-work-items`.
 - **Break into work items → publish to GitHub issues.** `/plan-work-items` → `/work-items-to-issues`.
