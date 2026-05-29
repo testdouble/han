@@ -63,6 +63,7 @@ Skills for recording how the team works.
 Skills for turning the work back into something sharable.
 
 - **[`/update-pr-description`](./update-pr-description.md).** Generate a PR description from the current branch's changes.
+- **[`/work-items-to-issues`](./work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
 
 ## Operations
 
@@ -74,7 +75,7 @@ Skills for capturing operational knowledge in artifacts the next on-call enginee
 
 ## How dispatch scales: sizing
 
-Seven of these skills ([`/architectural-analysis`](./architectural-analysis.md), [`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/research`](./research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
+The sizing-aware skills ([`/architectural-analysis`](./architectural-analysis.md), [`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/research`](./research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
 
 See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each sizing-aware skill's long-form doc has its own **Sizing** section with the skill-specific signals and caps.
 
@@ -97,6 +98,7 @@ A few common compositions:
 - **Triage → investigate.** `/issue-triage` → `/investigate`.
 - **Create specs → plan implementation → iterate → break into work items.** `/plan-a-feature` → `/plan-implementation` → `/iterative-plan-review` → `/plan-work-items`.
 - **Plan implementation → break into work items.** `/plan-implementation` → `/plan-work-items`.
+- **Break into work items → publish to GitHub issues.** `/plan-work-items` → `/work-items-to-issues`.
 - **Discover → document → standardize.** `/project-discovery` → `/project-documentation` → `/coding-standard`.
 - **Review locally → post to PR.** `/code-review` → `/gh-pr-review`.
 - **Investigate → iterate on the fix.** `/investigate` → `/iterative-plan-review`.

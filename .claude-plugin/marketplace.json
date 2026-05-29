@@ -4,14 +4,26 @@
     "name": "Test Double"
   },
   "metadata": {
-    "description": "Han plugin: evidence-based planning, investigation, and documentation skills for software projects."
+    "description": "Han: evidence-based planning, investigation, and documentation skills for software projects."
   },
   "plugins": [
     {
       "name": "han",
-      "source": "./plugin",
-      "description": "Evidence-based planning, investigation, and documentation skills for software projects. Includes issue triage, deep-dive investigations with root cause analysis, iterative plan refinement, architectural decision records (ADRs), project and feature documentation, coding standards, code reviews, test planning, PR descriptions, PR code reviews, and adversarial security vulnerability analysis.",
-      "version": "2.7.0"
+      "source": "./han",
+      "description": "Meta-plugin that installs the full Han suite. Has no components of its own; it depends on han.core and han.github so installing it pulls in both.",
+      "version": "3.0.0"
+    },
+    {
+      "name": "han.core",
+      "source": "./han.core",
+      "description": "Evidence-based planning, investigation, and documentation skills for software projects. Includes issue triage, deep-dive investigations with root cause analysis, iterative plan refinement, architectural decision records (ADRs), project and feature documentation, coding standards, code reviews, test planning, and adversarial security vulnerability analysis.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "han.github",
+      "source": "./han.github",
+      "description": "GitHub-specific extensions to Han. Provides skills to post code reviews as PR comments, update a PR description with a consistent format, and other GitHub-facing workflows.",
+      "version": "1.0.0"
     }
   ]
 }

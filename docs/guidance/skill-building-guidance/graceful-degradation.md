@@ -1,7 +1,9 @@
 ---
 paths:
-  - "plugin/skills/**/*.md"
-  - "plugin/skills/**/scripts/**"
+  - "han.core/skills/**/*.md"
+  - "han.github/skills/**/*.md"
+  - "han.core/skills/**/scripts/**"
+  - "han.github/skills/**/scripts/**"
 ---
 
 # Graceful Degradation
@@ -53,7 +55,7 @@ Run `${CLAUDE_SKILL_DIR}/scripts/detect-review-context.sh` to detect the git env
 **Mode C: No git / no changes found**
 - Use user-provided file paths or discover source files with Glob.
 ```
-(E1, E2 — `han/skills/code-review/SKILL.md` lines 30–48; `han/skills/code-review/scripts/detect-review-context.sh`)
+(E1, E2 — `han.core/skills/code-review/SKILL.md` lines 30–48; `han.core/skills/code-review/scripts/detect-review-context.sh`)
 
 ---
 

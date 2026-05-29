@@ -1,0 +1,9 @@
+{
+  "name": "han",
+  "description": "Evidence-based planning, investigation, documentation, and review for solo and small-team product engineers. Installs the full Han suite by pulling in han.core and its GitHub extensions (han.github).",
+  "version": "3.0.0",
+  "dependencies": [
+    "han.core",
+    "han.github"
+  ]
+}

@@ -51,7 +51,7 @@ You can integrate Han into something that does that lift. A larger team or an en
 
 > **If Han is not your fit.** If you need centralized governance, shared prompts across developers, indexed org knowledge, or audited AI usage across many developers, Han is not that product, and bolting those things on later will cost more than starting with a product that includes them. The [enterprise AI tooling integration research](./research/enterprise-ai-tooling-integration.md) names the categories and example vendors you will want to evaluate.
 >
-> **If Han is your fit.** Continue with [Concepts](./concepts.md) or the [Quickstart](./quickstart.md).
+> **If Han is your fit.** Decide what to install with [Choosing a Han plugin](./choosing-a-han-plugin.md), then continue with [Concepts](./concepts.md) or the [Quickstart](./quickstart.md).
 
 ## Where to go next
 

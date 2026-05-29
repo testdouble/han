@@ -1,6 +1,6 @@
 # /research
 
-Operator documentation for the `/research` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/research/SKILL.md`](../../plugin/skills/research/SKILL.md).
+Operator documentation for the `/research` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/research/SKILL.md`](../../han.core/skills/research/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [Evidence](../evidence.md)
 
@@ -134,4 +134,4 @@ URL: https://hbr.org/2007/09/performing-a-project-premortem
 - [`adversarial-validator`](../agents/adversarial-validator.md). The agent that attacks the evidence and recommendation before the report is presented.
 - [`codebase-explorer`](../agents/codebase-explorer.md). Dispatched for the codebase-grounded angle when a repository bears on the question.
 - [Evidence](../evidence.md). The canonical evidence rule. The trust classes, the corroboration gate, and the no-evidence label originated in `/research` and are now extracted as a plugin-wide rule other skills and agents share.
-- [`SKILL.md` for /research](../../plugin/skills/research/SKILL.md). The internal process definition.
+- [`SKILL.md` for /research](../../han.core/skills/research/SKILL.md). The internal process definition.

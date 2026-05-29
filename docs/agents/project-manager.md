@@ -1,6 +1,6 @@
 # project-manager
 
-Operator documentation for the `project-manager` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/project-manager.md`](../../plugin/agents/project-manager.md).
+Operator documentation for the `project-manager` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/project-manager.md`](../../han.core/agents/project-manager.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [YAGNI](../yagni.md) · [Evidence](../evidence.md)
 

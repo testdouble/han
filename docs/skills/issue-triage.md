@@ -1,6 +1,6 @@
 # /issue-triage
 
-Operator documentation for the `/issue-triage` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/issue-triage/SKILL.md`](../../plugin/skills/issue-triage/SKILL.md).
+Operator documentation for the `/issue-triage` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/issue-triage/SKILL.md`](../../han.core/skills/issue-triage/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 
@@ -174,4 +174,4 @@ The skill dispatches no sub-agents. It reads the report and, only to sharpen the
 - [`/investigate`](./investigate.md). The natural next skill when the issue is a bug or failure with enough context to trace.
 - [`/plan-a-feature`](./plan-a-feature.md). The natural next skill when the issue is a feature request with enough context to spec.
 - [`/plan-implementation`](./plan-implementation.md). The next skill when triage confirms a well-defined problem and a spec already exists.
-- [`SKILL.md` for /issue-triage](../../plugin/skills/issue-triage/SKILL.md). The internal process definition.
+- [`SKILL.md` for /issue-triage](../../han.core/skills/issue-triage/SKILL.md). The internal process definition.

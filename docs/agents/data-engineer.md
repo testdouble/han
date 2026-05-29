@@ -1,6 +1,6 @@
 # data-engineer
 
-Operator documentation for the `data-engineer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/data-engineer.md`](../../plugin/agents/data-engineer.md).
+Operator documentation for the `data-engineer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/data-engineer.md`](../../han.core/agents/data-engineer.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [YAGNI](../yagni.md)
 

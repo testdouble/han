@@ -1,6 +1,6 @@
 # project-scanner
 
-Operator documentation for the `project-scanner` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/project-scanner.md`](../../plugin/agents/project-scanner.md).
+Operator documentation for the `project-scanner` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/project-scanner.md`](../../han.core/agents/project-scanner.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md)
 

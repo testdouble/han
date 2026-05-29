@@ -10,7 +10,7 @@ YAGNI (*You Aren't Gonna Need It*) is the second foundational mechanic of the ha
 - **Two gates.** Gate 1 asks *is this needed now?* (the evidence test). Gate 2 asks *is there a strictly simpler version that satisfies the same evidence?* (the simpler-version test).
 - **Default is defer.** When no evidence applies, items move to a `## Deferred (YAGNI)` section in the artifact with a named *reopen-when* trigger. They are never silently dropped.
 - **You always win.** Skills and agents make the cost of inclusion visible; you can direct an item to be kept against the rule. The point is conscious choice, not bureaucratic exclusion.
-- **The canonical rule lives in [`plugin/references/yagni-rule.md`](../plugin/references/yagni-rule.md).** Every YAGNI-aware skill and agent loads that file at runtime. This page is the operator-facing summary.
+- **The canonical rule lives in [`han.core/references/yagni-rule.md`](../han.core/references/yagni-rule.md).** Every YAGNI-aware skill and agent loads that file at runtime. This page is the operator-facing summary.
 - **See also [`docs/evidence.md`](./evidence.md).** YAGNI's evidence test answers *is there any evidence at all to justify including this item?* The companion evidence rule answers *once an item passes that test, how strong is the evidence and what do you do when no evidence exists?* The two rules work together.
 
 ## Why YAGNI matters
@@ -52,7 +52,7 @@ If a simpler version satisfies the same evidence, the simpler version replaces t
 
 ## Named anti-patterns (auto-flag as YAGNI candidates)
 
-The full list lives in [`yagni-rule.md`](../plugin/references/yagni-rule.md). Highlights:
+The full list lives in [`yagni-rule.md`](../han.core/references/yagni-rule.md). Highlights:
 
 - "We might need…" / "for future flexibility" / "in case we want to…"
 - "When we scale" / "at scale" / "for performance" without measured pressure.
@@ -129,7 +129,7 @@ When no items are deferred, the section is omitted entirely. Don't write empty s
 
 ## Related reading
 
-- [`plugin/references/yagni-rule.md`](../plugin/references/yagni-rule.md). The canonical rule that every YAGNI-aware skill and agent loads at runtime.
+- [`han.core/references/yagni-rule.md`](../han.core/references/yagni-rule.md). The canonical rule that every YAGNI-aware skill and agent loads at runtime.
 - [Concepts](./concepts.md). The skill / agent split. YAGNI is a property of skills that produce artifacts and agents that review them.
 - [Sizing](./sizing.md). The other foundational mechanic. Sizing decides *how much review* an artifact gets; YAGNI decides *what survives* the review.
 - The skill long-form docs and agent long-form docs cited in the table above each name where they apply YAGNI in their own protocol.

@@ -2,7 +2,7 @@
 
 Han is built out of two kinds of things: **skills** and **agents**. If you read this page once before you pick a slash command, the rest of the documentation will make sense.
 
-> See also: [Plugin landing page](../README.md) · [Quickstart](./quickstart.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
+> See also: [Plugin landing page](../README.md) · [Choosing a plugin](./choosing-a-han-plugin.md) · [Quickstart](./quickstart.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
 
 ## TL;DR
 
@@ -23,7 +23,7 @@ A skill is a fixed sequence of steps that Claude Code runs when you type its sla
 
 - You invoke it: `/code-review`, `/plan-a-feature`, `/investigate`.
 - It follows a defined protocol. Every reader who runs the same skill gets the same shape of output.
-- It is documented by a `SKILL.md` file inside `plugin/skills/{name}/`.
+- It is documented by a `SKILL.md` file inside `han.core/skills/{name}/` (or `han.github/skills/{name}/` for the GitHub skills).
 - It may dispatch one or more agents for the steps that need judgment.
 
 **The test:** could you draw the whole thing as a flowchart? If yes, it is a skill.
@@ -34,7 +34,7 @@ An agent is a specialist teammate. A model with a persona, a narrow domain, and 
 
 - An agent has a name like `adversarial-security-analyst`, `project-manager`, or `junior-developer`.
 - An agent applies contextual judgment. *Is this finding really a problem? Does the plan address the risk? Should we ask another specialist?*
-- An agent is documented by a single `.md` file inside `plugin/agents/`.
+- An agent is documented by a single `.md` file inside `han.core/agents/`.
 - You can dispatch an agent directly with the `Agent` tool, but most agents get dispatched *for you* when a skill needs their input.
 
 **The test:** does this require reasoning about context rather than following a script? If yes, it is an agent.
@@ -69,7 +69,7 @@ Every skill that dispatches an agent swarm classifies the work as **small**, **m
 
 - **Default is small.** Every sizing-aware skill starts the classification at small and only escalates when concrete signals require it.
 - **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
-- **Seven sizing-aware skills.** [`/architectural-analysis`](./skills/architectural-analysis.md), [`/code-review`](./skills/code-review.md), [`/gap-analysis`](./skills/gap-analysis.md), [`/iterative-plan-review`](./skills/iterative-plan-review.md), [`/plan-a-feature`](./skills/plan-a-feature.md), [`/plan-implementation`](./skills/plan-implementation.md), [`/research`](./skills/research.md).
+- **Sizing-aware skills.** [`/architectural-analysis`](./skills/architectural-analysis.md), [`/code-review`](./skills/code-review.md), [`/gap-analysis`](./skills/gap-analysis.md), [`/iterative-plan-review`](./skills/iterative-plan-review.md), [`/plan-a-feature`](./skills/plan-a-feature.md), [`/plan-implementation`](./skills/plan-implementation.md), [`/research`](./skills/research.md).
 
 Read the full [Sizing](./sizing.md) reference for the bands, the auto-classification process, and the per-skill rules.
 
@@ -100,6 +100,12 @@ You might invoke an agent directly when:
 - You are composing a custom workflow that does not match any slash command cleanly.
 
 Direct invocation uses the `Agent` tool with `subagent_type: han:{agent-name}` (for example, `han:adversarial-security-analyst`).
+
+## How Han is packaged
+
+Han ships as three plugins in one marketplace. `han.core` carries the skills and every agent. `han.github` adds the GitHub skills and depends on `han.core`, so installing it brings the core along. `han` is a meta-plugin with no components of its own that depends on both, so installing it pulls in the whole suite. The practical choice is core only, or the full suite. There is no GitHub-only install.
+
+For which one to install and the dependency that surprises people, read [Choosing a Han plugin](./choosing-a-han-plugin.md).
 
 ## What does the plugin include?
 

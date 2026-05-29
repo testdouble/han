@@ -1,6 +1,6 @@
 # system-architect
 
-Operator documentation for the `system-architect` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/system-architect.md`](../../plugin/agents/system-architect.md).
+Operator documentation for the `system-architect` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/system-architect.md`](../../han.core/agents/system-architect.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [YAGNI](../yagni.md)
 

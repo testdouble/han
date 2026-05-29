@@ -1,6 +1,6 @@
 # evidence-based-investigator
 
-Operator documentation for the `evidence-based-investigator` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/evidence-based-investigator.md`](../../plugin/agents/evidence-based-investigator.md).
+Operator documentation for the `evidence-based-investigator` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/evidence-based-investigator.md`](../../han.core/agents/evidence-based-investigator.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md) · [Evidence](../evidence.md)
 

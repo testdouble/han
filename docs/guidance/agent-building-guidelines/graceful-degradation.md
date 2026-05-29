@@ -1,6 +1,6 @@
 ---
 paths:
-  - "plugin/agents/**/*.md"
+  - "han.core/agents/**/*.md"
 ---
 
 # Graceful Degradation
@@ -39,7 +39,7 @@ Run `git log --since="30 days ago" --name-only` to identify recently modified fi
 Prioritize test coverage for files changed in the last 30 days.
 ```
 
-(E4 in `plugin/agents/test-engineer.md` line 70. E5 in `plugin/agents/edge-case-explorer.md` line 38.)
+(E4 in `han.core/agents/test-engineer.md` line 70. E5 in `han.core/agents/edge-case-explorer.md` line 38.)
 
 **Noting the limitation** means including a line in the agent's output such as:
 

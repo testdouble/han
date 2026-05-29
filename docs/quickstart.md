@@ -4,6 +4,8 @@ New to the han plugin? Pick the path that matches what you are trying to do righ
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [How-to guides](./how-to/README.md) · [Skills](./skills/README.md) · [Agents](./agents/README.md) · [Sizing](./sizing.md) · [YAGNI](./yagni.md)
 
+> **Have not installed Han yet?** Read [Choosing a Han plugin](./choosing-a-han-plugin.md) first to pick between the full suite and core only, then come back here.
+
 If you want the full end-to-end recipe for one of these paths (specific prompts, what to do between steps, what to expect at each one), the [how-to guides](./how-to/README.md) cover planning, bug triage, and research workflows in depth. The quickstart points you at the right path; the how-to walks you through it.
 
 ## Which path are you on?
@@ -52,7 +54,7 @@ Start with the scope that matches:
 - **An open GitHub PR** → **[`/gh-pr-review`](./skills/gh-pr-review.md).** Everything `/code-review` does, plus a `junior-developer` clarity check against the drafted review body, plus posts the review as comments on the PR.
 - **A whole module or subsystem** → **[`/architectural-analysis`](./skills/architectural-analysis.md).** Always dispatches a spine of `structural-analyst`, `behavioral-analyst`, `risk-analyst`, and `software-architect` to examine coupling, data flow, risk, and SOLID alignment. Conditionally adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` when the focus area's signals call for them. The roster scales with the [size](./sizing.md), defaulting to small. For cross-service topology when `system-architect` is not auto-included, dispatch it separately.
 - **Tests you want to *plan*, not review** → **[`/test-planning`](./skills/test-planning.md).** Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it. Produces a prioritized test plan.
-- **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](./skills/gap-analysis.md).** Compares two artifacts (current state vs. desired state) and produces a plain-language, stakeholder-readable report indexed by stable `G-NNN` gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default — including `junior-developer`'s actor-perspective sweep across human users, API callers, AI agents, and other actor types. Opt out with `no swarm` for the lightweight pass.
+- **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](./skills/gap-analysis.md).** Compares two artifacts (current state vs. desired state) and produces a plain-language, stakeholder-readable report indexed by stable `G-NNN` gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default, including `junior-developer`'s actor-perspective sweep across human users, API callers, AI agents, and other actor types. Opt out with `no swarm` for the lightweight pass.
 - **A gap report or PRD that needs to be ordered into a phased build** → **[`/plan-a-phased-build`](./skills/plan-a-phased-build.md).** Splits the source artifact into a numbered sequence of vertical-slice build phases. Each phase is a thin end-to-end deliverable demoable to a real person, and each one builds on the prior. Dispatches `information-architect` against the rendered outline.
 
 **You are done when:** you have a review artifact you trust, with findings tied to specific files, lines, and severity levels.
@@ -100,7 +102,7 @@ You can reference multiple skills in one prompt and Claude runs them in sequence
 
 ## A note on sizing
 
-Seven skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**, **medium**, or **large** before dispatching agents, default to small, and scale the team and iteration depth to the chosen band. Pass the size as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See [Sizing](./sizing.md) for the full model.
+The sizing-aware skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**, **medium**, or **large** before dispatching agents, default to small, and scale the team and iteration depth to the chosen band. Pass the size as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See [Sizing](./sizing.md) for the full model.
 
 ## A note on YAGNI
 

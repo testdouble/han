@@ -8,7 +8,7 @@ All agents in the han plugin, grouped by role. Each entry is a one-sentence scen
 
 Most agents are dispatched *for you* by skills. You do not usually invoke them directly. Read [Concepts](../concepts.md) for the skill-vs-agent model before browsing this list. If you are looking to dispatch one directly, use the `Agent` tool with `subagent_type: han:{agent-name}`.
 
-When editing this index, verify every agent definition in `plugin/agents/` has a long-form doc in `docs/agents/` and an entry below.
+When editing this index, verify every agent definition in `han.core/agents/` has a long-form doc in `docs/agents/` and an entry below.
 
 ## Planning & facilitation
 

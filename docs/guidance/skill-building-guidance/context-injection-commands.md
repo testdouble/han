@@ -1,6 +1,7 @@
 ---
 paths:
-  - "plugin/skills/**/*.md"
+  - "han.core/skills/**/*.md"
+  - "han.github/skills/**/*.md"
 ---
 
 # Context Injection Commands in Skill Files

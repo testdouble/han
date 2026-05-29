@@ -1,6 +1,6 @@
 # codebase-explorer
 
-Operator documentation for the `codebase-explorer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/codebase-explorer.md`](../../plugin/agents/codebase-explorer.md).
+Operator documentation for the `codebase-explorer` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/codebase-explorer.md`](../../han.core/agents/codebase-explorer.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md)
 

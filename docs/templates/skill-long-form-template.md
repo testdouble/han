@@ -1,6 +1,6 @@
 # /{skill-name}
 
-Operator documentation for the `/{skill-name}` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/{skill-name}/SKILL.md`](../../plugin/skills/{skill-name}/SKILL.md).
+Operator documentation for the `/{skill-name}` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/{skill-name}/SKILL.md`](../../han.core/skills/{skill-name}/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 

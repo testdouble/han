@@ -17,6 +17,7 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 ## Which path are you on?
 
 - **New to han?** → Start with [Concepts](./docs/concepts.md), then the [Quickstart](./docs/quickstart.md).
+- **Deciding which plugin to install?** → [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The full suite, core only, and the dependency that surprises people, with a quick "which one do you need?" guide.
 - **Want the end-to-end recipe for a workflow?** → [How-to guides](./docs/how-to/README.md). Plan a feature, triage and investigate a bug, or research a decision, walked through step by step.
 - **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). All skills grouped by purpose.
 - **Looking for a specific agent?** → [Agents Index](./docs/agents/README.md). All agents grouped by role.
@@ -34,11 +35,14 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 /plugin install han@han
 ```
 
+Han ships as three plugins: `han.core` (the planning, investigation, review, and documentation skills plus every agent), `han.github` (GitHub-facing skills like posting a code review on a PR), and `han` (a meta-plugin with no components of its own that depends on the other two). Installing `han@han` pulls in the whole suite, and is the right choice for almost everyone. If you do not want the GitHub skills, install `han.core@han` instead. There is no GitHub-only install: `han.github` depends on `han.core`, so installing it brings the core skills and every agent along with it. For the full picture and a quick "which one do you need?" guide, see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).
+
 ## Documentation
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
+- [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The full suite vs. core only, the `han.github` dependency on `han.core`, and a quick guide to which one to install.
 - [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
-- [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, triaging and investigating a bug, and researching a decision. Pick one when you want the full walkthrough, not just the path.
+- [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, triaging and investigating a bug, and researching a decision. Pick one when you want the full walkthrough, not only the path.
 - [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.
 - [Agents Index](./docs/agents/README.md). All agents, grouped by role.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills dispatch.

@@ -1,6 +1,6 @@
 # han: Project Map
 
-Han is a Claude Code plugin: a suite of skills and agents for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work.
+Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as three plugins: `han.core` (the skills and agents), `han.github` (GitHub-facing skills), and `han` (a meta-plugin that installs both via dependencies).
 
 ## Repository layout
 
@@ -9,15 +9,22 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 ├── README.md           # End-user landing page
 ├── CONTRIBUTING.md     # Contributor guide
 ├── CLAUDE.md           # This file
-├── CHANGELOG.md    # Version history
+├── CHANGELOG.md        # Version history
 ├── .claude-plugin/
-│   └── marketplace.json   # Test Double marketplace manifest
-├── plugin/             # The actual plugin shipped to Claude Code
+│   └── marketplace.json   # Test Double marketplace manifest (lists han, han.core, han.github)
+├── han/                # Meta-plugin: no components of its own; depends on han.core + han.github
+│   └── .claude-plugin/
+│       └── plugin.json
+├── han.core/           # Core plugin: planning, investigation, review, documentation
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
+├── han.github/         # GitHub plugin: gh-pr-review, update-pr-description, work-items-to-issues
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
 ├── docs/               # Operator-facing documentation
 │   ├── writing-voice.md   # Voice profile every doc follows
 │   ├── concepts.md
@@ -34,14 +41,14 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 └── images/             # Banner and graphics for README
 ```
 
-The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`plugin/skills/{name}/SKILL.md` or `plugin/agents/{name}.md`) is the implementation.
+The plugins are shipped from `han.core/` and `han.github/`; the `han/` meta-plugin pulls in both through its `dependencies`. Documentation lives in `docs/` and covers the whole suite. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`han.core/skills/{name}/SKILL.md`, `han.github/skills/{name}/SKILL.md`, or `han.core/agents/{name}.md`) is the implementation.
 
 ## When to use which doc
 
 ### Entry points
 
 - **[README.md](./README.md).** End-user landing page. Use to understand what the plugin is and where to start. Lists install instructions and pointers to every other doc.
-- **[CONTRIBUTING.md](./CONTRIBUTING.md).** Contributor guide for adding or editing skills, agents, and documentation. Read before changing any file under `plugin/` or `docs/`.
+- **[CONTRIBUTING.md](./CONTRIBUTING.md).** Contributor guide for adding or editing skills, agents, and documentation. Read before changing any file under `han.core/`, `han.github/`, or `docs/`.
 - **[CHANGELOG.md](./CHANGELOG.md).** Version history. Check when a behavior or skill name in user-supplied context doesn't match what's on disk. May be a pre-2.0 rename or a removed feature.
 
 ### Writing voice
@@ -52,8 +59,9 @@ The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form 
 
 - **[docs/concepts.md](./docs/concepts.md).** The skill-vs-agent model that runs through the whole plugin. Read once before doing anything else. Every other doc assumes this vocabulary.
 - **[docs/quickstart.md](./docs/quickstart.md).** Five path-based recipes (plan a feature, investigate a bug, review code, set up a project, research your options). Use when picking which skill to run for a specific situation. For the full end-to-end recipe for planning, bugs, or research, the quickstart points into the how-to guides below.
+- **[docs/choosing-a-han-plugin.md](./docs/choosing-a-han-plugin.md).** Which plugin to install: the full `han` suite vs. `han.core` only, the `han.github`-depends-on-`han.core` dependency (there is no GitHub-only install), and a "which one do you need?" guide. Use when an operator is at the install decision point or asks what the three plugins are.
 - **[docs/how-to/README.md](./docs/how-to/README.md).** Three end-to-end workflow guides (plan a feature, triage and investigate a bug, research a decision) that walk the whole loop with specific prompts, decision points, and what to expect at each step. Use when the operator wants the full recipe and not just a path-picker. The quickstart is canonical for picking a path; a how-to is canonical for running it.
-- **[docs/sizing.md](./docs/sizing.md).** The small / medium / large dispatch model used by the seven swarming skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`). Use when a swarming skill needs to decide team size, or when a user asks what `medium` / `large` mean.
+- **[docs/sizing.md](./docs/sizing.md).** The small / medium / large dispatch model used by the swarming skills (`/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`). Use when a swarming skill needs to decide team size, or when a user asks what `medium` / `large` mean.
 - **[docs/yagni.md](./docs/yagni.md).** The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies before committing items to its artifact. Use when explaining why an item was deferred or rejected from a plan / review / ADR.
 - **[docs/evidence.md](./docs/evidence.md).** The three structural principles (proximity to origin, corroboration, explicit no-evidence labeling) that define what "evidence-based" means in Han, plus the trust-class vocabulary (codebase / web / provided) that grounds the corroboration gate. Use when a skill, agent, or operator asks what counts as valid evidence, how to label uncorroborated claims, or what to do when no evidence exists at all.
 - **[docs/why-solo-and-small-teams.md](./docs/why-solo-and-small-teams.md).** Honest fit answer for teams evaluating Han: the plugin is designed for solo product engineers and small teams, not for large teams or enterprise. Use when an operator is evaluating Han against an organization-sized governance or coordination problem, or when explaining what Han is and is not built for.
@@ -81,6 +89,7 @@ The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form 
 - **[docs/skills/coding-standard.md](./docs/skills/coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
 - **[docs/skills/architectural-decision-record.md](./docs/skills/architectural-decision-record.md).** Create, extract, or convert architectural decision records (ADRs).
 - **[docs/skills/update-pr-description.md](./docs/skills/update-pr-description.md).** Generate a PR description from the current branch's changes.
+- **[docs/skills/work-items-to-issues.md](./docs/skills/work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked and no label or assignee by default.
 - **[docs/skills/runbook.md](./docs/skills/runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Applies a YAGNI preflight that requires real evidence before writing.
 
 ### Agent catalog (`docs/agents/`)
@@ -139,4 +148,4 @@ Folder selection rule: if the artifact is the plan, write to `docs/plans/{plan-n
 - **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the README at the repo root.
 - **Voice is uniform.** Every doc follows [docs/writing-voice.md](./docs/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
 - **YAGNI applies to docs too.** Don't add speculative sections, for-future-flexibility warnings, or examples for behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
-- **Indexes stay complete, not counted.** Every skill in `plugin/skills/` has a long-form doc in `docs/skills/` and an entry in the skills index; same for agents in `plugin/agents/` and `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.
+- **Indexes stay complete, not counted.** Every skill in `han.core/skills/` and `han.github/skills/` has a long-form doc in `docs/skills/` and an entry in the skills index; same for agents in `han.core/agents/` and `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.

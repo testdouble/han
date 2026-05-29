@@ -1,6 +1,6 @@
 # content-auditor
 
-Operator documentation for the `content-auditor` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`plugin/agents/content-auditor.md`](../../plugin/agents/content-auditor.md).
+Operator documentation for the `content-auditor` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han.core/agents/content-auditor.md`](../../han.core/agents/content-auditor.md).
 
 > See also: [Plugin landing page](../../README.md) · [All agents](./README.md) · [All skills](../skills/README.md)
 

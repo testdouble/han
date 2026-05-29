@@ -1,6 +1,6 @@
 # /plan-work-items
 
-Operator documentation for the `/plan-work-items` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/plan-work-items/SKILL.md`](../../plugin/skills/plan-work-items/SKILL.md).
+Operator documentation for the `/plan-work-items` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/plan-work-items/SKILL.md`](../../han.core/skills/plan-work-items/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 
@@ -65,6 +65,7 @@ One file on disk plus an in-channel summary:
 - **Pair with `/iterative-plan-review` upstream.** A highly-trusted, reviewed-and-battle-tested plan makes dividing it into work items much easier and the breakdown sharper. Do not break down a plan you do not yet trust.
 - **Pair with `/plan-a-phased-build` upstream when the work is large.** When the effort is big enough to ship in slices, phase it first, plan the implementation of a single phase, then run this skill against that phase's plan. Each work-items file then covers one phase.
 - **Pair with `/tdd` downstream.** Once the breakdown is written, `/tdd` implements a work item test-first. The work item's `Description`, `Tests`, and `Acceptance criteria` become the behavior test list.
+- **Pair with `/work-items-to-issues` downstream when you track work on GitHub.** Once the breakdown is written, `/work-items-to-issues` publishes each item as a GitHub issue in its target repo. It needs the `han.github` plugin and the `gh` CLI.
 
 ## YAGNI (when applicable)
 
@@ -122,6 +123,7 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 - [`/iterative-plan-review`](./iterative-plan-review.md). Pair upstream to harden a plan you do not yet trust before breaking it into work items.
 - [`/plan-a-phased-build`](./plan-a-phased-build.md). Pair upstream when the work is large enough to ship in phases. Phase first, plan one phase, then break that phase's plan into work items.
 - [`/tdd`](./tdd.md). Pair downstream to implement a work item test-first.
-- [Work item template](../../plugin/skills/plan-work-items/references/work-item-template.md). The template the skill renders for each work item.
-- [Work-items file format](../../plugin/skills/plan-work-items/references/work-items-file-format.md). The title, intro, and preamble structure of the output file.
-- [Reference artifact inventory](../../plugin/skills/plan-work-items/references/reference-artifact-inventory.md). The include list, exclude list, and screenshot-to-work-item mapping rules the skill applies in Step 4.
+- [`/work-items-to-issues`](./work-items-to-issues.md). Pair downstream to publish the work items as GitHub issues. Part of the `han.github` plugin.
+- [Work item template](../../han.core/skills/plan-work-items/references/work-item-template.md). The template the skill renders for each work item.
+- [Work-items file format](../../han.core/skills/plan-work-items/references/work-items-file-format.md). The title, intro, and preamble structure of the output file.
+- [Reference artifact inventory](../../han.core/skills/plan-work-items/references/reference-artifact-inventory.md). The include list, exclude list, and screenshot-to-work-item mapping rules the skill applies in Step 4.

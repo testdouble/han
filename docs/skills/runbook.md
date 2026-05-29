@@ -1,6 +1,6 @@
 # /runbook
 
-Operator documentation for the `/runbook` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/runbook/SKILL.md`](../../plugin/skills/runbook/SKILL.md).
+Operator documentation for the `/runbook` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/runbook/SKILL.md`](../../han.core/skills/runbook/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md) · [Evidence](../evidence.md)
 
@@ -59,7 +59,7 @@ Example prompts:
 
 A single runbook file plus light integration:
 
-- **`docs/runbooks/{slug}.md`** (or the project's existing runbook directory and convention). The file follows the template at [`references/runbook-template.md`](../../plugin/skills/runbook/references/runbook-template.md). Required sections: title, one-line description, metadata block (Severity, Triggers, Reversible, Last validated, Last edited, Owner, Origin), Symptoms, Prerequisites, Resolve (or Quick fix), Verify the fix landed, Escalate, Rollback, Live links, Change history. Optional sections (deleted entirely if they do not apply): Likely cause, Not this — try instead, Background, Quick fix, If a step fails, If the problem comes back, What didn't work and why, Background and related.
+- **`docs/runbooks/{slug}.md`** (or the project's existing runbook directory and convention). The file follows the template at [`references/runbook-template.md`](../../han.core/skills/runbook/references/runbook-template.md). Required sections: title, one-line description, metadata block (Severity, Triggers, Reversible, Last validated, Last edited, Owner, Origin), Symptoms, Prerequisites, Resolve (or Quick fix), Verify the fix landed, Escalate, Rollback, Live links, Change history. Optional sections (deleted entirely if they do not apply): Likely cause, Not this — try instead, Background, Quick fix, If a step fails, If the problem comes back, What didn't work and why, Background and related.
 - **A metadata block tuned for 2am scanning.** Severity and Triggers up top; Reversible visible before the engineer commits to any destructive step; Last validated distinct from Last edited so trust signals are not muddied; Origin holding the YAGNI evidence.
 - **An imperative procedure.** Every step shows the exact command and what success looks like, with explicit branching when output differs.
 - **Filename convention discovered from the project.** Flat (`docs/runbooks/{scenario}.md`), per-service (`docs/runbooks/{service}/{scenario}.md`), or alert-keyed (`docs/runbooks/alerts/{AlertName}.md`) depending on what the project already uses. The skill matches existing convention when more than two runbooks are present; consistency is the larger value.
@@ -127,11 +127,11 @@ The alert-keyed naming convention (`alerts/{operator}/{AlertName}.md`) the skill
 
 URL: https://github.com/openshift/runbooks
 
-### `plugin/references/yagni-rule.md`
+### `han.core/references/yagni-rule.md`
 
 The skill's YAGNI preflight applies the project's own evidence-based YAGNI rule. The canonical anti-pattern — "runbook for an alert that has never fired" — comes directly from this rule and from the `devops-engineer` agent definition that codifies it.
 
-URL: [`plugin/references/yagni-rule.md`](../../plugin/references/yagni-rule.md)
+URL: [`han.core/references/yagni-rule.md`](../../han.core/references/yagni-rule.md)
 
 ### `docs/research/runbook-skill-research.md`
 
@@ -151,4 +151,4 @@ URL: [`docs/research/runbook-skill-research.md`](../research/runbook-skill-resea
 - [`information-architect`](../agents/information-architect.md). Reviewed the runbook output template for progressive disclosure during the skill's design pass.
 - [`junior-developer`](../agents/junior-developer.md). Reviewed the runbook output template for generalist readability during the skill's design pass.
 - [`devops-engineer`](../agents/devops-engineer.md). The agent that consumes runbooks during production-readiness review and whose YAGNI anti-pattern definition anchors the skill's preflight.
-- [`SKILL.md` for /runbook](../../plugin/skills/runbook/SKILL.md). The internal process definition.
+- [`SKILL.md` for /runbook](../../han.core/skills/runbook/SKILL.md). The internal process definition.

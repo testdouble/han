@@ -1,6 +1,6 @@
 # /stakeholder-summary
 
-Operator documentation for the `/stakeholder-summary` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/stakeholder-summary/SKILL.md`](../../plugin/skills/stakeholder-summary/SKILL.md).
+Operator documentation for the `/stakeholder-summary` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/stakeholder-summary/SKILL.md`](../../han.core/skills/stakeholder-summary/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 

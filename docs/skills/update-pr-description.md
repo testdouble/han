@@ -1,6 +1,6 @@
 # /update-pr-description
 
-Operator documentation for the `/update-pr-description` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/update-pr-description/SKILL.md`](../../plugin/skills/update-pr-description/SKILL.md).
+Operator documentation for the `/update-pr-description` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.github/skills/update-pr-description/SKILL.md`](../../han.github/skills/update-pr-description/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md)
 
@@ -78,7 +78,7 @@ The skill walks a six-step process:
 1. **Validate branch state.** Require `origin/HEAD`, require at least one commit, require at least one changed file.
 2. **Analyze changes.** Read the diff, stat, and log. Identify the central mechanism. Classify the change type.
 3. **Determine Test Plan applicability.** If all changed files are documentation, omit the Test Plan. If any are code or config, include it.
-4. **Generate the PR description.** Dispatch a `junior-developer` agent with the branch context, the inclusion decision from Step 3, and the contents of [`references/template.md`](../../plugin/skills/update-pr-description/references/template.md) and [`references/formatting-rules.md`](../../plugin/skills/update-pr-description/references/formatting-rules.md). The agent authors the description with a fresh-reviewer perspective, anticipating what a teammate without full project context needs to see. No nested fenced code blocks. No "Generated with Claude Code" trailer.
+4. **Generate the PR description.** Dispatch a `junior-developer` agent with the branch context, the inclusion decision from Step 3, and the contents of [`references/template.md`](../../han.github/skills/update-pr-description/references/template.md) and [`references/formatting-rules.md`](../../han.github/skills/update-pr-description/references/formatting-rules.md). The agent authors the description with a fresh-reviewer perspective, anticipating what a teammate without full project context needs to see. No nested fenced code blocks. No "Generated with Claude Code" trailer.
 5. **Verify.** Section order, file-table caps, valid markdown, branch-specific content only.
 6. **Display and update PR.** Show the description. If a PR exists, ask whether to push. On yes, `gh pr edit --body`.
 
@@ -103,4 +103,4 @@ URL: https://martinfowler.com/articles/feature-toggles.html
 - [`/gh-pr-review`](./gh-pr-review.md). Post a code review to the same PR.
 - [`/code-review`](./code-review.md). Local code review without touching GitHub.
 - [`junior-developer`](../agents/junior-developer.md). Authors the PR description with a fresh-reviewer perspective.
-- [`SKILL.md` for /update-pr-description](../../plugin/skills/update-pr-description/SKILL.md). The internal process definition.
+- [`SKILL.md` for /update-pr-description](../../han.github/skills/update-pr-description/SKILL.md). The internal process definition.

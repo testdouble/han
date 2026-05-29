@@ -1,6 +1,6 @@
 # /investigate
 
-Operator documentation for the `/investigate` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`plugin/skills/investigate/SKILL.md`](../../plugin/skills/investigate/SKILL.md).
+Operator documentation for the `/investigate` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/investigate/SKILL.md`](../../han.core/skills/investigate/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [Evidence](../evidence.md)
 
@@ -87,7 +87,7 @@ The skill dispatches at least two `evidence-based-investigator` agents in parall
 The skill walks a five-step process:
 
 1. **Research and investigation.** At least two `evidence-based-investigator` agents run in parallel, each from a different angle. Specialist analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) dispatch in parallel alongside them based on how you described the symptom. After all complete, the skill compiles a unified numbered evidence list (E1, E2, E3, …), tagging specialist findings with their domain.
-2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan file using the template at [`references/template.md`](../../plugin/skills/investigate/references/template.md).
+2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan file using the template at [`references/template.md`](../../han.core/skills/investigate/references/template.md).
 3. **Plan the fix.** The skill resolves project config (CLAUDE.md → project-discovery.md → docs/ Glob fallback), reads ADRs and coding standards relevant to the fix, and writes the Planned Fix section with file-level changes justified by specific evidence items.
 4. **Adversarial validation.** `adversarial-validator` agents receive the full evidence summary, root cause analysis, and planned fix. They challenge evidence, challenge the fix, and challenge assumptions. Counter-evidence becomes `V#` findings that reshape the plan.
 5. **Final summary and user review.** The skill adds the one-sentence-per-section summary and presents the plan for approval.
@@ -133,4 +133,4 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`/iterative-plan-review`](./iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
 - [`/runbook`](./runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
-- [`SKILL.md` for /investigate](../../plugin/skills/investigate/SKILL.md). The internal process definition.
+- [`SKILL.md` for /investigate](../../han.core/skills/investigate/SKILL.md). The internal process definition.

@@ -6,7 +6,7 @@ This page is for contributors: anyone adding, editing, or restructuring skills, 
 
 ## TL;DR
 
-- Skills live in [`plugin/skills/{name}/SKILL.md`](./plugin/skills/). Agents live in [`plugin/agents/{name}.md`](./plugin/agents/).
+- Skills live in [`han.core/skills/{name}/SKILL.md`](./han.core/skills/), or [`han.github/skills/{name}/SKILL.md`](./han.github/skills/) for GitHub-facing skills. Agents live in [`han.core/agents/{name}.md`](./han.core/agents/).
 - Long-form docs (for humans deciding *when* and *how* to use a skill or agent) live in `docs/skills/{name}.md` and `docs/agents/{name}.md`.
 - **Every skill and every agent gets a long-form doc.** No exceptions. See the [coverage rule](./docs/templates/coverage-rule.md).
 - Use the [long-form skill template](./docs/templates/skill-long-form-template.md) or the [agent template](./docs/templates/agent-long-form-template.md).
@@ -23,18 +23,18 @@ Read these once:
 
 ## Adding a skill
 
-1. Scaffold the folder under `plugin/skills/{name}/` and add a `SKILL.md`.
+1. Scaffold the folder under `han.core/skills/{name}/` (or `han.github/skills/{name}/` for a GitHub-facing skill) and add a `SKILL.md`.
 2. Write the `SKILL.md`:
    - Frontmatter with `name`, `description`, `allowed-tools`. See [skill-description-frontmatter.md](./docs/guidance/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{name}.md` and fill it in. Every skill gets a long-form doc.
 4. Add the skill to the [Skills Index](./docs/skills/README.md) with a one-sentence scent line and a link.
-5. Update the skill counts and catalog so they stay accurate: the skill catalog and "Counts to verify when editing indexes" line in [Root CLAUDE.md](./CLAUDE.md), the count in [Concepts](./docs/concepts.md) ("What does the plugin include?"), and the counts in the [README](./README.md). If the skill belongs to a new category, add it to the category lists too.
-6. Update the marketplace registry at [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) if needed.
+5. Add the skill to the catalog in [Root CLAUDE.md](./CLAUDE.md). The indexes and concept docs list skills without a running total, so there is no count to bump. If the skill belongs to a new category, add it to the category lists too.
+6. Update the marketplace registry at [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) if the new skill ships in a different plugin's component set.
 
 ## Adding an agent
 
-1. Create `plugin/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./docs/guidance/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
+1. Create `han.core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./docs/guidance/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
 2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/{name}.md` and fill it in. Every agent gets a long-form doc.
 3. Add the agent to the [Agents Index](./docs/agents/README.md) under the right role group.
 
