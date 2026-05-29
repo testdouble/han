@@ -1,6 +1,6 @@
 # han: Project Map
 
-Han is a Claude Code plugin: a suite of skills and agents for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work.
+Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as three plugins: `han.core` (the skills and agents), `han.github` (GitHub-facing skills), and `han` (a meta-plugin that installs both via dependencies).
 
 ## Repository layout
 
@@ -9,15 +9,22 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 ├── README.md           # End-user landing page
 ├── CONTRIBUTING.md     # Contributor guide
 ├── CLAUDE.md           # This file
-├── CHANGELOG.md    # Version history
+├── CHANGELOG.md        # Version history
 ├── .claude-plugin/
-│   └── marketplace.json   # Test Double marketplace manifest
-├── plugin/             # The actual plugin shipped to Claude Code
+│   └── marketplace.json   # Test Double marketplace manifest (lists han, han.core, han.github)
+├── han/                # Meta-plugin: no components of its own; depends on han.core + han.github
+│   └── .claude-plugin/
+│       └── plugin.json
+├── han.core/           # Core plugin: planning, investigation, review, documentation
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
+├── han.github/         # GitHub plugin: gh-pr-review, update-pr-description
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
 ├── docs/               # Operator-facing documentation
 │   ├── writing-voice.md   # Voice profile every doc follows
 │   ├── concepts.md
@@ -34,14 +41,14 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 └── images/             # Banner and graphics for README
 ```
 
-The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`plugin/skills/{name}/SKILL.md` or `plugin/agents/{name}.md`) is the implementation.
+The plugins are shipped from `han.core/` and `han.github/`; the `han/` meta-plugin pulls in both through its `dependencies`. Documentation lives in `docs/` and covers the whole suite. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`han.core/skills/{name}/SKILL.md`, `han.github/skills/{name}/SKILL.md`, or `han.core/agents/{name}.md`) is the implementation.
 
 ## When to use which doc
 
 ### Entry points
 
 - **[README.md](./README.md).** End-user landing page. Use to understand what the plugin is and where to start. Lists install instructions and pointers to every other doc.
-- **[CONTRIBUTING.md](./CONTRIBUTING.md).** Contributor guide for adding or editing skills, agents, and documentation. Read before changing any file under `plugin/` or `docs/`.
+- **[CONTRIBUTING.md](./CONTRIBUTING.md).** Contributor guide for adding or editing skills, agents, and documentation. Read before changing any file under `han.core/`, `han.github/`, or `docs/`.
 - **[CHANGELOG.md](./CHANGELOG.md).** Version history. Check when a behavior or skill name in user-supplied context doesn't match what's on disk. May be a pre-2.0 rename or a removed feature.
 
 ### Writing voice
@@ -139,4 +146,4 @@ Folder selection rule: if the artifact is the plan, write to `docs/plans/{plan-n
 - **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the README at the repo root.
 - **Voice is uniform.** Every doc follows [docs/writing-voice.md](./docs/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
 - **YAGNI applies to docs too.** Don't add speculative sections, for-future-flexibility warnings, or examples for behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
-- **Indexes stay complete, not counted.** Every skill in `plugin/skills/` has a long-form doc in `docs/skills/` and an entry in the skills index; same for agents in `plugin/agents/` and `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.
+- **Indexes stay complete, not counted.** Every skill in `han.core/skills/` and `han.github/skills/` has a long-form doc in `docs/skills/` and an entry in the skills index; same for agents in `han.core/agents/` and `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.
