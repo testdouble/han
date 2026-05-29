@@ -37,10 +37,10 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 ```
 
 Han ships as four plugins: 
+* `han`: a meta-plugin with no components of its own that depends on the other three
 * `han.core`: the planning, investigation, review, and documentation skills plus every agent
 * `han.github`: GitHub-facing skills like posting a code review on a PR
 * `han.reporting`: reporting skills like the stakeholder summary
-* and `han`: a meta-plugin with no components of its own that depends on the other three
 
 Installing `han@han` pulls in the whole suite, and is the right choice for almost everyone. If you do not want the
 GitHub or reporting skills, install `han.core@han` instead. There is no GitHub-only or reporting-only install: 
