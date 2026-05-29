@@ -11,13 +11,13 @@
       "name": "han",
       "source": "./han",
       "description": "Meta-plugin that installs the full Han suite. Has no components of its own; it depends on han.core and han.github so installing it pulls in both.",
-      "version": "2.7.0"
+      "version": "3.0.0"
     },
     {
       "name": "han.core",
       "source": "./han.core",
       "description": "Evidence-based planning, investigation, and documentation skills for software projects. Includes issue triage, deep-dive investigations with root cause analysis, iterative plan refinement, architectural decision records (ADRs), project and feature documentation, coding standards, code reviews, test planning, PR descriptions, and adversarial security vulnerability analysis.",
-      "version": "2.7.0"
+      "version": "1.0.0"
     },
     {
       "name": "han.github",
