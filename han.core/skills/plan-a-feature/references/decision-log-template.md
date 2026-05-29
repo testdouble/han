@@ -10,7 +10,7 @@ captures the history, rationale, evidence, and rejected alternatives for each de
 Every decision is classified as **full** or **trivial** before it is recorded.
 
 A decision is **full** when any of these signals is present:
-- it has at least one rejected alternative;
+- it has at least one rejected alternative **a reasonable engineer would plausibly have chosen** (an obvious or strawman alternative does not by itself make a decision full);
 - the rationale rests on evidence beyond the user's framing (codebase pattern,
   ADR, coding standard, prior decision, or an external standard like WCAG);
 - it was driven by, or later changed by, a review finding (`Driven by findings:`
@@ -24,7 +24,10 @@ supplied by the user's request, or where the answer is the only reasonable one
 given an obvious convention with no alternative worth discussing.
 
 If unsure, treat the decision as full. A future reader is better served by an
-unnecessary block of rationale than by a missing one.
+unnecessary block of rationale than by a missing one. The first signal above is
+deliberately a weight judgment, not a presence check — an obvious alternative
+does not promote a decision to full — so this "if unsure, treat as full" default
+is its backstop against drift across runs.
 
 Cross-referencing invariants:
 - `Linked technical notes:` — T# IDs from [feature-technical-notes.md](feature-technical-notes.md)
@@ -51,6 +54,13 @@ populate `Referenced in spec:` so the link is bidirectional.
 <!--
 One bullet per trivial decision. Format:
 
+- D#: {decision title} — {one-sentence outcome} (considered {alternative}; rejected because {one clause}). — Referenced in spec: {sections}.
+
+The parenthetical is OPTIONAL: write it only when an obvious alternative was
+discarded that did not earn full treatment. Keep it to a single bracketed
+clause, never more than one sentence, so trivial entries do not balloon. When no
+alternative was discarded, omit the parenthetical entirely:
+
 - D#: {decision title} — {one-sentence outcome}. — Referenced in spec: {sections}.
 
 No Question, Rationale, Evidence, Rejected alternatives, or other fields. Keep
@@ -58,7 +68,7 @@ the spec link populated so a reader can navigate from spec → decision log and
 find the outcome.
 -->
 
-- D{N}: {decision title} — {one-sentence outcome}. — Referenced in spec: {sections}.
+- D{N}: {decision title} — {one-sentence outcome} (considered {alternative}; rejected because {one clause}). — Referenced in spec: {sections}.
 
 ## Full decisions
 

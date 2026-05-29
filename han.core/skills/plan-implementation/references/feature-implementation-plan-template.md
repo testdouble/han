@@ -50,7 +50,9 @@ Inline decision references:
 
 ## Implementation Approach
 
-<!-- The shape of the implementation: how the feature fits into the system, what it reuses, what it introduces, where boundaries are drawn. Technical details are welcome here — this is the *how* document. Keep statements grounded in evidence (existing code paths, ADRs, conventions). Append inline `([D-N](artifacts/implementation-decision-log.md#...))` links to non-obvious choices. -->
+<!-- The shape of the implementation: how the feature fits into the system, what it reuses, what it introduces, where boundaries are drawn. Technical details are welcome here — this is the *how* document. Keep statements grounded in evidence (existing code paths, ADRs, conventions). Append inline `([D-N](artifacts/implementation-decision-log.md#...))` links to non-obvious choices.
+
+ALTITUDE: name and reference config and code artifacts; do not inline their full contents. Inline only the specific values that are themselves decisions (a flag default, a key name, a threshold). A full file block belongs in the file it configures, not in the plan. -->
 
 ### Architecture and Integration Points
 

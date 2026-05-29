@@ -13,7 +13,7 @@ Operator documentation for the `/plan-a-feature` skill in the han plugin. This d
 
 ## Key concepts
 
-- **Explore before asking.** The skill reads the codebase, ADRs, and coding standards before surfacing a question. Your judgment is reserved for decisions that genuinely need it.
+- **Explore before asking.** The skill reads the codebase, ADRs, and coding standards before surfacing a question — and, when a read-only tool that authoritatively answers a question is already available to the session (for example a connected schema or data-source tool), it queries that too. Your judgment is reserved for decisions that genuinely need it.
 - **Behavioral specification.** The spec describes outcomes, flows, states, and coordinations. Not libraries, file paths, or data shapes. Technical detail is admissible only as evidence for a behavioral decision.
 - **Decision tree walking.** Foundational decisions (what, who, outcome, trigger) settle before behavioral ones (flows, states); behavioral before boundary (edge cases); boundary before interaction (UI/API surface).
 - **Specialist review round.** Three to five sub-agents stress-test the draft in parallel. `junior-developer` is always in the mix. `project-manager` reconciles their findings.
@@ -117,7 +117,7 @@ The skill orchestrates a multi-step interview plus a parallel sub-agent review r
 
 ## In more detail
 
-The skill's default posture is to *explore before asking*: if a question can be answered by reading the codebase, project docs, coding standards, ADRs, or existing feature specs, the skill resolves it without troubling you. When a question genuinely requires user judgment, the skill surfaces it with a recommended answer, rationale grounded in evidence, and alternatives considered. You accept, amend, or redirect.
+The skill's default posture is to *explore before asking*: if a question can be answered by reading the codebase, project docs, coding standards, ADRs, or existing feature specs, the skill resolves it without troubling you. That source set extends to a read-only tool already available to the session — a connected schema or data-source tool, say — when one is permitted to the skill; it queries that source the same way it reads the filesystem ones, strictly read-only. The path is gated on the tool actually being available: if none is, the skill falls back to asking you, exactly as before. When a question genuinely requires user judgment, the skill surfaces it with a recommended answer, rationale grounded in evidence, and alternatives considered. You accept, amend, or redirect.
 
 The specification the skill produces is deliberately behavioral: outcomes, actors, triggers, flows, states, coordinations, edge cases, and user interactions. Technical artifacts (file paths, libraries, data shapes) are admissible only as **evidence** for behavioral decisions, never as the decision itself.
 
@@ -190,6 +190,7 @@ URLs: https://asana.com/resources/raid-log and https://projectmanagementcompass.
 - [Evidence](../evidence.md). The companion rule that characterizes how strong each surviving commitment's evidence is. Trust classes, the corroboration gate, and the no-evidence label.
 - [Skills Index](./README.md). All skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
+- [`/research`](./research.md). The upstream step when you had options to weigh before specifying. `/research` recommends an option among trade-offs; bring that recommendation here to turn it into a behavioral spec. The pairing is bidirectional: `/research` closes by pointing here.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative, project-manager-led team conversation.
 - [`/stakeholder-summary`](./stakeholder-summary.md). The optional sibling for non-technical feedback. Takes the `feature-specification.md` produced here and turns it into a plain-language stakeholder summary with Mermaid diagrams, for sharing with leadership, product, or customer-facing reviewers before implementation kicks off.
 - [`/iterative-plan-review`](./iterative-plan-review.md). The complement for plans that already exist. Use this when an implementation plan or spec has been drafted and needs multiple review passes to challenge assumptions and refine.

@@ -23,7 +23,7 @@ allowed-tools: Read, Write, Bash(find *), Bash(mkdir *)
 
 - Work only from what the reporter wrote. Do not infer facts that are not stated. This is the single most important constraint in this skill.
 - Classify the issue type before doing anything else. The type drives what counts as missing information.
-- Severity and reproducibility are estimates based on what is known. Mark them Unknown when not inferable from the report.
+- Severity and reproducibility are estimates based on what is known. For a Bug, Regression, Performance, or Security issue, mark them Unknown when not inferable. For a Feature Request, Question, or Other issue, omit them entirely when they are not inferable (see Step 4) rather than rendering Unknown.
 - The recommended next step is the single most appropriate han skill (or "clarify with reporter") to run after triage completes.
 - Project context (CLAUDE.md, project-discovery.md) is read only to identify Suspected Areas. Never use it to supply information the reporter omitted.
 
@@ -65,6 +65,7 @@ List what a developer would need to reproduce or investigate this issue that is 
 - **Performance** — scale or load at which the problem occurs, baseline measurements, environment
 - **Security** — affected endpoints or data, attack surface description, access level required to trigger
 - **Feature Request** — use case or job to be done, success criteria, constraints
+- **Feature Request / Question (problem space not yet decided)** — which options or approaches are in play, prior art, a build-vs-buy choice, or which direction to take, when the reporter is asking to define or scope the problem rather than supplying a missing fact about a direction already chosen
 
 List only what is genuinely absent. Do not list information already present in the report. If nothing is missing, write exactly: `None - report has enough to proceed.`
 
@@ -85,6 +86,8 @@ List only what is genuinely absent. Do not list information already present in t
 - **Rare** — reported once or infrequently; hard to reproduce
 - **Unknown** — not stated in the report
 
+**Omit when inapplicable.** Severity and Reproducibility describe a problem that is occurring. When the issue type is Feature Request, Question, or Other **and** neither is inferable from the report, omit both sections entirely rather than rendering `Unknown` — the same omit-when-not-inferable pattern Step 5 applies to Suspected Areas. For a Bug, Regression, Performance, or Security issue, always render both (as `Unknown` if needed); they are core to triaging a problem.
+
 ## Step 5: Identify Suspected Areas
 
 If the report points to a specific system area, list it. Then, only to sharpen those areas, consult project context: if the `CLAUDE.md` label is non-empty, read it; if the `project-discovery.md` label is non-empty, read it (it is the richer system map when present). Use them to name relevant areas such as upload pipeline, authentication middleware, database migrations, or frontend state management.
@@ -96,8 +99,8 @@ Do not infer areas the report does not point to, and never use project context t
 Decide the single recommendation using the issue type from Step 1 and the gaps from Step 3:
 
 - **Bug, Regression, Performance, or Security** — if reproduction steps, environment details (OS, browser, version), or user-impact scope are missing, the recommendation is `Clarify with reporter before proceeding`. Otherwise it is `/investigate`.
-- **Feature Request** — if the use case (job to be done) or success criteria are missing, the recommendation is `Clarify with reporter before proceeding`. Otherwise, if the feature is described but not yet specified, it is `/plan-a-feature`; if requirements are already specified, it is `/plan-implementation`.
-- **Question** — if the report plus project context is enough to answer it, the recommendation is `Answer the question directly; no han skill needed`. Otherwise it is `Clarify with reporter before proceeding`.
+- **Feature Request** — if the Step 3 Missing Information names a problem-space gap (which options or approaches are in play, prior art, a build-vs-buy choice, or which direction to take) rather than a missing user-supplied fact, the recommendation is `/research` — the problem space must be researched before the feature can be specified. Otherwise, if the use case (job to be done) or success criteria are missing, the recommendation is `Clarify with reporter before proceeding`. Otherwise, if the feature is described but not yet specified, it is `/plan-a-feature`; if requirements are already specified, it is `/plan-implementation`.
+- **Question** — if the Step 3 Missing Information names a problem-space gap (options, approaches, prior art, a build-vs-buy choice, or which direction to take), the recommendation is `/research`. Otherwise, if the report plus project context is enough to answer it, the recommendation is `Answer the question directly; no han skill needed`; if not, it is `Clarify with reporter before proceeding`.
 - **Other** — the recommendation is `Clarify with reporter before proceeding`.
 
 ## Step 7: Write the Triage Report
@@ -107,6 +110,6 @@ Resolve the output path:
 - If the user specified an output path, use it.
 - Otherwise use `$HOME/.claude/triages/{kebab-case-summary}.md`, where `{kebab-case-summary}` is the Step 2 Summary lowercased with non-alphanumeric runs replaced by single hyphens.
 
-Run `mkdir -p` on the directory that will contain the file (for the default, `mkdir -p "$HOME/.claude/triages"`). Write the report using the template at [template.md](references/template.md), filling every section from Steps 1-6 and writing the Step 6 result verbatim into Recommended Next Step. Omit the Suspected Areas section if Step 5 determined nothing is inferable.
+Run `mkdir -p` on the directory that will contain the file (for the default, `mkdir -p "$HOME/.claude/triages"`). Write the report using the template at [template.md](references/template.md), filling every section from Steps 1-6 and writing the Step 6 result verbatim into Recommended Next Step. Omit the Suspected Areas section if Step 5 determined nothing is inferable, and omit Severity and Reproducibility per the Step 4 omit rule.
 
-Present the completed triage report to the user.
+Present the completed triage report to the user. When the Recommended Next Step is a han skill (`/investigate`, `/research`, `/plan-a-feature`, or `/plan-implementation`), state plainly that this triage report is the handoff document — the operator passes the report itself to that skill rather than re-summarizing the issue. No separate brief is produced; the report already serves as the handoff.
