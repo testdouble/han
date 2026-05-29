@@ -161,4 +161,4 @@ https://code.claude.com/docs/en/plugins-reference.md#plugin-manifest-schema
 
 ## JSON example
 
-available at docs/templates/plugin-example.json
+available at docs/guidance/templates/plugin-example.json
