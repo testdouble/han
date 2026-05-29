@@ -34,9 +34,13 @@ A release section is laid out as:
 
 {release-level; only when work was deliberately cut. Optional.}
 
+### Issues closed in this release
+
+- {issue title} (#{issue number}) — opened by [@{opener}](https://github.com/{opener}); fixed in #{PR number} by [@{worker}](https://github.com/{worker}); thanks to [@{contributor}](https://github.com/{contributor})
+
 ### Pull requests in this release
 
-- {PR title} (#{number}) — @{author login}
+- {PR title} (#{number}) — [@{author login}](https://github.com/{author login})
 
 Full changelog: {blob link — see release-notes-format.md}
 ```
@@ -61,14 +65,40 @@ Decide by whether a `## v{parent target}` section already exists:
 
 Never delete or reorder existing version sections. Never edit a version section other than `## v{parent target}`.
 
-## Generated bookkeeping subsection
+## Linked mentions
 
-Heading: `### Pull requests in this release`
-
-Body: one bullet per merged pull request included in this release, newest merge last, in the exact form:
+Every `@mention` of a person anywhere in a changelog section — narrative prose, the issues subsection, the pull-requests subsection — is a markdown link to that person's GitHub profile, never flat text:
 
 ```
-- {PR title} (#{number}) — @{author login}
+[@{login}](https://github.com/{login})
+```
+
+GitHub does not auto-link `@username` in a rendered `CHANGELOG.md` blob, so the explicit link is what makes the mention clickable and unambiguous. (The GitHub release body is different: GitHub auto-links bare `@username` there, so the body keeps the bare form. See [release-notes-format.md](release-notes-format.md).)
+
+## Generated bookkeeping subsections
+
+Append these subsections at the end of the `## v{parent target}` section, in this order: the issues subsection first (when there are closed issues), then the pull-requests subsection. The `Full changelog:` line closes the last subsection.
+
+### Issues closed in this release
+
+Include this subsection only when one or more issues were closed by the release's PRs (`$issue_list` non-empty). Omit it entirely otherwise. One bullet per closed issue, relating the issue to the fix that resolved it and crediting everyone involved:
+
+```
+- {issue title} (#{issue number}) — opened by [@{opener}](https://github.com/{opener}); fixed in #{PR number} by [@{worker}](https://github.com/{worker}), [@{worker}](https://github.com/{worker}); thanks to [@{contributor}](https://github.com/{contributor})
+```
+
+- **opened by** — the person who opened the issue (one mention).
+- **fixed in** — the PR(s) that closed the issue, and the people who worked on that PR (author, reviewers, and commit/co-authors), each linked. When more than one PR closed the issue, list each `#{number}` with its workers.
+- **thanks to** — the people who contributed meaningfully to the issue (its commenters), with the opener and the PR workers removed so each person is credited once. Omit the whole `; thanks to ...` clause when that set is empty.
+
+Exclude bot accounts (`is_bot`, plus the `web-flow`, `github-actions`, and `dependabot` logins) from every list.
+
+### Pull requests in this release
+
+One bullet per merged pull request included in this release, newest merge last, in the exact form:
+
+```
+- {PR title} (#{number}) — [@{author login}](https://github.com/{author login})
 ```
 
 The PR list is repo-wide and appears once per release. It is not split per plugin; per-plugin attribution lives in the narrative sub-headings above it.
@@ -83,7 +113,7 @@ When no merged pull requests are found between the previous release and `HEAD` (
 
 This is the changelog form of the no-PR fallback. The GitHub release body uses a different, single-line form for the same case (see [release-notes-format.md](release-notes-format.md)). The changelog enumerates each commit; the body summarizes.
 
-Close the subsection with one final line:
+Close the last bookkeeping subsection with one final line:
 
 ```
 Full changelog: {compare-or-blob link — see release-notes-format.md}
@@ -101,5 +131,6 @@ Hard constraints from [`docs/writing-voice.md`](../../../../docs/writing-voice.m
 - None of: "It's worth noting", "Importantly", "delve", "foster", "synergy", "underscore", "pivotal", "showcase", "robust" (as a vague positive), "paradigm shift", "game changer", "Let's dive in", "deep dive".
 - Name skills, agents, files, and flags specifically (`/tdd`, `han.core/skills/code-review/SKILL.md`), never generically.
 - Reference internal paths with backticks. State what changed plainly; do not hedge with "arguably" or "one might say".
+- Every `@mention` of a person is a profile link `[@{login}](https://github.com/{login})`, never flat text (see "Linked mentions" above).
 
 The narrative describes what changed and why from the operator's point of view, not a file-by-file diff. Code structure can be summarized; behavior changes (new skills, renamed skills, changed defaults, changed dispatch) must be stated explicitly, under the plugin that owns them.

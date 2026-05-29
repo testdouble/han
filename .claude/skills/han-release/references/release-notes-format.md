@@ -9,11 +9,15 @@ The release notes body is assembled deterministically. It mirrors the format alr
 
 {one line per merged PR, newest merge last}
 
+## Issues closed
+
+{one line per issue closed by this release's PRs, omitted entirely when none}
+
 {the changelog narrative for v{parent target}: the summary paragraph and every
  ### {plugin} v{version} sub-heading (with their #### topic subsections) of the
- ## v{parent target} section, EXCLUDING the generated "### Pull requests in this
- release" / "### Commits in this release" subsection — that subsection is
- changelog-only bookkeeping}
+ ## v{parent target} section, EXCLUDING the generated "### Issues closed in this
+ release", "### Pull requests in this release", and "### Commits in this release"
+ subsections — those are changelog-only bookkeeping}
 
 **Full changelog:** {blob link}
 **Full Changelog:** {compare link}
@@ -34,6 +38,18 @@ One bullet per merged pull request, sorted by merge time ascending (newest merge
 ```
 
 This is the same format GitHub's auto-generated notes use and the same format prior Han releases used. Authors are attributed by GitHub login with a leading `@`. The PR list is repo-wide and is not split per plugin.
+
+In the GitHub release body, mentions stay as bare `@login`: GitHub auto-links them to profiles and notifies the people. (In `CHANGELOG.md` the mentions are explicit markdown links, because a rendered blob does not auto-link. See [changelog-rules.md](changelog-rules.md).)
+
+## Issues closed section
+
+The `## Issues closed` section lists every issue closed by this release's PRs, relating each issue to the fix and crediting the people involved. Omit the section entirely when no issues were closed. One bullet per issue:
+
+```
+* {issue title} (#{issue number}) — opened by @{opener}, fixed in #{PR number} by @{worker}, @{worker}; thanks to @{contributor}
+```
+
+`{opener}` is the person who opened the issue, `{worker}` are the people who worked on the closing PR (author, reviewers, commit/co-authors), and `{contributor}` are the people who contributed meaningfully to the issue (its commenters), with the opener and PR workers removed and the `; thanks to ...` clause omitted when empty. Exclude bot accounts. Mentions stay bare `@login` here, the same as the PR list.
 
 ## Full-changelog links
 

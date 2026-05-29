@@ -4,7 +4,9 @@ description: >
   Cut a Han release: update CHANGELOG.md with the changes since the last
   release, bump every plugin that changed, tag the suite version vX.Y.Z, and
   publish a GitHub release whose notes attribute every merged pull request to
-  its author and link back to the full changelog for that version. Han ships as
+  its author, credit every closed issue to the person who opened it, the people
+  who contributed to it, and the people who worked on the fix, and link back to
+  the full changelog for that version. Han ships as
   a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.github`,
   `han.reporting`, and any future `han.*` extension); the skill versions each
   plugin independently. Use when releasing, cutting a release, shipping a new
@@ -78,6 +80,19 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, Bash(git *
 
 5. **No-PR fallback.** If `$pr_list` is empty (local-only or squash history with no PR refs), record the notable commit subjects from `git log {range} --oneline` instead, and use the commits form documented in both reference files.
 
+6. **Collect closed issues and their attribution.** For each merged PR `N` in `$pr_list`, find the issues that PR closed and credit everyone involved. This relates each closed issue to the fix that resolved it.
+
+   - **Find the closed issues for the PR.** Take the issue numbers from `gh pr view N --json closingIssuesReferences --jq '[.closingIssuesReferences[]?.number]'` (the GitHub-tracked closing links). As a fallback for older PRs that linked via text, also scan the PR body and commit messages for GitHub closing keywords: `gh pr view N --json body,commits --jq '[.body, (.commits[].messageBody)] | join("\n")'` and extract `#<num>` that follow `close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, or `resolved` (case-insensitive). Union the two sets, dedupe.
+
+   - **Confirm each is a closed issue.** For each candidate number `I`, run `gh issue view I --json number,title,author,state,comments` (suppress stderr; redirect `2>/dev/null`). Skip the number if the command fails (it is a PR number, not an issue, or does not exist).
+
+   - **Gather attribution per issue.** Record:
+     - **opener** — `.author.login`, unless `.author.is_bot` is true.
+     - **issue contributors** (people who contributed meaningfully) — the distinct comment authors `[.comments[].author | select(.is_bot|not) | .login]`, with the opener and the PR workers (below) removed so each person is credited once. May be empty.
+     - **PR workers** — for the closing PR `N`, the union of the PR author, the review authors, and the commit authors: `gh pr view N --json author,reviews,commits --jq '[.author.login] + [.reviews[]?.author.login] + [.commits[].authors[].login] | unique'`. Drop bot accounts (`is_bot` where available, plus the `web-flow`, `github-actions`, and `dependabot` logins).
+
+   - **Build `$issue_list`.** One entry per closed issue: its number, title, opener, contributors, the closing PR number(s), and the merged PR workers. If the same issue is closed by more than one PR in the range, record every closing PR and merge their worker sets. Build the changelog bullets and release-body lines per [references/changelog-rules.md](references/changelog-rules.md) and [references/release-notes-format.md](references/release-notes-format.md). If no closed issues are found, `$issue_list` is empty and the issues subsection/section is omitted everywhere.
+
 ## Step 3: Build the per-plugin version plan
 
 Enumerate the plugins from `plugins` in Project Context (one parent, plus each child). For **every** plugin, determine `baseline`, whether it changed in `{range}`, and its `target`. Classify changes against [`docs/guidance/semantic-versioning.md`](../../../docs/guidance/semantic-versioning.md). The governing rules:
@@ -147,28 +162,29 @@ Skip any plugin whose `target == current` (ahead-path or new plugins — their f
 
 ## Step 5: Update CHANGELOG.md
 
-Follow [references/changelog-rules.md](references/changelog-rules.md) exactly. From `v3.0.0` onward, each release section is a parent `## v{parent target}` heading with one `### {plugin} v{version}` sub-heading per plugin that changed (the parent always appears; new and changed children appear; unchanged children are omitted), plus the release-level bookkeeping subsections.
+Follow [references/changelog-rules.md](references/changelog-rules.md) exactly. From `v3.0.0` onward, each release section is a parent `## v{parent target}` heading with one `### {plugin} v{version}` sub-heading per plugin that changed (the parent always appears; new and changed children appear; unchanged children are omitted), plus the release-level bookkeeping subsections. Every `@mention` in the changelog (narrative, PR bullets, issue bullets) is a markdown link to the person's GitHub profile: `[@{login}](https://github.com/{login})`, never flat text.
 
 1. **Does `## v{parent target}` already exist in `CHANGELOG.md`?** Search for the literal heading.
 
-2. **It exists — augment.** Leave every existing line of that section untouched. Append the generated bookkeeping subsection (`### Pull requests in this release`, or the commits form from the fallback) as the last `###` subsection of the `## v{parent target}` section, before the next `## v` heading. Build its bullets from `$pr_list` (Step 2) and close it with the `Full changelog:` line using the blob link from [references/release-notes-format.md](references/release-notes-format.md). Use Edit.
+2. **It exists — augment.** Leave every existing line of that section untouched. Append the generated bookkeeping subsections as the last `###` subsections of the `## v{parent target}` section, before the next `## v` heading, in this order: `### Issues closed in this release` (only when `$issue_list` is non-empty), then `### Pull requests in this release` (or the commits form from the fallback). Build the issue bullets from `$issue_list` and the PR bullets from `$pr_list` (Step 2), and close the final subsection with the `Full changelog:` line using the blob link from [references/release-notes-format.md](references/release-notes-format.md). Use Edit.
 
 3. **It does not exist — generate, then append.** Dispatch **one** `general-purpose` agent to write the narrative `## v{parent target}` section. The skill already holds this context — paste the actual values into the prompt, do not tell the agent to go read them:
 
    - The version plan from Step 3: parent `baseline → target`, and for each changed/new child its `name`, `baseline → target`, level, and new/changed status.
    - The commit log `git log {range} --oneline` and `git diff {range} --stat`, plus, per changed plugin, `git diff {range} --stat -- {source}/` so the agent can attribute each change to its plugin, plus a suite-level stat `git diff {range} --stat -- docs/ README.md CONTRIBUTING.md CHANGELOG.md .claude-plugin/` labeled as the evidence for the `### han` parent section (repo-root changes outside any plugin directory).
    - `$pr_list` (PR numbers, titles, authors).
+   - `$issue_list` (Step 2): each closed issue's number, title, opener, contributors, closing PR(s), and the relevant fix, so the narrative can credit the issue opener where it describes that fix.
    - `$release_context` from Step 1 (may be empty).
    - The two newest existing `## v{X.Y.Z}` sections from `CHANGELOG.md` verbatim, as the register model.
    - The "Register and voice" and "Per-plugin structure" constraints from [references/changelog-rules.md](references/changelog-rules.md), pasted in full.
 
-   Prompt the agent to: produce only the markdown for the `## v{parent target}` section — a one-paragraph summary that names the parent's new version and lists each changed/new child with its version, then one `### {plugin} v{version}` sub-heading per changed or new plugin (parent first), each describing only that plugin's changes (using `####` for topic subsections when needed), then a release-level `### Deferred (YAGNI)` subsection only when work was deliberately cut; match the register of the two pasted sections; obey every hard voice constraint; attribute every change to the plugin whose directory it touched; never invent changes not present in the commits, diff, or PR list; return only the section markdown with no preamble. If the agent returns anything else, discard it and re-issue with an explicit "return only the section markdown" reminder.
+   Prompt the agent to: produce only the markdown for the `## v{parent target}` section — a one-paragraph summary that names the parent's new version and lists each changed/new child with its version, then one `### {plugin} v{version}` sub-heading per changed or new plugin (parent first), each describing only that plugin's changes (using `####` for topic subsections when needed), then a release-level `### Deferred (YAGNI)` subsection only when work was deliberately cut; when a change closes a tracked issue, name the fix and credit the issue opener inline as a profile link `[@{login}](https://github.com/{login})`; render every `@mention` as a `[@{login}](https://github.com/{login})` profile link, never flat text; match the register of the two pasted sections; obey every hard voice constraint; attribute every change to the plugin whose directory it touched; never invent changes not present in the commits, diff, PR list, or issue list; return only the section markdown with no preamble. If the agent returns anything else, discard it and re-issue with an explicit "return only the section markdown" reminder.
 
-   Insert the returned section directly under the `# Han Release Notes` title, above the previous newest entry (Edit/Write). Then append the generated bookkeeping subsection to it exactly as in the augment case.
+   Insert the returned section directly under the `# Han Release Notes` title, above the previous newest entry (Edit/Write). Then append the generated bookkeeping subsections to it exactly as in the augment case.
 
 ## Step 6: Assemble the release notes body
 
-Build the GitHub release body per [references/release-notes-format.md](references/release-notes-format.md): `## What's Changed`, the PR lines (`* {title} by @{login} in {url}`, newest merge last), the `## v{parent target}` narrative (the summary paragraph and every `### {plugin} v{version}` sub-heading) **excluding** the generated PR/commits bookkeeping subsection, then the `**Full changelog:**` blob link and the `**Full Changelog:**` compare link (compare line omitted on a first release). Compute the blob anchor by lowercasing `v{parent target}` and deleting every character that is not `a-z`, `0-9`, or `-` (`v3.0.0` → `v300`). Write the assembled body to `/tmp/han-release-notes-v{parent target}.md` with the Write tool. Do not assemble it with shell `echo`/`printf`.
+Build the GitHub release body per [references/release-notes-format.md](references/release-notes-format.md): `## What's Changed`, the PR lines (`* {title} by @{login} in {url}`, newest merge last), an `## Issues closed` section built from `$issue_list` (omitted when empty), the `## v{parent target}` narrative (the summary paragraph and every `### {plugin} v{version}` sub-heading) **excluding** the generated PR/commits/issues bookkeeping subsections, then the `**Full changelog:**` blob link and the `**Full Changelog:**` compare link (compare line omitted on a first release). Compute the blob anchor by lowercasing `v{parent target}` and deleting every character that is not `a-z`, `0-9`, or `-` (`v3.0.0` → `v300`). Write the assembled body to `/tmp/han-release-notes-v{parent target}.md` with the Write tool. Do not assemble it with shell `echo`/`printf`.
 
 ## Step 7: Show the prepared release
 
