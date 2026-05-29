@@ -63,8 +63,9 @@ and is the right choice for almost everyone. If you do not want the GitHub or re
 instead. There is no GitHub-only or reporting-only install: both `han.github` and `han.reporting` depend on `han.core`,
 so installing either brings the core skills and every agent along with it. `han.feedback` is the exception: it depends
 on `han.core` too, but the `han` meta-plugin does not pull it in, so install it separately with `han.feedback@han` if
-you want it. For the full picture and a quick "which one do you need?" guide,
-see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).
+you want it. 
+
+For the full picture and a quick "which one do you need?" guide, see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).
 
 ## Documentation
 
