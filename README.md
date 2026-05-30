@@ -12,7 +12,9 @@ The skills are designed to compose. You can plan a feature, then plan its implem
 
 Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs through the whole plugin.
 
-> **Evaluating Han for a larger org?** Han is built for solo product engineers and small teams, not for large teams or enterprise. Read [Why solo and small teams, and not large teams or enterprise?](./docs/why-solo-and-small-teams.md) for the honest fit answer before going further.
+## For Solo Engineers and Small Teams
+
+**Evaluating Han for a larger teams?** Han is targeted at solo product engineers and small teams, instead of large teams or enterprise. Read [Why solo and small teams, and not large teams or enterprise?](./docs/why-solo-and-small-teams.md) for the honest fit answer before going further.
 
 ## Installation
 
