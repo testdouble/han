@@ -1,10 +1,13 @@
 # GitHub release notes format
 
-The release notes body is assembled deterministically. It mirrors the format already used by published Han releases (see `gh release view v2.7.0`): a `## What's Changed` PR list, the release's changelog narrative, then the full-changelog links. The release is named for the parent `han` plugin's version, so the tag and the body title are both `v{parent target}`.
+The release notes body is assembled deterministically: the release's summary paragraph leads (no heading), followed by a `## What's Changed` PR list, an `## Issues closed` section, the per-plugin `### {plugin} v{version}` narrative sub-headings, then the full-changelog links. The release is named for the parent `han` plugin's version, so the tag and the body title are both `v{parent target}`.
 
 ## Body template
 
 ```
+{the summary paragraph of the v{parent target} narrative: the one-paragraph
+ release overview, with NO heading above it. This leads the body.}
+
 ## What's Changed
 
 {one line per merged PR, newest merge last}
@@ -13,17 +16,18 @@ The release notes body is assembled deterministically. It mirrors the format alr
 
 {one line per issue closed by this release's PRs, omitted entirely when none}
 
-{the changelog narrative for v{parent target}: the summary paragraph and every
- ### {plugin} v{version} sub-heading (with their #### topic subsections) of the
- ## v{parent target} section, EXCLUDING the generated "### Issues closed in this
- release", "### Pull requests in this release", and "### Commits in this release"
- subsections — those are changelog-only bookkeeping}
+{every ### {plugin} v{version} sub-heading (with their #### topic subsections) of
+ the ## v{parent target} section, EXCLUDING the generated "### Issues closed in
+ this release", "### Pull requests in this release", and "### Commits in this
+ release" subsections (those are changelog-only bookkeeping). Do NOT include the
+ ## v{parent target} heading itself, and do NOT repeat the summary paragraph
+ here: it already leads the body above.}
 
 **Full changelog:** {blob link}
 **Full Changelog:** {compare link}
 ```
 
-The narrative carries the per-plugin sub-headings as they appear in `CHANGELOG.md`, so the release notes already show which child plugins changed and their new versions. Do not flatten or regroup them.
+The body opens with the release's summary paragraph (no heading), then `## What's Changed` and `## Issues closed`, then the per-plugin `### {plugin} v{version}` sub-headings exactly as they appear under `## v{parent target}` in `CHANGELOG.md`. The summary paragraph appears once, at the top; the `## v{parent target}` heading is not carried into the body, and the summary is not repeated above the sub-headings. The release notes still show which child plugins changed and their new versions. Do not flatten or regroup the sub-headings.
 
 If there is no previous release (this is the first tag), omit the `**Full Changelog:**` compare line and keep only the `**Full changelog:**` blob link.
 
