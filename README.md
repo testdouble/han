@@ -18,29 +18,29 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 
 ### Getting started
 
-- **New to han?** → Start with [Concepts](./docs/concepts.md), then the [Quickstart](./docs/quickstart.md).
-- **Deciding which plugin to install?** → [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The bundled suite, core only, the opt-in `han.feedback` plugin, and the dependency that surprises people, with a quick "which one do you need?" guide.
+- **New to han?** → Start with [Concepts](./docs/concepts.md), then the [Quickstart](./docs/quickstar.md)
+- **Deciding which plugin to install?** → [Choosing a Han plugin](./docs/choosing-a-han-plugin.md)
 
 ### Running a workflow
 
-- **Want the end-to-end recipe for a workflow?** → [How-to guides](./docs/how-to/README.md). Plan a feature, triage and investigate a bug, or research a decision, walked through step by step.
+- **Want the end-to-end recipe for a workflow?** → [How-to guides](./docs/how-to/README.md)
 
 ### Finding a skill or agent
 
-- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). All skills grouped by purpose.
-- **Looking for a specific agent?** → [Agents Index](./docs/agents/README.md). All agents grouped by role.
+- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md)
+- **Looking for a specific agent?** → [Agents Index](./docs/agents/README.md)
 
 ### Understanding how Han works
 
-- **Wondering how the agent swarms scale?** → [Sizing](./docs/sizing.md). The small / medium / large dispatch model used by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, and `/research`.
-- **Wondering why a skill said "YAGNI"?** → [YAGNI](./docs/yagni.md). The evidence-based rule every planning, review, and architecture skill applies before committing items to an artifact.
-- **Wondering what counts as evidence?** → [Evidence](./docs/evidence.md). The three principles (proximity, corroboration, no-evidence labeling) and the trust-class vocabulary every evidence-aware skill and agent applies.
+- **Wondering how the agent swarms scale?** → [Sizing](./docs/sizing.md)
+- **Wondering why a skill said "YAGNI"?** → [YAGNI](./docs/yagni.md)
+- **Wondering what counts as evidence?** → [Evidence](./docs/evidence.md)
 
 ### Extending and contributing
 
-- **Want to send the maintainers feedback?** → [How to provide feedback on Han](./docs/how-to/provide-feedback.md). Shape an idea or complaint into a postable issue with `/issue-triage`, or summarize a session with the opt-in `han.feedback` plugin.
-- **Want to extend Han with custom skills?** → [Extend Han with plugin dependencies](./docs/how-to/extend-han-with-plugin-dependencies.md) explains how one plugin builds on another through the `dependencies` field, using Han's own multi-plugin split as the worked example. [Build a plugin that depends on Han](./docs/how-to/build-a-plugin-that-depends-on-han.md) is the hands-on walkthrough: stand up your own plugin, add a skill that builds on `han.core`, and confirm a clean install pulls Han in alongside it.
-- **Writing or editing a skill or agent?** → [Contributing](./CONTRIBUTING.md).
+- **Want to send the maintainers feedback?** → [How to provide feedback on Han](./docs/how-to/provide-feedback.md)
+- **Want to extend Han with custom skills?** → [Extend Han via dependencies](./docs/how-to/extend-han-with-plugin-dependencies.md) and [Build a plugin that depends on Han](./docs/how-to/build-a-plugin-that-depends-on-han.md)
+- **Writing or editing a skill or agent?** → [Contributing](./CONTRIBUTING.md)
 
 ## Installation
 
