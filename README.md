@@ -24,7 +24,6 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 ### Running a workflow
 
 - **Want the end-to-end recipe for a workflow?** → [How-to guides](./docs/how-to/README.md). Plan a feature, triage and investigate a bug, or research a decision, walked through step by step.
-- **Want to send the maintainers feedback?** → [How to provide feedback on Han](./docs/how-to/provide-feedback.md). Shape an idea or complaint into a postable issue with `/issue-triage`, or summarize a session with the opt-in `han.feedback` plugin.
 
 ### Finding a skill or agent
 
@@ -39,6 +38,7 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 
 ### Extending and contributing
 
+- **Want to send the maintainers feedback?** → [How to provide feedback on Han](./docs/how-to/provide-feedback.md). Shape an idea or complaint into a postable issue with `/issue-triage`, or summarize a session with the opt-in `han.feedback` plugin.
 - **Want to extend Han with custom skills?** → [Extend Han with plugin dependencies](./docs/how-to/extend-han-with-plugin-dependencies.md) explains how one plugin builds on another through the `dependencies` field, using Han's own multi-plugin split as the worked example. [Build a plugin that depends on Han](./docs/how-to/build-a-plugin-that-depends-on-han.md) is the hands-on walkthrough: stand up your own plugin, add a skill that builds on `han.core`, and confirm a clean install pulls Han in alongside it.
 - **Writing or editing a skill or agent?** → [Contributing](./CONTRIBUTING.md).
 
