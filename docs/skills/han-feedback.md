@@ -17,7 +17,7 @@ Operator documentation for the `/han-feedback` skill in the opt-in `han.feedback
 - **Session scope.** The skill works from the current context window. It can only find `han.*` invocations visible in the conversation at the time you run it. If the session was compacted before you run `/han-feedback`, earlier invocations may not appear. Run it before compaction to catch everything.
 - **Feedback file.** A plain markdown file written to `~/.claude/han-feedback/`. The filename encodes the date and the skills covered. One file per day per run; existing files for today are not overwritten.
 - **Sensitive-content gate.** Before offering to post, the skill displays the full file and asks you to confirm it contains no personal identifiers, internal operational details, or client-specific information. An ambiguous response stops the posting flow. The posting target is a public GitHub repository.
-- **Rating dimensions.** The rating table adapts to the skill type. When prior feedback files exist, the skill reads the most recently modified one to anchor the format so your feedback collection stays consistent.
+- **Rating dimensions.** The rating table uses a named default set (output accuracy, evidence discipline, finding signal-to-noise, output length vs. decision count, turn efficiency), adjusted to the skill type only when it clearly calls for it. When prior feedback files exist, the skill reads the most recently modified one to anchor the format so your feedback collection stays consistent.
 - **Context window limitation.** Invocations from compacted turns are not visible. The skill counts any invocation as used regardless of whether it completed successfully.
 
 ## When to use it

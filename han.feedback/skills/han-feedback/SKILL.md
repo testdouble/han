@@ -79,7 +79,13 @@ Think through the session for each qualifying skill and assess the following.
 
 **Overall:** One paragraph summarizing the fit for this use case.
 
-**Rating:** Score across the dimensions used in the reference file from Step 5, or adjust dimensions to fit the skill type when no reference file exists.
+**Rating:** Score each dimension on a 1-to-5 scale. When the reference file from Step 5 exists, reuse its dimensions so ratings stay comparable across runs. When no reference file exists, use this default set, and add or drop a dimension only when the skill type clearly calls for it:
+
+- **Output accuracy.** Was the produced artifact factually correct and internally consistent?
+- **Evidence discipline.** Did the skill ground its claims in evidence and resolve questions before asking you?
+- **Finding signal-to-noise.** Were the dispatched agents' findings real and worth the turns they cost?
+- **Output length vs. decision count.** Was the artifact proportionate to the decisions it captured?
+- **Turn efficiency.** Did the skill converge without unnecessary rounds or escalations the evidence could have settled?
 
 For a session that used Han agents directly (no skill), assess the agents the same way.
 
@@ -121,7 +127,11 @@ Write the file to `~/.claude/han-feedback/{filename}` using this structure:
 
 | Dimension | Score |
 |---|---|
-| {dimension} | {N}/5 |
+| Output accuracy | {N}/5 |
+| Evidence discipline | {N}/5 |
+| Finding signal-to-noise | {N}/5 |
+| Output length vs. decision count | {N}/5 |
+| Turn efficiency | {N}/5 |
 ```
 
 List every Han skill used on the `**Skills used:**` line and every Han agent used on the `**Agents used:**` line, each with its full plugin namespace (for example `han.github:update-pr-description`, `han.core:risk-analyst`). If no Han agents ran, write `**Agents used:** none`.
