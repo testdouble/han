@@ -2,11 +2,13 @@
 
 Verification rules applied to every entity in scope. The skill's mode (branch vs. sweep) determines *which* entities are in scope. This checklist determines *what* is checked for each one. Apply every rule that fits the entity's type. Record each finding with the file path and a concrete fix; do not paper over discrepancies.
 
-## Skills (`plugin/skills/{name}/SKILL.md` + `docs/skills/{name}.md`)
+`{plugin}` below means the skill root the skill came from: one of `han.core`, `han.github`, `han.reporting`, `han.feedback`. Agents live only under `han.core`.
 
-### Skill definition (`plugin/skills/{name}/SKILL.md`)
+## Skills (`{plugin}/skills/{name}/SKILL.md` + `docs/skills/{name}.md`)
 
-1. **Frontmatter `name` matches directory name.** `name: foo-bar` requires `plugin/skills/foo-bar/`.
+### Skill definition (`{plugin}/skills/{name}/SKILL.md`)
+
+1. **Frontmatter `name` matches directory name.** `name: foo-bar` requires `{plugin}/skills/foo-bar/`.
 2. **Frontmatter `description` is current.** Reflects what the steps actually do. If steps changed and the description still names a removed step or omits a new one, update the description.
 3. **`allowed-tools` matches actual usage.** Every tool the steps call is listed; tools no longer used are removed. Each Bash command prefix is a separate `Bash()` entry.
 4. **Referenced scripts exist.** Every `${CLAUDE_SKILL_DIR}/scripts/...` path resolves to a real file under the skill's `scripts/`.
@@ -15,8 +17,8 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 
 ### Long-form doc (`docs/skills/{name}.md`)
 
-1. **Long-form doc exists.** Every skill in `plugin/skills/` has a matching long-form doc. Missing doc is a hard finding — create it from `docs/templates/skill-long-form-template.md` rather than leaving the gap.
-2. **Orientation frame intact.** First line is `# /{name}`; the second paragraph names the audience and links to `plugin/skills/{name}/SKILL.md`. The `> See also:` orientation line is present.
+1. **Long-form doc exists.** Every skill across the four skill roots has a matching long-form doc. Missing doc is a hard finding — create it from `docs/templates/skill-long-form-template.md` rather than leaving the gap.
+2. **Orientation frame intact.** First line is `# /{name}`; the second paragraph names the audience and links to `{plugin}/skills/{name}/SKILL.md`. The `> See also:` orientation line is present.
 3. **TL;DR present.** Three lines: what / when / what-you-get-back. Each one sentence.
 4. **Sections follow the template.** Key concepts, When to use it, How to invoke it, What you get back, How to get the most out of it, YAGNI (when applicable), Cost and latency, In more detail (optional), Sources, Related documentation.
 5. **TL;DR matches the skill's frontmatter description.** A reader who reads the SKILL.md frontmatter and the long-form TL;DR must come away with the same understanding. Mismatches are a finding.
@@ -37,9 +39,9 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 6. **Bidirectional Related documentation links.** If `/foo` pairs with `/bar`, both long-form docs name the pairing.
 7. **README.md skill references stay count-free.** The Skills Index links resolve and the surrounding text names no hardcoded skill count.
 
-## Agents (`plugin/agents/{name}.md` + `docs/agents/{name}.md`)
+## Agents (`han.core/agents/{name}.md` + `docs/agents/{name}.md`)
 
-### Agent definition (`plugin/agents/{name}.md`)
+### Agent definition (`han.core/agents/{name}.md`)
 
 1. **Frontmatter `name` matches the file's basename.**
 2. **Frontmatter `description` is current.** Reflects what the agent does, when to dispatch it, and what it does not do. Boundary statements name the right sibling agents.
@@ -49,7 +51,7 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 
 ### Long-form doc (`docs/agents/{name}.md`)
 
-1. **Long-form doc exists** for every agent in `plugin/agents/`. Missing doc is a hard finding — create it from `docs/templates/agent-long-form-template.md`.
+1. **Long-form doc exists** for every agent in `han.core/agents/`. Missing doc is a hard finding — create it from `docs/templates/agent-long-form-template.md`.
 2. **Orientation frame, TL;DR, and template sections present** per `docs/templates/agent-long-form-template.md`.
 3. **"Dispatched by" or equivalent section names every skill that uses this agent.** When a skill's dispatch list changed, this section updates.
 4. **TL;DR matches the agent's frontmatter description.**
@@ -74,7 +76,7 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 
 ## Indexes (`docs/skills/README.md`, `docs/agents/README.md`)
 
-1. **Every skill / agent in `plugin/` appears in the index** under exactly one group.
+1. **Every skill (across the four skill roots) and every agent (in `han.core/agents`) appears in the index** under exactly one group.
 2. **No index entry points at a non-existent file.**
 3. **Group headings still describe their groups accurately.** When a category was renamed or merged, the heading updates.
 4. **Each entry's scent line is current.**

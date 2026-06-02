@@ -20,9 +20,9 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *)
 ## Pre-requisites
 
 - git: !`which git`
-- repo root marker: !`find . -maxdepth 2 -name "plugin.json" -path "*/.claude-plugin/*" -type f`
-- skills directory: !`find . -maxdepth 2 -type d -name "skills" -path "*/plugin/*"`
-- agents directory: !`find . -maxdepth 2 -type d -name "agents" -path "*/plugin/*"`
+- repo root marker: !`find . -maxdepth 3 -name "plugin.json" -path "*/.claude-plugin/*" -type f`
+- skills directories: !`find han.core han.github han.reporting han.feedback -maxdepth 1 -type d -name skills 2>/dev/null`
+- agents directory: !`find han.core -maxdepth 1 -type d -name agents 2>/dev/null`
 
 **If any of the above are empty:** this skill is intended to run inside the Han plugin repository. Tell the operator which marker is missing and stop. Do not attempt to operate on a different repo.
 
@@ -39,7 +39,7 @@ Run `${CLAUDE_SKILL_DIR}/scripts/detect-doc-update-context.sh` and read its outp
 
 **`mode: branch`** — branch scope. Set `MODE = branch`. Read the file list between `changed-files-start` and `changed-files-end` (or note that the file list is empty if `changed-files: none` appears instead). If the file list is empty, inform the operator that the branch has no changes against the default branch and stop.
 
-**`mode: sweep`** — full sweep. Set `MODE = sweep`. The skill audits every documentation entity in the plugin.
+**`mode: sweep`** — full sweep. Set `MODE = sweep`. The skill audits every documentation entity across the plugin suite (`han.core`, `han.github`, `han.reporting`, `han.feedback`).
 
 Echo back the mode and the count of in-scope files (branch mode) or "full plugin sweep" (sweep mode) so the operator knows what is about to happen.
 
@@ -61,12 +61,22 @@ Deduplicate. Produce a single ordered inventory `INV`:
 6. Templates (specific files only).
 7. Root files (`README.md`, `CONTRIBUTING.md`, `CLAUDE.md`).
 
+### Plugin roots
+
+Han ships as several plugins. Skills are spread across four of them; agents live in only one. Long-form docs stay flat under `docs/skills/` and `docs/agents/` no matter which plugin owns the entity.
+
+- **Skill roots:** `han.core/skills`, `han.github/skills`, `han.reporting/skills`, `han.feedback/skills`.
+- **Agent root:** `han.core/agents` (the only plugin with agents).
+- **Plugin manifests:** `{plugin}/.claude-plugin/plugin.json` for each of `han`, `han.core`, `han.github`, `han.reporting`, `han.feedback`. Owned by `/han-release`; out of scope here.
+
+Throughout this skill, `{plugin}` means whichever of the four skill roots a given skill came from.
+
 ### When `MODE = sweep`
 
 Enumerate the full set:
 
-1. **Every skill.** `find plugin/skills -mindepth 1 -maxdepth 1 -type d` for the inventory; each entry pulls in `plugin/skills/{name}/SKILL.md` and `docs/skills/{name}.md`.
-2. **Every agent.** `find plugin/agents -mindepth 1 -maxdepth 1 -name "*.md" -type f` for the inventory; each entry pulls in `plugin/agents/{name}.md` and `docs/agents/{name}.md`.
+1. **Every skill.** `find han.core/skills han.github/skills han.reporting/skills han.feedback/skills -mindepth 1 -maxdepth 1 -type d` for the inventory; each entry pulls in `{plugin}/skills/{name}/SKILL.md` (the root the directory came from) and `docs/skills/{name}.md`.
+2. **Every agent.** `find han.core/agents -mindepth 1 -maxdepth 1 -name "*.md" -type f` for the inventory; each entry pulls in `han.core/agents/{name}.md` and `docs/agents/{name}.md`.
 3. **Both indexes** (`docs/skills/README.md`, `docs/agents/README.md`).
 4. **All top-level concept docs** in `docs/`.
 5. **All guidance docs** under `docs/guidance/`.
@@ -89,7 +99,7 @@ Walk `INV` in order. For each entity, apply every rule in [references/audit-chec
   - Fix: {concrete edit}
 ```
 
-**Read the source of truth before checking the doc.** For a skill, read `plugin/skills/{name}/SKILL.md` first, then read `docs/skills/{name}.md` and check it against the source. For an agent, read `plugin/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs — treat them with the same severity as broken scripts (see `docs/guidance/skill-building-guidance/documentation-maintenance.md`).
+**Read the source of truth before checking the doc.** For a skill, read `{plugin}/skills/{name}/SKILL.md` first (the plugin root the skill came from), then read `docs/skills/{name}.md` and check it against the source. For an agent, read `han.core/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs — treat them with the same severity as broken scripts (see `docs/guidance/skill-building-guidance/documentation-maintenance.md`).
 
 **Batch agent audits when the inventory is large.** When `INV` has more than ten skills or ten agents to audit, dispatch a `content-auditor` agent per batch of five entities with the entity name, the source-of-truth file, and the long-form doc. Hand each agent the relevant section of [references/audit-checklist.md](references/audit-checklist.md) inline (do not tell it to read the file). The agent returns findings; merge them into the working list. Do not run more than four such agents in parallel.
 
@@ -101,7 +111,7 @@ After Step 3, look across entities, not just within them.
 
 1. **Bidirectional skill boundaries.** For every skill in `INV` whose frontmatter or long-form "Do not invoke for" section names a sibling, verify the sibling names this skill in the reverse direction. Asymmetric boundaries are findings.
 2. **Bidirectional pairings.** For every skill or agent in `INV` whose long-form Related documentation names another, verify the other side links back where the link adds value. One-direction pairings without a reason are findings.
-3. **Indexes are consistent with reality.** Use Grep to confirm every skill in `plugin/skills/` appears in `docs/skills/README.md` exactly once, and every agent in `plugin/agents/` appears in `docs/agents/README.md` exactly once. Stray entries pointing at non-existent files are findings.
+3. **Indexes are consistent with reality.** Use Grep to confirm every skill across the four skill roots (`han.core/skills`, `han.github/skills`, `han.reporting/skills`, `han.feedback/skills`) appears in `docs/skills/README.md` exactly once, and every agent in `han.core/agents/` appears in `docs/agents/README.md` exactly once. Stray entries pointing at non-existent files are findings.
 4. **CLAUDE.md catalog completeness.** Every entity in `INV` (skills and agents) has a one-line entry in the CLAUDE.md doc map. Missing entries are findings.
 5. **Count-free references.** Confirm `README.md`, `CLAUDE.md` (the "Indexes stay complete, not counted" line), and `docs/concepts.md` describe the skills and agents without a hardcoded total. A reintroduced count (for example "21 skills" or "23 agents") is a finding. Sweep mode always runs this check; branch mode runs it only if the branch added or removed skills or agents.
 6. **The `## How skills compose` block in `docs/skills/README.md`** references current skill names only. References to renamed or removed skills are findings.
