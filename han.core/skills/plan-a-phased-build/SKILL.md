@@ -2,27 +2,19 @@
 name: "plan-a-phased-build"
 description: >
   Splits a body of context into a sequence of vertical-slice build phases where
-  each phase is independently demonstrable to a real user and each builds on
-  the work of the previous. Use when the user wants to plan, sequence, phase,
-  slice, break down, or order the build of a feature, capability, system, or
-  initiative — including requests like "split this into phases", "what should
-  we build first", "create a build plan", "phase this work", "turn this into
-  vertical slices", "outline the order of delivery", or "what's our roadmap".
-  Accepts any source of context — gap analyses, PRDs, design documents, feature
-  specifications, conversation notes, ADRs, requirements lists, or inline
-  descriptions — and produces a plain-language `build-phase-outline.md` indexed
-  by stable phase IDs. Each phase explains what gets built, why it lands at
-  that position, the outcome a real person can be shown end-to-end, cross-references
-  back to the source artifact for traceability, and preconditions. Foundational
-  or prerequisite phases appear first only when dependencies require them;
-  feature work otherwise sequences for earliest demoable value. The
-  information-architect reviews the rendered document so the result is findable,
-  scannable, and builds comprehension progressively. Does not produce
-  implementation detail — use plan-implementation. Does not specify behavior
-  that has not yet been decided — use plan-a-feature. Does not perform gap
-  analysis between two artifacts — use gap-analysis. Does not record
-  architectural decisions — use architectural-decision-record. Does not refine an existing plan —
-  use iterative-plan-review.
+  each phase is independently demonstrable to a real user and each builds on the
+  previous. Use when the user wants to plan, sequence, phase, slice, break down,
+  or order the build of a feature, capability, system, or initiative — including
+  "split this into phases", "what should we build first", "create a build plan",
+  "turn this into vertical slices", or "what's our roadmap". Accepts any source
+  of context (gap analyses, PRDs, design docs, feature specs, ADRs,
+  requirements, or inline notes) and produces a plain-language
+  build-phase-outline.md indexed by stable phase IDs, each phase explaining what
+  gets built, why it lands there, the end-to-end outcome a real person can be
+  shown, and its preconditions. Does not produce implementation detail — use
+  plan-implementation. Does not specify behavior that has not been decided — use
+  plan-a-feature. Does not perform gap analysis between two artifacts — use
+  gap-analysis.
 argument-hint: "[source context path or description, optional: output folder path, optional: shaping context]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 ---

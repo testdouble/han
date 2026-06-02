@@ -201,6 +201,7 @@ This is faster than trial-and-error with test prompts and reveals exactly what's
 9. External requirements (tools, preconditions) are mentioned when they affect skill selection
 
 Cross-references:
+- [Skill Description Length](./skill-description-length.md) — How long a description may be, and what to cut first when it runs over
 - [Naming Conventions](./naming-conventions.md) — Plugin and skill naming rules
 - [Skill Decomposition](./skill-decomposition.md) — When to split skills that share trigger space
 - [Troubleshooting](./troubleshooting.md) — Fixes for triggering problems (doesn't trigger, triggers too often)
