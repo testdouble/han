@@ -23,9 +23,9 @@ allowed-tools: Read, Glob, Grep, Agent
 ## Investigation Approach
 
 - Trace backward from symptoms — don't guess, follow the code.
-- Launch parallel `evidence-based-investigator` agents for different angles simultaneously — one for the error path, one for the data flow, one for recent changes.
+- Launch parallel `han.core:evidence-based-investigator` agents for different angles simultaneously — one for the error path, one for the data flow, one for recent changes.
 - Add one or more specialist analysts **in parallel with** the investigators when the bug type calls for it (concurrency, data flow across boundaries, database or query behavior). Specialist analysts find root causes generalists miss.
-- The `adversarial-validator` agent handles all three validation strategies (challenge evidence, challenge fix, challenge assumptions) internally.
+- The `han.core:adversarial-validator` agent handles all three validation strategies (challenge evidence, challenge fix, challenge assumptions) internally.
 - Apply the evidence rule from [../../references/evidence-rule.md](../../references/evidence-rule.md) to every finding. Codebase findings (file path, line number, log line, test output) carry the trust-class label "codebase" and stand on their citation. Web-source context (RFCs, vendor docs, Stack Overflow, blog posts) carries the trust-class label "web" and is subject to the corroboration gate when it drives the proposed fix. When the investigation hits a point where no evidence at any tier resolves a question, label the no-evidence state rather than guessing.
 
 # Investigate
@@ -34,17 +34,17 @@ allowed-tools: Read, Glob, Grep, Agent
 
 ### Always dispatch
 
-Launch at least 2 `evidence-based-investigator` agents in parallel, each investigating from a different angle — for example, one tracing the error path and another following the data flow.
+Launch at least 2 `han.core:evidence-based-investigator` agents in parallel, each investigating from a different angle — for example, one tracing the error path and another following the data flow.
 
 ### Conditional specialist dispatch
 
-Classify the bug from the user's symptom description before launching. Skip any specialist that does not apply. Dispatch every applicable specialist in parallel with the `evidence-based-investigator` agents in the same message.
+Classify the bug from the user's symptom description before launching. Skip any specialist that does not apply. Dispatch every applicable specialist in parallel with the `han.core:evidence-based-investigator` agents in the same message.
 
-1. **Launch concurrency-analyst** — when the symptom involves intermittent failures, race conditions, deadlocks, ordering issues, stale reads after writes, timeouts, dropped messages, or anything that only reproduces under load or concurrent users. Prompt: "Investigate the concurrency and async behavior of the code paths implicated by this symptom: {symptom}. Focus on race conditions, lock ordering, shared-resource contention, async error handling, and missing cancellation/timeout handling. Return numbered findings keyed to file paths and line numbers."
+1. **Launch han.core:concurrency-analyst** — when the symptom involves intermittent failures, race conditions, deadlocks, ordering issues, stale reads after writes, timeouts, dropped messages, or anything that only reproduces under load or concurrent users. Prompt: "Investigate the concurrency and async behavior of the code paths implicated by this symptom: {symptom}. Focus on race conditions, lock ordering, shared-resource contention, async error handling, and missing cancellation/timeout handling. Return numbered findings keyed to file paths and line numbers."
 
-2. **Launch behavioral-analyst** — when the symptom involves data transformed wrong, values lost between modules, errors swallowed, state mutated unexpectedly, or integration boundaries passing bad data. Prompt: "Trace the data flow for the code paths implicated by this symptom: {symptom}. Focus on data transformation across module boundaries, error propagation and loss, state mutation, and integration-boundary assumptions. Return numbered findings keyed to file paths and line numbers."
+2. **Launch han.core:behavioral-analyst** — when the symptom involves data transformed wrong, values lost between modules, errors swallowed, state mutated unexpectedly, or integration boundaries passing bad data. Prompt: "Trace the data flow for the code paths implicated by this symptom: {symptom}. Focus on data transformation across module boundaries, error propagation and loss, state mutation, and integration-boundary assumptions. Return numbered findings keyed to file paths and line numbers."
 
-3. **Launch data-engineer** — when the symptom involves wrong data in the database, slow queries, N+1, lock contention, migration failures, unbounded scans, lost data, broken referential integrity, or isolation-level surprises. Prompt: "Investigate the schema, queries, migrations, and data-access code implicated by this symptom: {symptom}. Focus on the specific data-engineering principles violated and the concrete data-level impact. Return numbered findings keyed to file paths, line numbers, and schema or migration references."
+3. **Launch han.core:data-engineer** — when the symptom involves wrong data in the database, slow queries, N+1, lock contention, migration failures, unbounded scans, lost data, broken referential integrity, or isolation-level surprises. Prompt: "Investigate the schema, queries, migrations, and data-access code implicated by this symptom: {symptom}. Focus on the specific data-engineering principles violated and the concrete data-level impact. Return numbered findings keyed to file paths, line numbers, and schema or migration references."
 
 After all agents complete (investigators and specialists), compile an **evidence summary** — a numbered list of concrete findings (E1, E2, E3, ...) that will feed into the root cause analysis. Specialist findings go into the same E-series list, tagged with the specialist's domain (e.g., `E3 (concurrency)`).
 
@@ -67,11 +67,11 @@ Design a fix that **directly addresses the root cause** from Step 2 — fix the 
 
 ## Step 4: Validation (CRITICAL)
 
-Launch `adversarial-validator` agents and pass them the complete evidence summary (all E1-EN items with full code snippets), the root cause analysis, and the planned fix with all file changes. Do not summarize — the validator needs verbatim detail to challenge effectively. Their job is adversarial — they must actively try to disprove the findings and break the fix.
+Launch `han.core:adversarial-validator` agents and pass them the complete evidence summary (all E1-EN items with full code snippets), the root cause analysis, and the planned fix with all file changes. Do not summarize — the validator needs verbatim detail to challenge effectively. Their job is adversarial — they must actively try to disprove the findings and break the fix.
 
 When counter-evidence is found, document it as a validation finding (V1, V2, ...), investigate whether it changes the root cause analysis, adjust the plan (evidence, root cause, and fix sections) as needed, and fill in the **Adjustments Made** section listing what changed and which validation finding triggered each change. When counter-evidence is not found, document what was checked and why it supports the original findings, recording it as a validation finding confirming the analysis.
 
-After all validation is complete, incorporate the `adversarial-validator` agents' Confidence Assessment and Remaining Risks into the plan.
+After all validation is complete, incorporate the `han.core:adversarial-validator` agents' Confidence Assessment and Remaining Risks into the plan.
 
 ## Step 5: Final Summary and User Review
 

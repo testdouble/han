@@ -103,54 +103,54 @@ In **lightweight mode**, skip Step 3 and run the checklist-based iteration loop 
 
 **Always include these two** — they are the minimum roster and cannot be omitted:
 
-- `junior-developer` — reframes the plan in plain terms and surfaces hidden assumptions, unstated prerequisites, and standards conflicts a generalist would notice.
-- `adversarial-validator` — attacks the plan's evidence, proposed approach, and assumptions with counter-evidence, edge cases, and falsification attempts.
+- `han.core:junior-developer` — reframes the plan in plain terms and surfaces hidden assumptions, unstated prerequisites, and standards conflicts a generalist would notice.
+- `han.core:adversarial-validator` — attacks the plan's evidence, proposed approach, and assumptions with counter-evidence, edge cases, and falsification attempts.
 
-**`evidence-based-investigator` is conditionally mandatory** — include it whenever the plan contains codebase claims to verify, and exclude it otherwise. The plan contains codebase claims if any of the following is true:
+**`han.core:evidence-based-investigator` is conditionally mandatory** — include it whenever the plan contains codebase claims to verify, and exclude it otherwise. The plan contains codebase claims if any of the following is true:
 
 - the plan body contains a file path matching common source extensions (e.g., `.ts`, `.tsx`, `.js`, `.jsx`, `.svelte`, `.go`, `.rb`, `.py`, `.rs`, `.java`, `.kt`, `.swift`, `.cs`, `.php`);
 - the plan references `src/`, `app/`, `lib/`, `internal/`, `pkg/`, or another source directory by path;
 - the plan contains a line-number reference like `:NNN` or `lines NN–NN`;
 - the plan names a function, class, or method in backticks alongside a file path or directory.
 
-Run a quick `grep` over the plan to detect these signals before finalizing the team. If any single match is found, include `evidence-based-investigator`. When in doubt, include it.
+Run a quick `grep` over the plan to detect these signals before finalizing the team. If any single match is found, include `han.core:evidence-based-investigator`. When in doubt, include it.
 
-When `evidence-based-investigator` is not included, state to the user in one line: "evidence-based-investigator is not required because the plan has no codebase claims to verify." If the user explicitly names the agent, honor the request regardless of the heuristic.
+When `han.core:evidence-based-investigator` is not included, state to the user in one line: "han.core:evidence-based-investigator is not required because the plan has no codebase claims to verify." If the user explicitly names the agent, honor the request regardless of the heuristic.
 
 **Select additional specialists up to the size cap from Step 2** (medium: 3–4 total team, large: 4–5 total team) based on what the plan actually touches. Fewer is better — only add an agent if their absence would meaningfully weaken the review. Draw from:
 
-- `user-experience-designer` — user-facing flows, UI, interaction models, accessibility.
-- `adversarial-security-analyst` — authentication, authorization, PII, untrusted input, secrets, supply chain.
-- `devops-engineer` — deployment, observability, rollout, feature flags, scale, SLO impact, cost.
-- `on-call-engineer` — application-source resilience patterns named in the plan: timeouts, retry strategy, idempotency, backpressure, kill switches, observability of new code paths. Hard boundary against `devops-engineer`: defer infrastructure and pipeline concerns to it.
-- `structural-analyst` — module boundaries, coupling, dependency direction, duplication.
-- `behavioral-analyst` — runtime behavior, data flow, error propagation, state transitions.
-- `concurrency-analyst` — concurrent access, race conditions, async coordination, ordering.
-- `software-architect` — intra-codebase architectural fit, module/class/interface sketches, SOLID-grounded refactoring paths.
-- `system-architect` — cross-service / bounded-context topology, context-map relationships, integration patterns, data ownership, failure-domain containment.
-- `risk-analyst` — prioritization of architectural and delivery risks.
-- `test-engineer` — observable-behavior test planning, test doubles.
-- `edge-case-explorer` — boundary values, input messiness, state-dependent failures.
-- `data-engineer` — schema changes, migrations, data movement, analytics implications.
-- `gap-analyzer` — spec-vs-implementation gap checks when a source spec exists.
-- `content-auditor` — documentation-preservation review when docs are being updated.
-- `codebase-explorer` — feature discovery when the plan touches unfamiliar code regions.
+- `han.core:user-experience-designer` — user-facing flows, UI, interaction models, accessibility.
+- `han.core:adversarial-security-analyst` — authentication, authorization, PII, untrusted input, secrets, supply chain.
+- `han.core:devops-engineer` — deployment, observability, rollout, feature flags, scale, SLO impact, cost.
+- `han.core:on-call-engineer` — application-source resilience patterns named in the plan: timeouts, retry strategy, idempotency, backpressure, kill switches, observability of new code paths. Hard boundary against `han.core:devops-engineer`: defer infrastructure and pipeline concerns to it.
+- `han.core:structural-analyst` — module boundaries, coupling, dependency direction, duplication.
+- `han.core:behavioral-analyst` — runtime behavior, data flow, error propagation, state transitions.
+- `han.core:concurrency-analyst` — concurrent access, race conditions, async coordination, ordering.
+- `han.core:software-architect` — intra-codebase architectural fit, module/class/interface sketches, SOLID-grounded refactoring paths.
+- `han.core:system-architect` — cross-service / bounded-context topology, context-map relationships, integration patterns, data ownership, failure-domain containment.
+- `han.core:risk-analyst` — prioritization of architectural and delivery risks.
+- `han.core:test-engineer` — observable-behavior test planning, test doubles.
+- `han.core:edge-case-explorer` — boundary values, input messiness, state-dependent failures.
+- `han.core:data-engineer` — schema changes, migrations, data movement, analytics implications.
+- `han.core:gap-analyzer` — spec-vs-implementation gap checks when a source spec exists.
+- `han.core:content-auditor` — documentation-preservation review when docs are being updated.
+- `han.core:codebase-explorer` — feature discovery when the plan touches unfamiliar code regions.
 
 **Selection rules**:
 
 - Honor any agents the user named explicitly.
 - Justify each additional specialist in one line — what in the plan requires them.
-- `risk-analyst`, `software-architect`, and `system-architect` consume upstream findings; only include them when at least one of `structural-analyst`, `behavioral-analyst`, or `concurrency-analyst` is also on the team.
-- If `user-experience-designer`, `adversarial-security-analyst`, or `data-engineer` is relevant, include them over nice-to-haves — the risks they surface rarely surface elsewhere.
+- `han.core:risk-analyst`, `han.core:software-architect`, and `han.core:system-architect` consume upstream findings; only include them when at least one of `han.core:structural-analyst`, `han.core:behavioral-analyst`, or `han.core:concurrency-analyst` is also on the team.
+- If `han.core:user-experience-designer`, `han.core:adversarial-security-analyst`, or `han.core:data-engineer` is relevant, include them over nice-to-haves — the risks they surface rarely surface elsewhere.
 
 **Spec-aware mode roster rules** (apply only when spec-aware mode was engaged in Step 1):
 
-- Do NOT include `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `software-architect`, `system-architect`, or `data-engineer` in the default roster. These specialists are named after mechanic-level analysis that belongs in `plan-implementation`, not in a behavioral spec review.
+- Do NOT include `han.core:structural-analyst`, `han.core:behavioral-analyst`, `han.core:concurrency-analyst`, `han.core:software-architect`, `han.core:system-architect`, or `han.core:data-engineer` in the default roster. These specialists are named after mechanic-level analysis that belongs in `plan-implementation`, not in a behavioral spec review.
 - If the user explicitly names one of the excluded specialists, honor the request — but issue a one-line warning that the specialist may surface implementation-level findings the spec will not absorb. Such findings get deferred to `plan-implementation` rather than edited into the spec.
-- The required agents are `junior-developer` and `adversarial-validator`; `evidence-based-investigator` is conditionally mandatory by the codebase-claims heuristic above. All three are generalist and evidence-oriented and serve the spec-review use case without modification.
-- Remaining available specialists in spec mode: `user-experience-designer`, `adversarial-security-analyst`, `devops-engineer`, `on-call-engineer` (scoped to spec-level resilience commitments — idempotency, retry behavior, kill switches, graceful degradation — not file-and-line mechanics), `edge-case-explorer`, `test-engineer`, `gap-analyzer`, `risk-analyst` (no structural/behavioral/concurrency upstream dependency), `content-auditor`, `codebase-explorer`.
+- The required agents are `han.core:junior-developer` and `han.core:adversarial-validator`; `han.core:evidence-based-investigator` is conditionally mandatory by the codebase-claims heuristic above. All three are generalist and evidence-oriented and serve the spec-review use case without modification.
+- Remaining available specialists in spec mode: `han.core:user-experience-designer`, `han.core:adversarial-security-analyst`, `han.core:devops-engineer`, `han.core:on-call-engineer` (scoped to spec-level resilience commitments — idempotency, retry behavior, kill switches, graceful degradation — not file-and-line mechanics), `han.core:edge-case-explorer`, `han.core:test-engineer`, `han.core:gap-analyzer`, `han.core:risk-analyst` (no structural/behavioral/concurrency upstream dependency), `han.core:content-auditor`, `han.core:codebase-explorer`.
 
-Present the proposed team to the user briefly — the required agents (and whether `evidence-based-investigator` was included or skipped, with the reason) plus the chosen specialists, each with a one-line justification — and proceed. If the user corrects the composition, adjust and continue.
+Present the proposed team to the user briefly — the required agents (and whether `han.core:evidence-based-investigator` was included or skipped, with the reason) plus the chosen specialists, each with a one-line justification — and proceed. If the user corrects the composition, adjust and continue.
 
 ## Step 4: Lightweight Iteration Loop (lightweight mode only)
 
@@ -185,26 +185,26 @@ Run 2 to 4 rounds. Each round:
 
    | Specialist | Plan sections to include in brief |
    |---|---|
-   | `user-experience-designer` | Sections touching user-facing flow, UI, interaction, accessibility |
-   | `adversarial-security-analyst` | Sections touching auth, authorization, PII, secrets, supply chain |
-   | `devops-engineer` | Sections touching deployment, observability, rollout, feature flags, scale, SLO impact, cost |
-   | `on-call-engineer` | Sections naming outbound calls, retry behavior, queue or buffer handling, async work, error handling on failure paths, idempotency, kill switches, and observability of new code paths at the application source line |
-   | `structural-analyst` | Sections naming module boundaries, coupling, dependency direction |
-   | `behavioral-analyst` | Sections describing runtime behavior, data flow, error propagation, state |
-   | `concurrency-analyst` | Sections touching concurrent access, race conditions, async coordination |
-   | `software-architect` / `system-architect` | Architecture / topology / context-map sections |
-   | `risk-analyst` | Architectural and delivery risks; depends on upstream specialist findings |
-   | `test-engineer` / `edge-case-explorer` | Sections describing observable behavior, boundary cases, failure modes |
-   | `data-engineer` | Sections touching schema, migration, data movement, analytics |
-   | `gap-analyzer` | Source PRD/spec + the plan under review |
-   | `content-auditor` | Documentation sections being updated |
-   | `codebase-explorer` | Sections touching unfamiliar code regions |
-   | `junior-developer` / `evidence-based-investigator` / `adversarial-validator` | Full plan (these agents are generalist by design) |
+   | `han.core:user-experience-designer` | Sections touching user-facing flow, UI, interaction, accessibility |
+   | `han.core:adversarial-security-analyst` | Sections touching auth, authorization, PII, secrets, supply chain |
+   | `han.core:devops-engineer` | Sections touching deployment, observability, rollout, feature flags, scale, SLO impact, cost |
+   | `han.core:on-call-engineer` | Sections naming outbound calls, retry behavior, queue or buffer handling, async work, error handling on failure paths, idempotency, kill switches, and observability of new code paths at the application source line |
+   | `han.core:structural-analyst` | Sections naming module boundaries, coupling, dependency direction |
+   | `han.core:behavioral-analyst` | Sections describing runtime behavior, data flow, error propagation, state |
+   | `han.core:concurrency-analyst` | Sections touching concurrent access, race conditions, async coordination |
+   | `han.core:software-architect` / `han.core:system-architect` | Architecture / topology / context-map sections |
+   | `han.core:risk-analyst` | Architectural and delivery risks; depends on upstream specialist findings |
+   | `han.core:test-engineer` / `han.core:edge-case-explorer` | Sections describing observable behavior, boundary cases, failure modes |
+   | `han.core:data-engineer` | Sections touching schema, migration, data movement, analytics |
+   | `han.core:gap-analyzer` | Source PRD/spec + the plan under review |
+   | `han.core:content-auditor` | Documentation sections being updated |
+   | `han.core:codebase-explorer` | Sections touching unfamiliar code regions |
+   | `han.core:junior-developer` / `han.core:evidence-based-investigator` / `han.core:adversarial-validator` | Full plan (these agents are generalist by design) |
 
    Give each agent:
    - The full plan file path (so it can read further) plus the relevant section excerpts inline in the brief. Also pass the paths to `artifacts/review-findings.md` and `artifacts/review-iteration-history.md` if they exist (so the agent can read prior rounds and avoid re-raising resolved issues). In spec-aware mode, also pass `artifacts/feature-technical-notes.md` if it exists. For legacy reviews the companion files may sit at the plan folder's root — pass whichever paths actually exist.
    - The project context from Step 1 (CLAUDE.md, project-discovery, coding standards, ADRs that were located).
-   - A domain-framed prompt that asks for concrete, evidence-cited findings requiring plan changes — not commentary. Frame the question around the agent's role (e.g., for `structural-analyst`: "where does this plan's proposed module layout conflict with existing boundaries, and what evidence in the codebase supports your critique?"). Include the directive: **read additional sections of the plan only if your domain needs context not in the excerpts above. Cite what you read.**
+   - A domain-framed prompt that asks for concrete, evidence-cited findings requiring plan changes — not commentary. Frame the question around the agent's role (e.g., for `han.core:structural-analyst`: "where does this plan's proposed module layout conflict with existing boundaries, and what evidence in the codebase supports your critique?"). Include the directive: **read additional sections of the plan only if your domain needs context not in the excerpts above. Cite what you read.**
    - A directive to cite sections by plan heading when raising findings so the skill can record `Changed in plan:` precisely.
    - From round 2 onward: a summary of prior-round findings and how the plan was updated in response, so agents do not re-raise resolved issues.
    - **Every agent also receives the YAGNI brief**: Apply the YAGNI rule per [../../references/yagni-rule.md](../../references/yagni-rule.md). For every plan item in your domain, ask: what evidence supports including it now (user-described need, named direct dependency, existing code path that breaks, applicable regulation, documented incident/metric)? When no accepted evidence applies, raise a `Category: YAGNI candidate` finding. When evidence applies but a strictly simpler version satisfies the same evidence, recommend the simpler version. Apply the named anti-patterns as auto-flags. YAGNI findings are first-class — surface them with a recommended resolution (cite evidence and keep, replace with simpler version, or defer with reopening trigger), never silently drop them.

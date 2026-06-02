@@ -40,7 +40,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(git conf
 
 ## Step 2: Explore the Codebase
 
-Launch 2-3 `codebase-explorer` agents in parallel with the feature name, scope, and any known file paths. Include the docs directory from Step 1 so agents can discover existing documentation. Each agent should explore from a different angle (e.g., entry points and core logic; data models and configuration; tests and existing docs).
+Launch 2-3 `han.core:codebase-explorer` agents in parallel with the feature name, scope, and any known file paths. Include the docs directory from Step 1 so agents can discover existing documentation. Each agent should explore from a different angle (e.g., entry points and core logic; data models and configuration; tests and existing docs).
 
 After all agents complete, merge their findings into a unified **discovery summary** — a numbered list (D1, D2, D3, ...) that combines all items, deduplicates files found by multiple agents, and resolves any conflicting findings.
 
@@ -89,7 +89,7 @@ Apply to every section:
 
 **Check the flag set in Step 1.** If the Content Audit is not needed, skip to Step 7.
 
-Identify every source of pre-existing content that fed into this task (previous doc version, CLAUDE.md content replaced with summary links, content migrated from other files). Re-read each source's original content from before your changes. Launch a `content-auditor` agent with the path to the new/updated document and the list of all source content (file paths and descriptions). The agent classifies each fact as Present, Correctly Removed, or Missing.
+Identify every source of pre-existing content that fed into this task (previous doc version, CLAUDE.md content replaced with summary links, content migrated from other files). Re-read each source's original content from before your changes. Launch a `han.core:content-auditor` agent with the path to the new/updated document and the list of all source content (file paths and descriptions). The agent classifies each fact as Present, Correctly Removed, or Missing.
 
 For each item classified as **Missing**, add the content back to the appropriate section, adapting wording to fit the new document's style while preserving factual content. Use the agent's suggested wording and placement as guidance.
 
@@ -97,7 +97,7 @@ Present the audit summary to the user: number of facts checked, number present, 
 
 ## Step 7: Information-Architecture Review
 
-Dispatch an `information-architect` agent against the written/updated doc before final verification. Pass it the document path, the docs directory root, and the intended audience (a developer or technically-literate stakeholder who needs to understand the feature's behavior before reading its code, and who may later modify it).
+Dispatch an `han.core:information-architect` agent against the written/updated doc before final verification. Pass it the document path, the docs directory root, and the intended audience (a developer or technically-literate stakeholder who needs to understand the feature's behavior before reading its code, and who may later modify it).
 
 Prompt: "Audit the feature doc at {doc_path} for findability, orientation, and comprehension. The intended audience is a developer or technically-literate stakeholder who needs to understand the feature's behavior before reading its code, and who may later modify it. Check: (1) Does a plain-language Summary and a How It Works and Primary Flows narration appear before any code, schema, or type reference? If the behavioral content is missing or sits below the reference detail, that is a finding. (2) Does the heading list let a scanning reader see where the functional overview ends and the deep `## Technical Reference` begins? (3) Is the Summary a short prose paragraph plus bullets, oriented at the right audience, and does the title + one-sentence description match what a reader scanning `{docs_directory}` would expect to find here? (4) Are Configuration and Error Handling scannable and placed ahead of the raw reference detail? (5) Does the Related Documentation section lead the reader to the next useful artifact, or dead-end them? Return a list of structural edits. Do not return an empty list unless the document leads with behavior and defers code reference."
 

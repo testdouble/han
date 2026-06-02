@@ -147,7 +147,7 @@ Write [`build-phase-outline.md`](references/build-phase-outline-template.md) usi
 
 ## Step 7: Information-Architect Review of the Rendered Document
 
-Launch the `information-architect` agent in a single Agent tool call (pass `model: "sonnet"`) to review the rendered `build-phase-outline.md` for findability, orientation, scannability, and progressive comprehension. Provide:
+Launch the `han.core:information-architect` agent in a single Agent tool call (pass `model: "sonnet"`) to review the rendered `build-phase-outline.md` for findability, orientation, scannability, and progressive comprehension. Provide:
 
 - The path to the rendered document.
 - A directive: **review the rendered outline as a stakeholder would encounter it**. Specifically: a reader landing cold on the document should be able to (a) understand the shape of the work in two minutes from the executive summary alone, (b) scan the index and identify phases relevant to their interests, (c) read any single phase entry and understand it without reading prior phases, and (d) cite stable phase IDs in tickets and threads.

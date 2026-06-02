@@ -127,7 +127,7 @@ Write the files. The primary spec goes at the root of `{folder}/`; the companion
    - **Coordinations** — inbound and outbound interactions with other subsystems.
    - **Out of scope** — what the feature deliberately does not do.
    - **Deferred (YAGNI)** — items considered but deferred under [../../references/yagni-rule.md](../../references/yagni-rule.md). For each: the item, why it was deferred (which gate failed — evidence test or simpler-version test), and the reopening trigger that would justify revisiting. **Lazily created — write this section only if at least one item was deferred. Omit the section entirely when nothing qualifies.**
-   - **Open items** — questions flagged for follow-up (populated later by the project-manager).
+   - **Open items** — questions flagged for follow-up (populated later by the han.core:project-manager).
    - **Summary** — outcome, actors, decision counts, sub-agents, key adjustments, and (only if tech-notes were captured) the `T#` count.
 
    For every behavior that embodies a non-obvious decision, append an inline parenthetical link to the decision in `artifacts/decision-log.md`, e.g. `([D4](artifacts/decision-log.md#d4-invite-expiration-window))`. Link only non-obvious behaviors — not every sentence. "Non-obvious" means a reader would reasonably ask "why this and not something else?"
@@ -167,7 +167,7 @@ This size drives the team-size cap in Step 6:
 
 | Size | Team cap | Rationale |
 |---|---|---|
-| Small | 2 (junior-developer + 1 chosen specialist) | Limited surface area; one domain specialist is usually enough. |
+| Small | 2 (han.core:junior-developer + 1 chosen specialist) | Limited surface area; one domain specialist is usually enough. |
 | Medium | 3 to 4 | Typical default; the historical cap. |
 | Large | 4 to 5 | Reserved for plans where missed coverage is expensive. |
 
@@ -175,32 +175,32 @@ This size drives the team-size cap in Step 6:
 
 ## Step 6: Dispatch the Review Team
 
-Choose sub-agents to review the draft spec in parallel based on the size cap from Step 5.5 and what the feature actually touches. **Always include `junior-developer`** to surface hidden inconsistencies, muddied scope, and assumptions. Select the remaining specialists from this list, matching domain to feature:
+Choose sub-agents to review the draft spec in parallel based on the size cap from Step 5.5 and what the feature actually touches. **Always include `han.core:junior-developer`** to surface hidden inconsistencies, muddied scope, and assumptions. Select the remaining specialists from this list, matching domain to feature:
 
-- `user-experience-designer` — any user-facing flow, UI, or interaction model.
-- `adversarial-security-analyst` — authentication, authorization, PII, untrusted input, secrets — at the behavioral attack-surface level (deep exploit-path work moves to `plan-implementation`).
-- `devops-engineer` — rollout, feature flags, observability, SLO behavior, operational affordances.
-- `on-call-engineer` — resilience commitments the spec must make to keep the on-call rotation healthy: idempotency on retried operations, timeout and deadline behavior, graceful-degradation paths when a dependency is down, kill-switch availability on risky new code paths, named failure-mode coverage. Spec-level only — file-and-line resilience review belongs to `plan-implementation`.
-- `edge-case-explorer` — boundary values, input messiness, state-dependent failures.
-- `test-engineer` — what observable behaviors the spec commits the system to making testable (test-double and collaborator-boundary framing is deferred to `plan-implementation`).
-- `gap-analyzer` — if a PRD or reference spec exists, compare the draft against it.
-- `risk-analyst` — prioritization of risks if the feature has significant blast radius.
+- `han.core:user-experience-designer` — any user-facing flow, UI, or interaction model.
+- `han.core:adversarial-security-analyst` — authentication, authorization, PII, untrusted input, secrets — at the behavioral attack-surface level (deep exploit-path work moves to `plan-implementation`).
+- `han.core:devops-engineer` — rollout, feature flags, observability, SLO behavior, operational affordances.
+- `han.core:on-call-engineer` — resilience commitments the spec must make to keep the on-call rotation healthy: idempotency on retried operations, timeout and deadline behavior, graceful-degradation paths when a dependency is down, kill-switch availability on risky new code paths, named failure-mode coverage. Spec-level only — file-and-line resilience review belongs to `plan-implementation`.
+- `han.core:edge-case-explorer` — boundary values, input messiness, state-dependent failures.
+- `han.core:test-engineer` — what observable behaviors the spec commits the system to making testable (test-double and collaborator-boundary framing is deferred to `plan-implementation`).
+- `han.core:gap-analyzer` — if a PRD or reference spec exists, compare the draft against it.
+- `han.core:risk-analyst` — prioritization of risks if the feature has significant blast radius.
 
-**Mechanic-focused specialists — `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `software-architect`, and `system-architect` — are intentionally excluded from the default spec-stage roster.** The analysts target module boundaries, runtime data flow, and concurrency primitives; the architects synthesize those findings into intra-codebase or cross-service topology recommendations. All of it is `plan-implementation`'s domain under the rule in the operating principles. Include one only if the user explicitly asks for it, and when doing so warn the user that the specialist may surface implementation-level findings the spec will not absorb — such findings get deferred to `plan-implementation` rather than edited into the spec.
+**Mechanic-focused specialists — `han.core:structural-analyst`, `han.core:behavioral-analyst`, `han.core:concurrency-analyst`, `han.core:software-architect`, and `han.core:system-architect` — are intentionally excluded from the default spec-stage roster.** The analysts target module boundaries, runtime data flow, and concurrency primitives; the architects synthesize those findings into intra-codebase or cross-service topology recommendations. All of it is `plan-implementation`'s domain under the rule in the operating principles. Include one only if the user explicitly asks for it, and when doing so warn the user that the specialist may surface implementation-level findings the spec will not absorb — such findings get deferred to `plan-implementation` rather than edited into the spec.
 
 **When launching each agent, pass `model: "sonnet"` to the Agent tool. Use domain-scoped briefs — do not hand every agent the full set of artifacts.** Pass each agent only the spec sections relevant to its domain plus pointers, and instruct it to read the rest on demand only if its domain needs it. Default mapping:
 
 | Specialist | Spec sections to include in brief |
 |---|---|
-| `user-experience-designer` | Outcome, Primary Flow, User Interactions, Edge Cases (UX-relevant rows only) |
-| `adversarial-security-analyst` | Outcome, Coordinations, Edge Cases, any sections touching auth/PII/secrets |
-| `devops-engineer` | Outcome, Coordinations, Out of Scope, Open Items |
-| `on-call-engineer` | Outcome, Primary Flow, Alternate Flows, Edge Cases, Coordinations (sections touching idempotency, retries, timeouts, kill switches, graceful degradation) |
-| `edge-case-explorer` | Outcome, Primary Flow, Alternate Flows, Edge Cases |
-| `test-engineer` | Outcome, Primary Flow, Alternate Flows, Edge Cases |
-| `gap-analyzer` | Source PRD or reference spec + the draft spec under review |
-| `risk-analyst` | Outcome, Coordinations, Edge Cases (risk-relevant rows only) |
-| `junior-developer` | Outcome + the first paragraph of every section (plain-language overview) |
+| `han.core:user-experience-designer` | Outcome, Primary Flow, User Interactions, Edge Cases (UX-relevant rows only) |
+| `han.core:adversarial-security-analyst` | Outcome, Coordinations, Edge Cases, any sections touching auth/PII/secrets |
+| `han.core:devops-engineer` | Outcome, Coordinations, Out of Scope, Open Items |
+| `han.core:on-call-engineer` | Outcome, Primary Flow, Alternate Flows, Edge Cases, Coordinations (sections touching idempotency, retries, timeouts, kill switches, graceful degradation) |
+| `han.core:edge-case-explorer` | Outcome, Primary Flow, Alternate Flows, Edge Cases |
+| `han.core:test-engineer` | Outcome, Primary Flow, Alternate Flows, Edge Cases |
+| `han.core:gap-analyzer` | Source PRD or reference spec + the draft spec under review |
+| `han.core:risk-analyst` | Outcome, Coordinations, Edge Cases (risk-relevant rows only) |
+| `han.core:junior-developer` | Outcome + the first paragraph of every section (plain-language overview) |
 
 Always pass the file paths to all artifacts (`{folder}/feature-specification.md`, `{folder}/artifacts/decision-log.md`, `{folder}/artifacts/team-findings.md`, plus `{folder}/artifacts/feature-technical-notes.md` if it exists) so the agent can read further on its own. Always pass the list of decisions already made (D# titles only — not the full entries) and a specific question framed for the agent's domain. Include the directive: **read additional sections only if your domain needs context not in the excerpts above. Cite what you read.**
 
@@ -238,13 +238,13 @@ After all review agents return, compile their findings. **Do not dump raw findin
 
 ## Step 8: Project Manager Synthesis
 
-Launch the `project-manager` agent in **synthesis mode** (pass `model: "sonnet"`). Provide it with:
+Launch the `han.core:project-manager` agent in **synthesis mode** (pass `model: "sonnet"`). Provide it with:
 
 - All output file paths: `{folder}/feature-specification.md`, `{folder}/artifacts/decision-log.md`, `{folder}/artifacts/team-findings.md`, and `{folder}/artifacts/feature-technical-notes.md` if it exists.
 - The full verbatim output from every review agent in Step 6.
 - The resolutions made in Step 7 (which findings were resolved by evidence, which by the user, and what changed in each file).
 
-Ask the project-manager to reconcile the specialist input against the files and apply any remaining corrections directly. It must:
+Ask the han.core:project-manager to reconcile the specialist input against the files and apply any remaining corrections directly. It must:
 
 - Record or update decisions in `artifacts/decision-log.md` with full rationale, evidence, and rejected alternatives.
 - Record or update findings in `artifacts/team-findings.md` with resolutions.
@@ -254,9 +254,9 @@ Ask the project-manager to reconcile the specialist input against the files and 
   - Every `F#` in `artifacts/team-findings.md` lists its affected `D#` IDs (`Affected decisions:`), affected `T#` IDs (`Affected tech-notes:`), and the spec sections it changed (`Changed in spec:`).
   - Every `T#` in `artifacts/feature-technical-notes.md` lists its supporting `D#` IDs (`Supports decisions:`), driving `F#` IDs (`Driven by findings:`), and the spec sections that reference it (`Referenced in spec:`).
   - Every non-obvious behavior in `feature-specification.md` has its inline `([D#](artifacts/decision-log.md#...))` link. Every sentence whose correct behavior depends on a captured mechanic has its inline `([T#](artifacts/feature-technical-notes.md#...))` link.
-  - The spec itself continues to obey the operating-principles rule — no language primitives, file/line references, function/class names, library mechanics, implementation patterns, or internal flag names in behavioral sentences. Any leak the project-manager finds is rewritten in place during synthesis.
+  - The spec itself continues to obey the operating-principles rule — no language primitives, file/line references, function/class names, library mechanics, implementation patterns, or internal flag names in behavioral sentences. Any leak the han.core:project-manager finds is rewritten in place during synthesis.
 
-The project-manager owns the final synthesis — its output is authoritative.
+The han.core:project-manager owns the final synthesis — its output is authoritative.
 
 ## Step 9: Present the Final Specification
 
@@ -266,7 +266,7 @@ Summarize for the user:
 - The number of YAGNI deferrals captured in `feature-specification.md`'s `## Deferred (YAGNI)` section (omit this line if the section was not written because nothing qualified).
 - The number of technical notes captured (point to `artifacts/feature-technical-notes.md`) — omit this line if the file was not created.
 - The sub-agents consulted and the key adjustments each drove (point to `artifacts/team-findings.md`).
-- Any remaining open items the project-manager flagged for follow-up (in `feature-specification.md`).
+- Any remaining open items the han.core:project-manager flagged for follow-up (in `feature-specification.md`).
 
 Ask whether the user wants to iterate on specific sections or consider the specification ready for implementation planning.
 

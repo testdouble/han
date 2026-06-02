@@ -23,13 +23,13 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *)
 
 ## Step 1: Discover Repository Structure
 
-Launch a `project-scanner` agent to determine whether the repository contains one project or many, and what each project's boundaries are. Wait for the agent to complete.
+Launch a `han.core:project-scanner` agent to determine whether the repository contains one project or many, and what each project's boundaries are. Wait for the agent to complete.
 
 From the agent's results, build a project list. Each entry has a project name (directory name, or repository name for root-level projects), root path, and dependency manifest path.
 
 ## Step 2: Explore Project Attributes
 
-Launch 3 `project-scanner` agents in parallel, each with a different focus area. Include the project list from Step 1 in each agent's prompt so they know which roots to explore.
+Launch 3 `han.core:project-scanner` agents in parallel, each with a different focus area. Include the project list from Step 1 in each agent's prompt so they know which roots to explore.
 
 **Agent 1 — Languages, Frameworks, Dependencies:** For each project, read the dependency manifest to identify languages and version constraints. Determine the package manager from the lock file type. From dependencies, identify structural/architectural frameworks (web, frontend, test, ORM/database) — focus on frameworks that define how the project is built, not utility packages. Note runtime version requirements.
 

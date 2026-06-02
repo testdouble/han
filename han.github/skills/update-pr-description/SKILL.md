@@ -49,7 +49,7 @@ Inspect the changed files from `branch stats` and classify each by extension. Do
 
 ## Step 4: Generate the PR Description
 
-Launch a single `junior-developer` agent to write the PR description directly. Junior-developer's fresh-reviewer perspective is the asset here: by authoring the description with the eyes of a teammate who lacks full project context, the result already anticipates what a reviewer needs to see, removing the need for a separate reviewer-context edit pass.
+Launch a single `han.core:junior-developer` agent to write the PR description directly. Junior-developer's fresh-reviewer perspective is the asset here: by authoring the description with the eyes of a teammate who lacks full project context, the result already anticipates what a reviewer needs to see, removing the need for a separate reviewer-context edit pass.
 
 Construct the agent prompt to include all of the following inline (the skill already has this context loaded — pass the actual values, not references):
 

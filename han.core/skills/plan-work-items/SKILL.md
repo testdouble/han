@@ -79,7 +79,7 @@ If an expected artifact is missing (for example, the plan touches an HTTP bounda
 
 ### 5. Draft the work items
 
-Launch `project-manager` (`subagent_type: "han:project-manager"`, `model: "sonnet"`) with:
+Launch `han.core:project-manager` (`subagent_type: "han.core:project-manager"`, `model: "sonnet"`) with:
 
 - The full plan or context content from Step 1.
 - The artifact inventory from Step 4.
@@ -87,7 +87,7 @@ Launch `project-manager` (`subagent_type: "han:project-manager"`, `model: "sonne
 - A directive to draft vertical slices: each work item is a narrow but complete path through the appropriate layers (schema, API, UI, tests), demoable or verifiable on its own. Classify each work item as **HITL** (requires human interaction: an architectural decision, a design review) or **AFK** (can be implemented and merged without a sync). Prefer AFK over HITL. Prefer many thin work items over few thick ones.
 - A directive to return the proposed breakdown as a numbered list. Do not write any files.
 
-Return the project-manager's output verbatim. Proceed to Step 6.
+Return the han.core:project-manager's output verbatim. Proceed to Step 6.
 
 ### 6. Assign symbolic IDs and titles
 

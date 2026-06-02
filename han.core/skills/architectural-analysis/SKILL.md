@@ -18,12 +18,12 @@ Read these before dispatching anything. They constrain every step below.
 
 - **A focus area is required.** This skill analyzes a specific module, directory, or feature. "Analyze the whole codebase" is not a valid input. If no focus area resolves to real files, stop and ask the user to name one.
 - **The agents own the judgment; the skill orchestrates.** The skill validates the focus area, classifies size, selects the roster, fans agents out and in, and renders the report. It does not produce findings itself.
-- **The discovery roster is signal-selected; the synthesis spine always runs.** `structural-analyst`, `behavioral-analyst`, `risk-analyst`, and `software-architect` run at every size BECAUSE structure, runtime behavior, risk-of-inaction, and SOLID synthesis are the irreducible core of an architectural read. Every other specialist is added only when the focus area's signals warrant it and the size band allows it, BECAUSE dispatching an agent whose domain the code does not touch burns tokens and dilutes the report with low-signal findings.
+- **The discovery roster is signal-selected; the synthesis spine always runs.** `han.core:structural-analyst`, `han.core:behavioral-analyst`, `han.core:risk-analyst`, and `han.core:software-architect` run at every size BECAUSE structure, runtime behavior, risk-of-inaction, and SOLID synthesis are the irreducible core of an architectural read. Every other specialist is added only when the focus area's signals warrant it and the size band allows it, BECAUSE dispatching an agent whose domain the code does not touch burns tokens and dilutes the report with low-signal findings.
 - **Default to small.** Start classification at small and escalate only when a higher-band signal is clearly present. Borderline signals stay at the smaller band. Under-dispatching is recoverable by re-running at a larger size; over-dispatching is not.
-- **Recommendations, not refactors.** The skill never modifies code. `software-architect` (and `system-architect` when dispatched) produce pseudocode sketches for proposed boundaries. Implementation is a separate, later step.
+- **Recommendations, not refactors.** The skill never modifies code. `han.core:software-architect` (and `han.core:system-architect` when dispatched) produce pseudocode sketches for proposed boundaries. Implementation is a separate, later step.
 - **Negative results are valuable.** When a dimension is genuinely clean (no concurrency in a pure-functional module, sound boundaries), the report says so. Agents must not fabricate findings to fill a section.
 - **Single pass, no iteration round.** This skill is a fan-out / fan-in, not an iterative loop. If a band proves too small, the user re-runs at a larger size — the skill does not self-escalate mid-run.
-- **System-altitude work is deferred by default.** `software-architect` defers cross-service / bounded-context / trust-boundary findings rather than absorbing them. `system-architect` is added to the roster only at large size and only when a boundary-crossing seam is actually present. When it is not dispatched, those deferrals are surfaced in the report so the user can dispatch `system-architect` separately.
+- **System-altitude work is deferred by default.** `han.core:software-architect` defers cross-service / bounded-context / trust-boundary findings rather than absorbing them. `han.core:system-architect` is added to the roster only at large size and only when a boundary-crossing seam is actually present. When it is not dispatched, those deferrals are surfaced in the report so the user can dispatch `han.core:system-architect` separately.
 - **The report template lives at [references/architectural-analysis-report-template.md](references/architectural-analysis-report-template.md).** The skill renders that template by filling placeholders and removing the sections whose agent was not dispatched. It does not invent a structure inline.
 
 # Run an Architectural Analysis
@@ -63,37 +63,37 @@ Run targeted `Grep` and `Glob` over the focus area to detect which domains the c
 
 **Synthesis spine — dispatched at every size:**
 
-- `structural-analyst` — static structure: module boundaries, coupling, dependency direction, abstractions, duplication. Emits `S#` findings.
-- `behavioral-analyst` — runtime behavior: data flow, error propagation, state management, integration boundaries. Emits `B#` findings.
-- `risk-analyst` — scores the `S`/`B`/`C` findings for risk of inaction (likelihood, severity, blast radius, reversibility). Emits `R#` items. Runs after the discovery wave.
-- `software-architect` — synthesizes all upstream findings into intra-codebase recommendations grounded in cohesion, coupling, and SOLID, with pseudocode sketches. Emits `A#` items. Runs last.
+- `han.core:structural-analyst` — static structure: module boundaries, coupling, dependency direction, abstractions, duplication. Emits `S#` findings.
+- `han.core:behavioral-analyst` — runtime behavior: data flow, error propagation, state management, integration boundaries. Emits `B#` findings.
+- `han.core:risk-analyst` — scores the `S`/`B`/`C` findings for risk of inaction (likelihood, severity, blast radius, reversibility). Emits `R#` items. Runs after the discovery wave.
+- `han.core:software-architect` — synthesizes all upstream findings into intra-codebase recommendations grounded in cohesion, coupling, and SOLID, with pseudocode sketches. Emits `A#` items. Runs last.
 
 **Signal-selected discovery specialists — added when the signal is present and the band allows:**
 
 | Specialist | Add when | Min band |
 |---|---|---|
-| `concurrency-analyst` (`C#`) | Concurrency signal present | Small |
-| `adversarial-security-analyst` (`SEC-###`) | Security signal present | Medium |
-| `data-engineer` | Data signal present | Medium |
-| `devops-engineer` (`DOR-###`) | DevOps signal present | Medium |
-| `on-call-engineer` (`OCE-###`) | On-call resilience signal present: application source in the focus area has outbound calls, retry logic, queue/buffer handling, async/await code, error-handling on a production path, fan-out loops, idempotency surfaces, or new production code paths whose failure would page someone | Medium |
-| `codebase-explorer` | Unfamiliar-area signal present | Large |
-| `system-architect` (`SA#`) | System-seam signal present | Large |
+| `han.core:concurrency-analyst` (`C#`) | Concurrency signal present | Small |
+| `han.core:adversarial-security-analyst` (`SEC-###`) | Security signal present | Medium |
+| `han.core:data-engineer` | Data signal present | Medium |
+| `han.core:devops-engineer` (`DOR-###`) | DevOps signal present | Medium |
+| `han.core:on-call-engineer` (`OCE-###`) | On-call resilience signal present: application source in the focus area has outbound calls, retry logic, queue/buffer handling, async/await code, error-handling on a production path, fan-out loops, idempotency surfaces, or new production code paths whose failure would page someone | Medium |
+| `han.core:codebase-explorer` | Unfamiliar-area signal present | Large |
+| `han.core:system-architect` (`SA#`) | System-seam signal present | Large |
 
-Roster caps by band: **small** runs the spine plus `concurrency-analyst` only (3–4 agents); **medium** adds one or two of `{adversarial-security-analyst, data-engineer, devops-engineer, on-call-engineer}` by signal (4–6 agents); **large** adds the remaining signalled specialists, `codebase-explorer` if the area is unfamiliar, and `system-architect` if a system-seam signal is present (6–9 agents). If more than the cap's worth of specialists are signalled, keep the band's count and prefer the specialists covering the strongest signals; note the omitted domains in the executive summary so the user can re-run larger. When both `devops-engineer` and `on-call-engineer` are signalled, prefer `on-call-engineer` if the focus area is application source and `devops-engineer` if it is infrastructure or pipelines; include both at large size only.
+Roster caps by band: **small** runs the spine plus `han.core:concurrency-analyst` only (3–4 agents); **medium** adds one or two of `{han.core:adversarial-security-analyst, han.core:data-engineer, han.core:devops-engineer, han.core:on-call-engineer}` by signal (4–6 agents); **large** adds the remaining signalled specialists, `han.core:codebase-explorer` if the area is unfamiliar, and `han.core:system-architect` if a system-seam signal is present (6–9 agents). If more than the cap's worth of specialists are signalled, keep the band's count and prefer the specialists covering the strongest signals; note the omitted domains in the executive summary so the user can re-run larger. When both `han.core:devops-engineer` and `han.core:on-call-engineer` are signalled, prefer `han.core:on-call-engineer` if the focus area is application source and `han.core:devops-engineer` if it is infrastructure or pipelines; include both at large size only.
 
-`system-architect` is the only specialist that changes `software-architect`'s behavior: when `system-architect` is on the roster, `software-architect` still defers boundary-crossing findings but the report carries `system-architect`'s recommendations for them instead of only listing them as deferred.
+`han.core:system-architect` is the only specialist that changes `han.core:software-architect`'s behavior: when `han.core:system-architect` is on the roster, `han.core:software-architect` still defers boundary-crossing findings but the report carries `han.core:system-architect`'s recommendations for them instead of only listing them as deferred.
 
 **Announce the decision in one line before dispatching**, with per-specialist justification — for example:
 
 > **Size: medium.** Focus area `src/auth/` spans the session and token subsystems; one security signal detected (token handling).
-> **Roster (5):** `structural-analyst`, `behavioral-analyst` (spine), `concurrency-analyst` (async token refresh detected), `adversarial-security-analyst` (token + session handling), then `risk-analyst` and `software-architect`.
+> **Roster (5):** `han.core:structural-analyst`, `han.core:behavioral-analyst` (spine), `han.core:concurrency-analyst` (async token refresh detected), `han.core:adversarial-security-analyst` (token + session handling), then `han.core:risk-analyst` and `han.core:software-architect`.
 
 State git availability in the same message if git is absent ("git unavailable — churn and recency evidence will be skipped"). Proceed without a blocking confirmation; this analysis is read-only and re-runnable, so a gate here would gate a reversible operation. If the user objects to the roster, honor the adjustment.
 
 ## Step 4: Dispatch the Discovery Wave in Parallel
 
-Launch every discovery agent on the roster in a single message with one `Agent` call per agent so they run concurrently: `structural-analyst`, `behavioral-analyst`, and whichever of `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`, `codebase-explorer` are on the roster. Do **not** launch `risk-analyst`, `software-architect`, or `system-architect` here — they are the synthesis layer (Steps 6 and 7).
+Launch every discovery agent on the roster in a single message with one `Agent` call per agent so they run concurrently: `han.core:structural-analyst`, `han.core:behavioral-analyst`, and whichever of `han.core:concurrency-analyst`, `han.core:adversarial-security-analyst`, `han.core:data-engineer`, `han.core:devops-engineer`, `han.core:on-call-engineer`, `han.core:codebase-explorer` are on the roster. Do **not** launch `han.core:risk-analyst`, `han.core:software-architect`, or `han.core:system-architect` here — they are the synthesis layer (Steps 6 and 7).
 
 Each brief must contain:
 
@@ -102,26 +102,26 @@ Each brief must contain:
 - The resolved project-context conventions, or a note that none were found and surrounding-code inference applies.
 - Git availability, so the agent knows whether churn/recency evidence is in scope.
 - A **calibration directive scaled to the band**: at **small**, escalate only the clearest high-impact findings and let lower-confidence observations default down; at **medium**, surface high- and medium-impact findings; at **large**, surface the full finding set. This scales the brief to the size the same way the roster does.
-- For `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, and `on-call-engineer`: scope the brief to the focus area and direct findings at architectural concerns within it (its domain's structural and behavioral risk), not a general audit of the whole repository. For `on-call-engineer`, the brief must restrict findings to application source files only — infrastructure, pipelines, and IaC are out of scope.
+- For `han.core:adversarial-security-analyst`, `han.core:data-engineer`, `han.core:devops-engineer`, and `han.core:on-call-engineer`: scope the brief to the focus area and direct findings at architectural concerns within it (its domain's structural and behavioral risk), not a general audit of the whole repository. For `han.core:on-call-engineer`, the brief must restrict findings to application source files only — infrastructure, pipelines, and IaC are out of scope.
 
 Wait for the entire wave to return before proceeding.
 
 ## Step 5: Compile the Discovery Findings
 
-Collect the full verbatim output from every discovery agent. Preserve every numbered item and its prefix exactly: `S#` (structural), `B#` (behavioral), `C#` (concurrency), `SEC-###` (security), `DOR-###` (devops), and `data-engineer`'s own finding IDs. Do not renumber, summarize, or drop items — the verbatim output is what the report carries and what the synthesis layer cross-references.
+Collect the full verbatim output from every discovery agent. Preserve every numbered item and its prefix exactly: `S#` (structural), `B#` (behavioral), `C#` (concurrency), `SEC-###` (security), `DOR-###` (devops), and `han.core:data-engineer`'s own finding IDs. Do not renumber, summarize, or drop items — the verbatim output is what the report carries and what the synthesis layer cross-references.
 
-If `concurrency-analyst` reported "no concurrency patterns found", keep that statement verbatim — it is a valid negative result, not a missing section.
+If `han.core:concurrency-analyst` reported "no concurrency patterns found", keep that statement verbatim — it is a valid negative result, not a missing section.
 
 ## Step 6: Dispatch the Risk Analyst
 
-Launch `risk-analyst` with one `Agent` call. Pass it the full verbatim `S#`, `B#`, and `C#` findings (its documented input contract). Do not pass it the security, data, or devops findings — those specialists already carry their own severity and impact framing, and `risk-analyst`'s rubric is built for the structural/behavioral/concurrency findings that lack inherent severity. The agent emits `R#` items cross-referencing the upstream `S`/`B`/`C` findings with likelihood, severity, blast radius, and reversibility. Wait for it to return.
+Launch `han.core:risk-analyst` with one `Agent` call. Pass it the full verbatim `S#`, `B#`, and `C#` findings (its documented input contract). Do not pass it the security, data, or devops findings — those specialists already carry their own severity and impact framing, and `han.core:risk-analyst`'s rubric is built for the structural/behavioral/concurrency findings that lack inherent severity. The agent emits `R#` items cross-referencing the upstream `S`/`B`/`C` findings with likelihood, severity, blast radius, and reversibility. Wait for it to return.
 
 ## Step 7: Dispatch the Synthesis Architects
 
 Launch the synthesis layer with one `Agent` call per architect, in a single message when both are on the roster:
 
-- `software-architect` — always. Pass it the full verbatim discovery output (`S`/`B`/`C` plus any `SEC-###`, `DOR-###`, and `data-engineer` findings) AND the `risk-analyst` `R#` items. It produces `A#` intra-codebase recommendations with pseudocode sketches, each cross-referencing upstream findings and naming the SOLID/cohesion/coupling concern. It defers boundary-crossing findings rather than absorbing them.
-- `system-architect` — only when it is on the roster (large size, system-seam signal). Pass it the same verbatim discovery output and `R#` items, plus the `DOR-###` and `data-engineer` findings explicitly (its documented optional inputs). It produces `SA#` cross-service / bounded-context recommendations and a context-map sketch.
+- `han.core:software-architect` — always. Pass it the full verbatim discovery output (`S`/`B`/`C` plus any `SEC-###`, `DOR-###`, and `han.core:data-engineer` findings) AND the `han.core:risk-analyst` `R#` items. It produces `A#` intra-codebase recommendations with pseudocode sketches, each cross-referencing upstream findings and naming the SOLID/cohesion/coupling concern. It defers boundary-crossing findings rather than absorbing them.
+- `han.core:system-architect` — only when it is on the roster (large size, system-seam signal). Pass it the same verbatim discovery output and `R#` items, plus the `DOR-###` and `han.core:data-engineer` findings explicitly (its documented optional inputs). It produces `SA#` cross-service / bounded-context recommendations and a context-map sketch.
 
 Wait for the synthesis layer to return.
 
@@ -132,8 +132,8 @@ Read [references/architectural-analysis-report-template.md](references/architect
 1. **Fill the front matter and "How to Read" frame.** Set the focus area, the chosen size with its one-line justification, the dispatched roster, and git availability.
 2. **Carry agent output verbatim.** Each analysis section is the corresponding agent's full output, unedited. The skill writes only the Executive Summary and the section prefaces.
 3. **Remove sections for agents that were not dispatched.** Drop the section, remove its line from `sections_included` in the front matter, and replace its promise in the "How to Read" frame with a single line stating it was not part of this run (the same way `gap-analysis` handles optional sections). A small run with no concurrency signal has no Concurrency section; a run with no security signal has no Security section.
-4. **Handle the concurrency negative result.** If `concurrency-analyst` ran but found nothing, keep the section and carry its "no concurrency patterns found" statement — this is a reported result, not an omission.
-5. **Resolve system-altitude content.** If `system-architect` was dispatched, render its `SA#` recommendations in the System-Architecture Recommendations section. If it was not, omit that section and instead render `software-architect`'s deferred boundary-crossing findings under "System-level concerns deferred", with the one-line note that the user can dispatch `system-architect` separately for recommendations at that altitude.
+4. **Handle the concurrency negative result.** If `han.core:concurrency-analyst` ran but found nothing, keep the section and carry its "no concurrency patterns found" statement — this is a reported result, not an omission.
+5. **Resolve system-altitude content.** If `han.core:system-architect` was dispatched, render its `SA#` recommendations in the System-Architecture Recommendations section. If it was not, omit that section and instead render `han.core:software-architect`'s deferred boundary-crossing findings under "System-level concerns deferred", with the one-line note that the user can dispatch `han.core:system-architect` separately for recommendations at that altitude.
 6. **Write the Executive Summary last**, after every other section is filled: the focus area and size, the 3–5 most critical findings across all dispatched dimensions, the highest-impact recommendations, and an explicit note on any dimension that was clean or any signalled domain omitted by the band cap.
 
-Close by telling the user, in a short message: the size class and roster used (and why), git availability, the count of findings by dimension, and any open items — boundary-crossing concerns deferred to `system-architect`, or signalled domains the band cap omitted that would justify a re-run at a larger size.
+Close by telling the user, in a short message: the size class and roster used (and why), git availability, the count of findings by dimension, and any open items — boundary-crossing concerns deferred to `han.core:system-architect`, or signalled domains the band cap omitted that would justify a re-run at a larger size.
