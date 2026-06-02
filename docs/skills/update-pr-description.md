@@ -64,7 +64,7 @@ A PR description rendered in-channel, optionally pushed to the open PR. Sections
 - **Commit the changes first.** The skill reads `git diff origin/HEAD...HEAD`. Uncommitted changes are not included.
 - **Surface the central mechanism in a context hint.** Feature flag name, migration phases, state-machine combinations. If you name these in the prompt, the Summary leads with them. Otherwise the skill infers from the diff (usually correctly, but a hint helps).
 - **Per-environment values matter.** *"Default off in prod, on in staging, toggle `billing_v2_enabled`"* is a better PR description than *"added feature flag."*
-- **Skip for doc-only branches.** The skill handles documentation-only branches correctly (omits Test Plan) but still writes a Summary. For pure formatting changes, a handwritten one-liner is probably faster.
+- **Skip for doc-only branches.** The skill handles documentation-only branches correctly (omits the "How this was tested" section) but still writes a Summary. For pure formatting changes, a handwritten one-liner is probably faster.
 - **Pair with `/post-code-review-to-pr`.** Description first, review second, both posted to the same PR.
 
 ## Cost and latency
@@ -77,7 +77,7 @@ The skill walks a six-step process:
 
 1. **Validate branch state.** Require `origin/HEAD`, require at least one commit, require at least one changed file.
 2. **Analyze changes.** Read the diff, stat, and log. Identify the central mechanism. Classify the change type.
-3. **Determine Test Plan applicability.** If all changed files are documentation, omit the Test Plan. If any are code or config, include it.
+3. **Determine "How this was tested" applicability.** If all changed files are documentation, omit the section. If any are code or config, include it.
 4. **Generate the PR description.** Dispatch a `junior-developer` agent with the branch context, the inclusion decision from Step 3, and the contents of [`references/template.md`](../../han.github/skills/update-pr-description/references/template.md) and [`references/formatting-rules.md`](../../han.github/skills/update-pr-description/references/formatting-rules.md). The agent authors the description with a fresh-reviewer perspective, anticipating what a teammate without full project context needs to see. No nested fenced code blocks. No "Generated with Claude Code" trailer.
 5. **Verify.** Section order, file-table caps, valid markdown, branch-specific content only.
 6. **Display and update PR.** Show the description. If a PR exists, ask whether to push. On yes, `gh pr edit --body`.

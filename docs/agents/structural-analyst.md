@@ -7,7 +7,7 @@ Operator documentation for the `structural-analyst` agent in the han plugin. Thi
 ## TL;DR
 
 - **What it does.** Analyzes the static structure of a specified codebase focus area: module boundaries, coupling, dependency direction, abstractions, and duplication. Produces numbered structural findings with file paths and verbatim code.
-- **When to dispatch it.** You want a principled static-structure pass on a module or focus area, independent of runtime behavior or risk assessment. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`.
+- **When to dispatch it.** You want a principled static-structure pass on a module or focus area, independent of runtime behavior or risk assessment. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`, and by `/iterative-plan-review` and `/plan-implementation` when the plan or review covers module boundaries, coupling, or dependency direction.
 - **What you get back.** Numbered `S#` findings, each tied to a structural dimension (Boundaries / Coupling / Dependency Direction / Abstraction / Duplication), file paths, verbatim code, and an impact statement.
 
 ## Key concepts
