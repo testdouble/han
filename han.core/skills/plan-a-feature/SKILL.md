@@ -1,22 +1,20 @@
 ---
 name: "plan-a-feature"
 description: >
-  Builds a feature specification from scratch through a relentless, evidence-based
-  interview that walks the design tree decision-by-decision, resolving dependencies
-  as it goes. Use when the user wants to plan, design, scope, specify, or flesh out
-  a new feature, capability, or system behavior before implementation — including
-  requests like "help me plan X", "spec out this feature", "design the Y flow", or
-  "let's figure out what it should do". Explores the codebase, project
-  documentation, coding standards, and ADRs to resolve questions before asking the
-  user, and always offers a recommended answer when questions must be surfaced.
-  Produces a feature-specification.md focused on system behaviors, coordinations,
-  processes, and user interactions — not implementation detail. Does not refine or
-  stress-test an existing plan — use iterative-plan-review. Does not investigate
-  bugs or failures — use investigate. Does not analyze existing architecture — use
-  architectural-analysis. Does not document already-built features — use
-  project-documentation. Does not record architectural decisions — use architectural-decision-record.
-  Does not research open-ended options or prior art before there is a feature to
-  specify — use research.
+  Builds a feature specification from scratch through a relentless,
+  evidence-based interview that walks the design tree decision-by-decision,
+  resolving dependencies as it goes. Use when the user wants to plan, design,
+  scope, specify, or flesh out a new feature, capability, or system behavior
+  before implementation — including "help me plan X", "spec out this feature",
+  "design the Y flow", or "let's figure out what it should do". Explores the
+  codebase, project documentation, coding standards, and ADRs to resolve
+  questions before asking the user, and always offers a recommended answer when
+  questions must be surfaced. Produces a feature-specification.md focused on
+  system behaviors, coordinations, processes, and user interactions — not
+  implementation detail. Does not refine or stress-test an existing plan — use
+  iterative-plan-review. Does not document already-built features — use
+  project-documentation. Does not research open-ended options before there is a
+  feature to specify — use research.
 arguments: size
 argument-hint: "[size: small | medium | large] [feature description, optional: output folder path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
