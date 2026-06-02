@@ -1,5 +1,60 @@
 # Han Release Notes
 
+## v3.1.0
+
+This release ships behavior and documentation updates across the Han suite, driven by planning-protocol feedback and a fix to how the swarming skills dispatch agents. The parent `han` plugin moves to 3.1.0. Three child plugins change: `han.core` to 1.1.0 (planning, review, and documentation skill updates plus the agent-dispatch namespacing fix), `han.github` to 1.1.0 (`/update-pr-description` template conformance), and `han.feedback` to 1.1.0 (named default rating dimensions). `han.reporting` is unchanged at 1.0.0.
+
+### han v3.1.0
+
+The agent-dispatch namespacing fix from [@mxriverlynn](https://github.com/mxriverlynn) in #44 rippled through the suite documentation. All 29 docs under `docs/agents/`, plus `docs/concepts.md`, the `docs/skills/` long-form docs, and `docs/templates/agent-long-form-template.md`, now show agent invocation examples with the fully-qualified `han.core:` prefix and align with the skill behavior changes in `han.core`.
+
+New contributor guidance was added. `docs/guidance/skill-building-guidance/skill-description-length.md` and a note in `skill-description-frontmatter.md` document the skill description length target (#45), and `docs/guidance/skill-building-guidance/agent-dispatch-namespacing.md` records the namespacing rule (#44).
+
+Two repo-maintenance skills under `.claude/skills/` changed. `han-release` now leads the release body with the summary and drops the redundant version heading. `han-update-documentation` was corrected for the five-plugin layout, including its audit-checklist and scope-mapping references (#47). Investigation and plan records for issues #40 and #44 were recorded under `docs/plans/`, and `marketplace.json` carries the version bumps.
+
+### han.core v1.1.0
+
+#### Planning-protocol feedback (issue #40)
+
+Feedback from [@mjansen401](https://github.com/mjansen401) in #40 drove three changes. `/plan-implementation` now lazily creates empty operational sections instead of emitting empty scaffolding (R1). The planning skills `/plan-a-feature` and `/plan-implementation` now exclude plugin contributions from scope (R3). The `/plan-implementation` skill also gained a `feature-implementation-plan-template.md`.
+
+#### Documentation and test-planning output
+
+`/project-documentation` output now leads with behavior and demotes technical reference, and uses Mermaid diagrams instead of ASCII block diagrams (#41, #42); the skill received a new `references/template.md` in a large rewrite. `/test-planning` now leads the plan with behavior, adds a review pass, and focuses on public-API tests, with a new `references/template.md` (#43).
+
+#### Agent-dispatch namespacing (issue #44)
+
+The swarming skills now dispatch agents by their fully-qualified `han.core:agent-name`, not a bare `agent-name` or a `han:` prefix (#44, #46). This touched the `code-review`, `gap-analysis`, `iterative-plan-review`, `architectural-analysis`, and `plan-*` skill files. Several skills (`architectural-analysis`, `gap-analysis`, `plan-a-feature`, `plan-a-phased-build`) also gained report or document templates.
+
+#### Skill descriptions
+
+Five skill descriptions were trimmed under the 1024-character target (#45).
+
+### han.github v1.1.0
+
+`/update-pr-description` now conforms to a repository's GitHub pull-request template when one is present, through a new `references/template-conformance.md` reference (#48). `references/formatting-rules.md` was updated alongside it, and `post-code-review-to-pr` received a one-line change.
+
+### han.feedback v1.1.0
+
+`/han-feedback` now names its default rating dimensions instead of leaving them unspecified, from feedback by [@mjansen401](https://github.com/mjansen401) in #40 (R2).
+
+### Issues closed in this release
+
+- Han Feedback: plan-a-feature + plan-implementation (#40). Opened by [@mjansen401](https://github.com/mjansen401); fixed in #41 by [@mxriverlynn](https://github.com/mxriverlynn).
+- Agent swarms must dispatch agents by full `namespace:agent-name`, not bare `agent-name` (#44). Opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #46 by [@mxriverlynn](https://github.com/mxriverlynn).
+
+### Pull requests in this release
+
+- #41 Planning protocol feedback (issue #40) ([@mxriverlynn](https://github.com/mxriverlynn))
+- #42 Lead /project-documentation output with behavior, demote technical reference ([@mxriverlynn](https://github.com/mxriverlynn))
+- #43 Test Planning: Usability and report output updates ([@mxriverlynn](https://github.com/mxriverlynn))
+- #45 Skill description guidance ([@mxriverlynn](https://github.com/mxriverlynn))
+- #46 Agent Swarm Fix: namespace qualified agent dispatch ([@mxriverlynn](https://github.com/mxriverlynn))
+- #47 Correct /han-update-documentation for five-plugin layout, and update all docs ([@mxriverlynn](https://github.com/mxriverlynn))
+- #48 Update-pr-description Skill: Conform to repository PR template when present ([@mxriverlynn](https://github.com/mxriverlynn))
+
+Full changelog: https://github.com/testdouble/han/blob/v3.1.0/CHANGELOG.md#v310
+
 ## v3.0.0
 
 This release restructures Han from a single plugin into a parent meta-plugin (`han` 3.0.0) that installs its capabilities through child plugins, each versioned on its own. Four child plugins ship at 1.0.0: `han.core` (planning, review, investigation, and documentation), `han.github` (GitHub-facing skills), `han.reporting` (stakeholder and HTML reporting), and the opt-in `han.feedback`. Installing `han` now pulls in `han.core`, `han.github`, and `han.reporting` through dependencies. `han.feedback` is installed separately.
