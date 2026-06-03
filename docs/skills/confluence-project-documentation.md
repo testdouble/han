@@ -16,7 +16,7 @@ Operator documentation for the `/confluence-project-documentation` skill in the 
 - **The Atlassian MCP server is required.** The skill checks the server is connected before it does any work. If the server is missing or not authenticated, the skill stops and points you at `/project-documentation` for a local-only run. It never silently falls back to local.
 - **You must provide the location.** The skill does not search Confluence for the right page. A real Confluence instance is large and full of duplicate and similarly-named pages, so guessing the destination is unreliable. You name the place; the skill publishes there.
 - **Two location forms.** Give it a Confluence page URL (to update that page, or to create a child page under it), or a space plus an optional parent page. The skill resolves whichever you provide.
-- **Confirmed publish.** Publishing puts the content where other people can see it, so the skill shows you the resolved destination and the exact action (create page "X" under "Parent", or update page "Y") and waits for your yes before posting.
+- **Confirmed publish, with a draft default.** Publishing puts the content where other people can see it, so the skill shows you the resolved destination and the exact action (create page "X" under "Parent", or update page "Y") and waits for your choice before posting. You get three options: save it as a Confluence draft to edit and publish yourself (the recommended default), publish it live immediately, or keep it local only.
 - **Markdown posts directly.** The Atlassian Confluence MCP tools accept Markdown, so the document publishes as-is with no manual conversion to Confluence storage format.
 
 ## When to use it
@@ -58,9 +58,9 @@ Example prompts:
 Two artifacts:
 
 - **The local doc.** Everything [`/project-documentation`](./project-documentation.md) produces: a new or updated `docs/{feature-name}.md` that leads with behavior, plus the `CLAUDE.md` / `AGENTS.md` reference and bidirectional cross-references. This file is the source content for Confluence.
-- **The Confluence page.** A page created at, or updated in place at, the location you named. The skill reports the page URL on success. Mermaid diagrams publish as Mermaid source in code blocks (see below).
+- **The Confluence page.** A page created at, or updated in place at, the location you named, either as an unpublished draft (the default) or live, per your choice. The skill reports the page URL on success and tells you which mode it used; for a draft, you still review and publish it yourself in Confluence. Mermaid diagrams publish as Mermaid source in code blocks (see below).
 
-If you decline at the confirmation step, you still keep the local doc; nothing is published.
+If you keep it local only at the confirmation step, you still keep the local doc; nothing is published.
 
 ## How to get the most out of it
 
@@ -80,8 +80,8 @@ The skill walks a short, deterministic process around the core documentation run
 0. **Atlassian MCP preflight.** Call `getAccessibleAtlassianResources` to confirm the server is connected and to get the cloud ID. If it is unavailable, stop before doing any work.
 1. **Resolve the target location.** Read the destination from your request, or ask for it. Resolve a page URL to a page (and decide update-vs-child), or resolve a space and parent page to their IDs. Fail fast if the location does not resolve.
 2. **Produce the documentation locally.** Invoke `/project-documentation` with all your context forwarded verbatim, and capture the markdown file it writes or updates.
-3. **Confirm publication.** Show the local doc path and the exact destination and action, and wait for your explicit yes.
-4. **Publish to Confluence.** Post the markdown directly with `contentFormat: "markdown"`, creating a new page or updating an existing one, then report the page URL.
+3. **Confirm publication.** Show the local doc path and the exact destination and action, and ask how to publish: save as a draft (the recommended default), publish live, or keep it local only.
+4. **Publish to Confluence.** Post the markdown directly with `contentFormat: "markdown"`, creating a new page or updating an existing one in the chosen mode (draft or live), then report the page URL.
 5. **Verification.** Preflight passed, the location was user-specified, the local doc was produced, confirmation was obtained, and the page was created or updated.
 
 ## Related documentation

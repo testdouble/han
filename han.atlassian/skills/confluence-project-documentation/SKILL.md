@@ -104,10 +104,17 @@ Present a clear summary and ask with `AskUserQuestion`:
   page (if any), and the exact action — *create a new page titled "X" under
   "Parent"*, or *update existing page "Y"* with its URL,
 - the question: **"Publish this documentation to that Confluence location?"**
-  with options "Yes, publish to Confluence" and "No, keep it local only".
+  with three options, listing the draft option first as the recommended default:
+  - **"Yes, save it as a draft to edit later (recommended)"** — the content is
+    saved as an unpublished Confluence draft (`status: "draft"`) for the user to
+    review, edit, and publish themselves. This is the default.
+  - **"Yes, publish it live now"** — the page goes live immediately
+    (`status: "current"`).
+  - **"No, keep it local only"** — nothing is published.
 
-If the user declines, stop. Report the local doc path and state clearly that
-nothing was published to Confluence.
+Record which of the two publish modes the user picked (live or draft); Step 4
+uses it. If the user keeps it local only, stop. Report the local doc path and
+state clearly that nothing was published to Confluence.
 
 ## Step 4: Publish to Confluence
 
@@ -116,13 +123,24 @@ The Confluence MCP tools accept Markdown directly via `contentFormat: "markdown"
 so post the document body as-is — no manual conversion to storage/XHTML is
 needed.
 
+Apply the publish mode the user chose in Step 3 with the create/update tool's
+status parameter: **draft** → `status: "draft"` (unpublished draft), **live** →
+`status: "current"` (immediately visible). Confirm the exact field against the
+tool's input schema when you call it, and use whatever the tool exposes for
+draft-vs-published.
+
 - **Create mode:** call `mcp__claude_ai_Atlassian__createConfluencePage` with the
   cloud ID, space ID, `title`, the markdown `body`, `contentFormat: "markdown"`,
-  and the parent page ID when one was resolved.
+  the chosen `status` (`"draft"` or `"current"`), and the parent page ID when one
+  was resolved.
 - **Update mode:** call `mcp__claude_ai_Atlassian__getConfluencePage` first to
   read the current page (for its version and existing content), then call
   `mcp__claude_ai_Atlassian__updateConfluencePage` with the cloud ID, page ID,
-  `title`, the markdown `body`, and `contentFormat: "markdown"`.
+  `title`, the markdown `body`, `contentFormat: "markdown"`, and the chosen
+  `status`. If the user chose draft for a page that is already published and the
+  tool cannot hold an unpublished draft over a live page, do not silently publish
+  it live: tell the user, and ask whether to publish the update live or keep the
+  changes local only.
 
 **Diagram note:** `/project-documentation` emits Mermaid diagrams in fenced
 ```mermaid``` code blocks. Confluence does not render Mermaid natively without a
@@ -131,8 +149,10 @@ intact — do not silently strip them — and tell the user the diagrams posted 
 Mermaid source, in case their space has a macro that renders them or they want to
 convert them by hand.
 
-On success, report the created or updated page's URL. On failure, report the
-error and confirm the local markdown doc from Step 2 is unchanged and intact.
+On success, report the created or updated page's URL, and state whether it was
+published live or saved as a draft. For a draft, make clear the user still needs
+to review and publish it in Confluence. On failure, report the error and confirm
+the local markdown doc from Step 2 is unchanged and intact.
 
 ## Step 5: Verification
 
@@ -144,5 +164,6 @@ error and confirm the local markdown doc from Step 2 is unchanged and intact.
    context and wrote or updated a local markdown file.
 4. **Explicit confirmation obtained:** the user approved the specific destination
    before anything was published.
-5. **Publish reported:** the page was created or updated and its URL was returned,
-   or the user declined and only the local doc exists.
+5. **Publish reported:** the page was created or updated in the chosen mode
+   (live or draft) and its URL was returned, or the user declined and only the
+   local doc exists.
