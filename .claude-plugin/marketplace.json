@@ -41,7 +41,7 @@
       "name": "han.atlassian",
       "source": "./han.atlassian",
       "description": "Atlassian-facing extensions to the Han suite. Adds markdown-to-confluence, which publishes a local Markdown file to a user-specified Confluence page; project-documentation-to-confluence, which runs the core project-documentation skill and then publishes the result there; and work-items-to-jira, which creates one Jira ticket per slice from a work-items file. All work through the Atlassian MCP server. Depends on han.core and requires a configured Atlassian MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
-      "version": "1.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "han.plugin-builder",
