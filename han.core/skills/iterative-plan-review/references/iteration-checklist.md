@@ -51,7 +51,7 @@ For each ambiguity:
 | **Tradeoffs** | Why there isn't an obvious right answer |
 | **Follow-up Room** | How the user can provide nuanced answers beyond a binary choice |
 
-## Stability Assessment (Iteration 3+)
+## Stability Assessment
 
 | Field | Content |
 |-------|---------|

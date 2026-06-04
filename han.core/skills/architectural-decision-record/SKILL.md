@@ -10,7 +10,7 @@ description: >
   project-documentation instead. Does not produce runbooks for operational
   scenarios — use runbook for that.
 argument-hint: [topic-or-title or document-path]
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(mkdir *), Bash(find *)
 ---
 
 # Create ADR
@@ -22,8 +22,6 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git config *), Bash(wh
 
 ## Project Context
 
-- Git user: !`git config user.name` (!`git config user.email`)
-- OS username: !`whoami`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 
@@ -45,11 +43,9 @@ Determine which mode to operate in based on the user's request:
 
 3. **Enumerate existing ADRs:** Use Glob to find existing `.md` files in the ADR directory.
 
-4. **Resolve author information:** If git user or email is empty in the project context above, ask the user for their name and email.
+4. **Check existing ADR format:** If existing ADRs were found, read one to understand the project's format. If it differs from [template.md](references/template.md), ask the user whether to match the existing format or use this skill's template.
 
-5. **Check existing ADR format:** If existing ADRs were found, read one to understand the project's format. If it differs from [template.md](references/template.md), ask the user whether to match the existing format or use this skill's template.
-
-6. **Discover the filename hierarchy taxonomy:** ADRs are organized by a one- or two-level hierarchy encoded in the filename so related decisions sort together in a directory listing. Discover the taxonomy that applies to *this* project — never hardcode it.
+5. **Discover the filename hierarchy taxonomy:** ADRs are organized by a one- or two-level hierarchy encoded in the filename so related decisions sort together in a directory listing. Discover the taxonomy that applies to *this* project — never hardcode it.
    - **From existing filenames:** If existing ADRs were enumerated, parse their filenames to extract the leading hierarchy segments already in use (e.g., `auth-session-storage.md` → top-level `auth`; `auth-tokens-rotation.md` → top-level `auth`, second-level `tokens`). Build a list of top-level prefixes and known second-level prefixes per top-level.
    - **From project context:** Read CLAUDE.md and project-discovery.md (paths from project context above) to identify the project's languages, frameworks, runtimes, subsystems, and bounded contexts. Each is a candidate top-level hierarchy (e.g., `auth`, `billing`, `api`, `worker`, `postgres`, `terraform`).
    - **Carry forward to Step 4:** the discovered top-level prefixes (existing + candidate) and any second-level prefixes already in use under each.
@@ -96,7 +92,7 @@ Merge the three agents' findings into the Decision, Decision Drivers, and Conseq
    - If the discovered taxonomy offers more than one reasonable placement, ask the user to choose before writing.
    - Place the file in the directory from Step 2.
 
-4. **Fill in metadata:** Status per Step 1 mode (`proposed` for new, `accepted` for converted; use `deprecated` or `superseded` when updating). Authors from project context (or Step 2 user input if empty). Date Created / Last Updated: current date and time. Reviewers: leave empty.
+4. **Fill in metadata:** Status per Step 1 mode (`proposed` for new, `accepted` for converted; use `deprecated` or `superseded` when updating). Date Created / Last Updated: current date and time.
 
 5. **Fill each required section** following the template's HTML comments for guidance.
 

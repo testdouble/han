@@ -8,7 +8,7 @@ Operator documentation for the `gap-analyzer` agent in the han plugin. This docu
 
 - **What it does.** Performs adversarial gap analysis between two artifacts: a current state and a desired state. Finds what's missing, incomplete, conflicting, or assumed. Classifies every finding into the four-category taxonomy: Missing / Partial / Divergent / Implicit.
 - **When to dispatch it.** You want a structured comparison of an implementation against a spec, PRD, or design doc, with evidence pairs from both inputs. Always dispatched by `/gap-analysis` for the primary analysis.
-- **What you get back.** A structured `gap-analysis-source.md` with `GAP-NNN` entries. Each entry has a category, an evidence pair (citation from both inputs), and an `Expected` / `Current` / `Why it matters` description.
+- **What you get back.** A structured `gap-analysis-source.md` with `GAP-NNN` entries. Each entry has a category, a `Feature/Behavior` label, and `Current State` / `Desired State` descriptions, each carrying a citation from its input.
 
 ## Key concepts
 
@@ -25,6 +25,7 @@ Operator documentation for the `gap-analyzer` agent in the han plugin. This docu
 
 - `/gap-analysis` is running. The skill always dispatches this agent for the primary analysis and renders the agent's structured output into a stakeholder-readable report.
 - `/iterative-plan-review` is in team mode and you want gaps surfaced as a review pillar.
+- `/plan-a-feature` is running and you want a draft spec compared against a PRD or reference spec to surface gaps before the spec is finalized.
 - You want a raw structured gap analysis without the IA-designed report rendering. (Usually you want the rendering. Use `/gap-analysis` directly.)
 
 **Do not dispatch for:**
@@ -53,10 +54,9 @@ Example prompts:
 
 - A `gap-analysis-source.md` file on disk with `GAP-NNN` entries. Each entry includes:
   - Category (Missing / Partial / Divergent / Implicit).
-  - Evidence pair: a citation from each input (file paths and line numbers, document section headings, URL excerpts).
-  - `Expected` description from the desired state.
-  - `Current` description from the current state.
-  - `Why it matters` reasoning.
+  - `Feature/Behavior`: the feature or behavior the gap concerns.
+  - `Current State`: what the current state shows, with evidence (file path and line number, document section heading, or URL excerpt).
+  - `Desired State`: what the desired state specifies, to the same evidence standard.
 - A returned summary with gap counts by category and the file path.
 
 The structured output is designed to be consumed by `/gap-analysis`, which translates each entry into a plain-language `G-NNN` entry in the rendered report.
@@ -102,4 +102,5 @@ URL: https://standards.ieee.org/ieee/829/3787/
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Used by `/gap-analysis` swarms to verify each gap against the current state.
 - [`content-auditor`](./content-auditor.md). Sibling for before-and-after content preservation (different problem).
 - [`/gap-analysis`](../skills/gap-analysis.md). Always dispatches this agent.
+- [`/plan-a-feature`](../skills/plan-a-feature.md). Dispatches this agent to compare a draft spec against a PRD or reference spec.
 - [Evidence](../evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes for evidence pairs, the corroboration gate for single-source web claims, and the no-evidence label for silent desired-state evidence.

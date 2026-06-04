@@ -77,4 +77,4 @@ Single-pass authoring with no sub-agent dispatch. Reads the source markdown and 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [`/stakeholder-summary`](./stakeholder-summary.md). Produces the `stakeholder-summary.md` markdown this skill converts to HTML.
 - [`/plan-a-feature`](./plan-a-feature.md). Produces the feature specification that `/stakeholder-summary` summarizes upstream of this skill.
-- [`/update-pr-description`](./update-pr-description.md). The other reporting skill — for PR bodies rather than executive summaries.
+- [`/update-pr-description`](./update-pr-description.md). The `han.github` skill for PR bodies rather than executive summaries.

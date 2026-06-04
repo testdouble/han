@@ -81,7 +81,7 @@ The skill dispatches one or two `codebase-explorer` agents in create-new mode (S
 The skill walks a six-step process:
 
 1. **Determine mode.** Creating new / Converting existing / Updating existing.
-2. **Discover project structure.** Find the ADR directory (or create one), enumerate existing ADRs, check format compatibility, resolve author info, and discover the filename hierarchy taxonomy from existing ADRs' filenames plus the project's subsystems, bounded contexts, and technologies.
+2. **Discover project structure.** Find the ADR directory (or create one), enumerate existing ADRs, check format compatibility, and discover the filename hierarchy taxonomy from existing ADRs' filenames plus the project's subsystems, bounded contexts, and technologies.
 3. **Gather context.** Topic, decision, alternatives. In create-new mode with sparse context, dispatch one or two `codebase-explorer` agents to gather evidence. Then dispatch `software-architect` or `system-architect`, `risk-analyst`, and `junior-developer` in parallel to stress-test the decision and rejected alternatives (skipped in update-only mode).
 4. **Write the ADR.** Conversion-mapping for source documents, hierarchically-prefixed filename (top-level subsystem/context, optional second level), fill the template with concrete content. The Notes section includes a key-files table with Glob-verified paths.
 5. **Integration.** `CLAUDE.md` / `AGENTS.md` reference, cross-references in both directions, source-document handling.

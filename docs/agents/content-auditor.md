@@ -7,7 +7,7 @@ Operator documentation for the `content-auditor` agent in the han plugin. This d
 ## TL;DR
 
 - **What it does.** Audits an updated documentation set against the original source content to ensure no important facts were lost. Classifies each fact as Present / Correctly Removed / Missing. Validates removals against the codebase. Identifies content that must be restored.
-- **When to dispatch it.** A document was rewritten, migrated, or consolidated and you need to verify nothing was silently dropped. Dispatched by `/project-documentation` when updating an existing doc.
+- **When to dispatch it.** A document was rewritten, migrated, or consolidated and you need to verify nothing was silently dropped. Dispatched by `/project-documentation` when updating an existing doc, by `/gap-analysis` as a swarm specialist when the desired state is documentation, and by `/iterative-plan-review` team mode when the plan under review is documentation.
 - **What you get back.** Numbered `A#` audit items, each with the fact, its source, the classification, and evidence (where the fact appears in the new doc, what codebase check confirmed a removal, or why the fact must be restored). Plus an Audit Summary with counts.
 
 ## Key concepts
@@ -26,6 +26,8 @@ Operator documentation for the `content-auditor` agent in the han plugin. This d
 - A team has rewritten a long-form doc and wants confirmation that the new version preserves all the load-bearing facts from the old version.
 - A consolidation effort moved content from many small files into one larger doc and you want to audit the consolidation for silent loss.
 - A doc has been translated or restructured and you want a pre-merge check before the old version is deleted.
+- `/gap-analysis` is running and the desired state is documentation. The skill dispatches this agent as a swarm specialist to audit for silently dropped content.
+- `/iterative-plan-review` is in team mode and the plan under review is documentation. The skill dispatches this agent to verify the documentation preserves its load-bearing facts.
 
 **Do not dispatch for:**
 
@@ -86,3 +88,5 @@ URL: https://standards.ieee.org/ieee/1063/2554/
 - [`gap-analyzer`](./gap-analyzer.md). Sibling agent for comparing two distinct artifacts (spec vs. implementation).
 - [`information-architect`](./information-architect.md). Sibling agent for IA structure of the new doc.
 - [`/project-documentation`](../skills/project-documentation.md). Always dispatches this agent in update mode.
+- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the desired state is documentation.
+- [`/iterative-plan-review`](../skills/iterative-plan-review.md). Dispatches this agent in team mode when the plan under review is documentation.

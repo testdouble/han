@@ -12,13 +12,11 @@ description: >
   descriptions — use update-pr-description for that. Does not produce runbooks
   for operational scenarios — use runbook for that.
 argument-hint: [feature-name or document-path]
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *), Bash(find *)
 ---
 
 ## Project Context
 
-- Git user: !`git config user.name` (!`git config user.email`)
-- OS username: !`whoami`
 - CLAUDE.md exists: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 
@@ -31,8 +29,6 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(git conf
 **Docs directory:** Resolve project config: read CLAUDE.md's `## Project Discovery` section for docs directory and language; fall back to project-discovery.md; fall back to Glob default (`docs/`). Use the found docs directory with Glob to enumerate existing `.md` files. If no docs directory was found, create `docs/`. The found language informs code fence language identifiers in Step 3.
 
 **Resolve target files:** Derive the filename in kebab-case: `docs/{feature-name}.md`. Use Glob to check if the file already exists (`docs/{feature-name}*.md`). If it exists, use `AskUserQuestion` to ask: update the existing document, or create with a different name? If not, it will be created.
-
-**Author info:** If git user or email is empty in the project context above, ask the user for their name and email.
 
 **Topic context:** Use the arguments and conversation context to understand the topic and scope. If unclear, use `AskUserQuestion` to clarify.
 
@@ -70,7 +66,7 @@ Apply to every section:
 
 **Updating existing documents:** Read the entire existing document first and note all content sources (existing doc, content migrated from CLAUDE.md or other files, any other inputs). Preserve the existing structure; don't reorganize unless requested. Identify sections needing changes based on Step 2 exploration. Add new sections where the template suggests them. If the existing doc has no plain-language behavioral layer (no Summary, How It Works, or Primary Flows), add those sections at the top so the updated doc leads with behavior. Flag removals as provisional for the Content Audit (Step 6). Update code examples to match current source and update cross-references in both directions.
 
-**Metadata:** Fill in **Last Updated** (current date/time) and **Authors** (from project context or Step 1 user input).
+**Metadata:** Fill in **Last Updated** (current date/time).
 
 ## Step 4: Update Agent Configuration Files
 

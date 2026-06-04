@@ -12,13 +12,11 @@ description: >
   research. Does not produce runbooks for operational scenarios — use runbook
   for that.
 argument-hint: [standard-topic or document-path]
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(mkdir *), Bash(find *)
 ---
 
 ## Project Context
 
-- Git user: !`git config user.name` (!`git config user.email`)
-- OS username: !`whoami`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
@@ -71,16 +69,14 @@ If no accepted evidence applies, recommend deferring the standard with the trigg
 
 3. **Enumerate existing coding standards:** If a coding standards directory was found, use Glob to enumerate existing `.md` files in that directory.
 
-4. **Resolve author information:** If git user or email is empty in the project context above, ask the user for their name and email.
+4. **Check existing coding standard format:** If existing coding standards were found via Glob, read one to understand the project's existing format. If it uses a different format than the template at [template.md](references/template.md), ask the user whether to match the existing format or use this skill's template.
 
-5. **Check existing coding standard format:** If existing coding standards were found via Glob, read one to understand the project's existing format. If it uses a different format than the template at [template.md](references/template.md), ask the user whether to match the existing format or use this skill's template.
-
-6. **Discover the filename hierarchy taxonomy:** Coding standards are organized by a one- or two-level hierarchy encoded in the filename so related standards sort together in a directory listing. Discover the taxonomy that applies to *this* project — never hardcode it.
+5. **Discover the filename hierarchy taxonomy:** Coding standards are organized by a one- or two-level hierarchy encoded in the filename so related standards sort together in a directory listing. Discover the taxonomy that applies to *this* project — never hardcode it.
    - **From existing filenames:** If existing standards were enumerated, parse their filenames to extract the leading hierarchy segments already in use (e.g., `svelte-component-naming.md` → top-level `svelte`; `svelte-stores-state-shape.md` → top-level `svelte`, second-level `stores`). Build a list of top-level prefixes and known second-level prefixes per top-level.
    - **From project context:** Read CLAUDE.md and project-discovery.md (paths from project context above) to identify the project's languages, frameworks, runtimes, and major subsystems. Each of these is a candidate top-level hierarchy (e.g., `svelte`, `rails`, `postgres`, `terraform`, `api`, `worker`).
    - **Carry forward to Step 6:** the discovered top-level prefixes (existing + candidate) and any second-level prefixes already in use under each.
 
-7. **Discover the project's primary file-type globs and group them into index-file buckets.** The `paths:` frontmatter in Step 6 needs file globs scoped to the languages and directories the new standard governs. The Step 7 integration then routes the new standard into one or more **per-file-type index files** under `.claude/rules/coding-standards/`, where each index file owns a single file-type bucket (for example, `svelte.md` owns `**/*.svelte`; `typescript.md` owns `**/*.ts` and `**/*.tsx`; `ruby.md` owns `**/*.rb` and `app/**/*.rb`). Build the candidate glob set and its bucket grouping now so Steps 6 and 7 have them on hand.
+6. **Discover the project's primary file-type globs and group them into index-file buckets.** The `paths:` frontmatter in Step 6 needs file globs scoped to the languages and directories the new standard governs. The Step 7 integration then routes the new standard into one or more **per-file-type index files** under `.claude/rules/coding-standards/`, where each index file owns a single file-type bucket (for example, `svelte.md` owns `**/*.svelte`; `typescript.md` owns `**/*.ts` and `**/*.tsx`; `ruby.md` owns `**/*.rb` and `app/**/*.rb`). Build the candidate glob set and its bucket grouping now so Steps 6 and 7 have them on hand.
    - **From CLAUDE.md and project-discovery.md:** extract every language, file extension, and major source directory the project actually uses (e.g., `**/*.go`, `**/*.ts`, `**/*.tsx`, `**/*.py`, `**/*.rb`, `app/**/*.rb`, `services/**/*.go`).
    - **From existing standards' `paths:` frontmatter:** if any existing standard already carries `paths:`, collect its globs as candidate glob prefixes — they reflect the project's accepted scoping vocabulary.
    - **From existing index files under `.claude/rules/coding-standards/`:** if the rules directory was found in the project context, enumerate the index files already present and read each one's `paths:` frontmatter. Each existing file defines an established bucket; reuse it rather than introducing a parallel bucket for the same file type.
@@ -122,20 +118,18 @@ When converting an existing document into a coding standard:
 ## Step 6: Write the Coding Standard
 
 1. Copy the template from [template.md](references/template.md)
-2. **File name:** `{top-level}[-{second-level}]-{hyphenated-name}.md` — a one- or two-level hierarchy prefix followed by the standard's specific name. The hierarchy must come from the taxonomy discovered in Step 3.6, never invented or hardcoded.
-   - **Top-level (required):** the highest-level grouping the standard belongs to (e.g., `svelte`, `rails`, `postgres`, `api`). Reuse an existing top-level prefix from Step 3.6 when one fits; only introduce a new top-level when no existing prefix applies, and prefer one that matches a language, framework, or subsystem already named in CLAUDE.md or project-discovery.md.
-   - **Second-level (optional):** add only when the top-level has — or will plausibly grow — multiple standards that benefit from a sub-grouping (e.g., `svelte-stores-…`, `svelte-components-…`). Reuse an existing second-level prefix from Step 3.6 when one fits. Skip the second level when the standard is the only one (or one of a few) under its top-level.
+2. **File name:** `{top-level}[-{second-level}]-{hyphenated-name}.md` — a one- or two-level hierarchy prefix followed by the standard's specific name. The hierarchy must come from the taxonomy discovered in Step 3.5, never invented or hardcoded.
+   - **Top-level (required):** the highest-level grouping the standard belongs to (e.g., `svelte`, `rails`, `postgres`, `api`). Reuse an existing top-level prefix from Step 3.5 when one fits; only introduce a new top-level when no existing prefix applies, and prefer one that matches a language, framework, or subsystem already named in CLAUDE.md or project-discovery.md.
+   - **Second-level (optional):** add only when the top-level has — or will plausibly grow — multiple standards that benefit from a sub-grouping (e.g., `svelte-stores-…`, `svelte-components-…`). Reuse an existing second-level prefix from Step 3.5 when one fits. Skip the second level when the standard is the only one (or one of a few) under its top-level.
    - **Hyphenated-name (required):** the specific topic of this standard, hyphenated, distinct from the hierarchy prefix.
    - If the discovered taxonomy offers more than one reasonable placement, ask the user to choose before writing.
 3. **Location:** place in the directory determined in Step 3
 4. **Fill in metadata:**
    - **Status**: per Step 1 mode (`proposed` for new, `accepted` for converted)
-   - **Authors**: from project context; if empty, from Step 3 user input
    - **Applies To**: free-text matching the project's terminology
    - **Date Created / Last Updated**: current date and time
-   - **Reviewers**: leave empty
 5. **Propose the `paths:` glob list and get user approval.** The `paths:` field in the YAML frontmatter is the canonical declaration of which file globs the standard governs. Step 7 uses each glob to route the new standard into one or more per-file-type **index files** under `.claude/rules/coding-standards/` — the standard itself is never loaded directly as a path-scoped rule. The index files are what Claude Code loads via [Claude Code path-scoped rules](https://code.claude.com/docs/en/memory), and they then point Claude at this standard on demand. Cross-cutting standards whose `paths:` span multiple file-type buckets get listed in each matching index.
-   - **Build the candidate list** from the Applies To text and Scope section of this standard, intersected with the project file-type globs discovered in Step 3.7. Scope a glob no broader than the standard actually governs — if the standard applies only to Svelte stores, prefer `src/**/stores/**/*.ts` over `**/*.ts`.
+   - **Build the candidate list** from the Applies To text and Scope section of this standard, intersected with the project file-type globs discovered in Step 3.6. Scope a glob no broader than the standard actually governs — if the standard applies only to Svelte stores, prefer `src/**/stores/**/*.ts` over `**/*.ts`.
    - **Surface the proposal to the user** with `AskUserQuestion` (or as a recommendation when running unattended). Quote the Applies To text or scope clause that justifies each glob; mark inferred globs as `(inferred)`. Name the index-file bucket(s) each glob will be routed into in Step 7 so the user can see the integration consequence. Do not write the file until the user confirms or proposes a substitute.
    - **YAML rule:** each glob must be double-quoted (characters like `*`, `{`, `[` are YAML-significant and fail to parse unquoted). Globs follow Claude Code's standard glob syntax (`**`, `*`, `?`, `{a,b}`).
 6. **Write the YAML frontmatter at the top of the file.** Place a `---` block before the `# {Title}` heading containing at minimum the approved `paths:` list. Example:
@@ -156,7 +150,7 @@ When converting an existing document into a coding standard:
 
 The standard is consumed by Claude Code through a small set of per-file-type **index files** under `.claude/rules/coding-standards/`. Each index file is itself a [path-scoped rule](https://code.claude.com/docs/en/memory) that carries `paths:` frontmatter for one file type (or a closely-related group), a brief load-on-demand instruction paragraph, and a list of entries pointing to the canonical standards in the project's coding-standards directory. When Claude Code reads a file matching an index file's globs, Claude loads only that small index, then decides which (if any) of the listed standards to open with the Read tool. The full text of a standard is never loaded automatically. This replaces the prior one-symlink-per-standard layout, which forced every standard whose `paths:` matched the current file into context at once. **Do not add the new standard as an enumerated link in `CLAUDE.md` (or `AGENTS.md`).** Rules are discovered through the `.claude/rules/` surface, not through the memory file, and enumerating them in the memory file is the failure mode this integration replaces.
 
-1. **Determine which index file(s) the new standard belongs in.** Using the buckets carried forward from Step 3.7, map each glob in the standard's approved `paths:` to a bucket. The set of matching buckets is the set of index files the standard will be listed in. A standard whose `paths:` spans multiple buckets (a cross-cutting standard, e.g., `"app/**/*.rb"` plus `"services/**/*.go"`) will be listed in each matching index — the canonical standards file is still only ever in one place; only the index entries are repeated.
+1. **Determine which index file(s) the new standard belongs in.** Using the buckets carried forward from Step 3.6, map each glob in the standard's approved `paths:` to a bucket. The set of matching buckets is the set of index files the standard will be listed in. A standard whose `paths:` spans multiple buckets (a cross-cutting standard, e.g., `"app/**/*.rb"` plus `"services/**/*.go"`) will be listed in each matching index — the canonical standards file is still only ever in one place; only the index entries are repeated.
 
 2. **Ensure `.claude/rules/coding-standards/` exists.** Run `mkdir -p .claude/rules/coding-standards`.
 

@@ -7,7 +7,7 @@ Operator documentation for the `edge-case-explorer` agent in the han plugin. Thi
 ## TL;DR
 
 - **What it does.** Systematically discovers edge cases that should be tested. Traces input sources, call chains, and integration boundaries. Catalogs boundary values, type coercion traps, external input messiness, state-dependent failures, and error-propagation gaps.
-- **When to dispatch it.** You want a structured edge-case catalog for code, either before writing tests or as part of a broader test-planning pass. Always dispatched by `/test-planning`. Conditionally dispatched by `/code-review` for changes that introduce new entry points or external-data handling.
+- **When to dispatch it.** You want a structured edge-case catalog for code, either before writing tests or as part of a broader test-planning pass. Always dispatched by `/test-planning`. Conditionally dispatched by `/code-review` for changes that introduce new entry points or external-data handling, by `/plan-a-feature` as part of the spec-stage team covering Outcome / Primary Flow / Alternate Flows / Edge Cases, by `/plan-implementation` as part of the implementation team, and by `/iterative-plan-review` in team mode.
 - **What you get back.** An `edge-case-analysis.md` file with `EC#` items grouped by priority (Critical / High / Medium / Low), each tied to a specific input, code location, current handling state, and the risk if unhandled. Plus a Dropped Edge Cases section.
 
 ## Key concepts
@@ -17,7 +17,7 @@ Operator documentation for the `edge-case-explorer` agent in the han plugin. Thi
 - **Trace inputs to the immediate caller, deeper at boundaries.** Internal function-to-function chains are trusted unless a clear external-data or type-coercion signal appears. Exhaustive mode traces to origin.
 - **Code location per finding.** Every `EC#` cites the affected `file:line` and references the input it touches. Untraceable edge cases are dropped.
 - **Discovers and catalogs, does not write tests.** Output is a prioritization plan. `test-engineer` or your team writes the tests.
-- **`/code-review` adds a failure-mode-target dispatcher directive at Step 3.5.** When dispatched from `/code-review` (version 2.3.0+), the skill appends an instruction that findings must ultimately trace to a failure mode in code on the scoped file list, even when callers outside the file list provide the evidence for that failure mode. The agent's Protocol 1 caller-read still applies; the file-list scope is on the failure-mode target, not the evidence source. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
+- **`/code-review` adds a failure-mode-target dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction that findings must ultimately trace to a failure mode in code on the scoped file list, even when callers outside the file list provide the evidence for that failure mode. The agent's Protocol 1 caller-read still applies; the file-list scope is on the failure-mode target, not the evidence source. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
 
 ## When to use it
 
@@ -25,6 +25,9 @@ Operator documentation for the `edge-case-explorer` agent in the han plugin. Thi
 
 - `/test-planning` is running. The skill always dispatches this agent.
 - `/code-review` flags changes that introduce new entry points, accept external input, or handle integration responses. The skill conditionally dispatches this agent.
+- `/plan-a-feature` is assembling its spec-stage team, covering Outcome / Primary Flow / Alternate Flows / Edge Cases.
+- `/plan-implementation` is assembling its implementation team.
+- `/iterative-plan-review` is running in team mode.
 - You want a structured pass to find what can go wrong with a specific function, endpoint, or integration before writing tests.
 - A recently shipped feature is producing unexpected production behavior and you want to systematically catalog the input shapes that could trigger it.
 
@@ -106,3 +109,6 @@ URL: https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-softwa
 - [`test-engineer`](./test-engineer.md). Sibling agent. `/test-planning` runs both in parallel.
 - [`/test-planning`](../skills/test-planning.md). Always dispatches this agent.
 - [`/code-review`](../skills/code-review.md). Conditionally dispatches this agent.
+- [`/plan-a-feature`](../skills/plan-a-feature.md). Dispatches this agent as part of the spec-stage team, covering Outcome / Primary Flow / Alternate Flows / Edge Cases.
+- [`/plan-implementation`](../skills/plan-implementation.md). Dispatches this agent as part of the implementation team.
+- [`/iterative-plan-review`](../skills/iterative-plan-review.md). Dispatches this agent in team mode.

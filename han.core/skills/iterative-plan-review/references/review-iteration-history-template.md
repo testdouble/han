@@ -6,9 +6,9 @@ Findings raised during each round live in [review-findings.md](review-findings.m
 and the primary plan lives one directory up (this file lives in the plan folder's
 `artifacts/` subfolder) — consult the plan's "Review History" section for the link.
 
-Iteration caps (see the iterative-plan-review skill):
-- Lightweight mode caps at five iterations.
-- Team mode caps at four rounds.
+Iteration caps (see the iterative-plan-review skill) scale with plan size:
+- Small (lightweight mode) caps at 1 iteration.
+- Medium (team mode) caps at 2 rounds; large caps at 3 rounds.
 
 A round entry is appended as each iteration closes; `Findings raised:` and
 `Changed in plan:` are filled in at write time, not backfilled.

@@ -7,7 +7,7 @@ Operator documentation for the `behavioral-analyst` agent in the han plugin. Thi
 ## TL;DR
 
 - **What it does.** Analyzes the runtime behavior of a specified codebase focus area: data flow, error propagation, state management, and integration boundaries. Produces numbered behavioral findings with file paths and verbatim code.
-- **When to dispatch it.** You want a principled runtime-behavior pass on a module or focus area, independent of static structure or concurrency. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`. Dispatched by `/investigate` when the symptom matches a data-flow or error-propagation bug.
+- **When to dispatch it.** You want a principled runtime-behavior pass on a module or focus area, independent of static structure or concurrency. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`. Dispatched by `/investigate` when the symptom matches a data-flow or error-propagation bug. Dispatched by `/plan-implementation` by signal when plan sections describe runtime behavior, data flow, error propagation, or state.
 - **What you get back.** Numbered `B#` findings, each tied to a behavioral dimension (Data Flow / Error Propagation / State Management / Integration Boundaries), file paths, verbatim code, and an impact statement.
 
 ## Key concepts
@@ -17,7 +17,7 @@ Operator documentation for the `behavioral-analyst` agent in the han plugin. Thi
 - **Error paths are not optional.** The agent walks try/catch blocks, error returns, and failure paths explicitly. Happy-path-only analysis is an anti-pattern.
 - **Implicit state counts.** Closures, module-level singletons, memoization caches, and thread-local state are flagged alongside explicit variables and databases.
 - **Discovers findings, does not synthesize.** Recommendations belong to `software-architect`. Risk assessment belongs to `risk-analyst`. Bug investigation belongs to `evidence-based-investigator`.
-- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review` (version 2.3.0+), the skill appends an instruction to default the severity of every finding to SUGG and escalate to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (`/architectural-analysis`, `/investigate`) receive the agent's default skeptical posture.
+- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction to default the severity of every finding to SUGG and escalate to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (`/architectural-analysis`, `/investigate`) receive the agent's default skeptical posture.
 
 ## When to use it
 
@@ -96,3 +96,4 @@ URL: https://martinfowler.com/bliki/TwoHardThings.html
 - [`/architectural-analysis`](../skills/architectural-analysis.md). Always dispatches this agent.
 - [`/investigate`](../skills/investigate.md). Dispatches this agent for data-flow and error-propagation bugs.
 - [`/code-review`](../skills/code-review.md). Conditionally dispatches this agent.
+- [`/plan-implementation`](../skills/plan-implementation.md). Dispatches this agent by signal when plan sections describe runtime behavior, data flow, error propagation, or state.

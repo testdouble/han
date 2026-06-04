@@ -153,7 +153,7 @@ URLs: https://asana.com/resources/raid-log and https://www.smartsheet.com/conten
 
 ### Decision Logs and Agile Decision-Making
 
-Decision logs are the Agile-era discipline for recording the *what* and the *why* of a decision so the team can revisit it cleanly later if evidence changes. The agent's Protocol 8 (Decision Synthesis) records decision ID, rationale, rejected alternatives, evidence, specialist owner, and revisit criterion: the full decision-log shape, applied inside a synthesized plan rather than as a separate artifact.
+Decision logs are the Agile-era discipline for recording the *what* and the *why* of a decision so the team can revisit it cleanly later if evidence changes. The agent's Protocol 9 (Decision Synthesis) records decision ID, rationale, rejected alternatives, evidence, specialist owner, and revisit criterion: the full decision-log shape, applied inside a synthesized plan rather than as a separate artifact.
 
 URLs: https://projectmanagementcompass.substack.com/p/building-decision-logs-that-protect and https://www.projectmanagertemplate.com/post/decision-logs-the-ultimate-guide
 
@@ -165,7 +165,7 @@ URLs: https://www.mindtools.com/a81qk8y/round-robin-brainstorming/ and https://g
 
 ### Amazon: Have Backbone; Disagree and Commit
 
-Jeff Bezos's *"Have Backbone; Disagree and Commit"* is the canonical articulation of the principle that teammates may disagree with a decision, but once the evidence has been weighed and every relevant voice has been heard, the team commits to executing it. And the dissent, with its cited evidence, is recorded so the decision can be revisited later if evidence changes. The agent encodes this in Protocol 8 (Decision Synthesis) and in the `Consensus Trap` anti-pattern, which prevents holding the discussion open indefinitely at the cost of shipping.
+Jeff Bezos's *"Have Backbone; Disagree and Commit"* is the canonical articulation of the principle that teammates may disagree with a decision, but once the evidence has been weighed and every relevant voice has been heard, the team commits to executing it. And the dissent, with its cited evidence, is recorded so the decision can be revisited later if evidence changes. The agent encodes this in Protocol 9 (Decision Synthesis), which records the dissent and its cited evidence alongside the committed decision so the call can be revisited later if evidence changes.
 
 URLs: https://en.wikipedia.org/wiki/Disagree_and_commit and https://www.amazon.jobs/content/en/our-workplace/leadership-principles
 

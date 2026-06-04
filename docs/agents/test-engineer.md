@@ -7,7 +7,7 @@ Operator documentation for the `test-engineer` agent in the han plugin. This doc
 ## TL;DR
 
 - **What it does.** Examines code and plans tests focused on observable behavior (inputs, outputs, collaborator interactions). Recommends test doubles (stubs for queries, mock expectations for commands) for isolation. Produces a prioritized test plan tied to specific entry points.
-- **When to dispatch it.** You want a prioritized test plan for new or existing code. Always dispatched by `/test-planning`. Conditionally dispatched by `/code-review` when the file list suggests coverage gaps. Conditionally dispatched by `/plan-implementation` for the implementation plan's testing strategy.
+- **When to dispatch it.** You want a prioritized test plan for new or existing code. Always dispatched by `/test-planning` and included in the default spec-stage roster of `/plan-a-feature`. Conditionally dispatched by `/code-review` when the file list suggests coverage gaps. Conditionally dispatched by `/plan-implementation` for the implementation plan's testing strategy. Available as a specialist in `/iterative-plan-review` spec mode.
 - **What you get back.** A `test-plan.md` with `T#` recommendations, each citing an entry point with `file:line`, a test level (unit / integration / end-to-end), test approach (behavior, stubs, input/action, expected output, expected commands), and a brittleness assessment. Plus a Deferred section for tests where brittleness outweighs value.
 
 ## Key concepts
@@ -25,6 +25,8 @@ Operator documentation for the `test-engineer` agent in the han plugin. This doc
 - `/test-planning` is running. The skill always dispatches this agent.
 - `/code-review` flags coverage gaps in the changed files. The skill dispatches this agent.
 - `/plan-implementation` is producing the implementation plan's testing strategy. The skill dispatches this agent.
+- `/plan-a-feature` is running. The agent is included in its default spec-stage roster.
+- `/iterative-plan-review` is running in spec mode. The agent is available as a specialist.
 - You want a structured test plan for a single module or feature without running a full review.
 
 **Do not dispatch for:**
@@ -107,3 +109,5 @@ URL: http://www.growing-object-oriented-software.com/
 - [`/test-planning`](../skills/test-planning.md). Always dispatches this agent.
 - [`/code-review`](../skills/code-review.md). Conditionally dispatches this agent.
 - [`/plan-implementation`](../skills/plan-implementation.md). Dispatches this agent for the implementation plan's testing strategy.
+- [`/plan-a-feature`](../skills/plan-a-feature.md). Includes this agent in its default spec-stage roster.
+- [`/iterative-plan-review`](../skills/iterative-plan-review.md). Makes this agent available as a specialist in spec mode.

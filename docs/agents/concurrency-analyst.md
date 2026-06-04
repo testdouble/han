@@ -7,7 +7,7 @@ Operator documentation for the `concurrency-analyst` agent in the han plugin. Th
 ## TL;DR
 
 - **What it does.** Analyzes concurrency and async patterns in a specified codebase focus area: race conditions, shared resource contention, deadlock potential, lock ordering, and async error handling. Produces numbered concurrency findings with file paths and verbatim code.
-- **When to dispatch it.** A focus area uses threads, async, parallel execution, or shared mutable state. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`, `/test-planning`, and `/investigate` when the symptom matches a concurrency bug.
+- **When to dispatch it.** A focus area uses threads, async, parallel execution, or shared mutable state. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`, `/test-planning`, and `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation` by signal when plan sections touch concurrent access, race conditions, or async coordination.
 - **What you get back.** Numbered `C#` findings, each tied to a concurrency dimension (Race Conditions / Resource Contention / Deadlock / Async Errors / Synchronization), file paths, verbatim code, and a concrete failure-scenario description. Or an explicit *"no concurrency patterns found"* report when none apply.
 
 ## Key concepts
@@ -98,3 +98,4 @@ URL: https://go.dev/talks/2012/waza.slide
 - [`system-architect`](./system-architect.md). Sibling for cross-service distributed coordination concerns.
 - [`/architectural-analysis`](../skills/architectural-analysis.md). Always dispatches this agent.
 - [`/code-review`](../skills/code-review.md), [`/test-planning`](../skills/test-planning.md), [`/investigate`](../skills/investigate.md). Conditionally dispatch this agent based on file signals.
+- [`/plan-implementation`](../skills/plan-implementation.md). Dispatches this agent by signal when plan sections touch concurrent access, race conditions, or async coordination.

@@ -128,9 +128,7 @@ Input:
 Output:
 
 ```md
-# Summary
-
-Uploads fail intermittently.
+# Uploads fail intermittently.
 
 # Issue Type
 

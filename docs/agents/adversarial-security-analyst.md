@@ -7,7 +7,7 @@ Operator documentation for the `adversarial-security-analyst` agent in the han p
 ## TL;DR
 
 - **What it does.** Adversarial security analysis of first-party code and dependencies. Proves real vulnerabilities exist with file-level evidence and demonstrated exploit paths. Never reports theoretical risks.
-- **When to dispatch it.** A change touches auth, input handling, isolation, crypto, uploads, or SQL/ORM, and you want exploit-path findings rather than CWE checklists. Always dispatched by `/code-review`.
+- **When to dispatch it.** A change touches auth, input handling, isolation, crypto, uploads, or SQL/ORM, and you want exploit-path findings rather than CWE checklists. Always dispatched by `/code-review`. Dispatched on a security signal by `/architectural-analysis` (security-signal roster on medium/large), `/gap-analysis` (swarm specialist), `/plan-a-feature` (spec-stage team), `/plan-implementation` (implementation team), and `/iterative-plan-review` (team mode), and by `/test-planning` for negative security tests.
 - **What you get back.** A `security-analysis.md` file with `SEC-###` findings, each tagged with OWASP category, file:line location, exact code snippet, and a step-by-step exploit description. Plus an in-channel summary with severity counts.
 
 ## Key concepts
@@ -25,6 +25,11 @@ Operator documentation for the `adversarial-security-analyst` agent in the han p
 - A branch or PR touches authentication, authorization, session management, input handling, file uploads, deserialization, crypto, secrets, or SQL / ORM queries.
 - A change introduces new dependencies, especially those handling untrusted input.
 - A code review is running and security is in scope (`/code-review` always dispatches this agent).
+- A security signal is present and `/architectural-analysis` builds its security-signal roster on a medium or large run.
+- `/gap-analysis` is running its validator-and-augmenter swarm and the gaps touch a security-sensitive surface (auth, input handling, crypto, uploads, isolation, SQL/ORM).
+- `/plan-a-feature` is interviewing a spec whose surface raises a security signal, and the spec-stage team needs exploit-path coverage.
+- `/plan-implementation` is planning an implementation that touches a security-sensitive surface, and the implementation team needs a security specialist.
+- `/iterative-plan-review` is running in team mode against a plan whose changes raise a security signal.
 - You want a second opinion on a security-sensitive change independent of code review.
 - A new endpoint or API surface is being added and you want exploit-path coverage of the OWASP Top 10 before merge.
 - A dependency bump is in scope and you want a CVE check against the new version.
@@ -109,6 +114,11 @@ URL: https://cwe.mitre.org/
 - [Agents Index](./README.md). All agents, grouped by role.
 - [`/code-review`](../skills/code-review.md). The skill that always dispatches this agent for security coverage.
 - [`/test-planning`](../skills/test-planning.md). Dispatches this agent for negative security test planning when the files touch auth, input handling, isolation, crypto, uploads, or SQL/ORM.
+- [`/architectural-analysis`](../skills/architectural-analysis.md). Adds this agent to its security-signal roster on a medium or large run.
+- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps touch a security-sensitive surface.
+- [`/plan-a-feature`](../skills/plan-a-feature.md). Dispatches this agent into the spec-stage team on a security signal.
+- [`/plan-implementation`](../skills/plan-implementation.md). Dispatches this agent into the implementation team on a security signal.
+- [`/iterative-plan-review`](../skills/iterative-plan-review.md). Dispatches this agent in team mode on a security signal.
 - [`devops-engineer`](./devops-engineer.md). Pair on regulated changes. Security analyst covers exploit paths. `devops-engineer` covers operational posture.
 - [`data-engineer`](./data-engineer.md). Pair on regulated data. Security analyst covers exploit paths. `data-engineer` covers data-level governance.
 - [`adversarial-validator`](./adversarial-validator.md). Pair when you want the security report challenged by another adversarial agent.

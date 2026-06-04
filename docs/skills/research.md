@@ -107,7 +107,7 @@ The skill's protocols are grounded in established practice for evidence-based re
 
 ### Toulmin: The Uses of Argument (1958)
 
-Stephen Toulmin's argument model — claim, grounds, warrant, backing — maps onto the skill's discipline that every option in the landscape is a claim that must trace to numbered grounds (E#) and that uncorroborated grounds cannot back the recommendation alone.
+Stephen Toulmin's argument model — claim, grounds, warrant, backing — maps onto the skill's discipline that every option in the landscape is a claim that must trace to numbered grounds (A#) and that uncorroborated grounds cannot back the recommendation alone.
 
 URL: https://en.wikipedia.org/wiki/Stephen_Toulmin#The_Toulmin_model_of_argument
 

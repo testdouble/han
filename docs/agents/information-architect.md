@@ -7,7 +7,7 @@ Operator documentation for the `information-architect` agent in the han plugin. 
 ## TL;DR
 
 - **What it does.** Audits a documentation set for findability, orientation, and comprehension problems.
-- **When to dispatch it.** A README, plugin docs tree, API reference, or ADR collection needs a principled structural audit before or during a rewrite.
+- **When to dispatch it.** A README, plugin docs tree, API reference, or ADR collection needs a principled structural audit before or during a rewrite. Also dispatched by `/plan-a-phased-build`, by `/coding-standard` (to audit the draft standard for findability and scannability), by `/test-planning` (to confirm the plan leads with plain language), by `/project-documentation` (to audit the information architecture of the docs), and by `/gap-analysis` (to design the report template).
 - **What you get back.** An IA findings report with numbered findings tied to IA principles and named reader audiences, plus structural recommendations sequenced ship-now vs. track-and-improve.
 
 ## Key concepts
@@ -31,6 +31,10 @@ An adversarial information architect that audits a documentation set (a README, 
 - A new feature lands and its documentation is being reorganized. The agent can audit the target structure before the rewrite commits.
 - A documentation set has grown organically over a long period and the team wants an evidence-based baseline before consolidating, splitting, or retiring pages.
 - Multiple audiences (first-time users, experts, contributors, debuggers) are all reading the same pages and the structure appears to serve none of them well.
+- `/coding-standard` is auditing the draft standard for findability and scannability before presenting it.
+- `/test-planning` is confirming the test plan leads with plain language a reader can act on.
+- `/project-documentation` is auditing the information architecture of the docs it produces.
+- `/gap-analysis` is designing the report template the gap findings will be written into.
 
 **Do not dispatch for:**
 
@@ -149,6 +153,10 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Agents Index](./README.md). All agents, grouped by role.
 - [`/plan-a-phased-build`](../skills/plan-a-phased-build.md). Dispatches the agent at runtime against every rendered build-phase outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension before presenting the document to you.
+- [`/coding-standard`](../skills/coding-standard.md). Dispatches this agent to audit the draft standard for findability and scannability.
+- [`/test-planning`](../skills/test-planning.md). Dispatches this agent to confirm the plan leads with plain language.
+- [`/project-documentation`](../skills/project-documentation.md). Dispatches this agent to audit the information architecture of the docs.
+- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent to design the report template.
 - [`user-experience-designer`](./user-experience-designer.md). The sibling agent for live UI surfaces. Dispatch both in parallel when a docs site blends content and interactive navigation.
 - [agent-domain-focus.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why this agent uses precise IA vocabulary and named anti-patterns instead of sharing the user-experience-designer's UI vocabulary.
 - [agent-model-selection.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.

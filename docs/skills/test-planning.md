@@ -93,7 +93,7 @@ The skill walks a five-step process:
 
 ## YAGNI
 
-A YAGNI sweep runs over the proposed test plan before it is committed. Tests for code paths that don't exist yet, hypothetical adversaries the change doesn't touch, branches that internal callers fully control, or coverage of all enum values when only one is reachable are YAGNI candidates and move to the plan's `## Deferred (YAGNI)` section. The Speculative Test rule (enforced by `test-engineer`) and the Speculative Edge Case rule (enforced by `edge-case-explorer`) catch the most common shapes: symmetry-driven coverage, defensive tests at trusted internal boundaries, and tests that exist only because *best practice says you should test that*.
+A YAGNI sweep runs over the proposed test plan before it is committed. Tests for code paths that don't exist yet, hypothetical adversaries the change doesn't touch, branches that internal callers fully control, or coverage of all enum values when only one is reachable are YAGNI candidates and move to the plan's `### Deferred Tests` section (marked with the YAGNI reason), with dropped edge cases going to `### Dropped Edge Cases`, both under the `## Technical Reference` region. The Speculative Test rule (enforced by `test-engineer`) and the Speculative Edge Case rule (enforced by `edge-case-explorer`) catch the most common shapes: symmetry-driven coverage, defensive tests at trusted internal boundaries, and tests that exist only because *best practice says you should test that*.
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 

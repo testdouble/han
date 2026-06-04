@@ -7,7 +7,7 @@ Operator documentation for the `structural-analyst` agent in the han plugin. Thi
 ## TL;DR
 
 - **What it does.** Analyzes the static structure of a specified codebase focus area: module boundaries, coupling, dependency direction, abstractions, and duplication. Produces numbered structural findings with file paths and verbatim code.
-- **When to dispatch it.** You want a principled static-structure pass on a module or focus area, independent of runtime behavior or risk assessment. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`, and by `/iterative-plan-review` and `/plan-implementation` when the plan or review covers module boundaries, coupling, or dependency direction.
+- **When to dispatch it.** You want a principled static-structure pass on a module or focus area, independent of runtime behavior or risk assessment. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`, and by `/iterative-plan-review` and `/plan-implementation` when the plan or review covers module boundaries, coupling, or dependency direction. Available to `/plan-a-feature` as an opt-in specialist, included on request.
 - **What you get back.** Numbered `S#` findings, each tied to a structural dimension (Boundaries / Coupling / Dependency Direction / Abstraction / Duplication), file paths, verbatim code, and an impact statement.
 
 ## Key concepts
@@ -17,7 +17,7 @@ Operator documentation for the `structural-analyst` agent in the han plugin. Thi
 - **Coupling has texture.** The agent distinguishes afferent (who depends on this?) from efferent (what does this depend on?), and stable-dependency from volatile-dependency, rather than counting imports as a single number.
 - **Negative results are valuable.** When a dimension surfaces no issues, the agent says so explicitly. *"Well-structured"* is a finding too.
 - **Discovers findings, does not synthesize.** Recommendations belong to `software-architect`. Risk assessment belongs to `risk-analyst`.
-- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review` (version 2.3.0+), the skill appends an instruction to default the severity of every finding to SUGG and escalate to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (such as `/architectural-analysis`) receive the agent's default skeptical posture.
+- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction to default the severity of every finding to SUGG and escalate to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (such as `/architectural-analysis`) receive the agent's default skeptical posture.
 
 ## When to use it
 
@@ -93,3 +93,4 @@ URL: https://martinfowler.com/books/refactoring.html
 - [`software-architect`](./software-architect.md). Synthesizes findings into intra-codebase recommendations.
 - [`/architectural-analysis`](../skills/architectural-analysis.md). Always dispatches this agent.
 - [`/code-review`](../skills/code-review.md). Conditionally dispatches this agent when the change touches module boundaries.
+- [`/plan-a-feature`](../skills/plan-a-feature.md). Dispatches this agent as an opt-in specialist, included on request.

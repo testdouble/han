@@ -17,7 +17,7 @@ Operator documentation for the `junior-developer` agent in the han plugin. This 
 - **Adversarial toward the artifact, never toward people.** Every clarifying question traces back to a location in the artifact, the conversation, or the codebase.
 - **Defers to specialists.** Flags where UX, DevOps, security, architecture, or testing depth is needed and names the specialist to dispatch. This agent does not claim their expertise.
 - **Open Questions as first-class output.** The questions the team has not yet answered are surfaced before specialists are dispatched so the specialists can aim their review.
-- **`/code-review` adds a file-list scoping dispatcher directive at Step 3.5.** When dispatched from `/code-review` (version 2.3.0+), the skill appends an instruction that outward reads (adjacent code, callers) are for context only and findings must concern code on the scoped file list. A finding about code outside the file list is permitted only when it directly demonstrates that the changed code on the file list cannot be safely interpreted without the out-of-scope context. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
+- **`/code-review` adds a file-list scoping dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction that outward reads (adjacent code, callers) are for context only and findings must concern code on the scoped file list. A finding about code outside the file list is permitted only when it directly demonstrates that the changed code on the file list cannot be safely interpreted without the out-of-scope context. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
 
 ## Summary
 
