@@ -63,7 +63,7 @@ Deduplicate. Produce a single ordered inventory `INV`:
 
 ### Plugin roots
 
-Han ships as several plugins. Skills are spread across four of them; agents live in only one. Long-form docs stay flat under `docs/skills/` and `docs/agents/` no matter which plugin owns the entity.
+Han ships as several plugins. Skills are spread across several of them; agents live in only one. Long-form docs stay flat under `docs/skills/` and `docs/agents/` no matter which plugin owns the entity.
 
 - **Skill roots:** `han.core/skills`, `han.github/skills`, `han.reporting/skills`, `han.feedback/skills`.
 - **Agent root:** `han.core/agents` (the only plugin with agents).

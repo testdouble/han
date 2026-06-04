@@ -186,4 +186,4 @@ https://code.claude.com/docs/en/plugin-marketplaces.md
 
 ## JSON example
 
-available at docs/templates/marketplace-example.json
+available at ../templates/marketplace-example.json

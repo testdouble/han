@@ -55,4 +55,4 @@ https://code.claude.com/docs/en/plugins-reference.md#monitors
 
 ## JSON example
 
-available at docs/templates/monitors-example.json
+available at ../templates/monitors-example.json

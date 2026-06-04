@@ -10,7 +10,7 @@
     {
       "name": "han",
       "source": "./han",
-      "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han.core, han.github, and han.reporting so installing it pulls in all three. Does not bundle the opt-in han.feedback plugin.",
+      "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han.core, han.github, and han.reporting so installing it pulls them all in. Does not bundle the opt-in han.feedback or han.plugin-builder plugins.",
       "version": "3.1.0"
     },
     {

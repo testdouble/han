@@ -125,7 +125,7 @@ of the reasons, and an evidence-based solution with adversarial validation.
 
 ### Rule: Use the template
 
-Follow the structural template at `docs/templates/plugin-readme-template.md`. The template includes HTML comments marking which sections are optional and should be removed when not applicable.
+Follow the structural template at `templates/plugin-readme-template.md`. The template includes HTML comments marking which sections are optional and should be removed when not applicable.
 
 ## Summary Checklist
 
@@ -134,4 +134,4 @@ Follow the structural template at `docs/templates/plugin-readme-template.md`. Th
 3. List all skills with `/skill-name` format and condensed one-line descriptions.
 4. Include Getting Started only when skills have dependency chains.
 5. Skills Reference has paragraph descriptions, Files lines, and example prompts for each skill.
-6. Follow the template at `docs/templates/plugin-readme-template.md`.
+6. Follow the template at `templates/plugin-readme-template.md`.

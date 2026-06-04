@@ -118,4 +118,4 @@ https://code.claude.com/docs/en/plugins-reference.md
 
 ## JSON example
 
-available at docs/templates/themes-example.json
+available at ../templates/themes-example.json
