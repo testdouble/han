@@ -36,6 +36,12 @@
       "source": "./han.feedback",
       "description": "Post-session feedback skill for the Han suite. Captures structured observations, ratings, and improvement ideas on the Han skills you ran in a session and optionally posts them as a GitHub issue to testdouble/han. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
       "version": "1.1.0"
+    },
+    {
+      "name": "han.plugin-builder",
+      "source": "./han.plugin-builder",
+      "description": "Guidance for building Claude Code skills, agents, and plugins. The guidance skill answers authoring questions and, run with init, vendors the full guidance set into a repo as a path-scoped rule index so the right guidance surfaces while editing skill and agent files. Opt-in and dependency-free: installed on its own, not pulled in by the han meta-plugin.",
+      "version": "1.0.0"
     }
   ]
 }

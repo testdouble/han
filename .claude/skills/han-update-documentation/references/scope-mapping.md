@@ -23,7 +23,7 @@ A single changed file can pull multiple entities into scope. Always add every en
 | `docs/sizing.md` | sizing |
 | `docs/yagni.md` | yagni |
 | `docs/writing-voice.md` | writing-voice |
-| `docs/guidance/**/*.md` | the guidance file itself |
+| `han.plugin-builder/skills/guidance/references/**/*.md` | the guidance file itself |
 | `docs/templates/**/*.md` | the template file itself |
 | `README.md` | root-readme |
 | `CONTRIBUTING.md` | contributing |

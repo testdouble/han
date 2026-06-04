@@ -2,7 +2,7 @@
 
 A walkthrough of how one Claude Code plugin builds on another through dependencies, using Han's own five plugins as the worked example. By the end you understand how `han.github`, `han.reporting`, and `han.feedback` extend `han.core`, why the `han` meta-plugin exists, why it bundles three of those layers but deliberately leaves `han.feedback` opt-in, and what install and enable actually do when a plugin names the plugins it needs.
 
-> See also: [How-to index](./README.md) · [Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md) · [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md) · [Choosing a Han plugin](../choosing-a-han-plugin.md)
+> See also: [How-to index](./README.md) · [Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md) · [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md) · [Choosing a Han plugin](../choosing-a-han-plugin.md)
 
 Claude Code plugins were not always able to build on each other. For a while, the only way to ship a related set of skills was to put them all in one plugin and hope nobody wanted a smaller slice. Plugin dependencies changed that: a plugin can name the plugins it needs, and Claude Code installs and enables them for you when your plugin goes in. That is the mechanism Han itself uses to split into five plugins, and it is the same mechanism you use to extend Han from a plugin of your own.
 
@@ -11,7 +11,7 @@ This guide is the conceptual half of that story. It walks how the dependency mec
 ## Before you begin
 
 - You want to understand how Han composes, either because you are about to extend it or because you are reading its five plugins and want to know why they are split the way they are.
-- You have looked at the [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md) or are comfortable opening one. This guide names the `dependencies` field repeatedly; the reference is where the full field shape lives.
+- You have looked at the [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md) or are comfortable opening one. This guide names the `dependencies` field repeatedly; the reference is where the full field shape lives.
 - You do not need to write any code to read this guide. The worked example is Han's own manifests, which already ship in this repository.
 
 ## What you'll end up with
@@ -29,7 +29,7 @@ You declare dependencies in a `dependencies` array in your plugin's `.claude-plu
       { "name": "some-plugin", "version": "~2.1.0" }
     ]
 
-A plain name floats to whatever version the marketplace currently provides. An object with a `version` field constrains the resolution to a semver range. The [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) covers the field shape, and the canonical Claude Code documentation at [code.claude.com/docs/en/plugin-dependencies](https://code.claude.com/docs/en/plugin-dependencies) is the source of truth for how resolution, versioning, and cross-marketplace trust behave. The behavior that matters for extending Han is short:
+A plain name floats to whatever version the marketplace currently provides. An object with a `version` field constrains the resolution to a semver range. The [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) covers the field shape, and the canonical Claude Code documentation at [code.claude.com/docs/en/plugin-dependencies](https://code.claude.com/docs/en/plugin-dependencies) is the source of truth for how resolution, versioning, and cross-marketplace trust behave. The behavior that matters for extending Han is short:
 
 - **Install pulls dependencies in.** When someone installs your plugin, Claude Code resolves each dependency, installs it, and tells you what it added. Your reader runs one install command and gets your plugin plus everything it depends on.
 - **Enabling is transitive.** Enabling your plugin enables its dependencies at the same scope. Disabling is the reverse: Claude Code refuses to disable a plugin while another enabled plugin still depends on it, and it prints the command to disable them together.
@@ -118,14 +118,14 @@ Put together, the three properties are the reason to extend Han through a depend
 
 ## What you should expect
 
-- **The resolution details live in the canonical docs, not in Han.** Han's in-repo [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) confirms the `dependencies` field and its syntax, but the full rules for version resolution, enable and disable behavior, pruning, and error handling are documented at [code.claude.com/docs/en/plugin-dependencies](https://code.claude.com/docs/en/plugin-dependencies). When a behavior here and a behavior there ever seem to disagree, the canonical docs win.
+- **The resolution details live in the canonical docs, not in Han.** Han's in-repo [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) confirms the `dependencies` field and its syntax, but the full rules for version resolution, enable and disable behavior, pruning, and error handling are documented at [code.claude.com/docs/en/plugin-dependencies](https://code.claude.com/docs/en/plugin-dependencies). When a behavior here and a behavior there ever seem to disagree, the canonical docs win.
 - **The versions in this guide are the versions on disk.** `han.core`, `han.github`, `han.reporting`, and `han.feedback` are at 1.0.0 and `han` is at 3.0.0 as written. If you are reading the manifests and the numbers differ, the manifests are right; this guide is describing the shape, not pinning the numbers.
 - **The meta-plugin shape is observed, not specified.** A zero-component plugin works because of what install does with dependencies, not because the docs name it as a construct. Han relies on it in production, so it is safe to copy, but read the canonical docs if install ever does something you did not expect.
 
 ## Where to go next
 
 - [Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md) is the hands-on next step: stand up a new plugin that depends on `han.core`, add a skill on top, and confirm both load.
-- [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md) is the field-level reference for everything in a manifest, including the [`dependencies`](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) field used throughout this guide.
+- [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md) is the field-level reference for everything in a manifest, including the [`dependencies`](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) field used throughout this guide.
 - [Choosing a Han plugin](../choosing-a-han-plugin.md) is the end-user view of the same five-plugin split, for deciding which one to install rather than how to build on it.
 
 ## Related Documentation
@@ -133,7 +133,7 @@ Put together, the three properties are the reason to extend Han through a depend
 - [Plugin landing page](../../README.md). Where the Han suite starts, and where the install commands live.
 - [How-to index](./README.md). The rest of the end-to-end guides.
 - [Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md). The hands-on companion to this conceptual guide.
-- [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md). The full manifest schema, including the `dependencies` field.
-- [marketplace.json reference](../guidance/claude-marketplace-and-plugin-configuration/marketplace-json-options.md). The marketplace schema, including cross-marketplace settings.
+- [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md). The full manifest schema, including the `dependencies` field.
+- [marketplace.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md). The marketplace schema, including cross-marketplace settings.
 - [Choosing a Han plugin](../choosing-a-han-plugin.md). The end-user view of the same five-plugin split.
 - [Claude Code: plugin dependencies](https://code.claude.com/docs/en/plugin-dependencies). The canonical reference for resolution, versioning, and cross-marketplace trust.

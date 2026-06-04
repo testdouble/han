@@ -95,5 +95,5 @@ Read each skill's **Sizing** section for the full per-skill rules.
 
 - [Concepts](./concepts.md). The skill / agent split. Sizing is a property of skills that dispatch agent swarms.
 - [YAGNI](./yagni.md). The other foundational mechanic. Sizing decides *how much review* an artifact gets; YAGNI decides *what survives* the review.
-- [`docs/guidance/agent-building-guidelines/multi-agent-economics.md`](./guidance/agent-building-guidelines/multi-agent-economics.md). Why dispatching the right number of agents matters more than dispatching the most agents.
+- [`han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md`](../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md). Why dispatching the right number of agents matters more than dispatching the most agents.
 - The **Sizing** section in each sizing-aware skill's long-form doc: [`/architectural-analysis`](./skills/architectural-analysis.md), [`/code-review`](./skills/code-review.md), [`/gap-analysis`](./skills/gap-analysis.md), [`/iterative-plan-review`](./skills/iterative-plan-review.md), [`/plan-a-feature`](./skills/plan-a-feature.md), [`/plan-implementation`](./skills/plan-implementation.md), [`/research`](./skills/research.md).

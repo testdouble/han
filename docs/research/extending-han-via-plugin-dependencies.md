@@ -43,7 +43,7 @@ On whether to split into multiple documents: Diátaxis permits section-level sep
 
 ### Where this could live in Han, and the constraints
 
-Han's documentation has clearly scoped homes (A21–A27). `docs/how-to/` currently holds **end-user** multi-skill workflow recipes (A21). `docs/guidance/` holds **contributor** authoring guidance (A22), and `CLAUDE.md` reserves it for authoring guidance, explicitly barring plans and research from it (A25). A field-level reference for the `dependencies` field already exists at `docs/guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, but it is thin — a syntax block only, with none of the resolution semantics from A1 (A23). `docs/choosing-a-han-plugin.md` already covers the install-time, end-user view of the three-plugin split, so the new document must not duplicate it (A24). `CONTRIBUTING.md` is the entry point for people working *inside* Han's own plugins, not for separate plugins that depend on Han (A27). `CLAUDE.md` enforces "one canonical source per concept" and a YAGNI-for-docs rule, and adding any document means updating the `CLAUDE.md` doc map (A25). There is no `README` index inside `docs/guidance/`; `CLAUDE.md` is that index [validation correction, see V8].
+Han's documentation has clearly scoped homes (A21–A27). `docs/how-to/` currently holds **end-user** multi-skill workflow recipes (A21). `han.plugin-builder/skills/guidance/references/` holds **contributor** authoring guidance (A22), and `CLAUDE.md` reserves it for authoring guidance, explicitly barring plans and research from it (A25). A field-level reference for the `dependencies` field already exists at `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, but it is thin — a syntax block only, with none of the resolution semantics from A1 (A23). `docs/choosing-a-han-plugin.md` already covers the install-time, end-user view of the three-plugin split, so the new document must not duplicate it (A24). `CONTRIBUTING.md` is the entry point for people working *inside* Han's own plugins, not for separate plugins that depend on Han (A27). `CLAUDE.md` enforces "one canonical source per concept" and a YAGNI-for-docs rule, and adding any document means updating the `CLAUDE.md` doc map (A25). There is no `README` index inside `han.plugin-builder/skills/guidance/references/`; `CLAUDE.md` is that index [validation correction, see V8].
 
 ## Options to Consider
 
@@ -72,7 +72,7 @@ These options concern how to structure and place the new document. They are not 
 
 ### O4: Co-locate with the existing config reference, and expand that reference
 
-- **What it is:** Place the new document inside `docs/guidance/claude-marketplace-and-plugin-configuration/` next to `plugin-json-options.md`, and at the same time expand that file's thin `dependencies` section so the "link to reference" actually answers the reader's question.
+- **What it is:** Place the new document inside `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/` next to `plugin-json-options.md`, and at the same time expand that file's thin `dependencies` section so the "link to reference" actually answers the reader's question.
 - **Trade-offs:** Lowest blast radius once you accept that the reference needs extending anyway (V4): the how-to sits beside the reference it depends on, reachable by a "see also" link, and the directory's concern (plugin configuration) stays coherent. The cost is that this subdirectory currently holds only schema-reference files, so the new document slightly broadens its character — but no rule restricts it to schema-only (V6).
 - **Rests on:** A11, A23, A25; validation findings V4, V6.
 - **Evidence status:** corroborated.
@@ -86,7 +86,7 @@ These options concern how to structure and place the new document. They are not 
 
 ## Recommendation
 
-- **Recommendation:** Write **one** task-focused document structured per **O3** (steps plus a short, bounded "how it works / why" section plus a copy-paste worked example), placed and scoped per **O4** (co-located with `docs/guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, with that file's `dependencies` section expanded in the same change). Build the worked example directly from Han's three plugins — `han.core` (no dependencies), `han.github` depending on `han.core`, and the `han` meta-plugin depending on both (A16–A20). Link to the canonical Claude plugin-dependencies documentation (A1) for the resolution and enable/disable semantics, and to the now-expanded in-repo reference (A23) for the field syntax — do not reproduce either table inline (A11). Frame the audience as **someone authoring a new plugin that depends on `han.core`, the way `han.github` does** — that is the proven, in-repo case. Treat outside third-party plugin authors as out of scope until there is evidence of that demand (see V2). Update the `CLAUDE.md` doc map with a use-case entry and a listing for the new file (there is no separate guidance index to update — `CLAUDE.md` is the index; see V8). Done criterion: a reader can stand up a new plugin that depends on `han.core`, add a skill, and confirm both load. Start here; escalate toward **O2** (split out a standalone explanation) only if the concept section later outgrows the task steps.
+- **Recommendation:** Write **one** task-focused document structured per **O3** (steps plus a short, bounded "how it works / why" section plus a copy-paste worked example), placed and scoped per **O4** (co-located with `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, with that file's `dependencies` section expanded in the same change). Build the worked example directly from Han's three plugins — `han.core` (no dependencies), `han.github` depending on `han.core`, and the `han` meta-plugin depending on both (A16–A20). Link to the canonical Claude plugin-dependencies documentation (A1) for the resolution and enable/disable semantics, and to the now-expanded in-repo reference (A23) for the field syntax — do not reproduce either table inline (A11). Frame the audience as **someone authoring a new plugin that depends on `han.core`, the way `han.github` does** — that is the proven, in-repo case. Treat outside third-party plugin authors as out of scope until there is evidence of that demand (see V2). Update the `CLAUDE.md` doc map with a use-case entry and a listing for the new file (there is no separate guidance index to update — `CLAUDE.md` is the index; see V8). Done criterion: a reader can stand up a new plugin that depends on `han.core`, add a skill, and confirm both load. Start here; escalate toward **O2** (split out a standalone explanation) only if the concept section later outgrows the task steps.
 
 - **Evidence basis:**
   - *Corroborated (codebase, directly observed):* Han's dependency topology and the worked example — `han.core` has no dependencies, `han.github` depends on `han.core`, `han` depends on both, all shipped through one marketplace (A16–A20). The existing-but-thin reference and the doc-home scoping/constraints (A21–A27).
@@ -113,11 +113,11 @@ The `adversarial-validator` attacked the evidence, the options framing, the reco
 - **Result:** Refuted (as originally framed). No evidence of any external plugin depending on `han.core`, and Han's YAGNI-for-docs rule (A25) bars speculative content. The demonstrated case is a *suite-internal* dependent plugin (`han.github`), not an outside third party.
 - **Impact:** The recommendation reframes the audience to the proven internal-author case and explicitly scopes out external third parties pending evidence. This is the open question flagged for the maintainers.
 
-### V3: `docs/guidance/` placement risks colliding with its stated purpose
+### V3: `han.plugin-builder/skills/guidance/references/` placement risks colliding with its stated purpose
 
 - **Strategy:** Challenge the Fix
 - **Investigation:** Read `CLAUDE.md:138-143` (guidance reserved for authoring guidance; plans/research barred) and the directory contents.
-- **Result:** Partially Refuted. A how-to-shaped usage doc is not obviously "authoring guidance," so a bare top-level `docs/guidance/` placement was weakly justified.
+- **Result:** Partially Refuted. A how-to-shaped usage doc is not obviously "authoring guidance," so a bare top-level `han.plugin-builder/skills/guidance/references/` placement was weakly justified.
 - **Impact:** Placement moved to the configuration-reference subdirectory (O4), where a usage companion to the reference is coherent, instead of a top-level guidance file.
 
 ### V4: Linking to the existing reference is a dead end
@@ -151,13 +151,13 @@ The `adversarial-validator` attacked the evidence, the options framing, the reco
 ### V8: The "guidance index" does not exist; the `CLAUDE.md` update is wider than stated
 
 - **Strategy:** Challenge the Fix
-- **Investigation:** Confirmed there is no `README` in `docs/guidance/`; `CLAUDE.md` is the index, and its "When to use which doc" section has no row for this use case.
+- **Investigation:** Confirmed there is no `README` in `han.plugin-builder/skills/guidance/references/`; `CLAUDE.md` is the index, and its "When to use which doc" section has no row for this use case.
 - **Result:** Refuted (as framed). There is no separate guidance index to update.
 - **Impact:** The recommendation now specifies updating `CLAUDE.md` (both a new use-case entry and the guidance listing) and drops the nonexistent "guidance index."
 
 ### Adjustments Made
 
-The original draft recommended a single top-level `docs/guidance/` how-to for an audience that included external third parties, linking to the existing reference for the "why." Validation refuted the speculative-audience framing (V2), the link-to-an-incomplete-reference instruction (V4), and the nonexistent-index instruction (V8), and showed the dismissed co-location option (O4) was actually the lowest-blast-radius placement (V6). The recommendation was rewritten to: scope the audience to the proven suite-internal author, place the document beside the configuration reference and expand that reference in the same change (O4), attribute resolution semantics to the canonical docs rather than the thin in-repo reference (V1, V5), and correct the `CLAUDE.md` update scope (V8). The dev.to source was removed (V7). The core direction — a how-to built on Han's own worked example, structured per Diátaxis, linking rather than embedding — survived.
+The original draft recommended a single top-level `han.plugin-builder/skills/guidance/references/` how-to for an audience that included external third parties, linking to the existing reference for the "why." Validation refuted the speculative-audience framing (V2), the link-to-an-incomplete-reference instruction (V4), and the nonexistent-index instruction (V8), and showed the dismissed co-location option (O4) was actually the lowest-blast-radius placement (V6). The recommendation was rewritten to: scope the audience to the proven suite-internal author, place the document beside the configuration reference and expand that reference in the same change (O4), attribute resolution semantics to the canonical docs rather than the thin in-repo reference (V1, V5), and correct the `CLAUDE.md` update scope (V8). The dev.to source was removed (V7). The core direction — a how-to built on Han's own worked example, structured per Diátaxis, linking rather than embedding — survived.
 
 ### Confidence Assessment
 
@@ -332,7 +332,7 @@ The original draft recommended a single top-level `docs/guidance/` how-to for an
 
 ### A22: Guidance directory contents
 
-- **Link / location:** `docs/guidance/`
+- **Link / location:** `han.plugin-builder/skills/guidance/references/`
 - **Retrieved:** n/a
 - **Trust class:** codebase
 - **Summary:** Contributor authoring guidance: `plugin-entity-taxonomy.md`, `iterative-plugin-development.md`, `local-development.md`, `semantic-versioning.md`, `skill-building-guidance/`, `agent-building-guidelines/`, and the configuration-reference subdir.
@@ -340,7 +340,7 @@ The original draft recommended a single top-level `docs/guidance/` how-to for an
 
 ### A23: Plugin configuration reference (dependencies field)
 
-- **Link / location:** `docs/guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md` (lines ~68-77)
+- **Link / location:** `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md` (lines ~68-77)
 - **Retrieved:** n/a
 - **Trust class:** codebase
 - **Summary:** Documents that `dependencies` exists and its syntax (bare name or `{name, version}`), but contains none of the resolution, enable/disable, prune, or error semantics from A1 — a syntax block only.
@@ -359,7 +359,7 @@ The original draft recommended a single top-level `docs/guidance/` how-to for an
 - **Link / location:** `CLAUDE.md`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** "When to use which doc" map; doc-home folder-selection rule; "one canonical source per concept"; YAGNI-for-docs; `docs/guidance/` reserved for authoring guidance (plans/research barred). Adding a doc requires updating this map.
+- **Summary:** "When to use which doc" map; doc-home folder-selection rule; "one canonical source per concept"; YAGNI-for-docs; `han.plugin-builder/skills/guidance/references/` reserved for authoring guidance (plans/research barred). Adding a doc requires updating this map.
 - **Evidence status:** directly observed.
 
 ### A26: Prior research — how-to docs structure

@@ -112,5 +112,5 @@ URL: https://cwe.mitre.org/
 - [`devops-engineer`](./devops-engineer.md). Pair on regulated changes. Security analyst covers exploit paths. `devops-engineer` covers operational posture.
 - [`data-engineer`](./data-engineer.md). Pair on regulated data. Security analyst covers exploit paths. `data-engineer` covers data-level governance.
 - [`adversarial-validator`](./adversarial-validator.md). Pair when you want the security report challenged by another adversarial agent.
-- [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why this agent uses precise vocabulary and named anti-patterns.
-- [agent-model-selection.md](../guidance/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
+- [agent-domain-focus.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why this agent uses precise vocabulary and named anti-patterns.
+- [agent-model-selection.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.

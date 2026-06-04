@@ -16,9 +16,9 @@ This page is for contributors: anyone adding, editing, or restructuring skills, 
 
 Read these once:
 
-- **[`docs/guidance/plugin-entity-taxonomy.md`](./docs/guidance/plugin-entity-taxonomy.md).** What a skill is, what an agent is, what a hook is, and which to reach for.
-- **[`docs/guidance/skill-building-guidance/`](./docs/guidance/skill-building-guidance/).** The skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution.
-- **[`docs/guidance/agent-building-guidelines/`](./docs/guidance/agent-building-guidelines/).** The agent-authoring rules: external files, model selection, domain focus, graceful degradation, multi-agent economics.
+- **[`han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`](./han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md).** What a skill is, what an agent is, what a hook is, and which to reach for.
+- **[`han.plugin-builder/skills/guidance/references/skill-building-guidance/`](./han.plugin-builder/skills/guidance/references/skill-building-guidance/).** The skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution.
+- **[`han.plugin-builder/skills/guidance/references/agent-building-guidelines/`](./han.plugin-builder/skills/guidance/references/agent-building-guidelines/).** The agent-authoring rules: external files, model selection, domain focus, graceful degradation, multi-agent economics.
 - **[Root `CLAUDE.md`](./CLAUDE.md).** Repo conventions, doc map, and where each kind of file lives.
 
 ## Which plugin does the change belong in?
@@ -42,7 +42,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 
 1. Decide the plugin using [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) above, then scaffold the folder under that plugin's `skills/{name}/` directory (`han.core`, `han.github`, `han.reporting`, or `han.feedback`) and add a `SKILL.md`.
 2. Write the `SKILL.md`:
-   - Frontmatter with `name`, `description`, `allowed-tools`. See [skill-description-frontmatter.md](./docs/guidance/skill-building-guidance/skill-description-frontmatter.md).
+   - Frontmatter with `name`, `description`, `allowed-tools`. See [skill-description-frontmatter.md](./han.plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{name}.md` and fill it in. Every skill gets a long-form doc.
 4. Add the skill to the [Skills Index](./docs/skills/README.md) with a one-sentence scent line and a link.
@@ -51,7 +51,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 
 ## Adding an agent
 
-1. Create `han.core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./docs/guidance/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
+1. Create `han.core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
 2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/{name}.md` and fill it in. Every agent gets a long-form doc.
 3. Add the agent to the [Agents Index](./docs/agents/README.md) under the right role group.
 
@@ -104,5 +104,5 @@ Before opening the PR, run through this checklist:
 - [Sizing](./docs/sizing.md). How the swarming skills classify work and scale dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based rule for what survives a review.
 - [Evidence](./docs/evidence.md). The three principles, the trust-class vocabulary, and the corroboration gate every evidence-aware skill and agent applies.
-- [`docs/guidance/skill-building-guidance/`](./docs/guidance/skill-building-guidance/). Skill-authoring guidance.
-- [`docs/guidance/agent-building-guidelines/`](./docs/guidance/agent-building-guidelines/). Agent-authoring guidance.
+- [`han.plugin-builder/skills/guidance/references/skill-building-guidance/`](./han.plugin-builder/skills/guidance/references/skill-building-guidance/). Skill-authoring guidance.
+- [`han.plugin-builder/skills/guidance/references/agent-building-guidelines/`](./han.plugin-builder/skills/guidance/references/agent-building-guidelines/). Agent-authoring guidance.

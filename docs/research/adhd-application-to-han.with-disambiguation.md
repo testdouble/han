@@ -1,6 +1,6 @@
 # Research: Would the ADHD parallel divergent ideation model fit any part of Han, with frames, personas, and domain specialists kept structurally distinct?
 
-A re-research of the original question at [adhd-application-to-han.md](./adhd-application-to-han.md), redone after [GitHub issue #17](https://github.com/UditAkhourii/adhd/issues/17) (filed by the ADHD article's author) flagged that the prior round conflated three distinct mechanisms. Also resolves an apparent tension between the persona finding and [docs/guidance/specialization-and-model-selection.md](../guidance/specialization-and-model-selection.md). Evidence mode: **strict**.
+A re-research of the original question at [adhd-application-to-han.md](./adhd-application-to-han.md), redone after [GitHub issue #17](https://github.com/UditAkhourii/adhd/issues/17) (filed by the ADHD article's author) flagged that the prior round conflated three distinct mechanisms. Also resolves an apparent tension between the persona finding and [han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md](../../han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md). Evidence mode: **strict**.
 
 ## Summary
 
@@ -18,7 +18,7 @@ A finding that is new to this round and changes the picture: Han already has thr
 
 The following prompt was used to generate the report:
 
-> we're going to look at the research in docs/research/adhd-application-to-han.md again. specifically, i need you to distinguish between a persona, domain specialist, and "frame" from the ADHD source article using https://github.com/UditAkhourii/adhd/issues/17 as a source for the distinguishing. from here, i need you to /research the original question of whether the ADHD model in the original source material would be a good fit for any part of Han. this is likely going to be a full rewrite of the report and i would like it saved as a new file named adhd-application-to-han.with-disambiguation.md - the goal is not to find a way to say that this ADHD model would fit well with Han, but to provide a more accurate reference perspective for the research, and to see how that research changes with this perspective. in addition to this, i want you to clarify the current A5 point that was made in this sentence: "Its most distinctive idea — a curated library of 15 cognitive frames (A1) — is directly contradicted by an independent academic finding that *ordinary* personas outperform *curated expert* personas (A5)". from other research i did with you in docs/guidance/specialization-and-model-selection.md - but i might be misunderstanding something between these two reports. again, i do not want confirmation bias in this. i want honest research to resolve my questions and see what the results of the research will be with these adjustments and perspectives
+> we're going to look at the research in docs/research/adhd-application-to-han.md again. specifically, i need you to distinguish between a persona, domain specialist, and "frame" from the ADHD source article using https://github.com/UditAkhourii/adhd/issues/17 as a source for the distinguishing. from here, i need you to /research the original question of whether the ADHD model in the original source material would be a good fit for any part of Han. this is likely going to be a full rewrite of the report and i would like it saved as a new file named adhd-application-to-han.with-disambiguation.md - the goal is not to find a way to say that this ADHD model would fit well with Han, but to provide a more accurate reference perspective for the research, and to see how that research changes with this perspective. in addition to this, i want you to clarify the current A5 point that was made in this sentence: "Its most distinctive idea — a curated library of 15 cognitive frames (A1) — is directly contradicted by an independent academic finding that *ordinary* personas outperform *curated expert* personas (A5)". from other research i did with you in han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md - but i might be misunderstanding something between these two reports. again, i do not want confirmation bias in this. i want honest research to resolve my questions and see what the results of the research will be with these adjustments and perspectives
 
 The `/research` skill comes from the Han plugin, in this repository.
 
@@ -420,7 +420,7 @@ The "no clear winner" recommendation survives the validation findings. The concl
 
 ### A27: Han internal — specialization-and-model-selection.md
 
-- **Link / location:** `docs/guidance/specialization-and-model-selection.md` at the time of research
+- **Link / location:** `han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md` at the time of research
 - **Retrieved:** n/a (codebase anchor)
 - **Trust class:** codebase
 - **Summary:** Han-internal guidance arguing specialized prompts (named heuristics, fixed rubrics, narrow domain framing) shift work from inference-time compute to prompt-time design, letting smaller models match larger ones on narrow tasks. Cites A18, A19, A20, and decomposition literature. Addresses narrow-task accuracy, not ideation diversity. No discussion of ideation, divergent thinking, or parallel exploration.
@@ -462,5 +462,5 @@ The "no clear winner" recommendation survives the validation findings. The concl
 - **A24** — The Spark Effect: On Engineering Creative Diversity in Multi-Agent AI Systems. arXiv 2510.15568. https://arxiv.org/html/2510.15568 (retrieved 2026-05-27).
 - **A25** — HBR — Research: When Used Correctly, LLMs Can Unlock More Creative Ideas. https://hbr.org/2025/12/research-when-used-correctly-llms-can-unlock-more-creative-ideas; OwnYourAI summary at https://ownyourai.com/examining-and-addressing-barriers-to-diversity-in-llm-generated-ideas/ (retrieved 2026-05-27).
 - **A26** — Han plugin codebase. `plugin/skills/` and `plugin/agents/` at the time of research. Codebase anchor.
-- **A27** — `docs/guidance/specialization-and-model-selection.md` in this repository. Codebase anchor.
+- **A27** — `han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md` in this repository. Codebase anchor.
 - **A28** — Prior research report. `docs/research/adhd-application-to-han.md` in this repository. Provided.

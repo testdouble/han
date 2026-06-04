@@ -2,7 +2,7 @@
 
 A walkthrough for standing up a new plugin that depends on `han.core`, adding a skill that builds on Han, and confirming that a clean install pulls Han in alongside it. This is the hands-on companion to [Extend Han with Plugin Dependencies](./extend-han-with-plugin-dependencies.md), which explains the mechanism this guide puts to work.
 
-> See also: [How-to index](./README.md) · [Extend Han with Plugin Dependencies](./extend-han-with-plugin-dependencies.md) · [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md) · [marketplace.json reference](../guidance/claude-marketplace-and-plugin-configuration/marketplace-json-options.md)
+> See also: [How-to index](./README.md) · [Extend Han with Plugin Dependencies](./extend-han-with-plugin-dependencies.md) · [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md) · [marketplace.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md)
 
 `han.github` already does exactly what this guide teaches: it ships GitHub-facing skills and declares `han.core` as a dependency, so installing it pulls core in too. You are about to build the same shape for a plugin of your own. The happy path below builds a plugin that ships inside the Han suite, the way `han.github` does, because that is the proven, in-repo case. When your plugin lives in a marketplace you own instead, the [Variations](#variations) section covers the one extra rule that applies.
 
@@ -114,15 +114,15 @@ Depend on `han` instead of `han.core` when your plugin needs the GitHub-facing s
 ## Where to go next
 
 - [Extend Han with Plugin Dependencies](./extend-han-with-plugin-dependencies.md) is the conceptual guide behind this one, if a step here assumed a mechanism you want spelled out.
-- [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md) is the field-level reference for the manifest you wrote in Step 1, including the [`dependencies`](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) field.
-- [marketplace.json reference](../guidance/claude-marketplace-and-plugin-configuration/marketplace-json-options.md) covers the marketplace entry from Step 3 and the `allowCrossMarketplaceDependenciesOn` setting from the variation.
-- The [skill-building guidance](../guidance/skill-building-guidance/) and [agent-building guidance](../guidance/agent-building-guidelines/) cover writing the skill or agent itself, which this guide assumes you can do.
+- [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md) is the field-level reference for the manifest you wrote in Step 1, including the [`dependencies`](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) field.
+- [marketplace.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md) covers the marketplace entry from Step 3 and the `allowCrossMarketplaceDependenciesOn` setting from the variation.
+- The [skill-building guidance](../../han.plugin-builder/skills/guidance/references/skill-building-guidance/) and [agent-building guidance](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/) cover writing the skill or agent itself, which this guide assumes you can do.
 
 ## Related Documentation
 
 - [Plugin landing page](../../README.md). Where the Han suite starts, and where the install commands live.
 - [How-to index](./README.md). The rest of the end-to-end guides.
 - [Extend Han with Plugin Dependencies](./extend-han-with-plugin-dependencies.md). The conceptual companion that explains the mechanism this guide uses.
-- [plugin.json reference](../guidance/claude-marketplace-and-plugin-configuration/plugin-json-options.md). The full manifest schema, including the `dependencies` field.
-- [marketplace.json reference](../guidance/claude-marketplace-and-plugin-configuration/marketplace-json-options.md). The marketplace schema, including cross-marketplace settings.
+- [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md). The full manifest schema, including the `dependencies` field.
+- [marketplace.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md). The marketplace schema, including cross-marketplace settings.
 - [Claude Code: plugin dependencies](https://code.claude.com/docs/en/plugin-dependencies). The canonical reference for resolution, versioning, and cross-marketplace trust.

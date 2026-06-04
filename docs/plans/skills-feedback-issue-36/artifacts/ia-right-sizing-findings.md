@@ -189,7 +189,7 @@ Every change above is an edit to an existing template comment or SKILL.md rule l
 
 ### How to Prevent This Going Forward
 
-- **Bake band-scaled rendering into every fixed-structure template, not just agent briefs.** The research skill already calibrates *agent briefs* by band (`SKILL.md:102`) but not the *rendered artifact*. A template-authoring rule — "if the skill is sizing-aware, the rendered artifact's lower layers must scale with the band" — would have caught IA-001 at design time. Consider adding this to `docs/guidance/skill-building-guidance/`.
+- **Bake band-scaled rendering into every fixed-structure template, not just agent briefs.** The research skill already calibrates *agent briefs* by band (`SKILL.md:102`) but not the *rendered artifact*. A template-authoring rule — "if the skill is sizing-aware, the rendered artifact's lower layers must scale with the band" — would have caught IA-001 at design time. Consider adding this to `han.plugin-builder/skills/guidance/references/skill-building-guidance/`.
 - **Prefer weight-based over presence-based classification triggers in any two-tier format.** IA-003 is a presence trigger contradicting a weight-based definition. A reviewer checklist item — "does the trigger match the definition?" — catches this class.
 - **Add an altitude line to any template that says 'technical details welcome.'** IA-005 came from open-ended permission with no ceiling. The "name, don't inline" altitude rule generalizes to any how-document template.
 - **When a mandate is restated for emphasis (IA-006), link the restatements** or note "see also line X" so a future edit changes them together.

@@ -117,7 +117,7 @@ The common thread holds: these are gaps in the skill's own synthesis layer, not 
 |----------|--------|------------|
 | Voice profile: no em-dashes, direct second person, plainspoken mentor tone, no hype | `docs/writing-voice.md` (referenced from `CLAUDE.md`) | All prose added to `SKILL.md` and the template |
 | YAGNI / evidence rule: do not add speculative sections; every addition needs evidence | `CLAUDE.md` ("YAGNI applies to docs too"), `han.core/references/evidence-rule.md` | Every new step, trigger clause, and template slot below — each must trace to an E-item |
-| Skill authoring: progressive disclosure, context hygiene, deterministic flowchartable steps | `docs/guidance/skill-building-guidance/`, `docs/guidance/plugin-entity-taxonomy.md` | New Step 1.5, Step 5.5 escape clause, Step 6 render rules |
+| Skill authoring: progressive disclosure, context hygiene, deterministic flowchartable steps | `han.plugin-builder/skills/guidance/references/skill-building-guidance/`, `han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md` | New Step 1.5, Step 5.5 escape clause, Step 6 render rules |
 | Analyzer stays neutral: no prioritization, no impact assessment | `han.core/agents/gap-analyzer.md` (Rules) | Fix 4 must keep prioritization in the skill, never push it into the analyzer |
 | One canonical source per concept; long-form doc is canonical | `CLAUDE.md` (Conventions) | `docs/skills/gap-analysis.md` must be updated to match every behavior change below |
 

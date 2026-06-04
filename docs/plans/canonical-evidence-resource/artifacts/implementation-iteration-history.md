@@ -16,7 +16,7 @@
   | C6 | Trust classes (codebase / web / provided) copied verbatim from `/research/SKILL.md:108` to keep controlled vocabulary | IA | Evidenced |
   | C7 | Corroboration gate scoped to web sources only; codebase-evidence extension deferred per V9 | IA, JD, research | Evidenced (`docs/research/evidence-hierarchy.md#v9`) |
   | C8 | No strict tier ordering in rule file (V5, V8 risk) | IA, JD | Evidenced |
-  | C9 | Rule file ≤80 lines for context hygiene (loaded by 10+ consumer skills) | IA | Evidenced (`docs/guidance/skill-building-guidance/context-hygiene.md`, `progressive-disclosure.md`) |
+  | C9 | Rule file ≤80 lines for context hygiene (loaded by 10+ consumer skills) | IA | Evidenced (`han.plugin-builder/skills/guidance/references/skill-building-guidance/context-hygiene.md`, `progressive-disclosure.md`) |
   | C10 | Categorize the 20 "evidence-based" occurrences into behavioral consumers (cite the canonical pair) vs descriptive-only (defer as YAGNI candidate) | JD, IA | Evidenced (YAGNI Gate 2) |
   | C11 | Extract `/research/SKILL.md:108–112` trust-class block to cite the canonical pair (true extraction, not parallel definition) | JD | Evidenced — load-bearing for "canonical" claim to hold |
   | C12 | Rule file explicitly states it supplements YAGNI's inclusion test (Gate 1) and does not replace it; YAGNI answers "is there any evidence?", evidence-rule answers "how confident in it?" | IA, JD | Evidenced (avoids vocabulary collision on "acceptable evidence") |

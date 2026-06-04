@@ -1,7 +1,7 @@
 # Guidance Currency Review: Skill, Agent, and Plugin Building Standards
 
 Research date: 2026-06-04
-Scope: every file under `docs/guidance/` (skill-building guidance, agent-building guidelines, the cross-cutting taxonomy and model-selection docs, the marketplace/plugin/monitors/themes configuration reference, the example manifests, and the local-development, iterative-development, semantic-versioning, and plugin-readme docs).
+Scope: every file under `han.plugin-builder/skills/guidance/references/` (skill-building guidance, agent-building guidelines, the cross-cutting taxonomy and model-selection docs, the marketplace/plugin/monitors/themes configuration reference, the example manifests, and the local-development, iterative-development, semantic-versioning, and plugin-readme docs).
 
 This report checks Han's contributor guidance against the current (June 2026) official Claude Code documentation and a small set of other trusted sources. It anchors on the official docs first, then branches out only where the official docs leave a gap. It exists to drive a guidance update plan; it is a durable research record and is not a source of truth for feature work.
 

@@ -1,6 +1,6 @@
 # han: Project Map
 
-Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as five plugins: `han.core` (the skills and agents), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs those three via dependencies), and `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately).
+Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as six plugins: `han.core` (the skills and agents), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs those three via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), and `han.plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
 
 ## Repository layout
 
@@ -11,7 +11,7 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 ├── CLAUDE.md           # This file
 ├── CHANGELOG.md        # Version history
 ├── .claude-plugin/
-│   └── marketplace.json   # Test Double marketplace manifest (lists han, han.core, han.github, han.reporting, han.feedback)
+│   └── marketplace.json   # Test Double marketplace manifest (lists han, han.core, han.github, han.reporting, han.feedback, han.plugin-builder)
 ├── han/                # Meta-plugin: no components of its own; depends on han.core + han.github + han.reporting
 │   └── .claude-plugin/
 │       └── plugin.json
@@ -33,6 +33,10 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   └── skills/         # Feedback skill directory (han-feedback) with SKILL.md
+├── han.plugin-builder/ # Opt-in plugin-building plugin: the guidance skill (depends on nothing; NOT bundled by the han meta-plugin)
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── skills/         # guidance skill: SKILL.md + assets/ + scripts/ + references/ (the authoring guidance, by topic)
 ├── docs/               # Operator-facing documentation
 │   ├── writing-voice.md   # Voice profile every doc follows
 │   ├── concepts.md
@@ -42,14 +46,13 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── agents/         # Long-form docs for all agents, plus README
 │   ├── skills/         # Long-form docs for all skills, plus README
 │   ├── how-to/         # End-to-end workflow guides (planning, bugs, research)
-│   ├── guidance/       # Contributor-facing authoring guidance
 │   ├── templates/      # Templates and coverage rule for long-form docs
 │   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
 │   └── research/       # Standalone research reports not tied to a specific plan
 └── images/             # Banner and graphics for README
 ```
 
-The plugins are shipped from `han.core/`, `han.github/`, `han.reporting/`, and `han.feedback/`; the `han/` meta-plugin pulls in the first three (core, github, reporting) through its `dependencies`. `han.feedback` depends on `han.core` like the other layers but is deliberately left out of the meta-plugin, so it is opt-in and installed on its own. Documentation lives in `docs/` and covers the whole suite. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`han.core/skills/{name}/SKILL.md`, `han.github/skills/{name}/SKILL.md`, `han.reporting/skills/{name}/SKILL.md`, `han.feedback/skills/{name}/SKILL.md`, or `han.core/agents/{name}.md`) is the implementation.
+The plugins are shipped from `han.core/`, `han.github/`, `han.reporting/`, `han.feedback/`, and `han.plugin-builder/`; the `han/` meta-plugin pulls in the first three (core, github, reporting) through its `dependencies`. `han.feedback` depends on `han.core` like the other layers but is deliberately left out of the meta-plugin, so it is opt-in and installed on its own. `han.plugin-builder` depends on nothing and is likewise opt-in and installed on its own. The contributor-facing authoring guidance (how to build skills, agents, and plugins) lives inside `han.plugin-builder/skills/guidance/references/`, not under `docs/`; running the `guidance` skill with `init` vendors a copy of that guidance into any repo as a path-scoped rule index. Documentation lives in `docs/` and covers the whole suite. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`han.core/skills/{name}/SKILL.md`, `han.github/skills/{name}/SKILL.md`, `han.reporting/skills/{name}/SKILL.md`, `han.feedback/skills/{name}/SKILL.md`, or `han.core/agents/{name}.md`) is the implementation.
 
 ## When to use which doc
 
@@ -126,31 +129,32 @@ Gap & content: `gap-analyzer`, `content-auditor`.
 - **[docs/templates/agent-long-form-template.md](./docs/templates/agent-long-form-template.md).** Template for a new agent's long-form doc.
 - **[docs/templates/coverage-rule.md](./docs/templates/coverage-rule.md).** The rule: every skill and every agent gets a long-form doc.
 
-### Authoring guidance (`docs/guidance/`)
+### Authoring guidance (`han.plugin-builder/skills/guidance/references/`)
+
+This is the body of contributor guidance for building skills, agents, and plugins. It lives in the `references/` folder of the `han.plugin-builder:guidance` skill (it used to live under `docs/guidance/`). Running `/guidance init` in a repo vendors a copy of these documents into `.claude/plugin-building-guidance/` and writes a path-scoped rule index at `.claude/rules/plugin-building-guidance.md` so the right document surfaces while editing skill and agent files. Read the documents directly here, or invoke the `guidance` skill.
 
 Top-level guidance documents for contributors writing skills, agents, and configuration:
 
-- **[docs/guidance/plugin-entity-taxonomy.md](./docs/guidance/plugin-entity-taxonomy.md).** Definitions of skills, agents, and hooks, and which to reach for. Read first when adding a new entity to the plugin.
-- **[docs/guidance/plugin-readme.md](./docs/guidance/plugin-readme.md).** Guidelines for plugin README structure.
-- **[docs/guidance/local-development.md](./docs/guidance/local-development.md).** Local development setup for working on the plugin.
-- **[docs/guidance/iterative-plugin-development.md](./docs/guidance/iterative-plugin-development.md).** Development workflow for evolving a plugin over time.
-- **[docs/guidance/semantic-versioning.md](./docs/guidance/semantic-versioning.md).** Versioning rules for plugin releases.
-- **[docs/guidance/specialization-and-model-selection.md](./docs/guidance/specialization-and-model-selection.md).** How to pick models for agents based on the work they do.
+- **[han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md](./han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md).** Definitions of skills, agents, and hooks, and which to reach for. Read first when adding a new entity to the plugin.
+- **[han.plugin-builder/skills/guidance/references/plugin-readme.md](./han.plugin-builder/skills/guidance/references/plugin-readme.md).** Guidelines for plugin README structure.
+- **[han.plugin-builder/skills/guidance/references/local-development.md](./han.plugin-builder/skills/guidance/references/local-development.md).** Local development setup for working on the plugin.
+- **[han.plugin-builder/skills/guidance/references/iterative-plugin-development.md](./han.plugin-builder/skills/guidance/references/iterative-plugin-development.md).** Development workflow for evolving a plugin over time.
+- **[han.plugin-builder/skills/guidance/references/semantic-versioning.md](./han.plugin-builder/skills/guidance/references/semantic-versioning.md).** Versioning rules for plugin releases.
+- **[han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md](./han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md).** How to pick models for agents based on the work they do.
 
 Subdirectories:
 
-- **[docs/guidance/agent-building-guidelines/](./docs/guidance/agent-building-guidelines/).** Agent-authoring rules: domain focus, external files, model selection, graceful degradation, multi-agent economics. Read before creating or significantly editing an agent.
-- **[docs/guidance/skill-building-guidance/](./docs/guidance/skill-building-guidance/).** Skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution, naming conventions, troubleshooting, and more. The single largest body of contributor guidance in the repo.
-- **[docs/guidance/claude-marketplace-and-plugin-configuration/](./docs/guidance/claude-marketplace-and-plugin-configuration/).** Reference for the JSON config formats: `marketplace.json`, `plugin.json`, `monitors.json`, `themes.json`. The `plugin.json` reference's `dependencies` section links out to the two how-to guides for extending Han via dependencies.
-- **[docs/guidance/templates/](./docs/guidance/templates/).** Example JSON manifests and a plugin README template.
-- **[docs/guidance/rfcs/](./docs/guidance/rfcs/).** Active RFCs for plugin-system changes.
+- **[han.plugin-builder/skills/guidance/references/agent-building-guidelines/](./han.plugin-builder/skills/guidance/references/agent-building-guidelines/).** Agent-authoring rules: domain focus, external files, model selection, graceful degradation, multi-agent economics. Read before creating or significantly editing an agent.
+- **[han.plugin-builder/skills/guidance/references/skill-building-guidance/](./han.plugin-builder/skills/guidance/references/skill-building-guidance/).** Skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution, naming conventions, troubleshooting, and more. The single largest body of contributor guidance in the repo.
+- **[han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/](./han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/).** Reference for the JSON config formats: `marketplace.json`, `plugin.json`, `monitors.json`, `themes.json`. The `plugin.json` reference's `dependencies` section links out to the two how-to guides for extending Han via dependencies.
+- **[han.plugin-builder/skills/guidance/references/templates/](./han.plugin-builder/skills/guidance/references/templates/).** Example JSON manifests and a plugin README template.
 
 ### Plans and research (`docs/plans/`, `docs/research/`)
 
 - **[docs/plans/](./docs/plans/).** Plan documents for work the team is doing on the plugin itself. One folder per plan, named after the plan. A plan that has its own dedicated research lives inside the plan folder under `docs/plans/{plan-name}/research/`. Use this when writing a plan for something the team is building, not for general standalone research.
 - **[docs/research/](./docs/research/).** Standalone research reports that are not tied to a specific plan — for example, evidence-based research backing a new agent, a new pattern, or a contributor decision that does not have its own plan folder yet. Use this when the research has durable value but no parent plan to nest under.
 
-Folder selection rule: if the artifact is the plan, write to `docs/plans/{plan-name}/`. If the artifact is research nested inside a plan, write to `docs/plans/{plan-name}/research/`. If the artifact is standalone research that informs the plugin but does not belong to a plan folder, write to `docs/research/`. Do not invent new top-level folders for these artifacts. Do not write plans or research into `docs/guidance/`; that folder is reserved for authoring guidance, not work-in-progress.
+Folder selection rule: if the artifact is the plan, write to `docs/plans/{plan-name}/`. If the artifact is research nested inside a plan, write to `docs/plans/{plan-name}/research/`. If the artifact is standalone research that informs the plugin but does not belong to a plan folder, write to `docs/research/`. Do not invent new top-level folders for these artifacts. Do not write plans or research into `han.plugin-builder/skills/guidance/references/`; that folder is reserved for authoring guidance, not work-in-progress.
 
 ## Conventions
 

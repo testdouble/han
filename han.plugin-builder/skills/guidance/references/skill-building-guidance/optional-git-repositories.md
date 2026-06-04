@@ -50,4 +50,4 @@ Detection happens in two layers:
 
 **Layer 2 — Skill body** (runs after the script): If the script reports `git-available: true` but `changed-files: none`, the skill body runs `git diff`, `git diff --cached`, and `git status --short` to check for uncommitted or untracked work. If any files are found, that is Mode B. If none are found, fall through to Mode C.
 
-See [`graceful-degradation.md`](graceful-degradation.md) for the detection script pattern and implementation rules. See [`han.core/skills/code-review/scripts/detect-review-context.sh`](../../../han.core/skills/code-review/scripts/detect-review-context.sh) for the canonical detection script implementation.
+See [`graceful-degradation.md`](graceful-degradation.md) for the detection script pattern and implementation rules. See [`han.core/skills/code-review/scripts/detect-review-context.sh`](../../../../../han.core/skills/code-review/scripts/detect-review-context.sh) for the canonical detection script implementation.

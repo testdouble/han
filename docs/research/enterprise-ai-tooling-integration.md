@@ -216,7 +216,7 @@ The original recommendation ordering survives, but the evidence chain was rewrit
 
 ### A9: Han Plugin Entity Taxonomy — MCP as a Recognized Plugin Component
 
-- **Link / location:** docs/guidance/plugin-entity-taxonomy.md (this repository)
+- **Link / location:** han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md (this repository)
 - **Retrieved:** n/a (codebase)
 - **Trust class:** codebase
 - **Summary:** Han's own entity taxonomy explicitly recognizes MCP servers and LSP servers as valid plugin components, alongside skills, agents, and hooks. For the Han audience specifically, MCP is the deployment primitive of the platform Han runs on, not an experimental concept. Cross-references the Claude Code plugin documentation.

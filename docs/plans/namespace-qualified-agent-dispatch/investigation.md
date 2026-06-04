@@ -108,7 +108,7 @@ Qualify every agent dispatch and dispatch-facing example across the suite to `ha
 
 #### Skill-building guidance (new `agent-dispatch-namespacing.md` + two contradicting examples)
 
-- **Change:** Add `docs/guidance/skill-building-guidance/agent-dispatch-namespacing.md` codifying the `han.core:agent-name` rule, why bare names are unreliable, and why the `han:` meta-plugin prefix resolves to nothing. Cross-link it from `skill-decomposition.md` and `workflow-patterns.md`, and fix the bare-name dispatch examples those two files taught.
+- **Change:** Add `han.plugin-builder/skills/guidance/references/skill-building-guidance/agent-dispatch-namespacing.md` codifying the `han.core:agent-name` rule, why bare names are unreliable, and why the `han:` meta-plugin prefix resolves to nothing. Cross-link it from `skill-decomposition.md` and `workflow-patterns.md`, and fix the bare-name dispatch examples those two files taught.
 - **Evidence:** (E1), (E2)
 - **Standards:** Voice profile; the directory self-applies via `paths:` frontmatter (no central index).
 - **Details:** `skill-decomposition.md:97` taught `evidence-based-investigator` bare and `workflow-patterns.md:131` taught `content-auditor` bare; both corrected (see V3).
