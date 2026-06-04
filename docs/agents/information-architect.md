@@ -71,7 +71,7 @@ Every finding is traceable to an IA principle, a documentation location, and a q
 - **Say what ships when.** If a reorganization is scheduled, ask the agent to sequence findings into *"must-fix-now"* vs. *"track-and-improve."* It already does this, but a reminder sharpens the judgment.
 - **Treat Open Questions as work.** They are not rhetorical. Each one is something the team must answer (in analytics, in support-ticket review, in a product decision, or in user research) to fully trust the severity of the findings that depend on it.
 - **Re-run after structural changes.** The agent is cheap to re-dispatch once a reorganization has landed. Open Questions from the first pass become Answered in the second, and regressions surface quickly.
-- **Pair with a reviewer agent.** The agent generates findings. It does not evaluate its own output. If you want adversarial validation of the IA report, follow it with `adversarial-validator` or a fresh agent pass. See [multi-agent-economics.md](../guidance/agent-building-guidelines/multi-agent-economics.md) for why self-evaluation is a bad default.
+- **Pair with a reviewer agent.** The agent generates findings. It does not evaluate its own output. If you want adversarial validation of the IA report, follow it with `adversarial-validator` or a fresh agent pass. See [multi-agent-economics.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md) for why self-evaluation is a bad default.
 
 ## Boundary with user-experience-designer
 
@@ -150,7 +150,7 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
 - [Agents Index](./README.md). All agents, grouped by role.
 - [`/plan-a-phased-build`](../skills/plan-a-phased-build.md). Dispatches the agent at runtime against every rendered build-phase outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension before presenting the document to you.
 - [`user-experience-designer`](./user-experience-designer.md). The sibling agent for live UI surfaces. Dispatch both in parallel when a docs site blends content and interactive navigation.
-- [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why this agent uses precise IA vocabulary and named anti-patterns instead of sharing the user-experience-designer's UI vocabulary.
-- [agent-model-selection.md](../guidance/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
-- [graceful-degradation.md](../guidance/agent-building-guidelines/graceful-degradation.md). Why the agent handles missing git and large-set sampling inline.
-- [multi-agent-economics.md](../guidance/agent-building-guidelines/multi-agent-economics.md). Why a separate reviewer pass is recommended rather than asking this agent to evaluate its own output.
+- [agent-domain-focus.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why this agent uses precise IA vocabulary and named anti-patterns instead of sharing the user-experience-designer's UI vocabulary.
+- [agent-model-selection.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
+- [graceful-degradation.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/graceful-degradation.md). Why the agent handles missing git and large-set sampling inline.
+- [multi-agent-economics.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md). Why a separate reviewer pass is recommended rather than asking this agent to evaluate its own output.

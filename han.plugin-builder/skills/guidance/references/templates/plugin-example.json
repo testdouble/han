@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "example-plugin",
+  "displayName": "Example Plugin",
+  "version": "1.0.0",
+  "description": "An example plugin demonstrating all available plugin.json fields",
+  "defaultEnabled": true,
+  "author": {
+    "name": "Your Name",
+    "email": "you@example.com",
+    "url": "https://example.com"
+  },
+  "homepage": "https://github.com/your-org/your-plugin",
+  "repository": "https://github.com/your-org/your-plugin",
+  "license": "MIT",
+  "keywords": ["example", "reference", "template"],
+  "skills": ["./skills/", "./extra-skills/"],
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": {
+    "example-server": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/servers/example-server",
+      "args": ["--data-dir", "${CLAUDE_PLUGIN_DATA}", "--config", "${CLAUDE_PLUGIN_ROOT}/config.json"]
+    }
+  },
+  "lspServers": "./.lsp.json",
+  "outputStyles": "./output-styles/",
+  "experimental": {
+    "monitors": "./monitors/monitors.json",
+    "themes": "./themes/"
+  },
+  "userConfig": {
+    "api_endpoint": {
+      "type": "string",
+      "title": "API Endpoint",
+      "description": "Base URL for the API this plugin connects to",
+      "required": true,
+      "default": "https://api.example.com"
+    },
+    "api_token": {
+      "type": "string",
+      "title": "API Token",
+      "description": "Authentication token for the API",
+      "sensitive": true,
+      "required": true
+    },
+    "allowed_environments": {
+      "type": "string",
+      "title": "Allowed Environments",
+      "description": "Comma-separated list of deployment environments this plugin may target",
+      "multiple": true,
+      "default": "staging"
+    },
+    "max_retries": {
+      "type": "number",
+      "title": "Max Retries",
+      "description": "Number of times to retry failed requests before giving up",
+      "min": 0,
+      "max": 10,
+      "default": 3
+    },
+    "verbose_logging": {
+      "type": "boolean",
+      "title": "Verbose Logging",
+      "description": "Enable detailed logging output for debugging",
+      "default": false
+    },
+    "config_file": {
+      "type": "file",
+      "title": "Config File",
+      "description": "Path to an optional local config file to merge with plugin defaults"
+    },
+    "workspace_dir": {
+      "type": "directory",
+      "title": "Workspace Directory",
+      "description": "Directory where the plugin stores working files"
+    }
+  },
+  "channels": [
+    {
+      "server": "example-server",
+      "userConfig": {
+        "channel_name": {
+          "type": "string",
+          "title": "Slack Channel Name",
+          "description": "Name of the Slack channel to post notifications to",
+          "required": true,
+          "default": "#deployments"
+        }
+      }
+    }
+  ],
+  "dependencies": [
+    "helper-lib",
+    { "name": "secrets-vault", "version": "~2.1.0" }
+  ]
+}

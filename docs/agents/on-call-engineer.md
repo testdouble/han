@@ -79,7 +79,7 @@ Every finding is traceable to a question in the log and an anti-pattern in the a
 - **Treat Open Questions as work.** They are not rhetorical. Each one is something the team must answer (by reading a test, dispatching `behavioral-analyst` or `concurrency-analyst` for an adjacent altitude, consulting an ADR, or asking the user) to fully trust the severity of the findings that depend on it.
 - **Pair with `devops-engineer` for shippable changes.** This agent reads the source; `devops-engineer` reads the deployment artifacts. A real ship-readiness pass usually wants both. They are scoped to be non-overlapping.
 - **Pair with `concurrency-analyst` for async-heavy code.** This agent flags "blocking I/O in async" and "fan-out without concurrency cap" patterns. `concurrency-analyst` goes deeper into races, locks, and deadlock potential.
-- **Pair with `adversarial-validator` for a second opinion on the report.** The agent generates findings; it does not evaluate its own output. See [multi-agent-economics.md](../guidance/agent-building-guidelines/multi-agent-economics.md).
+- **Pair with `adversarial-validator` for a second opinion on the report.** The agent generates findings; it does not evaluate its own output. See [multi-agent-economics.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md).
 - **Re-run after fixes.** Cheap to re-dispatch. Open Questions from the first pass usually become Answered in the second.
 
 ## YAGNI
@@ -192,6 +192,6 @@ URL: https://danluu.com/postmortem-lessons/
 - [`behavioral-analyst`](./behavioral-analyst.md). Pair on changes that cross module boundaries. This agent operates at the call site; behavioral-analyst operates at the module-boundary altitude.
 - [`adversarial-validator`](./adversarial-validator.md). Pair for a second opinion on the report.
 - [Research backing this agent](../research/on-call-engineer-research.md). The evidence-based research informing the agent's vocabulary, scope boundary, and tone calibration.
-- [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
-- [agent-model-selection.md](../guidance/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
-- [multi-agent-economics.md](../guidance/agent-building-guidelines/multi-agent-economics.md). Why a separate reviewer pass is recommended rather than asking this agent to evaluate its own output.
+- [agent-domain-focus.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
+- [agent-model-selection.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
+- [multi-agent-economics.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md). Why a separate reviewer pass is recommended rather than asking this agent to evaluate its own output.

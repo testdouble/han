@@ -194,5 +194,5 @@ URL: https://www.melconway.com/Home/Committees_Paper.html
 - [`structural-analyst`](./structural-analyst.md), [`behavioral-analyst`](./behavioral-analyst.md), [`concurrency-analyst`](./concurrency-analyst.md), [`risk-analyst`](./risk-analyst.md). The upstream analysts whose findings this agent synthesizes at the boundary level.
 - [`/plan-implementation`](../skills/plan-implementation.md). The skill that includes this agent in its roster when a feature crosses a service boundary.
 - [`/architectural-analysis`](../skills/architectural-analysis.md). Chains to `software-architect`, which defers cross-service concerns. When those deferrals appear, dispatch this agent.
-- [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
-- [agent-model-selection.md](../guidance/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
+- [agent-domain-focus.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
+- [agent-model-selection.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.

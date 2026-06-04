@@ -46,7 +46,7 @@ Example prompts:
 
 ## What you get back
 
-One file: `stakeholder-summary.md`, written in the same directory as the source spec. It has six sections in fixed order:
+One file: `stakeholder-summary.md`, written in the same directory as the source spec. It opens with a title heading, then has six sections in fixed order:
 
 1. **What problem are we solving?** — customer-voice framing plus the capabilities introduced.
 2. **What does this open up?** — outcomes the feature unblocks.

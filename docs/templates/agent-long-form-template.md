@@ -82,4 +82,4 @@ URL: {url}
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [`{companion-agent}`](./{companion-agent}.md). {How they pair}
 - [`/{skill-that-dispatches-this}`](../skills/{skill}.md). {The skill that typically dispatches this agent}
-- [{build-guideline link}](../guidance/agent-building-guidelines/{file}.md). {Relevance}
+- [{build-guideline link}](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/{file}.md). {Relevance}

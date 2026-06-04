@@ -6,7 +6,7 @@ This page is for contributors: anyone adding, editing, or restructuring skills, 
 
 ## TL;DR
 
-- Skills ship from one of four plugins depending on what they do: [`han.core/skills/`](./han.core/skills/) (planning, investigation, review, documentation), [`han.github/skills/`](./han.github/skills/) (GitHub-facing), [`han.reporting/skills/`](./han.reporting/skills/) (stakeholder reporting), or [`han.feedback/skills/`](./han.feedback/skills/) (feedback on Han itself). All agents live in [`han.core/agents/{name}.md`](./han.core/agents/). See [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) before you start.
+- Skills ship from the plugin that matches what they do: [`han.core/skills/`](./han.core/skills/) (planning, investigation, review, documentation), [`han.github/skills/`](./han.github/skills/) (GitHub-facing), [`han.reporting/skills/`](./han.reporting/skills/) (stakeholder reporting), or [`han.feedback/skills/`](./han.feedback/skills/) (feedback on Han itself); the contributor authoring guidance lives in [`han.plugin-builder/skills/`](./han.plugin-builder/skills/). All agents live in [`han.core/agents/{name}.md`](./han.core/agents/). See [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) before you start.
 - Long-form docs (for humans deciding *when* and *how* to use a skill or agent) live in `docs/skills/{name}.md` and `docs/agents/{name}.md`.
 - **Every skill and every agent gets a long-form doc.** No exceptions. See the [coverage rule](./docs/templates/coverage-rule.md).
 - Use the [long-form skill template](./docs/templates/skill-long-form-template.md) or the [agent template](./docs/templates/agent-long-form-template.md).
@@ -16,20 +16,21 @@ This page is for contributors: anyone adding, editing, or restructuring skills, 
 
 Read these once:
 
-- **[`docs/guidance/plugin-entity-taxonomy.md`](./docs/guidance/plugin-entity-taxonomy.md).** What a skill is, what an agent is, what a hook is, and which to reach for.
-- **[`docs/guidance/skill-building-guidance/`](./docs/guidance/skill-building-guidance/).** The skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution.
-- **[`docs/guidance/agent-building-guidelines/`](./docs/guidance/agent-building-guidelines/).** The agent-authoring rules: external files, model selection, domain focus, graceful degradation, multi-agent economics.
+- **[`han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`](./han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md).** What a skill is, what an agent is, what a hook is, and which to reach for.
+- **[`han.plugin-builder/skills/guidance/references/skill-building-guidance/`](./han.plugin-builder/skills/guidance/references/skill-building-guidance/).** The skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution.
+- **[`han.plugin-builder/skills/guidance/references/agent-building-guidelines/`](./han.plugin-builder/skills/guidance/references/agent-building-guidelines/).** The agent-authoring rules: external files, model selection, domain focus, graceful degradation, multi-agent economics.
 - **[Root `CLAUDE.md`](./CLAUDE.md).** Repo conventions, doc map, and where each kind of file lives.
 
 ## Which plugin does the change belong in?
 
-Han ships as five plugins. Four carry components; the fifth bundles the others. Decide where your change goes before you scaffold anything. (For the user-facing version of this map, see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).)
+Han ships as a family of plugins. Most carry components; the `han` meta-plugin bundles the others. Decide where your change goes before you scaffold anything. (For the user-facing version of this map, see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).)
 
 - **`han.core`** carries the planning, investigation, review, documentation, and convention skills, plus **every agent in the suite**. Agents always go here. A skill goes here when it works against the codebase or a plan and needs no external service.
 - **`han.github`** carries the GitHub-facing skills (`post-code-review-to-pr`, `update-pr-description`, `work-items-to-issues`). A skill goes here when it reads from or writes to GitHub through the `gh` CLI.
 - **`han.reporting`** carries the stakeholder-reporting skills (`stakeholder-summary`, `html-summary`). A skill goes here when its output is a report for a non-technical or executive audience rather than an engineering artifact.
 - **`han.feedback`** carries the single `han-feedback` skill. A skill goes here only when it captures feedback on the Han suite itself.
-- **`han`** is the meta-plugin. It has no components of its own; it depends on `han.core`, `han.github`, and `han.reporting` so one install pulls all three. `han.feedback` is deliberately left out so it stays opt-in. You add a component to `han` only by adding it to one of the child plugins; you never put a skill or agent directly in `han`.
+- **`han.plugin-builder`** carries the contributor authoring guidance (the `guidance` skill and its reference set). It is opt-in and depends on nothing. Edit it when you change how skills, agents, or plugins are built; it is not where product-facing skills go.
+- **`han`** is the meta-plugin. It has no components of its own; it depends on `han.core`, `han.github`, and `han.reporting` so one install pulls them all in. `han.feedback` and `han.plugin-builder` are deliberately left out so they stay opt-in. You add a component to `han` only by adding it to one of the child plugins; you never put a skill or agent directly in `han`.
 
 Two rules keep the dependency direction clean:
 
@@ -42,7 +43,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 
 1. Decide the plugin using [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) above, then scaffold the folder under that plugin's `skills/{name}/` directory (`han.core`, `han.github`, `han.reporting`, or `han.feedback`) and add a `SKILL.md`.
 2. Write the `SKILL.md`:
-   - Frontmatter with `name`, `description`, `allowed-tools`. See [skill-description-frontmatter.md](./docs/guidance/skill-building-guidance/skill-description-frontmatter.md).
+   - Frontmatter with `name`, `description`, `allowed-tools`. See [skill-description-frontmatter.md](./han.plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{name}.md` and fill it in. Every skill gets a long-form doc.
 4. Add the skill to the [Skills Index](./docs/skills/README.md) with a one-sentence scent line and a link.
@@ -51,7 +52,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 
 ## Adding an agent
 
-1. Create `han.core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./docs/guidance/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
+1. Create `han.core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
 2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/{name}.md` and fill it in. Every agent gets a long-form doc.
 3. Add the agent to the [Agents Index](./docs/agents/README.md) under the right role group.
 
@@ -104,5 +105,5 @@ Before opening the PR, run through this checklist:
 - [Sizing](./docs/sizing.md). How the swarming skills classify work and scale dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based rule for what survives a review.
 - [Evidence](./docs/evidence.md). The three principles, the trust-class vocabulary, and the corroboration gate every evidence-aware skill and agent applies.
-- [`docs/guidance/skill-building-guidance/`](./docs/guidance/skill-building-guidance/). Skill-authoring guidance.
-- [`docs/guidance/agent-building-guidelines/`](./docs/guidance/agent-building-guidelines/). Agent-authoring guidance.
+- [`han.plugin-builder/skills/guidance/references/skill-building-guidance/`](./han.plugin-builder/skills/guidance/references/skill-building-guidance/). Skill-authoring guidance.
+- [`han.plugin-builder/skills/guidance/references/agent-building-guidelines/`](./han.plugin-builder/skills/guidance/references/agent-building-guidelines/). Agent-authoring guidance.

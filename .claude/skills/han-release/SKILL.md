@@ -95,7 +95,7 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, Bash(git *
 
 ## Step 3: Build the per-plugin version plan
 
-Enumerate the plugins from `plugins` in Project Context (one parent, plus each child). For **every** plugin, determine `baseline`, whether it changed in `{range}`, and its `target`. Classify changes against [`docs/guidance/semantic-versioning.md`](../../../docs/guidance/semantic-versioning.md). The governing rules:
+Enumerate the plugins from `plugins` in Project Context (one parent, plus each child). For **every** plugin, determine `baseline`, whether it changed in `{range}`, and its `target`. Classify changes against [`docs/semantic-versioning.md`](../../../docs/semantic-versioning.md). The governing rules:
 
 - **The parent always bumps on every release.** Even when only one child changed, the parent gets a version bump, because every release is a release of the suite.
 - **A child bumps only when its own directory changed in `{range}`.** A child with no changes keeps its version.

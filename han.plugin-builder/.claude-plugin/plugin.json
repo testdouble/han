@@ -1,0 +1,5 @@
+{
+  "name": "han.plugin-builder",
+  "description": "Guidance and tooling for building Claude Code skills and plugins. Carries the full body of skill-authoring, agent-authoring, and plugin-configuration guidance, and an init step that vendors that guidance into any repo as a path-scoped rule index so contributors get the right guidance loaded for the file they are editing. Standalone and opt-in: depends on nothing and is not bundled by the han meta-plugin.",
+  "version": "1.0.0"
+}

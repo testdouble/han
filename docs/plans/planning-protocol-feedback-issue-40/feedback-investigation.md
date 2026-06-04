@@ -201,7 +201,7 @@ Validation was performed by the `adversarial-validator` agent against the draft 
 #### V5: Does collapsing small-plan sections violate a stated design principle?
 
 - **Hypothesis:** An ADR or guidance doc might mandate always-present sections as discipline.
-- **Investigation:** Searched `docs/guidance/`, `docs/sizing.md`, and plan-implementation operating principles.
+- **Investigation:** Searched `han.plugin-builder/skills/guidance/references/`, `docs/sizing.md`, and plan-implementation operating principles.
 - **Result:** Confirmed no blocking document exists; the YAGNI operating principle actively supports treating operational sections as conditional machinery.
 - **Impact:** R1 survives; no design principle blocks it.
 

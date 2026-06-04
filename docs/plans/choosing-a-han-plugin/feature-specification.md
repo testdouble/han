@@ -74,7 +74,7 @@ The reader's interaction is reading and navigating documentation. The affordance
 - Changing the plugin structure, the manifests, or the dependency relationship. This documents what exists; it does not restructure it.
 - Per-skill or per-agent install instructions. The documentation routes to the existing skills and agents indexes rather than enumerating every component.
 - A full inventory of every `han.core` skill on the standalone page. Core is summarized by category with a link to the skills index; the two `han.github` skills are named explicitly because the set is small ([D6](artifacts/decision-log.md#d6-decision-aid-format)).
-- Documenting how to author or publish plugins. That lives in `CONTRIBUTING.md` and `docs/guidance/`.
+- Documenting how to author or publish plugins. That lives in `CONTRIBUTING.md` and `han.plugin-builder/skills/guidance/references/`.
 
 ## Deferred (YAGNI)
 

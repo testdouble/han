@@ -93,6 +93,6 @@ Use this path right after a working session where one or more Han skills ran and
 
 - [Plugin landing page](../../README.md). Where the Han suite starts, and where the install commands live.
 - [How-to index](./README.md). The rest of the end-to-end guides.
-- [Choosing a Han plugin](../choosing-a-han-plugin.md). The end-user view of the five plugins, including the opt-in `han.feedback`.
+- [Choosing a Han plugin](../choosing-a-han-plugin.md). The end-user view of the plugins, including the opt-in `han.feedback`.
 - [`/issue-triage`](../skills/issue-triage.md). The skill that shapes an idea or complaint into a structured, postable issue.
 - [`/han-feedback`](../skills/han-feedback.md). The skill that summarizes a session and posts the feedback for you.

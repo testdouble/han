@@ -170,7 +170,7 @@ The original draft recommendation positioned the article's ideas as confidently 
 
 - **Confidence:** Low to medium
 - **Remaining Risks:**
-  - The recommendation rests heavily on validation findings about Han's existing architecture. The validator did not read `docs/guidance/agent-building-guidelines/multi-agent-economics.md`, which may contain explicit cost-per-call reasoning that would further constrain or enable the recommendation.
+  - The recommendation rests heavily on validation findings about Han's existing architecture. The validator did not read `han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md`, which may contain explicit cost-per-call reasoning that would further constrain or enable the recommendation.
   - A9 (BuildML practitioner blog) is unvetted — practitioner-blog provenance is not validated.
   - No artifact in the registry provides evidence for frame-based diversity benefit at K=2–5, which is the only scale at which Han dispatches. The principle is corroborated; the Han-scale benefit is not.
   - The recommendation declines to act in part because there is no Han-specific evidence of the diagnosed problem. If such evidence does exist and was not surfaced in this research round, the No-clear-winner posture would be wrong.

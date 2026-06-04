@@ -46,7 +46,7 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 1. **Frontmatter `name` matches the file's basename.**
 2. **Frontmatter `description` is current.** Reflects what the agent does, when to dispatch it, and what it does not do. Boundary statements name the right sibling agents.
 3. **`tools` matches actual usage.**
-4. **`model` matches the model selection guidance** in `docs/guidance/specialization-and-model-selection.md` for this agent's role.
+4. **`model` matches the model selection guidance** in `han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md` for this agent's role.
 5. **No stale references.** Sibling agents named in the boundary all exist. Skills named as callers exist.
 
 ### Long-form doc (`docs/agents/{name}.md`)
@@ -82,7 +82,7 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 4. **Each entry's scent line is current.**
 5. **Compositions list reflects current pairings.** The `## How skills compose` block in the skills index lists compositions that still hold; removes those that no longer do.
 
-## Guidance docs (`docs/guidance/**`)
+## Guidance docs (`han.plugin-builder/skills/guidance/references/**`)
 
 1. **References to scripts, file paths, tool flags, and conventions are current.** Doc-code contradictions are functional bugs — see `documentation-maintenance.md`.
 2. **Cross-references at the bottom resolve.**

@@ -103,7 +103,7 @@ Direct invocation uses the `Agent` tool with `subagent_type: han.core:{agent-nam
 
 ## How Han is packaged
 
-Han ships as five plugins in one marketplace. `han.core` carries most of the skills and every agent. `han.github` adds the GitHub skills and `han.reporting` adds the reporting skills; both depend on `han.core`, so installing either brings the core along. `han` is a meta-plugin with no components of its own that depends on those three, so installing it pulls in the bundled suite. The fifth plugin, `han.feedback`, adds the post-session feedback skill; it depends on `han.core` like the other layers, but the `han` meta-plugin does not pull it in, so it is opt-in and installed on its own. The practical choice is core only, the bundled suite, or the suite plus `han.feedback`. There is no GitHub-only or reporting-only install.
+Han ships as a family of plugins in one marketplace. `han.core` carries most of the skills and every agent. `han.github` adds the GitHub skills and `han.reporting` adds the reporting skills; both depend on `han.core`, so installing either brings the core along. `han` is a meta-plugin with no components of its own that depends on `han.core`, `han.github`, and `han.reporting`, so installing it pulls in the bundled suite. `han.feedback` adds the post-session feedback skill; it depends on `han.core` like the other layers, but the `han` meta-plugin does not pull it in, so it is opt-in and installed on its own. `han.plugin-builder` carries the guidance for building skills, agents, and plugins; it depends on nothing and is also opt-in. The practical choice is core only, the bundled suite, or the suite plus whichever opt-in plugins you want. There is no GitHub-only or reporting-only install.
 
 For which one to install and the dependency that surprises people, read [Choosing a Han plugin](./choosing-a-han-plugin.md).
 
@@ -126,6 +126,6 @@ Skim the indexes after you read this page. Pick the one skill you need right now
 
 ## Related reading
 
-- [`docs/guidance/plugin-entity-taxonomy.md`](./guidance/plugin-entity-taxonomy.md). The taxonomy this plugin follows. Applies across all plugins in this repo.
+- [`han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`](../han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md). The taxonomy this plugin follows. Applies across all plugins in this repo.
 - [Claude Code Skills reference](https://code.claude.com/docs/en/skills). How skills are defined and invoked in Claude Code itself.
 - [Claude Code Subagents reference](https://code.claude.com/docs/en/sub-agents). How agents are dispatched from inside skills.

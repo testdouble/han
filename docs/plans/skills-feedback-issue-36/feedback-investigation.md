@@ -158,7 +158,7 @@ Across the fourteen items, five distinct root causes recur, and each is the same
 | Voice profile: no em-dashes, direct second person, plainspoken mentor tone, no hype | `docs/writing-voice.md` (referenced from `CLAUDE.md`) | All prose added to every SKILL.md, template, and long-form doc below |
 | YAGNI / evidence rule: no speculative sections; every addition traces to evidence | `CLAUDE.md` ("YAGNI applies to docs too"), `han.core/references/evidence-rule.md` | Every change below must trace to an E-item; the two declined items must stay declined absent new evidence |
 | One canonical source per concept; long-form doc is canonical | `CLAUDE.md` (Conventions) | Each skill's `docs/skills/{name}.md` must be updated to match every behavior change |
-| Skill authoring: progressive disclosure, deterministic flowchartable steps, context hygiene | `docs/guidance/skill-building-guidance/`, `docs/guidance/plugin-entity-taxonomy.md` | New omit rules, routing branches, altitude rule, and audit directives |
+| Skill authoring: progressive disclosure, deterministic flowchartable steps, context hygiene | `han.plugin-builder/skills/guidance/references/skill-building-guidance/`, `han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md` | New omit rules, routing branches, altitude rule, and audit directives |
 | Sizing model (small/medium/large) governs dispatch | `docs/sizing.md` | Research report right-sizing must reuse the existing band, not introduce a new scale |
 | Indexes stay complete | `CLAUDE.md` (Conventions) | If any routing/handoff change adds a cross-link, verify the skills index still scents correctly |
 

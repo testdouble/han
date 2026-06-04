@@ -8,7 +8,7 @@ This release ships behavior and documentation updates across the Han suite, driv
 
 The agent-dispatch namespacing fix from [@mxriverlynn](https://github.com/mxriverlynn) in #44 rippled through the suite documentation. All 29 docs under `docs/agents/`, plus `docs/concepts.md`, the `docs/skills/` long-form docs, and `docs/templates/agent-long-form-template.md`, now show agent invocation examples with the fully-qualified `han.core:` prefix and align with the skill behavior changes in `han.core`.
 
-New contributor guidance was added. `docs/guidance/skill-building-guidance/skill-description-length.md` and a note in `skill-description-frontmatter.md` document the skill description length target (#45), and `docs/guidance/skill-building-guidance/agent-dispatch-namespacing.md` records the namespacing rule (#44).
+New contributor guidance was added. `han.plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-length.md` and a note in `skill-description-frontmatter.md` document the skill description length target (#45), and `han.plugin-builder/skills/guidance/references/skill-building-guidance/agent-dispatch-namespacing.md` records the namespacing rule (#44).
 
 Two repo-maintenance skills under `.claude/skills/` changed. `han-release` now leads the release body with the summary and drops the redundant version heading. `han-update-documentation` was corrected for the five-plugin layout, including its audit-checklist and scope-mapping references (#47). Investigation and plan records for issues #40 and #44 were recorded under `docs/plans/`, and `marketplace.json` carries the version bumps.
 
@@ -162,7 +162,7 @@ This release bundles three refactors that tighten how shipped skills and the rep
 
 ### Repo-local rules realignment under `.claude/rules/`
 
-The per-topic guidance under `.claude/rules/skills/` and `.claude/rules/agents/` previously consisted of symlinks pointing at individual pages in `docs/guidance/skill-building-guidance/` and `docs/guidance/agent-building-guidelines/`. Those symlinks are deleted and replaced with two canonical index files: `.claude/rules/coding-standards/plugin-skills.md` and `.claude/rules/coding-standards/plugin-agents.md`. Each index lists and links the underlying topic guidance directly rather than mirroring each page as its own symlink. This brings the repo's own `.claude/rules/` layout in line with the index-file template that `/coding-standard` now produces, so Han's internal setup matches the mechanism the shipped skill writes for other projects. (PR #15)
+The per-topic guidance under `.claude/rules/skills/` and `.claude/rules/agents/` previously consisted of symlinks pointing at individual pages in `han.plugin-builder/skills/guidance/references/skill-building-guidance/` and `han.plugin-builder/skills/guidance/references/agent-building-guidelines/`. Those symlinks are deleted and replaced with two canonical index files: `.claude/rules/coding-standards/plugin-skills.md` and `.claude/rules/coding-standards/plugin-agents.md`. Each index lists and links the underlying topic guidance directly rather than mirroring each page as its own symlink. This brings the repo's own `.claude/rules/` layout in line with the index-file template that `/coding-standard` now produces, so Han's internal setup matches the mechanism the shipped skill writes for other projects. (PR #15)
 
 ### Pull requests in this release
 
@@ -196,7 +196,7 @@ Full changelog: https://github.com/testdouble/han/blob/v2.6.1/CHANGELOG.md#v261
 
 ## v2.6.0
 
-A new `/stakeholder-summary` skill ships, taking the shipped catalog from 19 to 20 skills with agents holding at 22. A repo-local `/han-update-documentation` skill is added under `.claude/skills/` for keeping Han's own documentation in sync with shipped entities, mirroring the internal-only framing of `/han-release`. Completed planning artifacts under `docs/guidance/plans/`, `docs/guidance/rfcs/`, and `docs/plans/` are removed: roughly 4,470 lines of historical scratch material that has served its purpose.
+A new `/stakeholder-summary` skill ships, taking the shipped catalog from 19 to 20 skills with agents holding at 22. A repo-local `/han-update-documentation` skill is added under `.claude/skills/` for keeping Han's own documentation in sync with shipped entities, mirroring the internal-only framing of `/han-release`. Completed planning artifacts under `han.plugin-builder/skills/guidance/references/plans/`, `han.plugin-builder/skills/guidance/references/rfcs/`, and `docs/plans/` are removed: roughly 4,470 lines of historical scratch material that has served its purpose.
 
 ### New skill
 
@@ -219,9 +219,9 @@ A repo-maintenance skill `/han-update-documentation` is added at `.claude/skills
 
 Completed planning artifacts are deleted from the repo now that the work they tracked has shipped or been superseded:
 
-- `docs/guidance/plans/agentic-plugin-support/research.md`
-- `docs/guidance/plans/han/planning-token-burn-reduction.md`
-- `docs/guidance/rfcs/rename-plugin-marketplace-dist.md`
+- `han.plugin-builder/skills/guidance/references/plans/agentic-plugin-support/research.md`
+- `han.plugin-builder/skills/guidance/references/plans/han/planning-token-burn-reduction.md`
+- `han.plugin-builder/skills/guidance/references/rfcs/rename-plugin-marketplace-dist.md`
 - `docs/plans/code-review-guardrails/` (full directory)
 - `docs/plans/research-skill/` (full directory)
 
@@ -235,7 +235,7 @@ Full changelog: https://github.com/testdouble/han/blob/v2.6.0/CHANGELOG.md#v260
 
 ## v2.5.0
 
-A new `/research` skill and its `research-analyst` agent ship, taking the catalog to 19 skills and 22 agents. `/coding-standard` now writes its output as path-scoped Claude Code rules under `.claude/rules/` rather than a freestanding document, and the same path-scoped-rules pattern is applied repo-wide so contributor guidance under `docs/guidance/` reaches Claude Code automatically. A GitHub pull request template lands with a review checklist that hands off to `/update-pr-description`, and the README drops its duplicated skills list in favor of the canonical catalog under `docs/skills/`.
+A new `/research` skill and its `research-analyst` agent ship, taking the catalog to 19 skills and 22 agents. `/coding-standard` now writes its output as path-scoped Claude Code rules under `.claude/rules/` rather than a freestanding document, and the same path-scoped-rules pattern is applied repo-wide so contributor guidance under `han.plugin-builder/skills/guidance/references/` reaches Claude Code automatically. A GitHub pull request template lands with a review checklist that hands off to `/update-pr-description`, and the README drops its duplicated skills list in favor of the canonical catalog under `docs/skills/`.
 
 ### New skill
 
@@ -251,7 +251,7 @@ A new `/research` skill and its `research-analyst` agent ship, taking the catalo
 
 ### Contributor guidance as Claude Code rules
 
-A new `.claude/rules/` directory contains roughly 28 symlinks mirroring `docs/guidance/skill-building-guidance/*.md`, `docs/guidance/agent-building-guidelines/*.md`, and `docs/guidance/plugin-entity-taxonomy.md`. Path-scoped rules let Claude Code load the relevant guidance automatically when an operator edits a skill or agent under `plugin/`, so contributor conventions reach the model without the operator pasting them into context.
+A new `.claude/rules/` directory contains roughly 28 symlinks mirroring `han.plugin-builder/skills/guidance/references/skill-building-guidance/*.md`, `han.plugin-builder/skills/guidance/references/agent-building-guidelines/*.md`, and `han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`. Path-scoped rules let Claude Code load the relevant guidance automatically when an operator edits a skill or agent under `plugin/`, so contributor conventions reach the model without the operator pasting them into context.
 
 ### Pull request template
 
@@ -288,7 +288,7 @@ Three new plugin skills ship, taking the catalog from 15 to 18: `/issue-triage` 
 
 ### Agent model tiers
 
-`junior-developer`, `information-architect`, and `user-experience-designer` move from `model: sonnet` to `model: opus` in their agent frontmatter. All three perform synthesis over unbounded input, and `docs/guidance/specialization-and-model-selection.md` already listed them under "Keep opus" with an opus rationale in their long-form docs, but their frontmatter had shipped as `sonnet` since the initial repo extraction. This aligns the implementation with the documented design intent. It is a real behavior and cost change whenever any of these three agents is dispatched.
+`junior-developer`, `information-architect`, and `user-experience-designer` move from `model: sonnet` to `model: opus` in their agent frontmatter. All three perform synthesis over unbounded input, and `han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md` already listed them under "Keep opus" with an opus rationale in their long-form docs, but their frontmatter had shipped as `sonnet` since the initial repo extraction. This aligns the implementation with the documented design intent. It is a real behavior and cost change whenever any of these three agents is dispatched.
 
 ### Documentation
 

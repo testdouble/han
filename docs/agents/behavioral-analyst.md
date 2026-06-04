@@ -36,6 +36,7 @@ Operator documentation for the `behavioral-analyst` agent in the han plugin. Thi
 - Specific bug root cause. Use `evidence-based-investigator` or `/investigate`.
 - Risk prioritization. Use `risk-analyst` (which consumes this agent's findings).
 - Architectural recommendations. Use `software-architect`.
+- Cross-service or bounded-context changes. Use `system-architect`.
 
 ## How to invoke it
 

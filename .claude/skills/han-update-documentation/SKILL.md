@@ -63,7 +63,7 @@ Deduplicate. Produce a single ordered inventory `INV`:
 
 ### Plugin roots
 
-Han ships as several plugins. Skills are spread across four of them; agents live in only one. Long-form docs stay flat under `docs/skills/` and `docs/agents/` no matter which plugin owns the entity.
+Han ships as several plugins. Skills are spread across several of them; agents live in only one. Long-form docs stay flat under `docs/skills/` and `docs/agents/` no matter which plugin owns the entity.
 
 - **Skill roots:** `han.core/skills`, `han.github/skills`, `han.reporting/skills`, `han.feedback/skills`.
 - **Agent root:** `han.core/agents` (the only plugin with agents).
@@ -79,7 +79,7 @@ Enumerate the full set:
 2. **Every agent.** `find han.core/agents -mindepth 1 -maxdepth 1 -name "*.md" -type f` for the inventory; each entry pulls in `han.core/agents/{name}.md` and `docs/agents/{name}.md`.
 3. **Both indexes** (`docs/skills/README.md`, `docs/agents/README.md`).
 4. **All top-level concept docs** in `docs/`.
-5. **All guidance docs** under `docs/guidance/`.
+5. **All guidance docs** under `han.plugin-builder/skills/guidance/references/`.
 6. **All templates** under `docs/templates/`.
 7. **Root files** (`README.md`, `CONTRIBUTING.md`, `CLAUDE.md`).
 
@@ -99,7 +99,7 @@ Walk `INV` in order. For each entity, apply every rule in [references/audit-chec
   - Fix: {concrete edit}
 ```
 
-**Read the source of truth before checking the doc.** For a skill, read `{plugin}/skills/{name}/SKILL.md` first (the plugin root the skill came from), then read `docs/skills/{name}.md` and check it against the source. For an agent, read `han.core/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs — treat them with the same severity as broken scripts (see `docs/guidance/skill-building-guidance/documentation-maintenance.md`).
+**Read the source of truth before checking the doc.** For a skill, read `{plugin}/skills/{name}/SKILL.md` first (the plugin root the skill came from), then read `docs/skills/{name}.md` and check it against the source. For an agent, read `han.core/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs — treat them with the same severity as broken scripts (see `han.plugin-builder/skills/guidance/references/skill-building-guidance/documentation-maintenance.md`).
 
 **Batch agent audits when the inventory is large.** When `INV` has more than ten skills or ten agents to audit, dispatch a `content-auditor` agent per batch of five entities with the entity name, the source-of-truth file, and the long-form doc. Hand each agent the relevant section of [references/audit-checklist.md](references/audit-checklist.md) inline (do not tell it to read the file). The agent returns findings; merge them into the working list. Do not run more than four such agents in parallel.
 

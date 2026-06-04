@@ -74,7 +74,7 @@ Every finding is traceable to an operational principle (DORA key, Twelve-Factor 
 - **Treat Open Questions as work.** They are not rhetorical. Each one is something the team must answer (via a capacity plan, an SLO decision, a stakeholder conversation, a runbook write-up, or a metric query) to fully trust the severity of the findings that depend on it.
 - **Re-run after changes.** The agent is cheap to re-dispatch once a brief or fix has landed. Open Questions from the first pass become Answered in the second.
 - **Pair it with the security analyst on regulated changes.** The agent deliberately does not re-derive exploit paths. For a change touching auth, payments, or PHI/PCI data, dispatch `adversarial-security-analyst` alongside and compare the reports.
-- **Pair with a reviewer agent.** The agent generates findings. It does not evaluate its own output. If you want adversarial validation of the readiness report, follow it with `adversarial-validator` or a fresh agent pass. See [multi-agent-economics.md](../guidance/agent-building-guidelines/multi-agent-economics.md) for why self-evaluation is a bad default.
+- **Pair with a reviewer agent.** The agent generates findings. It does not evaluate its own output. If you want adversarial validation of the readiness report, follow it with `adversarial-validator` or a fresh agent pass. See [multi-agent-economics.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md) for why self-evaluation is a bad default.
 
 ## Cost and latency
 
@@ -193,7 +193,7 @@ URL: https://martinfowler.com/bliki/StranglerFigApplication.html
 - [Agents Index](./README.md). All agents, grouped by role.
 - [`data-engineer`](./data-engineer.md). Pair on production migrations. This agent covers rollout-level progressive delivery; `data-engineer` covers schema-level expand-and-contract.
 - [`adversarial-security-analyst`](./adversarial-security-analyst.md). Pair on changes touching auth, secrets, or regulated surfaces. This agent covers operational readiness; the security analyst covers exploit paths.
-- [agent-domain-focus.md](../guidance/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
-- [agent-model-selection.md](../guidance/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
-- [graceful-degradation.md](../guidance/agent-building-guidelines/graceful-degradation.md). Why the agent handles missing git and missing IaC inline.
-- [multi-agent-economics.md](../guidance/agent-building-guidelines/multi-agent-economics.md). Why a separate reviewer pass is recommended rather than asking this agent to evaluate its own output.
+- [agent-domain-focus.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
+- [agent-model-selection.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.
+- [graceful-degradation.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/graceful-degradation.md). Why the agent handles missing git and missing IaC inline.
+- [multi-agent-economics.md](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md). Why a separate reviewer pass is recommended rather than asking this agent to evaluate its own output.
