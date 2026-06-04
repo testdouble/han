@@ -3,8 +3,6 @@
 <!-- One-sentence description: what this feature/system does and why it exists. -->
 
 - **Last Updated:** {YYYY-MM-DD HH:mm}
-- **Authors:**
-  - {name} ({email})
 
 ## Summary
 

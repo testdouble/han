@@ -83,7 +83,7 @@ The skill dispatches two to three `codebase-explorer` agents in parallel (Step 2
 
 The skill walks an eight-step process:
 
-1. **Evaluate and gather context.** Guard check for ADR/coding-standard topics, resolve the docs directory, derive the target filename, resolve author info, flag whether the content audit will run.
+1. **Evaluate and gather context.** Guard check for ADR/coding-standard topics, resolve the docs directory, derive the target filename, flag whether the content audit will run.
 2. **Explore the codebase.** Two to three `codebase-explorer` agents in parallel; merge into a unified D1/D2/D3 discovery summary.
 3. **Write the documentation.** Follow the template, leading with behavior (Summary, How It Works, Primary Flows) before the Technical Reference; absolute paths; reference code as pointers and short snippets; language-specific fences; conditional sections omitted; update mode preserves existing structure and flags provisional removals.
 4. **Update agent configuration files.** Add the `CLAUDE.md` / `AGENTS.md` reference in the right section with the project's existing pattern.

@@ -9,10 +9,6 @@ paths:
 - **Status:** {proposed | accepted | deprecated}
 - **Date Created:** {YYYY-MM-DD HH:mm}
 - **Last Updated:** {YYYY-MM-DD HH:mm}
-- **Authors:**
-  - {name} ({username}, {email})
-- **Reviewers:**
-  - {name} ({username}, {email})
 - **Applies To:**
   - {which part(s) of the system this standard covers}
 

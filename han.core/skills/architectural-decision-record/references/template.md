@@ -3,10 +3,6 @@
 - **Status:** {proposed | accepted | deprecated | superseded}
 - **Date Created:** {YYYY-MM-DD HH:mm}
 - **Last Updated:** {YYYY-MM-DD HH:mm}
-- **Authors:**
-  - {name} ({username}, {email})
-- **Reviewers:**
-  - {name} ({username}, {email})
 
 ## Context
 
