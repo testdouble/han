@@ -211,6 +211,7 @@ The script handles JSON construction, escaping, and API calls — operations whe
 7. Every token in frontmatter costs context in every conversation — make it count
 
 Cross-references:
+- [Skill Frontmatter Fields](./skill-frontmatter-fields.md) — The full inventory of Level 1 frontmatter fields
 - [Skill Reference Files](./skill-reference-files.md) — Placement rules for the `references/` directory
 - [Skill Description Frontmatter](./skill-description-frontmatter.md) — Rules for writing effective Level 1 descriptions
 - [Context Injection Commands](./context-injection-commands.md) — How to inject runtime data into Level 2 content
