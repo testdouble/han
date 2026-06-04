@@ -9,6 +9,8 @@ When a skill dispatches agents via the `Agent` tool, each agent adds latency and
 
 This doc is about **whether to add more agents**. For choosing which model tier (opus/sonnet/haiku) a given agent should use, see [Model Selection](./agent-model-selection.md). That decision is about matching capability to task complexity, and cost is not a factor there. Here, cost is a factor: multiplying agents multiplies token spend, and each additional agent must clear a quality bar to justify that spend.
 
+**What "multi-agent" means in Han.** Han skills dispatch sub-agents in parallel through the `Agent` tool, and each agent's result is summarized back into the dispatching skill's context. This is *not* the experimental Claude Code [agent-teams](https://code.claude.com/docs/en/agent-teams) feature, in which each teammate is a separate Claude session with its own context window and teammates talk to each other. Agent teams cost significantly more (token usage scales linearly per teammate) and are gated behind `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`. The economics below apply to Han's parallel-dispatch model; agent teams cost strictly more for the same head count.
+
 ## The Escalation Cascade
 
 Start with the simplest architecture that could work. Advance only when measured quality justifies moving up.
@@ -31,11 +33,13 @@ Add a team only when the review problem is genuinely multi-dimensional. The outp
 
 **When to escalate here:** The worker + reviewer pattern produces good results on one dimension but misses others, and combining review domains into one agent degrades each (the generalist trap described in [Domain Focus](./agent-domain-focus.md)).
 
-**Hard cap:** Teams should not exceed 5 agents. Beyond this, coordination costs consistently exceed production benefits.
+**Hard cap (Han heuristic):** Han caps teams at 5 agents. Beyond this, coordination costs consistently exceed production benefits in our experience. This is our own operating limit, not a platform rule, but it sits in the same range as the official agent-teams guidance, which recommends 3-5 teammates ([Agent Teams](https://code.claude.com/docs/en/agent-teams)).
 
 ## The 45% Threshold
 
 Before adding another agent, ask: does the current architecture achieve more than 45% of optimal quality on the dimension you're trying to improve? If yes, improve the existing agent's instructions, vocabulary, or tool access first. Adding an agent is justified only when a single agent has been optimized and still falls short.
+
+This threshold tracks a finding from *Towards a Science of Scaling Agent Systems* (Google Research, Google DeepMind, and MIT, 2025): when a single agent already solves a task at roughly 45% accuracy, adding agents yields diminishing or negative returns. See [Sources](#sources).
 
 Multi-agent teams only outperform single agents when:
 
@@ -43,11 +47,13 @@ Multi-agent teams only outperform single agents when:
 - Each subtask activates a **distinct domain** that benefits from separate vocabulary routing.
 - The coordination overhead is **less than** the quality improvement.
 
-Sequential reasoning tasks (where each step depends on the previous step's full context) can degrade 39-70% in multi-agent setups because handoffs lose context.
+Sequential reasoning tasks (where each step depends on the previous step's full context) can degrade sharply in multi-agent setups because handoffs lose context. The same 2025 study reports 39-70% performance degradation for multi-agent variants on strict sequential-reasoning tasks: each handoff is a lossy compression of state, transferring explicit message content but losing the tacit understanding built up during reasoning. See [Sources](#sources).
 
 ## Scaling Reality
 
-Research on multi-agent scaling (DeepMind, 2025) shows diminishing returns:
+Multi-agent scaling shows diminishing returns. The 2025 study ran 180 controlled experiments across five architectures and three model families (GPT, Gemini, Claude) and found performance swinging from an 81% boost to a 70% drop depending on the task: parallelizable work benefits from more agents, sequential work degrades. The consistent shape is that the efficiency ratio (quality gained per token spent) falls as agents are added.
+
+The table below is an **illustrative model of that shape**, not data lifted from the study. Use it to reason about the trade-off, not as measured constants:
 
 | Team Size | Token Cost | Output Quality | Efficiency |
 |---|---|---|---|
@@ -56,7 +62,7 @@ Research on multi-agent scaling (DeepMind, 2025) shows diminishing returns:
 | 5 agents | ~7x | ~3.1x | 0.44 |
 | 7+ agents | ~12x+ | Often less than 4-agent | < 0.3 |
 
-Each additional agent must produce a measurable quality improvement to justify its cost. The efficiency ratio (quality gained / tokens spent) drops with every agent added. Team effectiveness plateaus around 4 agents. Beyond this, coordination costs actively harm output.
+Each additional agent must produce a measurable quality improvement to justify its cost. The efficiency ratio drops with every agent added. Team effectiveness plateaus around 4 agents. Beyond this, coordination costs actively harm output.
 
 ## Practical Implications for Skills
 
@@ -76,6 +82,12 @@ When designing a skill that dispatches agents:
 4. Cap teams at 5 agents. Beyond this, coordination costs exceed benefits.
 5. Apply the 45% threshold: optimize existing agents before adding new ones.
 6. Dispatch independent agents in parallel. Avoid long sequential chains.
+
+## Sources
+
+- [Towards a Science of Scaling Agent Systems (Google Research / Google DeepMind / MIT, 2025)](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/). Source for the ~45% capability-saturation threshold, the 39-70% sequential-reasoning degradation range, and the diminishing-returns direction (180 experiments, five architectures, three model families).
+- [Building effective agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents). "Agentic systems often trade latency and cost for better task performance"; start simple and add agent complexity only when measurement justifies it.
+- [Agent Teams (Claude Code docs)](https://code.claude.com/docs/en/agent-teams). The experimental multi-session feature distinct from Han's parallel `Agent`-tool dispatch; token cost scales linearly per teammate; recommends 3-5 teammates.
 
 Cross-references:
 
