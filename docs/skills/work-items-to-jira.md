@@ -14,8 +14,8 @@ Operator documentation for the `/work-items-to-jira` skill in the opt-in `han.at
 
 - **One project, not a repo map.** Every work item becomes a ticket in the single Jira project you name. Unlike the GitHub sibling, this skill does not split work across repos. If the source file spans several code repos, the repo prose is informational only; it never changes which project a ticket lands in.
 - **The Atlassian MCP server is required.** The skill checks the server is connected before it does any work. If the server is missing or not authenticated, the skill stops. It drives Jira entirely through the MCP server; there is no `gh`-style CLI and no shell-script pipeline.
-- **Sensible Jira defaults, all overridable.** Each ticket is created as a **Story**, **unassigned**, in the project's **Backlog**, with the **reporter** taken from the authenticated Atlassian MCP identity. You can override the issue type, set an assignee, name a target column, and parent every ticket to an epic.
-- **Epic is optional.** Name an epic and every created ticket is parented to it so the work shows up under the epic. Leave it out and tickets sit at the project's top level.
+- **Sensible Jira defaults, all overridable.** Each ticket is created as a **Story**, **unassigned**, in the project's **Backlog**, with the **reporter** taken from the authenticated Atlassian MCP identity. You can override the issue type, set an assignee, name a target column, and parent every ticket under an epic or a story.
+- **Parenting is optional, and the parent decides the child type.** Pass `--parent <KEY>` to parent every created ticket. Name an **epic** and each item is a standard issue (Story by default) under the epic. Name a **story** (any standard issue) and each item is a **subtask** under the story, defaulting to the project's subtask issue type. You cannot parent under a subtask. Leave `--parent` out and tickets sit at the project's top level. `--epic <KEY>` is a deprecated alias for `--parent`.
 - **Within-file dependencies.** Every SYM named in a `Depends on` line must resolve to another slice in the same file. After all tickets exist, the skill records each dependency in the dependent ticket (rewriting its `Depends on` line to the blockers' Jira keys) and creates a native "is blocked by" link when the configured MCP exposes an issue-link capability.
 - **Reference artifacts, not process artifacts.** Every ticket description carries the artifacts an implementer needs (API and event contracts, design references, schema docs, ADRs, coding standards) and never the process artifacts that record how the plan was reached (iteration histories, decision logs, review findings). The full include and exclude lists live in [the reference artifact inventory](../../han.atlassian/skills/work-items-to-jira/references/reference-artifact-inventory.md).
 - **No screenshot embedding.** The GitHub sibling copies PNGs into the target code repo and embeds same-repo URLs. That mechanism is GitHub-specific and is not part of this skill. Design references are carried as links in the ticket; add image attachments in Jira by hand if a ticket needs them.
@@ -27,7 +27,7 @@ Operator documentation for the `/work-items-to-jira` skill in the opt-in `han.at
 **Invoke when:**
 
 - You have a `work-items.md` file from `/plan-work-items` and you want each item published as a Jira ticket in a project your team tracks.
-- You want the items parented under an epic, created as a specific issue type, or dropped into a particular board column.
+- You want the items parented under an epic, nested as subtasks under a story, created as a specific issue type, or dropped into a particular board column.
 - You want the ticket descriptions to carry the contract, design, and standards links an implementer needs, with the process artifacts left out.
 
 **Do not invoke for:**
@@ -46,15 +46,16 @@ Give it:
 
 1. **The `work-items.md` path.** The single file produced by `/plan-work-items`. If you do not provide it, the skill asks.
 2. **The target project, required.** Pass `--project <KEY>` (for example `ACME`) or `--board <name>`; a board is resolved to its underlying project. If you provide neither, the skill asks before it creates anything.
-3. **An epic, optional.** Pass `--epic <KEY>` to parent every created ticket to that epic.
-4. **An issue type, optional.** Pass `--type <name>` to override the default of `Story`. The type must exist in the target project.
+3. **A parent, optional.** Pass `--parent <KEY>` to parent every created ticket. An **epic** key makes each item a standard issue under the epic; a **story** key makes each item a subtask under the story. `--epic <KEY>` is a deprecated alias.
+4. **An issue type, optional.** Pass `--type <name>` to override the default. The default is `Story` at the top level or under an epic, and the project's subtask type under a story. The type must exist in the target project and sit at the right hierarchy level for the parent.
 5. **An assignee, optional.** Pass `--assignee <accountId or email>`. The default is unassigned.
 6. **A column, optional.** Pass `--column <name>` to transition each ticket into that column after creation. The default is the project's Backlog.
 
 Example prompts:
 
 - `/work-items-to-jira docs/features/my-feature/work-items.md --project ACME`. Creates each item as a Story in the ACME project backlog, unassigned.
-- `/work-items-to-jira docs/features/my-feature/work-items.md --project ACME --epic ACME-12`. Parents every created ticket under epic ACME-12.
+- `/work-items-to-jira docs/features/my-feature/work-items.md --project ACME --parent ACME-12`. Parents every created Story under epic ACME-12.
+- `/work-items-to-jira docs/features/my-feature/work-items.md --project ACME --parent ACME-34`. When ACME-34 is a story, creates each item as a subtask under it.
 - `/work-items-to-jira docs/features/my-feature/work-items.md --project ACME --type Task --column "Selected for Development"`. Creates Tasks and moves each into the named column.
 
 ## What you get back
@@ -62,7 +63,7 @@ Example prompts:
 Tickets in Jira plus one file change on disk:
 
 - **One Jira ticket per work item** in the target project, created in dependency order (blockers first). Each description follows [the slice ticket format](../../han.atlassian/skills/work-items-to-jira/references/jira-ticket-template.md): summary with an inline plan reference, description, references, tests, and acceptance criteria. The ticket summary is the slice title; the symbolic SYM stays in the source file.
-- **Epic parenting** on every ticket when you named an epic.
+- **Parenting** on every ticket when you named a parent: standard issues under an epic, or subtasks under a story.
 - **Dependencies** recorded in each dependent ticket as its blockers' Jira keys, plus native "is blocked by" links when the MCP supports them.
 - **The chosen placement:** Backlog by default, or the named column applied through a Jira transition.
 - **The source `work-items.md` annotated** in place, each published slice heading rewritten from `## <SYM-N> — <title>` to `## <SYM-N> (<KEY>) — <title>`. This is the only file the skill writes, and it is what makes a re-run idempotent.
@@ -92,14 +93,14 @@ The skill walks a short, deterministic process:
 
 0. **Atlassian MCP preflight.** Call `getAccessibleAtlassianResources` to confirm the server is connected and get the cloud ID. Stop here if it is unavailable.
 1. **Locate the work-items file.** Read the single `work-items.md` from `/plan-work-items`.
-2. **Gather the run options.** Project or board, epic, issue type, assignee, column, taken from the arguments.
-3. **Resolve the target against Jira.** Confirm the project, validate the issue type against the project's metadata, confirm the epic, resolve the assignee account ID, and hold the column for the placement step.
+2. **Gather the run options.** Project or board, parent, issue type, assignee, column, taken from the arguments.
+3. **Resolve the target against Jira.** Confirm the project, resolve the parent and read its hierarchy level to decide whether children are standard issues (epic parent) or subtasks (story parent), validate the issue type against the project's metadata at the right hierarchy level, resolve the assignee account ID, and hold the column for the placement step.
 4. **Validate the format with evidence-based repair.** Check heading shape, `Depends on` syntax, within-file blockers, references present, and no process artifacts. Propose evidence-backed fixes and give you continue / correct / stop.
 5. **Show the plan for confirmation.** Present the destination and the table of tickets to create, and wait for an explicit yes.
-6. **Create one ticket per slice.** `createJiraIssue` with project, type, summary, description, optional epic parent, optional assignee. Annotate each slice heading with the returned key.
+6. **Create one ticket per slice.** `createJiraIssue` with project, the resolved type, summary, description, optional parent (epic or story), optional assignee. Annotate each slice heading with the returned key.
 7. **Link dependencies.** Record each blocker as a Jira key in the dependent ticket, and create a native "is blocked by" link when the MCP supports one.
 8. **Place tickets in the target column.** Leave them in Backlog by default, or transition each into the named column.
-9. **Report.** The project and epic, the issue type, the assignee, the column, every created ticket with its key and URL, the dependency links made, and any slices skipped because they already carried a key.
+9. **Report.** The project and parent (epic or story), the issue type, the assignee, the column, every created ticket with its key and URL, the dependency links made, and any slices skipped because they already carried a key.
 
 ## Sources
 
@@ -113,7 +114,7 @@ URL: https://www.atlassian.com/platform/remote-mcp-server
 
 ### Jira issue types and the backlog
 
-The Story default, the issue-type override validated against project metadata, epic parenting through the `parent` field, and backlog-versus-column placement through workflow transitions follow Jira's own issue model.
+The Story default, the issue-type override validated against project metadata, parenting through the `parent` field (standard issues under an epic, subtasks under a story), and backlog-versus-column placement through workflow transitions follow Jira's own issue model.
 
 URL: https://support.atlassian.com/jira-software-cloud/docs/what-are-issue-types/
 
