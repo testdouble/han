@@ -79,7 +79,10 @@ run `han:plan-implementation`          # han has no skills; same failure
 ## Scope note
 
 Han agents do not have the `Agent` tool, so an agent never dispatches another
-agent directly. The routing tables inside `project-manager` and
+agent directly. This also matches a platform rule: per the [Subagents
+documentation](https://code.claude.com/docs/en/sub-agents), subagents cannot
+spawn other subagents, so nested delegation must go through skills or be chained
+from the main conversation. The routing tables inside `project-manager` and
 `junior-developer` name the specialists a facilitating skill should bring in;
 the skill performs the qualified dispatch. The rule above governs the skills
 and any documented invocation example.

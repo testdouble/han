@@ -74,6 +74,35 @@ The [Context Injection Commands](../skill-building-guidance/context-injection-co
 | Frontmatter: `model` | No | Yes |
 | Directory structure | Own subdirectory (`skills/{name}/`) | Flat file (`agents/{name}.md`) |
 
+## Agent Frontmatter Fields
+
+Han agents set only `name`, `description`, `tools`, and `model` today, but the [Subagents documentation](https://code.claude.com/docs/en/sub-agents) supports more. Only `name` and `description` are required. The others, briefly:
+
+| Field | What it does |
+|---|---|
+| `tools` | Allowlist of tools the agent may use. Inherits all tools if omitted. |
+| `disallowedTools` | Denylist applied on top of `tools`. A tool in both is removed. |
+| `model` | Model alias, full model ID, or `inherit`. See [Model Selection](./agent-model-selection.md). |
+| `permissionMode` | Permission posture (`default`, `acceptEdits`, `plan`, and so on). |
+| `maxTurns` | Cap on agentic turns before the agent stops. |
+| `skills` | Skills to preload at startup (full content injected). |
+| `mcpServers` | MCP servers available to the agent. |
+| `hooks` | Lifecycle hooks scoped to the agent. |
+| `memory` | `user`, `project`, or `local` to enable cross-session persistent memory. |
+| `background` | `true` to always run the agent as a background task. |
+| `effort` | `low`/`medium`/`high`/`xhigh`/`max` effort override. |
+| `isolation` | `worktree` to run the agent in a temporary git worktree. |
+| `color` | Display color for the agent in the UI. |
+| `initialPrompt` | First user turn auto-submitted when the agent runs as a main session via `--agent`. |
+
+### Plugin agents ignore three of these (security boundary)
+
+When an agent is loaded **from a plugin** (which is how every Han agent ships), Claude Code ignores its `hooks`, `mcpServers`, and `permissionMode` frontmatter. This is a documented security boundary, not a bug: a plugin cannot silently grant itself hooks, MCP access, or a looser permission mode on the operator's machine. Do not rely on any of these three fields in a Han agent definition; they will be dropped. Source: [Subagents documentation](https://code.claude.com/docs/en/sub-agents).
+
+### Subagents cannot spawn subagents
+
+This is a platform rule, not just a Han convention: a subagent cannot dispatch another subagent. Nested delegation must go through skills or be chained from the main conversation. Han's agents reflect this by not carrying the `Agent` tool (see [Agent Dispatch Namespacing](../skill-building-guidance/agent-dispatch-namespacing.md)).
+
 ## Existing Agents as Evidence
 
 Agents in the han plugin demonstrate this pattern. Each is fully self-contained with all content inlined. For example:
