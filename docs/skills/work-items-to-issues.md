@@ -106,9 +106,21 @@ URL: https://docs.github.com/en/rest/issues
 
 ### GitHub REST API: Repository contents
 
-The screenshot upload step writes each PNG into the target repo through the repository Contents API, fetching the existing file sha to overwrite cleanly when one is already there. The same API writes to an assets branch (created from the default branch via the Git refs API) when the default branch is protected, and `gh pr` opens or reuses the pull request that carries those commits.
+The screenshot upload step writes each PNG into the target repo through the repository Contents API, fetching the existing file sha to overwrite cleanly when one is already there. On a protected default branch it writes the same blobs to an assets branch instead of writing to the default branch directly.
 
 URL: https://docs.github.com/en/rest/repos/contents
+
+### GitHub REST API: Git references
+
+When the default branch is protected, the upload step creates the assets branch through the Git references API. `upload-screenshots.sh` reads the default branch tip with `GET /repos/{owner}/{repo}/git/ref/heads/{branch}` and creates the new branch from it with `POST /repos/{owner}/{repo}/git/refs`.
+
+URL: https://docs.github.com/en/rest/git/refs
+
+### GitHub REST API: Pull requests
+
+The assets branch is surfaced for merge through the Pull requests API, reached with `gh pr`. The upload step reuses an open pull request for the branch when one already exists (`gh pr list --head`) and opens one otherwise (`gh pr create`), then prints its URL so you know inline designs render once it merges.
+
+URL: https://docs.github.com/en/rest/pulls/pulls
 
 ### GitHub REST API: Issue dependencies
 
