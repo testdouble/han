@@ -11,15 +11,29 @@ Solution: **copy each PNG into the target repo first**, then embed it via a same
 ## Required URL form
 
 ```
-https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<SYM-N>/<file>.png
+https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png
 ```
 
 - `<target-repo>` is the code repo the issue is being created in (e.g., `acme-web`).
 - `<branch>` is the target repo's default branch, fetched at upload time via `gh repo view <org>/<repo> --json defaultBranchRef --jq .defaultBranchRef.name` (typically `main`).
+- `<feature-slug>` is the kebab-cased basename of the plan folder (e.g., a plan folder `notification-preferences/` yields `notification-preferences`). It namespaces this feature's assets so they never collide with another feature's. See "Why the path is feature-scoped" below.
 - `<SYM-N>` is the slice's symbolic ID (e.g., `W-3`).
 - `<file>.png` matches the source filename in `<plan-folder>/ui-designs/<file>.png`.
 
 The `scripts/upload-screenshots.sh` script extracts this path from the work-items file, copies the PNG from the plan folder into the target repo at the corresponding location, and verifies the resulting URL resolves before issue creation.
+
+## Why the path is feature-scoped
+
+Symbolic IDs restart at `<PREFIX>-1` for every feature, so a flat `.github/issue-assets/<SYM-N>/` namespace commingles unrelated features that publish to the same repo: a second feature's `W-4` assets would land in the same folder as the first feature's `W-4`, with a real overwrite risk if they share a filename. The `<feature-slug>` segment gives each feature its own subtree. Derive the slug from the plan folder name (its kebab-cased basename) so it is stable and reproducible — `upload-screenshots.sh` reads the slug straight back out of the embedded URL, so the slug written into the URL is the one that must match.
+
+## How assets reach the default branch
+
+The embedded URL always points at the target repo's **default branch**, because that is where the asset lives once published. How the PNG gets there depends on the repo:
+
+- **Unprotected default branch** — `upload-screenshots.sh` writes each PNG directly to the default branch via the GitHub Contents API. Fully autonomous, no human step.
+- **Protected default branch** — a direct write is rejected (HTTP 409, "changes must be made through a pull request"). The script falls back automatically: it commits every PNG to an assets branch (`issue-assets/<feature-slug>`), opens a pull request, and prints the PR URL. The issues are still created immediately; their inline images render once that assets PR merges. The embedded URL does not change — it still names the default branch.
+
+The fallback never runs local git and never touches your current branch — every branch, commit, and PR operation is a server-side GitHub API call against the target code repo. The assets branch is created fresh from the default branch's tip, or reused on a re-run **only when it already carries this feature's `issue-assets/<feature-slug>/` tree**. A branch of that name that the skill did not create is refused, never committed onto, so no unrelated work is ever modified.
 
 ## Embed format inside the issue body
 
