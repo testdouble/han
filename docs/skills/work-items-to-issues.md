@@ -60,7 +60,7 @@ Files on disk plus issues on GitHub:
 - **A per-repo `<repo-name>.work-items.md`** next to the source, one per target repo. It copies the source title, intro, and cross-repo work-order prose, the shared reference artifacts that apply to that repo, and only that repo's items in source order. After publishing, its item headings carry a `(#NNN)` annotation that records the created issue number. The source file is left untouched.
 - **One GitHub issue per work item** in its target repo, created in dependency order (blockers first). Each issue body follows [the slice issue format](../../han.github/skills/work-items-to-issues/references/issue-template.md): summary with an inline plan reference, description, screenshots when the item has a UI surface, references, tests, and acceptance criteria.
 - **Within-repo `blocked_by` links** posted for every `Depends on` line, resolved through the recorded issue numbers.
-- **Screenshots** copied into each target repo under `.github/issue-assets/<item>/` and embedded inline in the issue bodies, when a `ui-designs/` folder is present.
+- **Screenshots** copied into each target repo under `.github/issue-assets/<feature-slug>/<item>/` and embedded inline in the issue bodies, when a `ui-designs/` folder is present. The `<feature-slug>` segment (the plan folder's kebab-cased name) keeps two features that publish to the same repo from colliding. When the target repo's default branch is protected and rejects a direct write, the screenshots are committed to an assets branch and an opened pull request instead, and the PR URL is printed; the issues are created right away and their inline designs render once that PR merges.
 
 ## How to get the most out of it
 
@@ -70,6 +70,7 @@ Files on disk plus issues on GitHub:
 - **Review the map before you confirm.** The skill pauses and shows you the item-to-repo table before it writes or creates anything. This is the moment to catch a misrouted item.
 - **Let the evidence-based repair run.** When a format check fails, the skill proposes a fix with its source. Continue with the fills when they look right, correct them when they do not, or stop and edit the file by hand.
 - **Re-run after a partial failure.** The pipeline is idempotent. Items already created are skipped and uploads overwrite in place, so a re-run resumes where it stopped.
+- **Merge the assets PR on a protected repo.** When the target repo's default branch is protected, the screenshots are committed to an `issue-assets/<feature-slug>` branch and opened as a pull request instead of pushed directly, and the skill surfaces that PR URL to you. The issues are created right away, but their inline designs stay broken until that assets PR merges, so merging it is the follow-up that finishes the publish.
 
 ## YAGNI (when applicable)
 
@@ -92,7 +93,7 @@ The skill walks a six-step process:
 5. **Write the per-repo work-items files.** For each target repo, write a filtered `<repo-name>.work-items.md` next to the source. This is the file the publish scripts read.
 6. **Publish each per-repo file.** Run the publish pipeline, which runs three idempotent scripts in order: upload the screenshots into the target repo, create one issue per item (annotating each heading with its `(#NNN)`), then post the within-repo `blocked_by` links.
 
-The publish pipeline is three scripts behind one wrapper. `upload-screenshots.sh` copies each referenced PNG from the plan folder into the target repo and verifies it. `create-issues.sh` creates one issue per item in file order, captures the returned number, and rewrites the heading in place so the next script can resolve symbolic IDs to issue numbers; it applies a label and an assignee only when you pass them. `link-blockers.sh` reads the recorded numbers and posts a native `blocked_by` relationship per blocker, erroring out if a `Depends on` line names an item that is not in the same repo, because a cross-repo dependency belongs in the work-order prose, not in a native link.
+The publish pipeline is three scripts behind one wrapper. `upload-screenshots.sh` copies each referenced PNG from the plan folder into the target repo and verifies it. It writes directly to the default branch when that branch accepts the write, and falls back to an assets branch plus a pull request when the default branch is protected. The fallback runs entirely through the GitHub API (no local git, so your current branch is never touched), and on re-run it reuses the assets branch only when that branch already carries this feature's `issue-assets/<feature-slug>/` tree, refusing a same-named branch it did not create. `create-issues.sh` creates one issue per item in file order, captures the returned number, and rewrites the heading in place so the next script can resolve symbolic IDs to issue numbers; it applies a label and an assignee only when you pass them. `link-blockers.sh` reads the recorded numbers and posts a native `blocked_by` relationship per blocker, erroring out if a `Depends on` line names an item that is not in the same repo, because a cross-repo dependency belongs in the work-order prose, not in a native link.
 
 ## Sources
 
@@ -106,9 +107,21 @@ URL: https://docs.github.com/en/rest/issues
 
 ### GitHub REST API: Repository contents
 
-The screenshot upload step writes each PNG into the target repo through the repository Contents API, fetching the existing file sha to overwrite cleanly when one is already there.
+The screenshot upload step writes each PNG into the target repo through the repository Contents API, fetching the existing file sha to overwrite cleanly when one is already there. On a protected default branch it writes the same blobs to an assets branch instead of writing to the default branch directly.
 
 URL: https://docs.github.com/en/rest/repos/contents
+
+### GitHub REST API: Git references
+
+When the default branch is protected, the upload step creates the assets branch through the Git references API. `upload-screenshots.sh` reads the default branch tip with `GET /repos/{owner}/{repo}/git/ref/heads/{branch}` and creates the new branch from it with `POST /repos/{owner}/{repo}/git/refs`.
+
+URL: https://docs.github.com/en/rest/git/refs
+
+### GitHub REST API: Pull requests
+
+The assets branch is surfaced for merge through the Pull requests API, reached with `gh pr`. The upload step reuses an open pull request for the branch when one already exists (`gh pr list --head`) and opens one otherwise (`gh pr create`), then prints its URL so you know inline designs render once it merges.
+
+URL: https://docs.github.com/en/rest/pulls/pulls
 
 ### GitHub REST API: Issue dependencies
 
