@@ -19,7 +19,7 @@ This is the **15-year practitioner test**: for every key term in the agent defin
 
 Research indicates that accuracy degrades with elaborate persona descriptions. The optimal range for the Role Identity (the "You are a..." opening paragraph in the agent body) is **under 50 tokens**. This is enough context to route to the right domain without wasting attention on self-description rather than task performance.
 
-The frontmatter `description` field is separate from the Role Identity. It is triggering metadata that tells Claude when to spawn the agent, and is not subject to the 50-token budget.
+The frontmatter `description` field is separate from the Role Identity. It is triggering metadata that tells Claude when to spawn the agent, and is not subject to the 50-token budget. It has its own length budget, because it is always-loaded for routing: see [Agent Description Length](./agent-description-length.md).
 
 Detailed protocols, checklists, anti-patterns, and procedures that follow the Role Identity do not count toward this budget. They provide operational depth, not identity framing.
 
@@ -33,7 +33,7 @@ An agent should have a single role: generate **or** evaluate, not both.
 
 ### 1. Write a Clear Frontmatter Description
 
-The `description` field in frontmatter is triggering metadata. It tells Claude when to spawn the agent. It is **not** the agent's persona and is **not** subject to the 50-token budget. The description should clearly state what the agent does and when to invoke it.
+The `description` field in frontmatter is triggering metadata. It tells Claude when to spawn the agent. It is **not** the agent's persona and is **not** subject to the 50-token budget. It does, however, have its own length budget, because every agent description is loaded into context in every session for routing: target 1024 characters and keep domain vocabulary and anti-pattern lists in the body, not the description. See [Agent Description Length](./agent-description-length.md). The description should clearly state what the agent does and when to invoke it.
 
 **Example:**
 ```yaml
@@ -43,7 +43,7 @@ description: "Research analyst for gathering, evaluating, and synthesizing
   credibility assessment, or triangulation of findings."
 ```
 
-This description is well over 50 tokens, and that is fine. Its job is to help Claude decide when to use the agent, not to set the model's persona.
+This description is well over 50 tokens, and that is fine. Its job is to help Claude decide when to use the agent, not to set the model's persona. It is still bound by the description length budget, though: keep it near 1024 characters and push domain vocabulary and anti-pattern detail into the body sections below. See [Agent Description Length](./agent-description-length.md).
 
 ### 2. Write a Concise Role Identity (Under 50 Tokens)
 
@@ -144,6 +144,7 @@ Pair a generator with a separate evaluator. For example, a generator agent that 
 
 ## Cross-References
 
+- [Agent Description Length](agent-description-length.md). The 1024-character budget for the always-loaded `description`, and which content has to move into the body to hit it.
 - [External File References](agent-external-files.md). All content must be inlined in the agent file. Vocabulary and anti-pattern sections are no exception.
 - [Model Selection](agent-model-selection.md). A well-specialized agent with precise vocabulary may perform well with a faster model, because domain terms activate expert knowledge even in smaller models.
 - [Specialization and Model Selection](../specialization-and-model-selection.md). Evidence base for why specialization shifts work from inference-time compute to prompt-time design.
