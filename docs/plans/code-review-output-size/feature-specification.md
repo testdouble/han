@@ -77,7 +77,7 @@ When more than one of these sections is present, they always render in this fixe
 
 ## Open Items
 
-<!-- populated by the project-manager in synthesis -->
+None. All three candidate questions identified during finding resolution (table-row prose-once carve-out, security-severity verification backstop, and consumer lazy-section scope) were resolved before synthesis: the table-row carve-out via F3/D2, the verification backstop via F4/D12, and the consumer scope via F12/D6.
 
 ## Summary
 

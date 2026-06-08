@@ -9,9 +9,23 @@ history, rationale, evidence, and rejected alternatives for each decision.
 
 ## Trivial decisions
 
-- D1: Scope — output document only — The feature changes only what the generated review document contains and how it is structured, not the skill's source files; trimming `SKILL.md`, the `references/` files, or the long-form doc for their own size is explicitly out of scope (covered by issue #51) (considered widening to source-file size; rejected because issue #57 explicitly carves that out as #51's territory). — Referenced in spec: Outcome, Out of Scope.
-- D9: Self-consistency and analysis behavior unchanged — What the review analyzes, which agents it dispatches, the severity rubric, the self-consistency tension check, and YAGNI's categorically non-corrective status are untouched; only the emitted document's shape and redundancy change. — Referenced in spec: Primary Flow, Out of Scope, Edge Cases and Failure Modes.
-- D10: Long-form doc consistency — The operator-facing long-form documentation that describes the review document's structure is updated for accuracy against the new structure, not trimmed for its own size. — Referenced in spec: Coordinations.
+### D1: Scope, output document only
+
+The feature changes only what the generated review document contains and how it is structured, not the skill's source files; trimming `SKILL.md`, the `references/` files, or the long-form doc for their own size is explicitly out of scope (covered by issue #51). Considered widening to source-file size; rejected because issue #57 explicitly carves that out as #51's territory.
+
+- **Referenced in spec:** Outcome, Out of Scope.
+
+### D9: Self-consistency and analysis behavior unchanged
+
+What the review analyzes, which agents it dispatches, the severity rubric, the self-consistency tension check, and YAGNI's categorically non-corrective status are untouched; only the emitted document's shape and redundancy change.
+
+- **Referenced in spec:** Primary Flow, Out of Scope, Edge Cases and Failure Modes.
+
+### D10: Long-form doc consistency
+
+The operator-facing long-form documentation that describes the review document's structure is updated for accuracy against the new structure, not trimmed for its own size.
+
+- **Referenced in spec:** Coordinations.
 
 ## Full decisions
 
