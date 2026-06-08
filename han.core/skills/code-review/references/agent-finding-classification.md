@@ -22,11 +22,12 @@ Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authori
 
 For each security finding (SEC-001, SEC-002, ...) from the agent:
 - Retain the SEC-### ID — do not convert to CRIT/WARN/SUGG
-- **Every SEC finding** (all severities): also assign a CRIT-### ID continuing sequentially from Steps 4-6 and the testing findings above. Add a cross-reference entry to the Critical section formatted as:
-  > **CRIT-###** **[Security]** → see SEC-### for full exploit path
-- If the security agent found no proven vulnerabilities, no CRIT-### entries are added
+- Render one full `SEC-###` block per finding (OWASP category, location, evidence, `EXPLOIT:`, severity) under `## 🔐 Security Vulnerabilities`. This block is the single home for the finding's prose.
+- Add one Review Summary table row per finding, with the severity tier shown inline in the Task ID cell (e.g., `SEC-001 (Critical)`) since the SEC-### ID does not encode a tier. Do **not** also add a CRIT-### cross-reference entry under `### 🔴 Critical` — security findings are not duplicated into the Critical section.
+- The Review Recommendation reflects the highest severity across all findings including these security severities: a Critical-severity security finding yields a do-not-merge recommendation even though it is not listed under Critical.
+- If the security agent found no proven vulnerabilities, the `## 🔐 Security Vulnerabilities` section and the Remediation note are omitted entirely.
 
-Include the agent's Security Improvement Summary verbatim in the review output — do not rewrite or summarize it.
+Collapse the agent's Security Improvement Summary into a single short **Remediation** note that follows the SEC-### blocks: reference the SEC-### IDs and state the actionable remediation in one or two sentences. Do not restate the finding descriptions and do not carry a generic "how to prevent this going forward" narrative.
 
 Security findings are not subject to the 30-item cap that applies to manual review and other agent findings.
 

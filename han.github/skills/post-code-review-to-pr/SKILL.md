@@ -41,7 +41,7 @@ Ask the user whether they'd like to post the review to the PR on GitHub using `A
 If the user accepts:
 
 1. Gather PR metadata by running `${CLAUDE_SKILL_DIR}/scripts/pr-metadata.sh`, which outputs JSON with `owner_repo`, `pr_number`, `head_sha`, `pr_author_login`, and `current_user_login`.
-2. Build the review body from: Review Summary table, Review Recommendation, What's Good section, and all findings organized by severity.
+2. Build the review body from: Review Summary table, Review Recommendation, and all findings organized by severity, plus any optional sections that are present. Treat every section other than the Review Summary table and the Review Recommendation as optional — the code-review skill renders a section only when it has content, so a section (the What's Good section, an absent severity section on a clean review, the Security Vulnerabilities section, the Remediation note) may simply not be there. Include each section when present and omit it without error or an empty heading when absent.
 3. Continue to Step 4 — do **not** post yet.
 
 ## Step 4: Pre-Post Clarity Check

@@ -54,7 +54,7 @@ Example prompts:
 
 A full review plus GitHub integration:
 
-- **The full `/code-review` output in-channel.** Review Summary table, Review Recommendation, What's Good, and all findings organized by severity. See the `/code-review` documentation for the detailed shape.
+- **The full `/code-review` output in-channel.** Review Summary table, Review Recommendation, and all findings organized by severity, plus any optional sections (What's Good, Security Vulnerabilities, Remediation) that are present. The code-review skill renders a section only when it has content, so the body builder treats every section other than the table and the recommendation as optional. See the `/code-review` documentation for the detailed shape.
 - **An offer to post to GitHub.** `AskUserQuestion` with "Yes, post to GitHub" / "No, just the local review."
 - **When accepted.** The skill gathers PR metadata (`owner/repo`, `pr_number`, `head_sha`, author login, current user login), runs a `junior-developer` clarity pass on the draft review body (flagging unclear wording, misaligned severity, accusatory tone, and broken location references), applies the edits, writes the final review body to a temp file, and posts it. Self-authored PRs become comments. PRs you did not author become formal reviews with the event type derived from severity.
 - **An offer to create a fix plan.** Only when CRIT or WARN findings exist. An implementation plan listing each finding by task ID, with specific code changes, file paths, and line numbers, ordered by priority.

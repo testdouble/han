@@ -354,7 +354,9 @@ If the han.core:test-engineer produced Deferred/Skipped items, include them as a
 
 ## Step 8: Generate Review Output
 
-Use the template at [template.md](references/template.md) for the output structure. Include all sections even when empty — the template shows the empty-state text for each. Include the Security Improvement Summary verbatim from the agent.
+Use the template at [template.md](references/template.md) for the output structure. **Render a section only when it has content** — never emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good) appears only when it has at least one item. When more than one section is present, keep them in the fixed order the template defines and never vary it. A clean review is the table's no-issues row plus an approval recommendation, and nothing else.
+
+Each finding's prose appears exactly once — in its finding block, or in its full security block. The Review Summary table row is an index entry, not a second copy of the prose; a `Tension with …` pointer note is a pointer, not prose. For security findings, render one full `SEC-###` block per finding and a single short Remediation note (see [agent-finding-classification.md](references/agent-finding-classification.md)); do not add a per-finding cross-reference under Critical. Render the **What's Good** section only when there is a specific, substantive positive worth recording — omit it when there is nothing substantive to say rather than forcing generic praise.
 
 ## Step 9: Verify Review Output
 
@@ -379,13 +381,18 @@ Then verify:
 2. Agent findings from every dispatched agent (testing, edge-case, structural, behavioral, concurrency, data, devops, han.core:junior-developer) have valid task IDs continuing from manual review IDs. Findings from agents that were not dispatched in Step 3 must not appear.
 3. Agent findings have valid `file_path:line_number` references
 4. Deferred tests note is present if the han.core:test-engineer produced skipped items
-5. The Review Summary table includes every finding and matches the detailed sections
+5. The Review Summary table includes every corrective finding (CRIT/WARN/SUGG) and every security finding, and matches the sections that are present. YAGNI findings are excluded from the table (see rule 12). For findings whose block omits the category, the table is the only place that category appears.
 6. All `file_path:line_number` references point to real files from the file list determined in Step 1
 7. SEC-### IDs are sequential starting at SEC-001
 8. Every SEC-### finding has an `EXPLOIT:` field populated
-9. Every SEC-### finding has a corresponding CRIT-### cross-reference in `### 🔴 Critical`
+9. Security findings are NOT cross-referenced in `### 🔴 Critical`. Instead, when any SEC-### finding exists, the Review Recommendation reflects the highest severity across all findings including the security findings' own severities (a Critical-severity security finding yields a do-not-merge recommendation)
 10. Junior-developer findings that overlap with a specialist agent's finding reference the specialist finding instead of duplicating it
 11. The review output is the COMPLETE and FINAL response. Do not append a trailing summary, commentary, sign-off, or follow-up message after the review. The structured review document IS the deliverable — nothing follows it.
 12. The `### 🟡 YAGNI` section, when present, opens with the verbatim statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* YAGNI findings appear ONLY in this section — they are not duplicated under CRIT/WARN/SUGG and are not included in the Review Summary table.
 13. Any `Tension with {other-task-id}:` notes added by Step 9.0 appear on both members of each contradictory pair.
+14. No section is rendered empty. Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, and What's Good appear only when they have content; the only always-present elements are the Review Summary table and the Review Recommendation. When multiple sections are present they appear in the template's fixed order (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good).
+15. Each security finding's severity tier is shown inline in its Review Summary table row (e.g., `SEC-001 (Critical)`), since its task ID does not encode a tier.
+16. Finding blocks omit the `[Category]` label for generic categories (already carried by the table and the task-ID prefix) and keep it only for content-bearing categories — ADR violations (naming the record), standards violations (naming the standard), and security. The `file_path:line_number` reference remains on every block.
+17. When proven security vulnerabilities exist, exactly one Remediation note follows the SEC-### blocks and references the SEC-### IDs without restating the finding descriptions. When there are no security findings, neither the Security Vulnerabilities section nor the Remediation note is rendered.
+18. The `### ✅ What's Good` section is rendered only when a specific, substantive positive exists; it is omitted entirely rather than filled with generic praise.
 
