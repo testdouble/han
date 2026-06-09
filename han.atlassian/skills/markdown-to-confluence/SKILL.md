@@ -49,6 +49,13 @@ does not resolve to a readable file, ask the user for the path with
 `AskUserQuestion` and do not proceed without one. This is the exact content that
 will be posted; do not rewrite, summarize, or restructure it.
 
+A body may legitimately contain embedded Confluence storage macros mixed into the
+Markdown — for example, an orchestrating skill such as
+`han.atlassian:plan-a-feature-to-confluence` rewrites its cross-page links into
+title-based page-link macros (the `<ac:link><ri:page ri:content-title="..."/>…</ac:link>`
+form, link body included) before handing the file over. Post these verbatim along
+with the rest of the body; do not strip or escape them.
+
 ## Step 2: Resolve the Target Confluence Location (required)
 
 **This skill does not search Confluence for the right place.** A typical
@@ -105,7 +112,8 @@ unpublished draft.
 Read the Markdown file from Step 1 and publish it with the Atlassian MCP server.
 The Confluence MCP tools accept Markdown directly via `contentFormat: "markdown"`,
 so post the document body as-is — no manual conversion to storage/XHTML is
-needed.
+needed. Any embedded storage macros (such as the `ac:link` page-link macros
+described in Step 1) ride along in the same body; post them verbatim.
 
 Apply the publish mode from Step 3 with the create/update tool's status
 parameter: **draft** → `status: "draft"` (unpublished draft), **live** →
