@@ -1,0 +1,8 @@
+{
+  "name": "han.linear",
+  "description": "Linear-facing extensions to the Han suite. Adds work-items-to-linear, which creates one Linear issue per slice from a work-items file. Works through the Linear MCP server. Depends on han.core and requires a configured Linear MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
+  "version": "1.0.0",
+  "dependencies": [
+    "han.core"
+  ]
+}

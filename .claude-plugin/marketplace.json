@@ -44,6 +44,12 @@
       "version": "1.0.0"
     },
     {
+      "name": "han.linear",
+      "source": "./han.linear",
+      "description": "Linear-facing extensions to the Han suite. Adds work-items-to-linear, which creates one Linear issue per slice from a work-items file. Works through the Linear MCP server. Depends on han.core and requires a configured Linear MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
+      "version": "1.0.0"
+    },
+    {
       "name": "han.plugin-builder",
       "source": "./han.plugin-builder",
       "description": "Guidance for building Claude Code skills, agents, and plugins. The guidance skill answers authoring questions and, run with init, vendors the full guidance set into a repo as a path-scoped rule index so the right guidance surfaces while editing skill and agent files. Opt-in and dependency-free: installed on its own, not pulled in by the han meta-plugin.",

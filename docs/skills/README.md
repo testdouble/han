@@ -96,6 +96,14 @@ The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira t
 
 ---
 
+## han.linear
+
+The opt-in Linear plugin. It publishes Han work items to Linear through the Linear MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.linear@han`. Requires a configured Linear MCP server. Depends on `han.core`.
+
+- **[`/work-items-to-linear`](./work-items-to-linear.md).** Create one Linear issue per slice from a `/plan-work-items` work-items file, in a single target team. Reads the team's real workflow states, labels, Projects, and members and resolves every option against them before creating anything; defaults each issue to the team's initial state, unassigned, and uncategorized, with optional state, labels, assignee, parent (sub-issue), and Project. Links within-file `Depends on` lines as native Linear "blocked by" relations. The Linear sibling of `/work-items-to-jira` and `/work-items-to-issues`.
+
+---
+
 ## How dispatch scales: sizing
 
 The sizing-aware skills ([`/architectural-analysis`](./architectural-analysis.md), [`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/research`](./research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.

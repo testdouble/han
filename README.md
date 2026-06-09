@@ -33,15 +33,16 @@ Han ships as multiple plugins:
 * `han.reporting`: reporting skills like the stakeholder summary
 * `han.feedback`: an opt-in skill for capturing post-session feedback on Han skill runs
 * `han.atlassian`: opt-in skills for publishing Markdown and documentation to Confluence and work items to Jira (requires an Atlassian MCP server)
+* `han.linear`: an opt-in skill for publishing work items to Linear (requires a Linear MCP server)
 * `han.plugin-builder`: an opt-in plugin carrying the guidance for building your own skills, agents, and plugins
 
 Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han.core`, `han.github`, and `han.reporting`),
 and is the right choice for almost everyone. If you do not want the GitHub or reporting skills, install `han.core@han` instead. 
 
 There is no GitHub-only or reporting-only install: both `han.github` and `han.reporting` depend on `han.core`,
-so installing either brings the core skills and every agent along with it. `han.feedback`, `han.atlassian`, and
+so installing either brings the core skills and every agent along with it. `han.feedback`, `han.atlassian`, `han.linear`, and
 `han.plugin-builder` are the exceptions: the `han` meta-plugin does not pull any of them in. `han.feedback` and
-`han.atlassian` depend on `han.core` (and `han.atlassian` also requires an Atlassian MCP server); `han.plugin-builder`
+`han.atlassian` depend on `han.core` (and `han.atlassian` also requires an Atlassian MCP server; `han.linear` likewise depends on `han.core` and requires a Linear MCP server); `han.plugin-builder`
 depends on nothing. Install each on its own with `han.feedback@han`, `han.atlassian@han`, or `han.plugin-builder@han`
 if you want it. 
 
