@@ -340,24 +340,30 @@ See [Context Injection Commands](./context-injection-commands.md) for the full r
 **Symptom:** A skill calls another skill via the Skill tool. The sub-skill runs
 and produces output on screen, but the calling skill never picks up the results.
 
-### Cause 1: Data-fetch sub-skill running inline
+### Cause 1: Data-fetch sub-skill (forked or inline)
 
-Data-fetch sub-skills (those that return small, structured values) are unreliable
-when running inline. The inline model has no structured return mechanism —
-Claude must manually context-switch back to the parent workflow.
+The skill calls another skill only to retrieve a few values (a config path, a
+command, a setting). This is unreliable in both forms. Inline, the model has no
+structured return mechanism and must manually context-switch back to the parent
+workflow. Forked with `context: fork`, an `api_retry` event can anchor the model
+on the sub-skill's returned output and bypass every remaining step, the
+early-exit failure documented in [Skill Composition](./skill-composition.md).
 
-**Fix:** Add `context: fork` to the sub-skill's frontmatter. The subagent runs
-in isolation and results are returned as a discrete tool response.
+**Fix:** Do not use a data-fetch sub-skill at all. Discover the values inline:
+detect config files via context injection, Read them directly in the skill's own
+steps, and fall back to conventional defaults. Duplicate the handful of discovery
+lines rather than sharing them through a sub-skill.
 
-### Cause 2: Sub-skill launches interactive workflow
+### Cause 2: Orchestration sub-skill, but the orchestrator lost its workflow
 
-If an inline sub-skill asks the user questions or calls other skills, the parent
-workflow is derailed.
+The skill legitimately hands heavy work to a substantial sub-skill, but never
+picks the workflow back up after the Skill call returns. The calling model treats
+the sub-skill's output as its own final answer and stops.
 
-**Fix:** Simplify the sub-skill to output values and stop. No interactive questions,
-no fallback skill calls.
-
-See [Skill Composition](./skill-composition.md) for the complete pattern.
+**Fix:** Keep the orchestrator thin so it has little state to lose across the
+call, and end the invoking step with an explicit instruction to proceed to the
+next step. Never rely on implicit continuation. See
+[Skill Composition](./skill-composition.md) for the full orchestration discipline.
 
 ## Summary Checklist
 
@@ -368,7 +374,7 @@ See [Skill Composition](./skill-composition.md) for the complete pattern.
 5. **Permission prompts:** Add tools to `allowed-tools`; use separate `Bash()` entries per command prefix
 6. **AskUserQuestion fails:** Remove it from `allowed-tools` — the bug causes silent failures when auto-approved
 7. **Context injection in prose:** Never use the literal bang-backtick pattern in SKILL.md body text — the loader parses raw text and tries to execute it
-8. **Sub-skill output lost:** Add `context: fork` to data-fetch sub-skills; remove interactive workflows from forked skills
+8. **Sub-skill output lost:** Replace data-fetch sub-skills with inline discovery; for orchestration sub-skills, keep the orchestrator thin and instruct it to proceed explicitly after the Skill call
 
 Cross-references:
 - [Naming Conventions](./naming-conventions.md) — Skill naming rules
