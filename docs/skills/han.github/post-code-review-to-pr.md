@@ -6,7 +6,7 @@ Operator documentation for the `/post-code-review-to-pr` skill in the han plugin
 
 ## TL;DR
 
-- **What it does.** Runs [`/code-review`](../han.core/code-review.md) against the current branch's GitHub PR and optionally posts the review to GitHub as a formal review or PR comment.
+- **What it does.** Runs [`/code-review`](../han.coding/code-review.md) against the current branch's GitHub PR and optionally posts the review to GitHub as a formal review or PR comment.
 - **When to use it.** You want the full code review *and* you want it visible to the team on the PR.
 - **What you get back.** The full code-review output in-channel, posted to the PR when you confirm, plus an optional fix plan for Critical and Warning findings.
 
@@ -29,9 +29,9 @@ Operator documentation for the `/post-code-review-to-pr` skill in the han plugin
 
 **Do not invoke for:**
 
-- **Local code review without touching GitHub.** Use [`/code-review`](../han.core/code-review.md).
+- **Local code review without touching GitHub.** Use [`/code-review`](../han.coding/code-review.md).
 - **Updating the PR description.** Use [`/update-pr-description`](./update-pr-description.md).
-- **Bug investigation.** Use [`/investigate`](../han.core/investigate.md).
+- **Bug investigation.** Use [`/investigate`](../han.coding/investigate.md).
 - **Architectural analysis.** Use [`/architectural-analysis`](../han.core/architectural-analysis.md).
 
 ## How to invoke it
@@ -99,8 +99,8 @@ URL: https://google.github.io/eng-practices/review/reviewer/
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
-- [`/code-review`](../han.core/code-review.md). The skill this one wraps. Use directly for local review without GitHub posting.
+- [`/code-review`](../han.coding/code-review.md). The skill this one wraps. Use directly for local review without GitHub posting.
 - [`/update-pr-description`](./update-pr-description.md). For writing the PR description.
-- [`/investigate`](../han.core/investigate.md). Next step when a Critical finding hides a bug.
+- [`/investigate`](../han.coding/investigate.md). Next step when a Critical finding hides a bug.
 - [`junior-developer`](../../agents/han.core/junior-developer.md). Runs the pre-post clarity check against the drafted review body.
 - [`SKILL.md` for /post-code-review-to-pr](../../../han.github/skills/post-code-review-to-pr/SKILL.md). The internal process definition.

@@ -94,6 +94,6 @@ URL: https://martinfowler.com/bliki/TwoHardThings.html
 - [`risk-analyst`](./risk-analyst.md). Consumes this agent's findings.
 - [`software-architect`](./software-architect.md). Synthesizes findings into recommendations.
 - [`/architectural-analysis`](../../skills/han.core/architectural-analysis.md). Always dispatches this agent.
-- [`/investigate`](../../skills/han.core/investigate.md). Dispatches this agent for data-flow and error-propagation bugs.
-- [`/code-review`](../../skills/han.core/code-review.md). Conditionally dispatches this agent.
+- [`/investigate`](../../skills/han.coding/investigate.md). Dispatches this agent for data-flow and error-propagation bugs.
+- [`/code-review`](../../skills/han.coding/code-review.md). Conditionally dispatches this agent.
 - [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Dispatches this agent by signal when plan sections describe runtime behavior, data flow, error propagation, or state.

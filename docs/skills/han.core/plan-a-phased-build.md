@@ -37,7 +37,7 @@ Operator documentation for the `/plan-a-phased-build` skill in the han plugin. T
 - **Comparing two artifacts.** Use [`/gap-analysis`](./gap-analysis.md) when the question is *"what's missing from X compared to Y."* This skill assumes the gap is already identified (or otherwise described) and orders the build to close it.
 - **Refining or stress-testing an existing plan.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for multi-pass review of a plan you have already drafted. This skill produces a new outline. It does not iterate on one in place.
 - **Recording an architectural decision.** Use [`/architectural-decision-record`](./architectural-decision-record.md) for ADRs. This skill produces a build sequence, not a record of a single decision and its alternatives.
-- **Investigating runtime bugs or failures.** Use [`/investigate`](./investigate.md) for evidence-based root-cause work on a defect.
+- **Investigating runtime bugs or failures.** Use [`/investigate`](../han.coding/investigate.md) for evidence-based root-cause work on a defect.
 - **Documenting an already-built feature.** Use [`/project-documentation`](./project-documentation.md) for descriptive docs of features, systems, and components that exist. This skill plans work yet to be built.
 
 ## How to invoke it

@@ -99,7 +99,7 @@ URL: https://en.wikipedia.org/wiki/Red_team
 - [Plugin landing page](../../../README.md). The front door.
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). The sibling agent the validator usually attacks. Investigators gather, validators falsify.
-- [`/investigate`](../../skills/han.core/investigate.md). Always dispatches this agent after the fix plan is drafted.
+- [`/investigate`](../../skills/han.coding/investigate.md). Always dispatches this agent after the fix plan is drafted.
 - [`/research`](../../skills/han.core/research.md). Always dispatches this agent as the adversarial-validation step at the end of every research pass, attacking the recommendation and its sources.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Required swarm role at every size. The swarm runs by default.
 - [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Dispatches this agent in team mode.

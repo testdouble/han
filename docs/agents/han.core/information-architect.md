@@ -153,8 +153,8 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`/plan-a-phased-build`](../../skills/han.core/plan-a-phased-build.md). Dispatches the agent at runtime against every rendered build-phase outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension before presenting the document to you.
-- [`/coding-standard`](../../skills/han.core/coding-standard.md). Dispatches this agent to audit the draft standard for findability and scannability.
-- [`/test-planning`](../../skills/han.core/test-planning.md). Dispatches this agent to confirm the plan leads with plain language.
+- [`/coding-standard`](../../skills/han.coding/coding-standard.md). Dispatches this agent to audit the draft standard for findability and scannability.
+- [`/test-planning`](../../skills/han.coding/test-planning.md). Dispatches this agent to confirm the plan leads with plain language.
 - [`/project-documentation`](../../skills/han.core/project-documentation.md). Dispatches this agent to audit the information architecture of the docs.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Dispatches this agent to design the report template.
 - [`user-experience-designer`](./user-experience-designer.md). The sibling agent for live UI surfaces. Dispatch both in parallel when a docs site blends content and interactive navigation.

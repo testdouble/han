@@ -97,5 +97,5 @@ URL: https://go.dev/talks/2012/waza.slide
 - [`software-architect`](./software-architect.md). Synthesizes findings into recommendations.
 - [`system-architect`](./system-architect.md). Sibling for cross-service distributed coordination concerns.
 - [`/architectural-analysis`](../../skills/han.core/architectural-analysis.md). Always dispatches this agent.
-- [`/code-review`](../../skills/han.core/code-review.md), [`/test-planning`](../../skills/han.core/test-planning.md), [`/investigate`](../../skills/han.core/investigate.md). Conditionally dispatch this agent based on file signals.
+- [`/code-review`](../../skills/han.coding/code-review.md), [`/test-planning`](../../skills/han.coding/test-planning.md), [`/investigate`](../../skills/han.coding/investigate.md). Conditionally dispatch this agent based on file signals.
 - [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Dispatches this agent by signal when plan sections touch concurrent access, race conditions, or async coordination.

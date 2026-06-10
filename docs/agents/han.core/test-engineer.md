@@ -106,8 +106,8 @@ URL: http://www.growing-object-oriented-software.com/
 - [YAGNI](../../yagni.md). The Speculative Test rule.
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`edge-case-explorer`](./edge-case-explorer.md). Sibling agent for boundary values and failure modes. `/test-planning` runs both in parallel.
-- [`/test-planning`](../../skills/han.core/test-planning.md). Always dispatches this agent.
-- [`/code-review`](../../skills/han.core/code-review.md). Conditionally dispatches this agent.
+- [`/test-planning`](../../skills/han.coding/test-planning.md). Always dispatches this agent.
+- [`/code-review`](../../skills/han.coding/code-review.md). Conditionally dispatches this agent.
 - [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Dispatches this agent for the implementation plan's testing strategy.
 - [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Includes this agent in its default spec-stage roster.
 - [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Makes this agent available as a specialist in spec mode.

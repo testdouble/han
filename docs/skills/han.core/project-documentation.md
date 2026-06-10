@@ -12,7 +12,7 @@ Operator documentation for the `/project-documentation` skill in the han plugin.
 
 ## Key concepts
 
-- **Guard check.** If the topic is really an architectural decision, the skill suggests [`/architectural-decision-record`](./architectural-decision-record.md) instead. If it is a convention, it suggests [`/coding-standard`](./coding-standard.md). Only real feature or system documentation proceeds.
+- **Guard check.** If the topic is really an architectural decision, the skill suggests [`/architectural-decision-record`](./architectural-decision-record.md) instead. If it is a convention, it suggests [`/coding-standard`](../han.coding/coding-standard.md). Only real feature or system documentation proceeds.
 - **Codebase exploration in parallel.** Two or three `codebase-explorer` agents run in parallel (entry points and core logic, data models and config, tests and existing docs) and merge into a unified numbered discovery summary (D1, D2, D3…).
 - **Real code, real paths.** Examples come from actual source files. Paths are absolute from the repo root.
 - **Content audit when updating.** When updating a doc or migrating content from elsewhere, the skill dispatches `content-auditor` to classify every fact as Present / Correctly Removed / Missing, then restores missing facts.
@@ -32,7 +32,7 @@ Operator documentation for the `/project-documentation` skill in the han plugin.
 
 - **Technology stack discovery.** Use [`/project-discovery`](./project-discovery.md) to detect languages, frameworks, and tooling.
 - **Architectural decisions.** Use [`/architectural-decision-record`](./architectural-decision-record.md).
-- **Coding conventions.** Use [`/coding-standard`](./coding-standard.md).
+- **Coding conventions.** Use [`/coding-standard`](../han.coding/coding-standard.md).
 - **PR descriptions.** Use [`/update-pr-description`](../han.github/update-pr-description.md).
 - **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures what to do when an alert fires or a known failure mode occurs; project documentation describes how the feature or system works.
 
@@ -120,7 +120,7 @@ URL: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/project-discovery`](./project-discovery.md). Run first. The documentation skill reads the discovery reference to find the docs directory and stack language.
 - [`/architectural-decision-record`](./architectural-decision-record.md). Use for decisions rather than system documentation.
-- [`/coding-standard`](./coding-standard.md). Use for rules rather than descriptions.
+- [`/coding-standard`](../han.coding/coding-standard.md). Use for rules rather than descriptions.
 - [`codebase-explorer`](../../agents/han.core/codebase-explorer.md). Dispatched in parallel for code discovery.
 - [`content-auditor`](../../agents/han.core/content-auditor.md). Dispatched in update mode to ensure no facts are lost.
 - [`information-architect`](../../agents/han.core/information-architect.md). Dispatched before verification to audit findability, scannability, and section ordering.

@@ -33,8 +33,8 @@ Operator documentation for the `/runbook` skill in the han plugin. This document
 
 - **Feature or system documentation.** Use [`/project-documentation`](./project-documentation.md). That skill describes what a feature does and how it works; this skill describes what to do when an operational scenario occurs.
 - **An architectural or design decision.** Use [`/architectural-decision-record`](./architectural-decision-record.md). An ADR records a decision and its alternatives; a runbook captures an operational procedure.
-- **Coding rules or conventions.** Use [`/coding-standard`](./coding-standard.md).
-- **An incident investigation in flight.** Use [`/investigate`](./investigate.md) for evidence-based root-cause work. Run `/runbook` after the investigation lands a procedure that the team will reuse.
+- **Coding rules or conventions.** Use [`/coding-standard`](../han.coding/coding-standard.md).
+- **An incident investigation in flight.** Use [`/investigate`](../han.coding/investigate.md) for evidence-based root-cause work. Run `/runbook` after the investigation lands a procedure that the team will reuse.
 - **A speculative runbook for an alert that has not fired.** The skill's YAGNI preflight will defer it. Wait until the alert actually fires or until evidence accumulates.
 
 ## How to invoke it
@@ -145,7 +145,7 @@ URL: [`docs/research/runbook-skill-research.md`](../../research/runbook-skill-re
 - [YAGNI](../../yagni.md). The evidence-based rule the skill applies before writing a runbook. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Evidence](../../evidence.md). The companion rule the skill applies to the citations that ground the scenario: trust classes, the corroboration gate, and the no-evidence label.
 - [Skills Index](../README.md). All skills, grouped by purpose.
-- [`/investigate`](./investigate.md). The investigation skill that often produces a procedure worth capturing as a runbook. Investigate first, then capture.
+- [`/investigate`](../han.coding/investigate.md). The investigation skill that often produces a procedure worth capturing as a runbook. Investigate first, then capture.
 - [`/project-documentation`](./project-documentation.md). For feature and system docs. Pair when a runbook needs background a feature doc already provides.
 - [`/architectural-decision-record`](./architectural-decision-record.md). For decisions that produce the system the runbook operates on.
 - [`information-architect`](../../agents/han.core/information-architect.md). Reviewed the runbook output template for progressive disclosure during the skill's design pass.

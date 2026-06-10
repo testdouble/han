@@ -1,6 +1,6 @@
 # /code-review
 
-Operator documentation for the `/code-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/code-review/SKILL.md`](../../../han.core/skills/code-review/SKILL.md).
+Operator documentation for the `/code-review` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.coding/skills/code-review/SKILL.md`](../../../han.coding/skills/code-review/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
 
@@ -39,10 +39,10 @@ Operator documentation for the `/code-review` skill in the han plugin. This docu
 **Do not invoke for:**
 
 - **Posting the review to a GitHub PR.** Use [`/post-code-review-to-pr`](../han.github/post-code-review-to-pr.md). It delegates to this skill and then posts the review as PR comments.
-- **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment across a module.
+- **Architectural analysis.** Use [`/architectural-analysis`](../han.core/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment across a module.
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial validation.
 - **Test planning in isolation.** Use [`/test-planning`](./test-planning.md) when you want a prioritized test plan without a full correctness review.
-- **Plan review.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for reviewing a work plan, not code.
+- **Plan review.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md) for reviewing a work plan, not code.
 - **Feedback on Han's own skills.** Use [`/han-feedback`](../han.feedback/han-feedback.md) to capture post-session feedback on the Han skills you ran.
 
 ## How to invoke it
@@ -142,7 +142,7 @@ The skill walks a ten-step process (Step 1.5 is a context loader inserted betwee
 
 ## YAGNI
 
-YAGNI in `/code-review` is **advisory-only** and runs as a two-pass procedure. **Pass 1, evidence test:** for every speculative addition (defensive code, single-implementation interfaces, configuration knobs no caller sets, instrumentation for non-flowing telemetry), check whether the diff contains evidence of need from one of the acceptable evidence types in [`yagni-rule.md`](../../../han.core/references/yagni-rule.md). When evidence is present, do not flag. **Pass 2, anti-pattern check:** only items that fail Pass 1 are matched against the named anti-patterns; matches become `YAGNI-###` findings whose body names the failing evidence type, the matched anti-pattern, and the simpler form considered.
+YAGNI in `/code-review` is **advisory-only** and runs as a two-pass procedure. **Pass 1, evidence test:** for every speculative addition (defensive code, single-implementation interfaces, configuration knobs no caller sets, instrumentation for non-flowing telemetry), check whether the diff contains evidence of need from one of the acceptable evidence types in [`yagni-rule.md`](../../../han.coding/references/yagni-rule.md). When evidence is present, do not flag. **Pass 2, anti-pattern check:** only items that fail Pass 1 are matched against the named anti-patterns; matches become `YAGNI-###` findings whose body names the failing evidence type, the matched anti-pattern, and the simpler form considered.
 
 A YAGNI finding alone does not block a clean review; the posture is *make the cost of inclusion visible*, not *reject the change*. Critical-path correctness, security, and data-integrity findings are unaffected by this advisory posture and follow the standard severity rules. In Mode B and Mode C, the YAGNI checklist is skipped unless the user explicitly requests it, since the diff signal that distinguishes introduced code from pre-existing code is absent.
 
@@ -177,10 +177,10 @@ URL: https://itrevolution.com/product/accelerate/
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/post-code-review-to-pr`](../han.github/post-code-review-to-pr.md). Wraps this skill and posts the review to a GitHub PR.
 - [`/investigate`](./investigate.md). Next step when a CRIT finding hides a bug whose root cause needs deeper analysis.
-- [`/architectural-analysis`](./architectural-analysis.md). Run alongside when the change touches module boundaries.
+- [`/architectural-analysis`](../han.core/architectural-analysis.md). Run alongside when the change touches module boundaries.
 - [Sizing](../../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`junior-developer`](../../agents/han.core/junior-developer.md), [`adversarial-security-analyst`](../../agents/han.core/adversarial-security-analyst.md). The two agents this skill always dispatches.
 - [`test-engineer`](../../agents/han.core/test-engineer.md), [`edge-case-explorer`](../../agents/han.core/edge-case-explorer.md), [`structural-analyst`](../../agents/han.core/structural-analyst.md), [`behavioral-analyst`](../../agents/han.core/behavioral-analyst.md), [`concurrency-analyst`](../../agents/han.core/concurrency-analyst.md). Conditional dispatches that join the roster when their signal appears in the file list.
 - [`data-engineer`](../../agents/han.core/data-engineer.md), [`devops-engineer`](../../agents/han.core/devops-engineer.md). Conditional dispatches for changes touching schemas/migrations/queries (data) or infra/CI/observability (devops).
 - [`on-call-engineer`](../../agents/han.core/on-call-engineer.md). Conditional dispatch when the change adds or modifies application source with runtime resilience surface (outbound calls, retry logic, queue/buffer handling, async/await code, error-handling on failure paths, idempotency, schema migrations co-deployed with dependent code, new production code paths). Hard boundary against `devops-engineer`: this agent reads application source only.
-- [`SKILL.md` for /code-review](../../../han.core/skills/code-review/SKILL.md). The internal process definition.
+- [`SKILL.md` for /code-review](../../../han.coding/skills/code-review/SKILL.md). The internal process definition.

@@ -31,7 +31,7 @@ Operator documentation for the `/issue-triage` skill in the han plugin. This doc
 
 **Do not invoke for:**
 
-- **Root cause analysis.** Use [`/investigate`](./investigate.md) to trace symptoms to code-level evidence.
+- **Root cause analysis.** Use [`/investigate`](../han.coding/investigate.md) to trace symptoms to code-level evidence.
 - **Feature planning.** Use [`/plan-a-feature`](./plan-a-feature.md) when the problem is well-defined and you are ready to spec the solution.
 - **Implementation planning.** Use [`/plan-implementation`](./plan-implementation.md) when you have a feature spec and are ready to plan the build.
 
@@ -171,7 +171,7 @@ The skill dispatches no sub-agents. It reads the report and, only to sharpen the
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
-- [`/investigate`](./investigate.md). The natural next skill when the issue is a bug or failure with enough context to trace.
+- [`/investigate`](../han.coding/investigate.md). The natural next skill when the issue is a bug or failure with enough context to trace.
 - [`/research`](./research.md). The natural next skill when the gap is a problem-space unknown — options, prior art, build-vs-buy, or which direction to take — rather than a missing user-supplied fact.
 - [`/plan-a-feature`](./plan-a-feature.md). The natural next skill when the issue is a feature request with enough context to spec.
 - [`/plan-implementation`](./plan-implementation.md). The next skill when triage confirms a well-defined problem and a spec already exists.

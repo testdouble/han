@@ -42,7 +42,7 @@ A 20+ year on-call veteran that reads application source code in a change and pr
 - **Module-boundary data flow or error propagation across modules.** Use [`behavioral-analyst`](./behavioral-analyst.md). This agent operates at the call site, not the module boundary.
 - **Schema, index, query, or migration design.** Use [`data-engineer`](./data-engineer.md). This agent flags migrations co-deployed with dependent code as a deployment-safety pattern, but it does not evaluate the schema itself.
 - **Risk scoring across architectural findings.** Use [`risk-analyst`](./risk-analyst.md). This agent produces its own severity tied to the named failure mode.
-- **Bug triage or root-cause investigation after an incident.** Use [`/investigate`](../../skills/han.core/investigate.md). This agent is for prevention before the page, not diagnosis after.
+- **Bug triage or root-cause investigation after an incident.** Use [`/investigate`](../../skills/han.coding/investigate.md). This agent is for prevention before the page, not diagnosis after.
 - **Writing or iterating on the code.** This agent produces a findings report. It does not modify code.
 
 ## How to invoke it

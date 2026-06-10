@@ -1,6 +1,6 @@
 # han: Project Map
 
-Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han.core` (the skills and agents), `han.coding` (code-writing and execution skills, currently the `tdd` and `refactor` skills; depends on `han.core` and is bundled by the `han` meta-plugin), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs `han.core`, `han.coding`, `han.github`, and `han.reporting` via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), `han.atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence documentation and work-items-to-Jira — which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin), and `han.plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
+Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han.core` (the skills and agents), `han.coding` (the coding skills you reach for while working in code: writing it with `tdd` and `refactor`, plus reviewing, testing, investigating, and standardizing it with `code-review`, `test-planning`, `investigate`, and `coding-standard`; depends on `han.core` and is bundled by the `han` meta-plugin), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs `han.core`, `han.coding`, `han.github`, and `han.reporting` via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), `han.atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence documentation and work-items-to-Jira — which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin), and `han.plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
 
 ## Repository layout
 
@@ -15,17 +15,17 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 ├── han/                # Meta-plugin: no components of its own; depends on han.core + han.coding + han.github + han.reporting
 │   └── .claude-plugin/
 │       └── plugin.json
-├── han.core/           # Core plugin: planning, investigation, review, documentation
+├── han.core/           # Core plugin: planning, research, analysis, documentation, operations + all agents
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
-├── han.coding/         # Coding plugin: tdd, refactor (code-writing/execution; depends on han.core; bundled by the han meta-plugin)
+├── han.coding/         # Coding plugin: tdd, refactor, code-review, test-planning, investigate, coding-standard (the skills for working in code; depends on han.core; bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   ├── skills/         # Code-writing skill directories, each with SKILL.md + references/ + scripts/
-│   └── references/     # Cross-skill reference files vendored for han.coding skills (e.g. yagni-rule.md)
+│   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
+│   └── references/     # Cross-skill reference files vendored for han.coding skills (yagni-rule.md, evidence-rule.md)
 ├── han.github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -88,7 +88,7 @@ The plugins are shipped from `han.core/`, `han.coding/`, `han.github/`, `han.rep
 
 ### Skill catalog (`docs/skills/`)
 
-- **[docs/skills/README.md](./docs/skills/README.md).** Index of all skills grouped by purpose (planning, building, investigation and research, review, discovery, conventions, reporting, operations). Start here when looking for the right slash command.
+- **[docs/skills/README.md](./docs/skills/README.md).** Index of all skills grouped by the plugin that ships them (with `han.core` sub-grouped by purpose: planning, triage and research, analysis, discovery, conventions, operations). Start here when looking for the right slash command.
 - **[docs/skills/plan-a-feature.md](./docs/skills/han.core/plan-a-feature.md).** Spec a feature from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
 - **[docs/skills/plan-implementation.md](./docs/skills/han.core/plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
 - **[docs/skills/plan-a-phased-build.md](./docs/skills/han.core/plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc) into a numbered sequence of vertical-slice phases, each independently demoable.
@@ -99,16 +99,16 @@ The plugins are shipped from `han.core/`, `han.coding/`, `han.github/`, `han.rep
 - **[docs/skills/tdd.md](./docs/skills/han.coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. An execution skill: it writes code, applying coding standards and ADRs in green and refactor.
 - **[docs/skills/refactor.md](./docs/skills/han.coding/refactor.md).** Restructure existing code without changing its behavior: a named target, a green suite over that target before any edit, small named refactorings verified step by step, hard stop rules on scope spread. An execution skill: it writes code. Cleanup inside an active TDD cycle belongs to `/tdd`'s refactor step.
 - **[docs/skills/issue-triage.md](./docs/skills/han.core/issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill.
-- **[docs/skills/investigate.md](./docs/skills/han.core/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
+- **[docs/skills/investigate.md](./docs/skills/han.coding/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 - **[docs/skills/research.md](./docs/skills/han.core/research.md).** Research an open-ended question (options, prior art, how something works) across the codebase and the open web, ending at an adversarially-validated recommendation. The question-shaped sibling of investigate.
-- **[docs/skills/code-review.md](./docs/skills/han.core/code-review.md).** Comprehensive code review of the current branch or specified files. Dispatches a domain-aware roster that scales with sizing.
+- **[docs/skills/code-review.md](./docs/skills/han.coding/code-review.md).** Comprehensive code review of the current branch or specified files. Dispatches a domain-aware roster that scales with sizing.
 - **[docs/skills/post-code-review-to-pr.md](./docs/skills/han.github/post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments after a clarity check.
 - **[docs/skills/architectural-analysis.md](./docs/skills/han.core/architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment.
 - **[docs/skills/gap-analysis.md](./docs/skills/han.core/gap-analysis.md).** Compare two artifacts (spec vs. implementation, PRD vs. shipped feature) and produce a plain-language report indexed by stable gap IDs.
-- **[docs/skills/test-planning.md](./docs/skills/han.core/test-planning.md).** Produce a prioritized test plan for a branch or directory.
+- **[docs/skills/test-planning.md](./docs/skills/han.coding/test-planning.md).** Produce a prioritized test plan for a branch or directory.
 - **[docs/skills/project-discovery.md](./docs/skills/han.core/project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Write a static reference other skills can consume.
 - **[docs/skills/project-documentation.md](./docs/skills/han.core/project-documentation.md).** Create and maintain documentation for features, systems, and components.
-- **[docs/skills/coding-standard.md](./docs/skills/han.core/coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
+- **[docs/skills/coding-standard.md](./docs/skills/han.coding/coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
 - **[docs/skills/architectural-decision-record.md](./docs/skills/han.core/architectural-decision-record.md).** Create, extract, or convert architectural decision records (ADRs).
 - **[docs/skills/update-pr-description.md](./docs/skills/han.github/update-pr-description.md).** Generate a PR description from the current branch's changes.
 - **[docs/skills/work-items-to-issues.md](./docs/skills/han.github/work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked and no label or assignee by default.

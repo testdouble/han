@@ -32,7 +32,7 @@ Operator documentation for the `software-architect` agent in the han plugin. Thi
 - **Cross-service / bounded-context topology.** Use [`system-architect`](./system-architect.md). Context-map relationships, integration patterns, data ownership across services, failure-domain containment.
 - **Discovering findings.** Use [`structural-analyst`](./structural-analyst.md), [`behavioral-analyst`](./behavioral-analyst.md), or [`concurrency-analyst`](./concurrency-analyst.md). This agent synthesizes. It does not discover.
 - **Risk prioritization.** Use [`risk-analyst`](./risk-analyst.md). This agent consumes risk assessments. It does not produce them.
-- **File-level code review.** Use [`/code-review`](../../skills/han.core/code-review.md). This agent does not grade individual files for correctness, style, or test coverage.
+- **File-level code review.** Use [`/code-review`](../../skills/han.coding/code-review.md). This agent does not grade individual files for correctness, style, or test coverage.
 - **Production readiness.** Use [`devops-engineer`](./devops-engineer.md). Deployment, observability, rollout, and SLO concerns live there.
 - **Schema, index, or query design.** Use [`data-engineer`](./data-engineer.md).
 - **Exploit-path analysis.** Use [`adversarial-security-analyst`](./adversarial-security-analyst.md).

@@ -33,9 +33,9 @@ Operator documentation for the `/architectural-analysis` skill in the han plugin
 
 **Do not invoke for:**
 
-- **Investigating a specific bug.** Use [`/investigate`](./investigate.md) for evidence-based root-cause work.
-- **File-level correctness review.** Use [`/code-review`](./code-review.md) for per-file correctness, testing, and compliance.
-- **Test planning.** Use [`/test-planning`](./test-planning.md) for a coverage-and-edge-case plan.
+- **Investigating a specific bug.** Use [`/investigate`](../han.coding/investigate.md) for evidence-based root-cause work.
+- **File-level correctness review.** Use [`/code-review`](../han.coding/code-review.md) for per-file correctness, testing, and compliance.
+- **Test planning.** Use [`/test-planning`](../han.coding/test-planning.md) for a coverage-and-edge-case plan.
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from scratch.
 - **Documenting an existing module.** Use [`/project-documentation`](./project-documentation.md).
 - **Architectural decision records.** Use [`/architectural-decision-record`](./architectural-decision-record.md) to capture a decision the architectural analysis motivated.
@@ -174,6 +174,6 @@ URL: https://www.domainlanguage.com/ddd/
 - [`software-architect`](../../agents/han.core/software-architect.md). The adversarial synthesis agent that produces intra-codebase recommendations and pseudocode sketches (always dispatched by this skill).
 - [`system-architect`](../../agents/han.core/system-architect.md). The adversarial synthesis agent that produces cross-service / bounded-context recommendations (dispatched at large size when a system-seam signal is present; otherwise dispatch separately).
 - [`/architectural-decision-record`](./architectural-decision-record.md). Record the architectural decisions the analysis motivates.
-- [`/investigate`](./investigate.md). Run when a finding reveals a concrete runtime bug.
+- [`/investigate`](../han.coding/investigate.md). Run when a finding reveals a concrete runtime bug.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Stress-test the refactoring plan that implements the recommendations.
 - [`SKILL.md` for /architectural-analysis](../../../han.core/skills/architectural-analysis/SKILL.md). The internal process definition.

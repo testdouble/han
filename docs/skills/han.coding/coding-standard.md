@@ -1,6 +1,6 @@
 # /coding-standard
 
-Operator documentation for the `/coding-standard` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/coding-standard/SKILL.md`](../../../han.core/skills/coding-standard/SKILL.md).
+Operator documentation for the `/coding-standard` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.coding/skills/coding-standard/SKILL.md`](../../../han.coding/skills/coding-standard/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md) · [Evidence](../../evidence.md)
 
@@ -31,11 +31,11 @@ Operator documentation for the `/coding-standard` skill in the han plugin. This 
 
 **Do not invoke for:**
 
-- **Architectural decisions.** Use [`/architectural-decision-record`](./architectural-decision-record.md) to record a decision. A coding standard encodes a rule; an ADR records a choice and its alternatives.
-- **Feature documentation.** Use [`/project-documentation`](./project-documentation.md) for describing how a system works.
+- **Architectural decisions.** Use [`/architectural-decision-record`](../han.core/architectural-decision-record.md) to record a decision. A coding standard encodes a rule; an ADR records a choice and its alternatives.
+- **Feature documentation.** Use [`/project-documentation`](../han.core/project-documentation.md) for describing how a system works.
 - **Style rules that a linter or formatter can enforce.** Configure the tool. Do not write a standard that duplicates it.
-- **Open-ended research not destined for a standard.** Use [`/research`](./research.md) to survey options and prior art when the output you want is a recommendation, not an enforceable rule.
-- **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures the procedure for an alert or incident; a coding standard encodes a rule the code itself must follow.
+- **Open-ended research not destined for a standard.** Use [`/research`](../han.core/research.md) to survey options and prior art when the output you want is a recommendation, not an enforceable rule.
+- **Runbooks for operational scenarios.** Use [`/runbook`](../han.core/runbook.md). A runbook captures the procedure for an alert or incident; a coding standard encodes a rule the code itself must follow.
 
 ## How to invoke it
 
@@ -58,7 +58,7 @@ Example prompts:
 
 A coding-standard document in the project's coding-standards directory, plus integration:
 
-- **`docs/coding-standards/{top-level}[-{second-level}]-{name}.md`.** The standard itself, following the template at [`references/template.md`](../../../han.core/skills/coding-standard/references/template.md). The hierarchy prefix is discovered from existing standards and the project's languages, frameworks, and subsystems so related standards sort together. The file opens with a YAML frontmatter block carrying the approved `paths:` globs, followed by metadata (Status, Applies To, Date Created, Last Updated), an Introduction, the Standard (rules in testable form), Correct-usage examples from real code, What-to-avoid examples, Rationale, and Additional Resources.
+- **`docs/coding-standards/{top-level}[-{second-level}]-{name}.md`.** The standard itself, following the template at [`references/template.md`](../../../han.coding/skills/coding-standard/references/template.md). The hierarchy prefix is discovered from existing standards and the project's languages, frameworks, and subsystems so related standards sort together. The file opens with a YAML frontmatter block carrying the approved `paths:` globs, followed by metadata (Status, Applies To, Date Created, Last Updated), an Introduction, the Standard (rules in testable form), Correct-usage examples from real code, What-to-avoid examples, Rationale, and Additional Resources.
 - **One or more entries in per-file-type index files under `.claude/rules/coding-standards/`.** The skill maps the standard's approved `paths:` globs to existing index files (or creates a new one when no bucket fits) and adds the new standard as a single-bullet entry: the standard's title, a relative link back to the canonical doc, and a 1-3 sentence description of what the standard covers and when a reader should pull the full file. A cross-cutting standard whose `paths:` spans multiple file types is listed in each matching index; the canonical file remains in one place. The skill never adds the standard as an enumerated entry in `CLAUDE.md` (or `AGENTS.md`); it adds a one-time pointer paragraph to the memory file only if the file does not already reference `.claude/rules/coding-standards/`.
 - **Cross-references.** Links to related standards, ADRs, and feature docs, added bidirectionally.
 - **Source-document handling** (conversion mode). If the source is fully subsumed, it is deleted and references updated. If it retains useful content, a link to the new standard is added.
@@ -101,7 +101,7 @@ The skill walks a ten-step process:
 4. **Gather context.** Topic, scope, motivation. Dispatch two `codebase-explorer` agents in parallel for implementation patterns and existing standards/ADRs.
 5. **Convert source document** (conversion mode only). Map sections using the ADR-conversion-mapping reference; handle the source file (delete if fully subsumed, link if partial).
 6. **Write the coding standard.** Hierarchically-prefixed filename (top-level subsystem/framework, optional second level), fill the template with real code examples and actual project language identifiers. Propose a `paths:` glob list scoped to what the standard governs, get user approval, and write it as YAML frontmatter at the top of the file.
-7. **Integration.** Determine which per-file-type index files under `.claude/rules/coding-standards/` the standard belongs in (based on the buckets discovered in Step 3.7); for each, create from the [index-file template](../../../han.core/skills/coding-standard/references/index-file-template.md) or update in place to add a bullet entry with the standard's title, a relative link to the canonical doc, and a 1-3 sentence description of what it covers and when to pull it; ensure the memory file's pointer paragraph exists (added once if missing, never enumerating individual standards); add cross-references in both directions. In update-mode, the skill deltas the standard's entry across index files when its `paths:` changed: removed from buckets that no longer match, added to buckets that newly match, description updated in place when scope shifted.
+7. **Integration.** Determine which per-file-type index files under `.claude/rules/coding-standards/` the standard belongs in (based on the buckets discovered in Step 3.7); for each, create from the [index-file template](../../../han.coding/skills/coding-standard/references/index-file-template.md) or update in place to add a bullet entry with the standard's title, a relative link to the canonical doc, and a 1-3 sentence description of what it covers and when to pull it; ensure the memory file's pointer paragraph exists (added once if missing, never enumerating individual standards); add cross-references in both directions. In update-mode, the skill deltas the standard's entry across index files when its `paths:` changed: removed from buckets that no longer match, added to buckets that newly match, description updated in place when scope shifted.
 8. **Adoption-bias audit.** Six structural checks against over-application: primary-rationale visibility, a decision tree near the top, a substantive *When NOT to Apply* section, surfaced (not buried) exceptions, code-example comments that match the primary rationale, and a verification step for defensive adoptions.
 9. **Adversarial review.** Dispatch `junior-developer` for ambiguity and assumption checks and `information-architect` for findability and structure. Apply actionable edits.
 10. **Verification.** Re-read the file, confirm metadata, template structure, `paths:` frontmatter, index-file membership across every matching bucket (with the entry's link resolving back to the canonical doc and the description in the 1-3 sentence shape that names both coverage and when-to-pull), real file paths in examples, distinct Correct-vs-Avoid examples, that no enumerated entry was added to the memory file, and that Step 8 and Step 9 edits were applied.
@@ -148,8 +148,8 @@ URL: https://code.claude.com/docs/en/memory
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Evidence](../../evidence.md). The companion rule the skill applies to the standard's supporting evidence: trust classes, the corroboration gate for web sources, and the no-evidence label.
 - [Skills Index](../README.md). All skills, grouped by purpose.
-- [`/architectural-decision-record`](./architectural-decision-record.md). For decisions rather than rules. Link the standard to the ADR when the rule embeds a choice.
-- [`/project-documentation`](./project-documentation.md). For system and feature documentation that is not a rule.
+- [`/architectural-decision-record`](../han.core/architectural-decision-record.md). For decisions rather than rules. Link the standard to the ADR when the rule embeds a choice.
+- [`/project-documentation`](../han.core/project-documentation.md). For system and feature documentation that is not a rule.
 - [`/code-review`](./code-review.md). Reads standards during every review. Violations become findings.
 - [`codebase-explorer`](../../agents/han.core/codebase-explorer.md), [`junior-developer`](../../agents/han.core/junior-developer.md), [`information-architect`](../../agents/han.core/information-architect.md). The agents this skill dispatches during evidence gathering and adversarial review.
-- [`SKILL.md` for /coding-standard](../../../han.core/skills/coding-standard/SKILL.md). The internal process definition.
+- [`SKILL.md` for /coding-standard](../../../han.coding/skills/coding-standard/SKILL.md). The internal process definition.

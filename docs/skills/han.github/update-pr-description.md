@@ -31,7 +31,7 @@ Operator documentation for the `/update-pr-description` skill in the han plugin.
 **Do not invoke for:**
 
 - **Posting a code review to the PR.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md).
-- **Running a local code review without touching the PR.** Use [`/code-review`](../han.core/code-review.md).
+- **Running a local code review without touching the PR.** Use [`/code-review`](../han.coding/code-review.md).
 - **Writing the initial feature specification.** Use [`/plan-a-feature`](../han.core/plan-a-feature.md).
 
 ## How to invoke it
@@ -103,6 +103,6 @@ URL: https://martinfowler.com/articles/feature-toggles.html
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/post-code-review-to-pr`](./post-code-review-to-pr.md). Post a code review to the same PR.
-- [`/code-review`](../han.core/code-review.md). Local code review without touching GitHub.
+- [`/code-review`](../han.coding/code-review.md). Local code review without touching GitHub.
 - [`junior-developer`](../../agents/han.core/junior-developer.md). Authors the PR description with a fresh-reviewer perspective.
 - [`SKILL.md` for /update-pr-description](../../../han.github/skills/update-pr-description/SKILL.md). The internal process definition.
