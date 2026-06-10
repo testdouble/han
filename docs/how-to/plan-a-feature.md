@@ -36,7 +36,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 
 ### Phase 1: Spec the feature
 
-1. **Run [`/plan-a-feature`](../skills/han.core/plan-a-feature.md) with the rough idea and an output folder.** A template that works well:
+1. **Run [`/plan-a-feature`](../skills/han.planning/plan-a-feature.md) with the rough idea and an output folder.** A template that works well:
 
     > `/plan-a-feature on building out {feature idea}, using {reference} as a starting point. It needs to {behaviors and constraints}. Write the plan to {plan folder} as we go.`
 
@@ -53,7 +53,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 ### Phase 2: Finalize the spec for this slice
 
 1. **Pick the slice spec you are about to plan.** This step has two paths:
-    - **If the feature is phased**, run [`/plan-a-phased-build`](../skills/han.core/plan-a-phased-build.md) against the Phase 1 spec, then run `/plan-a-feature` again for the specific phase you are working on:
+    - **If the feature is phased**, run [`/plan-a-phased-build`](../skills/han.planning/plan-a-phased-build.md) against the Phase 1 spec, then run `/plan-a-feature` again for the specific phase you are working on:
 
         > `/plan-a-phased-build {plan folder}/feature-specification.md`
         >
@@ -63,7 +63,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 
     - **If the feature is not phased**, the spec from Phase 1 is already the slice spec. Skip to step 2.
 
-2. **Manually review the spec, then iterate.** Read what han produced. Look for anything that drifted from the original idea, anything you do not understand, and anything that contradicts a decision you remember making. Push back where needed. Then run [`/iterative-plan-review`](../skills/han.core/iterative-plan-review.md) to refute assumptions, correct inconsistencies, and surface gaps:
+2. **Manually review the spec, then iterate.** Read what han produced. Look for anything that drifted from the original idea, anything you do not understand, and anything that contradicts a decision you remember making. Push back where needed. Then run [`/iterative-plan-review`](../skills/han.planning/iterative-plan-review.md) to refute assumptions, correct inconsistencies, and surface gaps:
 
     > `/iterative-plan-review {slice spec file}`
 
@@ -71,7 +71,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 
 ### Phase 3: Plan the implementation
 
-1. **Run [`/plan-implementation`](../skills/han.core/plan-implementation.md).** A template that works well:
+1. **Run [`/plan-implementation`](../skills/han.planning/plan-implementation.md).** A template that works well:
 
     > `/plan-implementation {slice spec file}`
 
@@ -85,7 +85,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 
 ### Phase 4: Break the plan into work
 
-1. **Run [`/plan-work-items`](../skills/han.core/plan-work-items.md).** A template that works well:
+1. **Run [`/plan-work-items`](../skills/han.planning/plan-work-items.md).** A template that works well:
 
     > `/plan-work-items {implementation plan file}`
 
@@ -116,4 +116,4 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 - [`/code-review`](../skills/han.coding/code-review.md) is the right step after `/tdd` finishes a behavior and before you open a PR.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the right guide when the work is not a new feature but a fix.
 - [Research a decision](./research-a-decision.md) is the right guide when you are not ready to spec because the underlying decision (which library, which pattern, which approach) has not been made yet.
-- The skill long-form docs ([plan-a-feature](../skills/han.core/plan-a-feature.md), [plan-a-phased-build](../skills/han.core/plan-a-phased-build.md), [plan-implementation](../skills/han.core/plan-implementation.md), [iterative-plan-review](../skills/han.core/iterative-plan-review.md), [plan-work-items](../skills/han.core/plan-work-items.md), [tdd](../skills/han.coding/tdd.md)) cover each step in depth. The how-to tells you how they fit together; the long-form docs tell you what each one does on its own.
+- The skill long-form docs ([plan-a-feature](../skills/han.planning/plan-a-feature.md), [plan-a-phased-build](../skills/han.planning/plan-a-phased-build.md), [plan-implementation](../skills/han.planning/plan-implementation.md), [iterative-plan-review](../skills/han.planning/iterative-plan-review.md), [plan-work-items](../skills/han.planning/plan-work-items.md), [tdd](../skills/han.coding/tdd.md)) cover each step in depth. The how-to tells you how they fit together; the long-form docs tell you what each one does on its own.

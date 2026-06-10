@@ -1,6 +1,6 @@
 # /plan-a-phased-build
 
-Operator documentation for the `/plan-a-phased-build` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/plan-a-phased-build/SKILL.md`](../../../han.core/skills/plan-a-phased-build/SKILL.md).
+Operator documentation for the `/plan-a-phased-build` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.planning/skills/plan-a-phased-build/SKILL.md`](../../../han.planning/skills/plan-a-phased-build/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
 
@@ -203,4 +203,4 @@ URL: see [`information-architect` agent definition](../../../han.core/agents/inf
 - [`/plan-implementation`](./plan-implementation.md). Pair downstream once a phase is greenlit. The phase entry's *"What we build"* and *"Outcome to demonstrate"* become the implementation plan's behavioral spec. *"Preconditions to verify"* become Open Items.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Use to refine an *existing* outline that needs sharpening. This skill produces a new outline from scratch. `/iterative-plan-review` iterates on one in place.
 - [`/architectural-decision-record`](./architectural-decision-record.md). The sibling skill for recording an architectural decision. Use `/architectural-decision-record` when the question is *"what did we decide and why."* Use `/plan-a-phased-build` when the question is *"in what order do we build."*
-- [Build-phase outline template](../../../han.core/skills/plan-a-phased-build/references/build-phase-outline-template.md). The IA-reviewed template the skill renders. The template's front matter, anchor scheme, and section structure are the canonical reference for the outline's shape.
+- [Build-phase outline template](../../../han.planning/skills/plan-a-phased-build/references/build-phase-outline-template.md). The IA-reviewed template the skill renders. The template's front matter, anchor scheme, and section structure are the canonical reference for the outline's shape.

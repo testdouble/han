@@ -8,7 +8,7 @@ WHAT BELONGS IN THIS FILE
 This specification captures WHAT the feature does, for WHOM, and WHY — at a level a
 reader who has never opened the codebase can understand. It does NOT capture HOW the
 feature is built. Implementation detail belongs in the implementation plan
-(see `han.core:plan-implementation`), in the code itself, or — when a mechanic is
+(see `han.planning:plan-implementation`), in the code itself, or — when a mechanic is
 load-bearing for a behavior specified here — in the lazily-created
 [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md).
 

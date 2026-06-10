@@ -33,7 +33,7 @@ Operator documentation for the `/investigate` skill in the han plugin. This docu
 - **Code review.** Use [`/code-review`](./code-review.md) for a correctness, testing, and compliance audit of a branch.
 - **Architectural analysis.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment of a module.
 - **Test planning.** Use [`/test-planning`](./test-planning.md) when the gap is coverage, not a bug.
-- **Plan review.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md) for multi-pass review of an existing plan.
+- **Plan review.** Use [`/iterative-plan-review`](../han.planning/iterative-plan-review.md) for multi-pass review of an existing plan.
 - **Open-ended research.** Use [`/research`](../han.core/research.md) when nothing is broken and you want options, prior art, or how something works before committing to a direction.
 - **Feedback on Han's own skills.** Use [`/han-feedback`](../han.feedback/han-feedback.md) to capture post-session feedback on the Han skills you ran.
 
@@ -131,7 +131,7 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`adversarial-validator`](../../agents/han.core/adversarial-validator.md). The agent that challenges evidence and fix after the plan is drafted.
 - [Evidence](../../evidence.md). The canonical evidence rule the skill applies to every finding. Codebase findings stand on their citation; web-source context is subject to the corroboration gate when it drives the proposed fix; no-evidence states are labeled rather than guessed at.
 - [`concurrency-analyst`](../../agents/han.core/concurrency-analyst.md), [`behavioral-analyst`](../../agents/han.core/behavioral-analyst.md), [`data-engineer`](../../agents/han.core/data-engineer.md). Specialist analysts dispatched alongside the investigators when the symptom classification calls for them.
-- [`/iterative-plan-review`](../han.core/iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
+- [`/iterative-plan-review`](../han.planning/iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
 - [`/runbook`](../han.core/runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
 - [`SKILL.md` for /investigate](../../../han.coding/skills/investigate/SKILL.md). The internal process definition.

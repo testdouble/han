@@ -26,7 +26,7 @@ You have a feature idea and want a specification grounded in evidence, then a pl
 
 The full walkthrough, with prompts, decision points, and what to expect at each step, lives in **[How to plan a feature, end to end](./how-to/plan-a-feature.md)**. The skills in the loop, in order:
 
-[`/plan-a-feature`](./skills/han.core/plan-a-feature.md) → [`/stakeholder-summary`](./skills/han.reporting/stakeholder-summary.md) *(optional)* → [`/plan-a-phased-build`](./skills/han.core/plan-a-phased-build.md) *(optional)* → [`/plan-implementation`](./skills/han.core/plan-implementation.md) → [`/iterative-plan-review`](./skills/han.core/iterative-plan-review.md) *(optional)* → [`/plan-work-items`](./skills/han.core/plan-work-items.md) *(optional)* → [`/tdd`](./skills/han.coding/tdd.md) *(when you build it)*.
+[`/plan-a-feature`](./skills/han.planning/plan-a-feature.md) → [`/stakeholder-summary`](./skills/han.reporting/stakeholder-summary.md) *(optional)* → [`/plan-a-phased-build`](./skills/han.planning/plan-a-phased-build.md) *(optional)* → [`/plan-implementation`](./skills/han.planning/plan-implementation.md) → [`/iterative-plan-review`](./skills/han.planning/iterative-plan-review.md) *(optional)* → [`/plan-work-items`](./skills/han.planning/plan-work-items.md) *(optional)* → [`/tdd`](./skills/han.coding/tdd.md) *(when you build it)*.
 
 **You are done when:** you have a `feature-specification.md` and a `feature-implementation-plan.md` in the same folder, each with a cross-referenced decision log and review findings. If the feature was large enough to phase, you also have a `build-phase-outline.md` that orders the work into demoable vertical slices. When you build it, the code lands behavior by behavior through `/tdd`, with tests leading.
 
@@ -38,7 +38,7 @@ Something is broken. You want a root cause, not a guess.
 
 The full walkthrough, including how to bring in production logs and when to triage instead of investigating right away, lives in **[How to triage and investigate a bug](./how-to/triage-and-investigate-a-bug.md)**. The skills in the loop:
 
-[`/issue-triage`](./skills/han.core/issue-triage.md) *(as needed)* → [`/investigate`](./skills/han.coding/investigate.md) → [`/iterative-plan-review`](./skills/han.core/iterative-plan-review.md) *(optional)*.
+[`/issue-triage`](./skills/han.core/issue-triage.md) *(as needed)* → [`/investigate`](./skills/han.coding/investigate.md) → [`/iterative-plan-review`](./skills/han.planning/iterative-plan-review.md) *(optional)*.
 
 **You are done when:** you have a report that names the root cause with file-level evidence, and a fix plan that has survived adversarial review.
 
@@ -55,7 +55,7 @@ Start with the scope that matches:
 - **A whole module or subsystem** → **[`/architectural-analysis`](./skills/han.coding/architectural-analysis.md).** Always dispatches a spine of `structural-analyst`, `behavioral-analyst`, `risk-analyst`, and `software-architect` to examine coupling, data flow, risk, and SOLID alignment. Conditionally adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` when the focus area's signals call for them. The roster scales with the [size](./sizing.md), defaulting to small. For cross-service topology when `system-architect` is not auto-included, dispatch it separately.
 - **Tests you want to *plan*, not review** → **[`/test-planning`](./skills/han.coding/test-planning.md).** Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it. Produces a prioritized test plan.
 - **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](./skills/han.core/gap-analysis.md).** Compares two artifacts (current state vs. desired state) and produces a plain-language, stakeholder-readable report indexed by stable `G-NNN` gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default, including `junior-developer`'s actor-perspective sweep across human users, API callers, AI agents, and other actor types. Opt out with `no swarm` for the lightweight pass.
-- **A gap report or PRD that needs to be ordered into a phased build** → **[`/plan-a-phased-build`](./skills/han.core/plan-a-phased-build.md).** Splits the source artifact into a numbered sequence of vertical-slice build phases. Each phase is a thin end-to-end deliverable demoable to a real person, and each one builds on the prior. Dispatches `information-architect` against the rendered outline.
+- **A gap report or PRD that needs to be ordered into a phased build** → **[`/plan-a-phased-build`](./skills/han.planning/plan-a-phased-build.md).** Splits the source artifact into a numbered sequence of vertical-slice build phases. Each phase is a thin end-to-end deliverable demoable to a real person, and each one builds on the prior. Dispatches `information-architect` against the rendered outline.
 
 **You are done when:** you have a review artifact you trust, with findings tied to specific files, lines, and severity levels.
 
@@ -80,7 +80,7 @@ You have a question, not a bug and not yet a feature. You want the options, the 
 
 The full walkthrough, including how to capture the recommendation as an ADR so the team has a single canonical record, lives in **[How to research a decision and capture it](./how-to/research-a-decision.md)**. The skills in the loop:
 
-[`/research`](./skills/han.core/research.md) → [`/architectural-decision-record`](./skills/han.core/architectural-decision-record.md) → [`/plan-a-feature`](./skills/han.core/plan-a-feature.md) *(optional next step)*.
+[`/research`](./skills/han.core/research.md) → [`/architectural-decision-record`](./skills/han.core/architectural-decision-record.md) → [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md) *(optional next step)*.
 
 **You are done when:** you have a research report whose recommendation survived an adversarial pass, with every claim tied to a source you can check yourself, and the decision captured as an ADR. If the request was really a bug, a spec, a standard, an artifact comparison, or an architecture assessment, `/research` routes you to the skill that owns it instead.
 
@@ -90,15 +90,15 @@ The full walkthrough, including how to capture the recommendation as an ADR so t
 
 You can reference multiple skills in one prompt and Claude runs them in sequence, feeding each one's output into the next. A few that work:
 
-- *"Investigate why webhook deliveries are failing intermittently, then create a plan to fix it and iterate on it."* → [`/investigate`](./skills/han.coding/investigate.md) → [`/iterative-plan-review`](./skills/han.core/iterative-plan-review.md).
+- *"Investigate why webhook deliveries are failing intermittently, then create a plan to fix it and iterate on it."* → [`/investigate`](./skills/han.coding/investigate.md) → [`/iterative-plan-review`](./skills/han.planning/iterative-plan-review.md).
 - *"Scan this repo, document the auth system, and create a coding standard for how we handle tokens."* → [`/project-discovery`](./skills/han.core/project-discovery.md) → [`/project-documentation`](./skills/han.core/project-documentation.md) → [`/coding-standard`](./skills/han.coding/coding-standard.md).
 - *"Review my branch, then create an ADR for any architectural decisions in the diff."* → [`/code-review`](./skills/han.coding/code-review.md) → [`/architectural-decision-record`](./skills/han.core/architectural-decision-record.md).
-- *"Plan the retry feature, then plan the implementation, then create a test plan for it."* → [`/plan-a-feature`](./skills/han.core/plan-a-feature.md) → [`/plan-implementation`](./skills/han.core/plan-implementation.md) → [`/test-planning`](./skills/han.coding/test-planning.md).
-- *"Spec the new onboarding flow, then write a stakeholder summary I can share with leadership before we build it."* → [`/plan-a-feature`](./skills/han.core/plan-a-feature.md) → [`/stakeholder-summary`](./skills/han.reporting/stakeholder-summary.md) → [`/html-summary`](./skills/han.reporting/html-summary.md) *(optional, for a self-contained HTML version to hand off)*.
-- *"Spec the discount engine, then build it test-first."* → [`/plan-a-feature`](./skills/han.core/plan-a-feature.md) → [`/tdd`](./skills/han.coding/tdd.md) → [`/code-review`](./skills/han.coding/code-review.md).
-- *"Research our options for background jobs, then spec the one you recommend."* → [`/research`](./skills/han.core/research.md) → [`/plan-a-feature`](./skills/han.core/plan-a-feature.md).
-- *"Compare the auth implementation to the auth spec, then plan how to close the gaps, finishing with splitting that work up into task-sized units."* → [`/gap-analysis`](./skills/han.core/gap-analysis.md) → [`/plan-implementation`](./skills/han.core/plan-implementation.md) → [`/plan-work-items`](./skills/han.core/plan-work-items.md).
-- *"Compare the share v1 implementation to the share v2 spec, split the gaps into a phased rollout, then plan implementation for the first phase, finally laying out individual tasks based on that plan."* → [`/gap-analysis`](./skills/han.core/gap-analysis.md) → [`/plan-a-phased-build`](./skills/han.core/plan-a-phased-build.md) → [`/plan-implementation`](./skills/han.core/plan-implementation.md) → [`/plan-work-items`](./skills/han.core/plan-work-items.md).
+- *"Plan the retry feature, then plan the implementation, then create a test plan for it."* → [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md) → [`/plan-implementation`](./skills/han.planning/plan-implementation.md) → [`/test-planning`](./skills/han.coding/test-planning.md).
+- *"Spec the new onboarding flow, then write a stakeholder summary I can share with leadership before we build it."* → [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md) → [`/stakeholder-summary`](./skills/han.reporting/stakeholder-summary.md) → [`/html-summary`](./skills/han.reporting/html-summary.md) *(optional, for a self-contained HTML version to hand off)*.
+- *"Spec the discount engine, then build it test-first."* → [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md) → [`/tdd`](./skills/han.coding/tdd.md) → [`/code-review`](./skills/han.coding/code-review.md).
+- *"Research our options for background jobs, then spec the one you recommend."* → [`/research`](./skills/han.core/research.md) → [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md).
+- *"Compare the auth implementation to the auth spec, then plan how to close the gaps, finishing with splitting that work up into task-sized units."* → [`/gap-analysis`](./skills/han.core/gap-analysis.md) → [`/plan-implementation`](./skills/han.planning/plan-implementation.md) → [`/plan-work-items`](./skills/han.planning/plan-work-items.md).
+- *"Compare the share v1 implementation to the share v2 spec, split the gaps into a phased rollout, then plan implementation for the first phase, finally laying out individual tasks based on that plan."* → [`/gap-analysis`](./skills/han.core/gap-analysis.md) → [`/plan-a-phased-build`](./skills/han.planning/plan-a-phased-build.md) → [`/plan-implementation`](./skills/han.planning/plan-implementation.md) → [`/plan-work-items`](./skills/han.planning/plan-work-items.md).
 
 ## A note on sizing
 

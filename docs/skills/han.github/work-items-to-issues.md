@@ -6,7 +6,7 @@ Operator documentation for the `/work-items-to-issues` skill in the han plugin. 
 
 ## TL;DR
 
-- **What it does.** Takes a `work-items.md` file produced by [`/plan-work-items`](../han.core/plan-work-items.md), maps each work item to its target repo, validates the format, and publishes one GitHub issue per work item.
+- **What it does.** Takes a `work-items.md` file produced by [`/plan-work-items`](../han.planning/plan-work-items.md), maps each work item to its target repo, validates the format, and publishes one GitHub issue per work item.
 - **When to use it.** You have a trusted work-items file and you want each item tracked as a GitHub issue an implementer can grab.
 - **What you get back.** One GitHub issue per work item in its target repo, within-repo `blocked_by` links, and a per-repo work-items file alongside the source that records the issue numbers.
 
@@ -31,7 +31,7 @@ Operator documentation for the `/work-items-to-issues` skill in the han plugin. 
 
 **Do not invoke for:**
 
-- **Producing the work-items file.** Use [`/plan-work-items`](../han.core/plan-work-items.md) to break a trusted plan into work items first. This skill publishes that file; it does not create it.
+- **Producing the work-items file.** Use [`/plan-work-items`](../han.planning/plan-work-items.md) to break a trusted plan into work items first. This skill publishes that file; it does not create it.
 - **Reviewing code or posting PR comments.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md) to post a review to a pull request, or [`/code-review`](../han.coding/code-review.md) for a local review.
 - **Writing a PR description.** Use [`/update-pr-description`](./update-pr-description.md).
 - **Writing the code for an item.** Use [`/tdd`](../han.coding/tdd.md) to implement a work item test-first.
@@ -65,7 +65,7 @@ Files on disk plus issues on GitHub:
 ## How to get the most out of it
 
 - **Install and authenticate `gh` first.** The skill and its publish scripts drive GitHub through the `gh` CLI. Without it, the skill cannot create issues.
-- **Run [`/plan-work-items`](../han.core/plan-work-items.md) upstream.** This skill publishes a work-items file; it does not produce one. A sharp, dependency-ordered breakdown makes the publish step clean.
+- **Run [`/plan-work-items`](../han.planning/plan-work-items.md) upstream.** This skill publishes a work-items file; it does not produce one. A sharp, dependency-ordered breakdown makes the publish step clean.
 - **Write the cross-repo work order as prose in the source file.** The intro paragraph that names which items ship to which repo is the primary signal for the item-to-repo map. The clearer it is, the less the skill has to infer.
 - **Review the map before you confirm.** The skill pauses and shows you the item-to-repo table before it writes or creates anything. This is the moment to catch a misrouted item.
 - **Let the evidence-based repair run.** When a format check fails, the skill proposes a fix with its source. Continue with the fills when they look right, correct them when they do not, or stop and edit the file by hand.
@@ -76,7 +76,7 @@ Files on disk plus issues on GitHub:
 
 YAGNI does not gate this skill's output. The work-items file is an already-committed decomposition, and this skill publishes it without adding new behavioral commitments or speculative infrastructure. The closest thing to a gate here is the reference-artifact rule: issue bodies carry the contracts, designs, and standards an implementer needs and leave out the process artifacts that only record how the plan was reached. That is content hygiene, not YAGNI.
 
-If the plan behind the work items has not been through a YAGNI sweep, run [`/iterative-plan-review`](../han.core/iterative-plan-review.md) on the plan before you break it into work items. See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
+If the plan behind the work items has not been through a YAGNI sweep, run [`/iterative-plan-review`](../han.planning/iterative-plan-review.md) on the plan before you break it into work items. See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
 ## Cost and latency
 
@@ -136,7 +136,7 @@ GA announcement: https://github.blog/changelog/2025-08-21-dependencies-on-issues
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule. This skill does not gate on it; enforcement belongs upstream.
-- [`/plan-work-items`](../han.core/plan-work-items.md). Pair upstream to produce the work-items file this skill publishes.
+- [`/plan-work-items`](../han.planning/plan-work-items.md). Pair upstream to produce the work-items file this skill publishes.
 - [`/work-items-to-jira`](../han.atlassian/work-items-to-jira.md). The Jira sibling that creates tickets in a project instead of GitHub issues (opt-in `han.atlassian` plugin).
 - [`/post-code-review-to-pr`](./post-code-review-to-pr.md). The sibling GitHub skill for posting a code review to a pull request.
 - [`/update-pr-description`](./update-pr-description.md). The sibling GitHub skill for writing a PR description.

@@ -188,7 +188,7 @@ URLs: https://www.atlassian.com/work-management/project-management/acceptance-cr
 - [Evidence](../../evidence.md). The companion rule the agent applies alongside YAGNI. Trust classes, the corroboration gate, and the no-evidence label.
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`junior-developer`](./junior-developer.md). The generalist stress-tester the PM leans on for plain-language reframing when specialist input gets entangled.
-- [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md) and [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Skills that dispatch this agent as coordinator and synthesizer.
+- [`/plan-a-feature`](../../skills/han.planning/plan-a-feature.md) and [`/plan-implementation`](../../skills/han.planning/plan-implementation.md). Skills that dispatch this agent as coordinator and synthesizer.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Dispatches this agent in synthesis mode at medium and large swarm sizes to consolidate swarm output into Section 4 of the report.
 - [agent-domain-focus.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise project-management vocabulary (RAID, disagree-and-commit, revisit criterion, servant leader) and named anti-patterns.
 - [agent-model-selection.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier on a synthesis-heavy coordination agent.

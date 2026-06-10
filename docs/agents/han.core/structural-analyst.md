@@ -93,6 +93,6 @@ URL: https://martinfowler.com/books/refactoring.html
 - [`software-architect`](./software-architect.md). Synthesizes findings into intra-codebase recommendations.
 - [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). Always dispatches this agent.
 - [`/code-review`](../../skills/han.coding/code-review.md). Conditionally dispatches this agent when the change touches module boundaries.
-- [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Dispatches this agent as an opt-in specialist, included on request.
-- [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Conditionally dispatches this agent when the review covers module boundaries, coupling, or dependency direction.
-- [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Conditionally dispatches this agent when the plan covers module boundaries, coupling, or dependency direction.
+- [`/plan-a-feature`](../../skills/han.planning/plan-a-feature.md). Dispatches this agent as an opt-in specialist, included on request.
+- [`/iterative-plan-review`](../../skills/han.planning/iterative-plan-review.md). Conditionally dispatches this agent when the review covers module boundaries, coupling, or dependency direction.
+- [`/plan-implementation`](../../skills/han.planning/plan-implementation.md). Conditionally dispatches this agent when the plan covers module boundaries, coupling, or dependency direction.

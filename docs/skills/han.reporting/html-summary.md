@@ -28,7 +28,7 @@ Operator documentation for the `/html-summary` skill in the han plugin. This doc
 **Do not invoke for:**
 
 - **Writing the summary itself.** Use [`/stakeholder-summary`](./stakeholder-summary.md) to produce the markdown this skill consumes.
-- **Specifying the feature.** Use [`/plan-a-feature`](../han.core/plan-a-feature.md) instead.
+- **Specifying the feature.** Use [`/plan-a-feature`](../han.planning/plan-a-feature.md) instead.
 - **Generating a PR description or other GitHub artifact.** Use [`/update-pr-description`](../han.github/update-pr-description.md).
 
 ## How to invoke it
@@ -76,5 +76,5 @@ Single-pass authoring with no sub-agent dispatch. Reads the source markdown and 
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [`/stakeholder-summary`](./stakeholder-summary.md). Produces the `stakeholder-summary.md` markdown this skill converts to HTML.
-- [`/plan-a-feature`](../han.core/plan-a-feature.md). Produces the feature specification that `/stakeholder-summary` summarizes upstream of this skill.
+- [`/plan-a-feature`](../han.planning/plan-a-feature.md). Produces the feature specification that `/stakeholder-summary` summarizes upstream of this skill.
 - [`/update-pr-description`](../han.github/update-pr-description.md). The `han.github` skill for PR bodies rather than executive summaries.

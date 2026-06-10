@@ -92,6 +92,6 @@ URL: https://www.howtomeasureanything.com/
 - [`software-architect`](./software-architect.md). Consumes this agent's risk ratings alongside the upstream findings to produce recommendations.
 - [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). Always dispatches this agent.
 - [`/architectural-decision-record`](../../skills/han.core/architectural-decision-record.md). Dispatches this agent for ADR risk scoring.
-- [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Conditionally dispatches this agent when the feature carries significant blast radius.
-- [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Conditionally dispatches this agent when the plan carries significant blast radius.
-- [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Conditionally dispatches this agent when the plan carries significant blast radius.
+- [`/plan-a-feature`](../../skills/han.planning/plan-a-feature.md). Conditionally dispatches this agent when the feature carries significant blast radius.
+- [`/plan-implementation`](../../skills/han.planning/plan-implementation.md). Conditionally dispatches this agent when the plan carries significant blast radius.
+- [`/iterative-plan-review`](../../skills/han.planning/iterative-plan-review.md). Conditionally dispatches this agent when the plan carries significant blast radius.

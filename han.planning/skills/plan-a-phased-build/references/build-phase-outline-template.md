@@ -3,7 +3,7 @@ title: "{{initiative_name}} — Build Phase Outline"
 source_artifact: "{{relative_path_to_source_artifact_or_none_if_built_from_conversation}}"
 audience: "{{e_g_engineering_product_leadership_mixed}}"
 generated: "{{YYYY-MM-DD}}"
-generated_by: "han.core:plan-a-phased-build"
+generated_by: "han.planning:plan-a-phased-build"
 ---
 
 <!--

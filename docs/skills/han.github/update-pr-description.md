@@ -32,7 +32,7 @@ Operator documentation for the `/update-pr-description` skill in the han plugin.
 
 - **Posting a code review to the PR.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md).
 - **Running a local code review without touching the PR.** Use [`/code-review`](../han.coding/code-review.md).
-- **Writing the initial feature specification.** Use [`/plan-a-feature`](../han.core/plan-a-feature.md).
+- **Writing the initial feature specification.** Use [`/plan-a-feature`](../han.planning/plan-a-feature.md).
 
 ## How to invoke it
 

@@ -1,6 +1,6 @@
 # /plan-a-feature
 
-Operator documentation for the `/plan-a-feature` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/plan-a-feature/SKILL.md`](../../../han.core/skills/plan-a-feature/SKILL.md).
+Operator documentation for the `/plan-a-feature` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.planning/skills/plan-a-feature/SKILL.md`](../../../han.planning/skills/plan-a-feature/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md) · [Evidence](../../evidence.md)
 

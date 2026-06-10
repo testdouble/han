@@ -26,9 +26,9 @@ Operator documentation for the `/stakeholder-summary` skill in the han plugin. T
 
 **Do not invoke for:**
 
-- **Writing the spec itself.** Use [`/plan-a-feature`](../han.core/plan-a-feature.md) instead.
-- **Sequencing the build.** Use [`/plan-a-phased-build`](../han.core/plan-a-phased-build.md) instead.
-- **Producing an implementation plan.** Use [`/plan-implementation`](../han.core/plan-implementation.md) instead.
+- **Writing the spec itself.** Use [`/plan-a-feature`](../han.planning/plan-a-feature.md) instead.
+- **Sequencing the build.** Use [`/plan-a-phased-build`](../han.planning/plan-a-phased-build.md) instead.
+- **Producing an implementation plan.** Use [`/plan-implementation`](../han.planning/plan-implementation.md) instead.
 
 ## How to invoke it
 
@@ -57,7 +57,7 @@ One file: `stakeholder-summary.md`, written in the same directory as the source 
 
 ## How to get the most out of it
 
-- **Write the spec first.** The summary derives from the spec — the cleaner the spec, the better the summary. Pair with [`/plan-a-feature`](../han.core/plan-a-feature.md) before this.
+- **Write the spec first.** The summary derives from the spec — the cleaner the spec, the better the summary. Pair with [`/plan-a-feature`](../han.planning/plan-a-feature.md) before this.
 - **Name your audience.** Leadership, customers, and product reviewers read for different things. Tell the skill who will receive it.
 - **Confirm the "intentionally not in this slice" list.** That section is where stakeholder pushback usually happens — make sure it matches what the spec actually defers.
 - **Pair with `/plan-a-phased-build` next.** Once stakeholders greenlight the shape, sequence the build.
@@ -71,7 +71,7 @@ Single-pass authoring with no sub-agent dispatch. Reads the source spec, drafts 
 ## Related documentation
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [`/plan-a-feature`](../han.core/plan-a-feature.md). Produces the feature specification this skill consumes.
-- [`/plan-a-phased-build`](../han.core/plan-a-phased-build.md). The natural next step once the summary lands stakeholder feedback.
-- [`/plan-implementation`](../han.core/plan-implementation.md). Turns the spec into an implementation plan after stakeholders sign off.
+- [`/plan-a-feature`](../han.planning/plan-a-feature.md). Produces the feature specification this skill consumes.
+- [`/plan-a-phased-build`](../han.planning/plan-a-phased-build.md). The natural next step once the summary lands stakeholder feedback.
+- [`/plan-implementation`](../han.planning/plan-implementation.md). Turns the spec into an implementation plan after stakeholders sign off.
 - [`/html-summary`](./html-summary.md). Converts the `stakeholder-summary.md` this skill produces into a self-contained HTML executive report.

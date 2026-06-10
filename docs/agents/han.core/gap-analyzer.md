@@ -102,5 +102,5 @@ URL: https://standards.ieee.org/ieee/829/3787/
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Used by `/gap-analysis` swarms to verify each gap against the current state.
 - [`content-auditor`](./content-auditor.md). Sibling for before-and-after content preservation (different problem).
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Always dispatches this agent.
-- [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Dispatches this agent to compare a draft spec against a PRD or reference spec.
+- [`/plan-a-feature`](../../skills/han.planning/plan-a-feature.md). Dispatches this agent to compare a draft spec against a PRD or reference spec.
 - [Evidence](../../evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes for evidence pairs, the corroboration gate for single-source web claims, and the no-evidence label for silent desired-state evidence.

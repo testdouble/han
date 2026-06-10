@@ -175,5 +175,5 @@ URL: https://www.domainlanguage.com/ddd/
 - [`system-architect`](../../agents/han.core/system-architect.md). The adversarial synthesis agent that produces cross-service / bounded-context recommendations (dispatched at large size when a system-seam signal is present; otherwise dispatch separately).
 - [`/architectural-decision-record`](../han.core/architectural-decision-record.md). Record the architectural decisions the analysis motivates.
 - [`/investigate`](./investigate.md). Run when a finding reveals a concrete runtime bug.
-- [`/iterative-plan-review`](../han.core/iterative-plan-review.md). Stress-test the refactoring plan that implements the recommendations.
+- [`/iterative-plan-review`](../han.planning/iterative-plan-review.md). Stress-test the refactoring plan that implements the recommendations.
 - [`SKILL.md` for /architectural-analysis](../../../han.coding/skills/architectural-analysis/SKILL.md). The internal process definition.
