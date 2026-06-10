@@ -16,15 +16,15 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(find *), mcp__claude_a
 
 # Plan a Feature to Confluence
 
-This skill builds a feature specification with the core `han.core:plan-a-feature`
+This skill builds a feature specification with the core `han.planning:plan-a-feature`
 skill, lets the user review the result, and then publishes it to a Confluence
 location that **the user must specify**. It is a thin orchestrator: the planning
-work belongs to `han.core:plan-a-feature`, and the publishing work belongs to
+work belongs to `han.planning:plan-a-feature`, and the publishing work belongs to
 `han.atlassian:markdown-to-confluence`. This skill only validates its inputs, runs the
 planning skill to a temporary folder, gets the user's review and publish choice,
 and hands each file to the publisher.
 
-`han.core:plan-a-feature` produces a small **set** of files — the primary
+`han.planning:plan-a-feature` produces a small **set** of files — the primary
 `feature-specification.md` plus companion artifacts under `artifacts/` (the
 decision log, the team findings, and a lazily-created technical-notes file). This
 skill publishes the **spec as a parent page** and each companion artifact as a
@@ -56,13 +56,13 @@ plan:
    user this skill requires the Atlassian MCP server to be installed, configured,
    and authenticated, and that they can re-run it once it is connected. Do not
    fall back to a local-only run; for local-only planning, point them at
-   `han.core:plan-a-feature`. This preflight runs first so a missing server fails
+   `han.planning:plan-a-feature`. This preflight runs first so a missing server fails
    before any planning work begins.
 2. **A feature to plan.** Confirm the request names a feature, capability, or
    system behavior to specify. This — together with the `size` argument and any
-   relevant conversation context — is forwarded to `han.core:plan-a-feature`
+   relevant conversation context — is forwarded to `han.planning:plan-a-feature`
    verbatim in Step 2. If the request is too thin to start, let
-   `han.core:plan-a-feature` run its own interview; do not pre-empt it here.
+   `han.planning:plan-a-feature` run its own interview; do not pre-empt it here.
 3. **A Confluence destination.** Confirm the request provides a target location:
    a **Confluence page URL** (to update that page, or create the spec as a child
    under it), or a **space** (key or name) plus an optional **parent page**. If
@@ -73,11 +73,11 @@ plan:
 
 ## Step 2: Produce the Plan to a Temporary Folder
 
-Invoke the `han.core:plan-a-feature` skill with the **Skill** tool, **forwarding
+Invoke the `han.planning:plan-a-feature` skill with the **Skill** tool, **forwarding
 all provided context** verbatim: the `size` argument (if the user passed
 `small`, `medium`, or `large`), the feature description, any known constraints or
 entry points, and the relevant conversation context. Do not summarize, trim, or
-reinterpret the user's context; pass it through so `han.core:plan-a-feature` runs
+reinterpret the user's context; pass it through so `han.planning:plan-a-feature` runs
 exactly as it would on its own — interview, review team, finding resolution, and
 project-manager synthesis included — **except** add one explicit instruction: it
 must write its output folder under `/tmp/` (for example
@@ -86,7 +86,7 @@ not prompt the user to choose or confirm an output location, because this skill
 owns that decision. This keeps the working plan out of the repo until the user
 decides to publish it.
 
-Let `han.core:plan-a-feature` complete its full process. **Capture the exact
+Let `han.planning:plan-a-feature` complete its full process. **Capture the exact
 `/tmp/` paths of every file it wrote:**
 
 - `/tmp/<feature-slug>/feature-specification.md` — the primary spec (always written).
@@ -236,7 +236,7 @@ either way.
 1. **Inputs validated:** the Atlassian server was reachable, a feature to plan
    was present, and a Confluence location was provided — or the skill stopped
    before doing any work.
-2. **Plan produced to /tmp:** `han.core:plan-a-feature` ran with the full
+2. **Plan produced to /tmp:** `han.planning:plan-a-feature` ran with the full
    forwarded context and wrote its files under a `/tmp/` folder whose paths were
    captured, including whether the lazily-created technical-notes file exists.
 3. **User reviewed:** the `/tmp/` paths were shown to the user before any publish.
