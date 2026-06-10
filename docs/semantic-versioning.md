@@ -80,7 +80,7 @@ After bumping (or not bumping), sync the current `plugin.json` version to that p
 
 ## Suite Versioning: Parent and Child Plugins
 
-Han ships as a suite: a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.github`, `han.reporting`, `han.feedback`, and any future `han.*` extension). The parent has no skills or agents of its own; it installs its **bundled** children (`han.core`, `han.github`, `han.reporting`) through its `dependencies`. Not every child is bundled: `han.feedback` ships in the same marketplace and depends on `han.core`, but the parent deliberately does not depend on it, so it is opt-in and installed on its own. Each plugin carries its own independent version line, and the git tag for a release tracks the **parent** version (the release `vX.Y.Z` is the parent `han` version).
+Han ships as a suite: a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.coding`, `han.github`, `han.reporting`, `han.feedback`, and any future `han.*` extension). The parent has no skills or agents of its own; it installs its **bundled** children (`han.core`, `han.coding`, `han.github`, `han.reporting`) through its `dependencies`. Not every child is bundled: `han.feedback` ships in the same marketplace and depends on `han.core`, but the parent deliberately does not depend on it, so it is opt-in and installed on its own. Each plugin carries its own independent version line, and the git tag for a release tracks the **parent** version (the release `vX.Y.Z` is the parent `han` version).
 
 Three rules govern how a release versions the suite:
 
