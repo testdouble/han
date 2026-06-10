@@ -1,6 +1,6 @@
 # han: Project Map
 
-Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han.core` (the skills and agents), `han.coding` (code-writing and execution skills, currently the `tdd` skill; depends on `han.core` and is bundled by the `han` meta-plugin), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs `han.core`, `han.coding`, `han.github`, and `han.reporting` via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), `han.atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence documentation and work-items-to-Jira — which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin), and `han.plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
+Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han.core` (the skills and agents), `han.coding` (code-writing and execution skills, currently the `tdd` and `refactor` skills; depends on `han.core` and is bundled by the `han` meta-plugin), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs `han.core`, `han.coding`, `han.github`, and `han.reporting` via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), `han.atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence documentation and work-items-to-Jira — which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin), and `han.plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
 
 ## Repository layout
 
@@ -21,10 +21,11 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
-├── han.coding/         # Coding plugin: tdd (code-writing/execution; depends on han.core; bundled by the han meta-plugin)
+├── han.coding/         # Coding plugin: tdd, refactor (code-writing/execution; depends on han.core; bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Code-writing skill directories, each with SKILL.md + references/ + scripts/
+│   ├── skills/         # Code-writing skill directories, each with SKILL.md + references/ + scripts/
+│   └── references/     # Cross-skill reference files vendored for han.coding skills (e.g. yagni-rule.md)
 ├── han.github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -95,7 +96,8 @@ The plugins are shipped from `han.core/`, `han.coding/`, `han.github/`, `han.rep
 - **[docs/skills/html-summary.md](./docs/skills/han.reporting/html-summary.md).** Convert a stakeholder summary markdown file into a single self-contained HTML executive report (Test Double-derived palette, inlined Mermaid diagrams). Produces the HTML file only; does not publish it.
 - **[docs/skills/iterative-plan-review.md](./docs/skills/han.core/iterative-plan-review.md).** Stress-test an existing plan through multiple codebase-grounded review passes. Edits the plan in place and records every finding.
 - **[docs/skills/plan-work-items.md](./docs/skills/han.core/plan-work-items.md).** Break a trusted implementation plan into independently-grabbable, atomic work items in a single work-items file.
-- **[docs/skills/tdd.md](./docs/skills/han.coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. The plugin's only execution skill: it writes code, applying coding standards and ADRs in green and refactor.
+- **[docs/skills/tdd.md](./docs/skills/han.coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. An execution skill: it writes code, applying coding standards and ADRs in green and refactor.
+- **[docs/skills/refactor.md](./docs/skills/han.coding/refactor.md).** Restructure existing code without changing its behavior: a named target, a green suite over that target before any edit, small named refactorings verified step by step, hard stop rules on scope spread. An execution skill: it writes code. Cleanup inside an active TDD cycle belongs to `/tdd`'s refactor step.
 - **[docs/skills/issue-triage.md](./docs/skills/han.core/issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill.
 - **[docs/skills/investigate.md](./docs/skills/han.core/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 - **[docs/skills/research.md](./docs/skills/han.core/research.md).** Research an open-ended question (options, prior art, how something works) across the codebase and the open web, ending at an adversarially-validated recommendation. The question-shaped sibling of investigate.

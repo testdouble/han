@@ -12,7 +12,7 @@ Operator documentation for the `/tdd` skill in the han plugin. This document hel
 
 ## Key concepts
 
-- **Execution skill.** Every other han skill produces a markdown document. This one modifies your source tree. It writes the tests and the production code. That is the point, and it is why the skill reports scope and recommends a branch before it starts, so a watching human can see what it will do.
+- **Execution skill.** The analysis and planning skills produce markdown documents. This one modifies your source tree: it writes the tests and the production code. That is the point, and it is why the skill reports scope and recommends a branch before it starts, so a watching human can see what it will do. Its sibling [`/refactor`](./refactor.md) is the other execution skill, for restructuring code that already exists.
 - **The observed-failure gate.** No production code changes unless a test has been run and watched to fail for the intended reason in that loop. A test that passes the first time it runs means red was never seen, which is a process violation, not a success.
 - **Two hats.** Making a test pass and improving structure are different jobs done at different times. The skill never refactors while a test is red. Make it run, then make it right.
 - **BDD framing.** Tests describe observable behavior, named in your project's existing convention, asserting outcomes through the public interface, never private state. For user-facing behavior the skill works outside-in: a failing acceptance test on the outside, red-green-refactor on the inside.
@@ -32,6 +32,7 @@ Operator documentation for the `/tdd` skill in the han plugin. This document hel
 - **Reviewing or auditing code that already exists.** Use [`/code-review`](../han.core/code-review.md) instead.
 - **Deciding what a feature should do.** Use [`/plan-a-feature`](../han.core/plan-a-feature.md) to specify behavior first, then bring the spec here.
 - **Finding the root cause of a bug.** Use [`/investigate`](../han.core/investigate.md). Once you have a fix in mind, you can drive it back in through `/tdd`.
+- **Restructuring existing code outside a TDD cycle.** Use [`/refactor`](./refactor.md). The refactor step inside `/tdd` cleans up only what the current red-green cycle touched; restructuring code that predates the cycle is its sibling's job.
 
 ## How to invoke it
 
@@ -128,6 +129,7 @@ URL: https://growing-object-oriented-software.com/
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule the refactor step and test list apply. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [`/refactor`](./refactor.md). The sibling execution skill. Run it for preparatory refactoring before a `/tdd` run ("make the change easy, then make the easy change"), or to execute review findings against existing code. Never run the two on the same code at the same time.
 - [`/test-planning`](../han.core/test-planning.md). Plan what to test without writing code. Use it before `/tdd` to enumerate behaviors, or instead of it when you want analysis rather than implementation.
 - [`/plan-a-feature`](../han.core/plan-a-feature.md). Specify behavior first; the spec becomes the test list `/tdd` builds from.
 - [`/code-review`](../han.core/code-review.md). Run it on the branch once the list is empty. TDD produces self-testing code; it does not replace review.

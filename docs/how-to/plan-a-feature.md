@@ -112,7 +112,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 
 ## Where to go next
 
-- [`/tdd`](../skills/han.coding/tdd.md) is the next step when work items are ready to build. It is han's only execution skill.
+- [`/tdd`](../skills/han.coding/tdd.md) is the next step when work items are ready to build. It writes the tests and production code into your tree.
 - [`/code-review`](../skills/han.core/code-review.md) is the right step after `/tdd` finishes a behavior and before you open a PR.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the right guide when the work is not a new feature but a fix.
 - [Research a decision](./research-a-decision.md) is the right guide when you are not ready to spec because the underlying decision (which library, which pattern, which approach) has not been made yet.

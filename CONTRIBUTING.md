@@ -26,7 +26,7 @@ Read these once:
 Han ships as a family of plugins. Most carry components; the `han` meta-plugin bundles the others. Decide where your change goes before you scaffold anything. (For the user-facing version of this map, see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).)
 
 - **`han.core`** carries the planning, investigation, review, documentation, and convention skills, plus **every agent in the suite**. Agents always go here. A skill goes here when it works against the codebase or a plan and needs no external service.
-- **`han.coding`** carries the code-writing and execution skills (`tdd`). A skill goes here when it changes the source tree rather than producing a document, the way `tdd` writes tests and production code. It is bundled by the `han` meta-plugin.
+- **`han.coding`** carries the code-writing and execution skills (`tdd`, `refactor`). A skill goes here when it changes the source tree rather than producing a document, the way `tdd` writes tests and production code and `refactor` restructures existing code. It is bundled by the `han` meta-plugin.
 - **`han.github`** carries the GitHub-facing skills (`post-code-review-to-pr`, `update-pr-description`, `work-items-to-issues`). A skill goes here when it reads from or writes to GitHub through the `gh` CLI.
 - **`han.reporting`** carries the stakeholder-reporting skills (`stakeholder-summary`, `html-summary`). A skill goes here when its output is a report for a non-technical or executive audience rather than an engineering artifact.
 - **`han.feedback`** carries the single `han-feedback` skill. A skill goes here only when it captures feedback on the Han suite itself.

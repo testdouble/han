@@ -8,8 +8,9 @@ description: >
   "red-green-refactor", drive code from tests, or grow a feature
   behavior-by-behavior with tests leading. This skill writes and changes code;
   it does not produce a test plan document (use test-planning), review or audit
-  existing code (use code-review), specify what a feature should do (use
-  plan-a-feature), or find the root cause of a bug (use investigate).
+  existing code (use code-review), restructure existing code outside a TDD
+  loop (use refactor), specify what a feature should do (use plan-a-feature),
+  or find the root cause of a bug (use investigate).
 argument-hint: "[what to build, a behavior to drive, or a path to a spec/plan]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *), Bash(pytest *), Bash(python3 *), Bash(go *), Bash(cargo *), Bash(make *), Bash(bundle *), Bash(rake *)
 ---

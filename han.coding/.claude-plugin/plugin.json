@@ -1,6 +1,6 @@
 {
   "name": "han.coding",
-  "description": "Code-writing and execution skills for the Han suite. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. Depends on han.core; bundled by the han meta-plugin.",
+  "description": "Code-writing and execution skills for the Han suite: the skills that change your source tree. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate, and the refactor skill, which restructures existing code without changing its behavior through a test-gated refactoring loop. Depends on han.core; bundled by the han meta-plugin.",
   "version": "1.0.0",
   "dependencies": [
     "han.core"

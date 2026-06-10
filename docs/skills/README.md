@@ -63,7 +63,8 @@ Skills for capturing operational knowledge in artifacts the next on-call enginee
 
 Code-writing and execution skills: the ones that change your source tree rather than produce a document. Depends on `han.core`; bundled by the `han` meta-plugin.
 
-- **[`/tdd`](./han.coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). The suite's only execution skill: it writes code, not a document.
+- **[`/tdd`](./han.coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). It writes code, not a document.
+- **[`/refactor`](./han.coding/refactor.md).** Restructure existing code without changing its behavior. Takes a named target (files, a module, a named smell, or the findings of a prior `/code-review` or `/architectural-analysis`), refuses to start without a green suite covering that target, plans a sequence of small named refactorings, re-runs the full suite after every step, and stops hard when changes spread beyond the declared scope. It writes code, not a document; cleanup inside an active TDD cycle belongs to `/tdd`'s refactor step instead.
 
 ## han.github
 
@@ -109,7 +110,7 @@ Every planning, review, and standards skill in the plugin applies an evidence-ba
 
 - **Planning.** [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/plan-a-phased-build`](./han.core/plan-a-phased-build.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md).
 - **Review and standards.** [`/code-review`](./han.core/code-review.md) (advisory-only), [`/coding-standard`](./han.core/coding-standard.md), [`/test-planning`](./han.core/test-planning.md), [`/architectural-decision-record`](./han.core/architectural-decision-record.md) (forcing-function requirement).
-- **Building.** [`/tdd`](./han.coding/tdd.md) (enforcing in the refactor step and the test list).
+- **Building.** [`/tdd`](./han.coding/tdd.md) (enforcing in the refactor step and the test list), [`/refactor`](./han.coding/refactor.md) (enforcing on the refactoring plan: every item needs evidence the code has a reason to change).
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 
@@ -127,6 +128,8 @@ A few common compositions:
 - **Break into work items → publish to Jira.** `/plan-work-items` → `/work-items-to-jira` (opt-in `han.atlassian` plugin; requires the Atlassian MCP server).
 - **Discover → document → standardize.** `/project-discovery` → `/project-documentation` → `/coding-standard`.
 - **Review locally → post to PR.** `/code-review` → `/post-code-review-to-pr`.
+- **Review → execute the refactorings.** `/code-review` or `/architectural-analysis` → `/refactor` (the review's structural findings become the refactoring plan's work orders).
+- **Prepare the ground → build.** `/refactor` → `/tdd` (preparatory refactoring makes the change easy, then `/tdd` makes the easy change).
 - **Investigate → iterate on the fix.** `/investigate` → `/iterative-plan-review`.
 - **Compare → plan the remediation.** `/gap-analysis` → `/plan-implementation` (the gap report's `G-NNN` IDs become work items in the implementation plan).
 - **Compare → phase the build → plan implementation per phase.** `/gap-analysis` → `/plan-a-phased-build` → `/plan-implementation` (the gap report orders `G-NNN` IDs into vertical slices, then each phase gets its own implementation plan once greenlit).

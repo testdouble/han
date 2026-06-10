@@ -29,7 +29,7 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 Han ships as multiple plugins:
 * **`han`**: the parent plugin that brings in `han.core`, `han.coding`, `han.github`, and `han.reporting`
 * `han.core`: the planning, investigation, review, and documentation skills plus every agent
-* `han.coding`: code-writing and execution skills like `/tdd`
+* `han.coding`: code-writing and execution skills like `/tdd` and `/refactor`
 * `han.github`: GitHub-facing skills like posting a code review on a PR
 * `han.reporting`: reporting skills like the stakeholder summary
 * `han.feedback`: an opt-in skill for capturing post-session feedback on Han skill runs
@@ -38,7 +38,7 @@ Han ships as multiple plugins:
 
 Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han.core`, `han.coding`, `han.github`, and `han.reporting`),
 and is the right choice for almost everyone. If you do not want the coding, GitHub, or reporting skills, install `han.core@han` instead;
-add `han.coding@han` on its own if you want just the `/tdd` code-writing skill alongside core.
+add `han.coding@han` on its own if you want just the code-writing skills (`/tdd`, `/refactor`) alongside core.
 
 There is no coding-only, GitHub-only, or reporting-only install: `han.coding`, `han.github`, and `han.reporting` all depend on `han.core`,
 so installing any of them brings the core skills and every agent along with it. `han.feedback`, `han.atlassian`, and
