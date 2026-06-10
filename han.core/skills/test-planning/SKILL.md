@@ -83,7 +83,7 @@ Combine findings from every dispatched agent into a unified, prioritized test pl
 
 ## Step 4: Generate Output
 
-Use the template at [template.md](references/template.md) for the output structure. The test plan leads with plain language and defers the implementation detail.
+Use the template at [template.md](./references/template.md) for the output structure. The test plan leads with plain language and defers the implementation detail.
 
 **Writing rules:**
 

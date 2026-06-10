@@ -39,7 +39,7 @@ A flat list (not per-repo) of artifacts more than one slice references — API c
 
 ### 5. Slices
 
-One slice per `## <SYM-N> — <title>` heading. Slice bodies follow [issue-template.md](issue-template.md). Slices may appear in any order — the skill does not reorder them when writing per-repo files; it preserves source order.
+One slice per `## <SYM-N> — <title>` heading. Slice bodies follow [issue-template.md](./issue-template.md). Slices may appear in any order — the skill does not reorder them when writing per-repo files; it preserves source order.
 
 ## Symbolic-ID prefixes
 
@@ -64,4 +64,4 @@ The per-repo file is what the publish scripts consume. The source `work-items.md
 
 ## What the publish scripts depend on
 
-The slice-body invariants are documented in [issue-template.md](issue-template.md). The per-repo file's preamble (title, intro, cross-repo prose, shared references) is for the human reviewer — the scripts ignore everything before the first `## <SYM-N>` heading.
+The slice-body invariants are documented in [issue-template.md](./issue-template.md). The per-repo file's preamble (title, intro, cross-repo prose, shared references) is for the human reviewer — the scripts ignore everything before the first `## <SYM-N>` heading.

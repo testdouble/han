@@ -9,7 +9,7 @@ A walkthrough for getting from an open-ended question ("which library", "which p
 - You have a real decision to make, not a bug to diagnose and not a feature to specify. `/investigate` is the right tool when something is broken; `/plan-a-feature` is the right tool when the decision has already been made and you are scoping behavior.
 - You have a question han can frame as a single decision. If the question is too thin, `/research` will ask you to sharpen it before dispatching anything. (Phase 1 step 1 below shows what a sharper framing looks like.)
 - You have any material you already trust. A vendor doc, an internal RFC, a benchmark you ran, a prior conversation. Bring it in. It enters the evidence list with its source, and the validator checks it against independent sources rather than letting it override them.
-- You have somewhere to put the ADR. Most projects keep ADRs in `docs/adr/`, `docs/architecture/decisions/`, or a similar directory. If your project does not have one and has not run [`/project-discovery`](../skills/project-discovery.md) yet, run that first so the ADR skill knows where to file the record.
+- You have somewhere to put the ADR. Most projects keep ADRs in `docs/adr/`, `docs/architecture/decisions/`, or a similar directory. If your project does not have one and has not run [`/project-discovery`](../skills/han.core/project-discovery.md) yet, run that first so the ADR skill knows where to file the record.
 
 ## What you'll end up with
 
@@ -24,7 +24,7 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 
 ### Phase 1: Research the question
 
-1. **Frame the decision and run [`/research`](../skills/research.md).** "Background jobs" is too thin to research; "should we adopt a job queue separate from our database, given we already run Postgres" is researchable. The framing names the decision, the constraint, and the comparison set. A template that works well when you already have a current choice:
+1. **Frame the decision and run [`/research`](../skills/han.core/research.md).** "Background jobs" is too thin to research; "should we adopt a job queue separate from our database, given we already run Postgres" is researchable. The framing names the decision, the constraint, and the comparison set. A template that works well when you already have a current choice:
 
     > `/research alternatives to {current choice}, for {purpose}, and provide a benefits and drawbacks comparison.`
 
@@ -44,7 +44,7 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 
 ### Phase 2: Capture the decision as an ADR
 
-1. **Run [`/architectural-decision-record`](../skills/architectural-decision-record.md) with the recommended option and the alternatives.** A template that works well:
+1. **Run [`/architectural-decision-record`](../skills/han.core/architectural-decision-record.md) with the recommended option and the alternatives.** A template that works well:
 
     > `/architectural-decision-record the choice of using {option}, with the other options as alternatives. We chose {option} because {reasons}. Reference the research report at {path}.`
 
@@ -77,8 +77,8 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 
 ## Where to go next
 
-- [`/plan-a-feature`](../skills/plan-a-feature.md) is the right next step when the research recommends an option and you are ready to specify behavior. The research decides *what*; `/plan-a-feature` specifies it.
+- [`/plan-a-feature`](../skills/han.core/plan-a-feature.md) is the right next step when the research recommends an option and you are ready to specify behavior. The research decides *what*; `/plan-a-feature` specifies it.
 - [Plan a feature, end to end](./plan-a-feature.md) is the matching how-to once the decision is captured.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the right guide when the question turns out to be a defect rather than an open question.
-- [`/coding-standard`](../skills/coding-standard.md) is the next step when the decision is broad enough to become a standard the team will apply repeatedly, rather than a one-off architectural call.
-- The skill long-form docs ([research](../skills/research.md), [architectural-decision-record](../skills/architectural-decision-record.md)) cover each step in depth.
+- [`/coding-standard`](../skills/han.core/coding-standard.md) is the next step when the decision is broad enough to become a standard the team will apply repeatedly, rather than a one-off architectural call.
+- The skill long-form docs ([research](../skills/han.core/research.md), [architectural-decision-record](../skills/han.core/architectural-decision-record.md)) cover each step in depth.

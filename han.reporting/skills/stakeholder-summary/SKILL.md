@@ -63,7 +63,7 @@ If a piece of content cannot be translated without losing meaning, leave it out.
 
 ## Step 4: Draft the Stakeholder Summary
 
-Use the template at [`references/stakeholder-summary-template.md`](references/stakeholder-summary-template.md). Write the file at the resolved output path, filling in each section in order:
+Use the template at [`references/stakeholder-summary-template.md`](./references/stakeholder-summary-template.md). Write the file at the resolved output path, filling in each section in order:
 
 1. **Title** — `# {{Feature Name}} — Stakeholder Summary`. Derive the feature name from the source spec's title or H1.
 2. **What problem are we solving?** One or two short paragraphs from the customer's point of view, followed by a short bulleted list of the capabilities the feature introduces (each as a bold name plus one sentence in the customer's voice).

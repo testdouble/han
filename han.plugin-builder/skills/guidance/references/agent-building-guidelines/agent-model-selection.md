@@ -138,7 +138,7 @@ These examples reinforce the decision criteria: opus for synthesis and judgment,
 
 ## Cross-References
 
-- [Domain Focus](agent-domain-focus.md). A well-specialized agent with precise domain vocabulary may perform well with a faster model (sonnet or haiku), because domain-specific terms activate expert knowledge even in smaller models.
+- [Domain Focus](./agent-domain-focus.md). A well-specialized agent with precise domain vocabulary may perform well with a faster model (sonnet or haiku), because domain-specific terms activate expert knowledge even in smaller models.
 - [Specialization and Model Selection](../specialization-and-model-selection.md). Evidence and mechanism behind why tightly-specified agents can run on smaller models without loss of quality, and where that breaks down.
 
 ## Sources

@@ -74,13 +74,13 @@ First, compose the **structure directive** based on the Step 2 result. The struc
   > **Structure (required):** Produce the description using this fixed structure and section order: Summary (with a `### Behavior changes` subsection only when runtime behavior changes) → What to look at first → How this was tested (only when included per the inclusion decision) → Files of interest → Test scenario changes (only if tests were added or edited). The first line under `## Summary` MUST be the bolded TL;DR sentence, before anything else is drafted. Include the `### Behavior changes` subsection only when runtime behavior changes (flag flips, migrations, state-machine edits, config changes, API contract changes); omit it for pure refactors and docs-only PRs; render interacting flags or modes as a small table.
   >
   > Default template to follow:
-  > {paste the contents of [template.md](references/template.md)}
+  > {paste the contents of [template.md](./references/template.md)}
 
 - **Option B — a repository template was found** (Step 2 recorded a template path and contents). The structure directive is:
   > **Structure (required):** Conform to the repository's pull-request template, reproduced below, following the conformance rules exactly. The template's headings and their order are authoritative.
   >
   > Conformance rules:
-  > {paste the contents of [template-conformance.md](references/template-conformance.md)}
+  > {paste the contents of [template-conformance.md](./references/template-conformance.md)}
   >
   > Repository PR template ({template path from Step 2}):
   > {paste the full contents of the discovered template, including its HTML comments}
@@ -90,7 +90,7 @@ Then construct the agent prompt to include all of the following inline (the skil
 - **Branch context** — the values of `current branch`, `default branch`, `branch summary`, `branch stats`, and `branch changes` from the Project Context section.
 - **"How this was tested" inclusion decision from Step 4** — either "Include the How this was tested section" or "Omit the How this was tested section entirely (documentation-only PR)".
 - **Structure directive** — Option A or Option B as composed above.
-- **Formatting rules** — paste the contents of [formatting-rules.md](references/formatting-rules.md) into the prompt so the agent does not need to read it.
+- **Formatting rules** — paste the contents of [formatting-rules.md](./references/formatting-rules.md) into the prompt so the agent does not need to read it.
 
 Use this prompt body (with the context above interpolated):
 

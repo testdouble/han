@@ -319,8 +319,8 @@ Three new plugin skills ship, taking the catalog from 15 to 18: `/issue-triage` 
 
 ### Documentation
 
-- [`docs/skills/issue-triage.md`](./docs/skills/issue-triage.md): output-contract block now mirrors `plugin/skills/issue-triage/references/template.md` (an H1 summary title with H2 section headers), and the cost-and-latency note now reflects that the skill reads both `CLAUDE.md` and `project-discovery.md` to sharpen Suspected Areas.
-- [`docs/skills/plan-work-items.md`](./docs/skills/plan-work-items.md): adds the missing `reference-artifact-inventory.md` link.
+- [`docs/skills/issue-triage.md`](./docs/skills/han.core/issue-triage.md): output-contract block now mirrors `plugin/skills/issue-triage/references/template.md` (an H1 summary title with H2 section headers), and the cost-and-latency note now reflects that the skill reads both `CLAUDE.md` and `project-discovery.md` to sharpen Suspected Areas.
+- [`docs/skills/plan-work-items.md`](./docs/skills/han.core/plan-work-items.md): adds the missing `reference-artifact-inventory.md` link.
 - `README.md`: the "Maintenance" heading typo is fixed.
 - `plugin/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`: descriptions synced; they now mention planning and issue triage.
 - `CLAUDE.md`: the "Current version" line is corrected.
@@ -375,8 +375,8 @@ The `/code-review` skill is recalibrated so its first pass produces the output t
 
 ### Documentation
 
-- [`docs/skills/code-review.md`](./docs/skills/code-review.md) is updated to mirror the new step structure (Step 1.5, the Step 7 sub-steps, Step 9.0), the per-agent dispatcher tailoring, the size-based demotion model, the YAGNI two-pass procedure, the full agent task ID format set, and the new YAGNI section in the output description.
-- The four affected agent docs ([`docs/agents/structural-analyst.md`](./docs/agents/structural-analyst.md), [`docs/agents/behavioral-analyst.md`](./docs/agents/behavioral-analyst.md), [`docs/agents/junior-developer.md`](./docs/agents/junior-developer.md), [`docs/agents/edge-case-explorer.md`](./docs/agents/edge-case-explorer.md)) each carry a one-paragraph note explaining the `/code-review` Step 3.5 dispatcher tailoring and confirming the agents' default behavior in other skills is unchanged.
+- [`docs/skills/code-review.md`](./docs/skills/han.core/code-review.md) is updated to mirror the new step structure (Step 1.5, the Step 7 sub-steps, Step 9.0), the per-agent dispatcher tailoring, the size-based demotion model, the YAGNI two-pass procedure, the full agent task ID format set, and the new YAGNI section in the output description.
+- The four affected agent docs ([`docs/agents/structural-analyst.md`](./docs/agents/han.core/structural-analyst.md), [`docs/agents/behavioral-analyst.md`](./docs/agents/han.core/behavioral-analyst.md), [`docs/agents/junior-developer.md`](./docs/agents/han.core/junior-developer.md), [`docs/agents/edge-case-explorer.md`](./docs/agents/han.core/edge-case-explorer.md)) each carry a one-paragraph note explaining the `/code-review` Step 3.5 dispatcher tailoring and confirming the agents' default behavior in other skills is unchanged.
 - [`docs/yagni.md`](./docs/yagni.md) `/code-review` table row is updated to reflect the two-pass procedure and the Mode B / Mode C YAGNI skip.
 - [`docs/skills/gh-pr-review.md`](./docs/skills/gh-pr-review.md) gains a Key Concept noting that the wrapped `/code-review` Step 1.5 plumbs the PR description into every agent's `$branch_context`.
 
@@ -414,7 +414,7 @@ Section 4 (Swarm Findings) is now rendered by default and is omitted only when t
 
 ### Documentation
 
-- [`docs/skills/gap-analysis.md`](./docs/skills/gap-analysis.md) — updated TL;DR, key concepts, sizing table, cost-and-latency model, "In more detail" section, and Sources / Related Documentation to reflect the opt-out posture.
+- [`docs/skills/gap-analysis.md`](./docs/skills/han.core/gap-analysis.md) — updated TL;DR, key concepts, sizing table, cost-and-latency model, "In more detail" section, and Sources / Related Documentation to reflect the opt-out posture.
 - Cross-references updated in [`docs/concepts.md`](./docs/concepts.md), [`docs/quickstart.md`](./docs/quickstart.md), [`docs/sizing.md`](./docs/sizing.md), [`docs/skills/README.md`](./docs/skills/README.md), and the agent docs for `adversarial-validator`, `evidence-based-investigator`, `junior-developer`, `project-manager`, and `gap-analyzer`.
 
 ## v2.0.1
@@ -464,7 +464,7 @@ Both skills replace the `{YYYYMMDDHHmmss}-{name}.md` pattern with `{top-level}[-
 
 ### Documentation
 
-- [`docs/skills/coding-standard.md`](./docs/skills/coding-standard.md) and [`docs/skills/architectural-decision-record.md`](./docs/skills/architectural-decision-record.md) updated to describe the hierarchical filename pattern, the discovery step, and the new shape of the produced filename.
+- [`docs/skills/coding-standard.md`](./docs/skills/han.core/coding-standard.md) and [`docs/skills/architectural-decision-record.md`](./docs/skills/han.core/architectural-decision-record.md) updated to describe the hierarchical filename pattern, the discovery step, and the new shape of the produced filename.
 
 ## v1.6.1
 
@@ -520,7 +520,7 @@ Run a gap analysis between a *current state* and a *desired state* — for examp
 - Optionally launches a swarm of validator/augmenter agents to corroborate or enrich findings. Swarm size (small / medium / large) is recommended based on gap count and category mix, but it never runs without the user opting in.
 - Ships with a report template (`references/gap-analysis-report-template.md`) designed by the `information-architect` agent.
 
-See [`/gap-analysis` documentation](./docs/skills/gap-analysis.md).
+See [`/gap-analysis` documentation](./docs/skills/han.core/gap-analysis.md).
 
 ### `/plan-a-phased-build` — turn context into a sequenced build plan
 
@@ -532,10 +532,10 @@ Take any source of context (a gap analysis, PRD, design doc, feature spec, conve
 - Each phase cross-references back to the source artifact for traceability.
 - The `information-architect` agent reviews the rendered document for findability and progressive comprehension.
 
-See [`/plan-a-phased-build` documentation](./docs/skills/plan-a-phased-build.md).
+See [`/plan-a-phased-build` documentation](./docs/skills/han.core/plan-a-phased-build.md).
 
 ### Documentation
 
-- New skill docs: [`gap-analysis.md`](./docs/skills/gap-analysis.md), [`plan-a-phased-build.md`](./docs/skills/plan-a-phased-build.md)
+- New skill docs: [`gap-analysis.md`](./docs/skills/han.core/gap-analysis.md), [`plan-a-phased-build.md`](./docs/skills/han.core/plan-a-phased-build.md)
 - [Skills Index](./docs/skills/README.md) and [Quickstart](./docs/quickstart.md) updated to surface both
 - Minor link/version touch-ups across existing skill docs

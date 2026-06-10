@@ -24,7 +24,7 @@ Read these before dispatching anything. They constrain every step below.
 - **Negative results are valuable.** When a dimension is genuinely clean (no concurrency in a pure-functional module, sound boundaries), the report says so. Agents must not fabricate findings to fill a section.
 - **Single pass, no iteration round.** This skill is a fan-out / fan-in, not an iterative loop. If a band proves too small, the user re-runs at a larger size — the skill does not self-escalate mid-run.
 - **System-altitude work is deferred by default.** `han.core:software-architect` defers cross-service / bounded-context / trust-boundary findings rather than absorbing them. `han.core:system-architect` is added to the roster only at large size and only when a boundary-crossing seam is actually present. When it is not dispatched, those deferrals are surfaced in the report so the user can dispatch `han.core:system-architect` separately.
-- **The report template lives at [references/architectural-analysis-report-template.md](references/architectural-analysis-report-template.md).** The skill renders that template by filling placeholders and removing the sections whose agent was not dispatched. It does not invent a structure inline.
+- **The report template lives at [references/architectural-analysis-report-template.md](./references/architectural-analysis-report-template.md).** The skill renders that template by filling placeholders and removing the sections whose agent was not dispatched. It does not invent a structure inline.
 
 # Run an Architectural Analysis
 
@@ -127,7 +127,7 @@ Wait for the synthesis layer to return.
 
 ## Step 8: Render and Present the Report
 
-Read [references/architectural-analysis-report-template.md](references/architectural-analysis-report-template.md). Render it and present the result directly in the conversation. Render rules:
+Read [references/architectural-analysis-report-template.md](./references/architectural-analysis-report-template.md). Render it and present the result directly in the conversation. Render rules:
 
 1. **Fill the front matter and "How to Read" frame.** Set the focus area, the chosen size with its one-line justification, the dispatched roster, and git availability.
 2. **Carry agent output verbatim.** Each analysis section is the corresponding agent's full output, unedited. The skill writes only the Executive Summary and the section prefaces.

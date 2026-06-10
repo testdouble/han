@@ -56,11 +56,11 @@ Use `AskUserQuestion` to confirm the output locations before writing.
 
 ### Standalone File
 
-Use the template at [template.md](references/template.md) as the structural guide. Rules: only include sections where information was actually discovered — omit empty sections entirely. Use `- {item type}: {concise info}` bullet format throughout. Format static assets as backtick-quoted paths relative to the repo root (e.g., `- lint config: \`.eslintrc.json\``). Commands must be actual commands that work in the project, not guesses. For multi-project repos, repeat the per-project section for each project.
+Use the template at [template.md](./references/template.md) as the structural guide. Rules: only include sections where information was actually discovered — omit empty sections entirely. Use `- {item type}: {concise info}` bullet format throughout. Format static assets as backtick-quoted paths relative to the repo root (e.g., `- lint config: \`.eslintrc.json\``). Commands must be actual commands that work in the project, not guesses. For multi-project repos, repeat the per-project section for each project.
 
 ### CLAUDE.md Summary
 
-Add a `## Project Discovery` section with only what other skills need most, using the template at [claudemd-summary-template.md](references/claudemd-summary-template.md).
+Add a `## Project Discovery` section with only what other skills need most, using the template at [claudemd-summary-template.md](./references/claudemd-summary-template.md).
 
 ## Step 5: Verification
 

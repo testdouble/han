@@ -27,7 +27,7 @@ Severity calibration is governed by **Step 3.3** (the authoritative home for siz
 
 **Project pattern deference:** A pattern that differs from general best practices but is consistent within the project is not a review finding. Only flag deviations from the project's own conventions.
 
-**YAGNI findings are a separate, non-correcting class.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](references/review-checklist.md) (the canonical home for the procedure and the (a)/(b)/(c) recording requirement) to every change in the diff. **YAGNI findings are listed in their own `### 🟡 YAGNI` section, separate from Critical / Warning / Suggestion**, and **do not appear under CRIT / WARN / SUGG**. The YAGNI section opens with this exact statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* Severity calibration (the directive in Step 3.3, the authoritative home) does NOT apply to YAGNI; these findings are surfaced regardless of change size and are advisory, not corrective.
+**YAGNI findings are a separate, non-correcting class.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](./references/review-checklist.md) (the canonical home for the procedure and the (a)/(b)/(c) recording requirement) to every change in the diff. **YAGNI findings are listed in their own `### 🟡 YAGNI` section, separate from Critical / Warning / Suggestion**, and **do not appear under CRIT / WARN / SUGG**. The YAGNI section opens with this exact statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* Severity calibration (the directive in Step 3.3, the authoritative home) does NOT apply to YAGNI; these findings are surfaced regardless of change size and are advisory, not corrective.
 
 **Automated tool boundary:** If the project has a linter or formatter, trust it. Only flag style issues that automated tools can't catch.
 
@@ -41,7 +41,7 @@ Assign a unique task ID to each review item:
 
 IDs are sequential within each category, starting at 001. Assign IDs in the order files are reviewed (alphabetically).
 
-**Category Assignment:** When an issue fits multiple categories, use the **first matching category** from the checklist order in [review-checklist.md](references/review-checklist.md).
+**Category Assignment:** When an issue fits multiple categories, use the **first matching category** from the checklist order in [review-checklist.md](./references/review-checklist.md).
 
 ## Step 1: Identify Changes
 
@@ -173,7 +173,7 @@ Every dispatched agent receives — alongside its domain-specific prompt — the
 >
 > When uncertain about severity, prefer the **lower** severity. If the worst-case impact is "an operator sees an error and retries," that is not Critical.
 >
-> **YAGNI findings are separate from severity.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](references/review-checklist.md) (Pass 1: evidence test against [`../../references/yagni-rule.md`](../../references/yagni-rule.md) Gate 1; Pass 2: named anti-pattern match) to every change in the diff regardless of size. The size-based demotion in this Step 3.3 directive does NOT apply to YAGNI findings; they are advisory at every size, listed in a separate section, and not corrected unless the user explicitly requests it. Each finding's body must name (a) the failing evidence type, (b) the matched anti-pattern, and (c) the simpler form considered.
+> **YAGNI findings are separate from severity.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](./references/review-checklist.md) (Pass 1: evidence test against [`../../references/yagni-rule.md`](../../references/yagni-rule.md) Gate 1; Pass 2: named anti-pattern match) to every change in the diff regardless of size. The size-based demotion in this Step 3.3 directive does NOT apply to YAGNI findings; they are advisory at every size, listed in a separate section, and not corrected unless the user explicitly requests it. Each finding's body must name (a) the failing evidence type, (b) the matched anti-pattern, and (c) the simpler form considered.
 
 ### Step 3.4: Domain-scoped file lists
 
@@ -243,7 +243,7 @@ Review each file from the Step 1 file list **in alphabetical order**. For each f
 2. **Skip binary files** — note them as skipped
 3. **Read the full file** to understand context. For very large files (over 1000 lines), focus reads on the changed regions and their surrounding context
 4. **Examine the diff** to understand what changed. If no diff is available (Mode B uncommitted review or Mode C non-git review from Step 1), skip this sub-step — the full file read from sub-step 3 provides all necessary context. Apply the review checklist to the entire file content.
-5. **Apply the review checklist** at [review-checklist.md](references/review-checklist.md)
+5. **Apply the review checklist** at [review-checklist.md](./references/review-checklist.md)
 
 If the user provided focus areas in their arguments (the `$focus_areas` binding from Step 1), apply extra scrutiny to those areas and include additional detail in findings for matching categories.
 
@@ -344,7 +344,7 @@ Security findings (SEC-series) are exempt from this gate because the security ag
 
 ### Step 7.3: Classify with the size-aware rubric
 
-Classify the surviving findings using the rubrics at [agent-finding-classification.md](references/agent-finding-classification.md). The rubric defines what each severity means in each agent category; Step 3.3's size-based demotion (read `{size}` from Step 3.1) governs which findings escalate to those bands. Continue task ID numbering sequentially from Steps 4-6 (see Task ID Assignment above).
+Classify the surviving findings using the rubrics at [agent-finding-classification.md](./references/agent-finding-classification.md). The rubric defines what each severity means in each agent category; Step 3.3's size-based demotion (read `{size}` from Step 3.1) governs which findings escalate to those bands. Continue task ID numbering sequentially from Steps 4-6 (see Task ID Assignment above).
 
 ### Deferred tests
 
@@ -354,9 +354,9 @@ If the han.core:test-engineer produced Deferred/Skipped items, include them as a
 
 ## Step 8: Generate Review Output
 
-Use the template at [template.md](references/template.md) for the output structure. **Render a section only when it has content** — never emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good) appears only when it has at least one item. When more than one section is present, keep them in the fixed order the template defines and never vary it. A clean review is the table's no-issues row plus an approval recommendation, and nothing else.
+Use the template at [template.md](./references/template.md) for the output structure. **Render a section only when it has content** — never emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good) appears only when it has at least one item. When more than one section is present, keep them in the fixed order the template defines and never vary it. A clean review is the table's no-issues row plus an approval recommendation, and nothing else.
 
-Each finding's prose appears exactly once — in its finding block, or in its full security block. The Review Summary table row is an index entry, not a second copy of the prose; a `Tension with …` pointer note is a pointer, not prose. For security findings, render one full `SEC-###` block per finding and a single short Remediation note (see [agent-finding-classification.md](references/agent-finding-classification.md)); do not add a per-finding cross-reference under Critical. Render the **What's Good** section only when there is a specific, substantive positive worth recording — omit it when there is nothing substantive to say rather than forcing generic praise.
+Each finding's prose appears exactly once — in its finding block, or in its full security block. The Review Summary table row is an index entry, not a second copy of the prose; a `Tension with …` pointer note is a pointer, not prose. For security findings, render one full `SEC-###` block per finding and a single short Remediation note (see [agent-finding-classification.md](./references/agent-finding-classification.md)); do not add a per-finding cross-reference under Critical. Render the **What's Good** section only when there is a specific, substantive positive worth recording — omit it when there is nothing substantive to say rather than forcing generic praise.
 
 ## Step 9: Verify Review Output
 

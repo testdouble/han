@@ -24,4 +24,4 @@ Omit the preamble entirely when no artifact applies to more than one work item.
 
 ## Work items
 
-Every work item uses the template at [work-item-template.md](work-item-template.md). Work items appear in dependency order: a work item never appears before a work item it depends on.
+Every work item uses the template at [work-item-template.md](./work-item-template.md). Work items appear in dependency order: a work item never appears before a work item it depends on.

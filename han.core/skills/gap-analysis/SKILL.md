@@ -29,7 +29,7 @@ allowed-tools: Read, Write, Glob, Grep, Agent, Bash(find *), Bash(git *)
 - **Optional sections must not be load-bearing.** A report with only Sections 1 and 2 must stand on its own. Sections 3 and 4 are additive — never required for Sections 1 and 2 to make sense.
 - **Purpose-conditioned prioritization is a labeled skill judgment, never the analyzer's.** The `han.core:gap-analyzer` produces a neutral, unprioritized gap list and must stay that way. When the user states *why* they are running the comparison (e.g., "before a redesign pass," "to scope the next sprint"), the skill may add one explicitly-labeled "Where to start" pointer view that names the few gaps most blocking that stated purpose. This is the skill's own synthesis judgment — the same kind it already makes when it clusters gaps into themes and derives confidence — layered on top of the neutral list, never replacing it, and omitted entirely when no purpose was given.
 - **Gap IDs are stable for the life of the report.** Map `GAP-NNN` from the `han.core:gap-analyzer` output to `G-NNN` in the report, preserving order. Cross-references in Sections 3 and 4 use the same `G-NNN` IDs.
-- **The report template lives at [gap-analysis-report-template.md](references/gap-analysis-report-template.md).** It was designed by the `han.core:information-architect` agent. The skill renders the template by filling placeholders and removing the optional sections that were not requested or generated.
+- **The report template lives at [gap-analysis-report-template.md](./references/gap-analysis-report-template.md).** It was designed by the `han.core:information-architect` agent. The skill renders the template by filling placeholders and removing the optional sections that were not requested or generated.
 
 # Run a Gap Analysis
 
@@ -163,14 +163,14 @@ Launch `han.core:project-manager` in synthesis mode with:
 
 - The full `han.core:gap-analyzer` source file (including any second-round delta).
 - The verbatim output from every other swarm agent.
-- The four-section template at [gap-analysis-report-template.md](references/gap-analysis-report-template.md).
+- The four-section template at [gap-analysis-report-template.md](./references/gap-analysis-report-template.md).
 - The chosen modes (swarm: yes, technical details: yes/no).
 
 Ask the han.core:project-manager to produce **only Section 4 content** — Confirmations, Contradictions, Augmentations, any artifact-level Analysis caveats the validator returned, and the Confidence summary table — plus per-gap confidence values for the skill to fold into Section 2. Direct PM to keep analysis caveats out of the per-gap confidence values (they apply to the whole report, not to any one gap). PM does not write the report file directly; it returns the consolidated Section 4 content and confidence values to the skill, which renders them into the template in Step 6.
 
 ## Step 6: Synthesize the Report
 
-Read [gap-analysis-report-template.md](references/gap-analysis-report-template.md). Render the report by filling placeholders and removing optional sections that do not apply.
+Read [gap-analysis-report-template.md](./references/gap-analysis-report-template.md). Render the report by filling placeholders and removing optional sections that do not apply.
 
 **Render rules:**
 

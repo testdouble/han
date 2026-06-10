@@ -23,8 +23,8 @@ The breakdown work — drafting slices, assigning symbolic IDs, specifying depen
 - Native `blocked_by` relationships are **within-repo only**. A cross-repo `Depends on` is a format error to surface for repair.
 - Symbolic-ID prefixes: accept whatever the input uses. Both shapes are valid input — single-prefix across repos (e.g., `W-N` for every slice) and per-repo prefixes (e.g., `V2-N` backend, `W-N` frontend, `EV-N` events). The publish scripts accept any uppercase prefix.
 - Every slice issue body MUST link the reference artifacts an implementer needs — API/event contracts, design frames, schema docs, runbooks, ADRs, coding standards. Issues that consume an HTTP endpoint or event payload MUST link the contract section that defines it.
-- UI slices, when the plan folder has a `ui-designs/` subfolder, MUST embed the relevant screenshots inline using same-target-repo raw URLs. See [references/screenshot-embed-rules.md](references/screenshot-embed-rules.md).
-- NEVER include process artifacts in issue bodies or the work-items preamble. Excluded categories — iteration histories, decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an `artifacts/` subfolder of the plan that is not a contract or design reference. Full include/exclude list in [references/reference-artifact-inventory.md](references/reference-artifact-inventory.md).
+- UI slices, when the plan folder has a `ui-designs/` subfolder, MUST embed the relevant screenshots inline using same-target-repo raw URLs. See [references/screenshot-embed-rules.md](./references/screenshot-embed-rules.md).
+- NEVER include process artifacts in issue bodies or the work-items preamble. Excluded categories — iteration histories, decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an `artifacts/` subfolder of the plan that is not a contract or design reference. Full include/exclude list in [references/reference-artifact-inventory.md](./references/reference-artifact-inventory.md).
 
 ## Process
 
@@ -45,7 +45,7 @@ If the prose and the file-path evidence disagree for a slice, surface the confli
 
 ### 3. Validate the format with evidence-based repair
 
-Check the work-items file against the format invariants in [references/issue-template.md](references/issue-template.md) and [references/work-items-file-format.md](references/work-items-file-format.md):
+Check the work-items file against the format invariants in [references/issue-template.md](./references/issue-template.md) and [references/work-items-file-format.md](./references/work-items-file-format.md):
 
 - **Heading shape.** Every slice heading matches `## <SYM-N> — <title>` with an em-dash separator (already-published headings annotated as `## <SYM-N> (#NNN) — <title>` are valid too).
 - **`Depends on` line.** Literal bold marker `**Depends on.**`, trailing period, `None.` or comma-separated SYMs.
@@ -113,4 +113,4 @@ The wrapper runs three idempotent scripts in order:
 
 When `upload-screenshots.sh` reports that it fell back to PR mode (it prints a `NOTE:` with an assets-branch pull request URL), surface that PR URL to the user and tell them the issues' inline designs render only once that assets PR merges. This is a required follow-up action; do not summarize it away.
 
-The format invariants the scripts depend on (heading shape, URL scheme, `Depends on` syntax) are documented in [references/issue-template.md](references/issue-template.md). Edits to that template require matching script changes.
+The format invariants the scripts depend on (heading shape, URL scheme, `Depends on` syntax) are documented in [references/issue-template.md](./references/issue-template.md). Edits to that template require matching script changes.

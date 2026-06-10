@@ -65,7 +65,7 @@ If no accepted evidence applies, recommend deferring the standard with the trigg
 
 3. **Enumerate existing coding standards:** If a coding standards directory was found, use Glob to enumerate existing `.md` files in that directory.
 
-4. **Check existing coding standard format:** If existing coding standards were found via Glob, read one to understand the project's existing format. If it uses a different format than the template at [template.md](references/template.md), ask the user whether to match the existing format or use this skill's template.
+4. **Check existing coding standard format:** If existing coding standards were found via Glob, read one to understand the project's existing format. If it uses a different format than the template at [template.md](./references/template.md), ask the user whether to match the existing format or use this skill's template.
 
 5. **Discover the filename hierarchy taxonomy:** Coding standards are organized by a one- or two-level hierarchy encoded in the filename so related standards sort together in a directory listing. Discover the taxonomy that applies to *this* project — never hardcode it.
    - **From existing filenames:** If existing standards were enumerated, parse their filenames to extract the leading hierarchy segments already in use (e.g., `svelte-component-naming.md` → top-level `svelte`; `svelte-stores-state-shape.md` → top-level `svelte`, second-level `stores`). Build a list of top-level prefixes and known second-level prefixes per top-level.
@@ -107,13 +107,13 @@ After both agents complete, merge their findings into a context block with:
 When converting an existing document into a coding standard:
 
 1. Read the source document
-2. Map sections to coding standard sections using the mapping at [adr-conversion-mapping.md](references/adr-conversion-mapping.md)
+2. Map sections to coding standard sections using the mapping at [adr-conversion-mapping.md](./references/adr-conversion-mapping.md)
 4. **If the source document is fully subsumed:** delete it and update references (search `CLAUDE.md`, `AGENTS.md`, and other markdown files)
 5. **If the source document retains useful content:** add a link to the new coding standard in the source document and remove migrated sections
 
 ## Step 6: Write the Coding Standard
 
-1. Copy the template from [template.md](references/template.md)
+1. Copy the template from [template.md](./references/template.md)
 2. **File name:** `{top-level}[-{second-level}]-{hyphenated-name}.md` — a one- or two-level hierarchy prefix followed by the standard's specific name. The hierarchy must come from the taxonomy discovered in Step 3.5, never invented or hardcoded.
    - **Top-level (required):** the highest-level grouping the standard belongs to (e.g., `svelte`, `rails`, `postgres`, `api`). Reuse an existing top-level prefix from Step 3.5 when one fits; only introduce a new top-level when no existing prefix applies, and prefer one that matches a language, framework, or subsystem already named in CLAUDE.md or project-discovery.md.
    - **Second-level (optional):** add only when the top-level has — or will plausibly grow — multiple standards that benefit from a sub-grouping (e.g., `svelte-stores-…`, `svelte-components-…`). Reuse an existing second-level prefix from Step 3.5 when one fits. Skip the second level when the standard is the only one (or one of a few) under its top-level.
@@ -152,7 +152,7 @@ The standard is consumed by Claude Code through a small set of per-file-type **i
 
 3. **For each matching index file, create or update it.**
 
-   - **If the index file does not exist yet**, copy the template at [index-file-template.md](references/index-file-template.md) to `.claude/rules/coding-standards/{bucket-name}.md` and fill it in:
+   - **If the index file does not exist yet**, copy the template at [index-file-template.md](./references/index-file-template.md) to `.claude/rules/coding-standards/{bucket-name}.md` and fill it in:
      - Replace the placeholder globs in `paths:` with the bucket's globs (each double-quoted; see the YAML rule in Step 6.5).
      - Replace `{File-type}` in the heading with the bucket name (e.g., `Svelte`, `TypeScript`, `Ruby`). Use the capitalization that matches the language/framework's own conventions.
      - Leave the entire instruction paragraph (everything between the heading and the `## Available standards` heading) verbatim. It is what tells Claude to make a relevance decision before opening any standard.
@@ -235,7 +235,7 @@ Apply every actionable edit both agents return. For findings that demand a judgm
 Read back the coding standard file and confirm:
 
 1. All metadata fields are filled in (no `{placeholder}` values remain)
-2. Template structure from [template.md](references/template.md) was followed
+2. Template structure from [template.md](./references/template.md) was followed
 3. YAML frontmatter is present at the top of the file with a `paths:` list, every glob is double-quoted, and the frontmatter closes with `---` before the `# {Title}` heading. When updating an existing standard, confirm no pre-existing frontmatter keys were stripped.
 4. **Index-file membership.** The standard is listed in every index file under `.claude/rules/coding-standards/` whose `paths:` overlaps the standard's `paths:`, and is **not** listed in any index file whose `paths:` does not overlap. For each index file the standard was added to, confirm: the file's `paths:` frontmatter still parses; every pre-existing entry is still present (none were dropped while editing); the instruction paragraph between the heading and `## Available standards` is unchanged from the template (verbatim); the new entry's relative link resolves to the canonical standard file; the new entry's description is 1-3 sentences and names both what the standard covers and when a reader should pull the full file. In update-mode, additionally confirm the standard's entry was removed from any index file whose `paths:` no longer overlaps.
 5. `CLAUDE.md` (or `AGENTS.md`) was **not** given a new enumerated entry for this standard. If a pointer paragraph was added because none existed, confirm it appears exactly once and that its wording describes the per-file-type index-file mechanism (not the prior one-symlink-per-standard mechanism).

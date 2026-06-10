@@ -51,8 +51,8 @@ The pattern that falls out, by agent archetype:
 
 ## Cross-References
 
-- [Agent Model Selection](agent-building-guidelines/agent-model-selection.md). Decision criteria for the `model` frontmatter field on agents.
-- [Agent Domain Focus](agent-building-guidelines/agent-domain-focus.md). How vocabulary routing, persona length, and named anti-patterns activate expert knowledge.
-- [Multi-Agent Economics](agent-building-guidelines/multi-agent-economics.md). When to add agents vs. improve existing ones.
-- [Progressive Disclosure](skill-building-guidance/progressive-disclosure.md). How skills layer information so the model isn't loading everything at once.
-- [Context Hygiene](skill-building-guidance/context-hygiene.md). Why every token competes for attention.
+- [Agent Model Selection](./agent-building-guidelines/agent-model-selection.md). Decision criteria for the `model` frontmatter field on agents.
+- [Agent Domain Focus](./agent-building-guidelines/agent-domain-focus.md). How vocabulary routing, persona length, and named anti-patterns activate expert knowledge.
+- [Multi-Agent Economics](./agent-building-guidelines/multi-agent-economics.md). When to add agents vs. improve existing ones.
+- [Progressive Disclosure](./skill-building-guidance/progressive-disclosure.md). How skills layer information so the model isn't loading everything at once.
+- [Context Hygiene](./skill-building-guidance/context-hygiene.md). Why every token competes for attention.

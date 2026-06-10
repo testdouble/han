@@ -73,7 +73,7 @@ Every `@mention` of a person anywhere in a changelog section — narrative prose
 [@{login}](https://github.com/{login})
 ```
 
-GitHub does not auto-link `@username` in a rendered `CHANGELOG.md` blob, so the explicit link is what makes the mention clickable and unambiguous. (The GitHub release body is different: GitHub auto-links bare `@username` there, so the body keeps the bare form. See [release-notes-format.md](release-notes-format.md).)
+GitHub does not auto-link `@username` in a rendered `CHANGELOG.md` blob, so the explicit link is what makes the mention clickable and unambiguous. (The GitHub release body is different: GitHub auto-links bare `@username` there, so the body keeps the bare form. See [release-notes-format.md](./release-notes-format.md).)
 
 ## Generated bookkeeping subsections
 
@@ -111,7 +111,7 @@ When no merged pull requests are found between the previous release and `HEAD` (
 - {commit subject} ({short sha})
 ```
 
-This is the changelog form of the no-PR fallback. The GitHub release body uses a different, single-line form for the same case (see [release-notes-format.md](release-notes-format.md)). The changelog enumerates each commit; the body summarizes.
+This is the changelog form of the no-PR fallback. The GitHub release body uses a different, single-line form for the same case (see [release-notes-format.md](./release-notes-format.md)). The changelog enumerates each commit; the body summarizes.
 
 Close the last bookkeeping subsection with one final line:
 

@@ -34,7 +34,7 @@ A flat list of artifacts more than one slice references — API contract section
 
 ### 5. Slices
 
-One slice per `## <SYM-N> — <title>` heading. Slice bodies follow [jira-ticket-template.md](jira-ticket-template.md). Slices may appear in any order; the skill preserves source order and creates tickets blocker-first as authored.
+One slice per `## <SYM-N> — <title>` heading. Slice bodies follow [jira-ticket-template.md](./jira-ticket-template.md). Slices may appear in any order; the skill preserves source order and creates tickets blocker-first as authored.
 
 ## Symbolic-ID prefixes
 

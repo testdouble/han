@@ -51,7 +51,7 @@ The mode determines *which* entities to audit. Always build a deduplicated list 
 
 ### When `MODE = branch`
 
-Map each changed file to its entities using [references/scope-mapping.md](references/scope-mapping.md). A single file can pull multiple entities into scope (a changed skill SKILL.md pulls the skill plus, if the description changed, the index and CLAUDE.md catalog). Then apply the **implicit dependencies** section of the mapping reference: skill or agent additions and removals pull the indexes, CLAUDE.md, README, and `docs/concepts.md` into scope; sibling-boundary changes pull the named sibling into scope.
+Map each changed file to its entities using [references/scope-mapping.md](./references/scope-mapping.md). A single file can pull multiple entities into scope (a changed skill SKILL.md pulls the skill plus, if the description changed, the index and CLAUDE.md catalog). Then apply the **implicit dependencies** section of the mapping reference: skill or agent additions and removals pull the indexes, CLAUDE.md, README, and `docs/concepts.md` into scope; sibling-boundary changes pull the named sibling into scope.
 
 Deduplicate. Produce a single ordered inventory `INV`:
 
@@ -93,7 +93,7 @@ Treat as ignored: `CHANGELOG.md`, plugin and marketplace `version` fields, `.cla
 
 ## Step 3: Per-entity audit
 
-Walk `INV` in order. For each entity, apply every rule in [references/audit-checklist.md](references/audit-checklist.md) that fits the entity's type. Record findings as you go in a working list with this shape:
+Walk `INV` in order. For each entity, apply every rule in [references/audit-checklist.md](./references/audit-checklist.md) that fits the entity's type. Record findings as you go in a working list with this shape:
 
 ```
 - {entity-name} ({path})
@@ -103,7 +103,7 @@ Walk `INV` in order. For each entity, apply every rule in [references/audit-chec
 
 **Read the source of truth before checking the doc.** For a skill, read `{plugin}/skills/{name}/SKILL.md` first (the plugin root the skill came from), then read `docs/skills/{name}.md` and check it against the source. For an agent, read `han.core/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs — treat them with the same severity as broken scripts (see `han.plugin-builder/skills/guidance/references/skill-building-guidance/documentation-maintenance.md`).
 
-**Batch agent audits when the inventory is large.** When `INV` has more than ten skills or ten agents to audit, dispatch a `content-auditor` agent per batch of five entities with the entity name, the source-of-truth file, and the long-form doc. Hand each agent the relevant section of [references/audit-checklist.md](references/audit-checklist.md) inline (do not tell it to read the file). The agent returns findings; merge them into the working list. Do not run more than four such agents in parallel.
+**Batch agent audits when the inventory is large.** When `INV` has more than ten skills or ten agents to audit, dispatch a `content-auditor` agent per batch of five entities with the entity name, the source-of-truth file, and the long-form doc. Hand each agent the relevant section of [references/audit-checklist.md](./references/audit-checklist.md) inline (do not tell it to read the file). The agent returns findings; merge them into the working list. Do not run more than four such agents in parallel.
 
 **Stop on first hard finding only for missing files.** Missing long-form doc, missing index entry, or missing CLAUDE.md catalog entry blocks the rest of that entity's checks until created. Other findings accumulate; do not bail.
 

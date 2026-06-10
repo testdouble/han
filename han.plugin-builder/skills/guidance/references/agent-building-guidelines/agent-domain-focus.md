@@ -140,12 +140,12 @@ Pair a generator with a separate evaluator. For example, a generator agent that 
 4. List 5-10 named anti-patterns with detection signals relevant to the agent's domain.
 5. No flattery, superlatives, or motivational framing. Let vocabulary do the routing.
 6. Assign a single role per agent. Generate or evaluate, not both.
-7. Inline all vocabulary, anti-patterns, and protocols in the agent file (see [External File References](agent-external-files.md)).
+7. Inline all vocabulary, anti-patterns, and protocols in the agent file (see [External File References](./agent-external-files.md)).
 
 ## Cross-References
 
-- [Agent Description Length](agent-description-length.md). The 1024-character budget for the always-loaded `description`, and which content has to move into the body to hit it.
-- [External File References](agent-external-files.md). All content must be inlined in the agent file. Vocabulary and anti-pattern sections are no exception.
-- [Model Selection](agent-model-selection.md). A well-specialized agent with precise vocabulary may perform well with a faster model, because domain terms activate expert knowledge even in smaller models.
+- [Agent Description Length](./agent-description-length.md). The 1024-character budget for the always-loaded `description`, and which content has to move into the body to hit it.
+- [External File References](./agent-external-files.md). All content must be inlined in the agent file. Vocabulary and anti-pattern sections are no exception.
+- [Model Selection](./agent-model-selection.md). A well-specialized agent with precise vocabulary may perform well with a faster model, because domain terms activate expert knowledge even in smaller models.
 - [Specialization and Model Selection](../specialization-and-model-selection.md). Evidence base for why specialization shifts work from inference-time compute to prompt-time design.
 - Source: [The Specialized Review Principle](https://jdforsythe.github.io/10-principles/principles/specialized-review/). Research-backed principle on vocabulary routing, persona length, and self-evaluation bias.

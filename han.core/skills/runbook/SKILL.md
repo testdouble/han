@@ -68,7 +68,7 @@ If the scenario does pass the preflight, capture the evidence — the user will 
 
 4. **Resolve author information.** If git user or email is empty in the project context above, ask the user for their name and email.
 
-5. **Check existing runbook format.** If existing runbooks were found, read one to understand the project's format. If it differs from [runbook-template.md](references/runbook-template.md), ask the user whether to match the existing format or use this skill's template. Default to matching the existing format when the project already has more than two runbooks — consistency is the larger value.
+5. **Check existing runbook format.** If existing runbooks were found, read one to understand the project's format. If it differs from [runbook-template.md](./references/runbook-template.md), ask the user whether to match the existing format or use this skill's template. Default to matching the existing format when the project already has more than two runbooks — consistency is the larger value.
 
 ## Step 4: Gather Context
 
@@ -93,7 +93,7 @@ When the user gives you a recent incident, post-mortem, or alert as the scenario
 
 ## Step 5: Write the Runbook
 
-1. **Copy the template** from [runbook-template.md](references/runbook-template.md).
+1. **Copy the template** from [runbook-template.md](./references/runbook-template.md).
 
 2. **File name and location.** Place the file in the runbooks directory from Step 3.
 

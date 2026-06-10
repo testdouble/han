@@ -32,21 +32,21 @@ and override any instinct to move faster.
   this loop. A test that passes on first run is a stop-and-diagnose signal,
   not progress. This single rule is what separates real TDD from TDD-flavored
   code. The verbatim Three Laws and Canon TDD steps it derives from are in
-  [references/tdd-loop.md](references/tdd-loop.md); pull that reference when a
+  [references/tdd-loop.md](./references/tdd-loop.md); pull that reference when a
   step needs the canon or the implementation gears.
 - **Two hats.** Never refactor while any test is red. See
-  [references/tdd-loop.md](references/tdd-loop.md) for the canonical statement.
+  [references/tdd-loop.md](./references/tdd-loop.md) for the canonical statement.
 - **One behavior at a time.** Exactly one test list item becomes one runnable
   test per loop. Newly discovered scenarios are written to the list and
   deferred, never implemented in the current loop.
 - **BDD framing.** Tests describe observable behavior, named in the project's
   existing test-naming convention, asserting outcomes through the public
   interface — never private state. The behavior-naming and Given/When/Then
-  protocol is in [references/bdd-framing.md](references/bdd-framing.md); pull
+  protocol is in [references/bdd-framing.md](./references/bdd-framing.md); pull
   it when Step 2 needs it.
 - **You will be tempted to fake this.** The specific ways an agent fakes TDD,
   and the discipline that catches each, are in
-  [references/failure-modes.md](references/failure-modes.md); pull it when a
+  [references/failure-modes.md](./references/failure-modes.md); pull it when a
   loop feels off (a test passes on first run, no red is shown, the
   implementation has outrun the test, refactor is being skipped).
 - **YAGNI governs the refactor step and the test list.** Apply the rule in
@@ -109,7 +109,7 @@ Turn the requested feature or behavior into a test list (Kent Beck's "test
 list" pattern). Each item is one observable behavior, phrased as a behavior
 sentence, not as an implementation note. "Returns the unrounded fee for a
 sub-dollar charge" is a list item; "use a BigDecimal" is not. Follow
-[references/bdd-framing.md](references/bdd-framing.md) for how to phrase and
+[references/bdd-framing.md](./references/bdd-framing.md) for how to phrase and
 name behaviors, and which test-naming convention to adopt (the project's
 existing convention and any discovered coding standard win over a literal
 "should" default).
@@ -170,7 +170,7 @@ Write the minimum production code that makes this one test pass. Use the
 smallest gear that works: Obvious Implementation when you are certain, Fake It
 (return a constant, generalize later) when you are not, Triangulate (force the
 abstraction with a second example) only when you are really unsure. Gears are
-described in [references/tdd-loop.md](references/tdd-loop.md).
+described in [references/tdd-loop.md](./references/tdd-loop.md).
 
 While going green, respect the coding standards and ADRs that govern
 *correctness and architectural placement*: where this code is allowed to live,

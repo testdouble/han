@@ -57,10 +57,10 @@ Section titles in the source may not match these names exactly — map by conten
 
 Read all references before producing HTML:
 
-- [references/report-style.md](references/report-style.md) — palette, typography, mermaid theming, component patterns, accessibility notes.
-- [references/layout-principles.md](references/layout-principles.md) — executive ordering, what hoists to the top, full-width data-flow rule, mermaid diagram preservation rules.
-- [references/writing-conventions.md](references/writing-conventions.md) — banned words (no superlatives), rewrite patterns, tone signals.
-- [references/html-template.html](references/html-template.html) — the canonical reference HTML. Use its structure, class names, and CSS verbatim. Adapt content; do not invent new styles.
+- [references/report-style.md](./references/report-style.md) — palette, typography, mermaid theming, component patterns, accessibility notes.
+- [references/layout-principles.md](./references/layout-principles.md) — executive ordering, what hoists to the top, full-width data-flow rule, mermaid diagram preservation rules.
+- [references/writing-conventions.md](./references/writing-conventions.md) — banned words (no superlatives), rewrite patterns, tone signals.
+- [references/html-template.html](./references/html-template.html) — the canonical reference HTML. Use its structure, class names, and CSS verbatim. Adapt content; do not invent new styles.
 
 ### 4. Produce the HTML
 

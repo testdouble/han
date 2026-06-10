@@ -1,6 +1,6 @@
 # How To: Triage and Investigate a Bug
 
-A walkthrough for getting from "something is broken" to a root cause backed by file-level evidence and a fix plan you can trust. The primary tool is [`/investigate`](../skills/investigate.md); [`/issue-triage`](../skills/issue-triage.md) handles the cases where you need to document the report for later instead of working it now.
+A walkthrough for getting from "something is broken" to a root cause backed by file-level evidence and a fix plan you can trust. The primary tool is [`/investigate`](../skills/han.core/investigate.md); [`/issue-triage`](../skills/han.core/issue-triage.md) handles the cases where you need to document the report for later instead of working it now.
 
 > See also: [How-to index](./README.md) · [Quickstart](../quickstart.md) · [Skills](../skills/README.md)
 
@@ -29,7 +29,7 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
 1. **Read the report you have.** If it names a specific symptom, a reproduction path, or a specific failure mode, skip to Phase 2. If it is vague ("the site feels slow," "something is wrong with billing"), move to step 2.
 
-2. **If the report is vague or incomplete, run [`/issue-triage`](../skills/issue-triage.md).** A template that works well:
+2. **If the report is vague or incomplete, run [`/issue-triage`](../skills/han.core/issue-triage.md).** A template that works well:
 
     > `/issue-triage {context: what was reported, where you saw it, screenshots, links to the original report}`
 
@@ -47,7 +47,7 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
 ### Phase 2: Investigate
 
-1. **Run [`/investigate`](../skills/investigate.md) with the concrete symptom and any context you already have.** A template that works well:
+1. **Run [`/investigate`](../skills/han.core/investigate.md) with the concrete symptom and any context you already have.** A template that works well:
 
     > `/investigate {context: the symptom, the reproduction path, any error messages or stack traces, the suspected commit if you have one}`
 
@@ -93,7 +93,7 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
     Validation findings from the new run confirm or falsify the hypothesis under production conditions.
 
-- **The investigation surfaces a procedure the team will reuse.** When the same symptom is likely to recur, pair `/investigate` with [`/runbook`](../skills/runbook.md). Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
+- **The investigation surfaces a procedure the team will reuse.** When the same symptom is likely to recur, pair `/investigate` with [`/runbook`](../skills/han.core/runbook.md). Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
 
 ## What you should expect at each step
 
@@ -106,5 +106,5 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
 - [Plan a feature, end to end](./plan-a-feature.md) is the right guide when triage says the report is a missing capability rather than a defect.
 - [Research a decision](./research-a-decision.md) is the right guide when triage says the report is really a question about an approach the team has not yet picked.
-- The skill long-form docs ([investigate](../skills/investigate.md), [issue-triage](../skills/issue-triage.md), [iterative-plan-review](../skills/iterative-plan-review.md), [runbook](../skills/runbook.md)) cover each step in depth.
-- [`/code-review`](../skills/code-review.md) is the right next step when the fix lands and you want a review of the change end-to-end before merge.
+- The skill long-form docs ([investigate](../skills/han.core/investigate.md), [issue-triage](../skills/han.core/issue-triage.md), [iterative-plan-review](../skills/han.core/iterative-plan-review.md), [runbook](../skills/han.core/runbook.md)) cover each step in depth.
+- [`/code-review`](../skills/han.core/code-review.md) is the right next step when the fix lands and you want a review of the change end-to-end before merge.

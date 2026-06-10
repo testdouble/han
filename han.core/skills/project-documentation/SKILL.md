@@ -39,7 +39,7 @@ After all agents complete, merge their findings into a unified **discovery summa
 
 ## Step 3: Write the Documentation
 
-Use the template at [template.md](references/template.md) as the structural guide. The template's HTML comments explain when to include each section and what to cover.
+Use the template at [template.md](./references/template.md) as the structural guide. The template's HTML comments explain when to include each section and what to cover.
 
 **File location:** `docs/{feature-name}.md` (in the directory determined in Step 1)
 

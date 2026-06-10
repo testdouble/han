@@ -16,90 +16,90 @@ The base plugin. It carries the planning, investigation, review, documentation, 
 
 Skills for specifying *what* a feature does, planning *how* to build it, and stress-testing plans before you commit.
 
-- **[`/plan-a-feature`](./plan-a-feature.md).** Build a feature specification from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
-- **[`/plan-implementation`](./plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
-- **[`/plan-a-phased-build`](./plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
-- **[`/iterative-plan-review`](./iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
-- **[`/plan-work-items`](./plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
+- **[`/plan-a-feature`](./han.core/plan-a-feature.md).** Build a feature specification from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
+- **[`/plan-implementation`](./han.core/plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
+- **[`/plan-a-phased-build`](./han.core/plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
+- **[`/iterative-plan-review`](./han.core/iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
+- **[`/plan-work-items`](./han.core/plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
 
 ### Investigation & research
 
 Skills for finding out *why* something is broken or *what* your options are, with evidence to back it.
 
-- **[`/issue-triage`](./issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill to run.
-- **[`/investigate`](./investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
-- **[`/research`](./research.md).** Research an open-ended question — options, possible solutions, prior art, or how something works — across the codebase and the open web, ending at an adversarially-validated recommendation without committing the team to any artifact. The question-shaped sibling of `/investigate`; scales with [size](../sizing.md).
+- **[`/issue-triage`](./han.core/issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill to run.
+- **[`/investigate`](./han.core/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
+- **[`/research`](./han.core/research.md).** Research an open-ended question — options, possible solutions, prior art, or how something works — across the codebase and the open web, ending at an adversarially-validated recommendation without committing the team to any artifact. The question-shaped sibling of `/investigate`; scales with [size](../sizing.md).
 
 ### Review & analysis
 
 Skills for getting a second set of eyes on code that already exists.
 
-- **[`/code-review`](./code-review.md).** Run a comprehensive code review on the current branch or specified files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
-- **[`/architectural-analysis`](./architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment. Always dispatches the `structural-analyst` / `behavioral-analyst` / `risk-analyst` / `software-architect` spine, and adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` by signal. Roster scales with [size](../sizing.md).
-- **[`/gap-analysis`](./gap-analysis.md).** Compare two artifacts (current state vs. desired state, for example spec vs. implementation, or PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default — `adversarial-validator` and `junior-developer` (actor-perspective sweep) always, plus `evidence-based-investigator` when the current state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` for the lightweight pass.
-- **[`/test-planning`](./test-planning.md).** Produce a prioritized test plan for a branch or directory. Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
+- **[`/code-review`](./han.core/code-review.md).** Run a comprehensive code review on the current branch or specified files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
+- **[`/architectural-analysis`](./han.core/architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment. Always dispatches the `structural-analyst` / `behavioral-analyst` / `risk-analyst` / `software-architect` spine, and adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` by signal. Roster scales with [size](../sizing.md).
+- **[`/gap-analysis`](./han.core/gap-analysis.md).** Compare two artifacts (current state vs. desired state, for example spec vs. implementation, or PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default — `adversarial-validator` and `junior-developer` (actor-perspective sweep) always, plus `evidence-based-investigator` when the current state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` for the lightweight pass.
+- **[`/test-planning`](./han.core/test-planning.md).** Produce a prioritized test plan for a branch or directory. Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
 
 ### Discovery & context
 
 Skills that produce context every other skill benefits from.
 
-- **[`/project-discovery`](./project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a static reference for other skills.
-- **[`/project-documentation`](./project-documentation.md).** Create and maintain documentation for features, systems, and components.
+- **[`/project-discovery`](./han.core/project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a static reference for other skills.
+- **[`/project-documentation`](./han.core/project-documentation.md).** Create and maintain documentation for features, systems, and components.
 
 ### Conventions & decisions
 
 Skills for recording how the team works.
 
-- **[`/coding-standard`](./coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
-- **[`/architectural-decision-record`](./architectural-decision-record.md).** Create, extract, or convert architectural decision records.
+- **[`/coding-standard`](./han.core/coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
+- **[`/architectural-decision-record`](./han.core/architectural-decision-record.md).** Create, extract, or convert architectural decision records.
 
 ### Operations
 
 Skills for capturing operational knowledge in artifacts the next on-call engineer can use.
 
-- **[`/runbook`](./runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Symptom-first template with imperative-voice procedure, expected output per step, escalation conditions, and rollback. Applies a YAGNI preflight that requires real evidence before writing.
+- **[`/runbook`](./han.core/runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Symptom-first template with imperative-voice procedure, expected output per step, escalation conditions, and rollback. Applies a YAGNI preflight that requires real evidence before writing.
 
 ## han.coding
 
 Code-writing and execution skills: the ones that change your source tree rather than produce a document. Depends on `han.core`; bundled by the `han` meta-plugin.
 
-- **[`/tdd`](./tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). The suite's only execution skill: it writes code, not a document.
+- **[`/tdd`](./han.coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). The suite's only execution skill: it writes code, not a document.
 
 ## han.github
 
 GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han.core`.
 
-- **[`/post-code-review-to-pr`](./post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
-- **[`/update-pr-description`](./update-pr-description.md).** Generate a PR description from the current branch's changes, conforming to the repository's PR template when one exists.
-- **[`/work-items-to-issues`](./work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
+- **[`/post-code-review-to-pr`](./han.github/post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
+- **[`/update-pr-description`](./han.github/update-pr-description.md).** Generate a PR description from the current branch's changes, conforming to the repository's PR template when one exists.
+- **[`/work-items-to-issues`](./han.github/work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
 
 ## han.reporting
 
 Skills for turning the work back into something sharable with non-technical stakeholders. Depends on `han.core`.
 
-- **[`/stakeholder-summary`](./stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams for user experience and data flow — for getting non-technical feedback before implementation kicks off.
-- **[`/html-summary`](./html-summary.md).** Convert a `stakeholder-summary.md` (from [`/stakeholder-summary`](./stakeholder-summary.md)) into a single self-contained HTML executive report — bottom line and asks up front, mermaid diagrams inlined, styled with a Test Double-derived palette. Produces the HTML file only; does not publish it.
+- **[`/stakeholder-summary`](./han.reporting/stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams for user experience and data flow — for getting non-technical feedback before implementation kicks off.
+- **[`/html-summary`](./han.reporting/html-summary.md).** Convert a `stakeholder-summary.md` (from [`/stakeholder-summary`](./han.reporting/stakeholder-summary.md)) into a single self-contained HTML executive report — bottom line and asks up front, mermaid diagrams inlined, styled with a Test Double-derived palette. Produces the HTML file only; does not publish it.
 
 ## han.feedback
 
 The opt-in feedback plugin. It captures observations about the Han suite itself. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.feedback@han`. Depends on `han.core`.
 
-- **[`/han-feedback`](./han-feedback.md).** Capture structured post-session feedback on the Han skills and agents you used across the whole `han.*` plugin family, and optionally post it as a GitHub issue to testdouble/han.
+- **[`/han-feedback`](./han.feedback/han-feedback.md).** Capture structured post-session feedback on the Han skills and agents you used across the whole `han.*` plugin family, and optionally post it as a GitHub issue to testdouble/han.
 
 ## han.atlassian
 
 The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira through the Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.atlassian@han`. Requires a configured Atlassian MCP server. Depends on `han.core`.
 
-- **[`/markdown-to-confluence`](./markdown-to-confluence.md).** Publish one local Markdown file to a user-specified Confluence location, creating a new page or updating an existing one. Defaults to an unpublished draft. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place. Posts an existing file; it does not generate documentation.
-- **[`/project-documentation-to-confluence`](./project-documentation-to-confluence.md).** Run `/project-documentation` to write feature documentation to a temporary file, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
-- **[`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md).** Run `/plan-a-feature` to build a feature specification in a temporary folder, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation: the spec as a parent page and each companion artifact (decision log, team findings, technical notes) as a child page beneath it. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
-- **[`/work-items-to-jira`](./work-items-to-jira.md).** Create one Jira ticket per slice from a `/plan-work-items` work-items file, in a single target project. Defaults to a Story, unassigned, in the backlog, with the reporter taken from the Atlassian MCP identity; epic parenting, issue type, assignee, and target column are optional overrides. The Jira sibling of `/work-items-to-issues`.
+- **[`/markdown-to-confluence`](./han.atlassian/markdown-to-confluence.md).** Publish one local Markdown file to a user-specified Confluence location, creating a new page or updating an existing one. Defaults to an unpublished draft. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place. Posts an existing file; it does not generate documentation.
+- **[`/project-documentation-to-confluence`](./han.atlassian/project-documentation-to-confluence.md).** Run `/project-documentation` to write feature documentation to a temporary file, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
+- **[`/plan-a-feature-to-confluence`](./han.atlassian/plan-a-feature-to-confluence.md).** Run `/plan-a-feature` to build a feature specification in a temporary folder, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation: the spec as a parent page and each companion artifact (decision log, team findings, technical notes) as a child page beneath it. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
+- **[`/work-items-to-jira`](./han.atlassian/work-items-to-jira.md).** Create one Jira ticket per slice from a `/plan-work-items` work-items file, in a single target project. Defaults to a Story, unassigned, in the backlog, with the reporter taken from the Atlassian MCP identity; epic parenting, issue type, assignee, and target column are optional overrides. The Jira sibling of `/work-items-to-issues`.
 
 ---
 
 ## How dispatch scales: sizing
 
-The sizing-aware skills ([`/architectural-analysis`](./architectural-analysis.md), [`/code-review`](./code-review.md), [`/gap-analysis`](./gap-analysis.md), [`/iterative-plan-review`](./iterative-plan-review.md), [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/research`](./research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
+The sizing-aware skills ([`/architectural-analysis`](./han.core/architectural-analysis.md), [`/code-review`](./han.core/code-review.md), [`/gap-analysis`](./han.core/gap-analysis.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md), [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/research`](./han.core/research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
 
 See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each sizing-aware skill's long-form doc has its own **Sizing** section with the skill-specific signals and caps.
 
@@ -107,9 +107,9 @@ See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each s
 
 Every planning, review, and standards skill in the plugin applies an evidence-based YAGNI rule before committing items to its artifact. Items without acceptable evidence move to a `## Deferred (YAGNI)` section with a named *reopen-when* trigger. Never silently dropped. The rule applies to:
 
-- **Planning.** [`/plan-a-feature`](./plan-a-feature.md), [`/plan-implementation`](./plan-implementation.md), [`/plan-a-phased-build`](./plan-a-phased-build.md), [`/iterative-plan-review`](./iterative-plan-review.md).
-- **Review and standards.** [`/code-review`](./code-review.md) (advisory-only), [`/coding-standard`](./coding-standard.md), [`/test-planning`](./test-planning.md), [`/architectural-decision-record`](./architectural-decision-record.md) (forcing-function requirement).
-- **Building.** [`/tdd`](./tdd.md) (enforcing in the refactor step and the test list).
+- **Planning.** [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/plan-a-phased-build`](./han.core/plan-a-phased-build.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md).
+- **Review and standards.** [`/code-review`](./han.core/code-review.md) (advisory-only), [`/coding-standard`](./han.core/coding-standard.md), [`/test-planning`](./han.core/test-planning.md), [`/architectural-decision-record`](./han.core/architectural-decision-record.md) (forcing-function requirement).
+- **Building.** [`/tdd`](./han.coding/tdd.md) (enforcing in the refactor step and the test list).
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 

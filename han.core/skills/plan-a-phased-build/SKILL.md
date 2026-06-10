@@ -113,7 +113,7 @@ State the proposed sequence to the user in one short message — phase number, n
 
 ## Step 6: Draft the Build-Phase Outline (Write Incrementally)
 
-Write [`build-phase-outline.md`](references/build-phase-outline-template.md) using the template. Write incrementally — save the file after every block below, never buffer the whole document in conversation memory and write at the end.
+Write [`build-phase-outline.md`](./references/build-phase-outline-template.md) using the template. Write incrementally — save the file after every block below, never buffer the whole document in conversation memory and write at the end.
 
 1. **Write the front matter, the H1 + intro paragraphs, and the Table of Contents.** Replace `{{this_build}}` and `{{the_source}}` in the optional Departures TOC entry with concrete nouns when rendering, or remove that TOC line entirely if no departures were captured. Save the file.
 2. **Write the Executive Summary** in this order, mirroring the template: goal → shape of the build (3-5 bullets) → sequencing rationale → departures (only if any) → deferred phases (only if any) → "Where to look next" pointer. Save the file.

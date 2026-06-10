@@ -1,6 +1,6 @@
 # Evidence Rule (Evidence-Based)
 
-This rule defines what evidence means in Han, how to characterize how strong it is, and what to do when no evidence exists at all. The rule supplements [`yagni-rule.md`](yagni-rule.md). YAGNI's categories answer *is there any evidence to include this item?* This rule answers *once an item passes that test, how confident should you be in the evidence, and what is the response when no evidence is available?*
+This rule defines what evidence means in Han, how to characterize how strong it is, and what to do when no evidence exists at all. The rule supplements [`yagni-rule.md`](./yagni-rule.md). YAGNI's categories answer *is there any evidence to include this item?* This rule answers *once an item passes that test, how confident should you be in the evidence, and what is the response when no evidence is available?*
 
 The vocabulary and the corroboration gate here originated in `/research`; this file is the canonical extraction so other skills and agents can apply the same primitives.
 
@@ -34,7 +34,7 @@ When sources contradict each other, surface the conflict. Record both, name the 
 
 When a claim has no evidence at any tier, label it. Defer the dependent decision. Name the concrete trigger that would justify revisiting.
 
-Do not collapse "no evidence" into "very weak evidence." They are different states. The response pattern is the same one [YAGNI](yagni-rule.md) uses for deferred items: a labeled defer with a concrete reopen trigger (a measured metric, an incident class, a customer commitment, a regulation taking effect, a dependency landing). Aspirational triggers do not qualify.
+Do not collapse "no evidence" into "very weak evidence." They are different states. The response pattern is the same one [YAGNI](./yagni-rule.md) uses for deferred items: a labeled defer with a concrete reopen trigger (a measured metric, an incident class, a customer commitment, a regulation taking effect, a dependency landing). Aspirational triggers do not qualify.
 
 ## How to apply the rule
 

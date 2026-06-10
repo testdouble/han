@@ -39,9 +39,9 @@ This skill mostly coordinates: locating the plan or context, resolving where the
 - Do NOT modify, annotate, or comment on the source implementation plan or context. It is read-only input.
 - Each work item is a **vertical slice**: a narrow but complete path through the relevant layers (schema, API, UI, tests) that is demoable or verifiable on its own. Not a layer, not a stub.
 - Every work item body MUST link the reference artifacts an implementer needs: API/event contracts, design frames, schema docs, runbooks, ADRs, coding standards. A work item that consumes an HTTP endpoint or event payload MUST link the contract section that defines it.
-- UI work items, when the plan folder has a `ui-designs/` subfolder, MUST reference the relevant design screenshots by a relative path from the work-items file to the screenshot. See [references/work-item-template.md](references/work-item-template.md).
+- UI work items, when the plan folder has a `ui-designs/` subfolder, MUST reference the relevant design screenshots by a relative path from the work-items file to the screenshot. See [references/work-item-template.md](./references/work-item-template.md).
 - `Depends on` lists other work items **in this same file** that must complete first, or `None`.
-- NEVER include process artifacts in work item bodies or the preamble. Excluded categories: iteration histories, decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an `artifacts/` subfolder of the plan that is not a contract or design reference. Restate plan-level decisions inline in the work item with `See plan: D-N` as the breadcrumb. Full include/exclude list in [references/reference-artifact-inventory.md](references/reference-artifact-inventory.md).
+- NEVER include process artifacts in work item bodies or the preamble. Excluded categories: iteration histories, decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an `artifacts/` subfolder of the plan that is not a contract or design reference. Restate plan-level decisions inline in the work item with `See plan: D-N` as the breadcrumb. Full include/exclude list in [references/reference-artifact-inventory.md](./references/reference-artifact-inventory.md).
 
 ## Process
 
@@ -73,7 +73,7 @@ If the plan references existing code or boundaries that aren't in your context, 
 
 ### 4. Inventory reference artifacts
 
-Before drafting work items, list every artifact an implementer of those work items will need. See [references/reference-artifact-inventory.md](references/reference-artifact-inventory.md) for the include list, exclude list, and screenshot-to-work-item mapping rules.
+Before drafting work items, list every artifact an implementer of those work items will need. See [references/reference-artifact-inventory.md](./references/reference-artifact-inventory.md) for the include list, exclude list, and screenshot-to-work-item mapping rules.
 
 If an expected artifact is missing (for example, the plan touches an HTTP boundary but no contract file exists), note it in the breakdown report rather than stopping: draft the work items that do not depend on it, and flag the work items it blocks as not draftable until the artifact exists. Stop only if no work items are draftable without the missing artifact.
 
@@ -112,7 +112,7 @@ This report is for visibility, not approval. Do not wait for the user's confirma
 
 ### 8. Write the work-items file
 
-Write one `work-items.md` in the folder resolved in Step 2. The file layout (title line, intro, optional shared-artifacts preamble) is specified in [references/work-items-file-format.md](references/work-items-file-format.md). Each work item uses the template in [references/work-item-template.md](references/work-item-template.md).
+Write one `work-items.md` in the folder resolved in Step 2. The file layout (title line, intro, optional shared-artifacts preamble) is specified in [references/work-items-file-format.md](./references/work-items-file-format.md). Each work item uses the template in [references/work-item-template.md](./references/work-item-template.md).
 
 Write incrementally per the operating principle: write the title and intro first, then append each work item as it is finalized. Save after each.
 

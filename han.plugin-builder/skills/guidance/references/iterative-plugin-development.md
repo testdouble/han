@@ -76,7 +76,7 @@ Each iteration should include lightweight testing to validate changes. Three tes
 
 Early iterations (1-2) focus on triggering and basic functional tests. Later iterations (3-5) add performance comparison as the skill stabilizes. Don't defer all testing to the end. Each iteration should validate its changes.
 
-For comprehensive testing guidance, see [Success Criteria and Testing](skill-building-guidance/success-criteria-and-testing.md).
+For comprehensive testing guidance, see [Success Criteria and Testing](./skill-building-guidance/success-criteria-and-testing.md).
 
 ## When to Stop Iterating
 
@@ -98,7 +98,7 @@ For comprehensive testing guidance, see [Success Criteria and Testing](skill-bui
 
 Cross-references:
 
-- [Skill Decomposition](skill-building-guidance/skill-decomposition.md). When iteration reveals a skill doing too much, decompose it.
-- [Entity Taxonomy](plugin-entity-taxonomy.md). Use the decision heuristic to validate entity type at each iteration.
-- [Skill Description Frontmatter](skill-building-guidance/skill-description-frontmatter.md). Descriptions should be refined across iterations, not written once.
-- [Success Criteria and Testing](skill-building-guidance/success-criteria-and-testing.md). Comprehensive testing methodology for skills.
+- [Skill Decomposition](./skill-building-guidance/skill-decomposition.md). When iteration reveals a skill doing too much, decompose it.
+- [Entity Taxonomy](./plugin-entity-taxonomy.md). Use the decision heuristic to validate entity type at each iteration.
+- [Skill Description Frontmatter](./skill-building-guidance/skill-description-frontmatter.md). Descriptions should be refined across iterations, not written once.
+- [Success Criteria and Testing](./skill-building-guidance/success-criteria-and-testing.md). Comprehensive testing methodology for skills.

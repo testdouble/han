@@ -38,7 +38,7 @@ Two rules keep the dependency direction clean:
 - **Every plugin depends on `han.core`,** so a skill in `han.coding`, `han.github`, `han.reporting`, or `han.feedback` may dispatch any `han.core` agent freely. That is why all agents live in `han.core`.
 - **`han.core` depends on nothing in the other plugins.** A `han.core` skill must not reach for a skill or agent that ships only in `han.coding`, `han.github`, `han.reporting`, or `han.feedback`. If a core skill needs that capability, the capability belongs in `han.core`.
 
-When a change adds, removes, or moves a skill between plugins, update the marketplace registry at [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) so the plugin's component set stays accurate. Long-form docs always live under `docs/` regardless of which plugin the entity ships in.
+When a change adds, removes, or moves a skill between plugins, update the marketplace registry at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) so the plugin's component set stays accurate. Long-form docs always live under `docs/` regardless of which plugin the entity ships in.
 
 ## Adding a skill
 
@@ -49,7 +49,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{name}.md` and fill it in. Every skill gets a long-form doc.
 4. Add the skill to the [Skills Index](./docs/skills/README.md) with a one-sentence scent line and a link.
 5. Add the skill to the catalog in [Root CLAUDE.md](./CLAUDE.md). The indexes and concept docs list skills without a running total, so there is no count to bump. If the skill belongs to a new category, add it to the category lists too.
-6. Update the marketplace registry at [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) if the new skill ships in a different plugin's component set.
+6. Update the marketplace registry at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) if the new skill ships in a different plugin's component set.
 
 ## Adding an agent
 

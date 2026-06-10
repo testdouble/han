@@ -40,7 +40,7 @@ Determine which mode to operate in based on the user's request:
 
 3. **Enumerate existing ADRs:** Use Glob to find existing `.md` files in the ADR directory.
 
-4. **Check existing ADR format:** If existing ADRs were found, read one to understand the project's format. If it differs from [template.md](references/template.md), ask the user whether to match the existing format or use this skill's template.
+4. **Check existing ADR format:** If existing ADRs were found, read one to understand the project's format. If it differs from [template.md](./references/template.md), ask the user whether to match the existing format or use this skill's template.
 
 5. **Discover the filename hierarchy taxonomy:** ADRs are organized by a one- or two-level hierarchy encoded in the filename so related decisions sort together in a directory listing. Discover the taxonomy that applies to *this* project — never hardcode it.
    - **From existing filenames:** If existing ADRs were enumerated, parse their filenames to extract the leading hierarchy segments already in use (e.g., `auth-session-storage.md` → top-level `auth`; `auth-tokens-rotation.md` → top-level `auth`, second-level `tokens`). Build a list of top-level prefixes and known second-level prefixes per top-level.
@@ -78,9 +78,9 @@ Merge the three agents' findings into the Decision, Decision Drivers, and Conseq
 
 ## Step 4: Write the ADR
 
-1. **Convert source document (if converting):** Read the source document and map sections to ADR sections using the mapping at [conversion-mapping.md](references/conversion-mapping.md).
+1. **Convert source document (if converting):** Read the source document and map sections to ADR sections using the mapping at [conversion-mapping.md](./references/conversion-mapping.md).
 
-2. Copy the template from [template.md](references/template.md)
+2. Copy the template from [template.md](./references/template.md)
 
 3. **File name and location:** `{top-level}[-{second-level}]-{kebab-case-title}.md` — a one- or two-level hierarchy prefix followed by the decision's specific title. The hierarchy must come from the taxonomy discovered in Step 2.6, never invented or hardcoded.
    - **Top-level (required):** the highest-level grouping the decision belongs to (e.g., `auth`, `billing`, `api`, `postgres`). Reuse an existing top-level prefix from Step 2.6 when one fits; only introduce a new top-level when no existing prefix applies, and prefer one that matches a subsystem, bounded context, or technology already named in CLAUDE.md or project-discovery.md.
@@ -116,7 +116,7 @@ Merge the three agents' findings into the Decision, Decision Drivers, and Conseq
 
 Read back the ADR file and confirm:
 
-1. All metadata fields are filled (no `{placeholder}` values remain) and template structure from [template.md](references/template.md) was followed
+1. All metadata fields are filled (no `{placeholder}` values remain) and template structure from [template.md](./references/template.md) was followed
 2. All required sections (Context, Decision Drivers, Considered Options, Decision, Consequences, Notes) have substantive content, and Notes includes a key files table with paths verified by Glob
 3. Cross-references in the ADR point to documents that exist
 4. Agent configuration file references (CLAUDE.md/AGENTS.md) correctly point to the new ADR

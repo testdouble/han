@@ -47,7 +47,7 @@ After all agents complete (investigators and specialists), compile an **evidence
 
 ## Step 2: Document Root Cause
 
-Write to the plan file using the template at [template.md](references/template.md). Fill in these sections:
+Write to the plan file using the template at [template.md](./references/template.md). Fill in these sections:
 
 1. **Problem Statement** — document the symptoms, expected behavior, conditions under which it occurs, and impact.
 2. **Evidence Summary** — consolidate evidence from all agents into a unified numbered list (E1, E2, E3, ...); merge duplicates and resolve conflicting findings while preserving each item's output structure.
@@ -57,7 +57,7 @@ Write to the plan file using the template at [template.md](references/template.m
 
 Resolve project config: read CLAUDE.md's `## Project Discovery` section for docs, ADR, and coding-standards directories; fall back to project-discovery.md; fall back to Glob defaults (`docs/`, `docs/adr/`, `docs/coding-standards/`). Search found directories for relevant standards, ADRs, and docs. Also check `CLAUDE.md`, `AGENTS.md`, and linter/formatter configs for coding standards. If none found, infer conventions from surrounding code.
 
-Design a fix that **directly addresses the root cause** from Step 2 — fix the underlying problem, not symptoms. Then fill in the remaining sections of [template.md](references/template.md) in the plan file:
+Design a fix that **directly addresses the root cause** from Step 2 — fix the underlying problem, not symptoms. Then fill in the remaining sections of [template.md](./references/template.md) in the plan file:
 
 1. **Coding Standards Reference** — for each applicable standard, document what the standard is, where it was found (file path, ADR number, or "inferred from surrounding code"), and which files or changes it governs. If none were found, note that explicitly and document inferred patterns.
 2. **Planned Fix** — write a one-sentence summary, then for each file that needs to change: full path from repo root, what will be modified/added/removed, which evidence items (E1, E2, ...) justify the change, which coding standards apply, and implementation specifics (new function signatures, changed logic, updated tests).

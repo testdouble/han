@@ -24,9 +24,9 @@ The breakdown work — drafting slices, assigning symbolic IDs, specifying depen
 - **Symbolic-ID prefixes:** accept whatever the input uses. Any uppercase prefix shape is valid (`W-N`, `V2-N`, `EV-N`, …); the prefix has no effect on Jira placement.
 - **Defaults:** issue type `Story`, no assignee, reporter taken from the Atlassian MCP identity, and the project's initial status (Backlog). Each is overridable per run; nothing is assigned or moved unless asked.
 - **Parenting is optional and determines the child issue type.** `--parent <KEY>` accepts an epic or a standard issue (a story, task, or bug). Under an **epic**, each item is a standard issue (default `Story`). Under a **story** (any standard issue), each item is a **subtask** (default the project's subtask issue type). You cannot parent under a subtask. `--epic <KEY>` is a deprecated alias for `--parent`; it resolves the same way regardless of the named issue's actual type.
-- **Every slice ticket MUST carry the reference artifacts an implementer needs** — API/event contracts, design references, schema docs, runbooks, ADRs, coding standards. Tickets that consume an HTTP endpoint or event payload MUST reference the contract section that defines it. Full include/exclude list in [references/reference-artifact-inventory.md](references/reference-artifact-inventory.md).
+- **Every slice ticket MUST carry the reference artifacts an implementer needs** — API/event contracts, design references, schema docs, runbooks, ADRs, coding standards. Tickets that consume an HTTP endpoint or event payload MUST reference the contract section that defines it. Full include/exclude list in [references/reference-artifact-inventory.md](./references/reference-artifact-inventory.md).
 - **NEVER include process artifacts in ticket descriptions.** Excluded: iteration histories, decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an `artifacts/` subfolder of the plan that is not a contract or design reference.
-- **No screenshot upload or image embedding.** Design references are carried as links, not uploaded into Jira. See [references/jira-ticket-template.md](references/jira-ticket-template.md).
+- **No screenshot upload or image embedding.** Design references are carried as links, not uploaded into Jira. See [references/jira-ticket-template.md](./references/jira-ticket-template.md).
 
 ## Process
 
@@ -38,7 +38,7 @@ If more than one site is accessible, note which are available; you will confirm 
 
 ### 1. Locate the work-items file
 
-If the path is not provided, ask for it. The input is a single `work-items.md` produced by `/plan-work-items`. Read it. Its format is described in [references/work-items-file-format.md](references/work-items-file-format.md).
+If the path is not provided, ask for it. The input is a single `work-items.md` produced by `/plan-work-items`. Read it. Its format is described in [references/work-items-file-format.md](./references/work-items-file-format.md).
 
 ### 2. Gather the run options
 
@@ -67,7 +67,7 @@ Using the cloud ID from Step 0, resolve everything concretely now so failures su
 
 ### 4. Validate the format with evidence-based repair
 
-Check the work-items file against the invariants in [references/jira-ticket-template.md](references/jira-ticket-template.md) and [references/work-items-file-format.md](references/work-items-file-format.md):
+Check the work-items file against the invariants in [references/jira-ticket-template.md](./references/jira-ticket-template.md) and [references/work-items-file-format.md](./references/work-items-file-format.md):
 
 - **Heading shape.** Every slice heading matches `## <SYM-N> — <title>` with an em-dash separator (already-published headings annotated as `## <SYM-N> (<KEY>) — <title>` are valid too).
 - **`Depends on` line.** Literal bold marker `**Depends on.**`, trailing period, `None.` or comma-separated SYMs.

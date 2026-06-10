@@ -173,7 +173,7 @@ A single `T#`-contradiction does NOT trip the gate on its own — it routes thro
 - If at least one Open Question is `plan-level` and unresolved → `continue iterating` (use Step 6 to resolve via evidence or han.core:junior-developer reframing).
 - Otherwise → `go to synthesis`.
 
-**Write the round entry** to `artifacts/implementation-iteration-history.md` using [implementation-iteration-history-template.md](references/implementation-iteration-history-template.md). Populate the claim ledger, Open Questions, spec-maturity tags, and next-step recommendation fields directly from this aggregation.
+**Write the round entry** to `artifacts/implementation-iteration-history.md` using [implementation-iteration-history-template.md](./references/implementation-iteration-history-template.md). Populate the claim ledger, Open Questions, spec-maturity tags, and next-step recommendation fields directly from this aggregation.
 
 **If the spec-maturity gate tripped**, this skill makes the one and only PM facilitation call in the round: launch `han.core:project-manager` in **facilitation mode** (pass `model: "sonnet"`) with the verbatim specialist outputs, the deterministic aggregation, and a directive to confirm or refine the gate-trip assessment and surface anything the deterministic aggregator might have missed before the user is asked to pause spec-stage work. Pass the directive: **do NOT write a facilitation-summary file to disk.** Return the facilitation output verbatim. Append PM's verbatim output to the round entry under a `Project-manager review (gate-trip pass):` field.
 
@@ -201,7 +201,7 @@ For each iteration:
 
 3. **Re-aggregate deterministically.** Apply the same Step 5 rules to the updated state: the prior round's iteration-history entry, the newly resolved Open Questions, the new specialist input from sub-step 2, and any user answers. Recompute the claim ledger, spec-maturity tags, Open Questions, and next-step recommendation. **Do not call `han.core:project-manager` for this** unless the spec-maturity gate trips for the first time in this round (in which case use the same single PM call described in Step 5).
 
-4. **Append a round entry to `artifacts/implementation-iteration-history.md`.** Before deciding whether to loop again, write the round's record using the [implementation-iteration-history-template.md](references/implementation-iteration-history-template.md) format. The entry consolidates the deterministic aggregation into the structured fields: `R#` ID, specialists engaged, new input provided, claim ledger, Open Questions raised, spec-maturity tags, resolution source per question, and the deterministic next-step recommendation. Leave `Decisions produced:` and `Changed in plan:` as `—` for now; both fields are backfilled by the han.core:project-manager in Step 8 once decisions are committed and the plan is written.
+4. **Append a round entry to `artifacts/implementation-iteration-history.md`.** Before deciding whether to loop again, write the round's record using the [implementation-iteration-history-template.md](./references/implementation-iteration-history-template.md) format. The entry consolidates the deterministic aggregation into the structured fields: `R#` ID, specialists engaged, new input provided, claim ledger, Open Questions raised, spec-maturity tags, resolution source per question, and the deterministic next-step recommendation. Leave `Decisions produced:` and `Changed in plan:` as `—` for now; both fields are backfilled by the han.core:project-manager in Step 8 once decisions are committed and the plan is written.
 
 5. **Decide whether to continue looping (deterministic stop rule).** Exit the loop when ANY of the following holds:
    - The deterministic next-step recommendation is **"go to synthesis."**
@@ -250,7 +250,7 @@ Launch `han.core:project-manager` in **synthesis mode** — this is the one call
 - The YAGNI ledger from Step 7.5 (items demoted or replaced under the YAGNI rule, plus any user overrides made during the sweep).
 - Any remaining open items and the user's disposition on each, including any spec-maturity-gate overrides and the reasoning the user provided.
 - The three target output paths: `{same-folder-as-source}/feature-implementation-plan.md`, `{same-folder-as-source}/artifacts/implementation-decision-log.md`, and `{same-folder-as-source}/artifacts/implementation-iteration-history.md` (the latter already populated with round entries from Step 6, awaiting backfill).
-- The templates: [feature-implementation-plan-template.md](references/feature-implementation-plan-template.md), [implementation-decision-log-template.md](references/implementation-decision-log-template.md), and [implementation-iteration-history-template.md](references/implementation-iteration-history-template.md).
+- The templates: [feature-implementation-plan-template.md](./references/feature-implementation-plan-template.md), [implementation-decision-log-template.md](./references/implementation-decision-log-template.md), and [implementation-iteration-history-template.md](./references/implementation-iteration-history-template.md).
 
 Ask the han.core:project-manager to produce the final synthesis across all three files:
 
