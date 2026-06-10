@@ -116,9 +116,9 @@ URL: https://cwe.mitre.org/
 - [`/test-planning`](../../skills/han.coding/test-planning.md). Dispatches this agent for negative security test planning when the files touch auth, input handling, isolation, crypto, uploads, or SQL/ORM.
 - [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). Adds this agent to its security-signal roster on a medium or large run.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps touch a security-sensitive surface.
-- [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Dispatches this agent into the spec-stage team on a security signal.
-- [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Dispatches this agent into the implementation team on a security signal.
-- [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Dispatches this agent in team mode on a security signal.
+- [`/plan-a-feature`](../../skills/han.planning/plan-a-feature.md). Dispatches this agent into the spec-stage team on a security signal.
+- [`/plan-implementation`](../../skills/han.planning/plan-implementation.md). Dispatches this agent into the implementation team on a security signal.
+- [`/iterative-plan-review`](../../skills/han.planning/iterative-plan-review.md). Dispatches this agent in team mode on a security signal.
 - [`devops-engineer`](./devops-engineer.md). Pair on regulated changes. Security analyst covers exploit paths. `devops-engineer` covers operational posture.
 - [`data-engineer`](./data-engineer.md). Pair on regulated data. Security analyst covers exploit paths. `data-engineer` covers data-level governance.
 - [`adversarial-validator`](./adversarial-validator.md). Pair when you want the security report challenged by another adversarial agent.

@@ -1,6 +1,6 @@
 # /plan-work-items
 
-Operator documentation for the `/plan-work-items` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/plan-work-items/SKILL.md`](../../../han.core/skills/plan-work-items/SKILL.md).
+Operator documentation for the `/plan-work-items` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.planning/skills/plan-work-items/SKILL.md`](../../../han.planning/skills/plan-work-items/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
 
@@ -124,6 +124,6 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 - [`/plan-a-phased-build`](./plan-a-phased-build.md). Pair upstream when the work is large enough to ship in phases. Phase first, plan one phase, then break that phase's plan into work items.
 - [`/tdd`](../han.coding/tdd.md). Pair downstream to implement a work item test-first.
 - [`/work-items-to-issues`](../han.github/work-items-to-issues.md). Pair downstream to publish the work items as GitHub issues. Part of the `han.github` plugin.
-- [Work item template](../../../han.core/skills/plan-work-items/references/work-item-template.md). The template the skill renders for each work item.
-- [Work-items file format](../../../han.core/skills/plan-work-items/references/work-items-file-format.md). The title, intro, and preamble structure of the output file.
-- [Reference artifact inventory](../../../han.core/skills/plan-work-items/references/reference-artifact-inventory.md). The include list, exclude list, and screenshot-to-work-item mapping rules the skill applies in Step 4.
+- [Work item template](../../../han.planning/skills/plan-work-items/references/work-item-template.md). The template the skill renders for each work item.
+- [Work-items file format](../../../han.planning/skills/plan-work-items/references/work-items-file-format.md). The title, intro, and preamble structure of the output file.
+- [Reference artifact inventory](../../../han.planning/skills/plan-work-items/references/reference-artifact-inventory.md). The include list, exclude list, and screenshot-to-work-item mapping rules the skill applies in Step 4.

@@ -29,7 +29,7 @@ allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *)
 
 Look back through the conversation for any use of a Han plugin component. A component counts as used if it was invoked, regardless of whether it completed or was cancelled.
 
-**Han skills.** Look for invocations of skills namespaced to any `han.*` plugin. The namespace is the plugin name followed by a colon: `han.core:`, `han.github:`, `han.reporting:`, `han.feedback:`, and the same shape for any future `han.*` plugin (treat a bare `han:` prefix as Han too). Watch for slash-command invocations (like `/han.core:plan-a-feature`), messages showing a skill launching (like "Launching skill: han.core:plan-a-feature"), and any output that identifies a specific Han skill ran.
+**Han skills.** Look for invocations of skills namespaced to any `han.*` plugin. The namespace is the plugin name followed by a colon: `han.core:`, `han.planning:`, `han.coding:`, `han.github:`, `han.reporting:`, `han.feedback:`, and the same shape for any future `han.*` plugin (treat a bare `han:` prefix as Han too). Watch for slash-command invocations (like `/han.planning:plan-a-feature`), messages showing a skill launching (like "Launching skill: han.planning:plan-a-feature"), and any output that identifies a specific Han skill ran.
 
 **Han agents.** Look for dispatches of agents from any `han.*` plugin. For example, an `Agent` tool call whose `subagent_type` is `han.core:adversarial-security-analyst`, or skill output naming a Han agent it launched (`evidence-based-investigator`, `project-manager`, `risk-analyst`, and so on). Record each distinct Han agent that ran, whether a skill dispatched it or it was invoked directly.
 
@@ -51,12 +51,12 @@ If everything used in this session already has a feedback file for today, report
 
 Compute the filename as `{TODAY}-{short-names}.md`, where:
 
-- Each component's short name is its plugin namespace stripped (everything up to and including the colon). For example `han.core:plan-a-feature` becomes `plan-a-feature`, `han.github:post-code-review-to-pr` becomes `post-code-review-to-pr`, and the agent `han.core:risk-analyst` becomes `risk-analyst`.
+- Each component's short name is its plugin namespace stripped (everything up to and including the colon). For example `han.planning:plan-a-feature` becomes `plan-a-feature`, `han.github:post-code-review-to-pr` becomes `post-code-review-to-pr`, and the agent `han.core:risk-analyst` becomes `risk-analyst`.
 - Join the short names of the **skills** being processed in this run with hyphens. Skills name the file because they are the unit of work; the agents are recorded inside the file.
 - When a session used Han agents directly with no Han skill, use the agent short names instead.
 - `{TODAY}` is today's date from Project Context.
 
-Example: a session with `han.core:plan-a-feature` and `han.coding:code-review` on 2026-05-29 produces `2026-05-29-plan-a-feature-code-review.md`.
+Example: a session with `han.planning:plan-a-feature` and `han.coding:code-review` on 2026-05-29 produces `2026-05-29-plan-a-feature-code-review.md`.
 
 ## Step 5: Read the format reference
 

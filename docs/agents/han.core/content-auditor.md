@@ -89,4 +89,4 @@ URL: https://standards.ieee.org/ieee/1063/2554/
 - [`information-architect`](./information-architect.md). Sibling agent for IA structure of the new doc.
 - [`/project-documentation`](../../skills/han.core/project-documentation.md). Always dispatches this agent in update mode.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Dispatches this agent as a swarm specialist when the desired state is documentation.
-- [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Dispatches this agent in team mode when the plan under review is documentation.
+- [`/iterative-plan-review`](../../skills/han.planning/iterative-plan-review.md). Dispatches this agent in team mode when the plan under review is documentation.

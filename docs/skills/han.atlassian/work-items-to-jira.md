@@ -6,7 +6,7 @@ Operator documentation for the `/work-items-to-jira` skill in the opt-in `han.at
 
 ## TL;DR
 
-- **What it does.** Takes a `work-items.md` file produced by [`/plan-work-items`](../han.core/plan-work-items.md), validates the format, and creates one Jira ticket per work item in a single target project through the Atlassian MCP server.
+- **What it does.** Takes a `work-items.md` file produced by [`/plan-work-items`](../han.planning/plan-work-items.md), validates the format, and creates one Jira ticket per work item in a single target project through the Atlassian MCP server.
 - **When to use it.** You have a trusted work-items file and you want each item tracked as a Jira ticket an implementer can grab.
 - **What you get back.** One Jira ticket per work item in the project you named, dependencies recorded ticket-to-ticket, and the source `work-items.md` annotated with each created ticket key.
 
@@ -32,7 +32,7 @@ Operator documentation for the `/work-items-to-jira` skill in the opt-in `han.at
 
 **Do not invoke for:**
 
-- **Producing the work-items file.** Use [`/plan-work-items`](../han.core/plan-work-items.md) to break a trusted plan into work items first. This skill publishes that file; it does not create it.
+- **Producing the work-items file.** Use [`/plan-work-items`](../han.planning/plan-work-items.md) to break a trusted plan into work items first. This skill publishes that file; it does not create it.
 - **Posting to GitHub.** Use [`/work-items-to-issues`](../han.github/work-items-to-issues.md) to create GitHub issues instead.
 - **Writing the code for an item.** Use [`/tdd`](../han.coding/tdd.md) to implement a work item test-first.
 
@@ -71,7 +71,7 @@ Tickets in Jira plus one file change on disk:
 ## How to get the most out of it
 
 - **Configure and authenticate the Atlassian MCP server first.** The skill drives Jira entirely through it. Without it, the skill stops at the preflight.
-- **Run [`/plan-work-items`](../han.core/plan-work-items.md) upstream.** This skill publishes a work-items file; it does not produce one. A sharp, dependency-ordered breakdown makes the create step clean.
+- **Run [`/plan-work-items`](../han.planning/plan-work-items.md) upstream.** This skill publishes a work-items file; it does not produce one. A sharp, dependency-ordered breakdown makes the create step clean.
 - **Name the project explicitly.** The project (or board) is required. Passing `--project <KEY>` removes any ambiguity about where the tickets land.
 - **Review the plan before you confirm.** The skill shows the destination and the full list of tickets it is about to create, and waits. This is the moment to catch a wrong project, epic, or issue type.
 - **Let the evidence-based repair run.** When a format check fails, the skill proposes a fix with its source. Continue with the fills when they look right, correct them when they do not, or stop and edit the file by hand.
@@ -81,7 +81,7 @@ Tickets in Jira plus one file change on disk:
 
 YAGNI does not gate this skill's output. The work-items file is an already-committed decomposition, and this skill publishes it without adding new behavioral commitments or speculative infrastructure. The closest thing to a gate here is the reference-artifact rule: ticket descriptions carry the contracts, designs, and standards an implementer needs and leave out the process artifacts that only record how the plan was reached. That is content hygiene, not YAGNI.
 
-If the plan behind the work items has not been through a YAGNI sweep, run [`/iterative-plan-review`](../han.core/iterative-plan-review.md) on the plan before you break it into work items. See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
+If the plan behind the work items has not been through a YAGNI sweep, run [`/iterative-plan-review`](../han.planning/iterative-plan-review.md) on the plan before you break it into work items. See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
 ## Cost and latency
 
@@ -124,7 +124,7 @@ URL: https://support.atlassian.com/jira-software-cloud/docs/what-are-issue-types
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [Choosing a Han plugin](../../choosing-a-han-plugin.md). Why `han.atlassian` is installed separately from the bundled suite, and what it requires.
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule. This skill does not gate on it; enforcement belongs upstream.
-- [`/plan-work-items`](../han.core/plan-work-items.md). Pair upstream to produce the work-items file this skill publishes.
+- [`/plan-work-items`](../han.planning/plan-work-items.md). Pair upstream to produce the work-items file this skill publishes.
 - [`/work-items-to-issues`](../han.github/work-items-to-issues.md). The GitHub sibling that creates issues instead of Jira tickets.
 - [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md). A sibling `han.atlassian` skill, for generating documentation and publishing it to Confluence.
 - [`/markdown-to-confluence`](./markdown-to-confluence.md). A sibling `han.atlassian` skill, for publishing an existing Markdown file to Confluence.

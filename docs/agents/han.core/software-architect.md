@@ -144,6 +144,6 @@ URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
 - [`structural-analyst`](./structural-analyst.md), [`behavioral-analyst`](./behavioral-analyst.md), [`concurrency-analyst`](./concurrency-analyst.md). The three parallel analysts whose findings this agent synthesizes.
 - [`risk-analyst`](./risk-analyst.md). The agent that prioritizes analyst findings. Its assessments are part of this agent's input.
 - [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). The skill that dispatches this agent as its final synthesis step.
-- [`/plan-implementation`](../../skills/han.core/plan-implementation.md). The skill that includes this agent in its roster for feature implementation planning.
+- [`/plan-implementation`](../../skills/han.planning/plan-implementation.md). The skill that includes this agent in its roster for feature implementation planning.
 - [agent-domain-focus.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.

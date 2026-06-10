@@ -48,14 +48,14 @@ Give it:
 
 Example prompts:
 
-- `/han-feedback`. *Run at the end of a session that used `/han.core:plan-a-feature` and `/han.core:plan-implementation`.*
+- `/han-feedback`. *Run at the end of a session that used `/han.planning:plan-a-feature` and `/han.planning:plan-implementation`.*
 - `/han-feedback`. *"I just finished a session with `/han.coding:investigate` and it found the root cause faster than I expected."* — use this framing to prime the skill with a concrete observation before it generates the feedback.
 
 ## What you get back
 
 One feedback file per run:
 
-- **`~/.claude/han-feedback/{date}-{skill-names}.md`** — the feedback file. Contains `**Skills used:**` and `**Agents used:**` headers (each listing the components with their full plugin namespace, like `han.core:plan-a-feature` or `han.core:risk-analyst`), context and outcome lines, three sections (What worked well, What didn't work, Overall), and a rating table. The date is today in ISO format; the filename's skill names are the plugin namespace stripped and joined with hyphens.
+- **`~/.claude/han-feedback/{date}-{skill-names}.md`** — the feedback file. Contains `**Skills used:**` and `**Agents used:**` headers (each listing the components with their full plugin namespace, like `han.planning:plan-a-feature` or `han.core:risk-analyst`), context and outcome lines, three sections (What worked well, What didn't work, Overall), and a rating table. The date is today in ISO format; the filename's skill names are the plugin namespace stripped and joined with hyphens.
 - **A GitHub issue URL** (conditional) — if you confirm posting, the skill runs `gh issue create` against testdouble/han and returns the issue URL.
 
 ## How to get the most out of it

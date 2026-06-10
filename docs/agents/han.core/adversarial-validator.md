@@ -102,6 +102,6 @@ URL: https://en.wikipedia.org/wiki/Red_team
 - [`/investigate`](../../skills/han.coding/investigate.md). Always dispatches this agent after the fix plan is drafted.
 - [`/research`](../../skills/han.core/research.md). Always dispatches this agent as the adversarial-validation step at the end of every research pass, attacking the recommendation and its sources.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Required swarm role at every size. The swarm runs by default.
-- [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Dispatches this agent in team mode.
+- [`/iterative-plan-review`](../../skills/han.planning/iterative-plan-review.md). Dispatches this agent in team mode.
 - [agent-domain-focus.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise falsification vocabulary and named anti-patterns.
 - [multi-agent-economics.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md). Why this agent is the canonical second-opinion pattern across the plugin.

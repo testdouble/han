@@ -10,17 +10,7 @@ Start on the [Quickstart](../quickstart.md). It picks the right skill for what y
 
 ## han.core
 
-The base plugin. It carries the planning, research, analysis, documentation, and operations skills, plus every agent those skills dispatch. Grouped by purpose below.
-
-### Planning
-
-Skills for specifying *what* a feature does, planning *how* to build it, and stress-testing plans before you commit.
-
-- **[`/plan-a-feature`](./han.core/plan-a-feature.md).** Build a feature specification from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
-- **[`/plan-implementation`](./han.core/plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
-- **[`/plan-a-phased-build`](./han.core/plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
-- **[`/iterative-plan-review`](./han.core/iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
-- **[`/plan-work-items`](./han.core/plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
+The base plugin. It carries the research, analysis, documentation, and operations skills, plus every agent those skills dispatch. Grouped by purpose below.
 
 ### Triage & research
 
@@ -53,6 +43,16 @@ Skills for recording how the team works.
 Skills for capturing operational knowledge in artifacts the next on-call engineer can use.
 
 - **[`/runbook`](./han.core/runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Symptom-first template with imperative-voice procedure, expected output per step, escalation conditions, and rollback. Applies a YAGNI preflight that requires real evidence before writing.
+
+## han.planning
+
+The planning layer: the skills for specifying *what* a feature does, planning *how* to build it, sequencing the build, breaking it into work, and stress-testing plans before you commit. Depends on `han.core`; bundled by the `han` meta-plugin.
+
+- **[`/plan-a-feature`](./han.planning/plan-a-feature.md).** Build a feature specification from scratch through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
+- **[`/plan-implementation`](./han.planning/plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
+- **[`/plan-a-phased-build`](./han.planning/plan-a-phased-build.md).** Split a body of context (gap analysis, PRD, design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
+- **[`/iterative-plan-review`](./han.planning/iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
+- **[`/plan-work-items`](./han.planning/plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
 
 ## han.coding
 
@@ -100,7 +100,7 @@ The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira t
 
 ## How dispatch scales: sizing
 
-The sizing-aware skills ([`/architectural-analysis`](./han.coding/architectural-analysis.md), [`/code-review`](./han.coding/code-review.md), [`/gap-analysis`](./han.core/gap-analysis.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md), [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/research`](./han.core/research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
+The sizing-aware skills ([`/architectural-analysis`](./han.coding/architectural-analysis.md), [`/code-review`](./han.coding/code-review.md), [`/gap-analysis`](./han.core/gap-analysis.md), [`/iterative-plan-review`](./han.planning/iterative-plan-review.md), [`/plan-a-feature`](./han.planning/plan-a-feature.md), [`/plan-implementation`](./han.planning/plan-implementation.md), [`/research`](./han.core/research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
 
 See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each sizing-aware skill's long-form doc has its own **Sizing** section with the skill-specific signals and caps.
 
@@ -108,7 +108,7 @@ See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each s
 
 Every planning, review, and standards skill in the plugin applies an evidence-based YAGNI rule before committing items to its artifact. Items without acceptable evidence move to a `## Deferred (YAGNI)` section with a named *reopen-when* trigger. Never silently dropped. The rule applies to:
 
-- **Planning.** [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/plan-a-phased-build`](./han.core/plan-a-phased-build.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md).
+- **Planning.** [`/plan-a-feature`](./han.planning/plan-a-feature.md), [`/plan-implementation`](./han.planning/plan-implementation.md), [`/plan-a-phased-build`](./han.planning/plan-a-phased-build.md), [`/iterative-plan-review`](./han.planning/iterative-plan-review.md).
 - **Review and standards.** [`/code-review`](./han.coding/code-review.md) (advisory-only), [`/coding-standard`](./han.coding/coding-standard.md), [`/test-planning`](./han.coding/test-planning.md), [`/architectural-decision-record`](./han.core/architectural-decision-record.md) (forcing-function requirement).
 - **Building.** [`/tdd`](./han.coding/tdd.md) (enforcing in the refactor step and the test list), [`/refactor`](./han.coding/refactor.md) (enforcing on the refactoring plan: every item needs evidence the code has a reason to change).
 

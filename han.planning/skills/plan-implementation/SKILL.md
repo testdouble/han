@@ -180,7 +180,7 @@ A single `T#`-contradiction does NOT trip the gate on its own — it routes thro
 Then surface the tripping findings to the user with:
 
 - The list of `spec-level` findings and `T#`-contradictions that tripped the gate, grouped by the spec section they affect.
-- A recommendation to run `han.core:iterative-plan-review` on the source spec (for mechanic-leak cleanup and gap filling) or re-enter `han.core:plan-a-feature` (for structural gaps where whole sections are missing).
+- A recommendation to run `han.planning:iterative-plan-review` on the source spec (for mechanic-leak cleanup and gap filling) or re-enter `han.planning:plan-a-feature` (for structural gaps where whole sections are missing).
 - An explicit **override option**. The user may direct the skill to continue anyway — in which case `plan-implementation` proceeds, and the tripping findings are documented in the round entry, noting the user's override and the reasoning provided.
 
 If the user overrides, the plan ships with the spec accepted as-is; if the user chooses to pause, stop the skill and hand control back to spec-stage work.

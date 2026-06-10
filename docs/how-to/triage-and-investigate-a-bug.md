@@ -106,5 +106,5 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
 - [Plan a feature, end to end](./plan-a-feature.md) is the right guide when triage says the report is a missing capability rather than a defect.
 - [Research a decision](./research-a-decision.md) is the right guide when triage says the report is really a question about an approach the team has not yet picked.
-- The skill long-form docs ([investigate](../skills/han.coding/investigate.md), [issue-triage](../skills/han.core/issue-triage.md), [iterative-plan-review](../skills/han.core/iterative-plan-review.md), [runbook](../skills/han.core/runbook.md)) cover each step in depth.
+- The skill long-form docs ([investigate](../skills/han.coding/investigate.md), [issue-triage](../skills/han.core/issue-triage.md), [iterative-plan-review](../skills/han.planning/iterative-plan-review.md), [runbook](../skills/han.core/runbook.md)) cover each step in depth.
 - [`/code-review`](../skills/han.coding/code-review.md) is the right next step when the fix lands and you want a review of the change end-to-end before merge.

@@ -6,13 +6,13 @@ Operator documentation for the `/plan-a-feature-to-confluence` skill in the opt-
 
 ## TL;DR
 
-- **What it does.** Runs the core [`/plan-a-feature`](../han.core/plan-a-feature.md) skill to build a feature specification in a temporary folder, shows you the files to review, and then, after you confirm, publishes the plan to a Confluence location you specify by handing each file to [`/markdown-to-confluence`](./markdown-to-confluence.md): the spec as a parent page and each companion artifact as a child page beneath it.
+- **What it does.** Runs the [`/plan-a-feature`](../han.planning/plan-a-feature.md) planning skill to build a feature specification in a temporary folder, shows you the files to review, and then, after you confirm, publishes the plan to a Confluence location you specify by handing each file to [`/markdown-to-confluence`](./markdown-to-confluence.md): the spec as a parent page and each companion artifact as a child page beneath it.
 - **When to use it.** You want a new feature planned from scratch *and* posted to a specific Confluence space or page, not just to local files.
 - **What you get back.** A working-draft plan folder under `/tmp/` that you can review, plus a small Confluence page tree at the location you named (if you choose to publish): the spec page with the decision log, team findings, and technical notes as child pages.
 
 ## Key concepts
 
-- **A thin orchestrator over two skills.** The interview, the design-tree walk, the review team, and the project-manager synthesis all belong to [`/plan-a-feature`](../han.core/plan-a-feature.md). The publishing, the location resolution, and the create-or-update calls all belong to [`/markdown-to-confluence`](./markdown-to-confluence.md). This skill only validates its inputs, runs the planning skill to a temporary folder, lets you review the files, takes your publish choice, and hands each file to the publisher.
+- **A thin orchestrator over two skills.** The interview, the design-tree walk, the review team, and the project-manager synthesis all belong to [`/plan-a-feature`](../han.planning/plan-a-feature.md). The publishing, the location resolution, and the create-or-update calls all belong to [`/markdown-to-confluence`](./markdown-to-confluence.md). This skill only validates its inputs, runs the planning skill to a temporary folder, lets you review the files, takes your publish choice, and hands each file to the publisher.
 - **A plan is a set of files, so Confluence gets a page tree.** `/plan-a-feature` produces a primary `feature-specification.md` plus companion artifacts under `artifacts/` (the decision log, the team findings, and a lazily-created technical-notes file). This skill publishes the spec as a parent page and each companion artifact that exists as a child page beneath it.
 - **It publishes in a single pass using title-based links.** The files link to each other with relative paths that break once each is a separate page. Because the skill decides every page's title up front, it rewrites those cross-file links into Confluence title-based page-link macros (`<ac:link><ri:page ri:content-title="..."/></ac:link>`) before creating any page. Those macros resolve by title at view time, so no page URL has to exist first, and each page is created exactly once with no separate update pass. It drops the `#heading` fragment in the rewrite (see the limitation under "What you get back").
 - **The Atlassian MCP server is required.** The skill checks the server is connected before it produces any plan, so a missing server fails fast. If the server is missing or not authenticated, the skill stops and points you at `/plan-a-feature` for a local-only run. It never silently falls back to local.
@@ -31,9 +31,9 @@ Operator documentation for the `/plan-a-feature-to-confluence` skill in the opt-
 
 **Do not invoke for:**
 
-- **Local-only planning.** Use [`/plan-a-feature`](../han.core/plan-a-feature.md). This skill is for when the plan also needs to land in Confluence.
+- **Local-only planning.** Use [`/plan-a-feature`](../han.planning/plan-a-feature.md). This skill is for when the plan also needs to land in Confluence.
 - **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the file and just want it posted, without generating a new plan.
-- **Refining or stress-testing an existing plan.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md).
+- **Refining or stress-testing an existing plan.** Use [`/iterative-plan-review`](../han.planning/iterative-plan-review.md).
 - **Documenting an already-built feature to Confluence.** Use [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md). That skill describes what exists; this one specifies what to build.
 
 ## How to invoke it
@@ -57,7 +57,7 @@ Example prompts:
 
 Two things:
 
-- **The working-draft plan.** A folder under `/tmp/` that [`/plan-a-feature`](../han.core/plan-a-feature.md) writes: `feature-specification.md` at the root and, under `artifacts/`, `decision-log.md`, `team-findings.md`, and (only if a load-bearing mechanic qualified) `feature-technical-notes.md`. These files are the source content for Confluence and the thing you review before publishing. They live in `/tmp/`, not your repo, so they do not get committed unless you move them there yourself.
+- **The working-draft plan.** A folder under `/tmp/` that [`/plan-a-feature`](../han.planning/plan-a-feature.md) writes: `feature-specification.md` at the root and, under `artifacts/`, `decision-log.md`, `team-findings.md`, and (only if a load-bearing mechanic qualified) `feature-technical-notes.md`. These files are the source content for Confluence and the thing you review before publishing. They live in `/tmp/`, not your repo, so they do not get committed unless you move them there yourself.
 - **The Confluence page tree.** The spec posted as a parent page at the location you named, with each companion artifact that exists posted as a child page beneath it, either as unpublished drafts (the default) or live, per your choice. The skill reports every page URL on success and tells you which mode it used; for drafts, you still review and publish them yourself in Confluence.
 
 Two things to know about how the content lands:
@@ -77,11 +77,11 @@ If you keep it local only at the confirmation step, you still keep the `/tmp/` p
 
 ## YAGNI
 
-This skill produces no artifact of its own, so it adds no YAGNI posture. The plan it publishes is built by [`/plan-a-feature`](../han.core/plan-a-feature.md), which applies the evidence-based [YAGNI](../../yagni.md) rule to every behavior, alternate flow, edge case, coordination, and open item before committing it to the spec, and records deferrals in the spec's `## Deferred (YAGNI)` section. Whatever YAGNI discipline shows up in the published spec comes from that run; this skill neither adds nor relaxes it.
+This skill produces no artifact of its own, so it adds no YAGNI posture. The plan it publishes is built by [`/plan-a-feature`](../han.planning/plan-a-feature.md), which applies the evidence-based [YAGNI](../../yagni.md) rule to every behavior, alternate flow, edge case, coordination, and open item before committing it to the spec, and records deferrals in the spec's `## Deferred (YAGNI)` section. Whatever YAGNI discipline shows up in the published spec comes from that run; this skill neither adds nor relaxes it.
 
 ## Cost and latency
 
-The skill itself dispatches no agents. Its cost is whatever [`/plan-a-feature`](../han.core/plan-a-feature.md) costs (its interview plus a review team of two to five `sonnet` sub-agents scaled by size, and a `project-manager` synthesis pass), plus the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes per page to resolve the location and publish. Because the cross-page links are rewritten into title macros before anything is created, each page is published with a single create call and no follow-up update, so a spec with three artifacts is four create steps at the end. For a medium feature, expect the same shape and run time as `/plan-a-feature`, with the publish steps appended.
+The skill itself dispatches no agents. Its cost is whatever [`/plan-a-feature`](../han.planning/plan-a-feature.md) costs (its interview plus a review team of two to five `sonnet` sub-agents scaled by size, and a `project-manager` synthesis pass), plus the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes per page to resolve the location and publish. Because the cross-page links are rewritten into title macros before anything is created, each page is published with a single create call and no follow-up update, so a spec with three artifacts is four create steps at the end. For a medium feature, expect the same shape and run time as `/plan-a-feature`, with the publish steps appended.
 
 ## In more detail
 
@@ -98,7 +98,7 @@ The skill walks a short, deterministic six-step process:
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
-- [`/plan-a-feature`](../han.core/plan-a-feature.md). The core skill this one runs to build the specification. Use it directly for a local-only plan.
+- [`/plan-a-feature`](../han.planning/plan-a-feature.md). The core skill this one runs to build the specification. Use it directly for a local-only plan.
 - [`/markdown-to-confluence`](./markdown-to-confluence.md). The publisher this skill hands each file to. Use it directly to publish any existing markdown file to Confluence.
 - [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md). The sibling that documents an already-built feature to Confluence, rather than planning a new one.
 - [Choosing a Han plugin](../../choosing-a-han-plugin.md). Why `han.atlassian` is installed separately from the bundled suite, and what it requires.

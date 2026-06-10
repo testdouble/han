@@ -263,4 +263,4 @@ Summarize for the user:
 
 Ask whether the user wants to iterate on specific sections or consider the specification ready for implementation planning.
 
-**Note for existing specs that predate this rule or need cleanup:** this skill authors new specifications from scratch. To clean an existing `feature-specification.md` against the current spec-content rule (for example, to extract implementation mechanics into a new `feature-technical-notes.md`), run `han.core:iterative-plan-review` on the existing spec file. Its spec-aware mode applies the same rule and roster used here.
+**Note for existing specs that predate this rule or need cleanup:** this skill authors new specifications from scratch. To clean an existing `feature-specification.md` against the current spec-content rule (for example, to extract implementation mechanics into a new `feature-technical-notes.md`), run `han.planning:iterative-plan-review` on the existing spec file. Its spec-aware mode applies the same rule and roster used here.

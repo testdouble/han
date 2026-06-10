@@ -170,7 +170,7 @@ URL: https://www.nngroup.com/articles/5-whys/
 - [Evidence](../../evidence.md). The companion rule the agent applies alongside YAGNI. Trust classes, the corroboration gate, and the no-evidence label.
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`project-manager`](./project-manager.md). The coordinator this agent pairs with in planning skill review rounds.
-- [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md) and [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Skills that always include this agent in their review rounds.
+- [`/plan-a-feature`](../../skills/han.planning/plan-a-feature.md) and [`/plan-implementation`](../../skills/han.planning/plan-implementation.md). Skills that always include this agent in their review rounds.
 - [agent-domain-focus.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns even when the domain is "being a generalist."
 - [agent-model-selection.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier on a synthesis-heavy inquiry agent.
 - [graceful-degradation.md](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/graceful-degradation.md). Why the agent handles missing git, missing standards documents, and missing ADRs inline rather than failing.

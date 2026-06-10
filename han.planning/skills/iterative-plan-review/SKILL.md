@@ -37,7 +37,7 @@ Resolve project config: read CLAUDE.md's `## Project Discovery` section for lang
 
 ### Spec-aware mode detection
 
-After reading the plan file, determine whether it is a `feature-specification.md` produced by (or compatible with) `han.core:plan-a-feature`. Engage **spec-aware mode** when either signal holds:
+After reading the plan file, determine whether it is a `feature-specification.md` produced by (or compatible with) `han.planning:plan-a-feature`. Engage **spec-aware mode** when either signal holds:
 
 - **Primary signal** — the plan's filename is exactly `feature-specification.md`.
 - **Fallback signal** — the file contains the canonical top-level headings of a feature spec: `## Outcome`, `## Actors and Triggers`, `## Primary Flow`, and `## Coordinations` (at least three of these four).
