@@ -56,7 +56,7 @@ Compute the filename as `{TODAY}-{short-names}.md`, where:
 - When a session used Han agents directly with no Han skill, use the agent short names instead.
 - `{TODAY}` is today's date from Project Context.
 
-Example: a session with `han.core:plan-a-feature` and `han.core:code-review` on 2026-05-29 produces `2026-05-29-plan-a-feature-code-review.md`.
+Example: a session with `han.core:plan-a-feature` and `han.coding:code-review` on 2026-05-29 produces `2026-05-29-plan-a-feature-code-review.md`.
 
 ## Step 5: Read the format reference
 

@@ -107,8 +107,8 @@ URL: https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-softwa
 - [YAGNI](../../yagni.md). The Speculative Edge Case rule.
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`test-engineer`](./test-engineer.md). Sibling agent. `/test-planning` runs both in parallel.
-- [`/test-planning`](../../skills/han.core/test-planning.md). Always dispatches this agent.
-- [`/code-review`](../../skills/han.core/code-review.md). Conditionally dispatches this agent.
+- [`/test-planning`](../../skills/han.coding/test-planning.md). Always dispatches this agent.
+- [`/code-review`](../../skills/han.coding/code-review.md). Conditionally dispatches this agent.
 - [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Dispatches this agent as part of the spec-stage team, covering Outcome / Primary Flow / Alternate Flows / Edge Cases.
 - [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Dispatches this agent as part of the implementation team.
 - [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Dispatches this agent in team mode.

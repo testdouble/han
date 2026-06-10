@@ -1,6 +1,6 @@
 # /investigate
 
-Operator documentation for the `/investigate` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/investigate/SKILL.md`](../../../han.core/skills/investigate/SKILL.md).
+Operator documentation for the `/investigate` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.coding/skills/investigate/SKILL.md`](../../../han.coding/skills/investigate/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [Evidence](../../evidence.md)
 
@@ -31,10 +31,10 @@ Operator documentation for the `/investigate` skill in the han plugin. This docu
 **Do not invoke for:**
 
 - **Code review.** Use [`/code-review`](./code-review.md) for a correctness, testing, and compliance audit of a branch.
-- **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment of a module.
+- **Architectural analysis.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment of a module.
 - **Test planning.** Use [`/test-planning`](./test-planning.md) when the gap is coverage, not a bug.
-- **Plan review.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for multi-pass review of an existing plan.
-- **Open-ended research.** Use [`/research`](./research.md) when nothing is broken and you want options, prior art, or how something works before committing to a direction.
+- **Plan review.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md) for multi-pass review of an existing plan.
+- **Open-ended research.** Use [`/research`](../han.core/research.md) when nothing is broken and you want options, prior art, or how something works before committing to a direction.
 - **Feedback on Han's own skills.** Use [`/han-feedback`](../han.feedback/han-feedback.md) to capture post-session feedback on the Han skills you ran.
 
 ## How to invoke it
@@ -88,7 +88,7 @@ The skill dispatches at least two `evidence-based-investigator` agents in parall
 The skill walks a five-step process:
 
 1. **Research and investigation.** At least two `evidence-based-investigator` agents run in parallel, each from a different angle. Specialist analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) dispatch in parallel alongside them based on how you described the symptom. After all complete, the skill compiles a unified numbered evidence list (E1, E2, E3, …), tagging specialist findings with their domain.
-2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan file using the template at [`references/template.md`](../../../han.core/skills/investigate/references/template.md).
+2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan file using the template at [`references/template.md`](../../../han.coding/skills/investigate/references/template.md).
 3. **Plan the fix.** The skill resolves project config (CLAUDE.md → project-discovery.md → docs/ Glob fallback), reads ADRs and coding standards relevant to the fix, and writes the Planned Fix section with file-level changes justified by specific evidence items.
 4. **Adversarial validation.** `adversarial-validator` agents receive the full evidence summary, root cause analysis, and planned fix. They challenge evidence, challenge the fix, and challenge assumptions. Counter-evidence becomes `V#` findings that reshape the plan.
 5. **Final summary and user review.** The skill adds the one-sentence-per-section summary and presents the plan for approval.
@@ -125,13 +125,13 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
-- [`/issue-triage`](./issue-triage.md). Run before investigation when the incoming report is too vague to trace; triage produces the sharp problem statement investigation needs.
-- [`/research`](./research.md). The question-shaped sibling. Use it when nothing is broken and you want options, prior art, or how something works before committing.
+- [`/issue-triage`](../han.core/issue-triage.md). Run before investigation when the incoming report is too vague to trace; triage produces the sharp problem statement investigation needs.
+- [`/research`](../han.core/research.md). The question-shaped sibling. Use it when nothing is broken and you want options, prior art, or how something works before committing.
 - [`evidence-based-investigator`](../../agents/han.core/evidence-based-investigator.md). The agent the skill dispatches in parallel for multi-angle evidence gathering.
 - [`adversarial-validator`](../../agents/han.core/adversarial-validator.md). The agent that challenges evidence and fix after the plan is drafted.
 - [Evidence](../../evidence.md). The canonical evidence rule the skill applies to every finding. Codebase findings stand on their citation; web-source context is subject to the corroboration gate when it drives the proposed fix; no-evidence states are labeled rather than guessed at.
 - [`concurrency-analyst`](../../agents/han.core/concurrency-analyst.md), [`behavioral-analyst`](../../agents/han.core/behavioral-analyst.md), [`data-engineer`](../../agents/han.core/data-engineer.md). Specialist analysts dispatched alongside the investigators when the symptom classification calls for them.
-- [`/iterative-plan-review`](./iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
+- [`/iterative-plan-review`](../han.core/iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
-- [`/runbook`](./runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
-- [`SKILL.md` for /investigate](../../../han.core/skills/investigate/SKILL.md). The internal process definition.
+- [`/runbook`](../han.core/runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
+- [`SKILL.md` for /investigate](../../../han.coding/skills/investigate/SKILL.md). The internal process definition.

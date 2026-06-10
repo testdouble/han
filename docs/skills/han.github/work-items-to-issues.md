@@ -32,7 +32,7 @@ Operator documentation for the `/work-items-to-issues` skill in the han plugin. 
 **Do not invoke for:**
 
 - **Producing the work-items file.** Use [`/plan-work-items`](../han.core/plan-work-items.md) to break a trusted plan into work items first. This skill publishes that file; it does not create it.
-- **Reviewing code or posting PR comments.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md) to post a review to a pull request, or [`/code-review`](../han.core/code-review.md) for a local review.
+- **Reviewing code or posting PR comments.** Use [`/post-code-review-to-pr`](./post-code-review-to-pr.md) to post a review to a pull request, or [`/code-review`](../han.coding/code-review.md) for a local review.
 - **Writing a PR description.** Use [`/update-pr-description`](./update-pr-description.md).
 - **Writing the code for an item.** Use [`/tdd`](../han.coding/tdd.md) to implement a work item test-first.
 

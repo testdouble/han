@@ -30,7 +30,7 @@ Operator documentation for the `/han-feedback` skill in the opt-in `han.feedback
 
 **Do not invoke for:**
 
-- **Reviewing code or investigating a bug.** Use [`/code-review`](../han.core/code-review.md) or [`/investigate`](../han.core/investigate.md).
+- **Reviewing code or investigating a bug.** Use [`/code-review`](../han.coding/code-review.md) or [`/investigate`](../han.coding/investigate.md).
 - **Researching how a skill works or what its options are.** Use [`/research`](../han.core/research.md).
 - **Feedback on components from non-Han plugins.** The skill scans for `han.*` namespaced skills and agents only; skills and agents from third-party plugins are out of scope.
 - **Editing or amending prior feedback.** Open `~/.claude/han-feedback/` and edit the file directly.
@@ -49,7 +49,7 @@ Give it:
 Example prompts:
 
 - `/han-feedback`. *Run at the end of a session that used `/han.core:plan-a-feature` and `/han.core:plan-implementation`.*
-- `/han-feedback`. *"I just finished a session with `/han.core:investigate` and it found the root cause faster than I expected."* — use this framing to prime the skill with a concrete observation before it generates the feedback.
+- `/han-feedback`. *"I just finished a session with `/han.coding:investigate` and it found the root cause faster than I expected."* — use this framing to prime the skill with a concrete observation before it generates the feedback.
 
 ## What you get back
 

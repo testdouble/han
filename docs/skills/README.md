@@ -1,6 +1,6 @@
 # Skills
 
-All skills in the Han suite, grouped by the plugin that ships them. `han.core` carries enough skills to group by purpose, so it has sub-categories; the smaller plugins are flat lists. Each entry is a one-sentence scent line plus a link to the canonical long-form doc.
+All skills in the Han suite, grouped by the plugin that ships them. `han.core` carries enough skills to group by purpose, so it has sub-categories; the other plugins are flat lists. Each entry is a one-sentence scent line plus a link to the canonical long-form doc.
 
 > See also: [Plugin landing page](../../README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md) · [All agents](../agents/README.md) · [Sizing](../sizing.md) · [YAGNI](../yagni.md)
 
@@ -10,7 +10,7 @@ Start on the [Quickstart](../quickstart.md). It picks the right skill for what y
 
 ## han.core
 
-The base plugin. It carries the planning, investigation, review, documentation, and operations skills, plus every agent those skills dispatch. Grouped by purpose below.
+The base plugin. It carries the planning, research, analysis, documentation, and operations skills, plus every agent those skills dispatch. Grouped by purpose below.
 
 ### Planning
 
@@ -22,22 +22,18 @@ Skills for specifying *what* a feature does, planning *how* to build it, and str
 - **[`/iterative-plan-review`](./han.core/iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
 - **[`/plan-work-items`](./han.core/plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
 
-### Investigation & research
+### Triage & research
 
-Skills for finding out *why* something is broken or *what* your options are, with evidence to back it.
+Skills for triaging an incoming report and researching your options, with evidence to back it.
 
 - **[`/issue-triage`](./han.core/issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill to run.
-- **[`/investigate`](./han.core/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 - **[`/research`](./han.core/research.md).** Research an open-ended question — options, possible solutions, prior art, or how something works — across the codebase and the open web, ending at an adversarially-validated recommendation without committing the team to any artifact. The question-shaped sibling of `/investigate`; scales with [size](../sizing.md).
 
-### Review & analysis
+### Analysis
 
-Skills for getting a second set of eyes on code that already exists.
+Skills for comparing two artifacts against each other.
 
-- **[`/code-review`](./han.core/code-review.md).** Run a comprehensive code review on the current branch or specified files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
-- **[`/architectural-analysis`](./han.core/architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment. Always dispatches the `structural-analyst` / `behavioral-analyst` / `risk-analyst` / `software-architect` spine, and adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` by signal. Roster scales with [size](../sizing.md).
 - **[`/gap-analysis`](./han.core/gap-analysis.md).** Compare two artifacts (current state vs. desired state, for example spec vs. implementation, or PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by default — `adversarial-validator` and `junior-developer` (actor-perspective sweep) always, plus `evidence-based-investigator` when the current state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` for the lightweight pass.
-- **[`/test-planning`](./han.core/test-planning.md).** Produce a prioritized test plan for a branch or directory. Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
 
 ### Discovery & context
 
@@ -50,7 +46,6 @@ Skills that produce context every other skill benefits from.
 
 Skills for recording how the team works.
 
-- **[`/coding-standard`](./han.core/coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
 - **[`/architectural-decision-record`](./han.core/architectural-decision-record.md).** Create, extract, or convert architectural decision records.
 
 ### Operations
@@ -61,10 +56,15 @@ Skills for capturing operational knowledge in artifacts the next on-call enginee
 
 ## han.coding
 
-Code-writing and execution skills: the ones that change your source tree rather than produce a document. Depends on `han.core`; bundled by the `han` meta-plugin.
+The coding layer: the skills you reach for while working in code. Writing it, reviewing it, analyzing it, testing it, investigating it, and standardizing it. Depends on `han.core`; bundled by the `han` meta-plugin.
 
 - **[`/tdd`](./han.coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). It writes code, not a document.
 - **[`/refactor`](./han.coding/refactor.md).** Restructure existing code without changing its behavior. Takes a named target (files, a module, a named smell, or the findings of a prior `/code-review` or `/architectural-analysis`), refuses to start without a green suite covering that target, plans a sequence of small named refactorings, re-runs the full suite after every step, and stops hard when changes spread beyond the declared scope. It writes code, not a document; cleanup inside an active TDD cycle belongs to `/tdd`'s refactor step instead.
+- **[`/code-review`](./han.coding/code-review.md).** Run a comprehensive code review on the current branch or specified files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the changed files trigger their domain. Roster scales with [size](../sizing.md).
+- **[`/architectural-analysis`](./han.coding/architectural-analysis.md).** Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment. Always dispatches the `structural-analyst` / `behavioral-analyst` / `risk-analyst` / `software-architect` spine, and adds `concurrency-analyst`, `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` by signal. Roster scales with [size](../sizing.md).
+- **[`/test-planning`](./han.coding/test-planning.md).** Produce a prioritized test plan for a branch or directory. Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files call for it.
+- **[`/investigate`](./han.coding/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
+- **[`/coding-standard`](./han.coding/coding-standard.md).** Create and update coding standards from existing patterns or evidence-based research.
 
 ## han.github
 
@@ -100,7 +100,7 @@ The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira t
 
 ## How dispatch scales: sizing
 
-The sizing-aware skills ([`/architectural-analysis`](./han.core/architectural-analysis.md), [`/code-review`](./han.core/code-review.md), [`/gap-analysis`](./han.core/gap-analysis.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md), [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/research`](./han.core/research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
+The sizing-aware skills ([`/architectural-analysis`](./han.coding/architectural-analysis.md), [`/code-review`](./han.coding/code-review.md), [`/gap-analysis`](./han.core/gap-analysis.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md), [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/research`](./han.core/research.md)) classify the work as **small**, **medium**, or **large** before dispatching agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or `large` as the first positional argument to override.
 
 See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each sizing-aware skill's long-form doc has its own **Sizing** section with the skill-specific signals and caps.
 
@@ -109,7 +109,7 @@ See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each s
 Every planning, review, and standards skill in the plugin applies an evidence-based YAGNI rule before committing items to its artifact. Items without acceptable evidence move to a `## Deferred (YAGNI)` section with a named *reopen-when* trigger. Never silently dropped. The rule applies to:
 
 - **Planning.** [`/plan-a-feature`](./han.core/plan-a-feature.md), [`/plan-implementation`](./han.core/plan-implementation.md), [`/plan-a-phased-build`](./han.core/plan-a-phased-build.md), [`/iterative-plan-review`](./han.core/iterative-plan-review.md).
-- **Review and standards.** [`/code-review`](./han.core/code-review.md) (advisory-only), [`/coding-standard`](./han.core/coding-standard.md), [`/test-planning`](./han.core/test-planning.md), [`/architectural-decision-record`](./han.core/architectural-decision-record.md) (forcing-function requirement).
+- **Review and standards.** [`/code-review`](./han.coding/code-review.md) (advisory-only), [`/coding-standard`](./han.coding/coding-standard.md), [`/test-planning`](./han.coding/test-planning.md), [`/architectural-decision-record`](./han.core/architectural-decision-record.md) (forcing-function requirement).
 - **Building.** [`/tdd`](./han.coding/tdd.md) (enforcing in the refactor step and the test list), [`/refactor`](./han.coding/refactor.md) (enforcing on the refactoring plan: every item needs evidence the code has a reason to change).
 
 See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.

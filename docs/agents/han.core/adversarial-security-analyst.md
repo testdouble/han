@@ -112,9 +112,9 @@ URL: https://cwe.mitre.org/
 
 - [Plugin landing page](../../../README.md). The front door.
 - [Agents Index](../README.md). All agents, grouped by role.
-- [`/code-review`](../../skills/han.core/code-review.md). The skill that always dispatches this agent for security coverage.
-- [`/test-planning`](../../skills/han.core/test-planning.md). Dispatches this agent for negative security test planning when the files touch auth, input handling, isolation, crypto, uploads, or SQL/ORM.
-- [`/architectural-analysis`](../../skills/han.core/architectural-analysis.md). Adds this agent to its security-signal roster on a medium or large run.
+- [`/code-review`](../../skills/han.coding/code-review.md). The skill that always dispatches this agent for security coverage.
+- [`/test-planning`](../../skills/han.coding/test-planning.md). Dispatches this agent for negative security test planning when the files touch auth, input handling, isolation, crypto, uploads, or SQL/ORM.
+- [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). Adds this agent to its security-signal roster on a medium or large run.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps touch a security-sensitive surface.
 - [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Dispatches this agent into the spec-stage team on a security signal.
 - [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Dispatches this agent into the implementation team on a security signal.

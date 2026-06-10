@@ -80,5 +80,5 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 - [`/plan-a-feature`](../skills/han.core/plan-a-feature.md) is the right next step when the research recommends an option and you are ready to specify behavior. The research decides *what*; `/plan-a-feature` specifies it.
 - [Plan a feature, end to end](./plan-a-feature.md) is the matching how-to once the decision is captured.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the right guide when the question turns out to be a defect rather than an open question.
-- [`/coding-standard`](../skills/han.core/coding-standard.md) is the next step when the decision is broad enough to become a standard the team will apply repeatedly, rather than a one-off architectural call.
+- [`/coding-standard`](../skills/han.coding/coding-standard.md) is the next step when the decision is broad enough to become a standard the team will apply repeatedly, rather than a one-off architectural call.
 - The skill long-form docs ([research](../skills/han.core/research.md), [architectural-decision-record](../skills/han.core/architectural-decision-record.md)) cover each step in depth.

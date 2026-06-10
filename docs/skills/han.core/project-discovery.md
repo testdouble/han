@@ -30,7 +30,7 @@ Operator documentation for the `/project-discovery` skill in the han plugin. Thi
 **Do not invoke for:**
 
 - **Feature or system documentation.** Use [`/project-documentation`](./project-documentation.md) for describing how a specific feature works.
-- **Architectural assessment.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow, and SOLID.
+- **Architectural assessment.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for coupling, data flow, and SOLID.
 - **Investigating why a skill found or did not find a config value.** That is a discovery bug. Re-run this skill.
 
 ## How to invoke it
@@ -100,8 +100,8 @@ URL: https://research.google/pubs/why-google-stores-billions-of-lines-of-code-in
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/project-documentation`](./project-documentation.md). For feature and system docs. Reads the discovery reference to find the right directory and language.
-- [`/coding-standard`](./coding-standard.md). For coding rules. Reads the discovery reference to find the standards directory.
+- [`/coding-standard`](../han.coding/coding-standard.md). For coding rules. Reads the discovery reference to find the standards directory.
 - [`/architectural-decision-record`](./architectural-decision-record.md). For architectural decisions. Reads the discovery reference to find the ADR directory.
-- [`/code-review`](./code-review.md). Reads the discovery reference for lint/build/test commands and for standards and ADR compliance checks.
+- [`/code-review`](../han.coding/code-review.md). Reads the discovery reference for lint/build/test commands and for standards and ADR compliance checks.
 - [`project-scanner`](../../agents/han.core/project-scanner.md). The agent this skill dispatches.
 - [`SKILL.md` for /project-discovery](../../../han.core/skills/project-discovery/SKILL.md). The internal process definition.

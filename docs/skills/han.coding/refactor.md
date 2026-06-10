@@ -22,15 +22,15 @@ Operator documentation for the `/refactor` skill in the han plugin. This documen
 
 **Invoke when:**
 
-- A [`/code-review`](../han.core/code-review.md) or [`/architectural-analysis`](../han.core/architectural-analysis.md) run produced refactoring recommendations you want executed.
+- A [`/code-review`](../han.coding/code-review.md) or [`/architectural-analysis`](../han.coding/architectural-analysis.md) run produced refactoring recommendations you want executed.
 - A named area of existing code needs restructuring: duplication to remove, a function to break up, a module whose coupling fights every change you make near it.
 - You are about to build in a messy area and want preparatory refactoring first ("make the change easy, then make the easy change"), before driving the feature with `/tdd`.
 
 **Do not invoke for:**
 
 - **Cleanup inside an active TDD cycle.** The refactor step of [`/tdd`](./tdd.md) owns that; this skill refuses to run alongside a red-green loop in flight.
-- **Finding out what to refactor.** Use [`/code-review`](../han.core/code-review.md) or [`/architectural-analysis`](../han.core/architectural-analysis.md) to produce the findings; this skill executes them.
-- **Fixing a bug.** A fix changes behavior, which this skill never does. Use [`/investigate`](../han.core/investigate.md) and then drive the fix in with [`/tdd`](./tdd.md).
+- **Finding out what to refactor.** Use [`/code-review`](../han.coding/code-review.md) or [`/architectural-analysis`](../han.coding/architectural-analysis.md) to produce the findings; this skill executes them.
+- **Fixing a bug.** A fix changes behavior, which this skill never does. Use [`/investigate`](../han.coding/investigate.md) and then drive the fix in with [`/tdd`](./tdd.md).
 - **Building new behavior.** Use [`/tdd`](./tdd.md).
 
 ## How to invoke it
@@ -78,7 +78,7 @@ Restructured code in your working tree, not a report. Specifically:
 
 ## In more detail
 
-The skill fills a specific gap in the suite. [`/code-review`](../han.core/code-review.md) and [`/architectural-analysis`](../han.core/architectural-analysis.md) recommend refactorings but never modify code; the refactor step of [`/tdd`](./tdd.md) modifies code but is deliberately scoped to what the current red-green cycle touched. Nothing executed a refactoring recommendation against existing code with safety discipline. This skill is that executor, which is why it deliberately does no analysis of its own: it consumes findings (or a user-named target) rather than dispatching analyst agents to discover them.
+The skill fills a specific gap in the suite. [`/code-review`](../han.coding/code-review.md) and [`/architectural-analysis`](../han.coding/architectural-analysis.md) recommend refactorings but never modify code; the refactor step of [`/tdd`](./tdd.md) modifies code but is deliberately scoped to what the current red-green cycle touched. Nothing executed a refactoring recommendation against existing code with safety discipline. This skill is that executor, which is why it deliberately does no analysis of its own: it consumes findings (or a user-named target) rather than dispatching analyst agents to discover them.
 
 The workflow shape (named target, plan before edit, small steps, verification after each, hard stop rules) is not style preference. It tracks the strongest converging evidence in both literatures: practitioner consensus from Fowler, Feathers, and Beck on behavior preservation, test gates, and scope control, and the 2024-2026 empirical studies of coding agents showing that named targets dramatically outperform open-ended prompts, that incremental verification loops are the most reliable correctness improver, and that conservative scope beats aggressive sweeps. The research behind the design, including the adversarial validation of it, is recorded in [docs/research/refactor-skill-research.md](../../research/refactor-skill-research.md).
 
@@ -124,7 +124,7 @@ URL: https://arxiv.org/abs/2411.04444
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [YAGNI](../../yagni.md). The evidence gate every planned refactoring passes, with the named anti-patterns and the deferral format.
 - [`/tdd`](./tdd.md). The sibling execution skill. Its refactor step owns cleanup inside a red-green cycle; this skill owns restructuring outside one. Preparatory refactoring here, then drive the behavior change there.
-- [`/code-review`](../han.core/code-review.md) and [`/architectural-analysis`](../han.core/architectural-analysis.md). Where the strongest input comes from: their findings are this skill's work orders.
-- [`/investigate`](../han.core/investigate.md). For when the "refactoring" you want is actually a bug to diagnose and fix.
+- [`/code-review`](../han.coding/code-review.md) and [`/architectural-analysis`](../han.coding/architectural-analysis.md). Where the strongest input comes from: their findings are this skill's work orders.
+- [`/investigate`](../han.coding/investigate.md). For when the "refactoring" you want is actually a bug to diagnose and fix.
 - [Research: refactor skill design](../../research/refactor-skill-research.md). The evidence-based, adversarially validated research behind this skill's design.
 - [Skill building guidance](../../../han.plugin-builder/skills/guidance/references/skill-building-guidance/). The progressive disclosure, description frontmatter, and bash-permission rules this skill follows.

@@ -28,10 +28,10 @@ Operator documentation for the `/tdd` skill in the han plugin. This document hel
 
 **Do not invoke for:**
 
-- **Producing a test plan without writing code.** Use [`/test-planning`](../han.core/test-planning.md) instead. It analyzes coverage gaps and prioritizes what to test; it does not implement.
-- **Reviewing or auditing code that already exists.** Use [`/code-review`](../han.core/code-review.md) instead.
+- **Producing a test plan without writing code.** Use [`/test-planning`](../han.coding/test-planning.md) instead. It analyzes coverage gaps and prioritizes what to test; it does not implement.
+- **Reviewing or auditing code that already exists.** Use [`/code-review`](../han.coding/code-review.md) instead.
 - **Deciding what a feature should do.** Use [`/plan-a-feature`](../han.core/plan-a-feature.md) to specify behavior first, then bring the spec here.
-- **Finding the root cause of a bug.** Use [`/investigate`](../han.core/investigate.md). Once you have a fix in mind, you can drive it back in through `/tdd`.
+- **Finding the root cause of a bug.** Use [`/investigate`](../han.coding/investigate.md). Once you have a fix in mind, you can drive it back in through `/tdd`.
 - **Restructuring existing code outside a TDD cycle.** Use [`/refactor`](./refactor.md). The refactor step inside `/tdd` cleans up only what the current red-green cycle touched; restructuring code that predates the cycle is its sibling's job.
 
 ## How to invoke it
@@ -64,10 +64,10 @@ The skill resolves your test, lint, and build commands from CLAUDE.md's `## Proj
 ## How to get the most out of it
 
 - **Bring a specification when you have one.** `/tdd` builds a better test list from a `feature-specification.md` than from a one-line prompt, because the behaviors and edge cases are already named. Run [`/plan-a-feature`](../han.core/plan-a-feature.md) first for anything non-trivial.
-- **Have your standards and ADRs discoverable.** The green and refactor steps apply your coding standards and architectural decisions. If they live in `docs/coding-standards/` or `docs/adr/`, or are recorded by [`/coding-standard`](../han.core/coding-standard.md) and [`/architectural-decision-record`](../han.core/architectural-decision-record.md), the skill finds and applies them. If they do not exist, it infers conventions from surrounding code, which is weaker.
+- **Have your standards and ADRs discoverable.** The green and refactor steps apply your coding standards and architectural decisions. If they live in `docs/coding-standards/` or `docs/adr/`, or are recorded by [`/coding-standard`](../han.coding/coding-standard.md) and [`/architectural-decision-record`](../han.core/architectural-decision-record.md), the skill finds and applies them. If they do not exist, it infers conventions from surrounding code, which is weaker.
 - **Let the list be the scope signal.** If the open test list grows past about ten items, the skill flags a scope warning and keeps going, then recommends splitting the work in its final summary. Take that warning seriously: a ballooning list usually means the feature wanted to be planned, not grown in one sitting.
 - **Read the red output.** The skill pastes real runner output for every red. Glancing at it is how you catch a test that fails for the wrong reason before it drives wrong code.
-- **Pair with `/code-review` next.** TDD produces self-testing code; it does not replace a second set of eyes. Run [`/code-review`](../han.core/code-review.md) on the branch when the list is empty.
+- **Pair with `/code-review` next.** TDD produces self-testing code; it does not replace a second set of eyes. Run [`/code-review`](../han.coding/code-review.md) on the branch when the list is empty.
 
 ## YAGNI
 
@@ -84,7 +84,7 @@ The rule is enforcing in refactor (speculative structure is deferred by default)
 
 ## In more detail
 
-The skill is structurally modeled on two existing skills. The loop and its stop condition follow [`/iterative-plan-review`](../han.core/iterative-plan-review.md): front-loaded constraints, a deterministic per-cycle process, a bounded list. The project and command discovery follows [`/test-planning`](../han.core/test-planning.md): resolve from CLAUDE.md's `## Project Discovery`, fall back to `project-discovery.md`, fall back to a one-time script.
+The skill is structurally modeled on two existing skills. The loop and its stop condition follow [`/iterative-plan-review`](../han.core/iterative-plan-review.md): front-loaded constraints, a deterministic per-cycle process, a bounded list. The project and command discovery follows [`/test-planning`](../han.coding/test-planning.md): resolve from CLAUDE.md's `## Project Discovery`, fall back to `project-discovery.md`, fall back to a one-time script.
 
 One design decision is worth knowing. Classic TDD says green should "commit whatever sins are necessary" and clean up in refactor. Taken literally, that would mean ignoring coding standards while going green. The skill splits the difference: standards that govern *correctness and architectural placement* (which boundary code must go through, where it is allowed to live, which contract it honors) are obeyed in green, because violating an ADR boundary is not a temporary sin you tidy later, it is the wrong code. Stylistic and structural standards, the kind you genuinely can defer, are the refactor hat. This keeps the green step minimal (the Three Laws still hold) while making sure the code that survives the cycle respects the project's architecture.
 
@@ -130,8 +130,8 @@ URL: https://growing-object-oriented-software.com/
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule the refactor step and test list apply. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [`/refactor`](./refactor.md). The sibling execution skill. Run it for preparatory refactoring before a `/tdd` run ("make the change easy, then make the easy change"), or to execute review findings against existing code. Never run the two on the same code at the same time.
-- [`/test-planning`](../han.core/test-planning.md). Plan what to test without writing code. Use it before `/tdd` to enumerate behaviors, or instead of it when you want analysis rather than implementation.
+- [`/test-planning`](../han.coding/test-planning.md). Plan what to test without writing code. Use it before `/tdd` to enumerate behaviors, or instead of it when you want analysis rather than implementation.
 - [`/plan-a-feature`](../han.core/plan-a-feature.md). Specify behavior first; the spec becomes the test list `/tdd` builds from.
-- [`/code-review`](../han.core/code-review.md). Run it on the branch once the list is empty. TDD produces self-testing code; it does not replace review.
-- [`/coding-standard`](../han.core/coding-standard.md) and [`/architectural-decision-record`](../han.core/architectural-decision-record.md). The standards and ADRs `/tdd` applies in green and refactor come from here.
-- [Skill building guidance](../../han.plugin-builder/skills/guidance/references/skill-building-guidance/). The progressive disclosure, description frontmatter, and bash-permission rules this skill follows.
+- [`/code-review`](../han.coding/code-review.md). Run it on the branch once the list is empty. TDD produces self-testing code; it does not replace review.
+- [`/coding-standard`](../han.coding/coding-standard.md) and [`/architectural-decision-record`](../han.core/architectural-decision-record.md). The standards and ADRs `/tdd` applies in green and refactor come from here.
+- [Skill building guidance](../../../han.plugin-builder/skills/guidance/references/skill-building-guidance/). The progressive disclosure, description frontmatter, and bash-permission rules this skill follows.

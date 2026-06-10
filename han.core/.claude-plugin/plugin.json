@@ -1,5 +1,5 @@
 {
   "name": "han.core",
-  "description": "Evidence-based planning, investigation, and documentation skills for software projects. Includes issue triage, deep-dive investigations with root cause analysis, iterative plan refinement, architectural decision records (ADRs), project and feature documentation, coding standards, code reviews, test planning, and adversarial security vulnerability analysis.",
+  "description": "Evidence-based planning, research, architecture, and documentation skills for software projects. Includes issue triage, feature and implementation planning, phased build planning, work-item breakdown, iterative plan refinement, open-ended research, architectural decision records (ADRs), gap analysis, project discovery, project and feature documentation, runbooks, and the adversarial specialist agents the rest of the suite dispatches.",
   "version": "1.1.1"
 }

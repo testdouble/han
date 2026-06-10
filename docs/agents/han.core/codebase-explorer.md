@@ -92,9 +92,9 @@ URL: https://pragprog.com/titles/atevol/software-design-x-rays/
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Sibling for bug-focused investigation.
 - [`project-scanner`](./project-scanner.md). Sibling for stack and tooling detection.
 - [`/project-documentation`](../../skills/han.core/project-documentation.md). Always dispatches this agent.
-- [`/coding-standard`](../../skills/han.core/coding-standard.md). Dispatches this agent for pattern discovery.
+- [`/coding-standard`](../../skills/han.coding/coding-standard.md). Dispatches this agent for pattern discovery.
 - [`/architectural-decision-record`](../../skills/han.core/architectural-decision-record.md). Dispatches this agent in create-new mode.
 - [`/research`](../../skills/han.core/research.md). Dispatches this agent on codebase-bearing questions.
-- [`/architectural-analysis`](../../skills/han.core/architectural-analysis.md). Dispatches this agent for a large or unfamiliar focus area.
+- [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). Dispatches this agent for a large or unfamiliar focus area.
 - [`/gap-analysis`](../../skills/han.core/gap-analysis.md). Dispatches this agent to map an unfamiliar current state.
 - [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Dispatches this agent for unfamiliar code regions.

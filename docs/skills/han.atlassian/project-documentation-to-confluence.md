@@ -33,7 +33,7 @@ Operator documentation for the `/project-documentation-to-confluence` skill in t
 - **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the file and just want it posted, without generating new documentation.
 - **Technology stack discovery.** Use [`/project-discovery`](../han.core/project-discovery.md).
 - **Architectural decisions.** Use [`/architectural-decision-record`](../han.core/architectural-decision-record.md).
-- **Coding conventions.** Use [`/coding-standard`](../han.core/coding-standard.md).
+- **Coding conventions.** Use [`/coding-standard`](../han.coding/coding-standard.md).
 - **Runbooks for operational scenarios.** Use [`/runbook`](../han.core/runbook.md).
 
 ## How to invoke it

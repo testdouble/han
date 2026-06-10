@@ -1,6 +1,6 @@
 # /test-planning
 
-Operator documentation for the `/test-planning` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/test-planning/SKILL.md`](../../../han.core/skills/test-planning/SKILL.md).
+Operator documentation for the `/test-planning` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.coding/skills/test-planning/SKILL.md`](../../../han.coding/skills/test-planning/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
 
@@ -33,9 +33,9 @@ Operator documentation for the `/test-planning` skill in the han plugin. This do
 **Do not invoke for:**
 
 - **Full code review.** Use [`/code-review`](./code-review.md) for correctness, testing, and compliance.
-- **Iterating on an existing test plan.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for multi-pass refinement of a written plan.
+- **Iterating on an existing test plan.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md) for multi-pass refinement of a written plan.
 - **Writing test code.** This skill produces a plan only. Write the tests separately.
-- **Architectural testability analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for structural testability concerns.
+- **Architectural testability analysis.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for structural testability concerns.
 
 ## How to invoke it
 
@@ -88,7 +88,7 @@ The skill walks a five-step process:
 1. **Determine scope.** Resolve project config; detect git mode (A/B/C) via `detect-test-context.sh`; build a file list.
 2. **Dispatch testing agents.** Launch `test-engineer` and `edge-case-explorer` always. Add `concurrency-analyst` when the file list touches async or shared state. Add `adversarial-security-analyst` when it touches auth, input handling, isolation, crypto, uploads, or SQL/ORM. All run in parallel in the background. The skill waits for every dispatched agent.
 3. **Merge and prioritize.** Classify findings into the four-tier priority scheme (security items auto-CRIT). Assign unified IDs. Interleave by priority. Cap non-security items at 40.
-4. **Generate output.** Fill the template at [`references/template.md`](../../../han.core/skills/test-planning/references/template.md), leading with plain language (Summary, What Needs Testing and Why, What Each Test Covers) before the Technical Reference region that holds the per-item test plan, deferred, dropped, coverage summary, and scope.
+4. **Generate output.** Fill the template at [`references/template.md`](../../../han.coding/skills/test-planning/references/template.md), leading with plain language (Summary, What Needs Testing and Why, What Each Test Covers) before the Technical Reference region that holds the per-item test plan, deferred, dropped, coverage summary, and scope.
 5. **Review the output.** Dispatch [`information-architect`](../../agents/han.core/information-architect.md) and [`junior-developer`](../../agents/han.core/junior-developer.md) in parallel against the generated plan — the information-architect confirms it leads with plain language and defers the implementation detail, the junior-developer confirms the plain-language layer stands on its own for a reader who never opens the Technical Reference. Apply every actionable edit; surface author-judgment findings with a recommended resolution.
 
 ## YAGNI
@@ -125,10 +125,10 @@ URL: https://www.wiley.com/en-us/Testing+Computer+Software%2C+2nd+Edition-p-9780
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/code-review`](./code-review.md). Dispatches the same agents plus `adversarial-security-analyst`. Use when you want correctness findings too.
-- [`/architectural-analysis`](./architectural-analysis.md). For structural testability concerns.
-- [`/iterative-plan-review`](./iterative-plan-review.md). Use to stress-test an already-written test plan.
+- [`/architectural-analysis`](../han.coding/architectural-analysis.md). For structural testability concerns.
+- [`/iterative-plan-review`](../han.core/iterative-plan-review.md). Use to stress-test an already-written test plan.
 - [`test-engineer`](../../agents/han.core/test-engineer.md), [`edge-case-explorer`](../../agents/han.core/edge-case-explorer.md). Always dispatched.
 - [`concurrency-analyst`](../../agents/han.core/concurrency-analyst.md). Dispatched when the file list touches async, threads, or shared state.
 - [`adversarial-security-analyst`](../../agents/han.core/adversarial-security-analyst.md). Dispatched when the file list touches auth, input handling, isolation, crypto, uploads, or SQL/ORM.
 - [`information-architect`](../../agents/han.core/information-architect.md), [`junior-developer`](../../agents/han.core/junior-developer.md). Review the generated plan for findability and plain-language clarity before it is finalized.
-- [`SKILL.md` for /test-planning](../../../han.core/skills/test-planning/SKILL.md). The internal process definition.
+- [`SKILL.md` for /test-planning](../../../han.coding/skills/test-planning/SKILL.md). The internal process definition.

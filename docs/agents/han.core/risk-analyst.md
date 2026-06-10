@@ -90,7 +90,7 @@ URL: https://www.howtomeasureanything.com/
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`structural-analyst`](./structural-analyst.md), [`behavioral-analyst`](./behavioral-analyst.md), [`concurrency-analyst`](./concurrency-analyst.md). The upstream agents whose findings this one consumes.
 - [`software-architect`](./software-architect.md). Consumes this agent's risk ratings alongside the upstream findings to produce recommendations.
-- [`/architectural-analysis`](../../skills/han.core/architectural-analysis.md). Always dispatches this agent.
+- [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). Always dispatches this agent.
 - [`/architectural-decision-record`](../../skills/han.core/architectural-decision-record.md). Dispatches this agent for ADR risk scoring.
 - [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Conditionally dispatches this agent when the feature carries significant blast radius.
 - [`/plan-implementation`](../../skills/han.core/plan-implementation.md). Conditionally dispatches this agent when the plan carries significant blast radius.

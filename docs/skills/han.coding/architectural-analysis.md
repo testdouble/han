@@ -1,6 +1,6 @@
 # /architectural-analysis
 
-Operator documentation for the `/architectural-analysis` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/architectural-analysis/SKILL.md`](../../../han.core/skills/architectural-analysis/SKILL.md).
+Operator documentation for the `/architectural-analysis` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.coding/skills/architectural-analysis/SKILL.md`](../../../han.coding/skills/architectural-analysis/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [Sizing](../../sizing.md)
 
@@ -18,7 +18,7 @@ Operator documentation for the `/architectural-analysis` skill in the han plugin
 - **The roster scales with size.** Small runs the spine plus concurrency. Medium adds one or two of the security, data, DevOps, and on-call specialists by signal. Large adds the rest, the codebase map, and the system architect when a cross-service seam is present. The skill defaults to small and announces the chosen size and roster, with a one-line justification, before dispatching.
 - **Numbered findings.** Each analyst returns findings with its own prefix: `S#` structural, `B#` behavioral, `C#` concurrency, `SEC-###` security, `DOR-###` DevOps, `OCE-###` on-call, `R#` risk, `A#` software-architecture, `SA#` system-architecture. Cross-references survive into the recommendations so every proposed change traces to the finding that drove it.
 - **Recommendations, not refactors.** The skill does not modify code. `software-architect` (and `system-architect` when dispatched) produce pseudocode sketches for proposed modules, interfaces, and boundaries. Implementation is a separate step.
-- **The report is template-driven.** The output structure lives in [`references/architectural-analysis-report-template.md`](../../../han.core/skills/architectural-analysis/references/architectural-analysis-report-template.md). Sections whose agent was not dispatched are removed from the rendered report rather than left empty.
+- **The report is template-driven.** The output structure lives in [`references/architectural-analysis-report-template.md`](../../../han.coding/skills/architectural-analysis/references/architectural-analysis-report-template.md). Sections whose agent was not dispatched are removed from the rendered report rather than left empty.
 
 ## When to use it
 
@@ -37,9 +37,9 @@ Operator documentation for the `/architectural-analysis` skill in the han plugin
 - **File-level correctness review.** Use [`/code-review`](./code-review.md) for per-file correctness, testing, and compliance.
 - **Test planning.** Use [`/test-planning`](./test-planning.md) for a coverage-and-edge-case plan.
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from scratch.
-- **Documenting an existing module.** Use [`/project-documentation`](./project-documentation.md).
-- **Architectural decision records.** Use [`/architectural-decision-record`](./architectural-decision-record.md) to capture a decision the architectural analysis motivated.
-- **Researching options or prior art.** Use [`/research`](./research.md) when the question is "what are the options" or "how does X work", not "is this existing module sound".
+- **Documenting an existing module.** Use [`/project-documentation`](../han.core/project-documentation.md).
+- **Architectural decision records.** Use [`/architectural-decision-record`](../han.core/architectural-decision-record.md) to capture a decision the architectural analysis motivated.
+- **Researching options or prior art.** Use [`/research`](../han.core/research.md) when the question is "what are the options" or "how does X work", not "is this existing module sound".
 
 ## How to invoke it
 
@@ -84,7 +84,7 @@ For the cross-skill sizing model and design principles, see [Sizing](../../sizin
 
 ## What you get back
 
-A unified report presented in-channel, rendered from [`references/architectural-analysis-report-template.md`](../../../han.core/skills/architectural-analysis/references/architectural-analysis-report-template.md). Sections whose agent was not dispatched are removed, not left empty. The full set:
+A unified report presented in-channel, rendered from [`references/architectural-analysis-report-template.md`](../../../han.coding/skills/architectural-analysis/references/architectural-analysis-report-template.md). Sections whose agent was not dispatched are removed, not left empty. The full set:
 
 - **Executive Summary.** The focus area and chosen size, the three to five most critical findings across dispatched dimensions, the highest-impact recommendations, and an explicit note on any dimension that was clean or any signalled domain the band cap omitted. This is the only synthesized prose.
 - **Structural Analysis.** Verbatim `structural-analyst` output. `S#` findings on module boundaries, coupling, dependency direction, abstractions, and duplication.
@@ -173,7 +173,7 @@ URL: https://www.domainlanguage.com/ddd/
 - [`risk-analyst`](../../agents/han.core/risk-analyst.md). The agent that scores the analysts' findings by likelihood, severity, blast radius, and reversibility.
 - [`software-architect`](../../agents/han.core/software-architect.md). The adversarial synthesis agent that produces intra-codebase recommendations and pseudocode sketches (always dispatched by this skill).
 - [`system-architect`](../../agents/han.core/system-architect.md). The adversarial synthesis agent that produces cross-service / bounded-context recommendations (dispatched at large size when a system-seam signal is present; otherwise dispatch separately).
-- [`/architectural-decision-record`](./architectural-decision-record.md). Record the architectural decisions the analysis motivates.
+- [`/architectural-decision-record`](../han.core/architectural-decision-record.md). Record the architectural decisions the analysis motivates.
 - [`/investigate`](./investigate.md). Run when a finding reveals a concrete runtime bug.
-- [`/iterative-plan-review`](./iterative-plan-review.md). Stress-test the refactoring plan that implements the recommendations.
-- [`SKILL.md` for /architectural-analysis](../../../han.core/skills/architectural-analysis/SKILL.md). The internal process definition.
+- [`/iterative-plan-review`](../han.core/iterative-plan-review.md). Stress-test the refactoring plan that implements the recommendations.
+- [`SKILL.md` for /architectural-analysis](../../../han.coding/skills/architectural-analysis/SKILL.md). The internal process definition.

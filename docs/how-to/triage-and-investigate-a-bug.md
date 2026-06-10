@@ -1,6 +1,6 @@
 # How To: Triage and Investigate a Bug
 
-A walkthrough for getting from "something is broken" to a root cause backed by file-level evidence and a fix plan you can trust. The primary tool is [`/investigate`](../skills/han.core/investigate.md); [`/issue-triage`](../skills/han.core/issue-triage.md) handles the cases where you need to document the report for later instead of working it now.
+A walkthrough for getting from "something is broken" to a root cause backed by file-level evidence and a fix plan you can trust. The primary tool is [`/investigate`](../skills/han.coding/investigate.md); [`/issue-triage`](../skills/han.core/issue-triage.md) handles the cases where you need to document the report for later instead of working it now.
 
 > See also: [How-to index](./README.md) · [Quickstart](../quickstart.md) · [Skills](../skills/README.md)
 
@@ -47,7 +47,7 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
 ### Phase 2: Investigate
 
-1. **Run [`/investigate`](../skills/han.core/investigate.md) with the concrete symptom and any context you already have.** A template that works well:
+1. **Run [`/investigate`](../skills/han.coding/investigate.md) with the concrete symptom and any context you already have.** A template that works well:
 
     > `/investigate {context: the symptom, the reproduction path, any error messages or stack traces, the suspected commit if you have one}`
 
@@ -106,5 +106,5 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
 - [Plan a feature, end to end](./plan-a-feature.md) is the right guide when triage says the report is a missing capability rather than a defect.
 - [Research a decision](./research-a-decision.md) is the right guide when triage says the report is really a question about an approach the team has not yet picked.
-- The skill long-form docs ([investigate](../skills/han.core/investigate.md), [issue-triage](../skills/han.core/issue-triage.md), [iterative-plan-review](../skills/han.core/iterative-plan-review.md), [runbook](../skills/han.core/runbook.md)) cover each step in depth.
-- [`/code-review`](../skills/han.core/code-review.md) is the right next step when the fix lands and you want a review of the change end-to-end before merge.
+- The skill long-form docs ([investigate](../skills/han.coding/investigate.md), [issue-triage](../skills/han.core/issue-triage.md), [iterative-plan-review](../skills/han.core/iterative-plan-review.md), [runbook](../skills/han.core/runbook.md)) cover each step in depth.
+- [`/code-review`](../skills/han.coding/code-review.md) is the right next step when the fix lands and you want a review of the change end-to-end before merge.
