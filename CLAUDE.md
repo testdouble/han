@@ -1,6 +1,6 @@
 # han: Project Map
 
-Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han.core` (the skills and agents), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs `han.core`, `han.github`, and `han.reporting` via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), `han.atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence documentation and work-items-to-Jira — which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin), and `han.plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
+Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han.core` (the skills and agents), `han.coding` (code-writing and execution skills, currently the `tdd` skill; depends on `han.core` and is bundled by the `han` meta-plugin), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs `han.core`, `han.coding`, `han.github`, and `han.reporting` via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), `han.atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence documentation and work-items-to-Jira — which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin), and `han.plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
 
 ## Repository layout
 
@@ -11,8 +11,8 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 ├── CLAUDE.md           # This file
 ├── CHANGELOG.md        # Version history
 ├── .claude-plugin/
-│   └── marketplace.json   # Test Double marketplace manifest (lists han, han.core, han.github, han.reporting, han.feedback, han.atlassian, han.plugin-builder)
-├── han/                # Meta-plugin: no components of its own; depends on han.core + han.github + han.reporting
+│   └── marketplace.json   # Test Double marketplace manifest (lists han, han.core, han.coding, han.github, han.reporting, han.feedback, han.atlassian, han.plugin-builder)
+├── han/                # Meta-plugin: no components of its own; depends on han.core + han.coding + han.github + han.reporting
 │   └── .claude-plugin/
 │       └── plugin.json
 ├── han.core/           # Core plugin: planning, investigation, review, documentation
@@ -21,6 +21,10 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
+├── han.coding/         # Coding plugin: tdd (code-writing/execution; depends on han.core; bundled by the han meta-plugin)
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── skills/         # Code-writing skill directories, each with SKILL.md + references/ + scripts/
 ├── han.github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -56,7 +60,7 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 └── images/             # Banner and graphics for README
 ```
 
-The plugins are shipped from `han.core/`, `han.github/`, `han.reporting/`, `han.feedback/`, `han.atlassian/`, and `han.plugin-builder/`; the `han/` meta-plugin pulls in `han.core`, `han.github`, and `han.reporting` through its `dependencies`. `han.feedback` and `han.atlassian` depend on `han.core` like the other layers but are deliberately left out of the meta-plugin, so each is opt-in and installed on its own (`han.atlassian` additionally requires a configured Atlassian MCP server). `han.plugin-builder` depends on nothing and is likewise opt-in and installed on its own. The contributor-facing authoring guidance (how to build skills, agents, and plugins) lives inside `han.plugin-builder/skills/guidance/references/`, not under `docs/`; running the `guidance` skill with `init` vendors a copy of that guidance into any repo as a path-scoped rule index. Documentation lives in `docs/` and covers the whole suite. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`han.core/skills/{name}/SKILL.md`, `han.github/skills/{name}/SKILL.md`, `han.reporting/skills/{name}/SKILL.md`, `han.feedback/skills/{name}/SKILL.md`, `han.atlassian/skills/{name}/SKILL.md`, or `han.core/agents/{name}.md`) is the implementation.
+The plugins are shipped from `han.core/`, `han.coding/`, `han.github/`, `han.reporting/`, `han.feedback/`, `han.atlassian/`, and `han.plugin-builder/`; the `han/` meta-plugin pulls in `han.core`, `han.coding`, `han.github`, and `han.reporting` through its `dependencies`. `han.coding` depends on `han.core` like the GitHub and reporting layers and is bundled by the meta-plugin. `han.feedback` and `han.atlassian` depend on `han.core` like the other layers but are deliberately left out of the meta-plugin, so each is opt-in and installed on its own (`han.atlassian` additionally requires a configured Atlassian MCP server). `han.plugin-builder` depends on nothing and is likewise opt-in and installed on its own. The contributor-facing authoring guidance (how to build skills, agents, and plugins) lives inside `han.plugin-builder/skills/guidance/references/`, not under `docs/`; running the `guidance` skill with `init` vendors a copy of that guidance into any repo as a path-scoped rule index. Documentation lives in `docs/` and covers the whole suite. Long-form docs in `docs/skills/{name}.md` and `docs/agents/{name}.md` are the canonical operator-facing source for every skill and every agent. The underlying definition (`han.core/skills/{name}/SKILL.md`, `han.coding/skills/{name}/SKILL.md`, `han.github/skills/{name}/SKILL.md`, `han.reporting/skills/{name}/SKILL.md`, `han.feedback/skills/{name}/SKILL.md`, `han.atlassian/skills/{name}/SKILL.md`, or `han.core/agents/{name}.md`) is the implementation.
 
 ## When to use which doc
 
@@ -175,4 +179,4 @@ Folder selection rule: if the artifact is the plan, write to `docs/plans/{plan-n
 - **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the README at the repo root.
 - **Voice is uniform.** Every doc follows [docs/writing-voice.md](./docs/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
 - **YAGNI applies to docs too.** Don't add speculative sections, for-future-flexibility warnings, or examples for behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
-- **Indexes stay complete, not counted.** Every skill in `han.core/skills/`, `han.github/skills/`, `han.reporting/skills/`, `han.feedback/skills/`, and `han.atlassian/skills/` has a long-form doc in `docs/skills/` and an entry in the skills index; same for agents in `han.core/agents/` and `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.
+- **Indexes stay complete, not counted.** Every skill in `han.core/skills/`, `han.coding/skills/`, `han.github/skills/`, `han.reporting/skills/`, `han.feedback/skills/`, and `han.atlassian/skills/` has a long-form doc in `docs/skills/` and an entry in the skills index; same for agents in `han.core/agents/` and `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.

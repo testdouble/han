@@ -27,19 +27,21 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 ```
 
 Han ships as multiple plugins:
-* **`han`**: the parent plugin that brings in `han.core`, `han.github`, and `han.reporting`
+* **`han`**: the parent plugin that brings in `han.core`, `han.coding`, `han.github`, and `han.reporting`
 * `han.core`: the planning, investigation, review, and documentation skills plus every agent
+* `han.coding`: code-writing and execution skills like `/tdd`
 * `han.github`: GitHub-facing skills like posting a code review on a PR
 * `han.reporting`: reporting skills like the stakeholder summary
 * `han.feedback`: an opt-in skill for capturing post-session feedback on Han skill runs
 * `han.atlassian`: opt-in skills for publishing Markdown and documentation to Confluence and work items to Jira (requires an Atlassian MCP server)
 * `han.plugin-builder`: an opt-in plugin carrying the guidance for building your own skills, agents, and plugins
 
-Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han.core`, `han.github`, and `han.reporting`),
-and is the right choice for almost everyone. If you do not want the GitHub or reporting skills, install `han.core@han` instead. 
+Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han.core`, `han.coding`, `han.github`, and `han.reporting`),
+and is the right choice for almost everyone. If you do not want the coding, GitHub, or reporting skills, install `han.core@han` instead;
+add `han.coding@han` on its own if you want just the `/tdd` code-writing skill alongside core.
 
-There is no GitHub-only or reporting-only install: both `han.github` and `han.reporting` depend on `han.core`,
-so installing either brings the core skills and every agent along with it. `han.feedback`, `han.atlassian`, and
+There is no coding-only, GitHub-only, or reporting-only install: `han.coding`, `han.github`, and `han.reporting` all depend on `han.core`,
+so installing any of them brings the core skills and every agent along with it. `han.feedback`, `han.atlassian`, and
 `han.plugin-builder` are the exceptions: the `han` meta-plugin does not pull any of them in. `han.feedback` and
 `han.atlassian` depend on `han.core` (and `han.atlassian` also requires an Atlassian MCP server); `han.plugin-builder`
 depends on nothing. Install each on its own with `han.feedback@han`, `han.atlassian@han`, or `han.plugin-builder@han`
@@ -50,7 +52,7 @@ For the full picture and a quick "which one do you need?" guide, see [Choosing a
 ## Documentation
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
-- [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The full suite vs. core only, the `han.github` and `han.reporting` dependencies on `han.core`, and a quick guide to which one to install.
+- [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The full suite vs. core only, the `han.coding`, `han.github`, and `han.reporting` dependencies on `han.core`, and a quick guide to which one to install.
 - [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
 - [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, triaging and investigating a bug, and researching a decision. Pick one when you want the full walkthrough, not only the path.
 - [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.

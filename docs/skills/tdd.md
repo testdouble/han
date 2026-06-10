@@ -1,6 +1,6 @@
 # /tdd
 
-Operator documentation for the `/tdd` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/tdd/SKILL.md`](../../han.core/skills/tdd/SKILL.md).
+Operator documentation for the `/tdd` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.coding/skills/tdd/SKILL.md`](../../han.coding/skills/tdd/SKILL.md).
 
 > See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
 

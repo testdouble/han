@@ -22,12 +22,6 @@ Skills for specifying *what* a feature does, planning *how* to build it, and str
 - **[`/iterative-plan-review`](./iterative-plan-review.md).** Stress-test an already-written plan through multiple codebase-grounded review passes.
 - **[`/plan-work-items`](./plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
 
-### Building
-
-Write the code itself, test-first, through a disciplined loop.
-
-- **[`/tdd`](./tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). The plugin's only execution skill: it writes code, not a document.
-
 ### Investigation & research
 
 Skills for finding out *why* something is broken or *what* your options are, with evidence to back it.
@@ -64,6 +58,12 @@ Skills for recording how the team works.
 Skills for capturing operational knowledge in artifacts the next on-call engineer can use.
 
 - **[`/runbook`](./runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Symptom-first template with imperative-voice procedure, expected output per step, escalation conditions, and rollback. Applies a YAGNI preflight that requires real evidence before writing.
+
+## han.coding
+
+Code-writing and execution skills: the ones that change your source tree rather than produce a document. Depends on `han.core`; bundled by the `han` meta-plugin.
+
+- **[`/tdd`](./tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). The suite's only execution skill: it writes code, not a document.
 
 ## han.github
 
