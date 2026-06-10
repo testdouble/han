@@ -84,7 +84,7 @@ and a wrong guess here burns the whole run.
 test command (under `### Commands and Tests`), the lint command, the build
 command, language, and framework. If absent, fall back to
 `project-discovery.md`. If still absent, run
-`${CLAUDE_SKILL_DIR}/../tdd/scripts/detect-tdd-context.sh` and parse its
+`${CLAUDE_SKILL_DIR}/scripts/detect-refactor-context.sh` and parse its
 output for git state and manifest-inferred commands. A missing test command is
 a hard blocker: exhaust inference, then ask the user, because this skill
 cannot run without a way to verify behavior. Also note any type-check command
