@@ -47,7 +47,7 @@ After all agents complete (investigators and specialists), compile an **evidence
 
 ## Step 2: Document Root Cause
 
-Write to the plan file using the template at [template.md](./references/template.md). Fill in these sections:
+Write to the plan file using the template at [template.md](./references/template.md). Fill the sections in the workflow order below; this is deliberately not the template's on-page order, which leads with the Summary and places the supporting Evidence Summary, Validation Results, and Coding Standards Reference near the end for the reader. Fill in these sections:
 
 1. **Problem Statement** — document the symptoms, expected behavior, conditions under which it occurs, and impact.
 2. **Evidence Summary** — consolidate evidence from all agents into a unified numbered list (E1, E2, E3, ...); merge duplicates and resolve conflicting findings while preserving each item's output structure.

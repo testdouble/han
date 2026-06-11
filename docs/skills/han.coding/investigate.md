@@ -56,17 +56,15 @@ Example prompts:
 
 ## What you get back
 
-An investigation plan file, plus an in-channel summary. The plan covers:
+An investigation plan file, plus an in-channel summary. The plan leads with the bottom line and keeps the supporting detail near the end, so it reads conclusion-first. It covers, in order:
 
+- **Summary.** One sentence each for root cause, fix, why correct, validation outcome, remaining risks. Up top so a reader gets the verdict before the backing detail.
 - **Problem Statement.** Symptoms, expected behavior, conditions under which it occurs, impact.
-- **Evidence Summary.** A numbered list (E1, E2, E3, …) consolidated from the parallel `evidence-based-investigator` agents. Duplicates merged; conflicts resolved with explicit citations.
 - **Root Cause Analysis.** One to three sentences summarizing the root cause, followed by a detailed analysis that references evidence items by number.
-- **Coding Standards Reference.** For each standard that applies, what it says, where it was found (path, ADR number, or *"inferred from surrounding code"*), and which files the fix will touch. This keeps the fix consistent with how the project already works.
 - **Planned Fix.** Per-file changes: full path, what will be modified, which evidence items justify the change, which standards apply, and implementation specifics (new function signatures, changed logic, updated tests).
-- **Validation Findings.** Numbered `V1, V2, …` entries from `adversarial-validator`. Each records the challenge attempted, whether counter-evidence was found, and what changed in response.
-- **Adjustments Made.** What the investigation changed after validation, cross-referenced to the `V#` that drove each change.
-- **Confidence Assessment and Remaining Risks.** The validator's closing judgment.
-- **Final Summary.** One sentence each for root cause, fix, why correct, validation outcome, remaining risks.
+- **Evidence Summary.** A numbered list (E1, E2, E3, …) consolidated from the parallel `evidence-based-investigator` agents. Duplicates merged; conflicts resolved with explicit citations.
+- **Validation Findings.** Numbered `V1, V2, …` entries from `adversarial-validator`. Each records the challenge attempted, whether counter-evidence was found, and what changed in response. Followed by **Adjustments Made** (what changed after validation, cross-referenced to the `V#` that drove it) and the **Confidence Assessment and Remaining Risks** that close the validator's judgment.
+- **Coding Standards Reference.** For each standard that applies, what it says, where it was found (path, ADR number, or *"inferred from surrounding code"*), and which files the fix will touch. This keeps the fix consistent with how the project already works.
 
 The plan is presented for approval before any code is written. Approve to trigger implementation; push back with feedback to revise.
 

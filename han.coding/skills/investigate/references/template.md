@@ -1,10 +1,12 @@
 # Investigation: {Issue Title}
 
-<!-- One-sentence summary of the problem being investigated. -->
+<!-- One-line orientation: what this report is and the decision it asks for. -->
+<!-- E.g. "Investigation report — read the Summary, then approve the Planned Fix or push back." -->
 
 ## Summary
 
 <!-- One sentence for each field. Reference evidence (E1, E2, ...) and validation (V1, V2, ...) where appropriate. -->
+<!-- Reader key: (E#) items are defined under Evidence Summary and (V#) items under Validation Results, both near the end of this report. -->
 
 - **Root Cause:** <!-- What caused the problem -->
 - **Fix:** <!-- What the planned changes will do -->
@@ -22,7 +24,7 @@
 
 ## Root Cause Analysis
 
-### Summary
+### Root Cause
 
 <!-- One sentence stating the root cause. -->
 
@@ -33,7 +35,7 @@
 
 ## Planned Fix
 
-### Summary
+### Approach
 
 <!-- One sentence describing what the fix will do. -->
 
@@ -56,49 +58,6 @@
 - **Details:** <!-- Implementation specifics -->
 
 <!-- Add more file entries as needed -->
-
-## Coding Standards Reference
-
-<!-- CONDITIONAL: Include this section if coding standards, conventions, or ADRs were found that apply to the fix. -->
-<!-- If no explicit standards were found, note that and document patterns inferred from surrounding code. -->
-
-| Standard | Source | Applies To |
-|----------|--------|------------|
-| Description of standard or convention | File path, ADR number, or "inferred from surrounding code" | Which files or changes this governs |
-
-## Validation Results
-
-<!-- Document the results of adversarial validation from Step 4. -->
-
-### Counter-Evidence Investigated
-
-<!-- Number each validation finding (V1, V2, ...) so they can be referenced in the summary. -->
-
-#### V1: {Hypothesis tested}
-
-- **Hypothesis:** <!-- What was assumed to be wrong or what could fail -->
-- **Investigation:** <!-- What was checked — file paths, code searched, tests run -->
-- **Result:** Confirmed / Refuted / Partially Refuted <!-- Did the original analysis hold up? -->
-- **Impact:** <!-- If refuted: what changed in the plan. If confirmed: why this supports the original analysis. -->
-
-#### V2: {Hypothesis tested}
-
-- **Hypothesis:** <!-- What was assumed to be wrong or what could fail -->
-- **Investigation:** <!-- What was checked -->
-- **Result:** Confirmed / Refuted / Partially Refuted
-- **Impact:** <!-- Effect on the plan -->
-
-<!-- Add more validation findings as needed (V3, V4, ...) -->
-
-### Adjustments Made
-
-<!-- CONDITIONAL: Include only if validation findings caused changes to the plan. -->
-<!-- List what changed and which validation finding (V1, V2, ...) triggered each change. -->
-
-### Confidence Assessment
-
-- **Confidence:** High / Medium / Low
-- **Remaining Risks:** <!-- Known risks, areas not fully validated, or assumptions that could not be verified -->
 
 ## Evidence Summary
 
@@ -134,3 +93,47 @@
 - **Relevance:** <!-- How this evidence connects to the problem -->
 
 <!-- Add more evidence items as needed (E4, E5, ...) -->
+
+## Validation Results
+
+<!-- Document how the fix was stress-tested by adversarial validation and the resulting confidence. -->
+
+### Counter-Evidence Investigated
+
+<!-- Number each validation finding (V1, V2, ...) so they can be referenced in the Summary. -->
+
+#### V1: {Hypothesis tested}
+
+- **Hypothesis:** <!-- What was assumed to be wrong or what could fail -->
+- **Investigation:** <!-- What was checked — file paths, code searched, tests run -->
+- **Result:** Confirmed / Refuted / Partially Refuted <!-- Did the original analysis hold up? -->
+- **Impact:** <!-- If refuted: what changed in the plan. If confirmed: why this supports the original analysis. -->
+
+#### V2: {Hypothesis tested}
+
+- **Hypothesis:** <!-- What was assumed to be wrong or what could fail -->
+- **Investigation:** <!-- What was checked -->
+- **Result:** Confirmed / Refuted / Partially Refuted
+- **Impact:** <!-- Effect on the plan -->
+
+<!-- Add more validation findings as needed (V3, V4, ...) -->
+
+### Adjustments Made
+
+<!-- CONDITIONAL: Include only if validation findings caused changes to the plan. -->
+<!-- List what changed and which validation finding (V1, V2, ...) triggered each change. -->
+
+### Confidence Assessment
+
+- **Confidence:** High / Medium / Low
+- **Remaining Risks:** <!-- Known risks, areas not fully validated, or assumptions that could not be verified -->
+
+## Coding Standards Reference
+
+<!-- CONDITIONAL: Include this section if coding standards, conventions, or ADRs were found that apply to the fix. -->
+<!-- These are the standards the fix was written against. -->
+<!-- If no explicit standards were found, note that and document patterns inferred from surrounding code. -->
+
+| Standard | Source | Applies To |
+|----------|--------|------------|
+| Description of standard or convention | File path, ADR number, or "inferred from surrounding code" | Which files or changes this governs |
