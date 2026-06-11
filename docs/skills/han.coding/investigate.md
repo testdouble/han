@@ -56,17 +56,15 @@ Example prompts:
 
 ## What you get back
 
-An investigation plan file, plus an in-channel summary. The plan covers:
+An investigation plan file, plus an in-channel summary. The plan leads with the bottom line and keeps the supporting detail near the end, so it reads conclusion-first. Sections appear only when the investigation produced meaningful content for them; one that would be empty is omitted, and the rest keep the order below. So a given report covers some or all of, in order:
 
+- **Summary.** One sentence each for root cause, fix, why correct, validation outcome, remaining risks. Up top so a reader gets the verdict before the backing detail.
 - **Problem Statement.** Symptoms, expected behavior, conditions under which it occurs, impact.
-- **Evidence Summary.** A numbered list (E1, E2, E3, …) consolidated from the parallel `evidence-based-investigator` agents. Duplicates merged; conflicts resolved with explicit citations.
 - **Root Cause Analysis.** One to three sentences summarizing the root cause, followed by a detailed analysis that references evidence items by number.
-- **Coding Standards Reference.** For each standard that applies, what it says, where it was found (path, ADR number, or *"inferred from surrounding code"*), and which files the fix will touch. This keeps the fix consistent with how the project already works.
 - **Planned Fix.** Per-file changes: full path, what will be modified, which evidence items justify the change, which standards apply, and implementation specifics (new function signatures, changed logic, updated tests).
-- **Validation Findings.** Numbered `V1, V2, …` entries from `adversarial-validator`. Each records the challenge attempted, whether counter-evidence was found, and what changed in response.
-- **Adjustments Made.** What the investigation changed after validation, cross-referenced to the `V#` that drove each change.
-- **Confidence Assessment and Remaining Risks.** The validator's closing judgment.
-- **Final Summary.** One sentence each for root cause, fix, why correct, validation outcome, remaining risks.
+- **Evidence Summary.** A numbered list (E1, E2, E3, …) consolidated from the parallel `evidence-based-investigator` agents. Duplicates merged; conflicts resolved with explicit citations.
+- **Validation Findings.** Numbered `V1, V2, …` entries from `adversarial-validator`. Each records the challenge attempted, whether counter-evidence was found, and what changed in response. Followed by **Adjustments Made** (what changed after validation, cross-referenced to the `V#` that drove it) and the **Confidence Assessment and Remaining Risks** that close the validator's judgment.
+- **Coding Standards Reference.** For each standard that applies, what it says, where it was found (path, ADR number, or *"inferred from surrounding code"*), and which files the fix will touch. This keeps the fix consistent with how the project already works.
 
 The plan is presented for approval before any code is written. Approve to trigger implementation; push back with feedback to revise.
 
@@ -91,7 +89,7 @@ The skill walks a five-step process:
 2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan file using the template at [`references/template.md`](../../../han.coding/skills/investigate/references/template.md).
 3. **Plan the fix.** The skill resolves project config (CLAUDE.md → project-discovery.md → docs/ Glob fallback), reads ADRs and coding standards relevant to the fix, and writes the Planned Fix section with file-level changes justified by specific evidence items.
 4. **Adversarial validation.** `adversarial-validator` agents receive the full evidence summary, root cause analysis, and planned fix. They challenge evidence, challenge the fix, and challenge assumptions. Counter-evidence becomes `V#` findings that reshape the plan.
-5. **Final summary and user review.** The skill adds the one-sentence-per-section summary and presents the plan for approval.
+5. **Summary and user review.** The skill writes the Summary section at the top of the report and presents the plan for approval.
 
 ## Sources
 
