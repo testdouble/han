@@ -1,5 +1,28 @@
 # Han Release Notes
 
+## v3.3.1
+
+This release refines the `/investigate` skill's output report and the operator doc that describes it. The parent `han` plugin moves to 3.3.1, and `han.coding` moves to 1.0.1. No other plugins change. The work is entirely a restructuring of the investigation report for readability: the report leads with its conclusion, omits sections that have no content, and renames "Final Summary" to "Summary".
+
+### han v3.3.1
+
+The long-form operator doc `docs/skills/han.coding/investigate.md` was updated to match the reworked `/investigate` output. It now describes the report as conclusion-first (BLUF), documents that sections appear only when they have meaningful content, and reflects the "Summary" rename along with the new section order (Problem Statement, Root Cause Analysis, Planned Fix, followed by supporting detail).
+
+### han.coding v1.0.1
+
+The `/investigate` output template in `han.coding/skills/investigate/references/template.md` was restructured for readability. The summary moved to the top of the report and was renamed from "Final Summary" to "Summary", the narrative now runs Problem Statement, Root Cause Analysis, Planned Fix, and the supporting detail below it (Evidence Summary, Validation Results, conditional Coding Standards Reference) is ordered by dependency. A three-way "Summary" heading collision was resolved by renaming the nested subsections to "Root Cause" and "Approach", and the Summary now carries a reader key pointing to where (E#) and (V#) items are defined.
+
+Output sections are now lazy-created: the report includes a section only when it has meaningful content, and empty sections are omitted rather than emitting placeholder or "N/A" headings. This is stated at the top of `han.coding/skills/investigate/references/template.md` and enforced in `han.coding/skills/investigate/SKILL.md`, which also notes that fill order is workflow order, not the template's on-page order.
+
+### Commits in this release
+
+- Reorder investigate template for readability (BLUF) (98e830c)
+- Refine investigate template after IA + junior-developer review (56bd7cd)
+- Lazy-create investigate output sections (2bc1b7a)
+- Doc sweep: reconcile investigate 'Final Summary' rename (2ddfb92)
+
+Full changelog: https://github.com/testdouble/han/blob/v3.3.1/CHANGELOG.md#v331
+
 ## v3.3.0
 
 This release reorganizes the Han suite: `han.core` was split, with code-writing skills moving to the new `han.coding` (which also adds a new `refactor` skill) and the planning skills moving to the new `han.planning`. Both new plugins depend on `han.core` and are bundled by the `han` meta-plugin, so no bundled-suite installer loses anything. The parent `han` plugin moves to 3.3.0. `han.core` moves to 1.2.0 (eleven skills removed, the specialist agents stay). Two new plugins join the suite at 1.0.0: `han.planning` and `han.coding`. `han.github` moves to 1.2.0, `han.atlassian` to 1.1.0, and `han.plugin-builder` to 1.1.0. `han.reporting` moves to 1.0.1 and `han.feedback` to 1.1.1.

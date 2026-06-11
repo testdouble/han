@@ -11,7 +11,7 @@
       "name": "han",
       "source": "./han",
       "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han.core, han.planning, han.coding, han.github, and han.reporting so installing it pulls them all in. Does not bundle the opt-in han.feedback, han.atlassian, or han.plugin-builder plugins.",
-      "version": "3.3.0"
+      "version": "3.3.1"
     },
     {
       "name": "han.core",
@@ -29,7 +29,7 @@
       "name": "han.coding",
       "source": "./han.coding",
       "description": "Code-writing and execution skills for the Han suite. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. Depends on han.core; bundled by the han meta-plugin.",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "han.github",

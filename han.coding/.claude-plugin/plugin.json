@@ -1,7 +1,7 @@
 {
   "name": "han.coding",
   "description": "Coding-facing skills for the Han suite: writing, reviewing, testing, investigating, and standardizing code. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate, and the refactor skill, which restructures existing code without changing its behavior through a test-gated refactoring loop, plus code-review (comprehensive review of local changes), architectural-analysis (module-level coupling, data flow, concurrency, risk, and SOLID assessment), test-planning (coverage-gap and edge-case test plans), investigate (evidence-based root-cause debugging), and coding-standard (creating and updating coding standards). Depends on han.core; bundled by the han meta-plugin.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": [
     "han.core"
   ]
