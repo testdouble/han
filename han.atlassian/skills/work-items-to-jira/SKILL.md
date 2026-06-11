@@ -7,7 +7,7 @@ description: >
   be worked on and tracked in Jira. Requires a configured Atlassian MCP server. Does not produce
   the work-items file itself — use plan-work-items to break a plan into work items first. Does not
   post to GitHub — use work-items-to-issues for GitHub issues.
-argument-hint: [path to work-items.md] [--project <KEY> or --board <name>] [--parent <KEY> epic or story (optional; --epic is a deprecated alias)] [--type <issue type, default Story>] [--assignee <accountId/email> (optional)] [--column <name, default Backlog>]
+argument-hint: "[path to work-items.md] [--project <KEY> or --board <name>] [--parent <KEY> epic or story (optional; --epic is a deprecated alias)] [--type <issue type, default Story>] [--assignee <accountId/email> (optional)] [--column <name, default Backlog>]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources, mcp__claude_ai_Atlassian__atlassianUserInfo, mcp__claude_ai_Atlassian__getVisibleJiraProjects, mcp__claude_ai_Atlassian__getJiraProjectIssueTypesMetadata, mcp__claude_ai_Atlassian__lookupJiraAccountId, mcp__claude_ai_Atlassian__createJiraIssue, mcp__claude_ai_Atlassian__editJiraIssue, mcp__claude_ai_Atlassian__getJiraIssue, mcp__claude_ai_Atlassian__getTransitionsForJiraIssue, mcp__claude_ai_Atlassian__transitionJiraIssue, mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql
 ---
 

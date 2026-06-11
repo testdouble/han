@@ -35,6 +35,30 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 /plugin install han@han
 ```
 
+### Codex
+
+Han also ships a Codex marketplace file at `.agents/plugins/marketplace.json`.
+Add this repo as a Codex marketplace:
+
+```
+codex plugin marketplace add oppegard/han
+```
+
+Claude Code resolves the `han` meta-plugin dependencies automatically. Codex
+does not use that Claude-only dependency metadata, so install the
+resource-bearing Han packages directly:
+
+```
+codex plugin add han.core@han
+codex plugin add han.planning@han
+codex plugin add han.coding@han
+codex plugin add han.github@han
+codex plugin add han.reporting@han
+```
+
+Install `han.feedback`, `han.atlassian`, or `han.plugin-builder` separately
+when you want those opt-in packages.
+
 Han ships as multiple plugins:
 
 | Plugin | Type | What it brings |
