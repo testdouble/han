@@ -6,8 +6,8 @@
     "name": "Test Double",
     "url": "https://testdouble.com"
   },
-  "homepage": "https://github.com/oppegard/han#readme",
-  "repository": "https://github.com/oppegard/han",
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
   "license": "MIT",
   "keywords": ["han", "github", "pull-requests", "issues", "code-review"],
   "skills": "./skills/",
@@ -18,7 +18,7 @@
     "developerName": "Test Double",
     "category": "Developer Tools",
     "capabilities": ["Skills"],
-    "websiteURL": "https://github.com/oppegard/han",
+    "websiteURL": "https://github.com/testdouble/han",
     "defaultPrompt": [
       "Update this PR description.",
       "Post this review to my PR.",

@@ -63,7 +63,7 @@ For the full picture and a quick "which one do you need?" guide, see [Choosing a
 Add this repo as a Codex marketplace:
 
 ```
-codex plugin marketplace add oppegard/han
+codex plugin marketplace add testdouble/han
 ```
 
 Codex does not yet support meta-plugins like `han@han` (see openai/codex#23531,) so install the Han packages directly:
