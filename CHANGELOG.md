@@ -1,5 +1,28 @@
 # Han Release Notes
 
+## v3.4.0
+
+This release adds two interview-driven builder skills to the opt-in `han.plugin-builder` plugin: `/skill-builder` and `/agent-builder`. Each one walks a new skill's or agent's design tree decision-by-decision through an evidence-based interview, then reviews the finished files against the plugin-building guidance and applies every fix it finds. The `guidance` skill gains an `update` mode for refreshing an already-vendored copy. The parent `han` plugin moves to 3.4.0 and `han.plugin-builder` moves to 1.2.0. No other plugins change.
+
+### han v3.4.0
+
+The suite-level work is documentation for the two new builder skills. Long-form operator docs were added at `docs/skills/han.plugin-builder/skill-builder.md` and `docs/skills/han.plugin-builder/agent-builder.md`, and `docs/skills/han.plugin-builder/guidance.md` was updated for the new `update` mode. The skills index `docs/skills/README.md`, the project map `CLAUDE.md`, `README.md`, and `docs/concepts.md` were updated to list and describe the new builders without a hardcoded count.
+
+The long-form doc `docs/skills/han.github/post-code-review-to-pr.md` was corrected to state that the optional fix plan lists findings ordered by priority, Critical first, matching `han.github/skills/post-code-review-to-pr/SKILL.md`.
+
+### han.plugin-builder v1.2.0
+
+Two new skills join the plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #70. `/skill-builder` builds a new Claude Code skill from scratch through a relentless, evidence-based interview that walks the skill's design tree (entity fit, use cases, name, description, workflow steps, tools, progressive-disclosure layout), then reviews the finished `SKILL.md` and any `references/`, `scripts/`, or `assets/` against the plugin-building guidance and applies every fix. `/agent-builder` does the same for a new agent, walking entity fit, domain focus and vocabulary, role identity, anti-patterns, description, model tier, tools, and self-containment, and reviewing the finished self-contained agent file against the guidance. Both explore the target plugin before asking, recommend an answer with its rationale for every question, and never batch questions.
+
+The `guidance` skill gained an `update` mode that refreshes an already-vendored guidance copy and its rule index, alongside the existing serve and `init` modes. `han.plugin-builder/skills/guidance/scripts/init-guidance.sh` was adjusted to support it.
+
+### Pull requests in this release
+
+- Update /investigate output ordering (#69) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Plugin builder skills: skill and agent builders (#70) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v3.4.0/CHANGELOG.md#v340
+
 ## v3.3.1
 
 This release refines the `/investigate` skill's output report and the operator doc that describes it. The parent `han` plugin moves to 3.3.1, and `han.coding` moves to 1.0.1. No other plugins change. The work is entirely a restructuring of the investigation report for readability: the report leads with its conclusion, omits sections that have no content, and renames "Final Summary" to "Summary".
