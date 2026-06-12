@@ -96,6 +96,14 @@ The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira t
 - **[`/plan-a-feature-to-confluence`](./han.atlassian/plan-a-feature-to-confluence.md).** Run `/plan-a-feature` to build a feature specification in a temporary folder, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation: the spec as a parent page and each companion artifact (decision log, team findings, technical notes) as a child page beneath it. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
 - **[`/work-items-to-jira`](./han.atlassian/work-items-to-jira.md).** Create one Jira ticket per slice from a `/plan-work-items` work-items file, in a single target project. Defaults to a Story, unassigned, in the backlog, with the reporter taken from the Atlassian MCP identity; epic parenting, issue type, assignee, and target column are optional overrides. The Jira sibling of `/work-items-to-issues`.
 
+## han.plugin-builder
+
+The opt-in plugin-building plugin. It carries the authoring guidance for skills, agents, and plugins, plus two interview-driven builders that author a new component from scratch and review it against that guidance. It depends on nothing, and the `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.plugin-builder@han`.
+
+- **[`/guidance`](./han.plugin-builder/guidance.md).** Serve the authoritative guidance for building skills, agents, and plugins, or vendor it into the current repository as a path-scoped rule index (`/guidance init`) so it surfaces automatically while editing skill and agent files (`/guidance update` refreshes a vendored copy).
+- **[`/skill-builder`](./han.plugin-builder/skill-builder.md).** Build a new skill from scratch through an evidence-based interview that walks the skill's design tree decision-by-decision, then review the finished files against the plugin-building guidance and apply every fix.
+- **[`/agent-builder`](./han.plugin-builder/agent-builder.md).** Build a new agent from scratch through an evidence-based interview that walks the agent's design tree decision-by-decision, then review the finished self-contained agent file against the plugin-building guidance and apply every fix.
+
 ---
 
 ## How dispatch scales: sizing
