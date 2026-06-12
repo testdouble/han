@@ -1,0 +1,28 @@
+{
+  "name": "han-reporting",
+  "version": "1.0.1",
+  "description": "Reporting and summary skills for stakeholder-facing summaries and HTML reports.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "reporting", "stakeholder-summary", "html-report"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Reporting",
+    "shortDescription": "Stakeholder summaries and self-contained HTML reports.",
+    "longDescription": "Reporting and summary skills that turn technical plans into stakeholder-facing summaries and HTML reports.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Write a stakeholder summary.",
+      "Create an HTML summary report.",
+      "Summarize this plan for non-engineers."
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "han-github",
+  "version": "1.2.0",
+  "description": "GitHub-facing Han skills for PR descriptions, code review comments, and publishing issues.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "github", "pull-requests", "issues", "code-review"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han GitHub",
+    "shortDescription": "PR description, PR review, and issue publishing skills.",
+    "longDescription": "GitHub-facing Han skills for PR descriptions, code review comments, and publishing work items as issues.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Update this PR description.",
+      "Post this review to my PR.",
+      "Publish these work items as issues."
+    ]
+  }
+}

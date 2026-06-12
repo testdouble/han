@@ -1,0 +1,28 @@
+{
+  "name": "han-coding",
+  "version": "1.0.0",
+  "description": "Coding-facing skills for writing, reviewing, testing, investigating, and refactoring code.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "coding", "tdd", "code-review", "refactoring"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Coding",
+    "shortDescription": "TDD, review, investigation, refactoring, and test planning.",
+    "longDescription": "Coding-facing skills for writing, reviewing, testing, investigating, refactoring, and standardizing code.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Build this behavior test-first.",
+      "Review my current branch with Han.",
+      "Investigate this bug with Han."
+    ]
+  }
+}

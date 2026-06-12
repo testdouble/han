@@ -1,0 +1,28 @@
+{
+  "name": "han-planning",
+  "version": "1.0.0",
+  "description": "Planning-facing skills for specifying, sequencing, and stress-testing work before implementation.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "planning", "feature-specification", "implementation-plan"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Planning",
+    "shortDescription": "Feature planning and implementation planning skills.",
+    "longDescription": "Planning-facing skills for specifying, planning, sequencing, breaking down, and stress-testing work before implementation.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Plan a feature with Han.",
+      "Turn a spec into an implementation plan.",
+      "Break this plan into work items."
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "name": "han",
+  "interface": {
+    "displayName": "Han"
+  },
+  "plugins": [
+    {
+      "name": "han-core",
+      "source": {
+        "source": "local",
+        "path": "./han.core"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-planning",
+      "source": {
+        "source": "local",
+        "path": "./han.planning"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-coding",
+      "source": {
+        "source": "local",
+        "path": "./han.coding"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-github",
+      "source": {
+        "source": "local",
+        "path": "./han.github"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-reporting",
+      "source": {
+        "source": "local",
+        "path": "./han.reporting"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-feedback",
+      "source": {
+        "source": "local",
+        "path": "./han.feedback"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-atlassian",
+      "source": {
+        "source": "local",
+        "path": "./han.atlassian"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-plugin-builder",
+      "source": {
+        "source": "local",
+        "path": "./han.plugin-builder"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

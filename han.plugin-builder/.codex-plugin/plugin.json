@@ -1,0 +1,28 @@
+{
+  "name": "han-plugin-builder",
+  "version": "1.1.0",
+  "description": "Guidance and tooling for building Han-compatible skills, agents, and plugins.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "plugin-builder", "skills", "agents", "guidance"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Plugin Builder",
+    "shortDescription": "Guidance for building skills, agents, and plugins.",
+    "longDescription": "Guidance and tooling for building Han-compatible skills, agents, and plugins.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Guide me through writing a skill.",
+      "Initialize Han plugin guidance.",
+      "Review my plugin structure."
+    ]
+  }
+}

@@ -28,6 +28,8 @@ Han's positioning and what it does not bring to the table.
 
 ## Installation
 
+## Claude Code
+
 Add the Test Double skills marketplace to Claude Code, then install the plugin:
 
 ```
@@ -55,6 +57,27 @@ not want the planning, coding, GitHub, or reporting skills, install `han.core@ha
 specific plugins as desired.
 
 For the full picture and a quick "which one do you need?" guide, see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).
+
+### Codex
+
+Add this repo as a Codex marketplace:
+
+```
+codex plugin marketplace add testdouble/han
+```
+
+Codex does not yet support meta-plugins like `han@han` (see openai/codex#23531,) so install the Han packages directly:
+
+```
+codex plugin add han-core@han
+codex plugin add han-planning@han
+codex plugin add han-coding@han
+codex plugin add han-github@han
+codex plugin add han-reporting@han
+```
+
+Install `han-feedback`, `han-atlassian`, or `han-plugin-builder` separately
+when you want those opt-in packages.
 
 ## Documentation
 

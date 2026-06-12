@@ -1,0 +1,28 @@
+{
+  "name": "han-core",
+  "version": "1.2.0",
+  "description": "Evidence-based research, architecture, and documentation skills for software projects.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "research", "architecture", "documentation"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Core",
+    "shortDescription": "Research, architecture, documentation, and core Han guidance.",
+    "longDescription": "Evidence-based research, architecture, and documentation skills for software projects, plus the specialist agent instructions the rest of Han uses.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Research an implementation approach with Han.",
+      "Create project documentation with Han.",
+      "Analyze gaps between two artifacts."
+    ]
+  }
+}

@@ -10,7 +10,7 @@ description: >
   plan-a-feature-to-confluence for that. Does not create architectural decision records — use
   architectural-decision-record. Does not create coding standards — use coding-standard. Does not
   produce runbooks — use runbook.
-argument-hint: [feature-name or doc-path] [confluence location: page URL or space + parent]
+argument-hint: "[feature-name or doc-path] [confluence location: page URL or space + parent]"
 allowed-tools: Read, Glob, Grep, Skill, Agent, Bash(date *), Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 

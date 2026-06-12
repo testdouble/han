@@ -1,0 +1,28 @@
+{
+  "name": "han-feedback",
+  "version": "1.1.1",
+  "description": "Post-session feedback skill for capturing structured observations about Han skill runs.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "feedback", "skills", "issues"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Feedback",
+    "shortDescription": "Capture structured feedback after Han skill runs.",
+    "longDescription": "Post-session feedback skill for capturing structured observations and improvement ideas about Han skill runs.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Capture feedback on this Han run.",
+      "Write Han feedback as an issue.",
+      "Record what worked and what did not."
+    ]
+  }
+}

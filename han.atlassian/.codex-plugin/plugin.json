@@ -1,0 +1,28 @@
+{
+  "name": "han-atlassian",
+  "version": "1.1.0",
+  "description": "Atlassian-facing Han skills for publishing Markdown and plans to Confluence and Jira.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "atlassian", "confluence", "jira", "documentation"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Atlassian",
+    "shortDescription": "Publish documentation to Confluence and work items to Jira.",
+    "longDescription": "Atlassian-facing Han skills for publishing Markdown and plans to Confluence and work items to Jira.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Publish this Markdown to Confluence.",
+      "Create Jira tickets from work items.",
+      "Plan a feature and publish it."
+    ]
+  }
+}
