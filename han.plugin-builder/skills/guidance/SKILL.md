@@ -2,11 +2,12 @@
 name: guidance
 description: >
   Authoritative guidance for building Claude Code skills, agents, and plugins, plus init and
-  update steps that install and refresh that guidance in the current repository. Use when you
-  need the rules or best practices for a skill, agent, hook, or plugin — designing, reviewing,
-  hardening, or checking one against the guidance. Run with `init` to vendor the guidance into
-  the current repository as a path-scoped rule index, or `update` to refresh an already-vendored
-  copy and its rule index. Does not run an interview to build a new skill or agent from scratch —
+  update steps that install and refresh the plugin-building skills in the current repository. Use
+  when you need the rules or best practices for a skill, agent, hook, or plugin — designing,
+  reviewing, hardening, or checking one against the guidance. Run with `init` to vendor the
+  guidance, skill-builder, and agent-builder skills into the current repository (so they run with
+  no dependency on this plugin) plus a path-scoped rule index, or `update` to refresh an
+  already-vendored copy. Does not run an interview to build a new skill or agent from scratch —
   use skill-builder or agent-builder. Does not write feature code, review application code, or
   build non-plugin features.
 allowed-tools: Read, Glob, Grep, Bash(find *)
@@ -57,47 +58,49 @@ Steps:
 
 ## Initialization Mode
 
-Install the guidance into the current repository so contributors get the right
-guidance surfaced automatically while editing skill and agent files, with no
-dependency on this plugin remaining installed.
+Install the plugin-building skills into the current repository so anyone using
+the repo can run them and consult the guidance, with no dependency on this
+plugin remaining installed.
 
 1. Run `${CLAUDE_SKILL_DIR}/scripts/init-guidance.sh` from the repository root.
-   The script vendors a full copy of the guidance documents into
-   `.claude/plugin-building-guidance/`, detects which globs cover this repo's
-   agent and skill files, and writes the path-scoped rule index at
-   `.claude/rules/plugin-building-guidance.md`. Capture its output.
-2. Report to the user what was written: the number of vendored guidance files,
-   the rule index path, and the `paths:` globs the script chose. Explain that
-   the rule index is an index only — Claude Code loads it when a matching skill
-   or agent file is touched, and it points to the vendored documents so only
-   the guidance needed for the current file is loaded, not all of it.
+   The script vendors three skills into `.claude/skills/` — a guidance-only
+   `guidance` skill (whose `references/` directory is the single in-repo copy of
+   the guidance documents), `skill-builder`, and `agent-builder` (with their
+   guidance paths rewritten to that vendored copy) — and writes the path-scoped
+   rule index at `.claude/rules/plugin-building-guidance.md`. Capture its output.
+2. Report to the user what was written: the three vendored skills, the total
+   file count, the rule index path, and the `paths:` globs. Explain that the
+   three skills are now available directly in the repo (`/guidance`,
+   `/skill-builder`, `/agent-builder`) and that the rule index is an index only
+   — Claude Code loads it when a matching skill or agent file is touched, and it
+   points to the vendored guidance so only the documents the current file needs
+   are loaded, not all of them.
 3. Do not commit. Leave the new files staged for the user to review.
 
 ## Update Mode
 
-Refresh the vendored guidance and its rule index in a repository that already
-has them, so contributors get the current guidance after this plugin has been
-updated. Updating is the same vendoring operation as Initialization Mode — it
-replaces the vendored copy and regenerates the rule index — but it first
-confirms the guidance is actually installed before touching anything.
+Refresh the vendored skills and their rule index in a repository that already
+has them, so contributors get the current skills and guidance after this plugin
+has been updated. Updating is the same vendoring operation as Initialization
+Mode — it replaces the vendored skills and regenerates the rule index — but it
+first confirms the skills are actually installed before touching anything.
 
-1. Check whether the guidance is already installed at the expected location.
-   Run `find .claude -maxdepth 2 \( -name plugin-building-guidance -o -name plugin-building-guidance.md \)`
-   from the repository root. The guidance is installed only when both the
-   `.claude/plugin-building-guidance` directory and the
+1. Check whether the skills are already installed at the expected location.
+   Run `find .claude -maxdepth 3 \( -path '*/skills/guidance' -o -name plugin-building-guidance.md \)`
+   from the repository root. The skills are installed only when both the
+   `.claude/skills/guidance` directory and the
    `.claude/rules/plugin-building-guidance.md` rule index turn up.
-2. If the guidance is **not** installed (the `find` turns up neither, or only
-   one of the two), do not update. Tell the user the guidance is not installed
-   at the expected location (`.claude/plugin-building-guidance/` and
+2. If the skills are **not** installed (the `find` turns up neither, or only
+   one of the two), do not update. Tell the user the skills are not installed
+   at the expected location (`.claude/skills/guidance/` and
    `.claude/rules/plugin-building-guidance.md`) and ask whether they want to
-   install it now. If they confirm, switch to **Initialization Mode** and run
+   install them now. If they confirm, switch to **Initialization Mode** and run
    its steps. If they decline, stop without writing anything.
-3. If the guidance **is** installed, run
+3. If the skills **are** installed, run
    `${CLAUDE_SKILL_DIR}/scripts/init-guidance.sh` from the repository root. The
-   script replaces the vendored guidance under `.claude/plugin-building-guidance/`
-   with a fresh copy and regenerates the rule index at
-   `.claude/rules/plugin-building-guidance.md`, re-detecting the `paths:` globs
-   for the current repo. Capture its output.
-4. Report to the user what was refreshed: the number of vendored guidance files,
-   the rule index path, and the `paths:` globs the script chose.
+   script replaces the vendored skills under `.claude/skills/` with fresh copies
+   and regenerates the rule index at `.claude/rules/plugin-building-guidance.md`.
+   Capture its output.
+4. Report to the user what was refreshed: the three vendored skills, the total
+   file count, the rule index path, and the `paths:` globs.
 5. Do not commit. Leave the changes staged for the user to review.

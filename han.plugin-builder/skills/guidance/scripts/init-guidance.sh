@@ -1,72 +1,92 @@
 #!/usr/bin/env bash
-# Vendor the plugin-building guidance into the current repository and write a
-# path-scoped rule index that points at it. Run from the repository root.
+# Vendor the plugin-building skills into the current repository so they run with
+# no dependency on the han.plugin-builder plugin, and write a path-scoped rule
+# index that surfaces the guidance while editing skill and agent files. Run from
+# the repository root.
 #
 # Effects (all inside the current working directory):
-#   .claude/plugin-building-guidance/   <- full copy of the guidance docs
+#   .claude/skills/guidance/        <- guidance-only skill + its references/ (the
+#                                      single vendored copy of the guidance docs)
+#   .claude/skills/skill-builder/   <- the skill-builder skill, guidance paths
+#                                      rewritten to the vendored location
+#   .claude/skills/agent-builder/   <- the agent-builder skill, same rewrite
 #   .claude/rules/plugin-building-guidance.md   <- the path-scoped rule index
 #
-# Re-running refreshes the vendored copy and regenerates the rule index; this
+# Re-running refreshes every vendored skill and regenerates the rule index; this
 # is what the skill's update mode invokes to refresh an existing install.
 set -euo pipefail
 
-# Resolve this skill's own directory so the source guidance and the index body
+# Resolve this skill's own directory so the source skills, references, and assets
 # are found regardless of where the plugin is installed.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILL_DIR="$(dirname "$SCRIPT_DIR")"
-SRC="$SKILL_DIR/references"
-ASSET="$SKILL_DIR/assets/rule-index-body.md"
+GUIDANCE_DIR="$(dirname "$SCRIPT_DIR")"
+PLUGIN_SKILLS_DIR="$(dirname "$GUIDANCE_DIR")"
+SRC_REFERENCES="$GUIDANCE_DIR/references"
+PORTABLE_SKILL="$GUIDANCE_DIR/assets/guidance-portable-SKILL.md"
+RULE_BODY="$GUIDANCE_DIR/assets/rule-index-body.md"
 
-if [ ! -d "$SRC" ]; then
-  echo "error: guidance source not found at $SRC" >&2
-  exit 1
-fi
-if [ ! -f "$ASSET" ]; then
-  echo "error: rule index body not found at $ASSET" >&2
-  exit 1
-fi
+for required in "$SRC_REFERENCES" "$PORTABLE_SKILL" "$RULE_BODY"; do
+  if [ ! -e "$required" ]; then
+    echo "error: required source not found at $required" >&2
+    exit 1
+  fi
+done
 
-DEST=".claude/plugin-building-guidance"
+SKILLS_DEST=".claude/skills"
 RULE=".claude/rules/plugin-building-guidance.md"
 
-# 1. Vendor the guidance docs into the repo (fresh copy each run).
-rm -rf "$DEST"
-mkdir -p "$DEST"
-cp -R "$SRC"/. "$DEST"/
-COPIED=$(find "$DEST" -type f | wc -l | tr -d ' ')
+# The vendored builder skills can no longer resolve ${CLAUDE_PLUGIN_ROOT} (it is
+# only set when the plugin is installed), so their guidance paths are rewritten
+# to point at the vendored guidance skill, repo-root-relative.
+OLD_PATH='${CLAUDE_PLUGIN_ROOT}/skills/guidance/references/'
+NEW_PATH='.claude/skills/guidance/references/'
 
-# 2. Detect which globs are needed to cover this repo's agent and skill files.
-#    Standard layouts put agents under */agents/ and skills under */skills/
-#    (including .claude/agents and .claude/skills).
-candidates=$(find . -type f -name '*.md' \( -path '*/agents/*' -o -path '*/skills/*' \) 2>/dev/null | grep -v '/\.git/' || true)
-paths_block=""
-if printf '%s\n' "$candidates" | grep -q '/agents/'; then
-  paths_block="${paths_block}  - \"**/agents/**/*.md\"
-"
-fi
-if printf '%s\n' "$candidates" | grep -q '/skills/'; then
-  paths_block="${paths_block}  - \"**/skills/**/*.md\"
-"
-fi
-# Fallback: if neither layout was detected, cover both so the rule still works
-# as the repo grows.
-if [ -z "$paths_block" ]; then
-  paths_block="  - \"**/agents/**/*.md\"
+# 1. Vendor the guidance skill: the guidance-only SKILL.md plus its references/,
+#    which is the single in-repo copy of the guidance documents everything else
+#    points at.
+rm -rf "$SKILLS_DEST/guidance"
+mkdir -p "$SKILLS_DEST/guidance"
+cp "$PORTABLE_SKILL" "$SKILLS_DEST/guidance/SKILL.md"
+cp -R "$SRC_REFERENCES" "$SKILLS_DEST/guidance/references"
+
+# 2. Vendor each builder skill, rewriting the guidance path in its SKILL.md.
+for builder in skill-builder agent-builder; do
+  src="$PLUGIN_SKILLS_DIR/$builder"
+  if [ ! -d "$src" ]; then
+    echo "error: builder skill source not found at $src" >&2
+    exit 1
+  fi
+  rm -rf "$SKILLS_DEST/$builder"
+  mkdir -p "$SKILLS_DEST/$builder"
+  cp -R "$src"/. "$SKILLS_DEST/$builder"/
+  tmp="$(mktemp)"
+  sed "s|${OLD_PATH}|${NEW_PATH}|g" "$SKILLS_DEST/$builder/SKILL.md" > "$tmp"
+  mv "$tmp" "$SKILLS_DEST/$builder/SKILL.md"
+done
+
+COPIED=$(find "$SKILLS_DEST/guidance" "$SKILLS_DEST/skill-builder" "$SKILLS_DEST/agent-builder" -type f | wc -l | tr -d ' ')
+
+# 3. Cover both the agent and skill layouts. Standard repos put agents under
+#    */agents/ and skills under */skills/ (including .claude/agents and
+#    .claude/skills). Both globs are emitted unconditionally so the rule fires
+#    whether the contributor is editing a skill or an agent, including new ones
+#    the repo does not have yet — the builder skills exist to create both.
+paths_block="  - \"**/agents/**/*.md\"
   - \"**/skills/**/*.md\"
 "
-fi
 
-# 3. Write the rule index: generated frontmatter + the static index body.
+# 4. Write the rule index: generated frontmatter + the static index body.
 mkdir -p "$(dirname "$RULE")"
 {
   printf -- "---\n"
   printf -- "paths:\n"
   printf -- "%s" "$paths_block"
   printf -- "---\n\n"
-  cat "$ASSET"
+  cat "$RULE_BODY"
 } > "$RULE"
 
-# 4. Report.
-echo "Vendored $COPIED guidance file(s) into $DEST"
+# 5. Report.
+echo "Vendored 3 skill(s) (guidance, skill-builder, agent-builder) into $SKILLS_DEST"
+echo "Copied $COPIED file(s) total"
 echo "Wrote rule index $RULE with paths:"
 printf '%s' "$paths_block"
