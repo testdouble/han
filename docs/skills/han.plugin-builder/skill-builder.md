@@ -8,16 +8,16 @@ Operator documentation for the `/skill-builder` skill in the opt-in `han.plugin-
 
 - **What it does.** Builds a new Claude Code skill from scratch through a relentless, evidence-based interview that walks the skill's design tree decision-by-decision, then reviews the finished files against the plugin-building guidance and applies every fix it finds.
 - **When to use it.** When you want to create, author, scaffold, or design a new skill or slash command and want it to conform to the established authoring rules without your having to remember them.
-- **What you get back.** A real skill on disk — `{plugin}/skills/{skill-name}/SKILL.md` plus any `references/`, `scripts/`, or `assets/` a use case justified — that has already passed a guidance-conformance review.
+- **What you get back.** A real skill on disk (`{plugin}/skills/{skill-name}/SKILL.md` plus any `references/`, `scripts/`, or `assets/` a use case justified) that has already passed a guidance-conformance review.
 
 ## Key concepts
 
 - **Interview-driven, one question at a time.** The skill interviews you relentlessly, walking each branch of the design tree and resolving dependencies between decisions one at a time. It never batches questions; later answers routinely make earlier ones moot.
-- **Explore before asking.** Any question the repository can answer — the target plugin's existing skills, sibling descriptions, `plugin.json`, conventions, the guidance documents — it answers by exploring instead of asking you.
+- **Explore before asking.** Any question the repository can answer (the target plugin's existing skills, sibling descriptions, `plugin.json`, conventions, the guidance documents) it answers by exploring instead of asking you.
 - **Recommend, then ask.** Every question surfaced to you comes with a recommended answer and its rationale, grounded in evidence. You accept, amend, or redirect.
 - **The design tree.** Foundational decisions (which plugin, the 2-3 use cases) settle before identity (name, description), which settle before workflow (pattern, steps, human gates), which settle before capabilities (tools, dispatch, scripts) and layout (body vs. references vs. scripts vs. assets).
 - **Apply-as-you-go, verify-at-the-end.** The interview consults the governing guidance document when a decision is on the table; a final review pass re-reads every relevant document and corrects the finished files. The interview gets each decision approximately right; the review pass makes the artifact correct.
-- **Self-contained review.** `han.plugin-builder` depends on nothing and ships no agents, so the review is done inline by reading the guidance — not by dispatching a review team.
+- **Self-contained review.** `han.plugin-builder` depends on nothing and ships no agents, so the review is done inline by reading the guidance, not by dispatching a review team.
 
 ## When to use it
 
@@ -54,9 +54,9 @@ Example prompts:
 
 A skill written into the target plugin:
 
-- **`{plugin}/skills/{skill-name}/SKILL.md`** — the skill definition: frontmatter (`name` matching the directory, a four-component `description` under 1024 characters, scoped `allowed-tools`, and any other settled fields) and a body of numbered process steps following the chosen workflow pattern.
-- **`{plugin}/skills/{skill-name}/references/`, `scripts/`, or `assets/`** — created only when a use case justified them. Domain knowledge (templates, checklists, matrices) lands in `references/`; deterministic operations in `scripts/`; output-only files in `assets/`. No empty or speculative folders.
-- **A new plugin scaffold** — if the skill belongs in a brand-new plugin, the `.claude-plugin/plugin.json` and marketplace entry, built per the configuration guidance.
+- **`{plugin}/skills/{skill-name}/SKILL.md`**, the skill definition: frontmatter (`name` matching the directory, a four-component `description` under 1024 characters, scoped `allowed-tools`, and any other settled fields) and a body of numbered process steps following the chosen workflow pattern.
+- **`{plugin}/skills/{skill-name}/references/`, `scripts/`, or `assets/`**, created only when a use case justified them. Domain knowledge (templates, checklists, matrices) lands in `references/`; deterministic operations in `scripts/`; output-only files in `assets/`. No empty or speculative folders.
+- **A new plugin scaffold**, if the skill belongs in a brand-new plugin: the `.claude-plugin/plugin.json` and marketplace entry, built per the configuration guidance.
 
 The skill closes by summarizing the decisions settled by evidence versus by you, the fixes the review pass applied (with the guidance document behind each), and the triggering and functional tests derived from the use cases.
 

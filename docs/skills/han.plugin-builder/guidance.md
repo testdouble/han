@@ -6,14 +6,14 @@ Operator documentation for the `/guidance` skill in the opt-in `han.plugin-build
 
 ## TL;DR
 
-- **What it does.** Serves the authoritative guidance for building Claude Code skills, agents, and plugins — and, on request, vendors that guidance into the current repository as a path-scoped rule index so it surfaces automatically while you edit skill and agent files.
+- **What it does.** Serves the authoritative guidance for building Claude Code skills, agents, and plugins, and on request vendors that guidance into the current repository as a path-scoped rule index so it surfaces automatically while you edit skill and agent files.
 - **When to use it.** When you need the rules or best practices for a skill, agent, hook, or plugin, or when you want a repository to carry the guidance locally so contributors get it loaded for the file they are editing.
 - **What you get back.** In Guidance Mode, the specific guidance applied to your situation with a citation. In Initialization or Update Mode, a vendored copy of the guidance at `.claude/plugin-building-guidance/` and a rule index at `.claude/rules/plugin-building-guidance.md`, left staged for you to review.
 
 ## Key concepts
 
 - **Three modes, chosen by argument.** `/guidance` with no argument runs **Guidance Mode** (serve the relevant doc). `/guidance init` (or `initialize`) runs **Initialization Mode** (vendor the guidance). `/guidance update` (or `refresh`) runs **Update Mode** (refresh an already-vendored copy).
-- **Serve, do not dump.** Guidance Mode reads only the one or two documents that apply to what you are building, then applies them and cites the file. It deliberately does not read every guidance document — that would defeat the progressive-disclosure model the guidance itself teaches.
+- **Serve, do not dump.** Guidance Mode reads only the one or two documents that apply to what you are building, then applies them and cites the file. It deliberately does not read every guidance document; that would defeat the progressive-disclosure model the guidance itself teaches.
 - **Path-scoped rule index.** Initialization writes a small index at `.claude/rules/plugin-building-guidance.md` whose `paths:` globs bind it to this repo's skill and agent files. Claude Code loads the index when a matching file is touched; the index points to the vendored documents so only the guidance the current file needs is loaded, not all of it.
 - **No dependency after vendoring.** Once `init` has run, the vendored guidance lives in the repo. Contributors get the right guidance surfaced even if the `han.plugin-builder` plugin is later uninstalled.
 - **Standalone and opt-in.** The plugin depends on nothing and is not bundled by the `han` meta-plugin. Install it on its own.
@@ -51,16 +51,16 @@ Example prompts:
 
 ## What you get back
 
-- **Guidance Mode** — the relevant guidance applied to your situation, with the source document cited (for example `skill-building-guidance/skill-description-frontmatter.md`) so you can read it in full.
-- **Initialization Mode** — a vendored copy of the guidance documents at `.claude/plugin-building-guidance/`, plus a path-scoped rule index at `.claude/rules/plugin-building-guidance.md`. The skill reports the number of vendored files and the `paths:` globs it chose, and leaves the new files staged for you to review (it does not commit).
-- **Update Mode** — the same vendoring operation as initialization, run only after confirming the guidance is already installed; it replaces the vendored copy and regenerates the rule index, again left staged.
+- **Guidance Mode.** The relevant guidance applied to your situation, with the source document cited (for example `skill-building-guidance/skill-description-frontmatter.md`) so you can read it in full.
+- **Initialization Mode.** A vendored copy of the guidance documents at `.claude/plugin-building-guidance/`, plus a path-scoped rule index at `.claude/rules/plugin-building-guidance.md`. The skill reports the number of vendored files and the `paths:` globs it chose, and leaves the new files staged for you to review (it does not commit).
+- **Update Mode.** The same vendoring operation as initialization, run only after confirming the guidance is already installed; it replaces the vendored copy and regenerates the rule index, again left staged.
 
 ## How to get the most out of it
 
 - **Name your topic, not "show me the guidance."** Guidance Mode is a router: it serves the one or two documents that fit. A specific question gets a specific document; a vague one gets a slower search.
 - **Run `init` once per repo, `update` after plugin upgrades.** Initialization is the first install; Update is the refresh. Update checks that both the vendored directory and the rule index exist before touching anything, and offers to initialize if they do not.
 - **Review the staged files before committing.** Neither `init` nor `update` commits. Inspect the rule index's `paths:` globs to confirm they cover where your repo keeps skills and agents.
-- **Reach for the builders when you want the work done, not just the rules.** [`/skill-builder`](./skill-builder.md) and [`/agent-builder`](./agent-builder.md) consult this same guidance during an interview and a review pass; use them when you want a finished artifact rather than a citation.
+- **Reach for the builders when you want the work done, not only the rules.** [`/skill-builder`](./skill-builder.md) and [`/agent-builder`](./agent-builder.md) consult this same guidance during an interview and a review pass; use them when you want a finished artifact rather than a citation.
 
 ## Cost and latency
 
