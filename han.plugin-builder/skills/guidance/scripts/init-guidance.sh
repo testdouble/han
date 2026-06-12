@@ -6,7 +6,8 @@
 #   .claude/plugin-building-guidance/   <- full copy of the guidance docs
 #   .claude/rules/plugin-building-guidance.md   <- the path-scoped rule index
 #
-# Re-running refreshes the vendored copy and regenerates the rule index.
+# Re-running refreshes the vendored copy and regenerates the rule index; this
+# is what the skill's update mode invokes to refresh an existing install.
 set -euo pipefail
 
 # Resolve this skill's own directory so the source guidance and the index body
