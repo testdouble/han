@@ -13,7 +13,7 @@ description: >
   first. Does not post to Jira — use work-items-to-jira. Does not post to GitHub — use
   work-items-to-issues.
 argument-hint: [path to work-items.md] --team <team> [--project <Linear project>] [--parent <issue id>] [--state <name>] [--label <name> (repeatable)] [--assignee <name/email/me>]
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), mcp__plugin_linear_linear__save_issue, mcp__plugin_linear_linear__get_issue, mcp__plugin_linear_linear__list_teams, mcp__plugin_linear_linear__list_issue_statuses, mcp__plugin_linear_linear__list_issue_labels, mcp__plugin_linear_linear__list_users, mcp__plugin_linear_linear__list_projects
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), mcp__plugin_linear_linear__save_issue, mcp__plugin_linear_linear__get_issue, mcp__plugin_linear_linear__list_teams, mcp__plugin_linear_linear__list_issue_statuses, mcp__plugin_linear_linear__list_issue_labels, mcp__plugin_linear_linear__list_users, mcp__plugin_linear_linear__get_user, mcp__plugin_linear_linear__list_projects
 ---
 
 # Work Items to Linear Issues
@@ -64,7 +64,7 @@ Resolve everything concretely now so failures surface before any issue is create
 - **Read the team's configuration** with `mcp__plugin_linear_linear__list_issue_statuses`, `mcp__plugin_linear_linear__list_issue_labels`, and `mcp__plugin_linear_linear__list_users`. These reads are independent and may run together.
 - **State.** If `--state` was given, match it against the team's real states. The default is the team's initial/default state. If a named state does not exist, present the team's real states and ask.
 - **Labels.** If `--label`s were given, match each against the team's labels. When categorization was not specified, present the team's real labels and let the operator choose one, several, or none. If the team defines no labels, say so and proceed without categorization.
-- **Assignee.** If named, resolve it to a member with `mcp__plugin_linear_linear__list_users`. If unset, leave issues unassigned. The creator is recorded automatically by Linear as the authenticated user; never set it.
+- **Assignee.** If named, resolve it with `mcp__plugin_linear_linear__get_user`: the literal token `me` resolves to the authenticated Linear identity, and a name or email resolves to that member. If unset, leave issues unassigned. The creator is recorded automatically by Linear as the authenticated user; never set it.
 - **Project (optional).** Resolve a named Project at **workspace scope** with `mcp__plugin_linear_linear__list_projects` (Projects are not strictly team-scoped), and confirm the target team participates in it.
 - **Parent (optional).** Resolve a named parent issue with `mcp__plugin_linear_linear__get_issue` and confirm it belongs to the target team.
 
