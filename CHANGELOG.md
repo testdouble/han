@@ -1,5 +1,29 @@
 # Han Release Notes
 
+## v3.4.1
+
+This release vendors the plugin-building skills, not the guidance alone, when `/guidance init` runs in a repository, and documents the result. The parent `han` plugin moves to 3.4.1 and `han.plugin-builder` moves to 1.2.1. No other plugins change.
+
+### han v3.4.1
+
+The suite-level work is documentation. Two new how-to guides were added: `docs/how-to/create-a-new-skill.md` is the end-to-end recipe for authoring a skill with `/skill-builder`, and `docs/how-to/create-a-new-agent.md` is the same for an agent with `/agent-builder`. `docs/how-to/README.md` was updated to index both. The long-form doc `docs/skills/han.plugin-builder/guidance.md` was updated to describe the new three-skill vendoring behavior of `init` and `update`, and `docs/skills/han.plugin-builder/skill-builder.md` and `docs/skills/han.plugin-builder/agent-builder.md` had minor updates. `README.md` was reorganized, and `CLAUDE.md`, `docs/choosing-a-han-plugin.md`, `docs/skills/README.md`, and `docs/how-to/build-a-plugin-that-depends-on-han.md` were updated to reflect the renamed vendored skills (`plugin-guidance`, `plugin-skill-builder`, `plugin-agent-builder`) and the three-skill vendoring. Em-dashes that had been introduced in the guidance-vendoring docs were removed.
+
+### han.plugin-builder v1.2.1
+
+The `/guidance` skill's `init` and `update` modes previously vendored only the guidance documents into `.claude/plugin-building-guidance/` plus a path-scoped rule index. They now vendor three skills into `.claude/skills/` under a `plugin-` prefix so they never collide with this plugin's own slash commands: a guidance-only `plugin-guidance` skill whose `references/` directory holds the single in-repo copy of the guidance documents, plus `plugin-skill-builder` and `plugin-agent-builder`, with their names, cross-references, and guidance paths rewritten to the vendored copy. `update` mode now refreshes every vendored skill in full and regenerates the rule index, confirming the skills are installed first. A new asset `han.plugin-builder/skills/guidance/assets/guidance-portable-SKILL.md` holds the portable SKILL.md template used when vendoring the guidance-only skill. `han.plugin-builder/skills/guidance/assets/rule-index-body.md` and `han.plugin-builder/skills/guidance/scripts/init-guidance.sh` were updated to perform this vendoring, and the `guidance` skill's `SKILL.md` description and its Initialization and Update mode text were rewritten to match.
+
+### Commits in this release
+
+- guidance init: vendor the three plugin-builder skills into the repo (5d6935c)
+- docs: sync guidance init behavior to vendoring three skills (98337df)
+- guidance init: rename vendored skills with a plugin- prefix (72f400c)
+- guidance: make explicit that update refreshes docs and skill copies (79a0a7a)
+- docs: remove em-dashes introduced in the guidance-vendoring docs (9953507)
+- docs: add how-to guides for creating a skill and an agent (06fdbf1)
+- organizing docs in readme (6aa67ac)
+
+Full changelog: https://github.com/testdouble/han/blob/v3.4.1/CHANGELOG.md#v341
+
 ## v3.4.0
 
 This release adds two interview-driven builder skills to the opt-in `han.plugin-builder` plugin: `/skill-builder` and `/agent-builder`. Each one walks a new skill's or agent's design tree decision-by-decision through an evidence-based interview, then reviews the finished files against the plugin-building guidance and applies every fix it finds. The `guidance` skill gains an `update` mode for refreshing an already-vendored copy. The parent `han` plugin moves to 3.4.0 and `han.plugin-builder` moves to 1.2.0. No other plugins change.
