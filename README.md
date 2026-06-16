@@ -47,6 +47,7 @@ Han ships as multiple plugins:
 | `han.reporting` | bundled | reporting skills like the stakeholder summary |
 | `han.feedback` | opt-in | skill for capturing post-session feedback on Han skill runs |
 | `han.atlassian` | opt-in | skills for publishing docs and work items to Atlassian products |
+| `han.linear` | opt-in | skill for publishing work items to Linear (requires a Linear MCP server) |
 | `han.plugin-builder` | opt-in | carries the guidance and skills for building your own skills, agents, and plugins |
 
 Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han.core`, `han.planning`,
