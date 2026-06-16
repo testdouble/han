@@ -29,6 +29,10 @@ example-plugin/
 ```
 Rename the directory to match the plugin name.
 
+### Rule: Never put a `.` in a plugin name
+
+Plugin names are kebab-case identifiers: lowercase letters, numbers, and hyphens only. Do not use a dot (`.`) as a separator, even though it reads naturally as a family namespace (`acme.core`). A dot breaks Codex entirely and Claude Code partially, because the plugin name doubles as the namespace prefix on its skills and agents. Use a hyphen instead (`acme-core`). The full rationale and the rename checklist live in [Plugin Naming](../claude-marketplace-and-plugin-configuration/plugin-naming.md).
+
 ### Rule: Skill directory names should indicate external dependencies
 
 If a skill requires an external tool or service (GitHub CLI, Slack, Jira, etc.), prefix the skill directory name with the tool name so users can predict the dependency from the name alone.
@@ -128,7 +132,7 @@ SKILL.md       # Exactly this, nothing else
 
 ## Summary Checklist
 
-1. Plugin directory name matches `name` in `plugin.json`
+1. Plugin directory name matches `name` in `plugin.json`, and that name never contains a `.` (kebab-case only; a dot breaks Codex and Claude Code)
 2. Skill directory names indicate external tool dependencies (e.g., `gh-` prefix for GitHub CLI)
 3. Skill `name` in SKILL.md frontmatter matches the directory name
 4. No `README.md` inside skill folders — use `SKILL.md` and `references/` instead

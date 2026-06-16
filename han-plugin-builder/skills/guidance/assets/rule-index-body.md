@@ -69,6 +69,7 @@ Guidance for authoring agent `.md` definitions. Agents are self-contained and ca
 
 Schema references for the JSON manifests that define a plugin and its marketplace.
 
+- [Plugin Naming](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/plugin-naming.md) — Why a plugin name must be kebab-case with no `.` (a dot breaks Codex entirely and Claude Code partially, because the name doubles as the skill and agent namespace prefix), plus the checklist for renaming off a dotted name. Read when naming a new plugin or renaming an existing one.
 - [plugin.json Schema Reference](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md) — Full schema for `.claude-plugin/plugin.json`: required fields, metadata, component paths, dependencies, and experimental keys. Read when creating or editing a plugin manifest.
 - [marketplace.json Schema Reference](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md) — Schema for `.claude-plugin/marketplace.json`, the registry Claude Code reads to discover and install plugins. Read when adding a plugin to a marketplace or editing the manifest.
 - [monitors.json Schema Reference](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/monitors-json-options.md) — Schema for the experimental monitors configuration (persistent background processes that deliver notifications). Read only when building monitor components.

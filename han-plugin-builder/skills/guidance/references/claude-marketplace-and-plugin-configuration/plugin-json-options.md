@@ -6,7 +6,7 @@ The `.claude-plugin/plugin.json` manifest file defines a Claude Code plugin's me
 
 | Field  | Type   | Description                                |
 | ------ | ------ | ------------------------------------------ |
-| `name` | string | Unique identifier in kebab-case, no spaces |
+| `name` | string | Unique identifier in kebab-case, no spaces. Never use a `.`; see [Plugin Naming](./plugin-naming.md). |
 
 ## Metadata Fields (Optional)
 

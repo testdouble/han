@@ -28,7 +28,7 @@ Each item in the `plugins` array:
 
 | Field         | Required | Type             | Description                                                              |
 | ------------- | -------- | ---------------- | ------------------------------------------------------------------------ |
-| `name`        | Yes      | string           | Plugin identifier in kebab-case                                          |
+| `name`        | Yes      | string           | Plugin identifier in kebab-case. Never use a `.`; see [Plugin Naming](./plugin-naming.md). |
 | `source`      | Yes      | string \| object | Where to fetch the plugin (see Source Variants below)                    |
 | `displayName` | No       | string           | Human-readable name shown in the UI; falls back to `name`. Not used for namespacing. Requires Claude Code v2.1.143+. |
 | `description` | No       | string           | Plugin description                                                       |
