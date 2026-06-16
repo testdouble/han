@@ -1,6 +1,6 @@
 # How-To Guides
 
-End-to-end recipes that walk a whole loop: what to type, what decisions you make between steps, and what you should expect along the way. Two kinds live here. Most guides are workflow recipes for *using* Han on a real piece of work. A second set covers *extending* Han by building a plugin on top of it.
+End-to-end recipes that walk a whole loop: what to type, what decisions you make between steps, and what you should expect along the way. Two kinds live here. Most guides are workflow recipes for *using* Han on a real piece of work. A second set covers *extending* Han: building a plugin on top of it, and authoring the skills and agents that go in a plugin.
 
 > See also: [Plugin landing page](../../README.md) · [Quickstart](../quickstart.md) · [Concepts](../concepts.md)
 
@@ -21,6 +21,11 @@ The skill long-form docs in [docs/skills/](../skills/README.md) are canonical fo
 
 - **[Extend Han with plugin dependencies](./extend-han-with-plugin-dependencies.md).** You want to understand how one plugin builds on another through the `dependencies` field, using Han's own `han.core` / `han.github` / `han` split as the worked example. The conceptual half: how the mechanism works and why Han is built this way.
 - **[Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md).** You are ready to stand up a new plugin that depends on `han.core`, add a skill that builds on it, and confirm a clean install pulls Han in alongside it. The hands-on half, with both the suite-internal and own-marketplace paths.
+
+### Authoring a skill or agent with the plugin builder
+
+- **[Create a new skill](./create-a-new-skill.md).** You want to build a new slash command and have it conform to the authoring rules without remembering them. Drives `/skill-builder` through the interview that walks the skill's design tree, then writes and reviews the files. Needs the opt-in `han.plugin-builder` plugin.
+- **[Create a new agent](./create-a-new-agent.md).** You want to build a new subagent (a judgment layer a skill dispatches) and have it conform to the domain-focus, model-selection, and self-containment rules. Drives `/agent-builder` through its design-tree interview, then writes and reviews the single self-contained file. Needs the opt-in `han.plugin-builder` plugin.
 
 ## Where to go next
 

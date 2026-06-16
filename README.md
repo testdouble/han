@@ -64,9 +64,6 @@ For the full picture and a quick "which one do you need?" guide, see [Choosing a
   `han.planning`, `han.coding`, `han.github`, and `han.reporting` dependencies on `han.core`, and a quick
   guide to which one to install.
 - [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
-- [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, triaging and
-  investigating a bug, and researching a decision. Pick one when you want the full walkthrough, not only
-  the path.
 - [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.
 - [Agents Index](./docs/agents/README.md). All agents, grouped by role.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming
@@ -75,14 +72,27 @@ For the full picture and a quick "which one do you need?" guide, see [Choosing a
   architecture skill applies.
 - [Evidence](./docs/evidence.md). What counts as evidence in Han, how to characterize how strong it is, and
   what to do when no evidence exists at all.
+- [Changelog](./CHANGELOG.md). What's new in each version of the plugin.
+
+### How-To Guides
+
+- [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, triaging and
+  investigating a bug, and researching a decision. Pick one when you want the full walkthrough, not only
+  the path.
 - [How to provide feedback on Han](./docs/how-to/provide-feedback.md). Send the maintainers structured
   feedback on a skill or agent run.
 - [Extend Han via dependencies](./docs/how-to/extend-han-with-plugin-dependencies.md). Add your own custom
   skills on top of Han.
 - [Build a plugin that depends on Han](./docs/how-to/build-a-plugin-that-depends-on-han.md). Ship a plugin
   that builds on Han's skills and agents.
+
+### Contributing to Han
+
 - [Contributing](./CONTRIBUTING.md). Adding or editing skills, agents, and documentation.
-- [Changelog](./CHANGELOG.md). What's new in each version of the plugin.
+- [Create a new skill](./docs/how-to/create-a-new-skill.md). Build a new slash command from scratch with
+  `/skill-builder`.
+- [Create a new agent](./docs/how-to/create-a-new-agent.md). Build a new subagent from scratch with
+  `/agent-builder`.
 
 ## Maintenance and Support
 

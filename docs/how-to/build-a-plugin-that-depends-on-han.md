@@ -116,7 +116,7 @@ Depend on `han` instead of `han.core` when your plugin needs the planning, codin
 - [Extend Han with Plugin Dependencies](./extend-han-with-plugin-dependencies.md) is the conceptual guide behind this one, if a step here assumed a mechanism you want spelled out.
 - [plugin.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md) is the field-level reference for the manifest you wrote in Step 1, including the [`dependencies`](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md#dependencies) field.
 - [marketplace.json reference](../../han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md) covers the marketplace entry from Step 3 and the `allowCrossMarketplaceDependenciesOn` setting from the variation.
-- The [skill-building guidance](../../han.plugin-builder/skills/guidance/references/skill-building-guidance/) and [agent-building guidance](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/) cover writing the skill or agent itself, which this guide assumes you can do.
+- [Create a new skill](./create-a-new-skill.md) and [Create a new agent](./create-a-new-agent.md) are the recipes for authoring the skill or agent itself with the plugin builder, the part Step 2 assumes you can do. The [skill-building guidance](../../han.plugin-builder/skills/guidance/references/skill-building-guidance/) and [agent-building guidance](../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/) are the rules behind those recipes, readable directly.
 
 ## Related Documentation
 

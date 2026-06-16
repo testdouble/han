@@ -2,7 +2,7 @@
 
 Operator documentation for the `/skill-builder` skill in the opt-in `han.plugin-builder` plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.plugin-builder/skills/skill-builder/SKILL.md`](../../../han.plugin-builder/skills/skill-builder/SKILL.md).
 
-> See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
+> See also: [Plugin landing page](../../../README.md) · [How to create a new skill](../../how-to/create-a-new-skill.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
 
 ## TL;DR
 
@@ -92,6 +92,7 @@ URL: https://www.anthropic.com/engineering/building-effective-agents
 ## Related documentation
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
+- [How to create a new skill](../../how-to/create-a-new-skill.md). The end-to-end recipe for driving this skill, with the prompts, the stages, and what to expect.
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule the skill applies to the artifact it builds.
 - [`/agent-builder`](./agent-builder.md). The sibling builder for agents; reach for it when the work is a judgment layer rather than a flowchartable process.
 - [`/guidance`](./guidance.md). Serves the same authoring guidance this skill applies, and its `init` vendors this skill (with `guidance` and `agent-builder`) into a repo; use it when you want the rules, not a finished skill.
