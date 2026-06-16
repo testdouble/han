@@ -17,7 +17,7 @@ Whether the protocol-overhead feedback in [issue #40](https://github.com/testdou
 
 ### E1: The spec template carries roughly nine sections, several already conditional
 
-- **Source:** `han.core/skills/plan-a-feature/references/feature-specification-template.md:101-232`
+- **Source:** `han-core/skills/plan-a-feature/references/feature-specification-template.md:101-232`
 - **Finding:**
   ```
   ## Outcome / ## Actors and Triggers / ## Primary Flow / ## Alternate Flows and States
@@ -28,19 +28,19 @@ Whether the protocol-overhead feedback in [issue #40](https://github.com/testdou
 
 ### E2: Sizing scales team size and round cap only, never template weight
 
-- **Source:** `docs/sizing.md:80-81`; `han.core/skills/plan-a-feature/SKILL.md:160-176`; `han.core/skills/plan-implementation/SKILL.md:88-96, 270-274`
+- **Source:** `docs/sizing.md:80-81`; `han-core/skills/plan-a-feature/SKILL.md:160-176`; `han-core/skills/plan-implementation/SKILL.md:88-96, 270-274`
 - **Finding:** A "small" classification reduces the review team (plan-a-feature cap 2, plan-implementation cap 3 and 1 round) and how aggressively findings are calibrated. The same full section list is enumerated for the produced document at all sizes (`plan-implementation/SKILL.md:273`). No "lightweight spec" mode or reduced-template output exists anywhere.
 - **Relevance:** This is the structural root of the headline complaint. Sizing is the existing dial Han offers, and it does not turn down document weight. Claim CONFIRMED.
 
 ### E3: plan-implementation renders several sections as empty stubs for small plans
 
-- **Source:** `han.core/skills/plan-implementation/references/feature-implementation-plan-template.md:83-173`
+- **Source:** `han-core/skills/plan-implementation/references/feature-implementation-plan-template.md:83-173`
 - **Finding:** `## RAID Log` (four tables) and `## Testing Strategy` have no conditional guard at all. `## Security Posture`, `## Operational Readiness`, and `## On-Call Resilience Posture` each carry an "If `{specialist}` contributed" guard on their *content* but keep their headers and sub-structure unconditionally. Only `## Deferred (YAGNI)` is truly lazy with an explicit "omit the section entirely" instruction (line ~166).
 - **Relevance:** A "small" plan (cap 3) usually does not dispatch the security, devops, or on-call specialists, yet all three sections still land as headers with stub content. This produces scaffolding for any small plan, **including a small software feature**, not only a documentation contribution. The template is internally inconsistent: it already has the lazy-creation pattern (`Deferred (YAGNI)`) but applies it to only one section. Claim CONFIRMED, and broader than the feedback framed it.
 
 ### E4: Both skills gate entry on software features, and every specialist is a software-system reviewer
 
-- **Source:** `han.core/skills/plan-a-feature/SKILL.md:3-13, 181-191`; `han.core/skills/plan-implementation/SKILL.md:3-26, 100-118`
+- **Source:** `han-core/skills/plan-a-feature/SKILL.md:3-13, 181-191`; `han-core/skills/plan-implementation/SKILL.md:3-26, 100-118`
 - **Finding:** plan-a-feature gates on "a new feature, capability, or system behavior before implementation" and produces a spec "focused on system behaviors, coordinations, processes, and user interactions." plan-implementation gates on "implement, build, deliver, or ship a feature." Both rosters are software-system specialists (user-experience-designer, adversarial-security-analyst, devops-engineer, on-call-engineer, structural/behavioral/concurrency analysts, software/system architects, data-engineer).
 - **Relevance:** Against a markdown file addition, those specialists have near-zero domain signal to return. The skills are scoped for software engineering by design. Confirms the operator's framing.
 
@@ -64,7 +64,7 @@ Whether the protocol-overhead feedback in [issue #40](https://github.com/testdou
 
 ### E8: han-feedback rating dimensions are underspecified at template time
 
-- **Source:** `han.feedback/skills/han-feedback/SKILL.md:82, 119-125`
+- **Source:** `han-feedback/skills/han-feedback/SKILL.md:82, 119-125`
 - **Finding:**
   ```
   **Rating:** Score across the dimensions used in the reference file from Step 5,
@@ -75,13 +75,13 @@ Whether the protocol-overhead feedback in [issue #40](https://github.com/testdou
 
 ### E9: Numbering namespaces are independent across files with no synchronization
 
-- **Source:** `han.core/skills/plan-a-feature/SKILL.md:61-62`; `han.core/skills/plan-implementation/SKILL.md:44-45`
+- **Source:** `han-core/skills/plan-a-feature/SKILL.md:61-62`; `han-core/skills/plan-implementation/SKILL.md:44-45`
 - **Finding:** The spec uses `D#` / `F#` / `T#`; the implementation plan uses a separate `D-N`; work items add a third sequence downstream. Nothing binds these counters, and inserting an item in one file does not propagate to the others. The skills rely on manual cross-reference maintenance.
 - **Relevance:** The step-numbering drift the feedback reports is structurally present, and it is general to the plan chain rather than specific to documentation. Claim PARTIALLY CONFIRMED.
 
 ### E10: plan-a-feature Step 2 discovery omits CONTRIBUTING.md and writes no shared notes file
 
-- **Source:** `han.core/skills/plan-a-feature/SKILL.md:63-75`; `han.core/skills/plan-implementation/SKILL.md:84-86, 143`
+- **Source:** `han-core/skills/plan-a-feature/SKILL.md:63-75`; `han-core/skills/plan-implementation/SKILL.md:84-86, 143`
 - **Finding:** plan-a-feature Step 2 reads `CLAUDE.md`, `AGENTS.md`, `project-discovery.md`, ADRs, coding standards, existing specs, and adjacent code, but not `CONTRIBUTING.md`. plan-implementation Step 2 writes a documented `.discovery-notes.md` single-source-of-truth file that every specialist reads first; plan-a-feature has no equivalent shared file and records findings in-context only.
 - **Relevance:** The praised `.discovery-notes.md` mechanism is real and standardized in plan-implementation, not ad hoc. The pre-flight gap the feedback describes is masked in the Han repo because `CLAUDE.md` is unusually complete, but the general pattern (Step 2 not reading `CONTRIBUTING.md`) holds for any project that keeps conventions there.
 
@@ -109,7 +109,7 @@ The smaller points split cleanly. The rating-dimension ambiguity (E8) is a real,
 
 | Convention | Source | Applies To |
 |---|---|---|
-| YAGNI two-gate rule (evidence test, then simpler-version test) | `docs/yagni.md`; `han.core/references/yagni-rule.md` | Every recommendation below, especially the decline of a new mode (Gate 2) and the lazy-section change (consistency with the existing `Deferred (YAGNI)` pattern) |
+| YAGNI two-gate rule (evidence test, then simpler-version test) | `docs/yagni.md`; `han-core/references/yagni-rule.md` | Every recommendation below, especially the decline of a new mode (Gate 2) and the lazy-section change (consistency with the existing `Deferred (YAGNI)` pattern) |
 | Sizing scales review depth, not artifact content | `docs/sizing.md` | Confirms template weight is not currently a sizing dial; R1 is the change that would make small plans proportionate |
 | Skill scoping via "do not invoke for" lists | `docs/skills/plan-a-feature.md`, `docs/skills/plan-implementation.md` | R3 (narrowly-scoped exclusion entry) |
 | Contribution workflow is a manual checklist | `CONTRIBUTING.md:41-51` | The simpler version that satisfies the headline use case |
@@ -123,14 +123,14 @@ Bucketed by the software-engineering gate. "One sentence summary" first, then th
 
 #### R1 (strongest): make plan-implementation's operational sections lazily created, matching the `Deferred (YAGNI)` pattern
 
-- **Change:** In `han.core/skills/plan-implementation/references/feature-implementation-plan-template.md`, give `## Security Posture`, `## Operational Readiness`, `## On-Call Resilience Posture`, and the `## RAID Log` sub-tables the same explicit "write this section only if there is content; otherwise omit it entirely" instruction that `## Deferred (YAGNI)` already carries. Update the `plan-implementation/SKILL.md:270-274` enumeration to mark them lazy alongside `Deferred (YAGNI)`.
+- **Change:** In `han-core/skills/plan-implementation/references/feature-implementation-plan-template.md`, give `## Security Posture`, `## Operational Readiness`, `## On-Call Resilience Posture`, and the `## RAID Log` sub-tables the same explicit "write this section only if there is content; otherwise omit it entirely" instruction that `## Deferred (YAGNI)` already carries. Update the `plan-implementation/SKILL.md:270-274` enumeration to mark them lazy alongside `Deferred (YAGNI)`.
 - **Evidence:** E2, E3. Sizing already classifies a plan as small but never reduces its document; the template already contains the lazy pattern for one section.
 - **Why it passes the gate:** This fixes a small *software* feature plan, not only a documentation one. It is squarely in scope, internally consistent with the template, and aligned with the plan-implementation operating principle that operational machinery shipped before it is needed is YAGNI.
 - **YAGNI:** Gate 1 satisfied (two documented runs plus the general small-feature case); Gate 2 satisfied (omit-when-empty is simpler than a new mode and reuses an existing mechanism).
 
 #### R2: name default rating dimensions in han-feedback
 
-- **Change:** In `han.feedback/skills/han-feedback/SKILL.md`, replace "adjust dimensions to fit the skill type" with a named default dimension set (for example: accuracy of output, evidence discipline, signal-to-noise of findings, output length versus decision count, round/turn efficiency), keeping the "adjust when a reference file exists" fallback.
+- **Change:** In `han-feedback/skills/han-feedback/SKILL.md`, replace "adjust dimensions to fit the skill type" with a named default dimension set (for example: accuracy of output, evidence discipline, signal-to-noise of findings, output length versus decision count, round/turn efficiency), keeping the "adjust when a reference file exists" fallback.
 - **Evidence:** E8.
 - **Why it passes the gate:** Scope-independent; the ambiguity arises for software-feedback sessions too. Cheap (one section of one file).
 
@@ -201,7 +201,7 @@ Validation was performed by the `adversarial-validator` agent against the draft 
 #### V5: Does collapsing small-plan sections violate a stated design principle?
 
 - **Hypothesis:** An ADR or guidance doc might mandate always-present sections as discipline.
-- **Investigation:** Searched `han.plugin-builder/skills/guidance/references/`, `docs/sizing.md`, and plan-implementation operating principles.
+- **Investigation:** Searched `han-plugin-builder/skills/guidance/references/`, `docs/sizing.md`, and plan-implementation operating principles.
 - **Result:** Confirmed no blocking document exists; the YAGNI operating principle actively supports treating operational sections as conditional machinery.
 - **Impact:** R1 survives; no design principle blocks it.
 

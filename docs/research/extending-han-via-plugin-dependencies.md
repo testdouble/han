@@ -1,12 +1,12 @@
 # Research: Extending Han via Claude plugin dependencies — how the mechanism works, how Han already uses it, and how to structure the how-to
 
-This report researches GitHub issue #31: how Claude Code plugin dependencies work, how Han already uses them (with `han.github` depending on `han.core` as the in-repo worked example), and how a new "how to extend Han via plugin dependencies" document should be structured and placed. It is the source material for writing that document; it does not write the document itself.
+This report researches GitHub issue #31: how Claude Code plugin dependencies work, how Han already uses them (with `han-github` depending on `han-core` as the in-repo worked example), and how a new "how to extend Han via plugin dependencies" document should be structured and placed. It is the source material for writing that document; it does not write the document itself.
 
 Evidence mode: **strict** (every claim that bears on the conclusion carries a checkable source; uncorroborated claims are labeled inline).
 
 ## Summary
 
-Claude Code lets one plugin build on another by listing it in a `dependencies` field in the plugin's configuration. When someone installs the dependent plugin, Claude Code automatically installs and turns on the plugins it depends on, and it will not let you turn off a plugin while something still needs it. Han already works exactly this way: the `han.github` plugin depends on `han.core`, and a small top-level `han` plugin depends on both so that installing it pulls in the whole suite. That makes Han its own working example, so the document this research backs is not speculative.
+Claude Code lets one plugin build on another by listing it in a `dependencies` field in the plugin's configuration. When someone installs the dependent plugin, Claude Code automatically installs and turns on the plugins it depends on, and it will not let you turn off a plugin while something still needs it. Han already works exactly this way: the `han-github` plugin depends on `han-core`, and a small top-level `han` plugin depends on both so that installing it pulls in the whole suite. That makes Han its own working example, so the document this research backs is not speculative.
 
 The clearest way to write the new document is as a task-focused how-to: a goal, what you need first, the steps, and a copy-and-paste example built from Han's own three plugins, plus a short, bounded "why it's built this way" section. It should point readers to the existing configuration reference rather than repeating it. The strongest evidence points to placing the new document next to Han's existing plugin-configuration reference and expanding that reference's thin dependency section at the same time, rather than starting a separate file elsewhere.
 
@@ -28,12 +28,12 @@ The resolution, enable/disable, pruning, and error-code details above rest on th
 
 Han is a live, shipped example of dependency-driven composition (A16–A20):
 
-- `han.core` v1.0.0 is the base layer and declares no dependencies (A18).
-- `han.github` v1.0.0 declares `dependencies: ["han.core"]` and ships the GitHub-facing skills (`gh-pr-review`, `update-pr-description`, `work-items-to-issues`) that build on core skills — for example, `gh-pr-review` runs core's `/code-review` and then posts the result to GitHub (A17, A20).
-- `han` v3.0.0 is a meta-plugin with no components of its own; it declares `dependencies: ["han.core", "han.github"]` so installing it pulls in the whole suite (A16).
+- `han-core` v1.0.0 is the base layer and declares no dependencies (A18).
+- `han-github` v1.0.0 declares `dependencies: ["han-core"]` and ships the GitHub-facing skills (`gh-pr-review`, `update-pr-description`, `work-items-to-issues`) that build on core skills — for example, `gh-pr-review` runs core's `/code-review` and then posts the result to GitHub (A17, A20).
+- `han` v3.0.0 is a meta-plugin with no components of its own; it declares `dependencies: ["han-core", "han-github"]` so installing it pulls in the whole suite (A16).
 - All three are listed in a single `marketplace.json` with relative `source` paths, and the marketplace text names `han` as a meta-plugin (A19).
 
-The dependency topology is acyclic: `han` → `{han.core, han.github}`, `han.github` → `han.core`, `han.core` → nothing. This is the worked example issue #31 asks the new document to teach.
+The dependency topology is acyclic: `han` → `{han-core, han-github}`, `han-github` → `han-core`, `han-core` → nothing. This is the worked example issue #31 asks the new document to teach.
 
 ### What the documentation-design evidence says
 
@@ -43,7 +43,7 @@ On whether to split into multiple documents: Diátaxis permits section-level sep
 
 ### Where this could live in Han, and the constraints
 
-Han's documentation has clearly scoped homes (A21–A27). `docs/how-to/` currently holds **end-user** multi-skill workflow recipes (A21). `han.plugin-builder/skills/guidance/references/` holds **contributor** authoring guidance (A22), and `CLAUDE.md` reserves it for authoring guidance, explicitly barring plans and research from it (A25). A field-level reference for the `dependencies` field already exists at `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, but it is thin — a syntax block only, with none of the resolution semantics from A1 (A23). `docs/choosing-a-han-plugin.md` already covers the install-time, end-user view of the three-plugin split, so the new document must not duplicate it (A24). `CONTRIBUTING.md` is the entry point for people working *inside* Han's own plugins, not for separate plugins that depend on Han (A27). `CLAUDE.md` enforces "one canonical source per concept" and a YAGNI-for-docs rule, and adding any document means updating the `CLAUDE.md` doc map (A25). There is no `README` index inside `han.plugin-builder/skills/guidance/references/`; `CLAUDE.md` is that index [validation correction, see V8].
+Han's documentation has clearly scoped homes (A21–A27). `docs/how-to/` currently holds **end-user** multi-skill workflow recipes (A21). `han-plugin-builder/skills/guidance/references/` holds **contributor** authoring guidance (A22), and `CLAUDE.md` reserves it for authoring guidance, explicitly barring plans and research from it (A25). A field-level reference for the `dependencies` field already exists at `han-plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, but it is thin — a syntax block only, with none of the resolution semantics from A1 (A23). `docs/choosing-a-han-plugin.md` already covers the install-time, end-user view of the three-plugin split, so the new document must not duplicate it (A24). `CONTRIBUTING.md` is the entry point for people working *inside* Han's own plugins, not for separate plugins that depend on Han (A27). `CLAUDE.md` enforces "one canonical source per concept" and a YAGNI-for-docs rule, and adding any document means updating the `CLAUDE.md` doc map (A25). There is no `README` index inside `han-plugin-builder/skills/guidance/references/`; `CLAUDE.md` is that index [validation correction, see V8].
 
 ## Options to Consider
 
@@ -72,7 +72,7 @@ These options concern how to structure and place the new document. They are not 
 
 ### O4: Co-locate with the existing config reference, and expand that reference
 
-- **What it is:** Place the new document inside `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/` next to `plugin-json-options.md`, and at the same time expand that file's thin `dependencies` section so the "link to reference" actually answers the reader's question.
+- **What it is:** Place the new document inside `han-plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/` next to `plugin-json-options.md`, and at the same time expand that file's thin `dependencies` section so the "link to reference" actually answers the reader's question.
 - **Trade-offs:** Lowest blast radius once you accept that the reference needs extending anyway (V4): the how-to sits beside the reference it depends on, reachable by a "see also" link, and the directory's concern (plugin configuration) stays coherent. The cost is that this subdirectory currently holds only schema-reference files, so the new document slightly broadens its character — but no rule restricts it to schema-only (V6).
 - **Rests on:** A11, A23, A25; validation findings V4, V6.
 - **Evidence status:** corroborated.
@@ -86,10 +86,10 @@ These options concern how to structure and place the new document. They are not 
 
 ## Recommendation
 
-- **Recommendation:** Write **one** task-focused document structured per **O3** (steps plus a short, bounded "how it works / why" section plus a copy-paste worked example), placed and scoped per **O4** (co-located with `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, with that file's `dependencies` section expanded in the same change). Build the worked example directly from Han's three plugins — `han.core` (no dependencies), `han.github` depending on `han.core`, and the `han` meta-plugin depending on both (A16–A20). Link to the canonical Claude plugin-dependencies documentation (A1) for the resolution and enable/disable semantics, and to the now-expanded in-repo reference (A23) for the field syntax — do not reproduce either table inline (A11). Frame the audience as **someone authoring a new plugin that depends on `han.core`, the way `han.github` does** — that is the proven, in-repo case. Treat outside third-party plugin authors as out of scope until there is evidence of that demand (see V2). Update the `CLAUDE.md` doc map with a use-case entry and a listing for the new file (there is no separate guidance index to update — `CLAUDE.md` is the index; see V8). Done criterion: a reader can stand up a new plugin that depends on `han.core`, add a skill, and confirm both load. Start here; escalate toward **O2** (split out a standalone explanation) only if the concept section later outgrows the task steps.
+- **Recommendation:** Write **one** task-focused document structured per **O3** (steps plus a short, bounded "how it works / why" section plus a copy-paste worked example), placed and scoped per **O4** (co-located with `han-plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md`, with that file's `dependencies` section expanded in the same change). Build the worked example directly from Han's three plugins — `han-core` (no dependencies), `han-github` depending on `han-core`, and the `han` meta-plugin depending on both (A16–A20). Link to the canonical Claude plugin-dependencies documentation (A1) for the resolution and enable/disable semantics, and to the now-expanded in-repo reference (A23) for the field syntax — do not reproduce either table inline (A11). Frame the audience as **someone authoring a new plugin that depends on `han-core`, the way `han-github` does** — that is the proven, in-repo case. Treat outside third-party plugin authors as out of scope until there is evidence of that demand (see V2). Update the `CLAUDE.md` doc map with a use-case entry and a listing for the new file (there is no separate guidance index to update — `CLAUDE.md` is the index; see V8). Done criterion: a reader can stand up a new plugin that depends on `han-core`, add a skill, and confirm both load. Start here; escalate toward **O2** (split out a standalone explanation) only if the concept section later outgrows the task steps.
 
 - **Evidence basis:**
-  - *Corroborated (codebase, directly observed):* Han's dependency topology and the worked example — `han.core` has no dependencies, `han.github` depends on `han.core`, `han` depends on both, all shipped through one marketplace (A16–A20). The existing-but-thin reference and the doc-home scoping/constraints (A21–A27).
+  - *Corroborated (codebase, directly observed):* Han's dependency topology and the worked example — `han-core` has no dependencies, `han-github` depends on `han-core`, `han` depends on both, all shipped through one marketplace (A16–A20). The existing-but-thin reference and the doc-home scoping/constraints (A21–A27).
   - *Corroborated (web, multi-source):* the documentation-structure guidance — separate how-to from explanation, link rather than embed reference, section-level separation as a valid first step, signposted sections for mixed audiences (A4–A14).
   - *Canonical web, single trust-class:* the dependency **resolution, enable/disable, prune, and error semantics** rest on the canonical Claude docs (A1–A3) and are **not** corroborated by any codebase artifact (A23 documents only syntax). The new document should attribute these to the canonical docs and link out, rather than present them as settled in-repo fact (see V1).
   - *Single-source / inference:* the zero-component "meta-plugin" pattern is named nowhere in the canonical docs; it is inferred from install semantics and evidenced in practice only by Han's own `han` plugin (A16, A19). The document should present it as observed practice and link to the canonical docs for current install behavior (see V5).
@@ -110,14 +110,14 @@ The `adversarial-validator` attacked the evidence, the options framing, the reco
 
 - **Strategy:** Challenge the Assumptions
 - **Investigation:** Searched operational docs for any third-party/external-plugin audience; read `CONTRIBUTING.md`.
-- **Result:** Refuted (as originally framed). No evidence of any external plugin depending on `han.core`, and Han's YAGNI-for-docs rule (A25) bars speculative content. The demonstrated case is a *suite-internal* dependent plugin (`han.github`), not an outside third party.
+- **Result:** Refuted (as originally framed). No evidence of any external plugin depending on `han-core`, and Han's YAGNI-for-docs rule (A25) bars speculative content. The demonstrated case is a *suite-internal* dependent plugin (`han-github`), not an outside third party.
 - **Impact:** The recommendation reframes the audience to the proven internal-author case and explicitly scopes out external third parties pending evidence. This is the open question flagged for the maintainers.
 
-### V3: `han.plugin-builder/skills/guidance/references/` placement risks colliding with its stated purpose
+### V3: `han-plugin-builder/skills/guidance/references/` placement risks colliding with its stated purpose
 
 - **Strategy:** Challenge the Fix
 - **Investigation:** Read `CLAUDE.md:138-143` (guidance reserved for authoring guidance; plans/research barred) and the directory contents.
-- **Result:** Partially Refuted. A how-to-shaped usage doc is not obviously "authoring guidance," so a bare top-level `han.plugin-builder/skills/guidance/references/` placement was weakly justified.
+- **Result:** Partially Refuted. A how-to-shaped usage doc is not obviously "authoring guidance," so a bare top-level `han-plugin-builder/skills/guidance/references/` placement was weakly justified.
 - **Impact:** Placement moved to the configuration-reference subdirectory (O4), where a usage companion to the reference is coherent, instead of a top-level guidance file.
 
 ### V4: Linking to the existing reference is a dead end
@@ -151,13 +151,13 @@ The `adversarial-validator` attacked the evidence, the options framing, the reco
 ### V8: The "guidance index" does not exist; the `CLAUDE.md` update is wider than stated
 
 - **Strategy:** Challenge the Fix
-- **Investigation:** Confirmed there is no `README` in `han.plugin-builder/skills/guidance/references/`; `CLAUDE.md` is the index, and its "When to use which doc" section has no row for this use case.
+- **Investigation:** Confirmed there is no `README` in `han-plugin-builder/skills/guidance/references/`; `CLAUDE.md` is the index, and its "When to use which doc" section has no row for this use case.
 - **Result:** Refuted (as framed). There is no separate guidance index to update.
 - **Impact:** The recommendation now specifies updating `CLAUDE.md` (both a new use-case entry and the guidance listing) and drops the nonexistent "guidance index."
 
 ### Adjustments Made
 
-The original draft recommended a single top-level `han.plugin-builder/skills/guidance/references/` how-to for an audience that included external third parties, linking to the existing reference for the "why." Validation refuted the speculative-audience framing (V2), the link-to-an-incomplete-reference instruction (V4), and the nonexistent-index instruction (V8), and showed the dismissed co-location option (O4) was actually the lowest-blast-radius placement (V6). The recommendation was rewritten to: scope the audience to the proven suite-internal author, place the document beside the configuration reference and expand that reference in the same change (O4), attribute resolution semantics to the canonical docs rather than the thin in-repo reference (V1, V5), and correct the `CLAUDE.md` update scope (V8). The dev.to source was removed (V7). The core direction — a how-to built on Han's own worked example, structured per Diátaxis, linking rather than embedding — survived.
+The original draft recommended a single top-level `han-plugin-builder/skills/guidance/references/` how-to for an audience that included external third parties, linking to the existing reference for the "why." Validation refuted the speculative-audience framing (V2), the link-to-an-incomplete-reference instruction (V4), and the nonexistent-index instruction (V8), and showed the dismissed co-location option (O4) was actually the lowest-blast-radius placement (V6). The recommendation was rewritten to: scope the audience to the proven suite-internal author, place the document beside the configuration reference and expand that reference in the same change (O4), attribute resolution semantics to the canonical docs rather than the thin in-repo reference (V1, V5), and correct the `CLAUDE.md` update scope (V8). The dev.to source was removed (V7). The core direction — a how-to built on Han's own worked example, structured per Diátaxis, linking rather than embedding — survived.
 
 ### Confidence Assessment
 
@@ -287,23 +287,23 @@ The original draft recommended a single top-level `han.plugin-builder/skills/gui
 - **Link / location:** `han/.claude-plugin/plugin.json`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** `han` v3.0.0, `dependencies: ["han.core", "han.github"]`, no components of its own — the meta-plugin that installs the whole suite.
+- **Summary:** `han` v3.0.0, `dependencies: ["han-core", "han-github"]`, no components of its own — the meta-plugin that installs the whole suite.
 - **Evidence status:** corroborated by A19; directly observed.
 
 ### A17: Han.github manifest
 
-- **Link / location:** `han.github/.claude-plugin/plugin.json`
+- **Link / location:** `han-github/.claude-plugin/plugin.json`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** `han.github` v1.0.0, `dependencies: ["han.core"]`; ships `gh-pr-review`, `update-pr-description`, `work-items-to-issues`.
+- **Summary:** `han-github` v1.0.0, `dependencies: ["han-core"]`; ships `gh-pr-review`, `update-pr-description`, `work-items-to-issues`.
 - **Evidence status:** corroborated by A19, A20; directly observed.
 
 ### A18: Han.core manifest
 
-- **Link / location:** `han.core/.claude-plugin/plugin.json`
+- **Link / location:** `han-core/.claude-plugin/plugin.json`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** `han.core` v1.0.0 with no `dependencies` field — the base layer of the topology.
+- **Summary:** `han-core` v1.0.0 with no `dependencies` field — the base layer of the topology.
 - **Evidence status:** corroborated by A19; directly observed.
 
 ### A19: Marketplace manifest
@@ -311,12 +311,12 @@ The original draft recommended a single top-level `han.plugin-builder/skills/gui
 - **Link / location:** `.claude-plugin/marketplace.json`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** Lists all three plugins with relative `source` paths (`./han`, `./han.core`, `./han.github`) and describes `han` as a meta-plugin that pulls in both others.
+- **Summary:** Lists all three plugins with relative `source` paths (`./han`, `./han-core`, `./han-github`) and describes `han` as a meta-plugin that pulls in both others.
 - **Evidence status:** corroborated by A16–A18; directly observed.
 
 ### A20: Han.github skills
 
-- **Link / location:** `han.github/skills/` (`gh-pr-review`, `update-pr-description`, `work-items-to-issues`)
+- **Link / location:** `han-github/skills/` (`gh-pr-review`, `update-pr-description`, `work-items-to-issues`)
 - **Retrieved:** n/a
 - **Trust class:** codebase
 - **Summary:** Concrete extension behavior — e.g., `gh-pr-review` runs core's `/code-review`, then posts the result to GitHub, showing a GitHub layer building on core skills.
@@ -332,7 +332,7 @@ The original draft recommended a single top-level `han.plugin-builder/skills/gui
 
 ### A22: Guidance directory contents
 
-- **Link / location:** `han.plugin-builder/skills/guidance/references/`
+- **Link / location:** `han-plugin-builder/skills/guidance/references/`
 - **Retrieved:** n/a
 - **Trust class:** codebase
 - **Summary:** Contributor authoring guidance: `plugin-entity-taxonomy.md`, `iterative-plugin-development.md`, `local-development.md`, `semantic-versioning.md`, `skill-building-guidance/`, `agent-building-guidelines/`, and the configuration-reference subdir.
@@ -340,7 +340,7 @@ The original draft recommended a single top-level `han.plugin-builder/skills/gui
 
 ### A23: Plugin configuration reference (dependencies field)
 
-- **Link / location:** `han.plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md` (lines ~68-77)
+- **Link / location:** `han-plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md` (lines ~68-77)
 - **Retrieved:** n/a
 - **Trust class:** codebase
 - **Summary:** Documents that `dependencies` exists and its syntax (bare name or `{name, version}`), but contains none of the resolution, enable/disable, prune, or error semantics from A1 — a syntax block only.
@@ -351,7 +351,7 @@ The original draft recommended a single top-level `han.plugin-builder/skills/gui
 - **Link / location:** `docs/choosing-a-han-plugin.md`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** End-user install guidance for the three-plugin split (which to install; `han.github` pulls `han.core`). Covers the installer's view, not the author's view.
+- **Summary:** End-user install guidance for the three-plugin split (which to install; `han-github` pulls `han-core`). Covers the installer's view, not the author's view.
 - **Evidence status:** directly observed; bounds what the new doc must not duplicate.
 
 ### A25: Project map and conventions
@@ -359,7 +359,7 @@ The original draft recommended a single top-level `han.plugin-builder/skills/gui
 - **Link / location:** `CLAUDE.md`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** "When to use which doc" map; doc-home folder-selection rule; "one canonical source per concept"; YAGNI-for-docs; `han.plugin-builder/skills/guidance/references/` reserved for authoring guidance (plans/research barred). Adding a doc requires updating this map.
+- **Summary:** "When to use which doc" map; doc-home folder-selection rule; "one canonical source per concept"; YAGNI-for-docs; `han-plugin-builder/skills/guidance/references/` reserved for authoring guidance (plans/research barred). Adding a doc requires updating this map.
 - **Evidence status:** directly observed.
 
 ### A26: Prior research — how-to docs structure
@@ -375,5 +375,5 @@ The original draft recommended a single top-level `han.plugin-builder/skills/gui
 - **Link / location:** `CONTRIBUTING.md`
 - **Retrieved:** n/a
 - **Trust class:** codebase
-- **Summary:** Entry point for contributors working inside Han's own plugins (adding skills/agents to `han.core` or `han.github`); does not address separate plugins that depend on Han.
+- **Summary:** Entry point for contributors working inside Han's own plugins (adding skills/agents to `han-core` or `han-github`); does not address separate plugins that depend on Han.
 - **Evidence status:** directly observed; relevant to the audience question in V2.

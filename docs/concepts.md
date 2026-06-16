@@ -24,7 +24,7 @@ A skill is a fixed sequence of steps that Claude Code runs. Typing the slash com
 - You invoke it: `/code-review`, `/plan-a-feature`, `/investigate`. This is the deliberate, primary path.
 - Claude may also auto-invoke it. Skill descriptions are written to match user intent, so a request like "can you make sure this code is solid?" can route into `/code-review` without you typing the command. This is on by default (the frontmatter field `disable-model-invocation` defaults to `false`); no Han skill turns it off. Either way the skill runs the same protocol.
 - It follows a defined protocol. Every reader who runs the same skill gets the same shape of output.
-- It is documented by a `SKILL.md` file inside `han.core/skills/{name}/` (or `han.planning/skills/{name}/`, `han.coding/skills/{name}/`, `han.github/skills/{name}/`, and the other plugins' `skills/{name}/` directories).
+- It is documented by a `SKILL.md` file inside `han-core/skills/{name}/` (or `han-planning/skills/{name}/`, `han-coding/skills/{name}/`, `han-github/skills/{name}/`, and the other plugins' `skills/{name}/` directories).
 - It may dispatch one or more agents for the steps that need judgment.
 
 **The test:** could you draw the whole thing as a flowchart? If yes, it is a skill.
@@ -35,7 +35,7 @@ An agent is a specialist teammate. A model with a persona, a narrow domain, and 
 
 - An agent has a name like `adversarial-security-analyst`, `project-manager`, or `junior-developer`.
 - An agent applies contextual judgment. *Is this finding really a problem? Does the plan address the risk? Should we ask another specialist?*
-- An agent is documented by a single `.md` file inside `han.core/agents/`.
+- An agent is documented by a single `.md` file inside `han-core/agents/`.
 - You can dispatch an agent directly with the `Agent` tool, but most agents get dispatched *for you* when a skill needs their input.
 
 **The test:** does this require reasoning about context rather than following a script? If yes, it is an agent.
@@ -70,7 +70,7 @@ Every skill that dispatches an agent swarm classifies the work as **small**, **m
 
 - **Default is small.** Every sizing-aware skill starts the classification at small and only escalates when concrete signals require it.
 - **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
-- **Sizing-aware skills.** [`/architectural-analysis`](./skills/han.coding/architectural-analysis.md), [`/code-review`](./skills/han.coding/code-review.md), [`/gap-analysis`](./skills/han.core/gap-analysis.md), [`/iterative-plan-review`](./skills/han.planning/iterative-plan-review.md), [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md), [`/plan-implementation`](./skills/han.planning/plan-implementation.md), [`/research`](./skills/han.core/research.md).
+- **Sizing-aware skills.** [`/architectural-analysis`](./skills/han-coding/architectural-analysis.md), [`/code-review`](./skills/han-coding/code-review.md), [`/gap-analysis`](./skills/han-core/gap-analysis.md), [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md), [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md), [`/plan-implementation`](./skills/han-planning/plan-implementation.md), [`/research`](./skills/han-core/research.md).
 
 Read the full [Sizing](./sizing.md) reference for the bands, the auto-classification process, and the per-skill rules.
 
@@ -84,7 +84,7 @@ Read the full [YAGNI](./yagni.md) reference for the gates, the acceptable-eviden
 
 ## Evidence: the confidence layer
 
-Once YAGNI has gated inclusion, the evidence rule characterizes the quality of the evidence each surviving item rests on. Three principles ground the rule: evidence closer to the originating event or data carries more weight than evidence at greater remove (proximity, applied as a heuristic, not a ranked ladder); two independent sources beat one source (corroboration, scoped to web sources); the absence of evidence is its own state with a name and a response (no-evidence labeling). The vocabulary of trust classes (codebase, web, provided) and the corroboration gate originated in [`/research`](./skills/han.core/research.md) and are now extracted into a canonical rule that every evidence-aware skill and agent reads at runtime.
+Once YAGNI has gated inclusion, the evidence rule characterizes the quality of the evidence each surviving item rests on. Three principles ground the rule: evidence closer to the originating event or data carries more weight than evidence at greater remove (proximity, applied as a heuristic, not a ranked ladder); two independent sources beat one source (corroboration, scoped to web sources); the absence of evidence is its own state with a name and a response (no-evidence labeling). The vocabulary of trust classes (codebase, web, provided) and the corroboration gate originated in [`/research`](./skills/han-core/research.md) and are now extracted into a canonical rule that every evidence-aware skill and agent reads at runtime.
 
 Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`), the planning and review skills (`/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`), the conventions skills (`/coding-standard`, `/architectural-decision-record`), the operational skills (`/runbook`), and to the agents that review artifacts (`project-manager`, `junior-developer`, `evidence-based-investigator`, `gap-analyzer`).
 
@@ -100,11 +100,11 @@ You might invoke an agent directly when:
 - You want a second opinion after a skill has run. Dispatch `adversarial-validator` against the plan a planning skill produced.
 - You are composing a custom workflow that does not match any slash command cleanly.
 
-Direct invocation uses the `Agent` tool with `subagent_type: han.core:{agent-name}` (for example, `han.core:adversarial-security-analyst`).
+Direct invocation uses the `Agent` tool with `subagent_type: han-core:{agent-name}` (for example, `han-core:adversarial-security-analyst`).
 
 ## How Han is packaged
 
-Han ships as a family of plugins in one marketplace. `han.core` carries the research, analysis, documentation, and operations skills and every agent. `han.planning` adds the planning skills you reach for before implementation (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`), `han.coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`, `/code-review`, `/architectural-analysis`, `/test-planning`, `/investigate`, and `/coding-standard`), `han.github` adds the GitHub skills, and `han.reporting` adds the reporting skills; each depends on `han.core`, so installing any of them brings the core along. `han` is a meta-plugin with no components of its own that depends on `han.core`, `han.planning`, `han.coding`, `han.github`, and `han.reporting`, so installing it pulls in the bundled suite. The remaining plugins are opt-in: `han.feedback` adds the post-session feedback skill, `han.atlassian` adds the Confluence and Jira skills (and needs a configured Atlassian MCP server), and `han.linear` adds the work-items-to-Linear skill (and needs a configured Linear MCP server). Each depends on `han.core` like the other layers, but the `han` meta-plugin does not pull it in, so you install it on its own. `han.plugin-builder` carries the guidance for building skills, agents, and plugins, plus the interview-driven `/skill-builder` and `/agent-builder` skills; it depends on nothing and is also opt-in. The practical choice is core only, the bundled suite, or the suite plus whichever opt-in plugins you want. There is no planning-only, coding-only, GitHub-only, or reporting-only install.
+Han ships as a family of plugins in one marketplace. `han-core` carries the research, analysis, documentation, and operations skills and every agent. `han-planning` adds the planning skills you reach for before implementation (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`), `han-coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`, `/code-review`, `/architectural-analysis`, `/test-planning`, `/investigate`, and `/coding-standard`), `han-github` adds the GitHub skills, and `han-reporting` adds the reporting skills; each depends on `han-core`, so installing any of them brings the core along. `han` is a meta-plugin with no components of its own that depends on `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`, so installing it pulls in the bundled suite. The remaining plugins are opt-in: `han-feedback` adds the post-session feedback skill, `han-atlassian` adds the Confluence and Jira skills (and needs a configured Atlassian MCP server), and `han-linear` adds the work-items-to-Linear skill (and needs a configured Linear MCP server). Each depends on `han-core` like the other layers, but the `han` meta-plugin does not pull it in, so you install it on its own. `han-plugin-builder` carries the guidance for building skills, agents, and plugins, plus the interview-driven `/skill-builder` and `/agent-builder` skills; it depends on nothing and is also opt-in. The practical choice is core only, the bundled suite, or the suite plus whichever opt-in plugins you want. There is no planning-only, coding-only, GitHub-only, or reporting-only install.
 
 For which one to install and the dependency that surprises people, read [Choosing a Han plugin](./choosing-a-han-plugin.md).
 
@@ -127,6 +127,6 @@ Skim the indexes after you read this page. Pick the one skill you need right now
 
 ## Related reading
 
-- [`han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`](../han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md). The taxonomy this plugin follows. Applies across all plugins in this repo.
+- [`han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`](../han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md). The taxonomy this plugin follows. Applies across all plugins in this repo.
 - [Claude Code Skills reference](https://code.claude.com/docs/en/skills). How skills are defined and invoked in Claude Code itself.
 - [Claude Code Subagents reference](https://code.claude.com/docs/en/sub-agents). How agents are dispatched from inside skills.

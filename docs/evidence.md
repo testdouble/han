@@ -13,7 +13,7 @@ This page supplements [YAGNI](./yagni.md). YAGNI's evidence test answers *is the
 - **Proximity is a heuristic, not a ranked ladder.** Running code beats documentation in many situations, but not all. Formal-methods contexts, specification-compliance contexts, and regulatory contexts invert the ordering. The rule names the principle and walks you through the inversions. It does not hand you a numbered list to apply blindly.
 - **The corroboration gate is scoped to web sources.** A single web claim that drives a recommendation gets marked single-source and cannot stand alone. Codebase evidence at a specific file path and line is not weakened by being a single citation. That asymmetry is intentional and matches how `/research` already behaves.
 - **No evidence is a state with a name and a response.** When a claim has no evidence at any tier, the response is to label it, defer the dependent decision, and name the trigger that would reopen it. The same defer-with-trigger pattern YAGNI uses.
-- **The canonical rule lives in [`han.core/references/evidence-rule.md`](../han.core/references/evidence-rule.md).** Every skill and agent that loads the rule at runtime reads that file. This page is the operator-facing summary.
+- **The canonical rule lives in [`han-core/references/evidence-rule.md`](../han-core/references/evidence-rule.md).** Every skill and agent that loads the rule at runtime reads that file. This page is the operator-facing summary.
 
 ## Why evidence-based matters
 
@@ -66,7 +66,7 @@ The corroboration gate and the proximity heuristic both rest on a vocabulary tha
 - **Web** sits outside the trust boundary. Documentation pages, blog posts, Stack Overflow, GitHub issues, RFCs, vendor whitepapers, LLM-generated content. Web sources can be wrong, stale, adversarially shaped, or contextually misapplied. The corroboration gate applies here.
 - **Provided** is operator-supplied material. Files you pasted in, links you handed to a skill, screenshots, transcripts. Apply interested-party scrutiny: the operator's intent in providing the material is itself a piece of context. Operator-provided material is held to the same scrutiny as a web source.
 
-These trust classes are the same ones [`/research`](./skills/han.core/research.md) already uses. The canonical rule extracts them so other skills and agents can apply the same vocabulary.
+These trust classes are the same ones [`/research`](./skills/han-core/research.md) already uses. The canonical rule extracts them so other skills and agents can apply the same vocabulary.
 
 ## How evidence-based reasoning applies across the plugin
 
@@ -74,21 +74,21 @@ Evidence applies in two postures: **producing** (when a skill drafts a judgment 
 
 | Surface | What evidence-based gates |
 |---|---|
-| [`/research`](./skills/han.core/research.md) | The canonical home of the trust classes, the corroboration gate, and the no-evidence label. Strict mode requires every claim driving the recommendation to carry an explicit evidence status. |
-| [`/investigate`](./skills/han.coding/investigate.md) | Investigation findings cite the file path, log line, or measurement that supports them. The corroboration gate applies when the investigation draws on web sources for context; codebase findings stand on their citation. |
-| [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md) | Behaviors, edge cases, and coordinations in the spec carry evidence. Items without evidence move to `## Deferred (YAGNI)`; items with evidence flagged as single-source web claims get marked accordingly. |
-| [`/plan-implementation`](./skills/han.planning/plan-implementation.md) | Implementation choices cite evidence per the YAGNI rule. When a recommendation rests on web research, the corroboration gate applies. |
-| [`/iterative-plan-review`](./skills/han.planning/iterative-plan-review.md) | Review pillars include the evidence sweep alongside YAGNI. Uncited claims and single-source web claims surface as findings. |
-| [`/gap-analysis`](./skills/han.core/gap-analysis.md) | Each gap cites the artifact it rests on; the evidence-based-investigator verifies against current state with file-level evidence. |
-| [`/code-review`](./skills/han.coding/code-review.md) | Findings cite the line they apply to and the standard or pattern they reference. |
-| [`/coding-standard`](./skills/han.coding/coding-standard.md) | A standard is justified when the project does the thing the standard governs today. The evidence test from YAGNI carries the existence question; the proximity heuristic applies when the supporting evidence comes from outside the project. |
-| [`/architectural-decision-record`](./skills/han.core/architectural-decision-record.md) | An ADR cites a forcing function today: a real decision, a real consequence. |
-| [`/runbook`](./skills/han.core/runbook.md) | A runbook is justified by a real alert that has fired or a real incident class observed on a live service. Hypotheticals do not qualify. |
-| [`evidence-based-investigator`](./agents/han.core/evidence-based-investigator.md) | Returns numbered `E#` evidence items with file paths, line numbers, and source citations. Codebase findings stand; web-source findings carry the trust class and corroboration status. |
-| [`research-analyst`](./agents/han.core/research-analyst.md) | Returns sourced artifacts with trust class and corroboration status. Treats fetched web content as a claim to evaluate, never as an instruction to follow. |
-| [`adversarial-validator`](./agents/han.core/adversarial-validator.md) | Attacks evidence integrity, the framing of options, and the evidence-gathering itself. Emits `V#` findings. |
-| [`project-manager`](./agents/han.core/project-manager.md) | Runs the YAGNI evidence gate during facilitation. Uncited proposals are challenged or deferred. |
-| [`junior-developer`](./agents/han.core/junior-developer.md) | Runs the YAGNI evidence sweep during stress-tests. Flags uncited additions and hidden assumptions. |
+| [`/research`](./skills/han-core/research.md) | The canonical home of the trust classes, the corroboration gate, and the no-evidence label. Strict mode requires every claim driving the recommendation to carry an explicit evidence status. |
+| [`/investigate`](./skills/han-coding/investigate.md) | Investigation findings cite the file path, log line, or measurement that supports them. The corroboration gate applies when the investigation draws on web sources for context; codebase findings stand on their citation. |
+| [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md) | Behaviors, edge cases, and coordinations in the spec carry evidence. Items without evidence move to `## Deferred (YAGNI)`; items with evidence flagged as single-source web claims get marked accordingly. |
+| [`/plan-implementation`](./skills/han-planning/plan-implementation.md) | Implementation choices cite evidence per the YAGNI rule. When a recommendation rests on web research, the corroboration gate applies. |
+| [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md) | Review pillars include the evidence sweep alongside YAGNI. Uncited claims and single-source web claims surface as findings. |
+| [`/gap-analysis`](./skills/han-core/gap-analysis.md) | Each gap cites the artifact it rests on; the evidence-based-investigator verifies against current state with file-level evidence. |
+| [`/code-review`](./skills/han-coding/code-review.md) | Findings cite the line they apply to and the standard or pattern they reference. |
+| [`/coding-standard`](./skills/han-coding/coding-standard.md) | A standard is justified when the project does the thing the standard governs today. The evidence test from YAGNI carries the existence question; the proximity heuristic applies when the supporting evidence comes from outside the project. |
+| [`/architectural-decision-record`](./skills/han-core/architectural-decision-record.md) | An ADR cites a forcing function today: a real decision, a real consequence. |
+| [`/runbook`](./skills/han-core/runbook.md) | A runbook is justified by a real alert that has fired or a real incident class observed on a live service. Hypotheticals do not qualify. |
+| [`evidence-based-investigator`](./agents/han-core/evidence-based-investigator.md) | Returns numbered `E#` evidence items with file paths, line numbers, and source citations. Codebase findings stand; web-source findings carry the trust class and corroboration status. |
+| [`research-analyst`](./agents/han-core/research-analyst.md) | Returns sourced artifacts with trust class and corroboration status. Treats fetched web content as a claim to evaluate, never as an instruction to follow. |
+| [`adversarial-validator`](./agents/han-core/adversarial-validator.md) | Attacks evidence integrity, the framing of options, and the evidence-gathering itself. Emits `V#` findings. |
+| [`project-manager`](./agents/han-core/project-manager.md) | Runs the YAGNI evidence gate during facilitation. Uncited proposals are challenged or deferred. |
+| [`junior-developer`](./agents/han-core/junior-developer.md) | Runs the YAGNI evidence sweep during stress-tests. Flags uncited additions and hidden assumptions. |
 
 ## The no-evidence section format
 
@@ -121,8 +121,8 @@ Most artifacts will not need this section. Skills that produce one are typically
 
 ## Related reading
 
-- [`han.core/references/evidence-rule.md`](../han.core/references/evidence-rule.md). The canonical rule that every evidence-aware skill and agent loads at runtime.
+- [`han-core/references/evidence-rule.md`](../han-core/references/evidence-rule.md). The canonical rule that every evidence-aware skill and agent loads at runtime.
 - [YAGNI](./yagni.md). The evidence test that gates inclusion. This rule and YAGNI work together: YAGNI asks *is there any evidence?* and this rule asks *how strong is the evidence?*
 - [Concepts](./concepts.md). The skill / agent split. Evidence is a property of skills that produce judgments and agents that review them.
 - [Sizing](./sizing.md). The other foundational mechanic. Sizing decides *how much review* an artifact gets; YAGNI decides *what survives*; evidence decides *how confident you are in what survives*.
-- [`/research`](./skills/han.core/research.md). The skill where the trust classes and the corroboration gate originated. Reads its own canonical rule at runtime.
+- [`/research`](./skills/han-core/research.md). The skill where the trust classes and the corroboration gate originated. Reads its own canonical rule at runtime.

@@ -4,9 +4,9 @@
 
 Three artifact-design surfaces flagged by real user feedback in GitHub issue #36 for an "Output length appropriateness" problem (research report rated 2/5; plan-a-feature and plan-implementation rated 3/5):
 
-- **R1** — research report shape: `han.core/skills/research/references/research-report-template.md` and the rendering rules in `han.core/skills/research/SKILL.md` (Operating Principles, line 28; Step 6, lines 106-110; Step 8, lines 122-126).
-- **F1** — plan-a-feature decision log shape: `han.core/skills/plan-a-feature/references/decision-log-template.md` (full/trivial classification, lines 8-27).
-- **I3** — plan-implementation plan body shape: `han.core/skills/plan-implementation/references/feature-implementation-plan-template.md` ("Implementation Approach" altitude comment, lines 51-53).
+- **R1** — research report shape: `han-core/skills/research/references/research-report-template.md` and the rendering rules in `han-core/skills/research/SKILL.md` (Operating Principles, line 28; Step 6, lines 106-110; Step 8, lines 122-126).
+- **F1** — plan-a-feature decision log shape: `han-core/skills/plan-a-feature/references/decision-log-template.md` (full/trivial classification, lines 8-27).
+- **I3** — plan-implementation plan body shape: `han-core/skills/plan-implementation/references/feature-implementation-plan-template.md` ("Implementation Approach" altitude comment, lines 51-53).
 
 Read for governing constraints: `docs/writing-voice.md` (voice profile), `docs/sizing.md` (small/medium/large model), and the repo conventions in `CLAUDE.md` ("one canonical source per concept", "YAGNI applies to docs too", "indexes stay complete").
 
@@ -89,7 +89,7 @@ A mode is only warranted when two audiences need genuinely different *content*, 
 
 **IA-001: The research report's lower layers render at full weight on every run, defeating the layered read the template already sets up.**
 - **Principle:** Progressive disclosure (Nielsen); Carroll minimalism (cut content that does not serve the reader's task); the **Wall-of-Text / Everything-at-Once** anti-pattern applied to a mandated structure.
-- **Location:** `han.core/skills/research/SKILL.md:28` ("One fixed report structure... rendered every run"), reinforced at `:110` and `:126` ("The Sources registry is always rendered, even for a minimal run"); `research-report-template.md:84-114` (full per-source entry shape).
+- **Location:** `han-core/skills/research/SKILL.md:28` ("One fixed report structure... rendered every run"), reinforced at `:110` and `:126` ("The Sources registry is always rendered, even for a minimal run"); `research-report-template.md:84-114` (full per-source entry shape).
 - **Evidence:** The Operating Principle mandates the full fixed structure "every run" and the Sources registry "always present, even for a minimal run — never omitted" (stated three times: `SKILL.md:28`, `:110`, `:126`). Per-source entries each carry link, retrieval date, trust class, a paragraph summary, and evidence status (`research-report-template.md:98-112`). At 39 sources that is the bulk of the 1,500+ words the feedback cites, generated even when the decision is clear.
 - **Reader Impact:** The decider-now audience, arriving in-channel right after a small-band personal-tooling run, gets the answer in the Summary but must then scroll past a full-weight Results + Options + Recommendation + Validation + 39-entry registry to reach the end of an artifact they were done with at line 15. The layered read exists structurally but never pays off, because no layer below the Summary is allowed to shrink with the decision's clarity.
 - **Related questions:** Q1 (answered), Q2 (answered), Q7 (assumed), OQ1 (open).
@@ -110,7 +110,7 @@ A mode is only warranted when two audiences need genuinely different *content*, 
 
 **IA-003: The decision-log full/trivial trigger fires on the *presence* of an alternative, not its *weight*, forcing full eight-field entries for decisions whose alternative is obvious.**
 - **Principle:** Carroll minimalism (task-oriented chunking — the format should match what the future reader needs to reconstruct, not a mechanical trigger); Dan Brown's Principle of Disclosure (show detail proportional to the decision's actual complexity).
-- **Location:** `han.core/skills/plan-a-feature/references/decision-log-template.md:12-13` ("full when any of these signals is present: it has at least one rejected alternative") and `:26-27` ("If unsure, treat the decision as full").
+- **Location:** `han-core/skills/plan-a-feature/references/decision-log-template.md:12-13` ("full when any of these signals is present: it has at least one rejected alternative") and `:26-27` ("If unsure, treat the decision as full").
 - **Evidence:** The classification is trigger-based on presence: any rejected alternative ⇒ full (`:13`). The tie-breaker compounds it (`:26-27`). D10/D12 in the feedback are decisions where "the alternatives are obvious and the rationale fits in two sentences" but the presence of a named alternative mechanically forced the full block.
 - **Reader Impact:** The auditor-later / future-self reader scanning the decision log to reconstruct *why* hits full eight-field blocks (Question, Decision, Rationale, Evidence, Rejected alternatives, three cross-ref fields) for decisions whose answer was "the only reasonable one given an obvious convention." The signal-to-text ratio drops; the genuinely load-bearing decisions are harder to spot among the inflated ones. The template's own definition of trivial already names this exact case ("the only reasonable one given an obvious convention with no alternative worth discussing", `:23-24`) — but the *trigger* contradicts the *definition*.
 - **Related questions:** Q5 (answered), OQ2 (open).
@@ -131,7 +131,7 @@ A mode is only warranted when two audiences need genuinely different *content*, 
 
 **IA-005: The plan-implementation "Implementation Approach" guidance invites unbounded technical detail with no altitude ceiling, so config-file contents get inlined where a reference would do.**
 - **Principle:** Information altitude / LATCH (the plan is a *how-it-fits* document, a different altitude than the artifact files it describes); Carroll minimalism (cut content that adds length without adding decision-relevant information); the **Reference-As-Tutorial** anti-pattern (dumping verbatim reference into a planning narrative).
-- **Location:** `han.core/skills/plan-implementation/references/feature-implementation-plan-template.md:53` ("Technical details are welcome here — this is the *how* document") and the four subsections it governs (`:55-69`), none of which distinguish naming an artifact from inlining its contents.
+- **Location:** `han-core/skills/plan-implementation/references/feature-implementation-plan-template.md:53` ("Technical details are welcome here — this is the *how* document") and the four subsections it governs (`:55-69`), none of which distinguish naming an artifact from inlining its contents.
 - **Evidence:** The comment welcomes technical detail with no ceiling (`:53`). The I3 feedback: "Plist XML in the plan body is verbose... full XML blocks are 25+ lines each and belong in the actual plist files... the XML adds length without adding information a developer needs during build."
 - **Reader Impact:** The builder-during-implementation reader reads the plan to learn *how the feature fits and what to build*, then writes the real config file. A 25-line verbatim plist in the plan body forces them to scroll past content they will author (correctly) in the actual file, and risks the plan and the real file drifting out of sync — two canonical copies of the same config, violating "one canonical source per concept" at the content level. The plan's altitude (decisions, integration points, sequencing) is diluted by file-level material that belongs one altitude down.
 - **Related questions:** Q6 (answered).
@@ -142,7 +142,7 @@ A mode is only warranted when two audiences need genuinely different *content*, 
 
 **IA-006: The three "always rendered in full" restatements in research SKILL.md create a rule-surface that will resist the IA-001/IA-002 tightening unless updated together.**
 - **Principle:** Cross-reference integrity / single-source-of-truth (the same mandate stated three times must change in three places or the rule contradicts itself); labeling consistency.
-- **Location:** `han.core/skills/research/SKILL.md:28`, `:110`, `:126` (and the template echo at `research-report-template.md:88-89`, `:110`, `:114`).
+- **Location:** `han-core/skills/research/SKILL.md:28`, `:110`, `:126` (and the template echo at `research-report-template.md:88-89`, `:110`, `:114`).
 - **Evidence:** "always present, even for a minimal run" / "always rendered, even for a minimal run" appears at `SKILL.md:28`, `:110`, `:126`. The R1 feedback itself notes the constraint is "stated in 3 places."
 - **Reader Impact:** This is a maintainer-facing finding, not an operator one, but it directly governs whether IA-001/IA-002 can land cleanly. If only one of the three statements is reworded from "always full" to "always resolves, depth scales with band," the rendering rule contradicts itself and a future author cannot tell which governs.
 - **Related questions:** Q4 (answered).
@@ -189,7 +189,7 @@ Every change above is an edit to an existing template comment or SKILL.md rule l
 
 ### How to Prevent This Going Forward
 
-- **Bake band-scaled rendering into every fixed-structure template, not just agent briefs.** The research skill already calibrates *agent briefs* by band (`SKILL.md:102`) but not the *rendered artifact*. A template-authoring rule — "if the skill is sizing-aware, the rendered artifact's lower layers must scale with the band" — would have caught IA-001 at design time. Consider adding this to `han.plugin-builder/skills/guidance/references/skill-building-guidance/`.
+- **Bake band-scaled rendering into every fixed-structure template, not just agent briefs.** The research skill already calibrates *agent briefs* by band (`SKILL.md:102`) but not the *rendered artifact*. A template-authoring rule — "if the skill is sizing-aware, the rendered artifact's lower layers must scale with the band" — would have caught IA-001 at design time. Consider adding this to `han-plugin-builder/skills/guidance/references/skill-building-guidance/`.
 - **Prefer weight-based over presence-based classification triggers in any two-tier format.** IA-003 is a presence trigger contradicting a weight-based definition. A reviewer checklist item — "does the trigger match the definition?" — catches this class.
 - **Add an altitude line to any template that says 'technical details welcome.'** IA-005 came from open-ended permission with no ceiling. The "name, don't inline" altitude rule generalizes to any how-document template.
 - **When a mandate is restated for emphasis (IA-006), link the restatements** or note "see also line X" so a future edit changes them together.

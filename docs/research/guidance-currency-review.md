@@ -1,7 +1,7 @@
 # Guidance Currency Review: Skill, Agent, and Plugin Building Standards
 
 Research date: 2026-06-04
-Scope: every file under `han.plugin-builder/skills/guidance/references/` (skill-building guidance, agent-building guidelines, the cross-cutting taxonomy and model-selection docs, the marketplace/plugin/monitors/themes configuration reference, the example manifests, and the local-development, iterative-development, semantic-versioning, and plugin-readme docs).
+Scope: every file under `han-plugin-builder/skills/guidance/references/` (skill-building guidance, agent-building guidelines, the cross-cutting taxonomy and model-selection docs, the marketplace/plugin/monitors/themes configuration reference, the example manifests, and the local-development, iterative-development, semantic-versioning, and plugin-readme docs).
 
 This report checks Han's contributor guidance against the current (June 2026) official Claude Code documentation and a small set of other trusted sources. It anchors on the official docs first, then branches out only where the official docs leave a gap. It exists to drive a guidance update plan; it is a durable research record and is not a source of truth for feature work.
 
@@ -79,7 +79,7 @@ Han's `allowed-tools-bash-permissions.md` and `allowed-tools-AskUserQuestion.md`
 
 ### 9. Subagent frontmatter — Han documents `model` only; many fields are undocumented
 
-Han's agent guidance (`agent-model-selection.md`, `agent-external-files.md`) covers the `model` field well and correctly states agents are flat self-contained files with no `references/` or `scripts/`. But the official Subagents doc (2) lists many fields Han never mentions: `tools`, `disallowedTools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `background`, `effort`, `isolation`, `color`, `initialPrompt`. Critically, source (2) documents a **security boundary**: `hooks`, `mcpServers`, and `permissionMode` are ignored when an agent is loaded from a plugin — directly relevant to Han, whose agents all ship in `han.core`. **Verdict: agent frontmatter coverage is thin and missing a Han-relevant security note.**
+Han's agent guidance (`agent-model-selection.md`, `agent-external-files.md`) covers the `model` field well and correctly states agents are flat self-contained files with no `references/` or `scripts/`. But the official Subagents doc (2) lists many fields Han never mentions: `tools`, `disallowedTools`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `background`, `effort`, `isolation`, `color`, `initialPrompt`. Critically, source (2) documents a **security boundary**: `hooks`, `mcpServers`, and `permissionMode` are ignored when an agent is loaded from a plugin — directly relevant to Han, whose agents all ship in `han-core`. **Verdict: agent frontmatter coverage is thin and missing a Han-relevant security note.**
 
 ### 10. Subagents cannot spawn subagents — Han states this only for its own agents
 

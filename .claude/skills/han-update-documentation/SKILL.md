@@ -21,8 +21,8 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *)
 
 - git: !`which git`
 - repo root marker: !`find . -maxdepth 3 -name "plugin.json" -path "*/.claude-plugin/*" -type f`
-- skill roots: !`find . -maxdepth 2 -type d -name skills -path './han.*/skills' ! -path './han.plugin-builder/skills' 2>/dev/null | sed 's|^\./||' | sort`
-- agents directory: !`find . -maxdepth 2 -type d -name agents -path './han.*/agents' 2>/dev/null | sed 's|^\./||' | sort`
+- skill roots: !`find . -maxdepth 2 -type d -name skills -path './han-*/skills' ! -path './han-plugin-builder/skills' 2>/dev/null | sed 's|^\./||' | sort`
+- agents directory: !`find . -maxdepth 2 -type d -name agents -path './han-*/agents' 2>/dev/null | sed 's|^\./||' | sort`
 
 **If any of the above are empty:** this skill is intended to run inside the Han plugin repository. Tell the operator which marker is missing and stop. Do not attempt to operate on a different repo.
 
@@ -35,7 +35,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *)
 
 Run `${CLAUDE_SKILL_DIR}/scripts/detect-doc-update-context.sh` and read its output. Branch on the `mode:` line.
 
-The script also emits the **skill roots** (between `skill-roots-start` and `skill-roots-end`) and the **agent root** (the `agent-root:` line), both discovered dynamically from disk. These are the authoritative roots for the rest of this skill — use them wherever the steps below say "the skill roots" or "the agent root," rather than any hardcoded plugin list. A skill root is every `han.*/skills` directory except `han.plugin-builder/skills`, whose `guidance` skill is authoring guidance audited under guidance docs (Step 2, sweep), not a documented product skill. Adding a new product plugin needs no edit to this skill; it shows up in the discovered roots automatically.
+The script also emits the **skill roots** (between `skill-roots-start` and `skill-roots-end`) and the **agent root** (the `agent-root:` line), both discovered dynamically from disk. These are the authoritative roots for the rest of this skill — use them wherever the steps below say "the skill roots" or "the agent root," rather than any hardcoded plugin list. A skill root is every `han-*/skills` directory except `han-plugin-builder/skills`, whose `guidance` skill is authoring guidance audited under guidance docs (Step 2, sweep), not a documented product skill. Adding a new product plugin needs no edit to this skill; it shows up in the discovered roots automatically.
 
 **`mode: error`** — stop. Surface the `reason:` line to the operator. Do not proceed.
 
@@ -67,8 +67,8 @@ Deduplicate. Produce a single ordered inventory `INV`:
 
 Han ships as several plugins. Skills are spread across several of them; agents live in only one. Long-form docs stay flat under `docs/skills/` and `docs/agents/` no matter which plugin owns the entity.
 
-- **Skill roots:** the list the detect script reported between `skill-roots-start` and `skill-roots-end`. Every `han.*/skills` directory except `han.plugin-builder/skills` (its `guidance` skill is authoring guidance, audited under guidance docs below). Do not hardcode the plugins here; read them from the script so a newly added plugin is covered automatically.
-- **Agent root:** the script's `agent-root:` line (`han.core/agents`, the only plugin with agents).
+- **Skill roots:** the list the detect script reported between `skill-roots-start` and `skill-roots-end`. Every `han-*/skills` directory except `han-plugin-builder/skills` (its `guidance` skill is authoring guidance, audited under guidance docs below). Do not hardcode the plugins here; read them from the script so a newly added plugin is covered automatically.
+- **Agent root:** the script's `agent-root:` line (`han-core/agents`, the only plugin with agents).
 - **Plugin manifests:** `{plugin}/.claude-plugin/plugin.json` for every plugin. Owned by `/han-release`; out of scope here.
 
 Throughout this skill, `{plugin}` means whichever discovered skill root a given skill came from.
@@ -81,7 +81,7 @@ Enumerate the full set:
 2. **Every agent.** Run `find <agent root> -mindepth 1 -maxdepth 1 -name "*.md" -type f`, passing the script's `agent-root`, for the inventory; each entry pulls in `{agent-root}/{name}.md` and `docs/agents/{name}.md`.
 3. **Both indexes** (`docs/skills/README.md`, `docs/agents/README.md`).
 4. **All top-level concept docs** in `docs/`.
-5. **All guidance docs** under `han.plugin-builder/skills/guidance/references/`.
+5. **All guidance docs** under `han-plugin-builder/skills/guidance/references/`.
 6. **All templates** under `docs/templates/`.
 7. **Root files** (`README.md`, `CONTRIBUTING.md`, `CLAUDE.md`).
 
@@ -101,7 +101,7 @@ Walk `INV` in order. For each entity, apply every rule in [references/audit-chec
   - Fix: {concrete edit}
 ```
 
-**Read the source of truth before checking the doc.** For a skill, read `{plugin}/skills/{name}/SKILL.md` first (the plugin root the skill came from), then read `docs/skills/{name}.md` and check it against the source. For an agent, read `han.core/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs — treat them with the same severity as broken scripts (see `han.plugin-builder/skills/guidance/references/skill-building-guidance/documentation-maintenance.md`).
+**Read the source of truth before checking the doc.** For a skill, read `{plugin}/skills/{name}/SKILL.md` first (the plugin root the skill came from), then read `docs/skills/{name}.md` and check it against the source. For an agent, read `han-core/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs — treat them with the same severity as broken scripts (see `han-plugin-builder/skills/guidance/references/skill-building-guidance/documentation-maintenance.md`).
 
 **Batch agent audits when the inventory is large.** When `INV` has more than ten skills or ten agents to audit, dispatch a `content-auditor` agent per batch of five entities with the entity name, the source-of-truth file, and the long-form doc. Hand each agent the relevant section of [references/audit-checklist.md](./references/audit-checklist.md) inline (do not tell it to read the file). The agent returns findings; merge them into the working list. Do not run more than four such agents in parallel.
 

@@ -41,13 +41,13 @@ This file records every decision settled while specifying the "Choosing a Han Pl
 
 ### D4: Three install commands first-class
 
-- **Question:** How should the documentation treat `han`, `han.core`, and `han.github` as install commands, given that `han.github` alone pulls in core and is functionally the full suite?
+- **Question:** How should the documentation treat `han`, `han-core`, and `han-github` as install commands, given that `han-github` alone pulls in core and is functionally the full suite?
 - **Decision:** Present all three commands as first-class options, each with an explicit statement of what it installs (including the dependency behavior), while recommending `han` as the default way to ask for the full suite.
-- **Rationale:** The user chose to keep all three commands documented as co-equal options rather than collapsing to two. The recommendation (D3) supplies the default without hiding the other commands. The documentation must make clear that `han` and `han.github` land the same skills and agents. F2 narrowed the original "differ only in intent and naming" framing: there is a real visible difference (the installed plugin list shows `han.github` plus `han.core` versus `han`), and `han` is the forward-compatible choice because future suite additions are declared as `han` dependencies. The equivalence is scoped to "which skills and agents land," stated as a current-state fact.
-- **Evidence:** user input; `han/.claude-plugin/plugin.json` (`dependencies: ["han.core", "han.github"]`); `han.github/.claude-plugin/plugin.json` (`dependencies: ["han.core"]`); `han.core/.claude-plugin/plugin.json` (no dependencies); official Claude Code plugin-dependencies reference (enabling a plugin enables its dependencies; the install output lists which dependencies were added).
+- **Rationale:** The user chose to keep all three commands documented as co-equal options rather than collapsing to two. The recommendation (D3) supplies the default without hiding the other commands. The documentation must make clear that `han` and `han-github` land the same skills and agents. F2 narrowed the original "differ only in intent and naming" framing: there is a real visible difference (the installed plugin list shows `han-github` plus `han-core` versus `han`), and `han` is the forward-compatible choice because future suite additions are declared as `han` dependencies. The equivalence is scoped to "which skills and agents land," stated as a current-state fact.
+- **Evidence:** user input; `han/.claude-plugin/plugin.json` (`dependencies: ["han-core", "han-github"]`); `han-github/.claude-plugin/plugin.json` (`dependencies: ["han-core"]`); `han-core/.claude-plugin/plugin.json` (no dependencies); official Claude Code plugin-dependencies reference (enabling a plugin enables its dependencies; the install output lists which dependencies were added).
 - **Rejected alternatives:**
-  - Document only two real choices (core-only vs full via `han`) and discourage installing `han.github` directly — rejected by the user in favor of keeping all three first-class.
-  - State that `han` and `han.github` "differ only in intent and naming" — rejected per F2; it conceals the installed-list difference and the forward-compatibility of `han`.
+  - Document only two real choices (core-only vs full via `han`) and discourage installing `han-github` directly — rejected by the user in favor of keeping all three first-class.
+  - State that `han` and `han-github` "differ only in intent and naming" — rejected per F2; it conceals the installed-list difference and the forward-compatibility of `han`.
 - **Linked technical notes:** —
 - **Driven by findings:** F2
 - **Dependent decisions:** D5
@@ -55,10 +55,10 @@ This file records every decision settled while specifying the "Choosing a Han Pl
 
 ### D5: Dependency nuance content
 
-- **Question:** How should the documentation explain the `han.github` → `han.core` dependency so readers are not confused about overlap?
-- **Decision:** State plainly that installing `han.github` resolves and installs `han.core` too, so it lands the same skills and agents as the full suite, and state explicitly that there is no GitHub-only install.
-- **Rationale:** This is the central confusion the issue flags. `han.github` ships only two skills but depends on core, so a reader expecting a "GitHub-only" partial would be wrong. Naming the non-existence of a GitHub-only install pre-empts the misread. F1 confirmed the auto-install behavior is documented runtime behavior, not an assumption, so the claim is safe to state as fact.
-- **Evidence:** `han.github/.claude-plugin/plugin.json` (`dependencies: ["han.core"]`); `han.github/skills/` contains only `gh-pr-review` and `update-pr-description`; `han.core` carries all agents and the core skill set; official Claude Code plugin-dependencies reference — "When you install a plugin that declares dependencies, Claude Code resolves and installs them automatically and lists which dependencies were added at the end of the install output" (https://code.claude.com/docs/en/plugin-dependencies).
+- **Question:** How should the documentation explain the `han-github` → `han-core` dependency so readers are not confused about overlap?
+- **Decision:** State plainly that installing `han-github` resolves and installs `han-core` too, so it lands the same skills and agents as the full suite, and state explicitly that there is no GitHub-only install.
+- **Rationale:** This is the central confusion the issue flags. `han-github` ships only two skills but depends on core, so a reader expecting a "GitHub-only" partial would be wrong. Naming the non-existence of a GitHub-only install pre-empts the misread. F1 confirmed the auto-install behavior is documented runtime behavior, not an assumption, so the claim is safe to state as fact.
+- **Evidence:** `han-github/.claude-plugin/plugin.json` (`dependencies: ["han-core"]`); `han-github/skills/` contains only `gh-pr-review` and `update-pr-description`; `han-core` carries all agents and the core skill set; official Claude Code plugin-dependencies reference — "When you install a plugin that declares dependencies, Claude Code resolves and installs them automatically and lists which dependencies were added at the end of the install output" (https://code.claude.com/docs/en/plugin-dependencies).
 - **Rejected alternatives:**
   - Leave the dependency implicit and let the reader infer it — rejected; the issue exists precisely because the relationship is non-obvious.
 - **Linked technical notes:** —
@@ -69,9 +69,9 @@ This file records every decision settled while specifying the "Choosing a Han Pl
 ### D6: Decision aid format
 
 - **Question:** How should the standalone page help a reader map their situation to an install choice?
-- **Decision:** Include a short, scannable "which one do you need?" decision aid that maps a reader's situation to a recommended install command and structurally marks the recommended default (a "start here" signal on the full `han` option). The dependency explanation appears on the page before the decision aid; the aid is never the first substantive content element. Summarize `han.core` by category with a link to the skills index; name the two `han.github` skills explicitly.
-- **Rationale:** A scannable aid serves a reader who wants to act without reading the whole page. Naming two GitHub skills is cheap and concrete; enumerating every core skill would duplicate the skills index and rot as skills change. F4 added the ordering constraint: if the aid precedes the dependency explanation, a scan-to-act reader can run `han.github` under the exact "GitHub-only" misread the page exists to prevent. F6 added the structural recommendation marker: with `han` and `han.github` showing the same "what you get," a reader can't resolve which to pick from names alone, so the recommendation (D3) must be surfaced structurally, not only in prose.
-- **Evidence:** `docs/sizing.md` and `docs/why-solo-and-small-teams.md` (tables and scannable bullets as the house pattern); `docs/skills/README.md` (existing canonical skill inventory); `han.github/skills/` (only two skills).
+- **Decision:** Include a short, scannable "which one do you need?" decision aid that maps a reader's situation to a recommended install command and structurally marks the recommended default (a "start here" signal on the full `han` option). The dependency explanation appears on the page before the decision aid; the aid is never the first substantive content element. Summarize `han-core` by category with a link to the skills index; name the two `han-github` skills explicitly.
+- **Rationale:** A scannable aid serves a reader who wants to act without reading the whole page. Naming two GitHub skills is cheap and concrete; enumerating every core skill would duplicate the skills index and rot as skills change. F4 added the ordering constraint: if the aid precedes the dependency explanation, a scan-to-act reader can run `han-github` under the exact "GitHub-only" misread the page exists to prevent. F6 added the structural recommendation marker: with `han` and `han-github` showing the same "what you get," a reader can't resolve which to pick from names alone, so the recommendation (D3) must be surfaced structurally, not only in prose.
+- **Evidence:** `docs/sizing.md` and `docs/why-solo-and-small-teams.md` (tables and scannable bullets as the house pattern); `docs/skills/README.md` (existing canonical skill inventory); `han-github/skills/` (only two skills).
 - **Rejected alternatives:**
   - Full per-plugin skill inventory on the page — rejected by the simpler-version test; it duplicates the skills index and creates a second thing to maintain.
   - Decision aid as the lead element on the page — rejected per F4; it lets a reader act before they hold the dependency fact.
@@ -99,9 +99,9 @@ This file records every decision settled while specifying the "Choosing a Han Pl
 ### D9: Composability note
 
 - **Question:** Should the documentation address a reader who installed core-only and later wants the GitHub skills?
-- **Decision:** Yes — state that a reader can install `han.github` (or `han`) afterward to add the GitHub layer on top of the core they already have.
+- **Decision:** Yes — state that a reader can install `han-github` (or `han`) afterward to add the GitHub layer on top of the core they already have.
 - **Rationale:** This is a real and predictable reader question that follows directly from the core-only recommendation in D3. Answering it removes a reason to hesitate on the lean choice.
-- **Evidence:** the three plugins are independently installable per `marketplace.json`; `han.github` depends on `han.core`, so adding it on top of an existing core install is consistent.
+- **Evidence:** the three plugins are independently installable per `marketplace.json`; `han-github` depends on `han-core`, so adding it on top of an existing core install is consistent.
 - **Rejected alternatives:**
   - Omit it — rejected; leaving the upgrade path unstated makes core-only feel like a one-way door.
 - **Linked technical notes:** —

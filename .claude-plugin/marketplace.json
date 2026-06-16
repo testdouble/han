@@ -10,60 +10,60 @@
     {
       "name": "han",
       "source": "./han",
-      "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han.core, han.planning, han.coding, han.github, and han.reporting so installing it pulls them all in. Does not bundle the opt-in han.feedback, han.atlassian, or han.plugin-builder plugins.",
+      "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han-core, han-planning, han-coding, han-github, and han-reporting so installing it pulls them all in. Does not bundle the opt-in han-feedback, han-atlassian, or han-plugin-builder plugins.",
       "version": "3.4.1"
     },
     {
-      "name": "han.core",
-      "source": "./han.core",
-      "description": "Evidence-based research, architecture, and documentation skills for software projects, plus the adversarial specialist agents the rest of the suite dispatches. Includes issue triage, open-ended research, architectural decision records (ADRs), gap analysis, project discovery, project and feature documentation, and runbooks. Feature- and implementation-planning skills live in han.planning, which depends on han.core.",
+      "name": "han-core",
+      "source": "./han-core",
+      "description": "Evidence-based research, architecture, and documentation skills for software projects, plus the adversarial specialist agents the rest of the suite dispatches. Includes issue triage, open-ended research, architectural decision records (ADRs), gap analysis, project discovery, project and feature documentation, and runbooks. Feature- and implementation-planning skills live in han-planning, which depends on han-core.",
       "version": "1.2.0"
     },
     {
-      "name": "han.planning",
-      "source": "./han.planning",
-      "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, and iterative-plan-review. Depends on han.core; bundled by the han meta-plugin.",
+      "name": "han-planning",
+      "source": "./han-planning",
+      "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, and iterative-plan-review. Depends on han-core; bundled by the han meta-plugin.",
       "version": "1.0.0"
     },
     {
-      "name": "han.coding",
-      "source": "./han.coding",
-      "description": "Code-writing and execution skills for the Han suite. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. Depends on han.core; bundled by the han meta-plugin.",
+      "name": "han-coding",
+      "source": "./han-coding",
+      "description": "Code-writing and execution skills for the Han suite. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. Depends on han-core; bundled by the han meta-plugin.",
       "version": "1.0.1"
     },
     {
-      "name": "han.github",
-      "source": "./han.github",
+      "name": "han-github",
+      "source": "./han-github",
       "description": "GitHub-specific extensions to Han. Provides skills to post code reviews as PR comments, update a PR description with a consistent format, and other GitHub-facing workflows.",
       "version": "1.2.0"
     },
     {
-      "name": "han.reporting",
-      "source": "./han.reporting",
+      "name": "han-reporting",
+      "source": "./han-reporting",
       "description": "Reporting and summary skills for the Han suite. Turns feature specifications into plain-language stakeholder summaries (also called executive or business summaries) with diagrams, for sharing with non-technical stakeholders before implementation kicks off.",
       "version": "1.0.1"
     },
     {
-      "name": "han.feedback",
-      "source": "./han.feedback",
+      "name": "han-feedback",
+      "source": "./han-feedback",
       "description": "Post-session feedback skill for the Han suite. Captures structured observations, ratings, and improvement ideas on the Han skills you ran in a session and optionally posts them as a GitHub issue to testdouble/han. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
       "version": "1.1.1"
     },
     {
-      "name": "han.atlassian",
-      "source": "./han.atlassian",
-      "description": "Atlassian-facing extensions to the Han suite. Adds markdown-to-confluence, which publishes a local Markdown file to a user-specified Confluence page; project-documentation-to-confluence, which runs the core project-documentation skill and then publishes the result there; plan-a-feature-to-confluence, which runs the core plan-a-feature skill and publishes the spec and its companion artifacts there as a page tree; and work-items-to-jira, which creates one Jira ticket per slice from a work-items file. All work through the Atlassian MCP server. Depends on han.core and requires a configured Atlassian MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
+      "name": "han-atlassian",
+      "source": "./han-atlassian",
+      "description": "Atlassian-facing extensions to the Han suite. Adds markdown-to-confluence, which publishes a local Markdown file to a user-specified Confluence page; project-documentation-to-confluence, which runs the core project-documentation skill and then publishes the result there; plan-a-feature-to-confluence, which runs the core plan-a-feature skill and publishes the spec and its companion artifacts there as a page tree; and work-items-to-jira, which creates one Jira ticket per slice from a work-items file. All work through the Atlassian MCP server. Depends on han-core and requires a configured Atlassian MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
       "version": "1.1.0"
     },
     {
-      "name": "han.linear",
-      "source": "./han.linear",
-      "description": "Linear-facing extensions to the Han suite. Adds work-items-to-linear, which creates one Linear issue per slice from a work-items file. Works through the Linear MCP server. Depends on han.core and requires a configured Linear MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
+      "name": "han-linear",
+      "source": "./han-linear",
+      "description": "Linear-facing extensions to the Han suite. Adds work-items-to-linear, which creates one Linear issue per slice from a work-items file. Works through the Linear MCP server. Depends on han-core and requires a configured Linear MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
       "version": "1.0.0"
     },
     {
-      "name": "han.plugin-builder",
-      "source": "./han.plugin-builder",
+      "name": "han-plugin-builder",
+      "source": "./han-plugin-builder",
       "description": "Guidance for building Claude Code skills, agents, and plugins. The guidance skill answers authoring questions and, run with init, vendors the full guidance set into a repo as a path-scoped rule index so the right guidance surfaces while editing skill and agent files. Opt-in and dependency-free: installed on its own, not pulled in by the han meta-plugin.",
       "version": "1.2.1"
     }

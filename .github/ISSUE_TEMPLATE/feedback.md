@@ -25,10 +25,10 @@ here as an issue:
    the resulting triage document below as the issue body.
 
 2. Feedback on a session you ran.
-   Install the opt-in han.feedback plugin (/plugin install han.feedback@han)
+   Install the opt-in han-feedback plugin (/plugin install han-feedback@han)
    and run /han-feedback at the end of the session, before you compact the
    context. It captures the Han skills and agents you used across the whole
-   han.* family (han.core, han.github, han.reporting, han.feedback), summarizes
+   han-* family (han-core, han-github, han-reporting, han-feedback), summarizes
    what worked, what did not, and a rating, then offers to post the issue for
    you.
 

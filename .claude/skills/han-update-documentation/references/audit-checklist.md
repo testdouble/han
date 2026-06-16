@@ -2,7 +2,7 @@
 
 Verification rules applied to every entity in scope. The skill's mode (branch vs. sweep) determines *which* entities are in scope. This checklist determines *what* is checked for each one. Apply every rule that fits the entity's type. Record each finding with the file path and a concrete fix; do not paper over discrepancies.
 
-`{plugin}` below means the skill root the skill came from: any discovered `han.*/skills` directory except `han.plugin-builder/skills` (the detect script reports the current list). Agents live only under the agent root (`han.core/agents`).
+`{plugin}` below means the skill root the skill came from: any discovered `han-*/skills` directory except `han-plugin-builder/skills` (the detect script reports the current list). Agents live only under the agent root (`han-core/agents`).
 
 ## Skills (`{plugin}/skills/{name}/SKILL.md` + `docs/skills/{name}.md`)
 
@@ -39,19 +39,19 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 6. **Bidirectional Related documentation links.** If `/foo` pairs with `/bar`, both long-form docs name the pairing.
 7. **README.md skill references stay count-free.** The Skills Index links resolve and the surrounding text names no hardcoded skill count.
 
-## Agents (`han.core/agents/{name}.md` + `docs/agents/{name}.md`)
+## Agents (`han-core/agents/{name}.md` + `docs/agents/{name}.md`)
 
-### Agent definition (`han.core/agents/{name}.md`)
+### Agent definition (`han-core/agents/{name}.md`)
 
 1. **Frontmatter `name` matches the file's basename.**
 2. **Frontmatter `description` is current.** Reflects what the agent does, when to dispatch it, and what it does not do. Boundary statements name the right sibling agents.
 3. **`tools` matches actual usage.**
-4. **`model` matches the model selection guidance** in `han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md` for this agent's role.
+4. **`model` matches the model selection guidance** in `han-plugin-builder/skills/guidance/references/specialization-and-model-selection.md` for this agent's role.
 5. **No stale references.** Sibling agents named in the boundary all exist. Skills named as callers exist.
 
 ### Long-form doc (`docs/agents/{name}.md`)
 
-1. **Long-form doc exists** for every agent in `han.core/agents/`. Missing doc is a hard finding — create it from `docs/templates/agent-long-form-template.md`.
+1. **Long-form doc exists** for every agent in `han-core/agents/`. Missing doc is a hard finding — create it from `docs/templates/agent-long-form-template.md`.
 2. **Orientation frame, TL;DR, and template sections present** per `docs/templates/agent-long-form-template.md`.
 3. **"Dispatched by" or equivalent section names every skill that uses this agent.** When a skill's dispatch list changed, this section updates.
 4. **TL;DR matches the agent's frontmatter description.**
@@ -82,7 +82,7 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 4. **Each entry's scent line is current.**
 5. **Compositions list reflects current pairings.** The `## How skills compose` block in the skills index lists compositions that still hold; removes those that no longer do.
 
-## Guidance docs (`han.plugin-builder/skills/guidance/references/**`)
+## Guidance docs (`han-plugin-builder/skills/guidance/references/**`)
 
 1. **References to scripts, file paths, tool flags, and conventions are current.** Doc-code contradictions are functional bugs — see `documentation-maintenance.md`.
 2. **Cross-references at the bottom resolve.**

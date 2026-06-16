@@ -1,6 +1,6 @@
 # Guidance Update Plan
 
-Companion to `guidance-currency-review.md`. This is the plain-language plan for updating the contributor guidance under `han.plugin-builder/skills/guidance/references/` so it matches current (June 2026) Claude Code standards. It groups the work into waves by impact, and for each item says what to do, why, and which source backs it. Nothing here is deleted; the changes are additions, citations, and refreshes.
+Companion to `guidance-currency-review.md`. This is the plain-language plan for updating the contributor guidance under `han-plugin-builder/skills/guidance/references/` so it matches current (June 2026) Claude Code standards. It groups the work into waves by impact, and for each item says what to do, why, and which source backs it. Nothing here is deleted; the changes are additions, citations, and refreshes.
 
 The headline: the guidance is in good shape. Most docs are current. The real work is one new reference doc, a handful of factual refreshes on the plugin/marketplace config docs and the agent docs, and one citation gap that should be closed because it currently presents real research as an unsourced claim.
 

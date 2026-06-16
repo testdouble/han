@@ -1,6 +1,6 @@
-# Research: How should the `han.coding:refactor` skill be designed?
+# Research: How should the `han-coding:refactor` skill be designed?
 
-GitHub issue [testdouble/han#52](https://github.com/testdouble/han/issues/52) requests a new `refactor` skill. The operator has directed that it live in `han.coding` as a code-writing skill alongside `tdd`. This research answers the open questions the issue's triage left: the job to be done, the distinction from existing skills, the workflow shape, and the guardrails. Evidence mode: strict.
+GitHub issue [testdouble/han#52](https://github.com/testdouble/han/issues/52) requests a new `refactor` skill. The operator has directed that it live in `han-coding` as a code-writing skill alongside `tdd`. This research answers the open questions the issue's triage left: the job to be done, the distinction from existing skills, the workflow shape, and the guardrails. Evidence mode: strict.
 
 ## Summary
 
@@ -66,7 +66,7 @@ The `tdd` skill's refactor step is non-skippable but deliberately narrow: it run
 ### O5: Plan-only refactor skill (added during validation)
 
 - **What it is:** A skill that produces a refactoring plan artifact and changes no code, parallel to `/plan-implementation`.
-- **Trade-offs:** Sidesteps every execution risk in the agentic evidence, but the operator's directive places the skill in `han.coding`, the plugin defined as code-writing and execution. A plan-only skill also overlaps the existing recommendation artifacts: `/code-review` findings and the software-architect's pseudocode sketches already are refactoring plans (A43, A44). The unmet need is execution, not another plan.
+- **Trade-offs:** Sidesteps every execution risk in the agentic evidence, but the operator's directive places the skill in `han-coding`, the plugin defined as code-writing and execution. A plan-only skill also overlaps the existing recommendation artifacts: `/code-review` findings and the software-architect's pseudocode sketches already are refactoring plans (A43, A44). The unmet need is execution, not another plan.
 - **Rests on:** (A43, A44, A45)
 - **Evidence status:** corroborated (against, within Han)
 
@@ -87,7 +87,7 @@ The `tdd` skill's refactor step is non-skippable but deliberately narrow: it run
 ### V2: A plan-only option was missing from the framing
 
 - **Strategy:** Challenge the Options Framing
-- **Investigation:** The validator found the option space conflated "a refactoring skill" with "an executing refactoring skill" and proposed a plan-only artifact skill in `han.core`.
+- **Investigation:** The validator found the option space conflated "a refactoring skill" with "an executing refactoring skill" and proposed a plan-only artifact skill in `han-core`.
 - **Result:** Refuted (the framing was incomplete)
 - **Impact:** O5 was added and evaluated. It is rejected on its merits: the operator placed the skill in the code-writing plugin, and the suite already produces refactoring-plan artifacts through its review skills. The unmet need is safe execution.
 
@@ -186,14 +186,14 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 | A38 | Meta Engineering, LLM mutation testing | https://engineering.fb.com/2025/09/30/security/llms-are-the-key-to-mutation-testing-and-better-compliance/ | 2026-06-10 | web (interested party) | LLMs as behavior oracles via mutation testing | figures single source; concept established in testing literature |
 | A39 | NimblePros, Characterization tests with snapshots | https://blog.nimblepros.com/blogs/characterization-tests-with-snapshot-testing/ | 2026-06-10 | web | Snapshot-based characterization tests as a refactoring baseline for legacy code | concept corroborated by A9; agentic application unstudied |
 | A40 | Towards Data Science, Large refactors in Cursor | https://towardsdatascience.com/how-to-perform-large-code-refactors-in-cursor/ | 2026-06-10 | web | Discovery/plan/execute/verify phases; post-hoc diff review keeps finding bugs | diff-review observation single source; phases corroborated by A28, A30 |
-| A41 | tdd refactor step | `han.coding/skills/tdd/SKILL.md:189-209` | n/a | codebase | Non-skippable, green-only, scoped to the current cycle, YAGNI-gated | corroborated by A42 |
-| A42 | tdd two-hats canon | `han.coding/skills/tdd/references/tdd-loop.md:58-64` | n/a | codebase | "Refactor only when every test is green"; structural change on red is not a refactor | corroborated by A41 |
-| A43 | code-review scope | `han.core/skills/code-review/SKILL.md` | n/a | codebase | Emits advisory refactoring findings; never modifies code | corroborated by A44 |
-| A44 | architectural-analysis and software-architect scope | `han.core/skills/architectural-analysis/SKILL.md`, `han.core/agents/software-architect.md` | n/a | codebase | Recommendations and pseudocode sketches only; never refactors | corroborated by A43 |
-| A45 | han.coding plugin manifest | `han.coding/.claude-plugin/plugin.json` | n/a | codebase | Code-writing plugin, depends on han.core; no refactor skill exists anywhere in the repo | corroborated by repo-wide search |
-| A46 | YAGNI rule | `docs/yagni.md`, `han.core/references/yagni-rule.md` | n/a | codebase | Evidence gate every skill applies before committing items | corroborated by suite-wide references |
+| A41 | tdd refactor step | `han-coding/skills/tdd/SKILL.md:189-209` | n/a | codebase | Non-skippable, green-only, scoped to the current cycle, YAGNI-gated | corroborated by A42 |
+| A42 | tdd two-hats canon | `han-coding/skills/tdd/references/tdd-loop.md:58-64` | n/a | codebase | "Refactor only when every test is green"; structural change on red is not a refactor | corroborated by A41 |
+| A43 | code-review scope | `han-core/skills/code-review/SKILL.md` | n/a | codebase | Emits advisory refactoring findings; never modifies code | corroborated by A44 |
+| A44 | architectural-analysis and software-architect scope | `han-core/skills/architectural-analysis/SKILL.md`, `han-core/agents/software-architect.md` | n/a | codebase | Recommendations and pseudocode sketches only; never refactors | corroborated by A43 |
+| A45 | han-coding plugin manifest | `han-coding/.claude-plugin/plugin.json` | n/a | codebase | Code-writing plugin, depends on han-core; no refactor skill exists anywhere in the repo | corroborated by repo-wide search |
+| A46 | YAGNI rule | `docs/yagni.md`, `han-core/references/yagni-rule.md` | n/a | codebase | Evidence gate every skill applies before committing items | corroborated by suite-wide references |
 | A47 | Doc coverage rule | `docs/templates/coverage-rule.md` | n/a | codebase | Every skill ships a long-form doc in the same PR, no exceptions | corroborated by docs tree |
-| A48 | tdd enforcement limitation | `docs/skills/han.coding/tdd.md:87-91` | n/a | codebase | The plugin model cannot physically enforce observed-X-before-Y; discipline plus shown evidence | corroborated by A41 |
+| A48 | tdd enforcement limitation | `docs/skills/han-coding/tdd.md:87-91` | n/a | codebase | The plugin model cannot physically enforce observed-X-before-Y; discipline plus shown evidence | corroborated by A41 |
 | A49 | GitHub issue #52 | https://github.com/testdouble/han/issues/52 | 2026-06-10 | provided | Triaged feature request for a refactor skill; open questions on scope; no documented friction | single source (the request itself) |
 
 ### A21: arXiv 2411.04444, LLMs in Automated Refactoring (recommendation-bearing)
@@ -222,7 +222,7 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 
 ### A41: tdd refactor step (recommendation-bearing)
 
-- **Link / location:** `han.coding/skills/tdd/SKILL.md:189-209`
+- **Link / location:** `han-coding/skills/tdd/SKILL.md:189-209`
 - **Retrieved:** n/a
 - **Trust class:** codebase
 - **Summary:** The suite's only existing refactoring automation. Non-skippable, runs only on green, scoped to the code the current red-green cycle touched, applies coding standards and ADRs, defers speculative abstraction. Defines the boundary the new skill must respect and the enforcement style (shown evidence, stop rules) it should reuse.
@@ -230,7 +230,7 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 
 ### A43 and A44: review skills' scope (recommendation-bearing)
 
-- **Link / location:** `han.core/skills/code-review/SKILL.md`, `han.core/skills/architectural-analysis/SKILL.md`, `han.core/agents/software-architect.md`
+- **Link / location:** `han-core/skills/code-review/SKILL.md`, `han-core/skills/architectural-analysis/SKILL.md`, `han-core/agents/software-architect.md`
 - **Retrieved:** n/a
 - **Trust class:** codebase
 - **Summary:** Both review skills explicitly never modify code: code review emits advisory findings, and architectural analysis ends at the software-architect's pseudocode sketches. Together with A41 they establish the gap the new skill fills and the input artifacts it should accept.

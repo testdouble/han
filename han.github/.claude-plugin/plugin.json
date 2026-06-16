@@ -1,8 +1,0 @@
-{
-  "name": "han.github",
-  "description": "Github specific extensions to the Han plugin for agentic planning and coding. Provides skills to post code reviews as PR comments, update a PR description with a consistent format, etc.",
-  "version": "1.2.0",
-  "dependencies": [
-    "han.core"
-  ]
-}

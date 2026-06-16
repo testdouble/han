@@ -15,17 +15,17 @@ The skill long-form docs in [docs/skills/](../skills/README.md) are canonical fo
 - **[Plan a feature, end to end](./plan-a-feature.md).** You have a feature idea and want a behavioral spec, an implementation plan, and a list of independently grabbable work items, grounded in evidence rather than your best guess. The longest of these; covers most of the planning skills.
 - **[Triage and investigate a bug](./triage-and-investigate-a-bug.md).** Something is broken or behaving oddly and you want a root cause backed by evidence, not a guess. Or the work is queued rather than immediate, and you want a structured triage document instead.
 - **[Research a decision and capture it](./research-a-decision.md).** Nothing is broken; you have a question (a new library, a hosting move, a build-vs-buy call) and want the options, prior art, and a recommendation, then record the chosen direction as an ADR.
-- **[Provide feedback on Han](./provide-feedback.md).** You want to tell the maintainers something: an idea or complaint you sharpen with `/issue-triage` before posting, or a report on how the skills performed in a session you just ran, summarized and posted by the opt-in `han.feedback` plugin.
+- **[Provide feedback on Han](./provide-feedback.md).** You want to tell the maintainers something: an idea or complaint you sharpen with `/issue-triage` before posting, or a report on how the skills performed in a session you just ran, summarized and posted by the opt-in `han-feedback` plugin.
 
 ### Extending Han with a plugin of your own
 
-- **[Extend Han with plugin dependencies](./extend-han-with-plugin-dependencies.md).** You want to understand how one plugin builds on another through the `dependencies` field, using Han's own `han.core` / `han.github` / `han` split as the worked example. The conceptual half: how the mechanism works and why Han is built this way.
-- **[Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md).** You are ready to stand up a new plugin that depends on `han.core`, add a skill that builds on it, and confirm a clean install pulls Han in alongside it. The hands-on half, with both the suite-internal and own-marketplace paths.
+- **[Extend Han with plugin dependencies](./extend-han-with-plugin-dependencies.md).** You want to understand how one plugin builds on another through the `dependencies` field, using Han's own `han-core` / `han-github` / `han` split as the worked example. The conceptual half: how the mechanism works and why Han is built this way.
+- **[Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md).** You are ready to stand up a new plugin that depends on `han-core`, add a skill that builds on it, and confirm a clean install pulls Han in alongside it. The hands-on half, with both the suite-internal and own-marketplace paths.
 
 ### Authoring a skill or agent with the plugin builder
 
-- **[Create a new skill](./create-a-new-skill.md).** You want to build a new slash command and have it conform to the authoring rules without remembering them. Drives `/skill-builder` through the interview that walks the skill's design tree, then writes and reviews the files. Needs the opt-in `han.plugin-builder` plugin.
-- **[Create a new agent](./create-a-new-agent.md).** You want to build a new subagent (a judgment layer a skill dispatches) and have it conform to the domain-focus, model-selection, and self-containment rules. Drives `/agent-builder` through its design-tree interview, then writes and reviews the single self-contained file. Needs the opt-in `han.plugin-builder` plugin.
+- **[Create a new skill](./create-a-new-skill.md).** You want to build a new slash command and have it conform to the authoring rules without remembering them. Drives `/skill-builder` through the interview that walks the skill's design tree, then writes and reviews the files. Needs the opt-in `han-plugin-builder` plugin.
+- **[Create a new agent](./create-a-new-agent.md).** You want to build a new subagent (a judgment layer a skill dispatches) and have it conform to the domain-focus, model-selection, and self-containment rules. Drives `/agent-builder` through its design-tree interview, then writes and reviews the single self-contained file. Needs the opt-in `han-plugin-builder` plugin.
 
 ## Where to go next
 

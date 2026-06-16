@@ -7,8 +7,8 @@ description: >
   its author, credit every closed issue to the person who opened it, the people
   who contributed to it, and the people who worked on the fix, and link back to
   the full changelog for that version. Han ships as
-  a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.github`,
-  `han.reporting`, and any future `han.*` extension); the skill versions each
+  a parent meta-plugin (`han`) plus child plugins (`han-core`, `han-github`,
+  `han-reporting`, and any future `han-*` extension); the skill versions each
   plugin independently. Use when releasing, cutting a release, shipping a new
   Han version, publishing release notes, or tagging a version. Reads each
   plugin's target version from its plugin.json; when a plugin has not been
@@ -44,12 +44,12 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, Bash(git *
 ### Vocabulary used throughout this skill
 
 - **parent** — the meta-plugin whose name equals the marketplace `name` (`parent plugin name` above, normally `han`). It has no skills or agents of its own; it exists to install the children via `dependencies`. The git tag tracks the parent's version, so the release tag is `v{parent target}`.
-- **children** — every other entry in `marketplace.json.plugins[]` (`han.core`, `han.github`, `han.reporting`, and any future `han.*` plugin). Each child has its own version line, bumped independently of the others.
+- **children** — every other entry in `marketplace.json.plugins[]` (`han-core`, `han-github`, `han-reporting`, and any future `han-*` plugin). Each child has its own version line, bumped independently of the others.
 - **baseline** of a plugin — its version at `prev` (the latest release tag). For the parent this is `prev#`. For a child it is the version recorded in that child's `plugin.json` at `prev`; if the child did not exist at `prev`, it is a **new plugin** (see Step 3).
 - **current** of a plugin — the version in its working-tree `plugin.json`.
 - **target** of a plugin — the version being released for it. The release tag is `v{parent target}`.
 - `prev` is the `latest release tag` (for example `v2.7.0`; the number without the leading `v` is `prev#`). On the first release `prev` is empty.
-- Each plugin's source directory comes from the `source` field in `marketplace.json` (for example `./han.core`), so its `plugin.json` is `{source}/.claude-plugin/plugin.json`. Use `{source}` verbatim in every git command: the `./`-prefixed form works both after a `{ref}:` colon (`git show {prev}:{source}/...`) and as a pathspec (`git diff ... -- {source}/`). Do not strip the leading `./`.
+- Each plugin's source directory comes from the `source` field in `marketplace.json` (for example `./han-core`), so its `plugin.json` is `{source}/.claude-plugin/plugin.json`. Use `{source}` verbatim in every git command: the `./`-prefixed form works both after a `{ref}:` colon (`git show {prev}:{source}/...`) and as a pathspec (`git diff ... -- {source}/`). Do not strip the leading `./`.
 
 ## Step 1: Parse the invocation and check release safety
 
@@ -99,7 +99,7 @@ Enumerate the plugins from `plugins` in Project Context (one parent, plus each c
 
 - **The parent always bumps on every release.** Even when only one child changed, the parent gets a version bump, because every release is a release of the suite.
 - **A child bumps only when its own directory changed in `{range}`.** A child with no changes keeps its version.
-- **A brand-new plugin is not bumped by the release that introduces it.** Its `plugin.json` version is its established baseline. Record the introduction in the changelog, but do not increment. This is the general rule for every future `han.*` extension, not a one-time exception for the current children.
+- **A brand-new plugin is not bumped by the release that introduces it.** Its `plugin.json` version is its established baseline. Record the introduction in the changelog, but do not increment. This is the general rule for every future `han-*` extension, not a one-time exception for the current children.
 
 ### 3a. Classify each plugin
 

@@ -8,7 +8,7 @@
       "name": "han-core",
       "source": {
         "source": "local",
-        "path": "./han.core"
+        "path": "./han-core"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -20,7 +20,7 @@
       "name": "han-planning",
       "source": {
         "source": "local",
-        "path": "./han.planning"
+        "path": "./han-planning"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -32,7 +32,7 @@
       "name": "han-coding",
       "source": {
         "source": "local",
-        "path": "./han.coding"
+        "path": "./han-coding"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -44,7 +44,7 @@
       "name": "han-github",
       "source": {
         "source": "local",
-        "path": "./han.github"
+        "path": "./han-github"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -56,7 +56,7 @@
       "name": "han-reporting",
       "source": {
         "source": "local",
-        "path": "./han.reporting"
+        "path": "./han-reporting"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -68,7 +68,7 @@
       "name": "han-feedback",
       "source": {
         "source": "local",
-        "path": "./han.feedback"
+        "path": "./han-feedback"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -80,7 +80,7 @@
       "name": "han-atlassian",
       "source": {
         "source": "local",
-        "path": "./han.atlassian"
+        "path": "./han-atlassian"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -92,7 +92,7 @@
       "name": "han-plugin-builder",
       "source": {
         "source": "local",
-        "path": "./han.plugin-builder"
+        "path": "./han-plugin-builder"
       },
       "policy": {
         "installation": "AVAILABLE",

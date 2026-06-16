@@ -41,20 +41,20 @@ Han ships as multiple plugins:
 
 | Plugin | Type | What it brings |
 | --- | --- | --- |
-| **`han`** | parent | the parent plugin that brings in `han.core`, `han.planning`, `han.coding`, `han.github`, and `han.reporting` |
-| `han.core` | bundled | research, analysis, and documentation skills plus every agent |
-| `han.planning` | bundled | planning skills you reach for before implementation |
-| `han.coding` | bundled | coding skills you reach for while working in code |
-| `han.github` | bundled | GitHub-facing skills like posting a code review on a PR |
-| `han.reporting` | bundled | reporting skills like the stakeholder summary |
-| `han.feedback` | opt-in | skill for capturing post-session feedback on Han skill runs |
-| `han.atlassian` | opt-in | skills for publishing docs and work items to Atlassian products |
-| `han.linear` | opt-in | skill for publishing work items to Linear (requires a Linear MCP server) |
-| `han.plugin-builder` | opt-in | carries the guidance and skills for building your own skills, agents, and plugins |
+| **`han`** | parent | the parent plugin that brings in `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
+| `han-core` | bundled | research, analysis, and documentation skills plus every agent |
+| `han-planning` | bundled | planning skills you reach for before implementation |
+| `han-coding` | bundled | coding skills you reach for while working in code |
+| `han-github` | bundled | GitHub-facing skills like posting a code review on a PR |
+| `han-reporting` | bundled | reporting skills like the stakeholder summary |
+| `han-feedback` | opt-in | skill for capturing post-session feedback on Han skill runs |
+| `han-atlassian` | opt-in | skills for publishing docs and work items to Atlassian products |
+| `han-linear` | opt-in | skill for publishing work items to Linear (requires a Linear MCP server) |
+| `han-plugin-builder` | opt-in | carries the guidance and skills for building your own skills, agents, and plugins |
 
-Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han.core`, `han.planning`,
-`han.coding`, `han.github`, and `han.reporting`), and is the right choice for most people. If you do
-not want the planning, coding, GitHub, or reporting skills, install `han.core@han` instead, and add other
+Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-core`, `han-planning`,
+`han-coding`, `han-github`, and `han-reporting`), and is the right choice for most people. If you do
+not want the planning, coding, GitHub, or reporting skills, install `han-core@han` instead, and add other
 specific plugins as desired.
 
 For the full picture and a quick "which one do you need?" guide, see [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).
@@ -84,7 +84,7 @@ separately when you want those opt-in packages.
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
 - [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The full suite vs. core only, the
-  `han.planning`, `han.coding`, `han.github`, and `han.reporting` dependencies on `han.core`, and a quick
+  `han-planning`, `han-coding`, `han-github`, and `han-reporting` dependencies on `han-core`, and a quick
   guide to which one to install.
 - [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
 - [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.

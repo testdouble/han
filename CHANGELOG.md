@@ -2,15 +2,15 @@
 
 ## v3.4.1
 
-This release vendors the plugin-building skills, not the guidance alone, when `/guidance init` runs in a repository, and documents the result. The parent `han` plugin moves to 3.4.1 and `han.plugin-builder` moves to 1.2.1. No other plugins change.
+This release vendors the plugin-building skills, not the guidance alone, when `/guidance init` runs in a repository, and documents the result. The parent `han` plugin moves to 3.4.1 and `han-plugin-builder` moves to 1.2.1. No other plugins change.
 
 ### han v3.4.1
 
-The suite-level work is documentation. Two new how-to guides were added: `docs/how-to/create-a-new-skill.md` is the end-to-end recipe for authoring a skill with `/skill-builder`, and `docs/how-to/create-a-new-agent.md` is the same for an agent with `/agent-builder`. `docs/how-to/README.md` was updated to index both. The long-form doc `docs/skills/han.plugin-builder/guidance.md` was updated to describe the new three-skill vendoring behavior of `init` and `update`, and `docs/skills/han.plugin-builder/skill-builder.md` and `docs/skills/han.plugin-builder/agent-builder.md` had minor updates. `README.md` was reorganized, and `CLAUDE.md`, `docs/choosing-a-han-plugin.md`, `docs/skills/README.md`, and `docs/how-to/build-a-plugin-that-depends-on-han.md` were updated to reflect the renamed vendored skills (`plugin-guidance`, `plugin-skill-builder`, `plugin-agent-builder`) and the three-skill vendoring. Em-dashes that had been introduced in the guidance-vendoring docs were removed.
+The suite-level work is documentation. Two new how-to guides were added: `docs/how-to/create-a-new-skill.md` is the end-to-end recipe for authoring a skill with `/skill-builder`, and `docs/how-to/create-a-new-agent.md` is the same for an agent with `/agent-builder`. `docs/how-to/README.md` was updated to index both. The long-form doc `docs/skills/han-plugin-builder/guidance.md` was updated to describe the new three-skill vendoring behavior of `init` and `update`, and `docs/skills/han-plugin-builder/skill-builder.md` and `docs/skills/han-plugin-builder/agent-builder.md` had minor updates. `README.md` was reorganized, and `CLAUDE.md`, `docs/choosing-a-han-plugin.md`, `docs/skills/README.md`, and `docs/how-to/build-a-plugin-that-depends-on-han.md` were updated to reflect the renamed vendored skills (`plugin-guidance`, `plugin-skill-builder`, `plugin-agent-builder`) and the three-skill vendoring. Em-dashes that had been introduced in the guidance-vendoring docs were removed.
 
-### han.plugin-builder v1.2.1
+### han-plugin-builder v1.2.1
 
-The `/guidance` skill's `init` and `update` modes previously vendored only the guidance documents into `.claude/plugin-building-guidance/` plus a path-scoped rule index. They now vendor three skills into `.claude/skills/` under a `plugin-` prefix so they never collide with this plugin's own slash commands: a guidance-only `plugin-guidance` skill whose `references/` directory holds the single in-repo copy of the guidance documents, plus `plugin-skill-builder` and `plugin-agent-builder`, with their names, cross-references, and guidance paths rewritten to the vendored copy. `update` mode now refreshes every vendored skill in full and regenerates the rule index, confirming the skills are installed first. A new asset `han.plugin-builder/skills/guidance/assets/guidance-portable-SKILL.md` holds the portable SKILL.md template used when vendoring the guidance-only skill. `han.plugin-builder/skills/guidance/assets/rule-index-body.md` and `han.plugin-builder/skills/guidance/scripts/init-guidance.sh` were updated to perform this vendoring, and the `guidance` skill's `SKILL.md` description and its Initialization and Update mode text were rewritten to match.
+The `/guidance` skill's `init` and `update` modes previously vendored only the guidance documents into `.claude/plugin-building-guidance/` plus a path-scoped rule index. They now vendor three skills into `.claude/skills/` under a `plugin-` prefix so they never collide with this plugin's own slash commands: a guidance-only `plugin-guidance` skill whose `references/` directory holds the single in-repo copy of the guidance documents, plus `plugin-skill-builder` and `plugin-agent-builder`, with their names, cross-references, and guidance paths rewritten to the vendored copy. `update` mode now refreshes every vendored skill in full and regenerates the rule index, confirming the skills are installed first. A new asset `han-plugin-builder/skills/guidance/assets/guidance-portable-SKILL.md` holds the portable SKILL.md template used when vendoring the guidance-only skill. `han-plugin-builder/skills/guidance/assets/rule-index-body.md` and `han-plugin-builder/skills/guidance/scripts/init-guidance.sh` were updated to perform this vendoring, and the `guidance` skill's `SKILL.md` description and its Initialization and Update mode text were rewritten to match.
 
 ### Commits in this release
 
@@ -26,19 +26,19 @@ Full changelog: https://github.com/testdouble/han/blob/v3.4.1/CHANGELOG.md#v341
 
 ## v3.4.0
 
-This release adds two interview-driven builder skills to the opt-in `han.plugin-builder` plugin: `/skill-builder` and `/agent-builder`. Each one walks a new skill's or agent's design tree decision-by-decision through an evidence-based interview, then reviews the finished files against the plugin-building guidance and applies every fix it finds. The `guidance` skill gains an `update` mode for refreshing an already-vendored copy. The parent `han` plugin moves to 3.4.0 and `han.plugin-builder` moves to 1.2.0. No other plugins change.
+This release adds two interview-driven builder skills to the opt-in `han-plugin-builder` plugin: `/skill-builder` and `/agent-builder`. Each one walks a new skill's or agent's design tree decision-by-decision through an evidence-based interview, then reviews the finished files against the plugin-building guidance and applies every fix it finds. The `guidance` skill gains an `update` mode for refreshing an already-vendored copy. The parent `han` plugin moves to 3.4.0 and `han-plugin-builder` moves to 1.2.0. No other plugins change.
 
 ### han v3.4.0
 
-The suite-level work is documentation for the two new builder skills. Long-form operator docs were added at `docs/skills/han.plugin-builder/skill-builder.md` and `docs/skills/han.plugin-builder/agent-builder.md`, and `docs/skills/han.plugin-builder/guidance.md` was updated for the new `update` mode. The skills index `docs/skills/README.md`, the project map `CLAUDE.md`, `README.md`, and `docs/concepts.md` were updated to list and describe the new builders without a hardcoded count.
+The suite-level work is documentation for the two new builder skills. Long-form operator docs were added at `docs/skills/han-plugin-builder/skill-builder.md` and `docs/skills/han-plugin-builder/agent-builder.md`, and `docs/skills/han-plugin-builder/guidance.md` was updated for the new `update` mode. The skills index `docs/skills/README.md`, the project map `CLAUDE.md`, `README.md`, and `docs/concepts.md` were updated to list and describe the new builders without a hardcoded count.
 
-The long-form doc `docs/skills/han.github/post-code-review-to-pr.md` was corrected to state that the optional fix plan lists findings ordered by priority, Critical first, matching `han.github/skills/post-code-review-to-pr/SKILL.md`.
+The long-form doc `docs/skills/han-github/post-code-review-to-pr.md` was corrected to state that the optional fix plan lists findings ordered by priority, Critical first, matching `han-github/skills/post-code-review-to-pr/SKILL.md`.
 
-### han.plugin-builder v1.2.0
+### han-plugin-builder v1.2.0
 
 Two new skills join the plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #70. `/skill-builder` builds a new Claude Code skill from scratch through a relentless, evidence-based interview that walks the skill's design tree (entity fit, use cases, name, description, workflow steps, tools, progressive-disclosure layout), then reviews the finished `SKILL.md` and any `references/`, `scripts/`, or `assets/` against the plugin-building guidance and applies every fix. `/agent-builder` does the same for a new agent, walking entity fit, domain focus and vocabulary, role identity, anti-patterns, description, model tier, tools, and self-containment, and reviewing the finished self-contained agent file against the guidance. Both explore the target plugin before asking, recommend an answer with its rationale for every question, and never batch questions.
 
-The `guidance` skill gained an `update` mode that refreshes an already-vendored guidance copy and its rule index, alongside the existing serve and `init` modes. `han.plugin-builder/skills/guidance/scripts/init-guidance.sh` was adjusted to support it.
+The `guidance` skill gained an `update` mode that refreshes an already-vendored guidance copy and its rule index, alongside the existing serve and `init` modes. `han-plugin-builder/skills/guidance/scripts/init-guidance.sh` was adjusted to support it.
 
 ### Pull requests in this release
 
@@ -49,17 +49,17 @@ Full changelog: https://github.com/testdouble/han/blob/v3.4.0/CHANGELOG.md#v340
 
 ## v3.3.1
 
-This release refines the `/investigate` skill's output report and the operator doc that describes it. The parent `han` plugin moves to 3.3.1, and `han.coding` moves to 1.0.1. No other plugins change. The work is entirely a restructuring of the investigation report for readability: the report leads with its conclusion, omits sections that have no content, and renames "Final Summary" to "Summary".
+This release refines the `/investigate` skill's output report and the operator doc that describes it. The parent `han` plugin moves to 3.3.1, and `han-coding` moves to 1.0.1. No other plugins change. The work is entirely a restructuring of the investigation report for readability: the report leads with its conclusion, omits sections that have no content, and renames "Final Summary" to "Summary".
 
 ### han v3.3.1
 
-The long-form operator doc `docs/skills/han.coding/investigate.md` was updated to match the reworked `/investigate` output. It now describes the report as conclusion-first (BLUF), documents that sections appear only when they have meaningful content, and reflects the "Summary" rename along with the new section order (Problem Statement, Root Cause Analysis, Planned Fix, followed by supporting detail).
+The long-form operator doc `docs/skills/han-coding/investigate.md` was updated to match the reworked `/investigate` output. It now describes the report as conclusion-first (BLUF), documents that sections appear only when they have meaningful content, and reflects the "Summary" rename along with the new section order (Problem Statement, Root Cause Analysis, Planned Fix, followed by supporting detail).
 
-### han.coding v1.0.1
+### han-coding v1.0.1
 
-The `/investigate` output template in `han.coding/skills/investigate/references/template.md` was restructured for readability. The summary moved to the top of the report and was renamed from "Final Summary" to "Summary", the narrative now runs Problem Statement, Root Cause Analysis, Planned Fix, and the supporting detail below it (Evidence Summary, Validation Results, conditional Coding Standards Reference) is ordered by dependency. A three-way "Summary" heading collision was resolved by renaming the nested subsections to "Root Cause" and "Approach", and the Summary now carries a reader key pointing to where (E#) and (V#) items are defined.
+The `/investigate` output template in `han-coding/skills/investigate/references/template.md` was restructured for readability. The summary moved to the top of the report and was renamed from "Final Summary" to "Summary", the narrative now runs Problem Statement, Root Cause Analysis, Planned Fix, and the supporting detail below it (Evidence Summary, Validation Results, conditional Coding Standards Reference) is ordered by dependency. A three-way "Summary" heading collision was resolved by renaming the nested subsections to "Root Cause" and "Approach", and the Summary now carries a reader key pointing to where (E#) and (V#) items are defined.
 
-Output sections are now lazy-created: the report includes a section only when it has meaningful content, and empty sections are omitted rather than emitting placeholder or "N/A" headings. This is stated at the top of `han.coding/skills/investigate/references/template.md` and enforced in `han.coding/skills/investigate/SKILL.md`, which also notes that fill order is workflow order, not the template's on-page order.
+Output sections are now lazy-created: the report includes a section only when it has meaningful content, and empty sections are omitted rather than emitting placeholder or "N/A" headings. This is stated at the top of `han-coding/skills/investigate/references/template.md` and enforced in `han-coding/skills/investigate/SKILL.md`, which also notes that fill order is workflow order, not the template's on-page order.
 
 ### Commits in this release
 
@@ -72,49 +72,49 @@ Full changelog: https://github.com/testdouble/han/blob/v3.3.1/CHANGELOG.md#v331
 
 ## v3.3.0
 
-This release reorganizes the Han suite: `han.core` was split, with code-writing skills moving to the new `han.coding` (which also adds a new `refactor` skill) and the planning skills moving to the new `han.planning`. Both new plugins depend on `han.core` and are bundled by the `han` meta-plugin, so no bundled-suite installer loses anything. The parent `han` plugin moves to 3.3.0. `han.core` moves to 1.2.0 (eleven skills removed, the specialist agents stay). Two new plugins join the suite at 1.0.0: `han.planning` and `han.coding`. `han.github` moves to 1.2.0, `han.atlassian` to 1.1.0, and `han.plugin-builder` to 1.1.0. `han.reporting` moves to 1.0.1 and `han.feedback` to 1.1.1.
+This release reorganizes the Han suite: `han-core` was split, with code-writing skills moving to the new `han-coding` (which also adds a new `refactor` skill) and the planning skills moving to the new `han-planning`. Both new plugins depend on `han-core` and are bundled by the `han` meta-plugin, so no bundled-suite installer loses anything. The parent `han` plugin moves to 3.3.0. `han-core` moves to 1.2.0 (eleven skills removed, the specialist agents stay). Two new plugins join the suite at 1.0.0: `han-planning` and `han-coding`. `han-github` moves to 1.2.0, `han-atlassian` to 1.1.0, and `han-plugin-builder` to 1.1.0. `han-reporting` moves to 1.0.1 and `han-feedback` to 1.1.1.
 
-### han.planning v1.0.0 (new)
+### han-planning v1.0.0 (new)
 
-A new bundled child plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #67 that depends on `han.core` and is installed by the `han` meta-plugin. It holds the five planning skills moved out of `han.core`: `/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`. It vendors `references/evidence-rule.md` and `references/yagni-rule.md` for those skills.
+A new bundled child plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #67 that depends on `han-core` and is installed by the `han` meta-plugin. It holds the five planning skills moved out of `han-core`: `/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`. It vendors `references/evidence-rule.md` and `references/yagni-rule.md` for those skills.
 
-### han.coding v1.0.0 (new)
+### han-coding v1.0.0 (new)
 
-A new bundled child plugin from [@mxriverlynn](https://github.com/mxriverlynn) that depends on `han.core` and is installed by the `han` meta-plugin. It ships seven skills. Six moved out of `han.core`: `/tdd` (#63), then `/code-review`, `/test-planning`, `/investigate`, `/coding-standard`, and `/architectural-analysis` (#66). One is brand new: `/refactor` (#65), which restructures existing code without changing its behavior through a test-gated loop (a named target, a green suite over that target before any edit, a planned sequence of small named refactorings, the full suite re-run after each step, and hard stop rules on scope spread); its revert mechanic is git-optional and it ships its own context-detection script, with the backing research at `docs/research/refactor-skill-research.md`, closing issue #52. The `/code-review` skill carries a leaner output document from #60: it defers YAGNI procedure detail to the checklist, collapses a repeated dispatcher-tailoring disclaimer, dedupes a size-demotion rule, and compresses verification items that re-quote canonical rules, closing issue #57. The plugin vendors `references/evidence-rule.md` and `references/yagni-rule.md`.
+A new bundled child plugin from [@mxriverlynn](https://github.com/mxriverlynn) that depends on `han-core` and is installed by the `han` meta-plugin. It ships seven skills. Six moved out of `han-core`: `/tdd` (#63), then `/code-review`, `/test-planning`, `/investigate`, `/coding-standard`, and `/architectural-analysis` (#66). One is brand new: `/refactor` (#65), which restructures existing code without changing its behavior through a test-gated loop (a named target, a green suite over that target before any edit, a planned sequence of small named refactorings, the full suite re-run after each step, and hard stop rules on scope spread); its revert mechanic is git-optional and it ships its own context-detection script, with the backing research at `docs/research/refactor-skill-research.md`, closing issue #52. The `/code-review` skill carries a leaner output document from #60: it defers YAGNI procedure detail to the checklist, collapses a repeated dispatcher-tailoring disclaimer, dedupes a size-demotion rule, and compresses verification items that re-quote canonical rules, closing issue #57. The plugin vendors `references/evidence-rule.md` and `references/yagni-rule.md`.
 
 ### han v3.3.0
 
-The headline is the plugin reorganization: `han.coding` and `han.planning` join the suite as bundled child plugins, the `han` meta-plugin now depends on `han.core`, `han.planning`, `han.coding`, `han.github`, and `han.reporting`, and `.claude-plugin/marketplace.json` carries the new plugin entries and version bumps.
+The headline is the plugin reorganization: `han-coding` and `han-planning` join the suite as bundled child plugins, the `han` meta-plugin now depends on `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`, and `.claude-plugin/marketplace.json` carries the new plugin entries and version bumps.
 
 #### Documentation
 
-In #64 the long-form docs under `docs/skills/` and `docs/agents/` were reorganized into per-plugin subfolders (`docs/skills/han.core/`, `docs/skills/han.coding/`, `docs/agents/han.core/`, and the rest), the README plugin list was converted to a table and simplified, and a full doc sweep fixed dispatcher accuracy and filled invocation gaps. In #59 `docs/concepts.md` was corrected to state that skills are model-invocable and not slash-command-only (no Han skill sets `disable-model-invocation`), closing issue #54 opened by [@chipit24](https://github.com/chipit24). The context-footprint investigation was recorded under `docs/plans/reduce-context-footprint/`.
+In #64 the long-form docs under `docs/skills/` and `docs/agents/` were reorganized into per-plugin subfolders (`docs/skills/han-core/`, `docs/skills/han-coding/`, `docs/agents/han-core/`, and the rest), the README plugin list was converted to a table and simplified, and a full doc sweep fixed dispatcher accuracy and filled invocation gaps. In #59 `docs/concepts.md` was corrected to state that skills are model-invocable and not slash-command-only (no Han skill sets `disable-model-invocation`), closing issue #54 opened by [@chipit24](https://github.com/chipit24). The context-footprint investigation was recorded under `docs/plans/reduce-context-footprint/`.
 
 #### Repository maintenance
 
 The `.claude/` repo-maintenance tooling was updated so `han-update-documentation` discovers skill roots dynamically.
 
-### han.core v1.2.0
+### han-core v1.2.0
 
-Eleven skills were removed from `han.core` and now live in the two new plugins: the five planning skills moved to `han.planning` and the six code-writing skills moved to `han.coding`. What remains in `han.core` is `/issue-triage`, `/research`, `/architectural-decision-record`, `/gap-analysis`, `/project-discovery`, `/project-documentation`, `/runbook`, plus all the specialist agents. The plugin description was updated to point planning skills at `han.planning`. In #58 the heaviest agent descriptions (`data-engineer`, `devops-engineer`, `information-architect`, `junior-developer`, `on-call-engineer`, `project-manager`, `system-architect`, `user-experience-designer`) and several skill descriptions were trimmed of methodology name-drops to cut always-loaded context, closing issue #51.
+Eleven skills were removed from `han-core` and now live in the two new plugins: the five planning skills moved to `han-planning` and the six code-writing skills moved to `han-coding`. What remains in `han-core` is `/issue-triage`, `/research`, `/architectural-decision-record`, `/gap-analysis`, `/project-discovery`, `/project-documentation`, `/runbook`, plus all the specialist agents. The plugin description was updated to point planning skills at `han-planning`. In #58 the heaviest agent descriptions (`data-engineer`, `devops-engineer`, `information-architect`, `junior-developer`, `on-call-engineer`, `project-manager`, `system-architect`, `user-experience-designer`) and several skill descriptions were trimmed of methodology name-drops to cut always-loaded context, closing issue #51.
 
-### han.github v1.2.0
+### han-github v1.2.0
 
 In #53 from [@afrerich](https://github.com/afrerich), the `/work-items-to-issues` screenshot upload (`scripts/upload-screenshots.sh`) gained a protected-branch fallback: when a direct write to the default branch is rejected with HTTP 409, it commits the PNGs to an assets branch, opens a pull request, and prints the PR URL, while the embedded image URLs always name the default branch so inline designs render once that assets PR merges. Assets are now namespaced by a `<feature-slug>` segment (the kebab-cased plan-folder basename) so two features publishing to the same repo do not collide. PUT failures are now propagated and add/update is gated on GET status. The change touched `references/issue-template.md`, `reference-artifact-inventory.md`, `screenshot-embed-rules.md`, `work-items-file-format.md`, and the `work-items-to-issues` `SKILL.md`.
 
-### han.atlassian v1.1.0
+### han-atlassian v1.1.0
 
 A new skill, `plan-a-feature-to-confluence`, from [@mxriverlynn](https://github.com/mxriverlynn) in #62: it runs `/plan-a-feature` and then publishes the spec as a parent Confluence page with each companion artifact (decision log, team findings, technical notes) as a child page, in a single create pass. Its sibling skills `markdown-to-confluence`, `project-documentation-to-confluence`, and `work-items-to-jira` each got minor edits to add bidirectional cross-references.
 
-### han.plugin-builder v1.1.0
+### han-plugin-builder v1.1.0
 
 A new reference file, `agent-building-guidelines/agent-description-length.md`, captures the agent description-length budget from issue #51 (#58). `skill-building-guidance/skill-composition.md` was rebuilt around orchestration versus data-fetch, with edits to `troubleshooting.md`, `agent-domain-focus.md`, `agent-model-selection.md`, `iterative-plugin-development.md`, `optional-git-repositories.md`, `specialization-and-model-selection.md`, the guidance `SKILL.md`, and `rule-index-body.md`.
 
-### han.reporting v1.0.1
+### han-reporting v1.0.1
 
 Doc-sweep wording edits to `html-summary/SKILL.md` and `stakeholder-summary/SKILL.md`: minor description and context changes only, no behavior change.
 
-### han.feedback v1.1.1
+### han-feedback v1.1.1
 
 A doc-sweep description trim to `han-feedback/SKILL.md`, no behavior change.
 
@@ -132,54 +132,54 @@ A doc-sweep description trim to `han-feedback/SKILL.md`, no behavior change.
 - Clarify skill invocation model in concepts.md (#54) (#59) — [@mxriverlynn](https://github.com/mxriverlynn)
 - issue 57: code review output size (#60) — [@mxriverlynn](https://github.com/mxriverlynn)
 - Han.atlassian: plan a feature in confluence (#62) — [@mxriverlynn](https://github.com/mxriverlynn)
-- Add han.coding and move tdd skill into it (#63) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Add han-coding and move tdd skill into it (#63) — [@mxriverlynn](https://github.com/mxriverlynn)
 - Nest skill and agent docs into per-plugin folders (#64) — [@mxriverlynn](https://github.com/mxriverlynn)
-- Add refactor skill to han.coding (#65) — [@mxriverlynn](https://github.com/mxriverlynn)
-- Moving skills into han.coding (#66) — [@mxriverlynn](https://github.com/mxriverlynn)
-- Plugin organizing: han.planning (#67) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Add refactor skill to han-coding (#65) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Moving skills into han-coding (#66) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Plugin organizing: han-planning (#67) — [@mxriverlynn](https://github.com/mxriverlynn)
 
 Full changelog: https://github.com/testdouble/han/blob/v3.3.0/CHANGELOG.md#v330
 
 ## v3.2.0
 
-This release introduces two new opt-in child plugins to the Han suite and patches `han.core`. The parent `han` plugin moves to 3.2.0. `han.core` moves to 1.1.1. Two new plugins join the suite at 1.0.0: `han.atlassian` and `han.plugin-builder`. `han.github` (1.1.0), `han.reporting` (1.0.0), and `han.feedback` (1.1.0) are unchanged.
+This release introduces two new opt-in child plugins to the Han suite and patches `han-core`. The parent `han` plugin moves to 3.2.0. `han-core` moves to 1.1.1. Two new plugins join the suite at 1.0.0: `han-atlassian` and `han-plugin-builder`. `han-github` (1.1.0), `han-reporting` (1.0.0), and `han-feedback` (1.1.0) are unchanged.
 
 ### han v3.2.0
 
-The contributor authoring guidance moved out of `docs/guidance/` into `han.plugin-builder/skills/guidance/references/`, which is why the docs tree shows large deletions. The Han-specific contributor docs that are not general authoring guidance, such as `docs/semantic-versioning.md`, moved up into `docs/` directly. A full doc sweep synced the `docs/skills/` and `docs/agents/` long-form docs with their sources, and new operator-facing skill docs were added for the new plugins' skills: `docs/skills/markdown-to-confluence.md`, `docs/skills/project-documentation-to-confluence.md`, and `docs/skills/work-items-to-jira.md`, with `docs/skills/README.md` updated to match. Two research reports landed under `docs/research/`: `guidance-currency-review.md` and `guidance-update-plan.md`. Hardcoded plugin, skill, and agent counts were removed from the living docs, including `docs/concepts.md` and the README. `.claude-plugin/marketplace.json` carries the version bumps and the two new plugin entries.
+The contributor authoring guidance moved out of `docs/guidance/` into `han-plugin-builder/skills/guidance/references/`, which is why the docs tree shows large deletions. The Han-specific contributor docs that are not general authoring guidance, such as `docs/semantic-versioning.md`, moved up into `docs/` directly. A full doc sweep synced the `docs/skills/` and `docs/agents/` long-form docs with their sources, and new operator-facing skill docs were added for the new plugins' skills: `docs/skills/markdown-to-confluence.md`, `docs/skills/project-documentation-to-confluence.md`, and `docs/skills/work-items-to-jira.md`, with `docs/skills/README.md` updated to match. Two research reports landed under `docs/research/`: `guidance-currency-review.md` and `guidance-update-plan.md`. Hardcoded plugin, skill, and agent counts were removed from the living docs, including `docs/concepts.md` and the README. `.claude-plugin/marketplace.json` carries the version bumps and the two new plugin entries.
 
-### han.core v1.1.1
+### han-core v1.1.1
 
 Author and reviewer attribution was removed from the output templates of `/architectural-decision-record`, `/coding-standard`, and `/project-documentation`. The generated documents no longer carry `Authors` or `Reviewers` metadata blocks, the skills no longer prompt for author information, and the now-unused `git config user.name` and `whoami` context injection, along with the matching `Bash(git config *)` and `Bash(whoami)` permissions, were dropped from those three `SKILL.md` files. `/iterative-plan-review` got minor tweaks to its reference files `iteration-checklist.md` and `review-iteration-history-template.md`.
 
-### han.atlassian v1.0.0 (new)
+### han-atlassian v1.0.0 (new)
 
-A new opt-in, Atlassian-facing plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #49. It depends on `han.core` and requires a configured Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own. It ships three skills. `markdown-to-confluence` publishes a local Markdown file to a user-specified Confluence page. `project-documentation-to-confluence` runs the core `/project-documentation` skill and then publishes the result to Confluence. `work-items-to-jira` creates one Jira ticket per slice from a work-items file and supports nesting items under an epic or a story via `--parent`; it ships the reference files `jira-ticket-template.md`, `reference-artifact-inventory.md`, and `work-items-file-format.md`. The two publish skills offer a live, draft, or local-only choice.
+A new opt-in, Atlassian-facing plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #49. It depends on `han-core` and requires a configured Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own. It ships three skills. `markdown-to-confluence` publishes a local Markdown file to a user-specified Confluence page. `project-documentation-to-confluence` runs the core `/project-documentation` skill and then publishes the result to Confluence. `work-items-to-jira` creates one Jira ticket per slice from a work-items file and supports nesting items under an epic or a story via `--parent`; it ships the reference files `jira-ticket-template.md`, `reference-artifact-inventory.md`, and `work-items-file-format.md`. The two publish skills offer a live, draft, or local-only choice.
 
-### han.plugin-builder v1.0.0 (new)
+### han-plugin-builder v1.0.0 (new)
 
 A new opt-in, dependency-free plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #50 that packages the contributor guidance for building Claude Code skills, agents, and plugins. The `han` meta-plugin does not bundle it; install it on its own. It ships the `guidance` skill, which answers authoring questions and, when run with `init`, vendors the full guidance set into a repo at `.claude/plugin-building-guidance/` and writes a path-scoped rule index at `.claude/rules/plugin-building-guidance.md` so the right guidance surfaces while editing skill and agent files. The guidance body (skill-building guidance, agent-building guidelines, the marketplace and plugin configuration reference, and templates) moved here out of `docs/guidance/` and was generalized to be repo-agnostic.
 
 ### Pull requests in this release
 
-- Add han.plugin-builder plugin and skills for plugin building guidance (#50) — [@mxriverlynn](https://github.com/mxriverlynn)
-- Create han.atlassian plugin with first skills (#49) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Add han-plugin-builder plugin and skills for plugin building guidance (#50) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Create han-atlassian plugin with first skills (#49) — [@mxriverlynn](https://github.com/mxriverlynn)
 
 Full changelog: https://github.com/testdouble/han/blob/v3.2.0/CHANGELOG.md#v320
 
 ## v3.1.0
 
-This release ships behavior and documentation updates across the Han suite, driven by planning-protocol feedback and a fix to how the swarming skills dispatch agents. The parent `han` plugin moves to 3.1.0. Three child plugins change: `han.core` to 1.1.0 (planning, review, and documentation skill updates plus the agent-dispatch namespacing fix), `han.github` to 1.1.0 (`/update-pr-description` template conformance), and `han.feedback` to 1.1.0 (named default rating dimensions). `han.reporting` is unchanged at 1.0.0.
+This release ships behavior and documentation updates across the Han suite, driven by planning-protocol feedback and a fix to how the swarming skills dispatch agents. The parent `han` plugin moves to 3.1.0. Three child plugins change: `han-core` to 1.1.0 (planning, review, and documentation skill updates plus the agent-dispatch namespacing fix), `han-github` to 1.1.0 (`/update-pr-description` template conformance), and `han-feedback` to 1.1.0 (named default rating dimensions). `han-reporting` is unchanged at 1.0.0.
 
 ### han v3.1.0
 
-The agent-dispatch namespacing fix from [@mxriverlynn](https://github.com/mxriverlynn) in #44 rippled through the suite documentation. All 29 docs under `docs/agents/`, plus `docs/concepts.md`, the `docs/skills/` long-form docs, and `docs/templates/agent-long-form-template.md`, now show agent invocation examples with the fully-qualified `han.core:` prefix and align with the skill behavior changes in `han.core`.
+The agent-dispatch namespacing fix from [@mxriverlynn](https://github.com/mxriverlynn) in #44 rippled through the suite documentation. All 29 docs under `docs/agents/`, plus `docs/concepts.md`, the `docs/skills/` long-form docs, and `docs/templates/agent-long-form-template.md`, now show agent invocation examples with the fully-qualified `han-core:` prefix and align with the skill behavior changes in `han-core`.
 
-New contributor guidance was added. `han.plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-length.md` and a note in `skill-description-frontmatter.md` document the skill description length target (#45), and `han.plugin-builder/skills/guidance/references/skill-building-guidance/agent-dispatch-namespacing.md` records the namespacing rule (#44).
+New contributor guidance was added. `han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-length.md` and a note in `skill-description-frontmatter.md` document the skill description length target (#45), and `han-plugin-builder/skills/guidance/references/skill-building-guidance/agent-dispatch-namespacing.md` records the namespacing rule (#44).
 
 Two repo-maintenance skills under `.claude/skills/` changed. `han-release` now leads the release body with the summary and drops the redundant version heading. `han-update-documentation` was corrected for the five-plugin layout, including its audit-checklist and scope-mapping references (#47). Investigation and plan records for issues #40 and #44 were recorded under `docs/plans/`, and `marketplace.json` carries the version bumps.
 
-### han.core v1.1.0
+### han-core v1.1.0
 
 #### Planning-protocol feedback (issue #40)
 
@@ -191,17 +191,17 @@ Feedback from [@mjansen401](https://github.com/mjansen401) in #40 drove three ch
 
 #### Agent-dispatch namespacing (issue #44)
 
-The swarming skills now dispatch agents by their fully-qualified `han.core:agent-name`, not a bare `agent-name` or a `han:` prefix (#44, #46). This touched the `code-review`, `gap-analysis`, `iterative-plan-review`, `architectural-analysis`, and `plan-*` skill files. Several skills (`architectural-analysis`, `gap-analysis`, `plan-a-feature`, `plan-a-phased-build`) also gained report or document templates.
+The swarming skills now dispatch agents by their fully-qualified `han-core:agent-name`, not a bare `agent-name` or a `han:` prefix (#44, #46). This touched the `code-review`, `gap-analysis`, `iterative-plan-review`, `architectural-analysis`, and `plan-*` skill files. Several skills (`architectural-analysis`, `gap-analysis`, `plan-a-feature`, `plan-a-phased-build`) also gained report or document templates.
 
 #### Skill descriptions
 
 Five skill descriptions were trimmed under the 1024-character target (#45).
 
-### han.github v1.1.0
+### han-github v1.1.0
 
 `/update-pr-description` now conforms to a repository's GitHub pull-request template when one is present, through a new `references/template-conformance.md` reference (#48). `references/formatting-rules.md` was updated alongside it, and `post-code-review-to-pr` received a one-line change.
 
-### han.feedback v1.1.0
+### han-feedback v1.1.0
 
 `/han-feedback` now names its default rating dimensions instead of leaving them unspecified, from feedback by [@mjansen401](https://github.com/mjansen401) in #40 (R2).
 
@@ -224,31 +224,31 @@ Full changelog: https://github.com/testdouble/han/blob/v3.1.0/CHANGELOG.md#v310
 
 ## v3.0.0
 
-This release restructures Han from a single plugin into a parent meta-plugin (`han` 3.0.0) that installs its capabilities through child plugins, each versioned on its own. Four child plugins ship at 1.0.0: `han.core` (planning, review, investigation, and documentation), `han.github` (GitHub-facing skills), `han.reporting` (stakeholder and HTML reporting), and the opt-in `han.feedback`. Installing `han` now pulls in `han.core`, `han.github`, and `han.reporting` through dependencies. `han.feedback` is installed separately.
+This release restructures Han from a single plugin into a parent meta-plugin (`han` 3.0.0) that installs its capabilities through child plugins, each versioned on its own. Four child plugins ship at 1.0.0: `han-core` (planning, review, investigation, and documentation), `han-github` (GitHub-facing skills), `han-reporting` (stakeholder and HTML reporting), and the opt-in `han-feedback`. Installing `han` now pulls in `han-core`, `han-github`, and `han-reporting` through dependencies. `han-feedback` is installed separately.
 
 ### han v3.0.0
 
-`han` is now a meta-plugin with no skills or agents of its own. It installs `han.core`, `han.github`, and `han.reporting` through its `dependencies`. Anyone who installed the previous single plugin needs to reinstall against the new layout, which is why this is a major release.
+`han` is now a meta-plugin with no skills or agents of its own. It installs `han-core`, `han-github`, and `han-reporting` through its `dependencies`. Anyone who installed the previous single plugin needs to reinstall against the new layout, which is why this is a major release.
 
-Documentation was reworked to match the split. Paths throughout the docs were repointed from the old `plugin/` tree to `han.core` and `han.github`. Added a "Choosing a Han Plugin" page and reorganized the README path-finder into categories. Added how-to guides for extending Han with your own plugin via dependencies, closing the request from [@mxriverlynn](https://github.com/mxriverlynn) in #31. Made `CONTRIBUTING.md` plugin-aware and stopped hardcoding skill and agent counts across the docs so the indexes no longer drift.
+Documentation was reworked to match the split. Paths throughout the docs were repointed from the old `plugin/` tree to `han-core` and `han-github`. Added a "Choosing a Han Plugin" page and reorganized the README path-finder into categories. Added how-to guides for extending Han with your own plugin via dependencies, closing the request from [@mxriverlynn](https://github.com/mxriverlynn) in #31. Made `CONTRIBUTING.md` plugin-aware and stopped hardcoding skill and agent counts across the docs so the indexes no longer drift.
 
-### han.core v1.0.0
+### han-core v1.0.0
 
 New plugin at 1.0.0. Packages the core of Han: the planning, building, investigation, review, discovery, and documentation skills, plus the specialist agents that previously shipped under the single `han` plugin. This release also adds a `/runbook` skill for operational scenarios and an `on-call-engineer` agent.
 
 Fixed `/gap-analysis` based on feedback from [@mjansen401](https://github.com/mjansen401) in #34, and documented the resulting behavior changes in its long-form doc. Corrected `/plan-a-feature`, `/plan-implementation`, `/issue-triage`, and `/research` based on feedback from [@mjansen401](https://github.com/mjansen401) in #36: `/plan-a-feature` gained weight-based decision-log triggering and connected-source resolution, `/plan-implementation` gained synthesis-audit parity and an altitude rule, `/issue-triage` added a `/research` route and omits inapplicable fields, and `/research` now right-sizes its report and hands off pure requests.
 
-### han.github v1.0.0
+### han-github v1.0.0
 
 New plugin at 1.0.0. Packages the GitHub-facing skills. Renamed the old `gh-pr-review` skill to `/post-code-review-to-pr` and moved `/update-pr-description` in. Added a new `/work-items-to-issues` skill that publishes each item in a work-items file as a GitHub issue, links within-repo blockers, and leaves the label and assignee optional.
 
-### han.reporting v1.0.0
+### han-reporting v1.0.0
 
 New plugin at 1.0.0. Packages the reporting skills. Moved `/stakeholder-summary` in and added a new `/html-summary` skill that converts a stakeholder summary into a single self-contained HTML executive report, styled with a Test Double-derived palette and inlined Mermaid diagrams.
 
-### han.feedback v1.0.0
+### han-feedback v1.0.0
 
-New plugin at 1.0.0. An opt-in plugin packaging the `/han-feedback` skill, which captures structured post-session feedback across the whole `han.*` family and can post it as a GitHub issue to testdouble/han. It depends on `han.core` but is deliberately left out of the `han` meta-plugin, so you install it on its own.
+New plugin at 1.0.0. An opt-in plugin packaging the `/han-feedback` skill, which captures structured post-session feedback across the whole `han-*` family and can post it as a GitHub issue to testdouble/han. It depends on `han-core` but is deliberately left out of the `han` meta-plugin, so you install it on its own.
 
 ### Issues closed in this release
 
@@ -329,7 +329,7 @@ This release bundles three refactors that tighten how shipped skills and the rep
 
 ### Repo-local rules realignment under `.claude/rules/`
 
-The per-topic guidance under `.claude/rules/skills/` and `.claude/rules/agents/` previously consisted of symlinks pointing at individual pages in `han.plugin-builder/skills/guidance/references/skill-building-guidance/` and `han.plugin-builder/skills/guidance/references/agent-building-guidelines/`. Those symlinks are deleted and replaced with two canonical index files: `.claude/rules/coding-standards/plugin-skills.md` and `.claude/rules/coding-standards/plugin-agents.md`. Each index lists and links the underlying topic guidance directly rather than mirroring each page as its own symlink. This brings the repo's own `.claude/rules/` layout in line with the index-file template that `/coding-standard` now produces, so Han's internal setup matches the mechanism the shipped skill writes for other projects. (PR #15)
+The per-topic guidance under `.claude/rules/skills/` and `.claude/rules/agents/` previously consisted of symlinks pointing at individual pages in `han-plugin-builder/skills/guidance/references/skill-building-guidance/` and `han-plugin-builder/skills/guidance/references/agent-building-guidelines/`. Those symlinks are deleted and replaced with two canonical index files: `.claude/rules/coding-standards/plugin-skills.md` and `.claude/rules/coding-standards/plugin-agents.md`. Each index lists and links the underlying topic guidance directly rather than mirroring each page as its own symlink. This brings the repo's own `.claude/rules/` layout in line with the index-file template that `/coding-standard` now produces, so Han's internal setup matches the mechanism the shipped skill writes for other projects. (PR #15)
 
 ### Pull requests in this release
 
@@ -363,7 +363,7 @@ Full changelog: https://github.com/testdouble/han/blob/v2.6.1/CHANGELOG.md#v261
 
 ## v2.6.0
 
-A new `/stakeholder-summary` skill ships, taking the shipped catalog from 19 to 20 skills with agents holding at 22. A repo-local `/han-update-documentation` skill is added under `.claude/skills/` for keeping Han's own documentation in sync with shipped entities, mirroring the internal-only framing of `/han-release`. Completed planning artifacts under `han.plugin-builder/skills/guidance/references/plans/`, `han.plugin-builder/skills/guidance/references/rfcs/`, and `docs/plans/` are removed: roughly 4,470 lines of historical scratch material that has served its purpose.
+A new `/stakeholder-summary` skill ships, taking the shipped catalog from 19 to 20 skills with agents holding at 22. A repo-local `/han-update-documentation` skill is added under `.claude/skills/` for keeping Han's own documentation in sync with shipped entities, mirroring the internal-only framing of `/han-release`. Completed planning artifacts under `han-plugin-builder/skills/guidance/references/plans/`, `han-plugin-builder/skills/guidance/references/rfcs/`, and `docs/plans/` are removed: roughly 4,470 lines of historical scratch material that has served its purpose.
 
 ### New skill
 
@@ -386,9 +386,9 @@ A repo-maintenance skill `/han-update-documentation` is added at `.claude/skills
 
 Completed planning artifacts are deleted from the repo now that the work they tracked has shipped or been superseded:
 
-- `han.plugin-builder/skills/guidance/references/plans/agentic-plugin-support/research.md`
-- `han.plugin-builder/skills/guidance/references/plans/han/planning-token-burn-reduction.md`
-- `han.plugin-builder/skills/guidance/references/rfcs/rename-plugin-marketplace-dist.md`
+- `han-plugin-builder/skills/guidance/references/plans/agentic-plugin-support/research.md`
+- `han-plugin-builder/skills/guidance/references/plans/han/planning-token-burn-reduction.md`
+- `han-plugin-builder/skills/guidance/references/rfcs/rename-plugin-marketplace-dist.md`
 - `docs/plans/code-review-guardrails/` (full directory)
 - `docs/plans/research-skill/` (full directory)
 
@@ -402,7 +402,7 @@ Full changelog: https://github.com/testdouble/han/blob/v2.6.0/CHANGELOG.md#v260
 
 ## v2.5.0
 
-A new `/research` skill and its `research-analyst` agent ship, taking the catalog to 19 skills and 22 agents. `/coding-standard` now writes its output as path-scoped Claude Code rules under `.claude/rules/` rather than a freestanding document, and the same path-scoped-rules pattern is applied repo-wide so contributor guidance under `han.plugin-builder/skills/guidance/references/` reaches Claude Code automatically. A GitHub pull request template lands with a review checklist that hands off to `/update-pr-description`, and the README drops its duplicated skills list in favor of the canonical catalog under `docs/skills/`.
+A new `/research` skill and its `research-analyst` agent ship, taking the catalog to 19 skills and 22 agents. `/coding-standard` now writes its output as path-scoped Claude Code rules under `.claude/rules/` rather than a freestanding document, and the same path-scoped-rules pattern is applied repo-wide so contributor guidance under `han-plugin-builder/skills/guidance/references/` reaches Claude Code automatically. A GitHub pull request template lands with a review checklist that hands off to `/update-pr-description`, and the README drops its duplicated skills list in favor of the canonical catalog under `docs/skills/`.
 
 ### New skill
 
@@ -418,7 +418,7 @@ A new `/research` skill and its `research-analyst` agent ship, taking the catalo
 
 ### Contributor guidance as Claude Code rules
 
-A new `.claude/rules/` directory contains roughly 28 symlinks mirroring `han.plugin-builder/skills/guidance/references/skill-building-guidance/*.md`, `han.plugin-builder/skills/guidance/references/agent-building-guidelines/*.md`, and `han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`. Path-scoped rules let Claude Code load the relevant guidance automatically when an operator edits a skill or agent under `plugin/`, so contributor conventions reach the model without the operator pasting them into context.
+A new `.claude/rules/` directory contains roughly 28 symlinks mirroring `han-plugin-builder/skills/guidance/references/skill-building-guidance/*.md`, `han-plugin-builder/skills/guidance/references/agent-building-guidelines/*.md`, and `han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`. Path-scoped rules let Claude Code load the relevant guidance automatically when an operator edits a skill or agent under `plugin/`, so contributor conventions reach the model without the operator pasting them into context.
 
 ### Pull request template
 
@@ -455,12 +455,12 @@ Three new plugin skills ship, taking the catalog from 15 to 18: `/issue-triage` 
 
 ### Agent model tiers
 
-`junior-developer`, `information-architect`, and `user-experience-designer` move from `model: sonnet` to `model: opus` in their agent frontmatter. All three perform synthesis over unbounded input, and `han.plugin-builder/skills/guidance/references/specialization-and-model-selection.md` already listed them under "Keep opus" with an opus rationale in their long-form docs, but their frontmatter had shipped as `sonnet` since the initial repo extraction. This aligns the implementation with the documented design intent. It is a real behavior and cost change whenever any of these three agents is dispatched.
+`junior-developer`, `information-architect`, and `user-experience-designer` move from `model: sonnet` to `model: opus` in their agent frontmatter. All three perform synthesis over unbounded input, and `han-plugin-builder/skills/guidance/references/specialization-and-model-selection.md` already listed them under "Keep opus" with an opus rationale in their long-form docs, but their frontmatter had shipped as `sonnet` since the initial repo extraction. This aligns the implementation with the documented design intent. It is a real behavior and cost change whenever any of these three agents is dispatched.
 
 ### Documentation
 
-- [`docs/skills/issue-triage.md`](./docs/skills/han.core/issue-triage.md): output-contract block now mirrors `plugin/skills/issue-triage/references/template.md` (an H1 summary title with H2 section headers), and the cost-and-latency note now reflects that the skill reads both `CLAUDE.md` and `project-discovery.md` to sharpen Suspected Areas.
-- [`docs/skills/plan-work-items.md`](./docs/skills/han.core/plan-work-items.md): adds the missing `reference-artifact-inventory.md` link.
+- [`docs/skills/issue-triage.md`](./docs/skills/han-core/issue-triage.md): output-contract block now mirrors `plugin/skills/issue-triage/references/template.md` (an H1 summary title with H2 section headers), and the cost-and-latency note now reflects that the skill reads both `CLAUDE.md` and `project-discovery.md` to sharpen Suspected Areas.
+- [`docs/skills/plan-work-items.md`](./docs/skills/han-core/plan-work-items.md): adds the missing `reference-artifact-inventory.md` link.
 - `README.md`: the "Maintenance" heading typo is fixed.
 - `plugin/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`: descriptions synced; they now mention planning and issue triage.
 - `CLAUDE.md`: the "Current version" line is corrected.
@@ -515,8 +515,8 @@ The `/code-review` skill is recalibrated so its first pass produces the output t
 
 ### Documentation
 
-- [`docs/skills/code-review.md`](./docs/skills/han.core/code-review.md) is updated to mirror the new step structure (Step 1.5, the Step 7 sub-steps, Step 9.0), the per-agent dispatcher tailoring, the size-based demotion model, the YAGNI two-pass procedure, the full agent task ID format set, and the new YAGNI section in the output description.
-- The four affected agent docs ([`docs/agents/structural-analyst.md`](./docs/agents/han.core/structural-analyst.md), [`docs/agents/behavioral-analyst.md`](./docs/agents/han.core/behavioral-analyst.md), [`docs/agents/junior-developer.md`](./docs/agents/han.core/junior-developer.md), [`docs/agents/edge-case-explorer.md`](./docs/agents/han.core/edge-case-explorer.md)) each carry a one-paragraph note explaining the `/code-review` Step 3.5 dispatcher tailoring and confirming the agents' default behavior in other skills is unchanged.
+- [`docs/skills/code-review.md`](./docs/skills/han-core/code-review.md) is updated to mirror the new step structure (Step 1.5, the Step 7 sub-steps, Step 9.0), the per-agent dispatcher tailoring, the size-based demotion model, the YAGNI two-pass procedure, the full agent task ID format set, and the new YAGNI section in the output description.
+- The four affected agent docs ([`docs/agents/structural-analyst.md`](./docs/agents/han-core/structural-analyst.md), [`docs/agents/behavioral-analyst.md`](./docs/agents/han-core/behavioral-analyst.md), [`docs/agents/junior-developer.md`](./docs/agents/han-core/junior-developer.md), [`docs/agents/edge-case-explorer.md`](./docs/agents/han-core/edge-case-explorer.md)) each carry a one-paragraph note explaining the `/code-review` Step 3.5 dispatcher tailoring and confirming the agents' default behavior in other skills is unchanged.
 - [`docs/yagni.md`](./docs/yagni.md) `/code-review` table row is updated to reflect the two-pass procedure and the Mode B / Mode C YAGNI skip.
 - [`docs/skills/gh-pr-review.md`](./docs/skills/gh-pr-review.md) gains a Key Concept noting that the wrapped `/code-review` Step 1.5 plumbs the PR description into every agent's `$branch_context`.
 
@@ -554,7 +554,7 @@ Section 4 (Swarm Findings) is now rendered by default and is omitted only when t
 
 ### Documentation
 
-- [`docs/skills/gap-analysis.md`](./docs/skills/han.core/gap-analysis.md) — updated TL;DR, key concepts, sizing table, cost-and-latency model, "In more detail" section, and Sources / Related Documentation to reflect the opt-out posture.
+- [`docs/skills/gap-analysis.md`](./docs/skills/han-core/gap-analysis.md) — updated TL;DR, key concepts, sizing table, cost-and-latency model, "In more detail" section, and Sources / Related Documentation to reflect the opt-out posture.
 - Cross-references updated in [`docs/concepts.md`](./docs/concepts.md), [`docs/quickstart.md`](./docs/quickstart.md), [`docs/sizing.md`](./docs/sizing.md), [`docs/skills/README.md`](./docs/skills/README.md), and the agent docs for `adversarial-validator`, `evidence-based-investigator`, `junior-developer`, `project-manager`, and `gap-analyzer`.
 
 ## v2.0.1
@@ -604,7 +604,7 @@ Both skills replace the `{YYYYMMDDHHmmss}-{name}.md` pattern with `{top-level}[-
 
 ### Documentation
 
-- [`docs/skills/coding-standard.md`](./docs/skills/han.core/coding-standard.md) and [`docs/skills/architectural-decision-record.md`](./docs/skills/han.core/architectural-decision-record.md) updated to describe the hierarchical filename pattern, the discovery step, and the new shape of the produced filename.
+- [`docs/skills/coding-standard.md`](./docs/skills/han-core/coding-standard.md) and [`docs/skills/architectural-decision-record.md`](./docs/skills/han-core/architectural-decision-record.md) updated to describe the hierarchical filename pattern, the discovery step, and the new shape of the produced filename.
 
 ## v1.6.1
 
@@ -660,7 +660,7 @@ Run a gap analysis between a *current state* and a *desired state* — for examp
 - Optionally launches a swarm of validator/augmenter agents to corroborate or enrich findings. Swarm size (small / medium / large) is recommended based on gap count and category mix, but it never runs without the user opting in.
 - Ships with a report template (`references/gap-analysis-report-template.md`) designed by the `information-architect` agent.
 
-See [`/gap-analysis` documentation](./docs/skills/han.core/gap-analysis.md).
+See [`/gap-analysis` documentation](./docs/skills/han-core/gap-analysis.md).
 
 ### `/plan-a-phased-build` — turn context into a sequenced build plan
 
@@ -672,10 +672,10 @@ Take any source of context (a gap analysis, PRD, design doc, feature spec, conve
 - Each phase cross-references back to the source artifact for traceability.
 - The `information-architect` agent reviews the rendered document for findability and progressive comprehension.
 
-See [`/plan-a-phased-build` documentation](./docs/skills/han.core/plan-a-phased-build.md).
+See [`/plan-a-phased-build` documentation](./docs/skills/han-core/plan-a-phased-build.md).
 
 ### Documentation
 
-- New skill docs: [`gap-analysis.md`](./docs/skills/han.core/gap-analysis.md), [`plan-a-phased-build.md`](./docs/skills/han.core/plan-a-phased-build.md)
+- New skill docs: [`gap-analysis.md`](./docs/skills/han-core/gap-analysis.md), [`plan-a-phased-build.md`](./docs/skills/han-core/plan-a-phased-build.md)
 - [Skills Index](./docs/skills/README.md) and [Quickstart](./docs/quickstart.md) updated to surface both
 - Minor link/version touch-ups across existing skill docs

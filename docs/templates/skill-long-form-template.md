@@ -1,8 +1,8 @@
 # /{skill-name}
 
-Operator documentation for the `/{skill-name}` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han.core/skills/{skill-name}/SKILL.md`](../../han.core/skills/{skill-name}/SKILL.md).
+Operator documentation for the `/{skill-name}` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`{plugin}/skills/{skill-name}/SKILL.md`](../../../{plugin}/skills/{skill-name}/SKILL.md).
 
-> See also: [Plugin landing page](../../README.md) · [All skills](./README.md) · [All agents](../agents/README.md) · [YAGNI](../yagni.md)
+> See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
 
 ## TL;DR
 
@@ -26,8 +26,8 @@ Operator documentation for the `/{skill-name}` skill in the han plugin. This doc
 
 **Do not invoke for:**
 
-- **{Adjacent task 1}.** Use [`/{sibling-skill}`](./{sibling-skill}.md) instead.
-- **{Adjacent task 2}.** Use [`/{sibling-skill}`](./{sibling-skill}.md) instead.
+- **{Adjacent task 1}.** Use [`/{sibling-skill}`](../{plugin}/{sibling-skill}.md) instead.
+- **{Adjacent task 2}.** Use [`/{sibling-skill}`](../{plugin}/{sibling-skill}.md) instead.
 
 ## How to invoke it
 
@@ -57,7 +57,7 @@ Example prompts:
 
 ## YAGNI (when applicable)
 
-{If this skill produces or reviews an artifact that can accrete speculative items (plan steps, abstractions, infrastructure additions, observability hooks, configuration knobs, ADRs, coding standards, tests, or build phases), describe the YAGNI posture this skill takes: which items it gates, which named anti-patterns force a finding, whether the rule is enforcing (defer-by-default) or advisory-only, and how the deferral surfaces in the artifact. Cross-reference [YAGNI](../yagni.md). Skills that do not produce or review such artifacts can omit this section.}
+{If this skill produces or reviews an artifact that can accrete speculative items (plan steps, abstractions, infrastructure additions, observability hooks, configuration knobs, ADRs, coding standards, tests, or build phases), describe the YAGNI posture this skill takes: which items it gates, which named anti-patterns force a finding, whether the rule is enforcing (defer-by-default) or advisory-only, and how the deferral surfaces in the artifact. Cross-reference [YAGNI](../../yagni.md). Skills that do not produce or review such artifacts can omit this section.}
 
 ## Cost and latency
 
@@ -79,8 +79,8 @@ URL: {url}
 
 ## Related documentation
 
-- [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [`{sibling-skill}`](./{sibling-skill}.md). {Why and when they pair}
-- [`{agent-this-skill-dispatches}`](../agents/{agent}.md). {Role in this skill}
-- [{build-guideline link}](../../han.plugin-builder/skills/guidance/references/skill-building-guidance/{file}.md). {Relevance}
+- [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
+- [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [`{sibling-skill}`](../{plugin}/{sibling-skill}.md). {Why and when they pair}
+- [`{agent-this-skill-dispatches}`](../../agents/han-core/{agent}.md). {Role in this skill}
+- [{build-guideline link}](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/{file}.md). {Relevance}

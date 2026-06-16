@@ -1,0 +1,5 @@
+{
+  "name": "han-core",
+  "description": "Evidence-based research, architecture, and documentation skills for software projects, plus the adversarial specialist agents the rest of the suite dispatches. Includes issue triage, open-ended research, architectural decision records (ADRs), gap analysis, project discovery, project and feature documentation, and runbooks. The feature- and implementation-planning skills (plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review) live in han-planning, which depends on han-core.",
+  "version": "1.2.0"
+}

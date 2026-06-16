@@ -1,0 +1,8 @@
+{
+  "name": "han-reporting",
+  "description": "Reporting and summary skills for the Han suite. Turns feature specifications into plain-language stakeholder summaries (also called executive or business summaries) with diagrams, for sharing with non-technical stakeholders before implementation kicks off.",
+  "version": "1.0.1",
+  "dependencies": [
+    "han-core"
+  ]
+}

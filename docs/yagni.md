@@ -10,7 +10,7 @@ YAGNI (*You Aren't Gonna Need It*) is the second foundational mechanic of the ha
 - **Two gates.** Gate 1 asks *is this needed now?* (the evidence test). Gate 2 asks *is there a strictly simpler version that satisfies the same evidence?* (the simpler-version test).
 - **Default is defer.** When no evidence applies, items move to a `## Deferred (YAGNI)` section in the artifact with a named *reopen-when* trigger. They are never silently dropped.
 - **You always win.** Skills and agents make the cost of inclusion visible; you can direct an item to be kept against the rule. The point is conscious choice, not bureaucratic exclusion.
-- **The canonical rule lives in [`han.core/references/yagni-rule.md`](../han.core/references/yagni-rule.md).** Every YAGNI-aware skill and agent loads that file at runtime. This page is the operator-facing summary.
+- **The canonical rule lives in [`han-core/references/yagni-rule.md`](../han-core/references/yagni-rule.md).** Every YAGNI-aware skill and agent loads that file at runtime. This page is the operator-facing summary.
 - **See also [`docs/evidence.md`](./evidence.md).** YAGNI's evidence test answers *is there any evidence at all to justify including this item?* The companion evidence rule answers *once an item passes that test, how strong is the evidence and what do you do when no evidence exists?* The two rules work together.
 
 ## Why YAGNI matters
@@ -52,7 +52,7 @@ If a simpler version satisfies the same evidence, the simpler version replaces t
 
 ## Named anti-patterns (auto-flag as YAGNI candidates)
 
-The full list lives in [`yagni-rule.md`](../han.core/references/yagni-rule.md). Highlights:
+The full list lives in [`yagni-rule.md`](../han-core/references/yagni-rule.md). Highlights:
 
 - "We might need…" / "for future flexibility" / "in case we want to…"
 - "When we scale" / "at scale" / "for performance" without measured pressure.
@@ -79,24 +79,24 @@ YAGNI applies in two postures: **producing** (when a skill drafts an artifact) a
 
 | Surface | What YAGNI gates |
 |---|---|
-| [`/plan-a-feature`](./skills/han.planning/plan-a-feature.md) | Every behavior, edge case, alternate flow, and coordination in the spec. Speculative behaviors land in a `## Deferred (YAGNI)` section. |
-| [`/plan-implementation`](./skills/han.planning/plan-implementation.md) | Every plan step, abstraction, infrastructure addition, observability hook, and rollout step. A YAGNI sweep runs before the plan is committed. |
-| [`/plan-a-phased-build`](./skills/han.planning/plan-a-phased-build.md) | Every phase. Phases whose only justification is "completeness of the roadmap" get deferred or merged into a smaller adjacent phase. |
-| [`/iterative-plan-review`](./skills/han.planning/iterative-plan-review.md) | A YAGNI review pillar runs alongside correctness, completeness, and risk. Every uncited item raises a `Category: YAGNI candidate` finding. |
-| [`/code-review`](./skills/han.coding/code-review.md) | YAGNI is **advisory-only** and runs as a two-pass procedure (Pass 1 evidence test against Gate 1; Pass 2 named anti-pattern match). Each finding records the failing evidence type, the matched anti-pattern, and the simpler form considered. Findings surface speculative additions but do not block a clean review on their own; the reviewer's posture is "make the cost of inclusion visible," not "reject the change." Skipped in Mode B (uncommitted changes) and Mode C (no git) unless explicitly requested via the focus-areas argument, since no diff exists to distinguish introduced code from pre-existing code. |
-| [`/coding-standard`](./skills/han.coding/coding-standard.md) | A standard is justified only when the project does the thing the standard governs *today* and the standard solves a real, concrete problem the team is currently hitting. |
-| [`/test-planning`](./skills/han.coding/test-planning.md) | A YAGNI sweep removes speculative tests: for code paths that don't exist, hypothetical adversaries, or branches the change doesn't touch. |
-| [`/architectural-decision-record`](./skills/han.core/architectural-decision-record.md) | An ADR requires a **forcing function** today: a real decision being made now, with consequences. ADRs about decisions that don't have a forcing function are YAGNI. |
-| [`/tdd`](./skills/han.coding/tdd.md) | Enforcing in the refactor step and the test list. A scenario joins the test list only with evidence; speculative scenarios are deferred with a reopen trigger. Refactor removes duplication but defers speculative abstraction (the Rule of Three). Correctness-and-placement standards still apply in green. |
-| [`project-manager`](./agents/han.core/project-manager.md) | The YAGNI Evidence Gate protocol. Every committed proposal in a facilitated discussion must cite evidence; uncited proposals are challenged or deferred. |
-| [`junior-developer`](./agents/han.core/junior-developer.md) | The YAGNI Evidence Sweep protocol. Flags hidden assumptions and uncited additions during stress-testing. |
-| [`software-architect`](./agents/han.core/software-architect.md) | Architectural recommendations cite the change-history or coupling evidence that justifies the recommendation. Speculative abstractions are deferred. |
-| [`system-architect`](./agents/han.core/system-architect.md) | Cross-service topology changes cite the seam-crossing evidence (data ownership conflict, failure-domain leak, integration shape) that justifies them. |
-| [`test-engineer`](./agents/han.core/test-engineer.md) | The Speculative Test rule. Tests for code paths that don't exist, hypothetical adversaries, or unreachable branches are flagged. |
-| [`edge-case-explorer`](./agents/han.core/edge-case-explorer.md) | The Speculative Edge Case rule. Edge cases for code paths that don't exist or for inputs that internal callers fully control are flagged. |
-| [`data-engineer`](./agents/han.core/data-engineer.md) | The Speculative Data Machinery rule. Indexes for queries that don't run, audit columns nobody reads, denormalization for read patterns that don't exist. |
-| [`devops-engineer`](./agents/han.core/devops-engineer.md) | The Premature Operational Machinery rule. Runbooks for alerts that have never fired, SLOs for traffic that doesn't yet exist, multi-region infrastructure for unproven single-region workloads. |
-| [`on-call-engineer`](./agents/han.core/on-call-engineer.md) | The Premature Operability Machinery rule, applied at the application source line. Circuit breakers, bulkheads, idempotency tables, kill switches, dead-letter queues, and custom error types are deferred when no evidence shows the system needs them now (named upstream finding, existing code path that breaks, three current uses, measured incident, applicable regulation). |
+| [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md) | Every behavior, edge case, alternate flow, and coordination in the spec. Speculative behaviors land in a `## Deferred (YAGNI)` section. |
+| [`/plan-implementation`](./skills/han-planning/plan-implementation.md) | Every plan step, abstraction, infrastructure addition, observability hook, and rollout step. A YAGNI sweep runs before the plan is committed. |
+| [`/plan-a-phased-build`](./skills/han-planning/plan-a-phased-build.md) | Every phase. Phases whose only justification is "completeness of the roadmap" get deferred or merged into a smaller adjacent phase. |
+| [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md) | A YAGNI review pillar runs alongside correctness, completeness, and risk. Every uncited item raises a `Category: YAGNI candidate` finding. |
+| [`/code-review`](./skills/han-coding/code-review.md) | YAGNI is **advisory-only** and runs as a two-pass procedure (Pass 1 evidence test against Gate 1; Pass 2 named anti-pattern match). Each finding records the failing evidence type, the matched anti-pattern, and the simpler form considered. Findings surface speculative additions but do not block a clean review on their own; the reviewer's posture is "make the cost of inclusion visible," not "reject the change." Skipped in Mode B (uncommitted changes) and Mode C (no git) unless explicitly requested via the focus-areas argument, since no diff exists to distinguish introduced code from pre-existing code. |
+| [`/coding-standard`](./skills/han-coding/coding-standard.md) | A standard is justified only when the project does the thing the standard governs *today* and the standard solves a real, concrete problem the team is currently hitting. |
+| [`/test-planning`](./skills/han-coding/test-planning.md) | A YAGNI sweep removes speculative tests: for code paths that don't exist, hypothetical adversaries, or branches the change doesn't touch. |
+| [`/architectural-decision-record`](./skills/han-core/architectural-decision-record.md) | An ADR requires a **forcing function** today: a real decision being made now, with consequences. ADRs about decisions that don't have a forcing function are YAGNI. |
+| [`/tdd`](./skills/han-coding/tdd.md) | Enforcing in the refactor step and the test list. A scenario joins the test list only with evidence; speculative scenarios are deferred with a reopen trigger. Refactor removes duplication but defers speculative abstraction (the Rule of Three). Correctness-and-placement standards still apply in green. |
+| [`project-manager`](./agents/han-core/project-manager.md) | The YAGNI Evidence Gate protocol. Every committed proposal in a facilitated discussion must cite evidence; uncited proposals are challenged or deferred. |
+| [`junior-developer`](./agents/han-core/junior-developer.md) | The YAGNI Evidence Sweep protocol. Flags hidden assumptions and uncited additions during stress-testing. |
+| [`software-architect`](./agents/han-core/software-architect.md) | Architectural recommendations cite the change-history or coupling evidence that justifies the recommendation. Speculative abstractions are deferred. |
+| [`system-architect`](./agents/han-core/system-architect.md) | Cross-service topology changes cite the seam-crossing evidence (data ownership conflict, failure-domain leak, integration shape) that justifies them. |
+| [`test-engineer`](./agents/han-core/test-engineer.md) | The Speculative Test rule. Tests for code paths that don't exist, hypothetical adversaries, or unreachable branches are flagged. |
+| [`edge-case-explorer`](./agents/han-core/edge-case-explorer.md) | The Speculative Edge Case rule. Edge cases for code paths that don't exist or for inputs that internal callers fully control are flagged. |
+| [`data-engineer`](./agents/han-core/data-engineer.md) | The Speculative Data Machinery rule. Indexes for queries that don't run, audit columns nobody reads, denormalization for read patterns that don't exist. |
+| [`devops-engineer`](./agents/han-core/devops-engineer.md) | The Premature Operational Machinery rule. Runbooks for alerts that have never fired, SLOs for traffic that doesn't yet exist, multi-region infrastructure for unproven single-region workloads. |
+| [`on-call-engineer`](./agents/han-core/on-call-engineer.md) | The Premature Operability Machinery rule, applied at the application source line. Circuit breakers, bulkheads, idempotency tables, kill switches, dead-letter queues, and custom error types are deferred when no evidence shows the system needs them now (named upstream finding, existing code path that breaks, three current uses, measured incident, applicable regulation). |
 
 ## The Deferred (YAGNI) section format
 
@@ -129,7 +129,7 @@ When no items are deferred, the section is omitted entirely. Don't write empty s
 
 ## Related reading
 
-- [`han.core/references/yagni-rule.md`](../han.core/references/yagni-rule.md). The canonical rule that every YAGNI-aware skill and agent loads at runtime.
+- [`han-core/references/yagni-rule.md`](../han-core/references/yagni-rule.md). The canonical rule that every YAGNI-aware skill and agent loads at runtime.
 - [Concepts](./concepts.md). The skill / agent split. YAGNI is a property of skills that produce artifacts and agents that review them.
 - [Sizing](./sizing.md). The other foundational mechanic. Sizing decides *how much review* an artifact gets; YAGNI decides *what survives* the review.
 - The skill long-form docs and agent long-form docs cited in the table above each name where they apply YAGNI in their own protocol.

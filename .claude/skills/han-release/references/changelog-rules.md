@@ -4,7 +4,7 @@
 
 ## Per-plugin structure (from v3.0.0 onward)
 
-Han ships as a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.github`, `han.reporting`, and any future `han.*` extension). Each plugin carries its own version. The changelog mirrors that: every change is attributed to the plugin whose directory it touched, never grouped together across plugins.
+Han ships as a parent meta-plugin (`han`) plus child plugins (`han-core`, `han-github`, `han-reporting`, and any future `han-*` extension). Each plugin carries its own version. The changelog mirrors that: every change is attributed to the plugin whose directory it touched, never grouped together across plugins.
 
 A release section is laid out as:
 
@@ -13,8 +13,8 @@ A release section is laid out as:
 
 {one-paragraph plain-language summary of the release. It names the parent's
  new version and lists every changed or new child with its version, for
- example: "han 3.1.0 ships a new GitHub skill (han.github 1.1.0) and a fix to
- the code-review roster (han.core 1.0.1)." han.reporting is unchanged.}
+ example: "han 3.1.0 ships a new GitHub skill (han-github 1.1.0) and a fix to
+ the code-review roster (han-core 1.0.1)." han-reporting is unchanged.}
 
 ### han v{parent target}
 
@@ -22,13 +22,13 @@ A release section is laid out as:
  marketplace and meta-plugin changes. Use #### topic subsections when there is
  more than one distinct thread.}
 
-### han.core v{version}
+### han-core v{version}
 
-{only han.core's changes. #### topic subsections as needed.}
+{only han-core's changes. #### topic subsections as needed.}
 
-### han.github v{version}
+### han-github v{version}
 
-{only han.github's changes.}
+{only han-github's changes.}
 
 ### Deferred (YAGNI)
 
@@ -48,10 +48,10 @@ Full changelog: {blob link — see release-notes-format.md}
 Rules for the per-plugin sub-headings:
 
 - **One `### {plugin name} v{version}` sub-heading per plugin that changed.** The parent (`### han v{parent target}`) always appears, because the parent always bumps. A child appears only when it changed in this release, or when it is newly introduced.
-- **A newly introduced child** gets a sub-heading marked as new, for example `### han.reporting v1.0.0 (new)`, describing what the plugin is and what it ships at introduction. Its version is the established baseline and does not increment for the release that introduces it.
+- **A newly introduced child** gets a sub-heading marked as new, for example `### han-reporting v1.0.0 (new)`, describing what the plugin is and what it ships at introduction. Its version is the established baseline and does not increment for the release that introduces it.
 - **An unchanged child is omitted entirely.** No empty sub-heading.
 - **Topic detail within a plugin uses `####`.** Reserve `###` for plugin sub-headings and the two release-level bookkeeping subsections (`### Deferred (YAGNI)`, `### Pull requests in this release`).
-- **Attribute by directory.** A change to a file under `han.github/` belongs in the `### han.github` section. Repo-root changes that live outside any plugin directory (`docs/`, `README.md`, `CONTRIBUTING.md`) are suite-level and belong in the `### han` section.
+- **Attribute by directory.** A change to a file under `han-github/` belongs in the `### han-github` section. Repo-root changes that live outside any plugin directory (`docs/`, `README.md`, `CONTRIBUTING.md`) are suite-level and belong in the `### han` section.
 
 Releases before `v3.0.0` predate the split and use the older flat layout (descriptive `###` topic subsections directly under `## v{X.Y.Z}`). Leave those historical sections exactly as they are.
 
@@ -129,7 +129,7 @@ Hard constraints from [`docs/writing-voice.md`](../../../../docs/writing-voice.m
 - `use`, never `leverage` or `utilize`.
 - No `just`, no `actually`.
 - None of: "It's worth noting", "Importantly", "delve", "foster", "synergy", "underscore", "pivotal", "showcase", "robust" (as a vague positive), "paradigm shift", "game changer", "Let's dive in", "deep dive".
-- Name skills, agents, files, and flags specifically (`/tdd`, `han.core/skills/code-review/SKILL.md`), never generically.
+- Name skills, agents, files, and flags specifically (`/tdd`, `han-core/skills/code-review/SKILL.md`), never generically.
 - Reference internal paths with backticks. State what changed plainly; do not hedge with "arguably" or "one might say".
 - Every `@mention` of a person is a profile link `[@{login}](https://github.com/{login})`, never flat text (see "Linked mentions" above).
 

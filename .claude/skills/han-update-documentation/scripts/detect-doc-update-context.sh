@@ -11,11 +11,11 @@
 #   default-branch   resolved default branch name (no remote prefix), or "none"
 #   skill-roots-start / skill-roots-end
 #                    wrap a newline-separated list of discovered skill roots
-#                    (every han.*/skills directory except the plugin-builder's,
+#                    (every han-*/skills directory except the plugin-builder's,
 #                    whose guidance skill is authoring guidance, not a documented
 #                    product skill). Discovered dynamically so a newly added
 #                    plugin needs no edit to this skill.
-#   agent-root       the single directory that holds agents (han.core/agents),
+#   agent-root       the single directory that holds agents (han-core/agents),
 #                    or "none" if not found
 #   changed-files-start / changed-files-end
 #                    (only when mode=branch and there are changes) wrap a
@@ -53,15 +53,15 @@ DEFAULT="${DEFAULT_FULL#origin/}"
 echo "default-branch: $DEFAULT"
 
 # Discover the documented skill roots and the agent root dynamically, so adding
-# a new product plugin needs no edit here. A skill root is any han.*/skills
+# a new product plugin needs no edit here. A skill root is any han-*/skills
 # directory; the plugin-builder's guidance skill is authoring guidance audited
 # under the guidance-docs branch, not a docs/skills/ product skill, so exclude it.
 echo "skill-roots-start"
-( cd "$ROOT" && find . -maxdepth 2 -type d -name skills -path './han.*/skills' \
-    ! -path './han.plugin-builder/skills' 2>/dev/null | sed 's|^\./||' | sort )
+( cd "$ROOT" && find . -maxdepth 2 -type d -name skills -path './han-*/skills' \
+    ! -path './han-plugin-builder/skills' 2>/dev/null | sed 's|^\./||' | sort )
 echo "skill-roots-end"
 
-AGENT_ROOT=$( cd "$ROOT" && find . -maxdepth 2 -type d -name agents -path './han.*/agents' \
+AGENT_ROOT=$( cd "$ROOT" && find . -maxdepth 2 -type d -name agents -path './han-*/agents' \
     2>/dev/null | sed 's|^\./||' | sort | head -1 )
 echo "agent-root: ${AGENT_ROOT:-none}"
 

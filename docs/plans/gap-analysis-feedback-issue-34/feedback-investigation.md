@@ -17,7 +17,7 @@ Four "what didn't work" items in [issue #34](https://github.com/testdouble/han/i
 
 ### E1: The validator brief gives no class for provenance / same-session-artifact observations
 
-- **Source:** `han.core/skills/gap-analysis/SKILL.md` (Step 5, Validator brief) and `han.core/agents/adversarial-validator.md` (Validation Strategy 4)
+- **Source:** `han-core/skills/gap-analysis/SKILL.md` (Step 5, Validator brief) and `han-core/agents/adversarial-validator.md` (Validation Strategy 4)
 - **Finding:**
   ```
   # SKILL.md Step 5 — Validator brief:
@@ -33,7 +33,7 @@ Four "what didn't work" items in [issue #34](https://github.com/testdouble/han/i
 
 ### E2: Section 4 of the report has no channel for process/workflow notes
 
-- **Source:** `han.core/skills/gap-analysis/references/gap-analysis-report-template.md` (Section 4) and `SKILL.md` (Step 6, render rule 7)
+- **Source:** `han-core/skills/gap-analysis/references/gap-analysis-report-template.md` (Section 4) and `SKILL.md` (Step 6, render rule 7)
 - **Finding:**
   ```
   # Template Section 4 has exactly three signal groups + a confidence table:
@@ -47,7 +47,7 @@ Four "what didn't work" items in [issue #34](https://github.com/testdouble/han/i
 
 ### E3: The second-round trigger keys on a raw count, with no escape when the delta is already covered
 
-- **Source:** `han.core/skills/gap-analysis/SKILL.md` (Step 5.5, Conditional Second Round)
+- **Source:** `han-core/skills/gap-analysis/SKILL.md` (Step 5.5, Conditional Second Round)
 - **Finding:**
   ```
   - **Trigger A:** the swarm returned ≥ 3 `proposed_new_gap` entries.
@@ -61,7 +61,7 @@ Four "what didn't work" items in [issue #34](https://github.com/testdouble/han/i
 
 ### E4: Actor enumeration is delegated to the junior-developer brief; the skill never derives actors from the artifact
 
-- **Source:** `han.core/skills/gap-analysis/SKILL.md` (Step 1, Step 5 junior-developer brief) and the Operating Principles bullet on the actor sweep
+- **Source:** `han-core/skills/gap-analysis/SKILL.md` (Step 1, Step 5 junior-developer brief) and the Operating Principles bullet on the actor sweep
 - **Finding:**
   ```
   # Step 5 junior-developer brief:
@@ -77,7 +77,7 @@ Four "what didn't work" items in [issue #34](https://github.com/testdouble/han/i
 
 ### E5: There is no purpose-conditioned prioritized view, and prioritization is (correctly) forbidden in the analyzer
 
-- **Source:** `han.core/agents/gap-analyzer.md` (Rules), `han.core/skills/gap-analysis/SKILL.md` (Step 1, Step 6), `gap-analysis-report-template.md` (Section 1)
+- **Source:** `han-core/agents/gap-analyzer.md` (Rules), `han-core/skills/gap-analysis/SKILL.md` (Step 1, Step 6), `gap-analysis-report-template.md` (Section 1)
 - **Finding:**
   ```
   # gap-analyzer.md Rules:
@@ -116,9 +116,9 @@ The common thread holds: these are gaps in the skill's own synthesis layer, not 
 | Standard | Source | Applies To |
 |----------|--------|------------|
 | Voice profile: no em-dashes, direct second person, plainspoken mentor tone, no hype | `docs/writing-voice.md` (referenced from `CLAUDE.md`) | All prose added to `SKILL.md` and the template |
-| YAGNI / evidence rule: do not add speculative sections; every addition needs evidence | `CLAUDE.md` ("YAGNI applies to docs too"), `han.core/references/evidence-rule.md` | Every new step, trigger clause, and template slot below — each must trace to an E-item |
-| Skill authoring: progressive disclosure, context hygiene, deterministic flowchartable steps | `han.plugin-builder/skills/guidance/references/skill-building-guidance/`, `han.plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md` | New Step 1.5, Step 5.5 escape clause, Step 6 render rules |
-| Analyzer stays neutral: no prioritization, no impact assessment | `han.core/agents/gap-analyzer.md` (Rules) | Fix 4 must keep prioritization in the skill, never push it into the analyzer |
+| YAGNI / evidence rule: do not add speculative sections; every addition needs evidence | `CLAUDE.md` ("YAGNI applies to docs too"), `han-core/references/evidence-rule.md` | Every new step, trigger clause, and template slot below — each must trace to an E-item |
+| Skill authoring: progressive disclosure, context hygiene, deterministic flowchartable steps | `han-plugin-builder/skills/guidance/references/skill-building-guidance/`, `han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md` | New Step 1.5, Step 5.5 escape clause, Step 6 render rules |
+| Analyzer stays neutral: no prioritization, no impact assessment | `han-core/agents/gap-analyzer.md` (Rules) | Fix 4 must keep prioritization in the skill, never push it into the analyzer |
 | One canonical source per concept; long-form doc is canonical | `CLAUDE.md` (Conventions) | `docs/skills/gap-analysis.md` must be updated to match every behavior change below |
 
 ## Planned Fix
@@ -131,7 +131,7 @@ Add the four missing synthesis responsibilities — surface the provided-source 
 
 ### Changes
 
-#### `han.core/skills/gap-analysis/SKILL.md`
+#### `han-core/skills/gap-analysis/SKILL.md`
 
 - **Change (Fix 1 — surface the provided-source caveat once, not per gap):** In Step 5's validator brief, keep provenance scrutiny fully intact (the `evidence-rule.md` **provided** trust class requires it). Add a clause: when a provenance concern applies *uniformly to the desired-state artifact as a whole* (e.g., "the desired state is a provided, uncommitted, same-session source"), return it **once** as a single artifact-level `analysis_caveat`, not repeated as a per-gap verdict on every gap that rests on that artifact. Provenance concerns specific to an *individual* gap's evidence still return as that gap's `contradicted`/`inconclusive` verdict. Add one Operating-Principles line: artifact-level analysis caveats are surfaced once and do not feed per-gap confidence (they bear on the whole report equally, so per-gap weighting would double-count one fact).
 - **Evidence:** (E1), (E2); corrected by (V2), (V7)
@@ -153,14 +153,14 @@ Add the four missing synthesis responsibilities — surface the provided-source 
 - **Standards:** Analyzer stays neutral (prioritization lives only in the skill, as a granted, labeled judgment); optional-sections-not-load-bearing (the block is additive; the neutral magnitude summary and Sections 1–2 still stand alone); consistent with the existing synthesis judgments the skill already makes (thematic clustering in render rule 5, confidence derivation in render rule 3).
 - **Details:** The block carries an explicit label — "Where to start (skill judgment for your stated purpose: {purpose})" — so it is never mistaken for the analyzer's neutral output or for the plain-language magnitude summary. It is plain language (IDs + reasons, no file paths), adds no new gaps, and changes no categories or confidence. Placement: a distinctly-titled block in Section 1 after the magnitude table, *not* folded into the neutral "shape of the gap" bullets, and *not* in swarm-gated Section 4 (so it survives the `no swarm` path).
 
-#### `han.core/agents/gap-analyzer.md`
+#### `han-core/agents/gap-analyzer.md`
 
 - **Change:** Add one line to the full-analysis output format (a neutral "Actors and modes observed in the desired state" note under Scope or Correspondence) so the analyzer reports the actor/mode signals it already encountered while building the correspondence map. Do **not** touch the Rules (no prioritization, no impact assessment), the gap taxonomy, or the neutral posture.
 - **Evidence:** (E4); scope corrected by (V4)
 - **Standards:** Analyzer neutrality is explicitly preserved — this reports an observation, it does not classify, rank, or weight; writing voice.
 - **Details:** Surfaces what the analyzer's Step 2 surface-area pass already sees, so the skill (Fix 3) can seed junior-developer without a divergent second read.
 
-#### `han.core/skills/gap-analysis/references/gap-analysis-report-template.md`
+#### `han-core/skills/gap-analysis/references/gap-analysis-report-template.md`
 
 - **Change:** (a) Add an **Analysis caveats** subsection at the end of Section 4 (after Augmentations, outside the Confidence summary) for artifact-level `analysis_caveat` items — rendered once as plain reminders, explicitly not gap findings. (b) Add an optional **Where to start** block in Section 1 after the magnitude table, shown only when a purpose was captured: a distinctly-titled, purpose-labeled mini-list of the most-blocking gaps with their `G-NNN` IDs and one-line reasons. Mark both as optional in the front-matter `sections_included` guidance and in "How to Read This Report."
 - **Evidence:** (E2), (E5); corrected by (V1), (V2)

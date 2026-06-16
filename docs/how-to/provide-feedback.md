@@ -1,6 +1,6 @@
 # How To: Provide Feedback on Han
 
-A walkthrough for getting feedback to the Han maintainers in a shape they can act on. There are two kinds of feedback and two paths. When you have an idea, a feature request, or a rough "this felt off" observation, you sharpen it with [`/issue-triage`](../skills/han.core/issue-triage.md) before you post it. When you have just finished a working session and want to report how the skills performed, you install the opt-in `han.feedback` plugin and let [`/han-feedback`](../skills/han.feedback/han-feedback.md) summarize the session and post it for you.
+A walkthrough for getting feedback to the Han maintainers in a shape they can act on. There are two kinds of feedback and two paths. When you have an idea, a feature request, or a rough "this felt off" observation, you sharpen it with [`/issue-triage`](../skills/han-core/issue-triage.md) before you post it. When you have just finished a working session and want to report how the skills performed, you install the opt-in `han-feedback` plugin and let [`/han-feedback`](../skills/han-feedback/han-feedback.md) summarize the session and post it for you.
 
 > See also: [How-to index](./README.md) · [Choosing a Han plugin](../choosing-a-han-plugin.md) · [Skills](../skills/README.md)
 
@@ -23,7 +23,7 @@ Either way the maintainers receive feedback that is specific enough to act on ra
 
 Use this path when the feedback is not tied to a single session: a feature you wish Han had, a skill that behaved in a way that surprised you, a rough idea you want to float. The problem with raw ideas is that they are usually missing the context a maintainer needs to act, and you cannot always see what is missing from the inside. `/issue-triage` is built for exactly that gap. It classifies the input, then lists what is absent for that type of input before anyone tries to act on it.
 
-1. **Run [`/issue-triage`](../skills/han.core/issue-triage.md) with your idea or observation, in your own words.** Do not polish it first. The skill is designed to work on messy, incomplete input, and cleaning it up changes what counts as missing information. A template that works well:
+1. **Run [`/issue-triage`](../skills/han-core/issue-triage.md) with your idea or observation, in your own words.** Do not polish it first. The skill is designed to work on messy, incomplete input, and cleaning it up changes what counts as missing information. A template that works well:
 
     > `/issue-triage` *"{the idea or complaint, exactly as it occurs to you}"*
 
@@ -45,17 +45,17 @@ Use this path when the feedback is not tied to a single session: a feature you w
 
 Use this path right after a working session where one or more Han skills ran and you have observations about how they performed. The `han-feedback` skill reads the session, synthesizes structured feedback, and offers to post it for you. It ships in a separate plugin you install once.
 
-1. **Install the `han.feedback` plugin.** The skill lives in an opt-in plugin that the `han` meta-plugin does not bundle, so installing the full suite does not give it to you. Install it on its own:
+1. **Install the `han-feedback` plugin.** The skill lives in an opt-in plugin that the `han` meta-plugin does not bundle, so installing the full suite does not give it to you. Install it on its own:
 
-    > `/plugin install han.feedback@han`
+    > `/plugin install han-feedback@han`
 
-    It depends on `han.core`, so Claude Code pulls core along if you do not already have it. You only do this once; after that the skill is available in every session. See [Choosing a Han plugin](../choosing-a-han-plugin.md) for where it sits in the suite.
+    It depends on `han-core`, so Claude Code pulls core along if you do not already have it. You only do this once; after that the skill is available in every session. See [Choosing a Han plugin](../choosing-a-han-plugin.md) for where it sits in the suite.
 
-2. **Run [`/han-feedback`](../skills/han.feedback/han-feedback.md) at the end of the session, before you compact.** No arguments are required.
+2. **Run [`/han-feedback`](../skills/han-feedback/han-feedback.md) at the end of the session, before you compact.** No arguments are required.
 
     > `/han-feedback`
 
-    The skill looks back through the conversation for invocations of any `han.*` plugin's skills and agents (`han.core`, `han.github`, `han.reporting`, `han.feedback`, and any future `han.*` plugin), then writes a dated feedback file to `~/.claude/han-feedback/` recording the skills and agents used and covering what worked, what didn't, an overall summary, and a rating. It reads only what is visible in the current context window, so run it while the full session is still in context. If the session was already compacted, the skill asks you to list what you used.
+    The skill looks back through the conversation for invocations of any `han-*` plugin's skills and agents (`han-core`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` plugin), then writes a dated feedback file to `~/.claude/han-feedback/` recording the skills and agents used and covering what worked, what didn't, an overall summary, and a rating. It reads only what is visible in the current context window, so run it while the full session is still in context. If the session was already compacted, the skill asks you to list what you used.
 
     You can prime it with a concrete observation before it writes anything: *"I just finished a session with `/investigate` and it found the root cause faster than I expected"* gives the skill a specific moment to build on. The more specific you are, the more useful the result.
 
@@ -84,15 +84,15 @@ Use this path right after a working session where one or more Han skills ran and
 
 ## Where to go next
 
-- [`/issue-triage`](../skills/han.core/issue-triage.md) is the skill behind Path A, and its long-form doc covers the full output contract.
-- [`/han-feedback`](../skills/han.feedback/han-feedback.md) is the skill behind Path B, with the details of the file format, the sensitive-content review, and the posting flow.
-- [Choosing a Han plugin](../choosing-a-han-plugin.md) explains why `han.feedback` is installed separately and where it sits relative to the bundled suite.
+- [`/issue-triage`](../skills/han-core/issue-triage.md) is the skill behind Path A, and its long-form doc covers the full output contract.
+- [`/han-feedback`](../skills/han-feedback/han-feedback.md) is the skill behind Path B, with the details of the file format, the sensitive-content review, and the posting flow.
+- [Choosing a Han plugin](../choosing-a-han-plugin.md) explains why `han-feedback` is installed separately and where it sits relative to the bundled suite.
 - [How-to index](./README.md) lists the rest of the end-to-end guides.
 
 ## Related Documentation
 
 - [Plugin landing page](../../README.md). Where the Han suite starts, and where the install commands live.
 - [How-to index](./README.md). The rest of the end-to-end guides.
-- [Choosing a Han plugin](../choosing-a-han-plugin.md). The end-user view of the plugins, including the opt-in `han.feedback`.
-- [`/issue-triage`](../skills/han.core/issue-triage.md). The skill that shapes an idea or complaint into a structured, postable issue.
-- [`/han-feedback`](../skills/han.feedback/han-feedback.md). The skill that summarizes a session and posts the feedback for you.
+- [Choosing a Han plugin](../choosing-a-han-plugin.md). The end-user view of the plugins, including the opt-in `han-feedback`.
+- [`/issue-triage`](../skills/han-core/issue-triage.md). The skill that shapes an idea or complaint into a structured, postable issue.
+- [`/han-feedback`](../skills/han-feedback/han-feedback.md). The skill that summarizes a session and posts the feedback for you.

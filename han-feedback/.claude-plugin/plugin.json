@@ -1,0 +1,8 @@
+{
+  "name": "han-feedback",
+  "description": "Post-session feedback skill for the Han suite. Captures structured observations, ratings, and improvement ideas on the Han skills you ran in a session and optionally posts them as a GitHub issue to testdouble/han. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
+  "version": "1.1.1",
+  "dependencies": [
+    "han-core"
+  ]
+}
