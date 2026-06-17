@@ -132,5 +132,4 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`/iterative-plan-review`](../han-planning/iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
 - [`/runbook`](../han-core/runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
-- [`/investigate-to-confluence`](../han-atlassian/investigate-to-confluence.md). The opt-in `han-atlassian` wrapper that runs this skill and publishes the investigation report to a Confluence location you specify. Requires the Atlassian MCP server.
 - [`SKILL.md` for /investigate](../../../han-coding/skills/investigate/SKILL.md). The internal process definition.

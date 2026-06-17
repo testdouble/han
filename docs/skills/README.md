@@ -89,7 +89,7 @@ The opt-in feedback plugin. It captures observations about the Han suite itself.
 
 ## han-atlassian
 
-The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira through the Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han-atlassian@han`. Requires a configured Atlassian MCP server. Depends on `han-core`.
+The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira through the Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han-atlassian@han`. Requires a configured Atlassian MCP server. Depends on `han-core`, `han-planning`, and `han-coding`, because its wrapper skills run skills from each.
 
 - **[`/markdown-to-confluence`](./han-atlassian/markdown-to-confluence.md).** Publish one local Markdown file to a user-specified Confluence location, creating a new page or updating an existing one. Defaults to an unpublished draft. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place. Posts an existing file; it does not generate documentation.
 - **[`/project-documentation-to-confluence`](./han-atlassian/project-documentation-to-confluence.md).** Run `/project-documentation` to write feature documentation to a temporary file, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
