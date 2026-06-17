@@ -1,5 +1,45 @@
 # Han Release Notes
 
+## v4.1.0
+
+han 4.1.0 ships a new Confluence-publishing skill (han-atlassian 2.1.0) and teaches the `/tdd` skill to write a passing regression test when the work is a bug fix (han-coding 2.1.0), plus a description cross-reference fix to `/plan-a-phased-build` (han-planning 2.0.1). `han-core`, `han-github`, `han-reporting`, `han-feedback`, `han-linear`, and `han-plugin-builder` are unchanged.
+
+### han v4.1.0
+
+The suite-level work is documentation. A docs sweep applied follow-up edits across `docs/`: the long-form agent docs for `data-engineer`, `devops-engineer`, `on-call-engineer`, and `user-experience-designer` (sibling-agent reciprocity, which agents dispatch them, and operator-facing detail), `docs/concepts.md`, `docs/choosing-a-han-plugin.md`, `docs/skills/README.md`, and the long-form docs for `issue-triage`, `stakeholder-summary`, and `tdd`. The new long-form doc `docs/skills/han-atlassian/investigate-to-confluence.md` was added for the new skill below, and the `/investigate` write-up backing the `/tdd` change was filed at `docs/plans/tdd-failure-characterization/investigation.md`.
+
+### han-atlassian v2.1.0
+
+#### New skill: investigate-to-confluence
+
+A new skill `investigate-to-confluence` runs the core `/investigate` skill to root-cause a bug or unexpected behavior, writes the investigation report to a `/tmp/` file (changing no code), shows it for review, then publishes that single report as one Confluence page to a user-specified location through `/markdown-to-confluence`. Added in `han-atlassian/skills/investigate-to-confluence/SKILL.md`, contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #77.
+
+#### Declared han-planning and han-coding dependencies
+
+`han-atlassian/.claude-plugin/plugin.json` now declares `han-planning` and `han-coding` alongside `han-core`. The plugin's wrapper skills run skills from each, so all three are required dependencies; the manifest previously declared only `han-core`.
+
+### han-coding v2.1.0
+
+#### /tdd writes regression tests for bug fixes
+
+The `/tdd` skill now distinguishes net-new behavior from a fix to existing broken behavior, and for the fix case it drives the test toward what the code should do (red while the bug is present, green once the fix lands) rather than toward the error the bug currently raises. The change lands at four points in `han-coding/skills/tdd/SKILL.md` (the Step 1 scope report, the Step 2 test list, the Red-phase pre-run assertion-direction check, and the first-run-pass diagnostic) and is reinforced in three references: `bdd-framing.md` sharpens the Then clause and adds the anti-pattern of asserting the buggy behavior, `failure-modes.md` adds a named failure mode for asserting the bug instead of the fix, and `tdd-loop.md` points its observed-failure gate at the new diagnostic. The carve-out preserves legitimate `assertRaises`-style tests where raising is the specified desired behavior. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #76.
+
+### han-planning v2.0.1
+
+The `/plan-a-phased-build` skill description gained a cross-reference clarifying that it does not break a plan into independently-grabbable work items, pointing to `/plan-work-items` instead. Description text only, no behavior change.
+
+### Issues closed in this release
+
+- tdd: error characterization tests assert the error is raised instead of asserting correct behavior that fails for the expected reason (#74) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #76 by [@mxriverlynn](https://github.com/mxriverlynn)
+- han-atlassian: add an investigate-to-confluence skill that wraps investigate and publishes results to Confluence (#75) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #77 by [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- TDD Skill: Add failure characterization (#76) — [@mxriverlynn](https://github.com/mxriverlynn)
+- han-atlassian: add investigate-to-confluence skill (#77) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.1.0/CHANGELOG.md#v410
+
 ## v4.0.0
 
 This release renames every plugin in the suite from a dotted name to a hyphenated name: `han.core` becomes `han-core`, `han.coding` becomes `han-coding`, `han.planning` becomes `han-planning`, `han.github` becomes `han-github`, `han.reporting` becomes `han-reporting`, `han.feedback` becomes `han-feedback`, `han.atlassian` becomes `han-atlassian`, and `han.plugin-builder` becomes `han-plugin-builder`. The parent meta-plugin `han` keeps its name and moves to 4.0.0; every renamed child goes major as well: `han-core` to 2.0.0, `han-planning` to 2.0.0, `han-coding` to 2.0.0, `han-github` to 2.0.0, `han-reporting` to 2.0.0, `han-feedback` to 2.0.0, `han-atlassian` to 2.0.0, and `han-plugin-builder` to 2.0.0. The rename is breaking because a plugin name is both its install identity and the namespace prefix for its agents (dispatching `han.core:research-analyst` is now `han-core:research-analyst`), so any saved install reference, dependency entry, or namespaced agent dispatch using the old dotted name breaks and must move to the hyphenated name. The rename was required for Codex marketplace support: a dot in a plugin name breaks Codex, where the name doubles as the skill and agent namespace prefix, so the whole suite needed Codex-safe (dot-free) names. This release also adds the new opt-in `han-linear` plugin at 1.0.0, carrying the `work-items-to-linear` skill.
