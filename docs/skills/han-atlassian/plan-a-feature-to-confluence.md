@@ -101,6 +101,7 @@ The skill walks a short, deterministic six-step process:
 - [`/plan-a-feature`](../han-planning/plan-a-feature.md). The core skill this one runs to build the specification. Use it directly for a local-only plan.
 - [`/markdown-to-confluence`](./markdown-to-confluence.md). The publisher this skill hands each file to. Use it directly to publish any existing markdown file to Confluence.
 - [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md). The sibling that documents an already-built feature to Confluence, rather than planning a new one.
+- [`/investigate-to-confluence`](./investigate-to-confluence.md). The sibling that root-causes a bug and publishes the investigation report to Confluence.
 - [Choosing a Han plugin](../../choosing-a-han-plugin.md). Why `han-atlassian` is installed separately from the bundled suite, and what it requires.
 - [YAGNI](../../yagni.md). The evidence-based rule the underlying `/plan-a-feature` run applies to the spec it builds.
 - [`SKILL.md` for /plan-a-feature-to-confluence](../../../han-atlassian/skills/plan-a-feature-to-confluence/SKILL.md). The internal process definition.
