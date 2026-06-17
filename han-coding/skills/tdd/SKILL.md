@@ -83,9 +83,13 @@ surrounding code instead.
 
 **Report scope, then proceed (no gate).** This skill runs autonomously after
 the initial request: it does not stop for confirmation. State to the user, in a
-few lines: the behavior or feature to be built, the resolved test/lint/build
-commands, the standards and ADRs found (or that none were), the current branch,
-and that the skill will now write code in a red-green-refactor loop. If
+few lines: the behavior or feature to be built, **whether this is net-new
+behavior or a fix to existing broken behavior** (a reported bug, a failing
+case, a fix being driven back in after `/investigate`, or code that already
+exhibits the error — recognize the fix case from those signals, not only from
+the word "bug"), the resolved test/lint/build commands, the standards and ADRs
+found (or that none were), the current branch, and that the skill will now
+write code in a red-green-refactor loop. If
 `current branch` from Project Context is the repository's default branch
 (`main` or `master`), recommend working on a branch, but do not wait for an
 answer. This is a report the user reads while the work runs, not a gate.
@@ -114,6 +118,17 @@ sub-dollar charge" is a list item; "use a BigDecimal" is not. Follow
 name behaviors, and which test-naming convention to adopt (the project's
 existing convention and any discovered coding standard win over a literal
 "should" default).
+
+**Fixing existing broken behavior is a regression test, not a bug-asserting
+test.** When the work fixes broken behavior, the list item names the *desired
+correct* behavior, not the current broken one: "returns the rounded total for a
+refund" (red now because the bug is present, green once the fix lands), never
+"raises ArgumentError on a refund" — a test that asserts the error the bug
+produces passes while the bug is present and breaks when you fix it, locking the
+bug in. The regression test asserts what the code *should* do. The boundary:
+asserting that the code raises is the *correct* test when raising is the
+specified desired behavior (raise on invalid input); it is wrong only when the
+raised error *is the bug being fixed*.
 
 Order the list outside-in by user value: the next item is the most important
 thing the system does not yet do. For an item that is **user-observable
@@ -154,6 +169,15 @@ project's convention. Assert an observable outcome through the public interface
 assert the observable result). Write no more of the test than is sufficient to
 fail; a compilation failure is a failure.
 
+**Before you run it, check the assertion direction for a fix to broken
+behavior.** The assertion must target the desired correct result, so the red
+you are about to observe is "correct behavior not yet produced" — not "the
+error the bug raises was raised successfully." A test that asserts the buggy
+behavior either passes immediately or goes red for the wrong reason; both look
+like a satisfied gate and both lock the bug in. (Asserting a raise is still
+correct when raising is the specified desired behavior; the trap is asserting
+the error that *is* the bug.)
+
 Run the resolved test command directly with Bash. **Paste the failing
 assertion plus enough surrounding output (5-10 lines) to confirm the failure
 reason** — the assertion text or the missing symbol you expect, not an
@@ -161,9 +185,14 @@ unrelated error. If the test passed on its first run, paste only the runner's
 summary line and stop to diagnose: the observed-failure gate has tripped.
 
 If the test passes on its first run, the observed-failure gate has tripped.
-Stop. Diagnose: the test is not exercising the behavior, or the behavior
-already exists. If the behavior already exists, cross the item off and pick the
-next one. Do not write production code off an unobserved red.
+Stop. Diagnose one of three causes: the test is not exercising the behavior;
+the behavior already exists; or — for a fix to broken behavior — the test is
+asserting the current broken behavior (the error the bug raises), which passes
+precisely because the bug is still present. If the behavior already exists,
+cross the item off and pick the next one. If the test is asserting the bug,
+**do not cross the item off** — rewrite it to assert the desired correct
+behavior, so it goes red until the fix lands. Do not write production code off
+an unobserved red.
 
 ### Green
 

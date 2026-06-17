@@ -31,9 +31,12 @@ A scenario is one test. The three clauses are the three phases of that test:
   Typically something that already happened. Commands that establish state.
 - **When** — the one event or action under test. The act. Exactly one per
   scenario. If you need an "and" in the When, you probably have two scenarios.
-- **Then** — the expected, observable outcome. The assert. It must be on an
-  observable output: a return value, a visible effect, a message or record
-  that leaves the unit. Never on internal or private state.
+- **Then** — the expected, observable outcome: the behavior the code *should*
+  produce, which for a fix to broken behavior is not what it produces today.
+  The assert. It must be on an observable output: a return value, a visible
+  effect, a message or record that leaves the unit (a raised exception is a
+  valid observable output to assert when raising is the desired behavior).
+  Never on internal or private state.
 
 Keep scenarios declarative, not imperative. "When the customer requests cash"
 is a behavior. "When the user clicks #submit then waits 200ms" is an
@@ -94,6 +97,11 @@ parameters are not the behavior, do not assert on them.
   field") instead of behavior. Rewrite functionally: name the intent, not the
   clicks.
 - **Asserting internal state** in the Then. Assert observable output only.
+- **Asserting the current buggy behavior** in the Then — for a fix to broken
+  behavior, asserting the error the bug raises instead of the desired correct
+  outcome. The test passes while the bug is present and breaks when you fix it.
+  Assert what the code should do. (This is not a ban on raise assertions:
+  asserting a raise is correct when raising is the specified desired behavior.)
 - **Imperative scenario** that encodes how instead of what. Make it
   declarative; logic changes should touch step definitions, not scenario text.
 - **Testing the mock instead of the behavior** — asserting call mechanics that

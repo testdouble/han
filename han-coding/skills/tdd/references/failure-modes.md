@@ -118,6 +118,26 @@ Three / Triangulate). Speculative structure is a YAGNI candidate: defer it with
 the trigger that would reopen it and tell the user. Refactor removes
 duplication; it does not add speculation.
 
+## 9. Asserting the bug instead of the fix
+
+**Symptom.** The work is a fix to existing broken behavior, and the test
+asserts the error the bug raises (or the wrong value it returns) rather than
+the desired correct result. It passes on first run because the bug is still
+present, or it goes red for a reason other than "correct behavior not
+produced". Either way the gate looks satisfied, and fixing the code then breaks
+the test.
+
+**Why it happens.** The model describes the behavior it observes now. For a bug
+the observable behavior today *is* the error, so "assert the observable
+outcome" reads as "assert that the error is raised".
+
+**Discipline.** A regression test asserts the *desired correct* behavior: it
+fails because the bug is present and passes once the fix lands. A bug-fix test
+that is green before the fix is the tell — rewrite it, do not cross the item
+off. The boundary: asserting that the code raises is the *right* test when
+raising is the specified desired behavior (raise on invalid input). The failure
+mode is asserting the error that *is* the bug being fixed.
+
 ## The one check that catches most of these
 
 Before every production-code edit, you must be able to point to a specific test

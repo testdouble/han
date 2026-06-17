@@ -25,13 +25,14 @@ Operator documentation for the `/tdd` skill in the han plugin. This document hel
 - You have a feature, behavior, or function to build and you want it driven test-first through a correct red-green-refactor cycle.
 - You want to grow code behavior by behavior with the tests leading, not write code and add tests afterward.
 - You are working from a specification or plan and want the implementation built with TDD discipline rather than in one pass.
+- You have a fix in mind for a bug and want to drive it in as a regression test: the test asserts the desired correct behavior, fails because the bug is still present, and passes once the fix lands. (Find the root cause first with [`/investigate`](../han-coding/investigate.md).)
 
 **Do not invoke for:**
 
 - **Producing a test plan without writing code.** Use [`/test-planning`](../han-coding/test-planning.md) instead. It analyzes coverage gaps and prioritizes what to test; it does not implement.
 - **Reviewing or auditing code that already exists.** Use [`/code-review`](../han-coding/code-review.md) instead.
 - **Deciding what a feature should do.** Use [`/plan-a-feature`](../han-planning/plan-a-feature.md) to specify behavior first, then bring the spec here.
-- **Finding the root cause of a bug.** Use [`/investigate`](../han-coding/investigate.md). Once you have a fix in mind, you can drive it back in through `/tdd`.
+- **Finding the root cause of a bug.** Use [`/investigate`](../han-coding/investigate.md). Once you have a fix in mind, you can drive it back in through `/tdd`: the regression test asserts the desired correct behavior (red until the fix lands), not that the bug's error is raised.
 - **Restructuring existing code outside a TDD cycle.** Use [`/refactor`](./refactor.md). The refactor step inside `/tdd` cleans up only what the current red-green cycle touched; restructuring code that predates the cycle is its sibling's job.
 
 ## How to invoke it

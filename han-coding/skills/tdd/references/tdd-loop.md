@@ -68,8 +68,11 @@ The single highest-value invariant, derived from Law 1 + Law 2 + Beck's
 test-first ordering: no production-code change is permitted unless a test has
 been run and observed to fail for the intended reason in this loop. A test that
 passes the first time it is ever run was never red — that is a process
-violation signal, not a success. Diagnose it: the test does not exercise the
-behavior, or the behavior already exists.
+violation signal, not a success. Diagnose it with the three-cause check in the
+`/tdd` skill's Red step: the test does not exercise the behavior, the behavior
+already exists, or — for a fix to broken behavior — the test asserts the
+current broken behavior (the error the bug raises) and so passes while the bug
+is still present.
 
 ## Implementation gears (choosing step size)
 
