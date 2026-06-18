@@ -1,25 +1,24 @@
+<!--
+Keep the whole description to 2-5 short paragraphs at most. The Summary sentence is one of them;
+Behavior changes is 1-3. Stay at the altitude of behavior and intent — the diff carries the specifics.
+-->
+
 ## Summary
 
 **{One-sentence TL;DR: this PR &lt;verb&gt; &lt;behavior&gt; so that &lt;why&gt;.}**
 
-{2-4 bullets covering: what changed in user-visible or runtime behavior, what scope is affected, and what a reviewer should pay extra attention to. Include specific config values, flag names (with a brief definition on first use), and migration phases when present. Do not list files here.}
+## Behavior changes
 
-### Behavior changes
+{1-3 short paragraphs, plain language, of what changes at runtime and why — the load-bearing content of this PR. Lead with the central mechanism (a feature flag, migration, state-machine edit, or config / API-contract change) and name its headline effect: a flag and its default, a migration's direction, the new vs. old behavior. Stay at the altitude of behavior and intent; do not enumerate every value, phase, or mode — the diff carries the specifics. Name internal flags or services on first use. A small table is fine only when several flags or modes genuinely interact. Omit this section entirely for pure refactors and docs-only PRs — in that case the Summary sentence stands alone.}
 
-{Plain-language description of before vs after. When multiple flags or modes interact, render as a small table. Name internal flags or services on first use. Omit this subsection entirely for pure refactors and docs-only PRs.}
+<!--
+Include "What to look at first" ONLY when this PR has more than ~8-10 files with SIGNIFICANT changes.
+"Significant" = code files. Documentation and configuration files do NOT count by default. A docs/config
+file counts as significant only with explicit justification for how it changes the BEHAVIOR of the code
+changes in this PR — and even then it usually does NOT belong in the list below. When the count of
+significant code files is at or below ~8-10, OMIT this whole section, heading included.
+-->
 
 ## What to look at first
 
-- {Pointer to a decision, tradeoff, or risk the reviewer should weight. 2-4 bullets max. This is not a file list — it is a "here is where the interesting decisions live" guide.}
-
-## How this was tested
-
-- ✅ {Scenario the author already verified, past tense.}
-
-## Files of interest
-
-- `{path}` — {one phrase about why this file matters for review}
-
-## Test scenario changes
-
-- {Behavioral scenario described in plain language, e.g., "Covers the case where the feature flag is on but the user is unauthenticated."}
+- {Pointer to a decision, tradeoff, or risk the reviewer should weight, in suggested reading order. 2-4 bullets max. This is a reading-order guide for a large change, not a file list — GitHub's Files Changed tab is one click away.}
