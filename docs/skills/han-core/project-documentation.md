@@ -35,6 +35,7 @@ Operator documentation for the `/project-documentation` skill in the han plugin.
 - **Coding conventions.** Use [`/coding-standard`](../han-coding/coding-standard.md).
 - **PR descriptions.** Use [`/update-pr-description`](../han-github/update-pr-description.md).
 - **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures what to do when an alert fires or a known failure mode occurs; project documentation describes how the feature or system works.
+- **An ephemeral, understand-now overview of code or a PR.** Use [`/code-overview`](../han-coding/code-overview.md). It produces a throwaway orientation aid in a scratch file, not durable docs in the repo tree.
 
 ## How to invoke it
 
@@ -121,6 +122,7 @@ URL: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 - [`/project-discovery`](./project-discovery.md). Run first. The documentation skill reads the discovery reference to find the docs directory and stack language.
 - [`/architectural-decision-record`](./architectural-decision-record.md). Use for decisions rather than system documentation.
 - [`/coding-standard`](../han-coding/coding-standard.md). Use for rules rather than descriptions.
+- [`/code-overview`](../han-coding/code-overview.md). The ephemeral counterpart: an understand-now overview written to a scratch file, where this skill produces durable docs in the repo tree.
 - [`codebase-explorer`](../../agents/han-core/codebase-explorer.md). Dispatched in parallel for code discovery.
 - [`content-auditor`](../../agents/han-core/content-auditor.md). Dispatched in update mode to ensure no facts are lost.
 - [`information-architect`](../../agents/han-core/information-architect.md). Dispatched before verification to audit findability, scannability, and section ordering.

@@ -157,6 +157,7 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
 - [`/coding-standard`](../../skills/han-coding/coding-standard.md). Dispatches this agent to audit the draft standard for findability and scannability.
 - [`/test-planning`](../../skills/han-coding/test-planning.md). Dispatches this agent to confirm the plan leads with plain language.
 - [`/project-documentation`](../../skills/han-core/project-documentation.md). Dispatches this agent to audit the information architecture of the docs.
+- [`/code-overview`](../../skills/han-coding/code-overview.md). Dispatches this agent to refine the drafted overview for progressive disclosure before the reader sees it.
 - [`/gap-analysis`](../../skills/han-core/gap-analysis.md). Dispatches this agent to design the report template.
 - [`user-experience-designer`](./user-experience-designer.md). The sibling agent for live UI surfaces. Dispatch both in parallel when a docs site blends content and interactive navigation.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why this agent uses precise IA vocabulary and named anti-patterns instead of sharing the user-experience-designer's UI vocabulary.

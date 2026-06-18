@@ -97,5 +97,6 @@ URL: https://pragprog.com/titles/atevol/software-design-x-rays/
 - [`/architectural-decision-record`](../../skills/han-core/architectural-decision-record.md). Dispatches this agent in create-new mode.
 - [`/research`](../../skills/han-core/research.md). Dispatches this agent on codebase-bearing questions.
 - [`/architectural-analysis`](../../skills/han-coding/architectural-analysis.md). Dispatches this agent for a large or unfamiliar focus area.
+- [`/code-overview`](../../skills/han-coding/code-overview.md). Dispatches this agent, scaled to size, to discover entry points, context, uses, and flow for an understand-now overview.
 - [`/gap-analysis`](../../skills/han-core/gap-analysis.md). Dispatches this agent to map an unfamiliar current state.
 - [`/iterative-plan-review`](../../skills/han-planning/iterative-plan-review.md). Dispatches this agent for unfamiliar code regions.
