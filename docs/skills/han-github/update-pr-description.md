@@ -69,7 +69,7 @@ A PR description rendered in-channel, optionally pushed to the open PR. When the
 
 ## Cost and latency
 
-The skill reads the git diff, stat, log, and any source files needed to understand the change, then dispatches a single `junior-developer` agent in Step 5 to author the PR description. The agent runs on its default model. Typical runs are around a minute for a typical PR.
+The skill reads the git diff, stat, log, and any source files needed to understand the change, then dispatches a single `junior-developer` agent in Step 4 to author the PR description. The agent runs on its default model. Typical runs are around a minute for a typical PR.
 
 ## In more detail
 
