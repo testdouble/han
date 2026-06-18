@@ -7,7 +7,7 @@ This page is for contributors: anyone adding, editing, or restructuring skills, 
 ## TL;DR
 
 - Skills ship from the plugin that matches what they do: [`han-core/skills/`](./han-core/skills/) (research, analysis, documentation, operations), [`han-planning/skills/`](./han-planning/skills/) (specifying, planning, sequencing, breaking down, and stress-testing work before implementation), [`han-coding/skills/`](./han-coding/skills/) (writing, reviewing, analyzing, testing, investigating, and standardizing code), [`han-github/skills/`](./han-github/skills/) (GitHub-facing), [`han-reporting/skills/`](./han-reporting/skills/) (stakeholder reporting), or [`han-feedback/skills/`](./han-feedback/skills/) (feedback on Han itself); the contributor authoring guidance lives in [`han-plugin-builder/skills/`](./han-plugin-builder/skills/). All agents live in [`han-core/agents/{name}.md`](./han-core/agents/). See [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) before you start.
-- Long-form docs (for humans deciding *when* and *how* to use a skill or agent) live in `docs/skills/{name}.md` and `docs/agents/{name}.md`.
+- Long-form docs (for humans deciding *when* and *how* to use a skill or agent) live in `docs/skills/{plugin}/{name}.md` and `docs/agents/han-core/{name}.md`.
 - **Every skill and every agent gets a long-form doc.** No exceptions. See the [coverage rule](./docs/templates/coverage-rule.md).
 - Use the [long-form skill template](./docs/templates/skill-long-form-template.md) or the [agent template](./docs/templates/agent-long-form-template.md).
 - The root [CLAUDE.md](./CLAUDE.md) carries the at-a-glance project map for assistants and contributors.
@@ -47,7 +47,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 2. Write the `SKILL.md`:
    - Frontmatter with `name`, `description`, `allowed-tools`. See [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
-3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{name}.md` and fill it in. Every skill gets a long-form doc.
+3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{plugin}/{name}.md` and fill it in. Every skill gets a long-form doc.
 4. Add the skill to the [Skills Index](./docs/skills/README.md) with a one-sentence scent line and a link.
 5. Add the skill to the catalog in [Root CLAUDE.md](./CLAUDE.md). The indexes and concept docs list skills without a running total, so there is no count to bump. If the skill belongs to a new category, add it to the category lists too.
 6. Update the marketplace registry at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) if the new skill ships in a different plugin's component set.
@@ -55,7 +55,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 ## Adding an agent
 
 1. Create `han-core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
-2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/{name}.md` and fill it in. Every agent gets a long-form doc.
+2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/han-core/{name}.md` and fill it in. Every agent gets a long-form doc.
 3. Add the agent to the [Agents Index](./docs/agents/README.md) under the right role group.
 
 ## Editing an existing long-form doc
