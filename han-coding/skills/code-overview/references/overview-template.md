@@ -12,6 +12,11 @@ remove the guidance comments, and keep the section order exactly as written.
   with a title and a short intro paragraph naming what is being examined. Do not
   emit `Mode:`, `Generated:`, or a bare `Target:` field — that metadata does not
   help the reader; fold anything worth keeping into the intro sentence.
+- **Never include PR statistics.** Do not state lines changed, files changed,
+  additions/deletions, commit counts, or any other diff-stat figure — not in the
+  intro, not in a section, not anywhere. These numbers go stale the moment the PR
+  changes and add no understanding. Describe what changed and why, never how big
+  the diff is.
 - **Progressive disclosure.** The most important understanding comes first;
   detail unfolds beneath it. A reader who stops after the lead section still
   knows what the target is and why it exists.
@@ -87,10 +92,11 @@ would open first to begin working, with one line each on what each is for.}
 # Change Overview: {short name of the pull request or branch}
 
 {Intro paragraph: one or two sentences naming what is being examined — which
-pull request or branch, what part of the system it touches, and its rough scale
-— so the reader knows the scope before the overview begins. Do not list mode,
-target URL, date, or size as metadata fields; weave whatever is worth saying
-into this sentence.}
+pull request or branch and what part of the system it touches — so the reader
+knows the scope before the overview begins. Do not list mode, target URL, date,
+or size as metadata fields, and never state diff statistics (lines changed,
+files changed, additions/deletions, commit counts); weave whatever is worth
+saying into this sentence.}
 
 <!-- Coverage note: include ONLY when coverage is partial. Delete this block otherwise. -->
 > **Coverage note.** This overview covers {what was covered}. It does not cover
