@@ -1,5 +1,42 @@
 # Han Release Notes
 
+## v4.2.0
+
+han 4.2.0 ships a new code-overview skill (han-coding 2.2.0) and a Confluence-publishing wrapper for it (han-atlassian 2.2.0), simplifies the `/update-pr-description` output (han-github 2.1.0), and adds a description cross-reference to `/project-documentation` (han-core 2.0.1). `han-planning`, `han-reporting`, `han-feedback`, `han-linear`, and `han-plugin-builder` are unchanged.
+
+### han v4.2.0
+
+The suite-level work is documentation. New long-form docs `docs/skills/han-coding/code-overview.md` and `docs/skills/han-atlassian/code-overview-to-confluence.md` were added for the two new skills, and the `code-overview` feature specification and its artifacts were filed under `docs/plans/code-overview/` (`feature-specification.md`, `artifacts/decision-log.md`, `artifacts/team-findings.md`). A docs sweep applied follow-up edits across `docs/`: `docs/skills/README.md`, `docs/choosing-a-han-plugin.md`, `docs/sizing.md`, the long-form agent docs for `codebase-explorer`, `information-architect`, and `junior-developer`, and the long-form docs for `update-pr-description`, `code-review`, `project-documentation`, and `project-discovery`. The top-level `CLAUDE.md` "When to use which doc" list was greatly reduced (25e05bf), and a docs fix corrected the `han-atlassian` dependency phrasing and `project-discovery` scope (dcd260f). `.claude-plugin/marketplace.json` carries the per-plugin version syncs for this release.
+
+### han-coding v2.2.0
+
+#### New skill: code-overview
+
+A new skill `code-overview` produces a progressive-disclosure, understand-now overview of unfamiliar code or a pull request's changes: what it does, how it flows, and where to start. It writes the overview to a scratch file and changes no code. Added in `han-coding/skills/code-overview/SKILL.md` with the output template in `han-coding/skills/code-overview/references/overview-template.md`. The overview output forbids PR statistics, and a follow-up added an intro paragraph, a readability pass, and PR screenshots. `han-coding/skills/code-review/SKILL.md` gained a cross-reference pointing to the new skill. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #83.
+
+### han-atlassian v2.2.0
+
+#### New skill: code-overview-to-confluence
+
+A new skill `code-overview-to-confluence` runs the core `code-overview` skill to produce the overview, then publishes it to a user-specified Confluence location through the Atlassian MCP server. Added in `han-atlassian/skills/code-overview-to-confluence/SKILL.md`. The `han-atlassian/.claude-plugin/plugin.json` description was updated to list the new skill. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #83.
+
+### han-github v2.1.0
+
+#### Simplified /update-pr-description output
+
+The `update-pr-description` skill's generated PR description is now capped at 2-5 short paragraphs. The Summary section is the bolded TL;DR sentence, Behavior changes is its own section, and "What to look at first" appears only when the PR has more than roughly 8-10 files with significant code changes. The "Files of interest", "Test scenario changes", and "How this was tested" sections were dropped, the separate test-applicability step was removed, and `han-github/skills/update-pr-description/references/formatting-rules.md` was deleted. `references/template.md` and `references/template-conformance.md` were reworked to match. This is a backward-compatible refinement of the same skill, not a new capability. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #84.
+
+### han-core v2.0.1
+
+The `project-documentation` skill description gained a cross-reference clarifying that it does not produce an ephemeral, understand-now overview of code or a PR, pointing to the new `code-overview` skill instead. Description text only, no behavior change.
+
+### Pull requests in this release
+
+- New skill /han-coding:code-overview (#83) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Simplify the update-pr-description skill's output (#84) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.2.0/CHANGELOG.md#v420
+
 ## v4.1.0
 
 han 4.1.0 ships a new Confluence-publishing skill (han-atlassian 2.1.0) and teaches the `/tdd` skill to write a passing regression test when the work is a bug fix (han-coding 2.1.0), plus a description cross-reference fix to `/plan-a-phased-build` (han-planning 2.0.1). `han-core`, `han-github`, `han-reporting`, `han-feedback`, `han-linear`, and `han-plugin-builder` are unchanged.
