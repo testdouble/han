@@ -1,10 +1,15 @@
+<!--
+Keep the whole description to 2-5 short paragraphs at most. The Summary sentence is one of them;
+Behavior changes is 1-3. Stay at the altitude of behavior and intent — the diff carries the specifics.
+-->
+
 ## Summary
 
 **{One-sentence TL;DR: this PR &lt;verb&gt; &lt;behavior&gt; so that &lt;why&gt;.}**
 
 ## Behavior changes
 
-{Plain-language description of before vs after — the load-bearing content of this PR. Lead with the central mechanism (feature flags, migrations, state-machine edits, config or API-contract changes). Include specific config values per environment, flag names and their enabled/disabled behavior, and migration phases. Name internal flags or services on first use with a brief inline definition. When multiple flags or modes interact, render as a small table. Omit this section entirely for pure refactors and docs-only PRs — in that case the Summary sentence stands alone.}
+{1-3 short paragraphs, plain language, of what changes at runtime and why — the load-bearing content of this PR. Lead with the central mechanism (a feature flag, migration, state-machine edit, or config / API-contract change) and name its headline effect: a flag and its default, a migration's direction, the new vs. old behavior. Stay at the altitude of behavior and intent; do not enumerate every value, phase, or mode — the diff carries the specifics. Name internal flags or services on first use. A small table is fine only when several flags or modes genuinely interact. Omit this section entirely for pure refactors and docs-only PRs — in that case the Summary sentence stands alone.}
 
 <!--
 Include "What to look at first" ONLY when this PR has more than ~8-10 files with SIGNIFICANT changes.

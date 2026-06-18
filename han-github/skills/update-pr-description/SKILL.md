@@ -58,7 +58,7 @@ Carry the recorded result (the template path and full contents, or "no repositor
 
 Review the branch diff, commits, and relevant source code to understand the PR. Identify the central mechanism — the primary purpose of the PR. If the PR is about feature flags, migrations, or behavioral changes, those ARE the point, not a side detail. Classify the change type (new feature, bug fix, refactoring, docs update, config change, etc.) and read related source files as needed to understand the full scope.
 
-When applicable (do not force these into every PR), collect specific details: feature flag gate names/values/interactions, actual config values per environment, before/after behavioral changes, migration phases/rollback/data flow, and state machine combinations.
+Find the headline behavioral effect — what changes for a user or caller and why — and the central mechanism's key facts (a flag and its default, a migration's direction, the new vs. old behavior). Do not catalog every config value, phase, or mode; the diff carries the specifics. The goal is a short description, not an exhaustive one.
 
 While analyzing, count the **significant** changed files from `branch stats`, since that count gates the "What to look at first" section in Step 4. "Significant" means code files. Documentation and configuration files do not count as significant by default; one counts only when there is explicit justification for how it changes the behavior of the code changes in the PR.
 
@@ -69,7 +69,9 @@ Launch a single `han-core:junior-developer` agent to write the PR description di
 First, compose the **structure directive** based on the Step 2 result. The structure directive is the only part of the prompt that differs between the two cases; everything else is shared.
 
 - **Option A — no repository template** (Step 2 recorded "no repository template"). The structure directive is:
-  > **Structure (required):** Produce the description using this fixed structure and section order: Summary (the bolded TL;DR sentence only) → Behavior changes (its own `##` section, present only when runtime behavior changes; omit for pure refactors and docs-only PRs) → What to look at first (only when the PR has more than ~8-10 files with significant changes; see the threshold rule below). The first line under `## Summary` MUST be the bolded TL;DR sentence, and the Summary section contains nothing else — no bullet list, no file mentions. Include the `## Behavior changes` section only when runtime behavior changes (flag flips, migrations, state-machine edits, config changes, API contract changes); omit it for pure refactors and docs-only PRs; render interacting flags or modes as a small table.
+  > **Structure (required):** Produce the description using this fixed structure and section order: Summary (the bolded TL;DR sentence only) → Behavior changes (its own `##` section, present only when runtime behavior changes; omit for pure refactors and docs-only PRs) → What to look at first (only when the PR has more than ~8-10 files with significant changes; see the threshold rule below). The first line under `## Summary` MUST be the bolded TL;DR sentence, and the Summary section contains nothing else — no bullet list, no file mentions. Include the `## Behavior changes` section only when runtime behavior changes (flag flips, migrations, state-machine edits, config changes, API contract changes); omit it for pure refactors and docs-only PRs.
+  >
+  > **Length (required):** The whole description is at most 2-5 short paragraphs (the Summary sentence is one of them), and Behavior changes is 1-3 short paragraphs. A small table is fine only when several flags or modes genuinely interact; prefer prose otherwise.
   >
   > **"What to look at first" inclusion rule:** Include "What to look at first" only when the PR has more than ~8-10 files with *significant* changes. "Significant" means code files. Documentation and configuration files do **not** count as significant by default. A docs or config file counts as significant only when there is explicit justification for how that change affects the *behavior* of the code changes in the PR — and even when a docs/config file is deemed significant, it most likely should **not** be listed in "What to look at first" itself. When the count of significant (code) files is at or below ~8-10, **omit "What to look at first" entirely**, heading included. Only include it when a large code change genuinely needs a reading-order guide.
   >
@@ -97,14 +99,12 @@ Use this prompt body (with the context above interpolated):
 > Follow the structure directive below for how the description is organized and laid out. Follow the content rules below for what goes in it. When the structure directive provides a repository template, the template's structure wins over the default section names referenced in the content rules; map the content into the template's sections per the conformance rules.
 >
 > **Content rules across all sections:**
-> - Lead the primary summary or description section with a single bolded TL;DR sentence in the form `**This PR <verb> <behavior>, so that <why>.**` — fill it before drafting anything else.
-> - Keep the Summary to that single sentence. No bullet list, no file mentions. Every other detail belongs in Behavior changes.
-> - Identify the central mechanism (feature flags, migrations, behavioral changes) from the diff and commits before drafting, and put it in the bolded TL;DR sentence and lead Behavior changes with it.
-> - Include specific configuration values (environment settings, flag combinations, thresholds, defaults) — not "added config for X."
-> - Never over-summarize behavioral changes — code structure can be summarized, but runtime behavior cannot. Include per-environment values, migration phases, and flag enabled/disabled behavior.
-> - Explain how components work together, not just what each one does.
+> - **Keep it short: the entire description is at most 2-5 short paragraphs** (the Summary sentence counts as one), and Behavior changes is 1-3 short paragraphs. If you are writing more, you are adding detail a reviewer should read from the diff, not the description.
+> - Lead the primary summary or description section with a single bolded TL;DR sentence in the form `**This PR <verb> <behavior>, so that <why>.**` — fill it before drafting anything else. Keep the Summary to that one sentence: no bullet list, no file mentions.
+> - Lead Behavior changes with the central mechanism (a feature flag, migration, or behavioral change) in plain language: name it and its headline effect — a flag and its default, a migration's direction, the new vs. old behavior. Do not enumerate every config value, phase, or mode; a reviewer reads the diff for specifics.
+> - Stay at the altitude of behavior and intent, not implementation. Say what changes for a user or caller and why, not how each file or function does it.
 > - Only describe changes unique to the PR branch — never include changes merged from the default branch.
-> - Do not rely on internal flag names, service names, or acronyms without a brief inline definition on first use.
+> - Define any internal flag, service, or acronym briefly on first use.
 > - "What to look at first" is a 2-4 bullet reading-order guide for a large change, pointing at decisions, tradeoffs, or risks in the order to read them — it is NOT a file list. Include it ONLY when the PR has more than ~8-10 files with significant (code) changes per the inclusion rule in the structure directive; otherwise omit the section, heading included.
 >
 > **Formatting:** Never nest fenced code blocks inside the PR description — use inline backticks for short references, indented 4-space blocks for short snippets, prose descriptions, or small tables instead. Use `##`/`###` headers for sections. Do not leave authoring-instruction HTML comments or template placeholder braces in the rendered output. Never include any form of 'Generated with Claude Code.'
@@ -131,9 +131,10 @@ Before displaying the PR description, read it back and confirm. Use the checklis
 
 1. The primary summary or description section opens with a single bolded TL;DR sentence leading with behavior, and contains nothing else — no bullet list, no file mentions.
 2. "Behavior changes" carries the behavioral detail. It is present unless the PR is a pure refactor or docs-only change.
-3. "What to look at first" appears only when the PR has more than ~8-10 files with significant (code) changes — documentation and configuration files do not count as significant by default. Otherwise it is omitted entirely, heading included. When present, it is a 2-4 bullet reading-order guide pointing at decisions or risks, not a file list.
-4. Valid markdown, no nested fenced code blocks, no leftover authoring-instruction HTML comments or template placeholder braces (`{...}`), no "Generated with Claude Code."
-5. Only branch-specific changes described.
+3. The whole description is concise — at most 2-5 short paragraphs (the Summary sentence is one), with Behavior changes at 1-3. Trim anything that restates the diff or drops to implementation-level detail.
+4. "What to look at first" appears only when the PR has more than ~8-10 files with significant (code) changes — documentation and configuration files do not count as significant by default. Otherwise it is omitted entirely, heading included. When present, it is a 2-4 bullet reading-order guide pointing at decisions or risks, not a file list.
+5. Valid markdown, no nested fenced code blocks, no leftover authoring-instruction HTML comments or template placeholder braces (`{...}`), no "Generated with Claude Code."
+6. Only branch-specific changes described.
 
 **When Step 2 recorded "no repository template" (Option A), also confirm:** the sections appear in the fixed order — Summary → Behavior changes (when applicable) → What to look at first (only when the significant-file threshold is met).
 

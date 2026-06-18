@@ -7,15 +7,16 @@ Operator documentation for the `/update-pr-description` skill in the han plugin.
 ## TL;DR
 
 - **What it does.** Generates a PR description from the current branch's changes against a GitHub PR using the `gh` CLI. When the repository defines its own GitHub pull-request template, the description conforms to that template's structure.
-- **When to use it.** You have a branch with committed changes and want a focused PR description that surfaces the central behavioral change, with a reading-order guide for large changes.
+- **When to use it.** You have a branch with committed changes and want a short, focused PR description (a few short paragraphs) that surfaces the central behavioral change, with a reading-order guide for large changes.
 - **What you get back.** A markdown PR description in-channel, optionally pushed to the open PR via `gh pr edit`.
 
 ## Key concepts
 
-- **Central mechanism up front.** Feature flags, migrations, and behavioral changes lead the Summary. Code structure is summarized; runtime behavior is not.
+- **Short by design.** The whole description is at most 2-5 short paragraphs, with the behavioral detail in 1-3 of them. It stays at the altitude of behavior and intent and lets the diff carry the specifics, rather than restating config values, phases, or modes in prose.
+- **Central mechanism up front.** Feature flags, migrations, and behavioral changes lead the Summary. Behavior is named with its headline effect (a flag and its default, a migration's direction), not enumerated value by value.
 - **Repository PR template aware.** Before generating, the skill looks for a GitHub pull-request template (in the repo root, `.github/`, `docs/`, or a `PULL_REQUEST_TEMPLATE/` directory). If it finds one, the description conforms to that template's headings and order instead of the default structure. It reads the template's intent rather than assuming a shape: a template whose comments say "replace this with a description" is treated as a throwaway scaffold and replaced wholesale, while a structural template's sections are filled in and preserved. Checklist boxes are checked only when the diff unambiguously proves them; the rest are left for the author. If multiple templates exist in a `PULL_REQUEST_TEMPLATE/` directory, the skill asks which to use.
 - **Junior-developer authors the description.** A `junior-developer` agent writes the PR description directly. Authoring with a fresh-reviewer perspective (a teammate without full project context) means the result already anticipates what a reviewer needs to see, so no separate review pass is required.
-- **Lean output, no GitHub-duplicating sections.** The description is a one-sentence Summary, a Behavior changes section, and a conditional "What to look at first." It deliberately drops a test-results list, a files-of-interest list, and a test-scenario list — GitHub's Checks and Files Changed tabs already render those one click away.
+- **Lean output, no GitHub-duplicating sections.** The description is a one-sentence Summary, a short Behavior changes section, and a conditional "What to look at first." It deliberately drops a test-results list, a files-of-interest list, and a test-scenario list — GitHub's Checks and Files Changed tabs already render those one click away.
 - **"What to look at first" is conditional on size.** It appears only when the PR has more than ~8-10 files with significant changes. "Significant" means code files; documentation and configuration files do not count by default, and even when one is judged significant it usually does not belong in the list.
 - **Branch-specific diff only.** The skill describes changes unique to the feature branch. Never changes pulled in from the default branch.
 - **gh CLI required.** Without `gh`, the skill stops immediately and tells you to install it.
@@ -54,7 +55,7 @@ Example prompts:
 A PR description rendered in-channel, optionally pushed to the open PR. When the repository has no PR template, sections appear in this fixed order: Summary, Behavior changes (when runtime behavior changes), What to look at first (only for large code changes). When the repository defines a PR template, the description follows that template's headings and order instead, with "What to look at first" appended when the template has no home for it and the PR is large enough to warrant it.
 
 - **Summary.** A single bolded TL;DR sentence (`**This PR <verb> <behavior>, so that <why>.**`) and nothing else — no bullet list, no file mentions.
-- **Behavior changes.** The load-bearing section: a plain-language before/after of what the PR changes at runtime, leading with the central mechanism (flag flips, migrations, state-machine edits, config or API-contract changes), with specific per-environment values and a small table when flags or modes interact. Omitted for pure refactors and docs-only PRs.
+- **Behavior changes.** The load-bearing section, kept to 1-3 short paragraphs: a plain-language before/after of what the PR changes at runtime, leading with the central mechanism (flag flips, migrations, state-machine edits, config or API-contract changes) and its headline effect. A small table appears only when several flags or modes genuinely interact. Omitted for pure refactors and docs-only PRs.
 - **What to look at first.** A 2–4 bullet reading-order guide pointing at decisions, tradeoffs, or risks — not a file list. Present only when the PR has more than ~8-10 files with significant (code) changes; documentation and configuration files do not count as significant by default.
 - **An offer to push the description to the open PR.** The skill checks for an existing PR via `gh pr view`. If one exists, it asks before calling `gh pr edit --body`.
 
