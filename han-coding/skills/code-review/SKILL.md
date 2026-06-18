@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Run a comprehensive code review on local source files. Use this skill when the user asks to review, audit, inspect, evaluate, or check code, even if they never use the word \"review.\" Does not post comments to GitHub pull requests — use post-code-review-to-pr for that. Does not analyze architectural structure or module boundaries — use architectural-analysis for that. Does not capture feedback on Han's own skills — use han-feedback for that."
+description: "Run a comprehensive code review on local source files. Use this skill when the user asks to review, audit, inspect, evaluate, or check code, even if they never use the word \"review.\" Does not post comments to GitHub pull requests — use post-code-review-to-pr for that. Does not analyze architectural structure or module boundaries — use architectural-analysis for that. Does not explain code or a PR to build understanding before reviewing — use code-overview for that. Does not capture feedback on Han's own skills — use han-feedback for that."
 arguments: size
 argument-hint: "[size: small | medium | large] [optional context about changes or areas to focus on]"
 allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Grep, Glob, Agent

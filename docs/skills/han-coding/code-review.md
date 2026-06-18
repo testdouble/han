@@ -39,6 +39,7 @@ Operator documentation for the `/code-review` skill in the han plugin. This docu
 **Do not invoke for:**
 
 - **Posting the review to a GitHub PR.** Use [`/post-code-review-to-pr`](../han-github/post-code-review-to-pr.md). It delegates to this skill and then posts the review as PR comments.
+- **Explaining a change or getting oriented before reviewing.** Use [`/code-overview`](./code-overview.md). Run it to understand what a change does, then run this skill to judge whether it is any good.
 - **Architectural analysis.** Use [`/architectural-analysis`](../han-coding/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment across a module.
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial validation.
 - **Test planning in isolation.** Use [`/test-planning`](./test-planning.md) when you want a prioritized test plan without a full correctness review.
@@ -176,6 +177,7 @@ URL: https://itrevolution.com/product/accelerate/
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/post-code-review-to-pr`](../han-github/post-code-review-to-pr.md). Wraps this skill and posts the review to a GitHub PR.
+- [`/code-overview`](./code-overview.md). The orientation counterpart: run it to understand a change before this skill judges its quality.
 - [`/investigate`](./investigate.md). Next step when a CRIT finding hides a bug whose root cause needs deeper analysis.
 - [`/architectural-analysis`](../han-coding/architectural-analysis.md). Run alongside when the change touches module boundaries.
 - [Sizing](../../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.

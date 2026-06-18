@@ -171,6 +171,7 @@ URL: https://www.nngroup.com/articles/5-whys/
 - [Agents Index](../README.md). All agents, grouped by role.
 - [`project-manager`](./project-manager.md). The coordinator this agent pairs with in planning skill review rounds.
 - [`/plan-a-feature`](../../skills/han-planning/plan-a-feature.md) and [`/plan-implementation`](../../skills/han-planning/plan-implementation.md). Skills that always include this agent in their review rounds.
+- [`/code-overview`](../../skills/han-coding/code-overview.md). Dispatches this agent (with `information-architect`) to review the drafted overview for readability before the reader sees it.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns even when the domain is "being a generalist."
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier on a synthesis-heavy inquiry agent.
 - [graceful-degradation.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/graceful-degradation.md). Why the agent handles missing git, missing standards documents, and missing ADRs inline rather than failing.

@@ -7,7 +7,7 @@ Operator documentation for the `codebase-explorer` agent in the han plugin. This
 ## TL;DR
 
 - **What it does.** Thoroughly discovers implementation details for a specific feature or system: entry points, core logic, data models, configuration, tests, and feature-type-specific artifacts.
-- **When to dispatch it.** A feature, subsystem, or capability needs structured codebase discovery. Often dispatched two or three in parallel from a different angle each. Always dispatched by `/project-documentation`. Dispatched by `/coding-standard` for pattern discovery and by `/architectural-decision-record` for context gathering. Also dispatched by `/research` on codebase-bearing questions, by `/architectural-analysis` for a large or unfamiliar focus area, by `/gap-analysis` to map an unfamiliar current state, and by `/iterative-plan-review` for unfamiliar code regions.
+- **When to dispatch it.** A feature, subsystem, or capability needs structured codebase discovery. Often dispatched two or three in parallel from a different angle each. Always dispatched by `/project-documentation`. Dispatched by `/coding-standard` for pattern discovery and by `/architectural-decision-record` for context gathering. Also dispatched by `/research` on codebase-bearing questions, by `/architectural-analysis` for a large or unfamiliar focus area, by `/code-overview` to discover entry points, context, uses, and flow for an understand-now overview, by `/gap-analysis` to map an unfamiliar current state, and by `/iterative-plan-review` for unfamiliar code regions.
 - **What you get back.** Numbered `D#` discovery items, each with category (Entry point / Core logic / Data model / Config / Test / Docs / Feature-specific), a file path with line number, a brief verbatim snippet of key definitions, and connections to other files.
 
 ## Key concepts
@@ -27,6 +27,7 @@ Operator documentation for the `codebase-explorer` agent in the han plugin. This
 - `/architectural-decision-record` is creating a new ADR with sparse context. The skill dispatches one or two of these to gather supporting evidence.
 - `/research` is answering a codebase-bearing question and needs structured discovery of the relevant implementation.
 - `/architectural-analysis` is analyzing a large or unfamiliar focus area and needs a discovery pass before the structural analysts run.
+- `/code-overview` is building an understand-now overview of unfamiliar code or a PR's changes. The skill dispatches one to five of these, scaled to size, to discover entry points, context, uses, and flow.
 - `/gap-analysis` is mapping an unfamiliar current state before comparing it against the desired state.
 - `/iterative-plan-review` is reviewing a plan that touches unfamiliar code regions and needs them discovered first.
 - You want a structured discovery pass on a feature before writing or refactoring it.
@@ -96,5 +97,6 @@ URL: https://pragprog.com/titles/atevol/software-design-x-rays/
 - [`/architectural-decision-record`](../../skills/han-core/architectural-decision-record.md). Dispatches this agent in create-new mode.
 - [`/research`](../../skills/han-core/research.md). Dispatches this agent on codebase-bearing questions.
 - [`/architectural-analysis`](../../skills/han-coding/architectural-analysis.md). Dispatches this agent for a large or unfamiliar focus area.
+- [`/code-overview`](../../skills/han-coding/code-overview.md). Dispatches this agent, scaled to size, to discover entry points, context, uses, and flow for an understand-now overview.
 - [`/gap-analysis`](../../skills/han-core/gap-analysis.md). Dispatches this agent to map an unfamiliar current state.
 - [`/iterative-plan-review`](../../skills/han-planning/iterative-plan-review.md). Dispatches this agent for unfamiliar code regions.
