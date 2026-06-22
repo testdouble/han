@@ -68,7 +68,7 @@ One file: `stakeholder-summary.md`, written in the same directory as the source 
 
 ## Cost and latency
 
-Single-pass authoring with no sub-agent dispatch. Reads the source spec, drafts the summary, writes it once, and self-checks. Built for tight-loop iteration — re-run it after the spec changes.
+Single-pass authoring with no sub-agent dispatch. Reads the source spec, drafts the summary, writes it once, then runs three self-check passes (internal-consistency, plain-language, and reading-order), each re-reading the file from disk before presenting it. Built for tight-loop iteration: re-run it after the spec changes.
 
 ## Related documentation
 

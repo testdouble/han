@@ -73,7 +73,7 @@ Wait for the agent's return. The summary it returns names the file path and gap 
 **Always required, at every size:**
 
 - `han-core:adversarial-validator` — attacks the han-core:gap-analyzer's findings with counter-evidence to surface invalid gaps and produce per-gap confidence verdicts.
-- `han-core:junior-developer` — runs the actor-perspective sweep. For every gap, enumerates every actor the desired state addresses or implies (human end users and sub-roles, API callers, AI agents, integration partners, batch processes, internal admins, auditors) and checks whether the gap holds for every actor type. Surfaces gaps the analyzer missed because it only considered one actor type.
+- `han-core:junior-developer` — runs the actor-perspective sweep. For every gap, enumerates every actor the desired state addresses or implies (human end users and sub-roles, API callers, AI agents, integration partners, batch processes, internal services) and checks whether the gap holds for every actor type. Surfaces gaps the analyzer missed because it only considered one actor type.
 
 **Required when the current state is concrete** (codebase, document on disk, fetchable URL — not inline-text-only comparison):
 

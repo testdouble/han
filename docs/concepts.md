@@ -70,7 +70,7 @@ Every skill that dispatches an agent swarm classifies the work as **small**, **m
 
 - **Default is small.** Every sizing-aware skill starts the classification at small and only escalates when concrete signals require it.
 - **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
-- **Sizing-aware skills.** [`/architectural-analysis`](./skills/han-coding/architectural-analysis.md), [`/code-review`](./skills/han-coding/code-review.md), [`/gap-analysis`](./skills/han-core/gap-analysis.md), [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md), [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md), [`/plan-implementation`](./skills/han-planning/plan-implementation.md), [`/research`](./skills/han-core/research.md).
+- **Sizing-aware skills.** [`/architectural-analysis`](./skills/han-coding/architectural-analysis.md), [`/code-overview`](./skills/han-coding/code-overview.md), [`/code-review`](./skills/han-coding/code-review.md), [`/gap-analysis`](./skills/han-core/gap-analysis.md), [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md), [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md), [`/plan-implementation`](./skills/han-planning/plan-implementation.md), [`/research`](./skills/han-core/research.md).
 
 Read the full [Sizing](./sizing.md) reference for the bands, the auto-classification process, and the per-skill rules.
 

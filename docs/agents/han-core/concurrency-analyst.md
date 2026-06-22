@@ -7,7 +7,7 @@ Operator documentation for the `concurrency-analyst` agent in the han plugin. Th
 ## TL;DR
 
 - **What it does.** Analyzes concurrency and async patterns in a specified codebase focus area: race conditions, shared resource contention, deadlock potential, lock ordering, and async error handling. Produces numbered concurrency findings with file paths and verbatim code.
-- **When to dispatch it.** A focus area uses threads, async, parallel execution, or shared mutable state. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`, `/test-planning`, and `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation` by signal when plan sections touch concurrent access, race conditions, or async coordination.
+- **When to dispatch it.** A focus area uses threads, async, parallel execution, or shared mutable state. Dispatched by `/architectural-analysis` when the focus area shows a concurrency signal (it joins the signal-selected discovery roster, not the always-on synthesis spine). Conditionally dispatched by `/code-review`, `/test-planning`, and `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation` by signal when plan sections touch concurrent access, race conditions, or async coordination.
 - **What you get back.** Numbered `C#` findings, each tied to a concurrency dimension (Race Conditions / Resource Contention / Deadlock / Async Errors / Synchronization), file paths, verbatim code, and a concrete failure-scenario description. Or an explicit *"no concurrency patterns found"* report when none apply.
 
 ## Key concepts
@@ -22,7 +22,7 @@ Operator documentation for the `concurrency-analyst` agent in the han plugin. Th
 
 **Dispatch when:**
 
-- `/architectural-analysis` is running. The agent is one of the three parallel analysts the skill always dispatches.
+- `/architectural-analysis` is running and the focus area shows a concurrency signal. The agent joins the signal-selected discovery roster (the always-on spine is `structural-analyst` and `behavioral-analyst`).
 - `/code-review` flags files that touch threads, async, or shared state.
 - `/test-planning` needs negative tests for race conditions or lock-ordering inversions.
 - `/investigate` matches the symptom to intermittent / race / timeout bugs. The skill dispatches this agent alongside the investigators.
@@ -96,6 +96,6 @@ URL: https://go.dev/talks/2012/waza.slide
 - [`risk-analyst`](./risk-analyst.md). Consumes this agent's findings.
 - [`software-architect`](./software-architect.md). Synthesizes findings into recommendations.
 - [`system-architect`](./system-architect.md). Sibling for cross-service distributed coordination concerns.
-- [`/architectural-analysis`](../../skills/han-coding/architectural-analysis.md). Always dispatches this agent.
+- [`/architectural-analysis`](../../skills/han-coding/architectural-analysis.md). Dispatches this agent when the focus area shows a concurrency signal.
 - [`/code-review`](../../skills/han-coding/code-review.md), [`/test-planning`](../../skills/han-coding/test-planning.md), [`/investigate`](../../skills/han-coding/investigate.md). Conditionally dispatch this agent based on file signals.
 - [`/plan-implementation`](../../skills/han-planning/plan-implementation.md). Dispatches this agent by signal when plan sections touch concurrent access, race conditions, or async coordination.

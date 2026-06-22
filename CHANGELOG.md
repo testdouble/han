@@ -1,5 +1,35 @@
 # Han Release Notes
 
+## v4.3.0
+
+han 4.3.0 teaches the `coding-standard` skill to cite code by durable, greppable anchors instead of volatile `file:line` references (han-coding 2.3.0), and applies a one-line wording fix to `gap-analysis` (han-core 2.0.2). `han-planning`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, `han-linear`, and `han-plugin-builder` are unchanged.
+
+### han v4.3.0
+
+The suite-level work is documentation and repo-root config. `docs/agents/han-core/concurrency-analyst.md` corrected its dispatch claims. `docs/concepts.md`, `docs/quickstart.md`, `docs/skills/han-coding/coding-standard.md`, `docs/skills/han-reporting/stakeholder-summary.md`, and `docs/templates/coverage-rule.md` got sizing-aware-list and count-free-index-convention fixes, plus stale long-form doc path corrections left over from the plugin-rename reorg (#80). `.github/pull_request_template.md` and `CONTRIBUTING.md` were aligned with the count-free index convention (#81). `CLAUDE.md` dropped `CLAUDE.md` itself from the list of places the doc-update skill needs to keep current. `.claude-plugin/marketplace.json` carries the per-plugin version syncs for this release.
+
+### han-coding v2.3.0
+
+The `coding-standard` skill now generates standards that cite code by durable, greppable anchors instead of `file:line` references that go stale as the codebase moves. A new reference file `han-coding/skills/coding-standard/references/durable-references.md` holds the rule: numbered rules for deriving a greppable anchor (Rules 1 and 2, with an escalation path that flags a place for engineer review when it cannot be cleanly anchored), Rule 3 for writing "Applies To" as a membership criterion, and Rule 4 idioms for timeless phrasing.
+
+In `han-coding/skills/coding-standard/SKILL.md`, the Step 4 `han-core:codebase-explorer` dispatch prompts now ask for a file path, a line range, and one or more greppable durable anchors per place (following Rules 1 and 2), and flag places that reach escalation for engineer review rather than returning an anchor. The standards/ADRs explorer asks for cross-references as a document path plus a stable section heading, and the merged context block gains a "Flagged candidates" bucket for places that could not be cleanly anchored. Step 6 reads and applies `durable-references.md` in its authoring mode throughout, writing "Applies To" as a membership criterion (Rule 3) and surfacing any flagged candidate with a recommended resolution instead of emitting a coarse or anchorless reference. The verification step adds a temporal-phrasing scan over the whole document, not just the citations, reframing temporal hits to the timeless property via the Rule 4 idioms and flagging anything that cannot be re-anchored. Index-file entry descriptions now follow Rule 3 as well. The output template `han-coding/skills/coding-standard/references/template.md` changed its Project-references bullet to pair a file path with a stable anchor. Contributed by [@taminomara](https://github.com/taminomara) in #79.
+
+### han-core v2.0.2
+
+The `han-core/skills/gap-analysis/SKILL.md` `han-core:junior-developer` actor-perspective sweep changed its trailing actor examples from "internal admins, auditors" to "internal services". Wording only, no behavior change.
+
+### Issues closed in this release
+
+- `coding-standard` skill generates standards that cite volatile codebase state, so produced standards go stale (#73) — opened by [@taminomara](https://github.com/taminomara); fixed in #79 by [@taminomara](https://github.com/taminomara); thanks to [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- docs: align PR template checklist with the count-free index convention (#81) — [@taminomara](https://github.com/taminomara)
+- docs: fix stale long-form doc paths after the plugin-rename reorg (#80) — [@taminomara](https://github.com/taminomara)
+- feat: coding standard durable references (#79) — [@taminomara](https://github.com/taminomara)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.3.0/CHANGELOG.md#v430
+
 ## v4.2.0
 
 han 4.2.0 ships a new code-overview skill (han-coding 2.2.0) and a Confluence-publishing wrapper for it (han-atlassian 2.2.0), simplifies the `/update-pr-description` output (han-github 2.1.0), and adds a description cross-reference to `/project-documentation` (han-core 2.0.1). `han-planning`, `han-reporting`, `han-feedback`, `han-linear`, and `han-plugin-builder` are unchanged.
