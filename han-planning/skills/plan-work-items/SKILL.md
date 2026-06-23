@@ -32,7 +32,6 @@ This skill mostly coordinates: locating the plan or context, resolving where the
 - **Run autonomously.** After the initial request, run end to end without pausing for human confirmation. When a decision has a reasonable default (where the file goes, how the plan divides), make it, state it, and proceed. Print the work item breakdown for visibility, but never gate on approval to continue. Stop for the user only when the skill genuinely cannot continue without input — there is no plan or context to work from at all.
 - **One file, no repository awareness.** This skill produces exactly one `work-items.md`. It does not split work by repository, count repositories, or reason about cross-repository integration. The breakdown is driven only by the plan or context it is given.
 - **Save incrementally — never lose work.** Write the work-items file as soon as the title and intro are drafted, then append each work item as it is finalized. Do not buffer the whole document in conversation memory and write it at the end.
-- **All sub-agents in this skill run on sonnet.** When launching any Agent tool call in this skill, pass `model: "sonnet"`.
 
 ## Rules
 
@@ -79,7 +78,7 @@ If an expected artifact is missing (for example, the plan touches an HTTP bounda
 
 ### 5. Draft the work items
 
-Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`, `model: "sonnet"`) with:
+Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) with:
 
 - The full plan or context content from Step 1.
 - The artifact inventory from Step 4.

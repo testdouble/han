@@ -28,7 +28,6 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 - **Traceability back to source is non-negotiable.** Every phase cites the section(s) of the source artifact that drove it. The reader can always answer "where did this phase come from?" without leaving the document.
 - **Save incrementally — never lose work.** Write the outline file as soon as the executive summary and phase index are drafted, then update the file every time a phase is fleshed out. Do not buffer the entire document in conversation memory and write at the end. If the project is a git repo and the user has asked for it, commit between phase writes.
 - **YAGNI is a first-class operating principle.** Apply the evidence-based YAGNI rule from [../../references/yagni-rule.md](../../references/yagni-rule.md). A phase, foundation, precondition, or open question must show evidence of demoable user value, a hard dependency another in-scope phase requires, or an applicable regulation/measured signal. Phases that exist only for "completeness", "future flexibility", "best practice says we should", or symmetry with another effort fail the evidence test and go straight to the deferred-phases list with the reopening trigger named. Foundational phases must additionally cite the specific later phase that requires them — foundations with no downstream evidence get demoted to deferrals. Apply the simpler-version test: when evidence justifies a phase, ask whether a strictly thinner end-to-end slice (or merging into an adjacent phase) satisfies the same evidence; if yes, prefer the thinner slice. Every committed phase is delivery cost the team will pay.
-- **All sub-agents in this skill run on sonnet.** When launching any Agent tool call in this skill, pass `model: "sonnet"`.
 
 # Plan a Phased Build
 
@@ -141,7 +140,7 @@ Write [`build-phase-outline.md`](./references/build-phase-outline-template.md) u
 
 ## Step 7: Information-Architect Review of the Rendered Document
 
-Launch the `han-core:information-architect` agent in a single Agent tool call (pass `model: "sonnet"`) to review the rendered `build-phase-outline.md` for findability, orientation, scannability, and progressive comprehension. Provide:
+Launch the `han-core:information-architect` agent in a single Agent tool call to review the rendered `build-phase-outline.md` for findability, orientation, scannability, and progressive comprehension. Provide:
 
 - The path to the rendered document.
 - A directive: **review the rendered outline as a stakeholder would encounter it**. Specifically: a reader landing cold on the document should be able to (a) understand the shape of the work in two minutes from the executive summary alone, (b) scan the index and identify phases relevant to their interests, (c) read any single phase entry and understand it without reading prior phases, and (d) cite stable phase IDs in tickets and threads.

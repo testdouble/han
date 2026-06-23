@@ -42,6 +42,8 @@ model: sonnet
 
 The frontmatter `model` is the level you control as an agent author, but an operator's env var or a dispatch-time choice can override it.
 
+**Scope: this rule governs agent definition files only, not skill dispatch.** "Always set model explicitly" applies to the `model:` frontmatter of an agent definition (`**/agents/**/*.md`). It does NOT mean a skill should pass a `model` override on its Agent tool calls. A skill that hard-codes a tier name at dispatch (`pass model: "sonnet"`) sends a Claude-specific identifier across the host boundary, which fails on non-Claude hosts that have their own model namespace, and it silently supersedes each dispatched agent's own frontmatter tier. Skills should pass no model override; let each agent's frontmatter tier govern on Claude Code, and let the host default govern elsewhere.
+
 ## Model Characteristics
 
 | Model   | Capability | Speed   | Best For                                                                                   |

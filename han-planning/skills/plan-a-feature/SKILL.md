@@ -27,7 +27,6 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 - **Load-bearing mechanics go in `feature-technical-notes.md`, not the spec.** When a mechanic is load-bearing for a behavior — meaning the behavioral commitment in the spec is only correct because of that mechanic (ordering, durability, consistency, visibility timing) — the behavioral consequence goes in the spec sentence, and the mechanic goes in a `T#` note linked inline from that sentence. The tech-notes file is LAZILY created — it exists only when at least one load-bearing mechanic qualified. Mechanics that are discoverable from the code repo (an existing pattern, an in-use library, a documented convention) do NOT belong in the tech-notes file either — `plan-implementation` will find them from the code. Mechanics that do not affect observable behavior are pure implementation and belong in the implementation plan, not here.
 - **YAGNI is a first-class operating principle.** Apply the evidence-based YAGNI rule defined in [../../references/yagni-rule.md](../../references/yagni-rule.md). Every behavior, alternate flow, edge case, coordination, open item, or other commitment in `feature-specification.md` must cite at least one piece of evidence per the rule's evidence test (user-described need, named direct dependency, existing production code path that breaks, applicable regulation, documented incident or measured metric). When evidence justifies the item, apply the simpler-version test — replace with the strictly simpler version that satisfies the same evidence. Items that fail the evidence test get demoted to a `## Deferred (YAGNI)` section in the spec with the trigger that would justify reopening, never silently dropped and never silently kept. Every spec section is ongoing maintenance and a pattern future agents will copy.
 - **Evidence quality is a companion operating principle.** Apply the evidence rule from [../../references/evidence-rule.md](../../references/evidence-rule.md) alongside YAGNI. YAGNI gates inclusion (is there any evidence?); the evidence rule characterizes the quality of the evidence each spec commitment rests on. Name the trust class of cited sources (codebase, web, provided); mark single-source web claims that drive a commitment; label commitments with no evidence at any tier as a distinct deferred state rather than weak evidence. The proximity-to-origin principle is a heuristic, not a strict tier list.
-- **All sub-agents in this skill run on sonnet.** When launching any Agent tool call in this skill, pass `model: "sonnet"`.
 
 # Plan a Feature
 
@@ -181,7 +180,7 @@ Choose sub-agents to review the draft spec in parallel based on the size cap fro
 
 **Mechanic-focused specialists — `han-core:structural-analyst`, `han-core:behavioral-analyst`, `han-core:concurrency-analyst`, `han-core:software-architect`, and `han-core:system-architect` — are intentionally excluded from the default spec-stage roster.** The analysts target module boundaries, runtime data flow, and concurrency primitives; the architects synthesize those findings into intra-codebase or cross-service topology recommendations. All of it is `plan-implementation`'s domain under the rule in the operating principles. Include one only if the user explicitly asks for it, and when doing so warn the user that the specialist may surface implementation-level findings the spec will not absorb — such findings get deferred to `plan-implementation` rather than edited into the spec.
 
-**When launching each agent, pass `model: "sonnet"` to the Agent tool. Use domain-scoped briefs — do not hand every agent the full set of artifacts.** Pass each agent only the spec sections relevant to its domain plus pointers, and instruct it to read the rest on demand only if its domain needs it. Default mapping:
+**Use domain-scoped briefs — do not hand every agent the full set of artifacts.** Pass each agent only the spec sections relevant to its domain plus pointers, and instruct it to read the rest on demand only if its domain needs it. Default mapping:
 
 | Specialist | Spec sections to include in brief |
 |---|---|
@@ -231,7 +230,7 @@ After all review agents return, compile their findings. **Do not dump raw findin
 
 ## Step 8: Project Manager Synthesis
 
-Launch the `han-core:project-manager` agent in **synthesis mode** (pass `model: "sonnet"`). Provide it with:
+Launch the `han-core:project-manager` agent in **synthesis mode**. Provide it with:
 
 - All output file paths: `{folder}/feature-specification.md`, `{folder}/artifacts/decision-log.md`, `{folder}/artifacts/team-findings.md`, and `{folder}/artifacts/feature-technical-notes.md` if it exists.
 - The full verbatim output from every review agent in Step 6.
