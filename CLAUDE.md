@@ -47,7 +47,7 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 ├── han-linear/         # Opt-in Linear plugin: work-items-to-linear (depends on han-core; requires the Linear MCP server; NOT bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Atlassian skill directories, each with SKILL.md + references/
+│   └── skills/         # Linear skill directory, with SKILL.md + references/
 ├── han-plugin-builder/ # Opt-in plugin-building plugin: guidance, skill-builder, agent-builder (depends on nothing; NOT bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
