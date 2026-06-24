@@ -6,19 +6,20 @@ Operator documentation for the `/code-overview` skill in the han plugin. This do
 
 ## TL;DR
 
-- **What it does.** Produces a human-readable, progressive-disclosure overview of unfamiliar code (as it is now) or of a pull request's changes (what they do and why), so you can get up to speed before working on or reviewing it.
+- **What it does.** Produces a human-readable, progressive-disclosure overview of unfamiliar code or of a pull request's changes that leads with *why* — the real problem the code solves or the goal it accomplishes for the business or a user — and flows everything else (what it does, how it works, where to start) out of that, so you can get up to speed before working on or reviewing it.
 - **When to use it.** You have landed in code you do not know, or a PR you are about to review, and you want a fast orientation before you start.
 - **What you get back.** A scratch overview file (written outside the repository) with a purpose statement, Mermaid flow charts, the directly-related context, and where to start — at minimal technical depth.
 - **Size-aware.** The skill classifies the target as small / medium / large, defaults to small, and scales how many `codebase-explorer` agents it dispatches. Pass the size as the first positional argument to override (`/code-overview medium`). See [Sizing](../../sizing.md).
 
 ## Key concepts
 
-- **Two modes.** *Code mode* explains a file, directory, or symbol as it is now. *PR mode* explains a set of changes — what they do, grouped by intent, and how to look at the PR before reviewing it. The skill picks the mode from the target.
+- **Why first.** The overview is built to answer one question before any other: *why does this code exist?* The answer is the real problem it solves or the goal it accomplishes for the business or a user — not the technical mechanics. What it does, how it flows, and where to start are not dropped; they flow out of the why and exist to give you the context to understand it. A confidently stated why that the code's intent does not support is the one thing the skill guards hardest against.
+- **Two modes.** *Code mode* explains a file, directory, or symbol as it is now — why it exists, then what it does. *PR mode* explains a set of changes — why they exist, grouped by the intent each group serves, and how to look at the PR before reviewing it. The skill picks the mode from the target.
 - **Understand now, not document for later.** The overview is an ephemeral orientation aid written to a scratch file, never committed into the repository's documentation tree. That is the line against `/project-documentation`.
 - **No findings.** The overview raises no quality findings, severities, or recommended changes — even the PR-mode "what to watch" section is navigational, naming where the change is hardest to follow, not whether it is any good. That is the line against `/code-review`.
 - **Accurate, not just readable.** Before you see it, an `adversarial-validator` pass re-reads the code and challenges every claim the draft makes, so the flow charts, entry points, and change groupings reflect what the code actually does. The validation guards truth (the description matches the code); it never crosses into judging the code's quality, which stays `/code-review`'s job.
-- **Progressive disclosure.** The most important understanding comes first (what it is and why), then the flow chart, then context, then where to start. A reader who stops early still knows what the target is.
-- **Minimal technical detail, scoped per section.** Purpose, flow, and context stay high-level; the where-to-start section is the exception and names concrete entry points so you can actually open the right file.
+- **Progressive disclosure, anchored on the why.** The most important understanding comes first — *why the code exists*, the problem it solves or goal it serves — then the flow chart, then context, then where to start, each flowing from and serving that why. A reader who stops early still knows why the target exists and what need it meets.
+- **Minimal technical detail, scoped per section.** The why, flow, and context stay high-level — the why told as a problem solved or goal met, not technical mechanics; the where-to-start section is the exception and names concrete entry points so you can actually open the right file.
 
 ## When to use it
 
@@ -55,14 +56,14 @@ Example prompts:
 
 A single Markdown overview file written to a scratch location **outside the repository** (for example under your system temp directory). The skill shows you the path; open it where the Mermaid charts render. The file is not committed and is not maintained — it is a point-in-time orientation aid.
 
-The document follows one structure per mode, under a shared grammar. It opens with a title and a short intro paragraph naming what is being examined (not a metadata block), then:
+The document follows one structure per mode, under a shared grammar. It opens with a title and a short intro paragraph naming what is being examined (not a metadata block), then leads with the why and lets every later section flow from it:
 
-- **Code mode:** *What it does and why* → *Main flow* (a Mermaid chart with a scope label) → *Context and uses* → *Where to start*.
-- **PR mode:** *What this change does and why* → *Changes by intent* (grouped by the outcome each group delivers) → *How the change flows* (a Mermaid chart with a scope label) → *What to watch when reviewing* (navigational only).
+- **Code mode:** *Why it exists* (the problem solved or goal served, then briefly what it is) → *Main flow* (a Mermaid chart with a scope label, read as how the code delivers on the why) → *Context and uses* → *Where to start*.
+- **PR mode:** *Why this change exists* (the need that motivated it, then the bottom line of what it does) → *Changes by intent* (grouped by the outcome — the why — each group delivers) → *How the change flows* (a Mermaid chart with a scope label) → *What to watch when reviewing* (navigational only).
 
 In PR mode, when the pull request has screenshots, the overview embeds them inline next to the text they illustrate, so you do not have to switch back to the PR to see them.
 
-Before you see it, the draft passes two checks in parallel. An accuracy pass — `adversarial-validator` re-reads the code and challenges every claim the overview makes (does the flow chart match the real control flow, do the named entry points exist, does each change-by-intent grouping describe what the code actually does), so a confidently wrong overview gets corrected before it can mislead you. And a readability pass — `information-architect` and `junior-developer` review the document for progressive disclosure and clarity. The skill applies both, with accuracy corrections taking precedence, then rewrites the file. The validator checks the description against the code only to keep it truthful, never to judge the code's quality — the overview still raises no findings about the work itself.
+Before you see it, the draft passes two checks in parallel. An accuracy pass — `adversarial-validator` re-reads the code and its intent and challenges every claim the overview makes, starting with the load-bearing one: is the stated *why* grounded in real evidence (commit and PR/issue intent, comments, what the code visibly does toward a goal) or an invented rationale; does the flow chart match the real control flow; do the named entry points exist; does each change-by-intent grouping describe what the code actually does. A confidently wrong overview — most of all a confidently wrong *why* — gets corrected before it can mislead you. And a readability pass — `information-architect` and `junior-developer` review the document for progressive disclosure and clarity. The skill applies both, with accuracy corrections taking precedence, then rewrites the file. The validator checks the description against the code only to keep it truthful, never to judge the code's quality — the overview still raises no findings about the work itself.
 
 When the target is too large to cover fully at the chosen size, the overview adds a coverage note immediately after the header, naming what it did not cover and the next size up, so you know the picture is partial before you study the charts.
 
@@ -91,7 +92,7 @@ The skill runs on the default model tier and dispatches a lean roster: one to fi
 
 ## In more detail
 
-The skill orchestrates and synthesizes; the agents discover, validate, and refine. It resolves the target by a fixed precedence — an explicit pull request reference first, then a file or directory path, then a symbol, and finally (with no target) the current branch's changes — so an ambiguous string never silently selects the wrong mode. It classifies size, dispatches `codebase-explorer` agents over the target or the changed files, and then writes the overview itself: the grouping, the charts, and the orientation are the skill's work, not pasted agent output.
+The skill orchestrates and synthesizes; the agents discover, validate, and refine. It resolves the target by a fixed precedence — an explicit pull request reference first, then a file or directory path, then a symbol, and finally (with no target) the current branch's changes — so an ambiguous string never silently selects the wrong mode. It classifies size, dispatches `codebase-explorer` agents over the target or the changed files — telling them to surface the evidence of *why* the code exists (the problem it solves or goal it serves, drawn from commit and PR intent, comments, naming, and tests) alongside entry points, context, uses, and flow — and then writes the overview itself, leading with that why and flowing the grouping, charts, and orientation out of it. The grouping, the charts, and the orientation are the skill's work, not pasted agent output.
 
 PR mode runs on the local branch diff and does not require a remote pull request; a remote PR is needed only when you name one explicitly. The skill degrades gracefully when its tools are missing: code mode against a named target still runs without git, while PR mode and the bare-invocation default tell you they need git to read changes. When a named pull request cannot be reached, the skill offers code mode against a local target instead.
 

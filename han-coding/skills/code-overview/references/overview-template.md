@@ -17,15 +17,25 @@ remove the guidance comments, and keep the section order exactly as written.
   intro, not in a section, not anywhere. These numbers go stale the moment the PR
   changes and add no understanding. Describe what changed and why, never how big
   the diff is.
-- **Progressive disclosure.** The most important understanding comes first;
-  detail unfolds beneath it. A reader who stops after the lead section still
-  knows what the target is and why it exists.
-- **Minimal technical detail, scoped per section.** The purpose, flow, and
-  context sections stay at the level of what the code does and why — no
-  detail a reader would otherwise look up in the code itself. The
-  where-to-start / what-to-watch handoff section is the exception: it must name
-  the concrete entry points (the specific files or components) the operator
-  would open first, or it is not actionable.
+- **Lead with the why, from the solution's perspective.** The lead section
+  answers *why this code (or change) exists* — the real problem it solves or the
+  goal it accomplishes for the business or a user — told as a solution to a need,
+  never as technical mechanics: why it exists, why it works the way it does, why
+  it is the current solution to that need. Every section after it (flow, context,
+  handoff) exists to give the reader the context to understand that why. Never
+  invent a business rationale the evidence does not support; when the why can only
+  be inferred, mark it as inferred.
+- **Progressive disclosure, anchored on the why.** The most important
+  understanding comes first, and that is *why the code exists* — the problem it
+  solves or goal it serves. Detail unfolds beneath it, every section flowing from
+  and serving that why. A reader who stops after the lead section still knows why
+  the target exists and what need it meets.
+- **Minimal technical detail, scoped per section.** The why, flow, and
+  context sections stay at the level of why the code exists and what it does — the
+  why told as a problem solved or goal met, with no detail a reader would
+  otherwise look up in the code itself. The where-to-start / what-to-watch handoff
+  section is the exception: it must name the concrete entry points (the specific
+  files or components) the operator would open first, or it is not actionable.
 - **Chart scope labels.** Every flow chart carries a one-line label stating what
   it covers, and — when coverage is partial — what it leaves out. A chart must
   make sense to a reader who reads only the chart and its label.
@@ -54,10 +64,14 @@ sentence.}
 > **Coverage note.** This overview covers {what was covered}. It does not cover
 > {what was left out}. Re-run at size {next size up} for fuller coverage.
 
-## What it does and why
+## Why it exists
 
-{One short paragraph: what this code is and why it exists. The single most
-important orientation fact, in plain language.}
+{Lead with the why: the real problem this code solves or the goal it accomplishes
+for the business or a user — as a solution to a need, not technical mechanics —
+and why it works the way it does. Then, briefly, what it is, so the reader has a
+concrete referent. The single most important orientation fact is the why; if the
+why can only be inferred from the code and its intent, say so rather than
+inventing a rationale.}
 
 ## Main flow
 
@@ -69,14 +83,15 @@ flowchart TD
   {the main process flow}
 ```
 
-{One or two sentences walking the reader through the chart at a high level.}
+{One or two sentences walking the reader through the chart at a high level —
+read as how the code delivers on the why above.}
 
 ## Context and uses
 
-- **Context (understand first):** {what the target depends on and the
-  surrounding code a reader must understand before touching it}.
-- **Uses (where it is invoked):** {where the target is called from, the blast
-  radius of a change}.
+- **Context (understand first):** {what the target depends on to meet that need,
+  and the surrounding code a reader must understand before touching it}.
+- **Uses (where it is invoked):** {where the target is called from — where the
+  need it serves is met — and the blast radius of a change}.
 
 ## Where to start
 
@@ -102,17 +117,20 @@ saying into this sentence.}
 > **Coverage note.** This overview covers {what was covered}. It does not cover
 > {what was left out}. Re-run at size {next size up} for fuller coverage.
 
-## What this change does and why
+## Why this change exists
 
-{One short paragraph: the bottom line of the change — what it does and why,
-in plain language.}
+{Lead with the why: the real problem this change solves or the goal it advances
+for the business or a user — the need that motivated it, as a solution to that
+need, not technical mechanics. Then, briefly, the bottom line of what it does. If
+the why can only be inferred from intent (commit messages, PR/issue text), say so
+rather than inventing one.}
 
 ## Changes by intent
 
-<!-- Group changes by the reader-visible outcome each group delivers (what a
-reviewer would say changed and why), NOT by file, layer, or author motivation.
-If the change is a single logical unit, drop the grouping and write one
-narrative paragraph instead of the list below. -->
+<!-- Group changes by the reader-visible outcome each group delivers — the why
+each group serves (what a reviewer would say changed and why), NOT by file,
+layer, or author motivation. If the change is a single logical unit, drop the
+grouping and write one narrative paragraph instead of the list below. -->
 
 - **{outcome the group delivers}:** {what changed to deliver it, and why}.
 
