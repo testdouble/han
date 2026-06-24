@@ -16,6 +16,7 @@ Operator documentation for the `/code-overview` skill in the han plugin. This do
 - **Two modes.** *Code mode* explains a file, directory, or symbol as it is now. *PR mode* explains a set of changes — what they do, grouped by intent, and how to look at the PR before reviewing it. The skill picks the mode from the target.
 - **Understand now, not document for later.** The overview is an ephemeral orientation aid written to a scratch file, never committed into the repository's documentation tree. That is the line against `/project-documentation`.
 - **No findings.** The overview raises no quality findings, severities, or recommended changes — even the PR-mode "what to watch" section is navigational, naming where the change is hardest to follow, not whether it is any good. That is the line against `/code-review`.
+- **Accurate, not just readable.** Before you see it, an `adversarial-validator` pass re-reads the code and challenges every claim the draft makes, so the flow charts, entry points, and change groupings reflect what the code actually does. The validation guards truth (the description matches the code); it never crosses into judging the code's quality, which stays `/code-review`'s job.
 - **Progressive disclosure.** The most important understanding comes first (what it is and why), then the flow chart, then context, then where to start. A reader who stops early still knows what the target is.
 - **Minimal technical detail, scoped per section.** Purpose, flow, and context stay high-level; the where-to-start section is the exception and names concrete entry points so you can actually open the right file.
 
@@ -61,7 +62,7 @@ The document follows one structure per mode, under a shared grammar. It opens wi
 
 In PR mode, when the pull request has screenshots, the overview embeds them inline next to the text they illustrate, so you do not have to switch back to the PR to see them.
 
-Before you see it, the draft passes a readability pass: `information-architect` and `junior-developer` review the document for progressive disclosure and clarity, and the skill rewrites it from their recommendations. They review the document, not the code — the overview still raises no findings about the work itself.
+Before you see it, the draft passes two checks in parallel. An accuracy pass — `adversarial-validator` re-reads the code and challenges every claim the overview makes (does the flow chart match the real control flow, do the named entry points exist, does each change-by-intent grouping describe what the code actually does), so a confidently wrong overview gets corrected before it can mislead you. And a readability pass — `information-architect` and `junior-developer` review the document for progressive disclosure and clarity. The skill applies both, with accuracy corrections taking precedence, then rewrites the file. The validator checks the description against the code only to keep it truthful, never to judge the code's quality — the overview still raises no findings about the work itself.
 
 When the target is too large to cover fully at the chosen size, the overview adds a coverage note immediately after the header, naming what it did not cover and the next size up, so you know the picture is partial before you study the charts.
 
@@ -86,11 +87,11 @@ Classification defaults to small and escalates only on a clear signal; a borderl
 
 ## Cost and latency
 
-The skill runs on the default model tier and dispatches a lean roster: one to five `han-core:codebase-explorer` agents in parallel, scaled to size, then a synthesis pass the skill performs itself, then a two-agent readability pass (`information-architect` and `junior-developer`, in parallel) whose recommendations the skill applies. The most expensive single step is the parallel exploration wave at large size. It is built for quick, on-demand orientation, so it is cheap at small size and safe to run often; it is read-only and re-runnable, so there is no approval gate before it works.
+The skill runs on the default model tier and dispatches a lean roster: one to five `han-core:codebase-explorer` agents in parallel, scaled to size, then a synthesis pass the skill performs itself, then a three-agent review wave in parallel — `adversarial-validator` (accuracy, re-reading the code) alongside `information-architect` and `junior-developer` (readability) — whose recommendations the skill applies. The most expensive single step is the parallel exploration wave at large size. It is built for quick, on-demand orientation, so it is cheap at small size and safe to run often; it is read-only and re-runnable, so there is no approval gate before it works.
 
 ## In more detail
 
-The skill orchestrates and synthesizes; the agents only discover. It resolves the target by a fixed precedence — an explicit pull request reference first, then a file or directory path, then a symbol, and finally (with no target) the current branch's changes — so an ambiguous string never silently selects the wrong mode. It classifies size, dispatches `codebase-explorer` agents over the target or the changed files, and then writes the overview itself: the grouping, the charts, and the orientation are the skill's work, not pasted agent output.
+The skill orchestrates and synthesizes; the agents discover, validate, and refine. It resolves the target by a fixed precedence — an explicit pull request reference first, then a file or directory path, then a symbol, and finally (with no target) the current branch's changes — so an ambiguous string never silently selects the wrong mode. It classifies size, dispatches `codebase-explorer` agents over the target or the changed files, and then writes the overview itself: the grouping, the charts, and the orientation are the skill's work, not pasted agent output.
 
 PR mode runs on the local branch diff and does not require a remote pull request; a remote PR is needed only when you name one explicitly. The skill degrades gracefully when its tools are missing: code mode against a named target still runs without git, while PR mode and the bare-invocation default tell you they need git to read changes. When a named pull request cannot be reached, the skill offers code mode against a local target instead.
 
@@ -126,5 +127,6 @@ URL: https://www.spinellis.gr/codereading/
 - [`/investigate`](./investigate.md). Reach for this when something is broken and you need a root cause, not an overview.
 - [Sizing](../../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`codebase-explorer`](../../agents/han-core/codebase-explorer.md). The agent this skill dispatches, scaled to size, to discover entry points, context, uses, and flow.
+- [`adversarial-validator`](../../agents/han-core/adversarial-validator.md). The agent that re-reads the code to challenge the drafted overview's claims for accuracy before you see it, so the description matches what the code actually does.
 - [`information-architect`](../../agents/han-core/information-architect.md), [`junior-developer`](../../agents/han-core/junior-developer.md). The two agents that review the drafted overview for progressive disclosure and readability before you see it.
 - [`SKILL.md` for /code-overview](../../../han-coding/skills/code-overview/SKILL.md). The internal process definition.
