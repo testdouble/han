@@ -114,6 +114,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 
 - [`/tdd`](../skills/han-coding/tdd.md) is the next step when work items are ready to build. It writes the tests and production code into your tree.
 - [`/code-review`](../skills/han-coding/code-review.md) is the right step after `/tdd` finishes a behavior and before you open a PR.
+- [Revise a plan after the build has started](./revise-a-plan.md) is the right guide when a plan from this loop needs to change once you are already building.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the right guide when the work is not a new feature but a fix.
 - [Research a decision](./research-a-decision.md) is the right guide when you are not ready to spec because the underlying decision (which library, which pattern, which approach) has not been made yet.
 - The skill long-form docs ([plan-a-feature](../skills/han-planning/plan-a-feature.md), [plan-a-phased-build](../skills/han-planning/plan-a-phased-build.md), [plan-implementation](../skills/han-planning/plan-implementation.md), [iterative-plan-review](../skills/han-planning/iterative-plan-review.md), [plan-work-items](../skills/han-planning/plan-work-items.md), [tdd](../skills/han-coding/tdd.md)) cover each step in depth. The how-to tells you how they fit together; the long-form docs tell you what each one does on its own.

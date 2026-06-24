@@ -13,6 +13,7 @@ The skill long-form docs in [docs/skills/](../skills/README.md) are canonical fo
 ### Using Han on a real piece of work
 
 - **[Plan a feature, end to end](./plan-a-feature.md).** You have a feature idea and want a behavioral spec, an implementation plan, and a list of independently grabbable work items, grounded in evidence rather than your best guess. The longest of these; covers most of the planning skills.
+- **[Revise a plan after the build has started](./revise-a-plan.md).** You already planned the work and started building, and now a later work item needs refining or an earlier decision no longer holds, and you want to change the right planning document and keep the others consistent rather than editing code and letting the plan drift.
 - **[Triage and investigate a bug](./triage-and-investigate-a-bug.md).** Something is broken or behaving oddly and you want a root cause backed by evidence, not a guess. Or the work is queued rather than immediate, and you want a structured triage document instead.
 - **[Research a decision and capture it](./research-a-decision.md).** Nothing is broken; you have a question (a new library, a hosting move, a build-vs-buy call) and want the options, prior art, and a recommendation, then record the chosen direction as an ADR.
 - **[Provide feedback on Han](./provide-feedback.md).** You want to tell the maintainers something: an idea or complaint you sharpen with `/issue-triage` before posting, or a report on how the skills performed in a session you just ran, summarized and posted by the opt-in `han-feedback` plugin.
