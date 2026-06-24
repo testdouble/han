@@ -1,5 +1,29 @@
 # Han Release Notes
 
+## v4.3.2
+
+han 4.3.2 re-focuses the `code-overview` skill around why code exists and adds an adversarial accuracy-validation pass to it (han-coding 2.3.1), and adds two how-to guides plus the research backing one of them to the suite documentation. `han-core`, `han-planning`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, and `han-linear` are unchanged.
+
+### han v4.3.2
+
+The suite-level work is documentation. Two how-to guides were added: `docs/how-to/revise-a-plan.md` covers how to change a plan after the build has started, and `docs/how-to/accelerate-understanding-of-unfamiliar-code.md` covers getting up to speed on unfamiliar code. Both are surfaced in `docs/how-to/README.md` and the recipe list in the root `README.md`. `docs/research/llm-accelerated-code-understanding.md` was added as the research backing the understanding-acceleration guide. `docs/how-to/plan-a-feature.md` and `docs/skills/README.md` got one-line updates, and the research summary dropped a banned word for voice compliance. `README.md` also got a header fix for the Claude installation section. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #87 and #88.
+
+### han-coding v2.3.1
+
+The `code-overview` skill (`han-coding/skills/code-overview/SKILL.md` and `han-coding/skills/code-overview/references/overview-template.md`) was reworked in two ways.
+
+First, the whole overview is now organized around one question: why does this code exist? The answer is the real problem the code solves or the goal it serves for the business or a user, never the technical mechanics. Code mode leads with a "Why it exists" section and PR mode with a "Why this change exists" section, and every following section (flow, context, where to start) is framed as serving that why. The skill's `description` frontmatter, its operating constraints, the Step 4 explorer dispatch, the Step 5 rendering order, and the per-section detail rule were all updated to put the why first. The Step 4 dispatch now asks explorers to gather evidence of why the code exists from commit messages, PR and issue intent, comments, naming, and tests, and to say so rather than invent a reason when the why is not stated. Where the why can only be inferred, the overview marks it as inferred and does not assert a business rationale the evidence does not support.
+
+Second, Step 7 (renamed "Validate Accuracy, then Refine for Readability") now dispatches three agents in parallel instead of two: `han-core:adversarial-validator` joins `han-core:information-architect` and `han-core:junior-developer`. The validator re-reads the target, and the diff in PR mode, and challenges every material claim the overview makes, the stated why most of all, for grounding in the actual code and its intent, citing the file, line, or commit that disproves any unsupported, overstated, contradicted, or hallucinated claim. It validates the accuracy of the description only and does not judge the code's quality or raise findings about the code. Accuracy corrections take precedence over readability edits when the skill applies recommendations. `docs/skills/han-coding/code-overview.md` and `docs/agents/han-core/adversarial-validator.md` were updated to match, and the adversarial-validator agent doc now names `/code-overview` as a dispatcher. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #89.
+
+### Pull requests in this release
+
+- How to change a plan (#87) — [@mxriverlynn](https://github.com/mxriverlynn)
+- How to: accelerate understanding of unfamiliar code (#88) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Code overview: answering "why" as the most important aspect (#89) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.3.2/CHANGELOG.md#v432
+
 ## v4.3.1
 
 han 4.3.1 removes the Claude-specific model overrides from the four planning skills so they run on hosts with their own model namespaces (han-planning 2.0.2), and clarifies the agent-model-selection guidance so the overrides are not reintroduced (han-plugin-builder 2.0.1). `han-core`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, and `han-linear` are unchanged.
