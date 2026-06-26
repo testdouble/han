@@ -273,8 +273,8 @@ After reviewing all changed files, analyze the changes against the project's doc
 
 For each source where Step 1's project config lookup returned a path:
 
-1. Scan filenames in the directory to identify documents relevant to the changed files
-2. Read each relevant document in full
+1. Scan filenames in the directory to identify only the documents whose subject matter intersects the changed files. Do not read the whole directory — pulling an unrelated standard or ADR into the review dilutes the signal and measurably degrades judgment, the same reason Step 1.5 caps branch context. Relevant is "governs code this diff touched", not "exists in the directory".
+2. Read each selected document in full. Weight correctness- and behavior-bearing rules (data isolation, error handling, API contracts, architectural decisions) over exhaustive style minutiae; style the project's linter already enforces is out of scope per the automated-tool boundary.
 3. **Verify the standard's premise applies before raising a "violates standard X" finding.** Read at least one architectural file in this codebase that demonstrates the standard's premise: an entry-point file for runtime-shape standards, a router or navigation surface for routing standards, a config file for configuration standards, an integration boundary for cross-service standards. When the architectural file confirms the premise, proceed with the violation analysis. When the file does not confirm the premise (e.g., the standard assumes SPA-style company switching but the codebase uses full-page redirects; the standard assumes rich-error API responses but the codebase uses type-system-closed contracts), do not raise the finding. Log a single line in the orchestrator's notes: `premise not verified for {standard}; finding omitted`. The "infer the premise from the standard's own examples" path is not a forward path; it is a reason to omit the finding.
 4. Evaluate whether the changes contradict, circumvent, deviate from, or are inconsistent with the document
 5. Report violations as review items using the category prefix from the table above
@@ -291,7 +291,7 @@ Documentation compliance findings merge into the same output sections as the fil
 
 After the compliance analysis, evaluate whether documentation files are still accurate given the code changes. **Skip this step if Step 1's project config lookup did not find a docs directory.**
 
-1. **Identify relevant docs** based on the domains, packages, and features touched by the diff
+1. **Identify relevant docs** based on the domains, packages, and features touched by the diff. Scope to docs whose subject matter the diff actually touches; do not sweep the entire docs tree.
 2. **Skip irrelevant docs**
 3. **Read and evaluate each relevant doc** against the current state of the code. Look for:
    - Incorrect behavior descriptions
