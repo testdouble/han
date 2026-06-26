@@ -29,7 +29,7 @@ Skills for comparing two artifacts against each other.
 
 Skills that produce context every other skill benefits from.
 
-- **[`/project-discovery`](./han-core/project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a static reference for other skills.
+- **[`/project-discovery`](./han-core/project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a concise reference section into AGENTS.md or CLAUDE.md for other skills.
 - **[`/project-documentation`](./han-core/project-documentation.md).** Create and maintain documentation for features, systems, and components.
 
 ### Conventions & decisions

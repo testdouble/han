@@ -65,12 +65,12 @@ Start with the scope that matches:
 
 Every other path works better when the plugin has rich context about your project. If you have ten minutes before you need the real skill, spend it here.
 
-1. **[`/project-discovery`](./skills/han-core/project-discovery.md).** Scans the repository and writes a static reference (languages, frameworks, build tools, documentation structure). Other skills consume this automatically.
+1. **[`/project-discovery`](./skills/han-core/project-discovery.md).** Scans the repository and writes a concise `## Project Discovery` section into your AGENTS.md or CLAUDE.md (languages, frameworks, build commands, where things live). Other skills consume this automatically.
 2. **[`/project-documentation`](./skills/han-core/project-documentation.md)** *(as needed).* Document features, systems, and components. `/code-review` and `/architectural-decision-record` read these docs as context.
 3. **[`/coding-standard`](./skills/han-coding/coding-standard.md)** *(as needed).* Formalize coding conventions, either from existing patterns or from research. `/code-review` checks these automatically.
 4. **[`/architectural-decision-record`](./skills/han-core/architectural-decision-record.md)** *(as needed).* Record architectural decisions.
 
-**You are done when:** you have a `project-discovery.md` at the project root and the docs and standards you need to give other skills useful context.
+**You are done when:** you have a `## Project Discovery` section in your AGENTS.md or CLAUDE.md and the docs and standards you need to give other skills useful context.
 
 ---
 
