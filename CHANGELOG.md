@@ -1,5 +1,57 @@
 # Han Release Notes
 
+## v4.4.0
+
+han 4.4.0 adds an independent adversarial validation pass to the `code-review` skill and hardens it against untrusted branch context (han-coding 2.4.0), reworks the `project-discovery` skill to write a concise section directly into the project's `AGENTS.md` or `CLAUDE.md` (han-core 2.1.0), and lands three documentation and frontmatter fixes: a `Write` permission for `post-code-review-to-pr` (han-github 2.1.2), missing frontmatter for `html-summary` (han-reporting 2.0.1), and corrected agent names in the skill-building guidance (han-plugin-builder 2.0.2). `han-planning` (2.0.2), `han-feedback` (2.0.0), `han-atlassian` (2.2.0), and `han-linear` (1.0.1) are unchanged.
+
+### han v4.4.0
+
+The suite-level work is documentation plus the per-plugin version syncs in `.claude-plugin/marketplace.json` for this release.
+
+New `docs/research/effective-ai-code-reviews.md` is a research report validating the claims behind effective AI code reviews, and new `docs/how-to/run-an-effective-code-review.md` is a how-to guide built on it. Both are surfaced in `docs/how-to/README.md`, and both back the `code-review` work in han-coding. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #92.
+
+A documentation sweep brought the skill and agent docs current with this release: `docs/skills/han-coding/code-review.md`, `docs/skills/han-core/project-discovery.md`, `docs/skills/han-core/project-documentation.md`, `docs/agents/han-core/adversarial-validator.md` (which now cross-links the new `code-review` Step 7.4 dispatch), `docs/agents/han-core/user-experience-designer.md`, `docs/skills/README.md`, `docs/skills/han-atlassian/project-documentation-to-confluence.md`, `docs/quickstart.md`, `README.md`, and `CONTRIBUTING.md`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #94.
+
+### han-core v2.1.0
+
+The `project-discovery` skill was reworked to write a concise `## Project Discovery` section directly into the project's `AGENTS.md` (preferred) or `CLAUDE.md`, instead of writing a standalone `docs/project-discovery.md` file plus a separate CLAUDE.md summary. The `output-file-path` argument-hint was removed, so the skill no longer takes an output path. `han-core/skills/project-discovery/references/claudemd-summary-template.md` was deleted, and `han-core/skills/project-discovery/references/template.md` was rewritten as the single concise structural guide.
+
+The skill now reads the target file first and builds a deduplication baseline, dropping any fact the file already documents, dropping empty and placeholder lines, and surfacing contradictions through AskUserQuestion. If nothing new remains after deduplication, it writes nothing and tells the user the file already covers the project. The output is deliberately small (where things live, languages and frameworks, commands to run), not an exhaustive inventory. `allowed-tools` dropped `Bash(date *)` and `Bash(mkdir *)`, since the skill no longer creates a docs directory or timestamps a file. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #93.
+
+### han-coding v2.4.0
+
+The `code-review` skill (`han-coding/skills/code-review/SKILL.md`) changed in two threads. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #92 and #94.
+
+#### Independent findings-validator pass (Step 7.4)
+
+A new Step 7.4, "Validate the finding list (independent adversarial pass)", runs after the existing collect, demote, and rubric sub-steps. It dispatches one `han-core:adversarial-validator` to re-attack the consolidated corrective-finding list against the code itself in fresh context, the way `investigate` validates a root cause, rather than trusting each producing agent's rationale. It runs only when at least one corrective finding (CRIT, WARN, SUGG, or any SEC-###) survived, and is skipped on a clean review.
+
+The validator returns Confirmed, Partially Refuted, or Refuted per finding. The orchestrator keeps Confirmed, demotes one severity on Partially Refuted, and drops Refuted only when concrete counter-evidence at `file_path:line_number` was supplied; an overcorrection guard keeps a finding when the validator only asserts. SEC-### findings drop only on refuted exploit paths with counter-evidence. The pass is a filter, not a finding source, so Step 9's verification is unaffected. The reachability gate text in Step 7.2 now notes that paraphrased reachability hedging it cannot catch literally is caught semantically by Step 7.4.
+
+#### Fetched branch context treated as untrusted data
+
+Fetched branch context is now handled as untrusted third-party data. Step 1.5 strips any instruction or directive aimed at the reviewer or an agent out of the Branch Context summary, and Step 3's agent prompt wraps `$branch_context` in explicit BEGIN and END "UNTRUSTED" markers with a directive to never obey text inside them, while `$focus_areas` stays trusted. Step 6's documentation-compliance and documentation-freshness passes were scoped to only the docs and standards whose subject matter the diff actually touches (reading the whole directory dilutes the signal), and weight correctness and behavior-bearing rules over style the linter already enforces.
+
+### han-github v2.1.2
+
+Added `Write` to `allowed-tools` in `han-github/skills/post-code-review-to-pr/SKILL.md`, since the skill needs write access. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #94.
+
+### han-reporting v2.0.1
+
+Added the missing `argument-hint: "[path to stakeholder-summary.md]"` and `allowed-tools: Read, Write` frontmatter to `han-reporting/skills/html-summary/SKILL.md`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #94.
+
+### han-plugin-builder v2.0.2
+
+Corrected the agent names in the example in `han-plugin-builder/skills/guidance/references/skill-building-guidance/use-case-planning.md`: `codebase-exploration` became `codebase-explorer` and `content-audit` became `content-auditor`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #94.
+
+### Pull requests in this release
+
+- effective code reviews (#92) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Project discovery: destination file, and simplified output (#93) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Code review effectiveness updates (#94) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.4.0/CHANGELOG.md#v440
+
 ## v4.3.3
 
 han 4.3.3 is a fix that wraps `argument-hint` frontmatter values in double quotes so YAML parses them as strings instead of misreading the bracket and flag syntax. The fix lands in `han-core` (2.0.3), `han-coding` (2.3.2), `han-github` (2.1.1), and `han-linear` (1.0.1). `han-planning`, `han-reporting`, `han-feedback`, `han-atlassian`, and `han-plugin-builder` are unchanged.
