@@ -101,7 +101,8 @@ separately when you want those opt-in packages.
 
 - [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, revising a plan
   after the build starts, accelerating your understanding of unfamiliar code, triaging and investigating a
-  bug, and researching a decision. Pick one when you want the full walkthrough, not only the path.
+  bug, running an effective code review, and researching a decision. Pick one when you want the full
+  walkthrough, not only the path.
 - [How to provide feedback on Han](./docs/how-to/provide-feedback.md). Send the maintainers structured
   feedback on a skill or agent run.
 - [Extend Han via dependencies](./docs/how-to/extend-han-with-plugin-dependencies.md). Add your own custom
