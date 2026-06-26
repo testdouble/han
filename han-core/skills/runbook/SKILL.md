@@ -8,7 +8,7 @@ description: >
   requiring the scenario to be real before producing the runbook. Does not produce feature or
   system documentation — use project-documentation. Does not record architectural decisions — use
   architectural-decision-record. Does not create coding standards — use coding-standard.
-argument-hint: [topic or scenario, or path to existing runbook to update]
+argument-hint: "[topic or scenario, or path to existing runbook to update]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git config *), Bash(whoami), Bash(date *), Bash(mkdir *), Bash(find *)
 ---
 

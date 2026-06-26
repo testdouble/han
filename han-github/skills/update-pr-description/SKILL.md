@@ -5,7 +5,7 @@ description: >
   CLI. Use when writing, drafting, or updating pull request descriptions, PR summaries, or PR
   bodies. Does not review code or post review comments — use code-review for local review or
   post-code-review-to-pr for posting a review to GitHub.
-argument-hint: [optional context about the PR]
+argument-hint: "[optional context about the PR]"
 allowed-tools: Read, Glob, Grep, Agent, Bash(git *), Bash(gh *)
 ---
 

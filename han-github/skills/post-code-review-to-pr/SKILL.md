@@ -7,7 +7,7 @@ description: >
   GitHub as PR comments. For local code review without posting to GitHub, use
   code-review instead. Does not write or update PR descriptions — use
   update-pr-description for that.
-argument-hint: [optional context about the PR or areas to focus on]
+argument-hint: "[optional context about the PR or areas to focus on]"
 allowed-tools: Bash(jq *), Bash(gh *), Bash(git *), Bash(make *), Bash(npm *), Read, Grep, Glob, Skill, Agent
 ---
 
