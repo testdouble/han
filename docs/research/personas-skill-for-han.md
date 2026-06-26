@@ -6,9 +6,9 @@ This report researches how the `zvoque/claude-personas` project works and what i
 
 The `claude-personas` plugin lets you put Claude into a named "persona mode" (for example "contrarian" or "senior") and keeps that mode active across a whole session by re-injecting the persona's instructions on every turn through a Claude Code hook. Its goal is to stop Claude from drifting back to its default voice. The idea is reasonable and the underlying mechanism is a real, documented Claude Code capability, but the specific project is eleven days old, has six stars, and has no independent validation that it works as described.
 
-On the bigger question — should Han build something like this — the answer is **no, not as a copy of this tool, and probably not as a new skill at all**. Han already does the thing that actually carries the value. Its 23 agents are already strong, durable personas (an "on-call engineer with 20+ years," a "junior developer with 3–5 years," a "seasoned project manager"), and skills like `code-review`, `architectural-analysis`, and `plan-implementation` already convene them as parallel expert panels and synthesize the result. The research literature is the deciding factor: assigning a persona/role label does **not** reliably improve accuracy and often hurts it; the gains that real multi-agent setups show come from task decomposition, scoped briefs, and output-space coverage — exactly what Han already gets from domain-scoped specialist dispatch, not from the persona label itself. The one genuine gap (no way to convene an ad-hoc panel on an arbitrary artifact on demand) is small and, if pursued, should be scoped as task-specific dispatch rather than a "persona costume."
+On the bigger question — should Han build something like this — the answer is **no, not as a copy of this tool, and not as a new skill right now**. Han already does the thing that actually carries the value. Its 23 agents are already strong, durable personas (an "on-call engineer with 20+ years," a "junior developer with 3–5 years," a "seasoned project manager"), and skills like `code-review`, `architectural-analysis`, and `plan-implementation` already convene them as parallel expert panels and synthesize the result. The research helps point the way: on objective, factual tasks, assigning a persona/role label does **not** reliably improve accuracy and often hurts it, and the gains real multi-agent setups show come from task decomposition, scoped briefs, and output coverage — exactly what Han already gets from domain-scoped specialist dispatch, not from the persona label itself. Two honest caveats keep this at medium rather than high confidence: most of that evidence tests factual recall, while Han's agents do *judgment* work (review, analysis), where the evidence is thinner and a diverse panel is, if anything, weakly favorable; and Han genuinely lacks one thing the tool offers — a persistent persona for the top-level working session — which the evidence neither supports nor rules out, so the right call there is "wait for a real need" (YAGNI), not "proven worthless." The one other gap (convening an ad-hoc panel on an arbitrary artifact on demand) is small and overlaps existing skills; if pursued, it should be scoped as task-specific dispatch, not a "persona costume."
 
-- **Confidence:** High
+- **Confidence:** Medium
 
 ## Research Results
 
@@ -22,7 +22,7 @@ The project is very early: created 2026-06-15, six stars, one fork, zero open is
 
 ### What the evidence says about persona/role prompting
 
-This is the decisive part, and the evidence is strong and consistent: **persona/role labels do not reliably improve accuracy, and frequently hurt it on objective tasks.** The largest controlled study (9 models, 162 personas, 2,410 questions) found personas in system prompts produce no consistent benefit, with most personas having no or negative impact (A10). A 2026 study sharpened this: expert personas help generative/alignment tasks but damage accuracy-dependent tasks — MMLU dropped from 71.6% to 68.0% under a full expert persona — because the persona prefix activates instruction-following at the cost of factual recall (A12). A "double-edged sword" study found role-playing degraded performance on 7 of 12 reasoning datasets (A11), and a controlled 4-condition study found aggregate effects vanishingly small (Cohen's d < 0.12), with role prompts trading clarity for stylistic markers of expertise (A13). An oracle that picks the perfect persona per question helps, but no automated selection beats random (A10).
+On **objective, factual tasks** the evidence is strong and consistent: **persona/role labels do not reliably improve accuracy, and frequently hurt it.** The largest controlled study (9 models, 162 personas, 2,410 questions) found personas in system prompts produce no consistent benefit, with most personas having no or negative impact (A10). A 2026 study (PRISM) found expert personas help generative/alignment tasks but damage accuracy-dependent tasks — MMLU dropped from 71.6% to 68.0% under a full expert persona (A12) — though note this result was produced with weights-level LoRA adaptation, **not** prompt-level system messages, so its transfer to prompt-only persona use (what Han and a `/personas` skill actually do) is not directly established [transfer-gap] (A12, A28). A "double-edged sword" study found role-playing degraded performance on 7 of 12 reasoning datasets (A11), and a controlled 4-condition study found aggregate effects vanishingly small (Cohen's d < 0.12), with role prompts trading clarity for stylistic markers of expertise [single-source, recent preprint] (A13). An oracle that picks the perfect persona per question helps, but no automated selection beats random (A10). These four studies converge directionally; they are not four methodologically-independent measurements, and most of them test factual recall rather than the judgment/review tasks Han's agents perform — a transfer gap the report does not paper over.
 
 Where multi-agent setups genuinely help, the benefit traces to **decomposition and output coverage, not the role label.** Self-consistency — same model, same prompt, sampled multiple times and majority-voted — produces large, well-replicated reasoning gains (+17.9% GSM8K) with no personas at all (A15). Multi-agent debate showed early gains (A14) but did not hold up under broader evaluation: it underperformed plain chain-of-thought on MMLU by 7+ points in one systematic study (A18), "does not reliably outperform self-consistency and ensembling" (A17), and suffers documented failure modes — problem drift over rounds (A21) and the fact that models cannot reliably self-correct without external feedback (A20). The exception where diverse panels do help cleanly is **judgment/evaluation tasks** (safety review, adversarial defense), where adding diverse agents strengthens the verdict (A22 and the OpenReview "test-time scaling" finding). No published study directly ablates "role label only" vs. "task scoping only" on the same benchmark — that specific comparison is a gap — but every positive result is explainable by decomposition/coverage rather than the label (A11, A12, A14, A15).
 
@@ -30,16 +30,16 @@ Where multi-agent setups genuinely help, the benefit traces to **decomposition a
 
 Han already implements the evidence-backed version of this. It ships 23 specialist agents, each a strong, durable persona embedded in the agent definition itself — "adversarial on-call engineer with 20+ years of being woken at 3am," "junior developer with three to five years," "seasoned, facilitative project manager," "adversarial security analyst" (A24). Crucially, these are not bare costume labels: each carries domain vocabulary, anti-patterns, protocols, and an output contract, and skills pass each agent a **domain-scoped brief** (only the files relevant to its domain) — i.e., task decomposition, the thing the evidence credits (A24, A25).
 
-Han also already convenes expert panels. `code-review` and `architectural-analysis` select a roster by signal and dispatch 4–7 specialists **in parallel**, then reconcile findings (A25). `plan-implementation` runs a multi-specialist panel with rounds, reframing via `junior-developer`, and final synthesis by `project-manager` (A27). The `project-manager` agent has an explicit round-robin facilitation mode that makes sure every specialist voice is heard before synthesizing (A26) — structurally the same idea as zvoque's "team debate," but scoped to a task and synthesized deterministically. Han's maintainers have also already researched this exact question and reached an inconclusive verdict, explicitly distinguishing *personas* (identity cues that anchor sampling) from *domain specialists* (role-grounded reviewers with scoped briefs) and noting Han uses the latter (A28). The one thing Han does **not** have is a user-facing way to convene an ad-hoc named panel on an arbitrary artifact on demand, or to put the top-level Claude into a persistent persona for a working session (A24–A27).
+Han also already convenes expert panels. `code-review` and `architectural-analysis` select a roster by signal and dispatch several specialists **in parallel** — `code-review` can fan out up to ten — then reconcile findings (A25). `plan-implementation` runs a multi-specialist panel: parallel review rounds with domain-scoped briefs, mid-loop reframing via `junior-developer`, and a final synthesis by `project-manager` in its last step (A27). Note that `plan-implementation` deliberately does **not** run `project-manager` in round-robin facilitation mode per round — that facilitation capability exists on the `project-manager` agent itself (A26) and is structurally the same idea as zvoque's "team debate," but the skill reserves PM for the final deterministic synthesis. Han's maintainers have also already researched the adjacent personas-vs-specialists question (in the context of ADHD divergent-ideation frames) and reached an inconclusive verdict, explicitly distinguishing *personas* (identity cues that anchor sampling) from *domain specialists* (role-grounded reviewers with scoped briefs) and noting Han uses the latter — though that prior research did not directly evaluate a persistent top-level session persona (A28). The things Han does **not** have are a user-facing way to convene an ad-hoc named panel on an arbitrary artifact on demand, and a way to put the top-level Claude into a persistent persona for a working session (A24–A27). No evidence in this report tests whether that second capability would help an agentic orchestrator; it is an unfilled gap, not a proven-worthless one.
 
 ## Options to Consider
 
 ### O1: Port `zvoque/claude-personas` (persistent per-turn persona mode) into Han
 
-- **What it is:** Add a Han skill that puts the top-level Claude into a named persona and re-injects it each turn via a `UserPromptSubmit` hook, mirroring the tool.
-- **Trade-offs:** Targets the *interactive top-level agent*, which is orthogonal to Han's value (Han's leverage is in dispatched subagents, not the driver's voice). The evidence says a persistent persona label does not improve accuracy and can hurt it (A10, A11, A12, A13). The reference implementation is 11 days old, six stars, unvalidated, and uninspectable (A1, A2). Adds per-turn token overhead and a hook dependency.
-- **Rests on:** (A1, A2, A3, A10, A11, A12, A13)
-- **Evidence status:** corroborated
+- **What it is:** Add a Han skill that puts the top-level Claude into a named persona and re-injects it each turn via a `UserPromptSubmit` hook, mirroring the tool. This targets the *interactive top-level agent* — a capability genuinely orthogonal to Han's subagent dispatch, which Han has no equivalent for.
+- **Trade-offs:** Two separate objections that should not be conflated. **(1) The reference implementation** is 11 days old, six stars, unvalidated, and uninspectable (A1, A2) — a sound reason not to *port this specific tool*. **(2) The concept** (a persistent top-level persona for a working session) is not ruled out by the cited evidence: A10–A13 test persona labels on factual-recall accuracy, not session consistency for an agentic orchestrator, so they do not speak to this use case. The honest status is no applicable evidence either way — which makes this a YAGNI deferral (wait for a felt need), not an evidence-based rejection. Adds per-turn token overhead and a hook dependency.
+- **Rests on:** (A1, A2, A3); evidence against the concept itself is absent, not present.
+- **Evidence status:** single-source on the tool (caveated); concept is unevidenced (defer on YAGNI)
 
 ### O2: Build a Han-native user-facing "expert panel on demand" skill
 
@@ -57,12 +57,70 @@ Han also already convenes expert panels. `code-review` and `architectural-analys
 
 ## Recommendation
 
-- **Recommendation:** **O3 — do not adopt a `claude-personas`-style skill; Han already realizes the evidence-backed value of personas through scoped specialist dispatch and panel synthesis.** Reject O1 outright: it is immature (A1, A2), aimed at the top-level agent rather than Han's subagent leverage, and rests on a persona-label mechanism the evidence shows does not improve (and often harms) accuracy (A10, A11, A12, A13). O2 is the only defensible incremental move — an on-demand, user-chosen panel on an arbitrary artifact is the one capability Han lacks — but it is a small gap that overlaps existing panel skills, and if pursued it should be scoped and synthesized as task-specific dispatch, never framed as a persona costume (A15, A22, A25, A27). Take O2 to `/plan-a-feature` only if the ad-hoc-panel gap is felt in practice.
-- **Evidence basis:** The core "no" rests on corroborated evidence: four independent studies agree persona/role labels do not improve accuracy on objective tasks (A10, A11, A12, A13), and the multi-agent gains that exist trace to decomposition and coverage, well-replicated for self-consistency (A15) and limited/unreliable for debate (A17, A18, A20, A21). That Han already implements scoped specialist dispatch and parallel panels is corroborated by direct codebase evidence (A24, A25, A26, A27) and by Han's own prior research (A28). The immaturity of the reference tool is corroborated by repository metadata (A2); its mechanism is single-source on the author's README (A1) but platform-plausible (A3). No part of this recommendation rests on reasoning alone.
+- **Recommendation:** **O3 — do not adopt a `claude-personas`-style skill right now; Han already captures the decomposition value that real multi-agent setups deliver, through scoped specialist dispatch and panel synthesis.** Do not port zvoque's tool (O1) for two distinct reasons: the *implementation* is immature and uninspectable (A1, A2), and the *concept* it adds — a persistent top-level session persona — has no applicable evidence in either direction, so it is a YAGNI deferral until a real need surfaces, not something the evidence rules out. O2 (an on-demand, user-chosen panel on an arbitrary artifact) is the one capability Han lacks that the evidence weakly favors for judgment tasks (A22), but it overlaps existing panel skills (A25, A27) and, if pursued, should be scoped and synthesized as task-specific dispatch, never framed as a persona costume (A15, A22). Take O2 to `/plan-a-feature` only if the ad-hoc-panel gap is felt in practice.
+- **Evidence basis:** The "no, not now" rests on a mix the report labels honestly. **Corroborated by codebase evidence:** Han already implements scoped specialist dispatch and parallel panels (A24, A25, A27), and its agents are durable scoped specialists, not bare persona labels (A24, A28). **Corroborated by web evidence:** persona/role labels do not improve factual-task accuracy (A10, A11; A12 with a LoRA-vs-prompt transfer caveat; A13 a single recent preprint), and the multi-agent gains that exist trace to decomposition/coverage — well-replicated for self-consistency (A15), limited and unreliable for debate (A17, A18, A20, A21). **Single-source:** the reference tool's mechanism (A1), corroborated as platform-plausible (A3); its immaturity from repo metadata (A2). **What the recommendation does _not_ rest on:** any claim that a persistent top-level persona is proven useless — that capability is unevidenced, and the recommendation defers it on YAGNI grounds rather than claiming evidence against it. No part rests on unevidenced reasoning presented as fact.
 
 ## Validation
 
-<!-- adversarial-validator findings inserted after validation pass -->
+An adversarial-validator pass attacked the evidence, the options framing, the recommendation, and the evidence-gathering integrity. The recommendation survived, but several claims were corrected and confidence was lowered from High to Medium.
+
+### V1: A12 (PRISM) mechanism mischaracterized
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Cross-checked A12 against Han's own prior research (A28), which cites the same paper and records that PRISM uses bootstrapped gated LoRA adapters (weights-level fine-tuning), not prompt-level personas, and explicitly caveats that transfer to prompt-only is not established.
+- **Result:** Refuted (as originally stated). The draft claimed the MMLU drop happens "because the persona prefix activates instruction-following" — a prompt-level mechanism A12 does not test.
+- **Impact:** A12 now carries an explicit LoRA-vs-prompt transfer caveat in Research Results and the source table. The "four independent studies" framing was relabeled as directional convergence.
+
+### V2: Persona evidence tests factual recall; Han's agents do judgment tasks
+
+- **Strategy:** Challenge the Assumptions
+- **Investigation:** A10–A13 test MMLU/reasoning accuracy. Han's `code-review`, `architectural-analysis`, and `plan-implementation` are judgment/evaluation tasks, where the one relevant finding (A22, diverse judging panels help) is weakly *favorable* to diverse agents.
+- **Result:** Partially Refuted. The transfer gap was acknowledged in the draft but treated as neutral when the only applicable evidence leans slightly the other way.
+- **Impact:** Research Results, Summary, and Recommendation now state the evidence is decisive for factual tasks and thinner for Han's judgment tasks. Confidence lowered to Medium.
+
+### V3: "4–7 specialists" understates the actual dispatch cap
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** `han-coding/skills/code-review/SKILL.md` defines 2 always-on plus 8 conditional specialists — a maximum of 10 — with no stated cap of 7.
+- **Result:** Partially Refuted. The parallel-dispatch claim is accurate; the specific number was not in the code.
+- **Impact:** A25 and Research Results now say "several … up to ten."
+
+### V4: A27 line citation wrong; PM does not facilitate per round in plan-implementation
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** `han-planning/skills/plan-implementation/SKILL.md` puts PM synthesis in Step 8 (~line 242) and JD reframing in Step 6 (~line 195), outside the cited 72–134 range; line 139 explicitly states PM is NOT called per round in facilitation mode.
+- **Result:** Refuted for the PM-facilitation implication. The draft conflated the PM agent's round-robin capability with how plan-implementation actually uses it.
+- **Impact:** Research Results and A26/A27 corrected: plan-implementation reserves PM for final synthesis; round-robin facilitation is an agent capability the skill does not invoke per round.
+
+### V5: A28 covers the adjacent ADHD-frames question, not this exact one
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** A28's research question is about ADHD divergent-ideation frames; it distinguishes personas from domain specialists (directly relevant) but never evaluates a persistent top-level session persona.
+- **Result:** Partially Refuted.
+- **Impact:** "Already researched this exact question" softened to "the adjacent personas-vs-specialists question," with a note that the top-level-persona dimension was not covered.
+
+### V6 / V7: Dismissal of a persistent top-level persona was assertion dressed as evidence
+
+- **Strategy:** Challenge the Recommendation
+- **Investigation:** The draft rejected O1's concept partly via A10–A13, which do not test orchestrator-level session persistence, and partly via tool immaturity (A1, A2) — conflating implementation maturity with concept merit. The mechanism is platform-real (A3) and the user need is independently attested (A7).
+- **Result:** Confirmed gap.
+- **Impact:** O1 and the Recommendation were rewritten to separate the two objections cleanly: don't port *this tool* (immaturity), and defer the *concept* on YAGNI grounds (no applicable evidence) rather than claiming evidence rules it out.
+
+### V8: A13 is a single recent preprint, not independent corroboration
+
+- **Strategy:** Challenge the Evidence-Gathering Integrity
+- **Investigation:** A13 (a May 2026 preprint) is absent from A28's adjacent literature review, cannot be independently verified from this codebase, and its "corroborated by A10, A12" label reflects directional consistency, not methodological independence. The load-bearing anchors (A10, EMNLP 2024; A15, ICLR 2023; A14, ICML 2023) are well-established and verifiable.
+- **Result:** Partially Refuted.
+- **Impact:** A13 flagged single-source/recent-preprint in Research Results and the table; the evidence cluster relabeled as directional convergence. The recommendation does not depend on A13.
+
+### Adjustments Made
+
+The recommendation (O3) survived but was reframed: from "the evidence rules out persona prompting" to "Han already captures the decomposition value; the persona-label evidence is decisive only for factual tasks; the persistent-top-level-persona gap is real but unevidenced and deferred on YAGNI." The A12 mechanism caveat, the A13 single-source flag, the judgment-vs-factual transfer gap, and three codebase citation corrections (A25 count, A26/A27 PM role, A28 scope) were applied throughout. Confidence was lowered from High to Medium.
+
+### Confidence Assessment
+
+- **Confidence:** Medium
+- **Remaining Risks:** (1) A12's LoRA-vs-prompt transfer is unresolved; (2) A13 is a single unverifiable recent preprint; (3) no study directly tests whether a top-level session persona helps agentic judgment tasks — that gap is deferred on YAGNI, not closed; (4) the persona-prompting evidence base is strongest for factual recall, which is not Han's agents' primary task. None of these flips the recommendation, but together they cap confidence at Medium.
 
 ## Sources
 
@@ -78,8 +136,8 @@ Han also already convenes expert panels. `code-review` and `architectural-analys
 | A8 | SuperClaude_Framework | https://github.com/SuperClaude-Org/SuperClaude_Framework | 2026-06-26 | web | Large comparable: 20 agents, behavioral modes via command selection | single source (caveated) |
 | A10 | "A Helpful Assistant Is Not Really Helpful" (EMNLP 2024) | https://arxiv.org/abs/2311.10054 | 2026-06-26 | web | 9 models, 162 personas: personas give no consistent accuracy benefit; most no/negative | corroborated by A11, A12, A13 |
 | A11 | "Persona is a Double-Edged Sword" | https://arxiv.org/abs/2408.08631 | 2026-06-26 | web | Role-playing degraded 7/12 reasoning datasets; ensemble of framings helps, not the label | corroborated by A10, A12 |
-| A12 | "Expert Personas… Damage Accuracy" (PRISM, 2026) | https://arxiv.org/abs/2603.18507 | 2026-06-26 | web | Personas help alignment tasks, hurt accuracy (MMLU 71.6%→68.0%); abandons role labels | corroborated by A10, A13 |
-| A13 | "When Does Persona Prompting Actually Help?" | https://arxiv.org/html/2605.29420v1 | 2026-06-26 | web | Aggregate effects tiny (d<0.12); role trades clarity for expertise markers | corroborated by A10, A12 |
+| A12 | "Expert Personas… Damage Accuracy" (PRISM, 2026) | https://arxiv.org/abs/2603.18507 | 2026-06-26 | web | Personas help alignment tasks, hurt accuracy (MMLU 71.6%→68.0%) — but via **LoRA fine-tuning, not prompts**; prompt-only transfer not established | directionally consistent with A10; transfer-gap caveat per A28 |
+| A13 | "When Does Persona Prompting Actually Help?" | https://arxiv.org/html/2605.29420v1 | 2026-06-26 | web | Aggregate effects tiny (d<0.12); role trades clarity for expertise markers | single source, recent preprint; directionally consistent with A10 |
 | A14 | Multiagent Debate (Du et al., ICML 2023) | https://arxiv.org/abs/2305.14325 | 2026-06-26 | web | Debate improved arithmetic/GSM8K; agents shared prompts, no personas | contradicted in scope by A17, A18 |
 | A15 | Self-Consistency (Wang et al., ICLR 2023) | https://arxiv.org/abs/2203.11171 | 2026-06-26 | web | Sample+majority-vote, same prompt, no personas: +17.9% GSM8K — decomposition/coverage wins | corroborated by A16 |
 | A16 | Mixture-of-Agents (ICLR 2025) | https://arxiv.org/abs/2406.04692 | 2026-06-26 | web | Layered multi-model aggregation beats GPT-4o on AlpacaEval; cost high; judge-scored | single source (caveated; judge bias per A22) |
@@ -90,10 +148,10 @@ Han also already convenes expert panels. `code-review` and `architectural-analys
 | A22 | "Can You Trust LLM Judgments?" | https://arxiv.org/abs/2412.12509 | 2026-06-26 | web | LLM judges have position/length/self bias; diverse panels mitigate — panels help judgment | corroborated directionally |
 | A23 | "More Agents Is All You Need" | https://arxiv.org/abs/2402.05120 | 2026-06-26 | web | Sampling+voting scales with agent count but saturates; coverage, not capability | corroborated by A15 |
 | A24 | Han agent roster + definitions | han-core/agents/*.md (23 files) | n/a | codebase | 23 specialist agents, each a durable persona with domain vocab, anti-patterns, scoped output | corroborated by A28 |
-| A25 | Parallel specialist dispatch | han-coding/skills/code-review/SKILL.md:125–243; architectural-analysis/SKILL.md:62–107 | n/a | codebase | Skills select roster by signal, dispatch 4–7 specialists in parallel with domain-scoped briefs | corroborated by A27 |
-| A26 | Project-manager round-robin facilitation | han-core/agents/project-manager.md | n/a | codebase | PM agent has explicit facilitation/synthesis modes; round-robin ensures every voice heard | corroborated by A27 |
-| A27 | plan-implementation panel | han-planning/skills/plan-implementation/SKILL.md:72–134 | n/a | codebase | Multi-specialist panel: parallel review rounds, JD reframing, PM synthesis | corroborated by A25 |
-| A28 | Han prior persona research | docs/research/adhd-application-to-han.with-disambiguation.md | n/a | codebase | Han already researched personas; distinguishes personas vs. domain specialists; verdict inconclusive | corroborated by A10, A12 |
+| A25 | Parallel specialist dispatch | han-coding/skills/code-review/SKILL.md:125–243 (2 always-on + 8 conditional = up to 10); architectural-analysis/SKILL.md:62–107 | n/a | codebase | Skills select roster by signal, dispatch several specialists (up to ten) in parallel with domain-scoped briefs | corroborated by A27 |
+| A26 | Project-manager facilitation capability | han-core/agents/project-manager.md | n/a | codebase | PM agent *has* round-robin facilitation + synthesis modes; whether a skill uses facilitation per round is the skill's choice | corroborated by A27 |
+| A27 | plan-implementation panel | han-planning/skills/plan-implementation/SKILL.md (Step 4 ~72–134 parallel rounds; Step 6 ~195 JD reframing; Step 8 ~242 PM synthesis; line 139: PM NOT facilitated per round) | n/a | codebase | Multi-specialist panel: parallel review rounds, JD reframing, PM reserved for final synthesis | corroborated by A25 |
+| A28 | Han prior persona research | docs/research/adhd-application-to-han.with-disambiguation.md | n/a | codebase | ADHD-frames research; distinguishes personas vs. domain specialists (relevant); did NOT evaluate top-level session persona; verdict inconclusive | directionally consistent with A10, A12 |
 | A29 | Skill authoring conventions | CONTRIBUTING.md:46–56; han-plugin-builder/skills/guidance/references/ | n/a | codebase | New skills: SKILL.md structure, scoped Bash perms, mandatory long-form doc | n/a (procedural) |
 
 ### A1: zvoque/claude-personas (README) — recommendation-bearing
@@ -133,5 +191,5 @@ Han also already convenes expert panels. `code-review` and `architectural-analys
 - **Link / location:** han-coding/skills/code-review/SKILL.md:125–243; han-coding/skills/architectural-analysis/SKILL.md:62–107
 - **Retrieved:** n/a (codebase)
 - **Trust class:** codebase (trusted current-state anchor)
-- **Summary:** `code-review` and `architectural-analysis` classify size, detect domain signals, select a roster, and dispatch 4–7 specialists in parallel with domain-scoped file lists, then reconcile findings. This is already an "expert panel on demand" scoped to a task — the durable form of what `/personas team` gestures at.
+- **Summary:** `code-review` and `architectural-analysis` classify size, detect domain signals, select a roster, and dispatch several specialists in parallel (code-review defines 2 always-on plus 8 conditional agents, up to ten) with domain-scoped file lists, then reconcile findings. This is already an "expert panel on demand" scoped to a task — the durable form of what `/personas team` gestures at.
 - **Evidence status:** corroborated by A27 (plan-implementation panel) and A26 (PM facilitation).
