@@ -9,7 +9,7 @@ description: >
   coding-standard instead. Does not generate PR descriptions — use update-pr-description for that.
   Does not produce runbooks for operational scenarios — use runbook for that. Does not produce an
   ephemeral, understand-now overview of code or a PR — use code-overview for that.
-argument-hint: [feature-name or document-path]
+argument-hint: "[feature-name or document-path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *), Bash(find *)
 ---
 

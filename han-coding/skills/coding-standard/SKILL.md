@@ -7,7 +7,7 @@ description: >
   architectural-decision-record for ADRs. Does not write feature or system documentation — use
   project-documentation for that. Does not research open-ended options — use research. Does not
   produce runbooks for operational scenarios — use runbook for that.
-argument-hint: [standard-topic or document-path]
+argument-hint: "[standard-topic or document-path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(mkdir *), Bash(find *)
 ---
 

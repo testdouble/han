@@ -8,7 +8,7 @@ description: >
   tools, or repository structure. Does not create or update project
   documentation — use project-documentation for writing feature or system docs.
 
-argument-hint: [output-file-path]
+argument-hint: "[output-file-path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *), Bash(git symbolic-ref *), Bash(find *)
 ---
 

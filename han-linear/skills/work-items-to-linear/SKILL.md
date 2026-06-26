@@ -12,7 +12,7 @@ description: >
   re-runs resume cleanly. Does not produce the work-items file itself — use plan-work-items
   first. Does not post to Jira — use work-items-to-jira. Does not post to GitHub — use
   work-items-to-issues.
-argument-hint: [path to work-items.md] --team <team> [--project <Linear project>] [--parent <issue id>] [--state <name>] [--label <name> (repeatable)] [--assignee <name/email/me>]
+argument-hint: "[path to work-items.md] --team <team> [--project <Linear project>] [--parent <issue id>] [--state <name>] [--label <name> (repeatable)] [--assignee <name/email/me>]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), mcp__plugin_linear_linear__save_issue, mcp__plugin_linear_linear__get_issue, mcp__plugin_linear_linear__list_teams, mcp__plugin_linear_linear__list_issue_statuses, mcp__plugin_linear_linear__list_issue_labels, mcp__plugin_linear_linear__list_users, mcp__plugin_linear_linear__get_user, mcp__plugin_linear_linear__list_projects
 ---
 
