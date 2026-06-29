@@ -4,17 +4,17 @@ How should Han formalize a reusable, cross-skill standard for producing clear, u
 
 **Evidence mode:** strict (default; the operator did not opt into exploratory mode).
 
-> **Status: draft pending adversarial validation.** The Validation section is filled in after the validator runs.
-
 ## Summary
 
 The clearest move is to build one short, shared "readability" rule the same way Han already ships `yagni-rule.md` and `evidence-rule.md`: a tight, prioritized set of rules, each stated as a one-line rule plus the reason it helps a reader plus a do/don't example, paired with a plain-language `docs/` write-up. The rules themselves are not a matter of taste. Decades of plain-language practice, government standards, the major tech style guides, and web-reading research all converge on the same short list: say the main point first, one idea per paragraph, short sentences (around 15 to 20 words on average), active voice, common words over jargon, and reveal detail in layers. That convergence is the strongest-corroborated finding in this research.
 
 A reference alone does not change what a skill produces, though. Two things have to happen for it to take effect, and both match how Han already works. First, the structural rules get baked into each skill's output template, the way the research and stakeholder-summary templates already lead with a plain-language summary. Second, each reader-facing skill applies the rule while it writes and runs a short plain-language self-check before it finishes, the way `stakeholder-summary` already runs its Pass A/B/C check. A separate "rewrite this to be readable" pass is well-evidenced and worth adding where a skill already has a synthesis or editor step.
 
-Two cautions carry real evidence behind them. Do not turn the standard into a long checklist of rules crammed into one instruction: model compliance drops sharply as the number of simultaneous instructions rises, so a tight prioritized set beats an exhaustive one. And do not make a readability score (like Flesch) the target; those formulas are weak proxies for real understanding and reward gaming. Use audience framing ("write this for a smart non-expert") as the always-on instruction instead, and keep the score, if used at all, as a rough diagnostic.
+Two cautions carry real evidence behind them. Do not turn the standard into a long checklist of rules crammed into one instruction: model compliance drops sharply as the number of simultaneous instructions rises, so a tight prioritized set beats an exhaustive one, and the rule is best used by handing its structural rules to templates, its examples to the model as samples, and its checks to a short after-the-fact review rather than firing all of them at once. And do not make a readability score (like Flesch) the target; those formulas are weak proxies for real understanding and reward gaming. Use audience framing ("write this for a smart non-expert") as the always-on instruction instead, and keep the score, if used at all, as a rough diagnostic.
 
-- **Confidence:** High
+One honest correction to the premise: Han uses `yagni` and `sizing` differently. `yagni` (and `evidence`) ship as a shared rule file that skills load and apply; `sizing` is a shared *concept* re-implemented inside each skill, with only a narrative write-up in `docs/`, no shared rule file. The fitting model for this standard is the `yagni`/`evidence` rule-file model, not sizing. The good news from checking the code is that those rule files are not just author-time guidance: skills and agents are directed to load and apply them at runtime, so a readability rule would get real grip. The remaining uncertainty is about how much it improves output and how much wiring each skill needs, not about whether it is the right shape.
+
+- **Confidence:** Medium
 
 ## Research Results
 
@@ -48,16 +48,20 @@ Anthropic's prompting guidance is unusually concrete here: it publishes a ready-
 
 ### Han already has most of the substrate — and one real gap
 
-Han is not starting from nothing. It already ships the exact reference mechanism this standard would use: `yagni-rule.md` and `evidence-rule.md` live in `han-core/references/`, are cited from skill definitions by relative link, are vendored into `han-planning/references/` and `han-coding/references/` by manual file copy, and are paired with operator-facing extracts in `docs/` (A53, A54). It already has a voice profile, `docs/writing-voice.md`, with strong, specific rules (no em-dash, no "just," no "leverage," a named AI-slop blocklist) — but that profile governs operator *documentation* and is not loaded at runtime by any skill or agent (A52). And nearly every reader-facing skill already carries plain-language guidance and a progressive-disclosure output template: research leads with a jargon-free summary, stakeholder-summary mandates "plain language only" and runs a three-pass self-check, code-overview demands "minimal technical detail," investigate and update-pr-description front-load a one-line summary (A55, A56).
+Han is not starting from nothing. It already ships the exact reference mechanism this standard would use: `yagni-rule.md` and `evidence-rule.md` live in `han-core/references/`, are cited from skill definitions by relative link, are vendored into `han-planning/references/` and `han-coding/references/` by manual file copy, and are paired with operator-facing extracts in `docs/` (`docs/yagni.md`, `docs/evidence.md`) (A53, A54). One correction to the operator's framing surfaced in validation: `sizing` is *not* one of these shared rule files. Sizing is a concept re-implemented inside each skill's `SKILL.md` with only a narrative `docs/sizing.md`; there is no `sizing-rule.md` (A54). So the proven, fitting precedent is `yagni-rule.md` / `evidence-rule.md`, not sizing — that is the model this standard should copy.
 
-The gap is that all of this is *distributed and re-stated per skill* rather than centralized. Each skill phrases its own plain-language rule in its own words, which is exactly the drift a shared `sizing`/`yagni`-style reference exists to prevent (A56). One more structural fact shapes the recommendation: in Han, a reference takes effect because the skill author reads it and encodes it into the skill's steps and into the briefs of the agents it dispatches — references are advisory guidance, not a runtime gate (A57). Some skills already dispatch an editor-style agent (`information-architect`, `junior-developer`) that runs a readability pass, which is the natural hook for enforcement (A57).
+A second correction matters more, because it strengthens the case. Earlier exploration suggested references were merely author-time guidance. Direct inspection shows otherwise: `docs/yagni.md` states plainly that "every YAGNI-aware skill and agent loads that file at runtime," and skill steps and agent briefs direct the executor to read and apply the referenced rule by relative link as it runs (A57). A reference is therefore applied at runtime, not just pre-baked by an author — so a `readability-rule.md` would have real runtime grip. What loading does *not* guarantee is full compliance once the rule competes with every other instruction in context, which is the curse-of-instructions risk handled below.
+
+Han also already has a voice profile, `docs/writing-voice.md`, with strong, specific rules (no em-dash, no "just," no "leverage," a named AI-slop blocklist) — but that profile governs operator *documentation* and is not loaded at runtime by any skill or agent (A52). And several reader-facing skills already carry plain-language guidance and a progressive-disclosure output template, though less uniformly than first assumed: research leads with a jargon-free summary, stakeholder-summary mandates "plain language only" and runs a three-pass self-check, code-overview demands "minimal technical detail" and is the one skill that already dispatches `information-architect` and `junior-developer` specifically for a readability pass (A55, A57). The convergence is real but partial. `investigate` is the weakest example: its summary is a five-field structured technical block (root cause, fix, why correct, validation outcome, remaining risks), not a plain one-line summary, and it cites no readability principle and dispatches no readability reviewer (A55, A56). `update-pr-description` does front-load a one-line TL;DR but dispatches `junior-developer` as a *writer*, not a readability reviewer.
+
+The gap is that all of this is *distributed and re-stated per skill* rather than centralized, and unevenly applied. Each skill phrases its own plain-language rule in its own words, and some (investigate) barely do so at all — which is the kind of drift a shared `yagni`/`evidence`-style reference exists to prevent (A56). Worth stating honestly: the report treats this drift as a risk a shared reference would reduce, not as a measured defect — no one has measured that current per-skill output is worse than a shared reference would produce (see Validation V8). The editor-agent readability pass exists today in exactly one reader-facing skill (code-overview), so adopting it elsewhere is new wiring, not the extension of a settled pattern (A57).
 
 ## Options to Consider
 
 ### O1: A shared `readability-rule.md` reference (the yagni/evidence model)
 
-- **What it is:** One short cross-skill reference in `han-core/references/`, structured like the existing rules: a prioritized set of ~8-12 rules across the structural / sentence / word layers, each as *rule + why-it-helps-the-reader + do/don't example + a testable check*, plus a `docs/readability.md` operator extract, vendored into `han-planning`/`han-coding` like the other rules. Reader-facing skills cite it, encode its structural rules into their templates, apply it while writing, and check against it before finishing.
-- **Trade-offs:** Authoring cost is real — every rule needs a good do/don't pair. References are advisory at runtime, not enforced (A57), so it only works if skills actually wire it in. Vendoring is manual file duplication (A53).
+- **What it is:** One short cross-skill reference in `han-core/references/`, structured like the existing rules: a prioritized set of ~8-12 rules across the structural / sentence / word layers, each as *rule + why-it-helps-the-reader + do/don't example + a testable check*, plus a `docs/readability.md` operator extract, vendored into `han-planning`/`han-coding` like the other rules. The rule is designed so it is never fired as one big instruction block — that would reproduce the curse of instructions (A24) it is meant to dodge. Instead each part has a distinct home: the structural rules are baked into each skill's output template (so they shape structure without being re-read every run), the do/don't pairs are handed to the model as few-shot examples (the most reliable style lever, A25, A32), and the testable checks run as a short separate self-check or editor pass *after* drafting (the decomposition that beats stacking, A23). A skill applies one layer at a time rather than all of it at once.
+- **Trade-offs:** Authoring cost is real — every rule needs a good do/don't pair. The rule loads at runtime (A57), which gives it grip, but loading does not guarantee compliance when it competes with a skill's other instructions, so the template/few-shot/self-check split above is load-bearing, not optional. Vendoring is manual file duplication (A53).
 - **Rests on:** (A1, A4, A11, A14, A15, A16, A43, A45) for content; (A24, A25, A32) for shape; (A52, A53, A54, A56, A57) for fit to Han.
 - **Evidence status:** corroborated
 
@@ -68,12 +72,12 @@ The gap is that all of this is *distributed and re-stated per skill* rather than
 - **Rests on:** (A21, A22, A23) for the two-pass payoff; (A24) for why it helps; (A29) for the risk.
 - **Evidence status:** corroborated
 
-### O3: Distribute readability into per-skill templates plus a per-skill self-check (no central reference)
+### O3: Distribute readability into per-skill templates plus a standardized per-skill self-check (no central reference)
 
-- **What it is:** Keep doing what Han partly does today — push the rules into each skill's output template and add a plain-language self-check per skill (generalize stakeholder-summary's Pass A/B/C), with no shared reference file.
-- **Trade-offs:** Lowest new-artifact cost and the templates already carry structure (A55, A56). But it bakes in the exact drift the operator wants to fix: each skill re-states the rules in its own words, there is no single source of truth to evolve, and it omits the very thing asked for — a shared reference like sizing/yagni (A56).
-- **Rests on:** (A55, A56) for what exists; (A47) for the drift/duplication failure mode.
-- **Evidence status:** corroborated
+- **What it is:** Keep doing what Han partly does today — push the rules into each skill's output template and add a *standardized* plain-language self-check to each reader-facing skill (generalize stakeholder-summary's Pass A/B/C into one reusable check-list), with no shared rule file.
+- **Trade-offs:** Lowest new-artifact cost, and the templates plus stakeholder-summary's self-check show the pattern already works without a shared reference (A55, A56). This is the genuine alternative to O1, and the more YAGNI-minimal one. Its weakness is real but un-measured: each skill re-states the rules in its own words (investigate barely states them at all, A56), there is no single source of truth to evolve when the rules change, and it omits the shared reference the operator explicitly asked for. The honest caveat, raised in validation, is that no one has shown current per-skill output is actually *worse* than a shared reference would produce — the drift O1 prevents is a plausible risk, not a measured defect (V8).
+- **Rests on:** (A55, A56) for what exists and already works; (A47) for the drift/duplication failure mode as a risk.
+- **Evidence status:** corroborated (the un-measured drift premise is the open question between O3 and O1)
 
 ### O4: A dedicated readability editor sub-agent with a behaviorally-anchored rubric
 
@@ -105,12 +109,82 @@ The gap is that all of this is *distributed and re-stated per skill* rather than
 
 ## Recommendation
 
-- **Recommendation:** Build the standard as **O1 — a shared `readability-rule.md` reference on the yagni/evidence model — as the backbone, with enforcement layered through the mechanisms Han already uses.** This is the option the operator actually asked for (a shared reference like sizing and yagni), it is the best-corroborated on content, and it fits Han's proven reference mechanism exactly. O1 does not stand alone: because references are advisory at runtime (A57), the rule changes output only if each reader-facing skill (a) embeds the rule's *structural* rules into its output template (the O3 carrier, which several skills already have), (b) names the rule in its producing-step instructions with the do/don't pairs serving as few-shot exemplars, and (c) runs a plain-language self-check or an editor-agent pass against it before finishing (O2 where a skill already synthesizes; O4 where it already dispatches an editor agent). Wrap that with an always-on audience frame ("write this for a smart non-expert who has not seen the code") as the single most reliable instruction (A21, A32). Keep the rule short and prioritized to beat the curse of instructions (A24). Explicitly forbid hard word-count caps (A39, A28). Demote readability formulas to an optional diagnostic with caveats (O6, A10). Rule out Vale/CI (O5) on fit and reject controlled language (O7) on cost. Reuse `docs/writing-voice.md`'s vocabulary blocklist rather than duplicating it (A52).
-- **Evidence basis:** The *content* of the rule rests on corroborated, independently-converging evidence: structural rules (A1, A4, A11, A14, A15, A16, A43, A45), sentence-level rules (A1, A3, A5, A6), word-level rules (A1, A3, A4). The *shaping* decisions rest on corroborated evidence too: the curse of instructions (A24, with A23 corroborating the decomposition fix), few-shot exemplars beating abstract rules (A25, A32), audience targeting as the core instruction (A21, three independent studies), avoiding hard word caps (A39 single-source first-party, corroborated directionally by A28), and the unreliability of ungrounded LLM self-judging (A30). The *fit to Han* — that this should be a `*-rule.md` reference carried by templates and self-checks rather than a CI lint or a new agent alone — rests on codebase evidence (A52, A53, A54, A55, A56, A57), which is the trusted current-state anchor. Two evidence conflicts are handled explicitly rather than papered over: active-vs-passive (A19) resolves to "active by default, passive as a named exception," and the ISO 24495-1 principle names (A2) are not relied on. The single softest point, carried as a residual risk rather than hidden, is that advisory references do not *guarantee* runtime behavior; the codebase shows the mechanism works for yagni and evidence, but enforcement is by construction, not by gate (A57).
+- **Recommendation:** Build the standard as **O1 — a shared `readability-rule.md` reference on the `yagni`/`evidence` rule-file model — as the backbone, with enforcement layered through the mechanisms Han already uses.** This is the artifact the operator explicitly asked for (a shared reference for reader-facing skills), which is itself acceptable YAGNI evidence (a user-described need), and its content is the best-corroborated part of this research. One framing correction: the fitting precedent is `yagni-rule.md` / `evidence-rule.md`, not sizing, which is not a shared rule file (A54). O1 does not stand alone. Because the rule loads at runtime but loading does not guarantee compliance once it competes with other instructions (A57, A24), the rule only reliably changes output if each reader-facing skill (a) embeds the rule's *structural* rules into its output template (the O3 carrier, which several skills already have), (b) names the rule in its producing-step instructions with the do/don't pairs serving as few-shot exemplars (A25, A32), and (c) runs a plain-language self-check or an editor-agent pass against it before finishing (O2 where a skill already synthesizes; O4 — today only code-overview already wires this, so elsewhere it is new work). Wrap that with an always-on audience frame ("write this for a smart non-expert who has not seen the code"), the most practical single instruction (A21, A32). Keep the rule short and prioritized, and apply it one layer at a time rather than as one block, to beat the curse of instructions (A24, A23). Prefer qualitative length guidance over hard word-count caps (A28). Demote readability formulas to an optional diagnostic with caveats (O6, A10). Rule out Vale/CI (O5) on fit and reject controlled language (O7) on cost. Reuse `docs/writing-voice.md`'s vocabulary blocklist rather than duplicating it (A52).
+- **The honest alternative:** O3 (distribute the rules into templates plus a *standardized* per-skill self-check, no shared file) is the more YAGNI-minimal choice and is not strictly beaten by evidence — the drift O1 prevents is a plausible risk, not a measured one (V8). O1 is recommended over it for one decisive reason: the operator asked for a shared, evolvable reference to cite across skills, and a single source of truth is materially easier to keep current than the same rules re-stated in every skill. If the operator would rather not carry a new reference file, O3-strengthened captures most of the benefit at lower cost, and O1 can be deferred until per-skill drift is actually observed.
+- **Evidence basis:** The *content* of the rule rests on corroborated, independently-converging evidence across four traditions: structural rules (A1, A4, A11, A14, A15, A16, A43, A45), sentence-level rules (A1, A3, A5, A6), word-level rules (A1, A3, A4). This is the strongest part of the recommendation. The *shaping* decisions rest on corroborated evidence: the curse of instructions (A24, with A23 corroborating the decomposition fix), few-shot exemplars beating abstract rules (A25, A32), and the unreliability of ungrounded LLM self-judging (A30). Two shaping claims are deliberately carried weaker than before: audience-targeting (A21) is strongly evidenced but only *within the healthcare-simplification domain*, so for technical skill output it is carried as directionally sound (and backed by Anthropic's own guidance, A32) with the accuracy-tension caveat (A29) governing dense reports; and the "avoid hard word caps" point now rests on A28 (models overshoot numeric targets) rather than on A39, whose specific "3% regression" figure is single-source, first-party, and not independently verifiable, so it is dropped from the basis. The *fit to Han* — a `*-rule.md` reference carried by templates and self-checks rather than a CI lint or a new agent alone — rests on codebase evidence (A52, A53, A54, A55, A56, A57), the trusted current-state anchor; validation corrected this evidence in Han's favor (the rule loads at runtime) and against it (convergence across skills is partial, editor-agent wiring exists in only one skill). Two source conflicts are handled explicitly: active-vs-passive (A19) resolves to "active by default, passive as a named exception," and the ISO 24495-1 principle names (A2) are not relied on. The residual risk is not that references are unenforced — they load and apply at runtime — but that loading does not guarantee compliance, the per-skill wiring cost is higher than a single file suggests (especially for investigate), and the benefit over O3 is reasoned, not measured.
 
 ## Validation
 
-_Pending adversarial-validator pass._
+The adversarial-validator read the report and verified every codebase claim against what is on disk. It produced eight findings; the recommendation survives, but in a more qualified form, and several evidence claims were corrected.
+
+### V1: References are applied at runtime, not "advisory"
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Read `docs/yagni.md` line 13 ("Every YAGNI-aware skill and agent loads that file at runtime"), `han-core/skills/research/SKILL.md` Step 6, and `han-core/agents/junior-developer.md` — all direct the executor to read and apply the referenced rule file at runtime via relative link.
+- **Result:** Refuted (the "advisory" framing).
+- **Impact:** Strengthens O1: a `readability-rule.md` gets real runtime grip, not just author-time encoding. The report's original "softest point" was wrong and has been rewritten; the residual risk is now "loaded but compliance not guaranteed," not "might never be wired in."
+
+### V2: The "sizing" analogy is broken — no `sizing-rule.md` exists
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** `han-core/references/` contains only `evidence-rule.md` and `yagni-rule.md`; a repo-wide search for `sizing-rule.md` returns nothing. Sizing lives inside each SKILL.md plus a narrative `docs/sizing.md`. `docs/evidence.md` exists as a third extract.
+- **Result:** Refuted (sizing as part of the proven `*-rule.md` mechanism).
+- **Impact:** The operator's "like sizing and yagni" premise is half false. Corrected throughout: the fitting precedent is `yagni`/`evidence`, not sizing.
+
+### V3: `investigate` does not front-load a plain one-line summary
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** `investigate`'s template Summary is a five-field structured technical block (root cause, fix, why correct, validation outcome, remaining risks); the skill cites no readability principle and dispatches no readability reviewer.
+- **Result:** Refuted for investigate.
+- **Impact:** Cross-skill convergence (A55, A56) was overstated. Corrected: investigate is the weakest example and would need the most new wiring.
+
+### V4: The editor-agent readability pass exists in only one reader-facing skill
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Only `code-overview` dispatches `information-architect` + `junior-developer` for a readability pass. Other skills use `junior-developer` in generalist or writer mode.
+- **Result:** Partially refuted ("some skills... the natural hook").
+- **Impact:** O4 is an existing pattern only for code-overview; elsewhere it is new work. Implementation cost corrected upward.
+
+### V5: Internal contradiction — an 8–12-rule file vs. the curse-of-instructions warning
+
+- **Strategy:** Challenge the Recommendation
+- **Investigation:** O1's ~12 rules × 4 components is ~48 instruction elements; if loaded as one block alongside a skill's other instructions, it reproduces the A24 failure it cites.
+- **Result:** Partially refuted (tension identified but originally unresolved).
+- **Impact:** Resolved in O1 and the Recommendation: structural rules go to templates, do/don't pairs become few-shot examples, testable checks run as a separate after-the-fact pass, applied one layer at a time (the A23 decomposition).
+
+### V6: A21's three studies are all healthcare-domain — corroboration within a domain, not across
+
+- **Strategy:** Challenge the Evidence-Gathering Integrity
+- **Investigation:** All three audience-targeting studies are biomedical patient-education papers; Han produces accuracy-sensitive technical reports, where A29 documents fidelity loss under heavy simplification.
+- **Result:** Partially refuted ("single most-evidenced lever").
+- **Impact:** Audience-framing downgraded to directionally sound for technical output, backed by A32, with A29 as the governing constraint. The "no accuracy loss" finding is not transferred to investigation reports.
+
+### V7: A39 (Anthropic April-2026 postmortem) is single-source, first-party, unverifiable
+
+- **Strategy:** Challenge the Evidence-Gathering Integrity
+- **Investigation:** The postmortem post-dates the assistant's knowledge cutoff, is a vendor source describing its own decision, and A28 corroborates only the "overshoot" finding, not "a hard cap caused a 3% regression."
+- **Result:** Confirmed (single-source).
+- **Impact:** A39's specific figure dropped from the evidence basis; "avoid hard word caps" now rests on A28 alone. Recommendation unchanged.
+
+### V8: O3 is dismissed on asserted, not measured, drift
+
+- **Strategy:** Challenge the Options Framing
+- **Investigation:** stakeholder-summary, code-overview, and research already show good per-skill plain-language discipline without a shared reference; the report asserts drift is a defect but never measures it.
+- **Result:** Confirmed (the O1-over-O3 case is reasoned, not demonstrated).
+- **Impact:** O3-strengthened is now presented as the genuine, more-YAGNI-minimal alternative. O1 is still recommended, but on the operator's explicit request for a single evolvable source of truth, not on a proven quality gap — and O1 may be deferred until drift is observed.
+
+### Adjustments Made
+
+- Summary confidence lowered from High to Medium; the sizing-premise correction and the runtime-loading correction added.
+- The "Han already has the substrate" section rewritten: references load at runtime (not advisory), sizing is not a rule file, investigate convergence corrected, editor-agent pattern scoped to code-overview.
+- O1 rewritten to resolve the curse-of-instructions contradiction (template / few-shot / separate self-check split, one layer at a time).
+- O3 rewritten as the genuine YAGNI-minimal alternative with the un-measured-drift caveat.
+- Recommendation: A39's figure dropped (now rests on A28); A21 downgraded to domain-caveated; the residual risk re-framed from "unenforced" to "loaded-but-not-guaranteed, with higher per-skill wiring cost and a reasoned-not-measured benefit over O3"; the O3 alternative made explicit.
+
+### Confidence Assessment
+
+- **Confidence:** Medium
+- **Remaining Risks:** The benefit of O1 over a strengthened O3 is reasoned, not measured (V8). Per-skill wiring cost is higher than a single file implies, especially for investigate, which has the least existing groundwork (V3, V4). Audience-targeting evidence is domain-limited and is in tension with accuracy preservation on dense technical reports (V6, A29). The rule loads at runtime but loading does not guarantee compliance (V1, A24), so the template/few-shot/self-check split is essential, not optional. The most-corroborated part — *what the rules should say* — is solid; the softer parts are *how much it will help* and *what it costs to wire in*.
 
 ## Sources
 
@@ -136,7 +210,7 @@ _Pending adversarial-validator pass._
 | A18 | Cognitive load theory & writing (Sweller) | https://readabilityformulas.com/improve-your-writing-style-with-cognitive-load-theory/ | 2026-06-29 | web | Long/complex sentences saturate working memory, reducing comprehension | corroborated (A6); "50% drop" figure single-source |
 | A19 | Active vs passive evidence (Psych Today summary; APA "In Defense of the Passive") | https://psycnet.apa.org/manuscript/2020-19385-001.pdf | 2026-06-29 | web | Active generally faster to process; no difference in scientific prose — conflict | conflict surfaced; resolves to "active default, passive as exception" |
 | A20 | Hemingway Editor thresholds | https://hemingwayapp.com/help/docs/highlighted-issues | 2026-06-29 | web | Flags 20-29 word sentences (consider), 30+ (split), adverbs, passive | corroborated (A6, A5) |
-| A21 | Grade-level/audience targeting readability studies (JMIR e69955; JMIR Cardio e68817; PMC12010112) | https://www.jmir.org/2025/1/e69955 | 2026-06-29 | web | "Explain simpler"/grade-level prompts drop FK grade 2-5 levels with no accuracy loss in expert review | corroborated (3 independent studies) |
+| A21 | Grade-level/audience targeting readability studies (JMIR e69955; JMIR Cardio e68817; PMC12010112) | https://www.jmir.org/2025/1/e69955 | 2026-06-29 | web | "Explain simpler"/grade-level prompts drop FK grade 2-5 levels with no accuracy loss in expert review | corroborated within healthcare domain only (V6); not cross-domain for technical output |
 | A22 | Self-Refine (iterative self-critique) | https://arxiv.org/abs/2303.17651 | 2026-06-29 | web | Generate→critique→refine improved output ~20% absolute across 7 tasks incl. readability | corroborated (A23) |
 | A23 | DeCRIM (decompose, critique, refine per-constraint) | https://arxiv.org/abs/2410.06458 | 2026-06-29 | web | Splitting constraints + per-constraint critique beats holistic; GPT-4 fails 21%+ multi-constraint | corroborated (A22, A24) |
 | A24 | Curse of Instructions | https://openreview.net/forum?id=R6q67CDBCH | 2026-06-29 | web | All-followed probability decays ~exponentially with instruction count (85-90%→15-44%) | corroborated (A23) |
@@ -154,7 +228,7 @@ _Pending adversarial-validator pass._
 | A36 | Claude Code skills (SKILL.md) | https://code.claude.com/docs/en/skills | 2026-06-29 | web (official) | Task-specific instructions that load only when invoked; right home for per-deliverable format | corroborated (A35) |
 | A37 | Anthropic's Constitution | https://www.anthropic.com/constitution | 2026-06-29 | web (official) | Lists over-hedging, unnecessary caveats, wishy-washy answers, preachiness as behaviors to avoid | corroborated (A32, A38) |
 | A38 | Claude 4 system prompt analysis (Simon Willison) | https://simonwillison.net/2025/May/25/claude-4-system-prompt/ | 2026-06-29 | web | Claude's own prompt suppresses reflexive lists and opening flattery | corroborated (A32, A37) |
-| A39 | Anthropic April 2026 Claude Code postmortem | https://www.anthropic.com/engineering/april-23-postmortem | 2026-06-29 | web (official) | Hard 25/100-word caps caused a measured 3% quality drop, reverted; prose instructions ≠ token caps | single-source (first-party); directionally corroborated by A28 |
+| A39 | Anthropic April 2026 Claude Code postmortem | https://www.anthropic.com/engineering/april-23-postmortem | 2026-06-29 | web (official) | Claims hard 25/100-word caps caused a measured 3% quality drop, reverted | single-source, first-party, unverifiable (V7); dropped from evidence basis |
 | A40 | Claude extended/adaptive thinking (display modes) | https://platform.claude.com/docs/en/build-with-claude/extended-thinking | 2026-06-29 | web (official) | Reasoning is a separate block; display:"omitted" keeps it out of human-facing text | single-source for the display field |
 | A41 | Claude structured outputs | https://platform.claude.com/docs/en/build-with-claude/structured-outputs | 2026-06-29 | web (official) | JSON-schema output / strict tools; extract data then render prose separately | corroborated (A32) |
 | A42 | Vale prose linter + team deployments (Datadog, Spectrocloud, Contentsquare, GitLab, LWN) | https://vale.sh/docs | 2026-06-29 | web | CI-enforced prose linting catches surface issues at scale; GitLab 3-tier severity; supplements, not replaces, human review | corroborated (multi-org) |
@@ -169,10 +243,10 @@ _Pending adversarial-validator pass._
 | A51 | Pre-publish checklist / DoD / Paperpal Preflight | https://paperpal.com/preflight | 2026-06-29 | web (vendor) | Binary categorized preflight checks as a definition-of-done for written output | single-source/vendor caveat |
 | A52 | Han voice profile (`docs/writing-voice.md`) | repo: docs/writing-voice.md | n/a | codebase | Strong specific voice rules (no em-dash, no "just"/"leverage", AI-slop blocklist); governs operator docs, not loaded at runtime by skills | trusted current-state anchor |
 | A53 | Han cross-skill rule mechanism (`han-core/references/yagni-rule.md`, `evidence-rule.md`) | repo: han-core/references/*.md | n/a | codebase | The `*-rule.md` model: rule file cited by relative link, vendored into han-planning/han-coding by manual copy | trusted current-state anchor |
-| A54 | Han operator-extract pattern (`docs/sizing.md`, `docs/yagni.md`) | repo: docs/sizing.md, docs/yagni.md | n/a | codebase | Each rule is paired with a plain-language `docs/` extract for operators | trusted current-state anchor |
-| A55 | Han per-skill output templates | repo: han-*/skills/*/references/*template*.md | n/a | codebase | research/investigate/code-overview/stakeholder-summary/update-pr-description templates already lead with plain-language summary + progressive disclosure | trusted current-state anchor |
-| A56 | Han distributed per-skill plain-language principles | repo: han-*/skills/*/SKILL.md | n/a | codebase | Each reader-facing skill re-states its own plain-language rule (stakeholder-summary Pass A/B/C, code-overview "minimal detail", etc.) — drift a shared reference would fix | trusted current-state anchor |
-| A57 | How Han references take effect | repo: SKILL.md citations + agent briefs | n/a | codebase | References are advisory: the author encodes them into skill steps + agent briefs; editor agents (information-architect, junior-developer) already run readability passes | trusted current-state anchor |
+| A54 | Han operator-extract pattern (`docs/yagni.md`, `docs/evidence.md`; `docs/sizing.md`) | repo: docs/yagni.md, docs/evidence.md, docs/sizing.md | n/a | codebase | yagni/evidence rules each pair with a `docs/` extract; sizing has a `docs/` narrative but NO `sizing-rule.md` — it is not a shared rule file (V2) | trusted current-state anchor |
+| A55 | Han per-skill output templates | repo: han-*/skills/*/references/*template*.md | n/a | codebase | research/code-overview/stakeholder-summary/update-pr-description lead with plain-language summary + progressive disclosure; investigate's summary is a 5-field technical block, not a plain one-liner (V3) | trusted current-state anchor; investigate corrected |
+| A56 | Han distributed per-skill plain-language principles | repo: han-*/skills/*/SKILL.md | n/a | codebase | Reader-facing skills re-state their own plain-language rule unevenly (stakeholder-summary Pass A/B/C strong; investigate cites none) — the drift a shared reference would reduce, though drift is un-measured (V8) | trusted current-state anchor |
+| A57 | How Han references take effect | repo: docs/yagni.md:13; SKILL.md citations + agent briefs | n/a | codebase | References LOAD at runtime: "every YAGNI-aware skill and agent loads that file at runtime"; skills/agents are directed to read+apply by relative link (V1). Readability editor-agent pass exists only in code-overview (V4) | trusted current-state anchor |
 
 ### A21: Grade-level / audience targeting — recommendation-bearing
 
@@ -200,8 +274,8 @@ _Pending adversarial-validator pass._
 
 ### A57: How Han references take effect — recommendation-bearing
 
-- **Link / location:** repo: skill `SKILL.md` reference citations and dispatched agent briefs; `information-architect` / `junior-developer` agent usage in code-overview and test-planning
+- **Link / location:** repo: `docs/yagni.md:13`; skill `SKILL.md` reference citations and dispatched agent briefs; `information-architect` / `junior-developer` readability usage in `code-overview`
 - **Retrieved:** n/a
 - **Trust class:** codebase (trusted current-state anchor)
-- **Summary:** A Han reference is advisory, not a runtime gate: the skill author reads the rule and encodes it into the skill's steps and into the briefs of the agents it dispatches. Several skills already dispatch an editor-style agent that runs a readability or plain-language pass. This is why the recommendation pairs O1 (the reference) with template-embedding and a self-check/editor pass — the reference only changes output if a skill wires it in — and it is also the recommendation's softest point, carried as a residual risk.
+- **Summary:** Corrected in validation (V1). A Han reference is *loaded and applied at runtime*, not merely author-time guidance: `docs/yagni.md` states "every YAGNI-aware skill and agent loads that file at runtime," and skill steps and agent briefs direct the executor to read and apply the rule by relative link as it runs. This gives a `readability-rule.md` real runtime grip and removes the report's original "advisory" softest point. What loading does not buy is guaranteed compliance once the rule competes with a skill's other instructions (the curse of instructions, A24) — so the recommendation still pairs O1 with template-embedding, few-shot do/don't pairs, and a separate self-check/editor pass. The readability-specific editor-agent pass currently exists in exactly one reader-facing skill, `code-overview` (V4); adopting it elsewhere is new wiring.
 - **Evidence status:** trusted current-state anchor
