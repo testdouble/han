@@ -124,7 +124,7 @@ before its parent is settled.
 4. **Capabilities** — What model tier fits the cognitive load (`opus` for
    synthesis and judgment, `sonnet` for structured procedures, `haiku` for fast
    lookups, `inherit` only when matching the session is intentional)? What
-   `tools` does it need — defaulting to no `Agent` tool, since dispatch flows
+   `tools` does it need, defaulting to no `Agent` tool, since dispatch flows
    from skills to agents, and carrying it only when a concrete need is
    documented?
 5. **Body structure** — What inlined protocol, checklist, and reference content
