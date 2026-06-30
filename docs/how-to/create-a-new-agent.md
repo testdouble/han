@@ -44,7 +44,7 @@ The workflow runs as one continuous interview that moves through three natural s
 
 ### Stage 3: Write, review, and wire up
 
-1. **Let the builder write the single file and run the conformance review.** Everything the agent needs is inlined into one flat `.md` file: no `references/` folder, no `scripts/`, no context injection. After writing it, the builder re-reads every guidance document that applies and corrects the file directly: role-identity length, the description budget, self-containment violations, and an over-broad tool set, including removing the `Agent` tool, since subagents cannot spawn subagents. You see the result after the fixes land.
+1. **Let the builder write the single file and run the conformance review.** Everything the agent needs is inlined into one flat `.md` file: no `references/` folder, no `scripts/`, no context injection. After writing it, the builder re-reads every guidance document that applies and corrects the file directly: role-identity length, the description budget, self-containment violations, and an over-broad tool set, including flagging the `Agent` tool for justification when it is present, since dispatch flows from skills to agents by default. You see the result after the fixes land.
 
 2. **Read the closing summary and the dispatch wiring.** The builder reports the agent's shape, which decisions it settled by evidence versus by you, the fixes the review applied with the guidance behind each, and how the agent is dispatched: the qualified `defining-plugin:agent-name` and the skill that calls it.
 

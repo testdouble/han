@@ -65,7 +65,7 @@ The skill closes by summarizing the agent's shape (role, model, tools, vocabular
 - **Name the domain narrowly.** A focused domain activates deep expertise; a broad one averages shallow knowledge across competing domains. The skill pushes for precision, but starting narrow helps.
 - **Decide generate-or-evaluate up front.** If you want an agent that both produces and judges, the skill will split it. Knowing which role you want avoids a mid-interview redirect.
 - **Push back on the model tier.** The skill recommends a tier from the cognitive load (opus for synthesis and judgment, sonnet for structured procedures, haiku for fast lookups). If your sense of the work differs, say so.
-- **Trust the review pass.** The Step 6 conformance review fixes role-identity length, description budget, self-containment violations, and an over-broad tool set before you see them, including removing the `Agent` tool, since subagents cannot spawn subagents.
+- **Trust the review pass.** The Step 6 conformance review fixes role-identity length, description budget, self-containment violations, and an over-broad tool set before you see them, including flagging the `Agent` tool for justification when it is present, since dispatch flows from skills to agents by default.
 - **Wire up the caller.** An agent is dispatched by a skill. If the calling skill does not exist yet, the skill recommends [`/skill-builder`](./skill-builder.md) to build it.
 
 ## YAGNI

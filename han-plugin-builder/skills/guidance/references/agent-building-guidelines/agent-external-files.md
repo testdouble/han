@@ -99,9 +99,11 @@ Many agents set only `name`, `description`, `tools`, and `model`, but the [Subag
 
 When an agent is loaded **from a plugin** (which is how every plugin agent ships), Claude Code ignores its `hooks`, `mcpServers`, and `permissionMode` frontmatter. This is a documented security boundary, not a bug: a plugin cannot silently grant itself hooks, MCP access, or a looser permission mode on the operator's machine. Do not rely on any of these three fields in a plugin agent definition; they will be dropped. Source: [Subagents documentation](https://code.claude.com/docs/en/sub-agents).
 
-### Subagents cannot spawn subagents
+### Default to no `Agent` tool: prefer dispatch from skills to agents
 
-This is a platform rule: a subagent cannot dispatch another subagent. Nested delegation must go through skills or be chained from the main conversation. Reflect this by not giving your agents the `Agent` tool (see [Agent Dispatch Namespacing](../skill-building-guidance/agent-dispatch-namespacing.md)).
+Prefer dispatch to flow from skills to agents. By default, an agent does not carry the `Agent` tool, so it never dispatches another agent directly; the skills do the dispatching and the agents apply judgment. This default keeps dispatch boundaries clean, keeps every dispatch namespaced through a skill, and keeps the orchestrating context economical, since a dispatched agent's deliberation stays out of the caller's window (see [Agent Dispatch Namespacing](../skill-building-guidance/agent-dispatch-namespacing.md)).
+
+Break the default only when you can demonstrate a concrete need, and record why in the agent itself. The shape that earns it is a coordinator that dispatches a dedicated worker agent for a self-contained sub-task, so the worker gets fresh context and its back-and-forth stays out of the coordinator's window. For example, a review coordinator that dispatches a review agent which runs a code-review skill and fans out its own specialist panel: the deviation is deliberate, the reviewers get clean context, and the panel's deliberation never crowds the coordinator.
 
 ## The Pattern in Practice
 

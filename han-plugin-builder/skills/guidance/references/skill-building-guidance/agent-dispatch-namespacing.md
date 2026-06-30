@@ -76,14 +76,16 @@ run `example:plan-implementation`         # example has no skills; same failure
 
 ## Scope note
 
-If your agents do not have the `Agent` tool, an agent never dispatches another
-agent directly. This also matches a platform rule: per the [Subagents
-documentation](https://code.claude.com/docs/en/sub-agents), subagents cannot
-spawn other subagents, so nested delegation must go through skills or be chained
-from the main conversation. A routing table inside a coordinator agent can name
-the specialists a facilitating skill should bring in; the skill performs the
-qualified dispatch. The rule above governs the skills and any documented
-invocation example.
+By convention, an agent does not carry the `Agent` tool, so it never dispatches
+another agent directly. Dispatch flows from skills to agents: a routing table
+inside a coordinator agent can name the specialists a facilitating skill should
+bring in, and the skill performs the qualified dispatch. The rules above govern
+the skills and any documented invocation example.
+
+When an agent does need the `Agent` tool, that is a documented exception (see
+[External File References in Agent Definitions](../agent-building-guidelines/agent-external-files.md)),
+and its dispatches still follow the `your-plugin:agent-name` namespacing rules
+above.
 
 Cross-references:
 - [Skill Decomposition](./skill-decomposition.md). When a step's judgment belongs in a dispatched agent.

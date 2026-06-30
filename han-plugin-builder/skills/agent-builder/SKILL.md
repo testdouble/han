@@ -124,8 +124,9 @@ before its parent is settled.
 4. **Capabilities** — What model tier fits the cognitive load (`opus` for
    synthesis and judgment, `sonnet` for structured procedures, `haiku` for fast
    lookups, `inherit` only when matching the session is intentional)? What
-   `tools` does it need — and never the `Agent` tool, because subagents cannot
-   spawn subagents?
+   `tools` does it need — defaulting to no `Agent` tool, since dispatch flows
+   from skills to agents, and carrying it only when a concrete need is
+   documented?
 5. **Body structure** — What inlined protocol, checklist, and reference content
    does the agent need to do its job, given it cannot use external files? Where
    does graceful-degradation wording belong?
@@ -207,8 +208,9 @@ fixing them. Cover at minimum:
    reference content is inlined; frontmatter uses `tools` (not `allowed-tools`),
    and the file relies on no field plugins ignore.
 7. **Tool set** (`agent-dispatch-namespacing.md`, `agent-external-files.md`) —
-   the agent does not have the `Agent` tool (subagents cannot spawn subagents),
-   and the `tools` allowlist is the minimum the work needs.
+   the agent defaults to no `Agent` tool, since dispatch flows from skills to
+   agents; if it carries the `Agent` tool, the agent records why that exception
+   is necessary. The `tools` allowlist is the minimum the work needs.
 8. **Graceful degradation** (`agent-building-guidelines/graceful-degradation.md`)
    — every tool-dependent step checks availability inline and notes the
    limitation when the tool is absent.

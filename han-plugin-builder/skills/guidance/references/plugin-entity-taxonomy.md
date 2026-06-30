@@ -41,7 +41,7 @@ Automatic triggers on system events. No user invocation. Complement skills (expl
 ## Composition Rules
 
 - Skills execute deterministic processes. They may invoke other skills for fixed sub-steps, or dispatch agents for research and validation.
-- Agents apply contextual judgment. They orchestrate skills, make decisions, and can dispatch other agents for parallel independent workstreams.
+- Agents apply contextual judgment. They orchestrate skills and make decisions. Dispatch flows from skills to agents by default, so an agent normally does not dispatch other agents; when a concrete need justifies it, an agent can dispatch other agents for parallel independent workstreams, but that is a documented exception, not the default.
 - Hooks trigger skills or agents reactively on system events.
 - The key distinction: skills follow a fixed flowchart (even when invoking other components); agents decide what to do based on context.
 
