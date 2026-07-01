@@ -66,6 +66,7 @@ Agents that compare artifacts and preserve meaning across documentation moves.
 
 - **[`gap-analyzer`](./han-core/gap-analyzer.md).** Finds what is missing, incomplete, conflicting, or assumed when comparing a current state against a desired state (code vs. spec, implementation vs. PRD). Dispatched by [`/gap-analysis`](../skills/han-core/gap-analysis.md), which renders the agent's structured output as a plain-language, stakeholder-readable report.
 - **[`content-auditor`](./han-core/content-auditor.md).** Validates that documentation updates preserved the important facts from the original source. Flags removals that were not justified by the codebase.
+- **[`readability-editor`](./han-core/readability-editor.md).** Rewrites a finished draft for a non-author reader against the shared readability standard, preserving every fact and leaving code, diagrams, and citation identifiers untouched. Dispatched by the synthesis skills as their readability rewrite pass. See [Readability](../readability.md).
 
 ---
 

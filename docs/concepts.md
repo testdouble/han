@@ -13,7 +13,9 @@ Han is built out of two kinds of things: **skills** and **agents**. If you read 
 - **YAGNI** decides what survives. Every skill that produces an artifact and every agent that reviews one applies an evidence-based rule before committing items: features, plan steps, code recommendations, ADRs, coding standards, runbooks, alerts, indexes, tests, abstractions. Items without evidence get deferred (recorded for later, not silently dropped). See [YAGNI](./yagni.md).
 - **Evidence** decides how confident you are in what survives. Once YAGNI passes an item through, the evidence rule names the trust class of the citation (codebase, web, provided), applies a corroboration gate to web sources, and labels claims with no evidence at any tier as a distinct deferred state. See [Evidence](./evidence.md).
 
-That is the whole model. Everything else is vocabulary.
+Those three are the whole decision model. Everything else is vocabulary.
+
+- **Readability** is a different kind of standard, not a fourth decision mechanic. Sizing, YAGNI, and evidence decide *what happens* to an item; readability governs the *output* of the skills whose deliverable is prose a non-author reads, so that output leads with its main point, uses plain language, and reveals detail in layers. It is scoped to those reader-facing skills, not near-universal like the three mechanics. See [Readability](./readability.md).
 
 > **Evaluating Han for a larger org?** Han is built for solo product engineers and small teams, not for large teams or enterprise. Read [Why solo and small teams, and not large teams or enterprise?](./why-solo-and-small-teams.md) for the honest fit answer before going further.
 
@@ -90,6 +92,16 @@ Evidence applies to the research and investigation skills (`/research`, `/invest
 
 Read the full [Evidence](./evidence.md) reference for the three principles, the trust-class vocabulary, the corroboration gate, the no-evidence response, and the per-skill / per-agent application table.
 
+## Readability: the output standard
+
+Sizing, YAGNI, and evidence decide how a skill works. Readability decides how its output reads. Every reader-facing skill (one whose primary deliverable is prose a non-author reads end to end) applies one shared readability rule as it writes, so the deliverable leads with its main point, gives each paragraph one idea, uses descriptive headings, keeps sentences short and active, prefers common words, and reveals detail in layers.
+
+The rule is applied in stages, never as one instruction block: its structural rules shape each skill's output template, and its six behaviorally-anchored criteria run as a discrete self-check after the draft exists. Skills with a synthesis or editor step also dispatch the [`readability-editor`](./agents/han-core/readability-editor.md) agent to rewrite the draft, preserving every fact. Fidelity outranks readability: no required fact is dropped to read more simply.
+
+Readability applies to the thirteen reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`, `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`, `/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`). Skills whose output is code or a governed structured artifact are out of scope.
+
+Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope table, and the fidelity guard.
+
 ## When would you invoke an agent directly?
 
 Most of the time you will not. A skill calling an agent is the typical flow.
@@ -123,6 +135,7 @@ Skim the indexes after you read this page. Pick the one skill you need right now
 - **Want to know how dispatch scales?** → [Sizing](./sizing.md).
 - **Want to know what survives a review?** → [YAGNI](./yagni.md).
 - **Want to know how confident to be in what survives?** → [Evidence](./evidence.md).
+- **Want to know how skill output is kept readable?** → [Readability](./readability.md).
 - **Writing your own skill or agent?** → [Contributing](../CONTRIBUTING.md).
 
 ## Related reading

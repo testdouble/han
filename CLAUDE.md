@@ -20,7 +20,7 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   │   └── plugin.json
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
-│   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
+│   └── references/     # Cross-skill reference files (e.g. yagni-rule.md, evidence-rule.md, readability-rule.md — canonical copies)
 ├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation; depends on han-core; bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -30,15 +30,17 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
-│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, readability-rule.md)
 ├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
+│   ├── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
+│   └── references/     # Cross-skill reference files vendored for han-github skills (readability-rule.md)
 ├── han-reporting/      # Reporting plugin: stakeholder-summary, html-summary
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Reporting skill directories, each with SKILL.md + references/ (html-summary adds scripts/ + assets/)
+│   ├── skills/         # Reporting skill directories, each with SKILL.md + references/ (html-summary adds scripts/ + assets/)
+│   └── references/     # Cross-skill reference files vendored for han-reporting skills (readability-rule.md)
 ├── han-feedback/       # Opt-in feedback plugin: han-feedback (depends on han-core; NOT bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json

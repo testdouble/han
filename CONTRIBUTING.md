@@ -2,7 +2,7 @@
 
 This page is for contributors: anyone adding, editing, or restructuring skills, agents, or documentation in the han plugin. If you just want to use the plugin, start with the [Plugin landing page](./README.md) or the [Quickstart](./docs/quickstart.md).
 
-> See also: [Plugin landing page](./README.md) · [Concepts](./docs/concepts.md) · [Sizing](./docs/sizing.md) · [YAGNI](./docs/yagni.md) · [Evidence](./docs/evidence.md)
+> See also: [Plugin landing page](./README.md) · [Concepts](./docs/concepts.md) · [Sizing](./docs/sizing.md) · [YAGNI](./docs/yagni.md) · [Evidence](./docs/evidence.md) · [Readability](./docs/readability.md)
 
 ## TL;DR
 
@@ -60,6 +60,20 @@ When a change adds, removes, or moves a skill between plugins, update the market
 2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/han-core/{name}.md` and fill it in. Every agent gets a long-form doc.
 3. Add the agent to the [Agents Index](./docs/agents/README.md) under the right role group.
 
+## Wiring the readability standard into a skill
+
+If the skill you are adding is **reader-facing** — its primary deliverable is human-facing prose that a non-author reads end to end to understand something (a finding, a summary, a plan of record, a document) — it applies the shared [Readability](./docs/readability.md) standard. Skills whose primary output is code, or a governed structured artifact (a specification, plan, work-item, or coding standard), are out of scope and skip this section.
+
+The inclusion test is the guide; the enumerated list in [Readability](./docs/readability.md#scope-which-skills-are-reader-facing) is authoritative. When a new skill passes the test, add it to that list and wire the standard in:
+
+1. **Vendor the rule.** The canonical rule is [`han-core/references/readability-rule.md`](./han-core/references/readability-rule.md). If the skill ships in a plugin that does not yet carry a copy, copy the file byte-for-byte into that plugin's `references/` directory (the same way [`yagni-rule.md`](./han-core/references/yagni-rule.md) and `evidence-rule.md` are vendored). Never wire a skill to load the rule before its plugin carries the copy. When the rule changes, update the canonical copy and re-copy it into every plugin that ships an in-scope skill.
+2. **Embed the structural rules in the output template.** The skill's output template carries main-point-first, descriptive front-loaded headings, one-idea-per-paragraph, numbered lists for steps and bullets for the rest, and progressive disclosure, so the draft is born structured.
+3. **Load and apply the rule, with an audience frame.** The skill reads `../../references/readability-rule.md` as it produces output and holds the audience frame: a capable reader who did not do the work. If the skill's real reader is a specific expert (an engineer, a pull-request reviewer, a non-technical stakeholder), name that reader instead of defaulting, and scope the frame per section so technical specifics the reader needs are not simplified away.
+4. **Add the standardized self-check.** Before presenting, the skill runs the six behaviorally-anchored yes/no criteria (main point first, descriptive headings, one idea per paragraph, sentence length, no blocklisted word, every fact preserved) over the prose regions only, and corrects any failure. Leave code fences, diagram bodies, rendered markup, and citation identifiers unevaluated and unchanged.
+5. **Wire the rewrite pass only if the skill synthesizes.** If the skill has a synthesis or editor step — a distinct pass, after the full draft exists, that reviews or consolidates the whole draft before presenting it — dispatch the [`readability-editor`](./docs/agents/han-core/readability-editor.md) agent to rewrite the draft against the rule, preserving every fact, after the draft is written and before the self-check. Where the skill already ran a readability pass of its own, the dedicated reviewer replaces it rather than stacking a second pass on top. A synthesis skill that cannot dispatch an agent today gains that capability as part of wiring the standard in.
+
+Keep the applied set tight. The rule is applied in stages (template, then a discrete self-check, plus the rewrite pass for synthesis skills), never as one stacked instruction block.
+
 ## Editing an existing long-form doc
 
 The docs follow a strict template. Before changing a section's shape, check [`docs/templates/skill-long-form-template.md`](./docs/templates/skill-long-form-template.md) or [`docs/templates/agent-long-form-template.md`](./docs/templates/agent-long-form-template.md) so the change stays consistent across peers.
@@ -109,5 +123,6 @@ Before opening the PR, run through this checklist:
 - [Sizing](./docs/sizing.md). How the swarming skills classify work and scale dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based rule for what survives a review.
 - [Evidence](./docs/evidence.md). The three principles, the trust-class vocabulary, and the corroboration gate every evidence-aware skill and agent applies.
+- [Readability](./docs/readability.md). The shared output standard every reader-facing skill applies as it writes.
 - [`han-plugin-builder/skills/guidance/references/skill-building-guidance/`](./han-plugin-builder/skills/guidance/references/skill-building-guidance/). Skill-authoring guidance.
 - [`han-plugin-builder/skills/guidance/references/agent-building-guidelines/`](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/). Agent-authoring guidance.
