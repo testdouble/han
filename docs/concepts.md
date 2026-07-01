@@ -98,7 +98,7 @@ Sizing, YAGNI, and evidence decide how a skill works. Readability decides how it
 
 The rule is applied in stages, never as one instruction block: its structural rules shape each skill's output template, and its six behaviorally-anchored criteria run as a discrete self-check after the draft exists. Skills with a synthesis or editor step also dispatch the [`readability-editor`](./agents/han-core/readability-editor.md) agent to rewrite the draft, preserving every fact. Fidelity outranks readability: no required fact is dropped to read more simply.
 
-Readability applies to the thirteen reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`, `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`, `/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`). Skills whose output is code or a governed structured artifact are out of scope.
+Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`, `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`, `/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`). Skills whose output is code or a governed structured artifact are out of scope.
 
 Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope table, and the fidelity guard.
 
