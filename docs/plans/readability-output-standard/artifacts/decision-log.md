@@ -138,14 +138,21 @@ Evidence sources draw on two trust classes: **codebase** (the trusted current-st
 - **Dependent decisions:** —
 - **Referenced in spec:** Preconditions, Alternate Flows and States, Coordinations, Edge Cases and Failure Modes
 
-### D10: Audience frame generalized, with per-skill sharpening
+### D10: Audience frame generalized, with a named audience per engineer-facing skill
 
 - **Question:** What single instruction should be on for every reader-facing skill while it drafts, given that some skills' readers are experts who have seen the code?
-- **Decision:** An always-on audience frame: write for a capable reader who did not do this work and lacks the author's context. A skill whose reader is a specific audience sharpens the frame to that audience (an engineer reading a root-cause finding, a reviewer reading a pull-request summary) and may scope it per section so technical specifics a reader needs are not simplified away.
-- **Rationale:** Audience framing is the most practical single instruction for plain output, backed by Anthropic's prompting guidance. The review team showed that a fixed "non-expert who has not seen the code" frame mis-fits skills whose readers demonstrably have seen the code (update-pr-description, investigate, project-documentation's own stated audience), steering output away from its real reader. Generalizing the frame and allowing per-skill sharpening keeps the instruction while fixing the mis-fit.
+- **Decision:** An always-on default audience frame: write for a capable reader who did not do this work and lacks the author's context. The five skills whose reader is specifically an engineer each name that audience rather than defaulting, and may scope the frame per section so technical specifics a reader needs are not simplified away:
+  - **investigate** — the engineer who will implement the fix and may be paged on the bug.
+  - **update-pr-description** — the reviewer evaluating the pull request, who will read the code.
+  - **code-review** — the author and reviewers of the change under review.
+  - **architectural-analysis** — the engineer weighing the module's design and deciding whether to change it.
+  - **project-documentation** — a technically-literate reader who needs to understand the feature's behavior before reading or modifying its code.
+  The remaining in-scope skills keep the default frame; any skill with an even more specific audience (for example stakeholder-summary's non-technical stakeholders) names it the same way.
+- **Rationale:** Audience framing is the most practical single instruction for plain output, backed by Anthropic's prompting guidance. The review team showed that a fixed "non-expert who has not seen the code" frame mis-fits skills whose readers demonstrably have seen the code (update-pr-description, investigate, project-documentation's own stated audience), steering output away from its real reader. The operator chose to commit each engineer-facing skill to a named audience rather than leave it a general permission, so the sharpening is consistent and not left to each author to rediscover. This resolved open item OI-1.
 - **Evidence:** web (via research report) — A21 (audience/grade-level targeting, domain-caveated per V6), A32 (Anthropic prompting guidance), A29 (fidelity constraint on dense output). codebase — `han-core/skills/project-documentation/SKILL.md` defines a technically-literate audience; `han-coding/skills/investigate/SKILL.md` presents a plan to an engineer about to implement.
 - **Rejected alternatives:**
   - A single fixed "non-expert who has not seen the code" frame for all skills — rejected because it mis-frames the skills whose readers are engineers.
+  - Leaving per-skill sharpening as a general permission with no named audiences — this was the draft's approach (open item OI-1); rejected on the operator's choice to name each engineer-facing skill's audience so the framing is consistent rather than author-dependent.
   - A grade-level numeric target instead of an audience frame — rejected because numeric targets are overshot and grade levels are meaningless for adult expert readers.
 - **Linked technical notes:** —
 - **Driven by findings:** F7

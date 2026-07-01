@@ -66,7 +66,7 @@ Findings are classified **major** (changes a behavioral commitment, edge-case ru
 
 - **Agent:** junior-developer, edge-case-explorer, information-architect (independently)
 - **Finding:** "Write for a smart non-expert who has not seen the code" is wrong for update-pr-description (read by reviewers who see the code), investigate (read by engineers implementing the fix), and project-documentation (whose own stated audience is technically literate). The single frame steers those skills away from their real reader.
-- **Resolution:** Generalized the frame to "a capable reader who did not do this work and lacks the author's context," and allowed per-skill and per-section sharpening. Recorded the per-skill sharpening as an open item (OI-1 after the original OI-1, the investigate/update-pr-description synthesis classification, was resolved by the user).
+- **Resolution:** Generalized the frame to "a capable reader who did not do this work and lacks the author's context." The per-skill sharpening was first left as an open item, then resolved by the user: each of the five engineer-facing skills now names its audience in D10, and no open items remain.
 - **Resolved by:** evidence
 - **Affected decisions:** D10
 - **Changed in spec:** Primary Flow (step 2), Edge Cases and Failure Modes, Open Items

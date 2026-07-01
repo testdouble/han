@@ -51,7 +51,7 @@ The standard is deliberately kept tight. Structural rules that apply to only a m
 When an in-scope skill produces its deliverable:
 
 1. The skill loads the shared readability rule as it produces its human-facing output. For the skills that already load the shared YAGNI or evidence rules, this reuses an established habit; for the rest, loading a shared rule is new behavior wired for the first time ([D1](artifacts/decision-log.md#d1-standard-shape-shared-rule-file-on-the-yagnievidence-model)).
-2. The skill applies an always-on audience frame while drafting: write for a capable reader who did not do this work and lacks the author's context. A skill whose reader is a specific audience (for example an engineer reading a root-cause finding or a reviewer reading a pull-request summary) sharpens the frame to that audience rather than defaulting to a non-expert ([D10](artifacts/decision-log.md#d10-audience-frame-generalized-with-per-skill-sharpening)).
+2. The skill applies an always-on audience frame while drafting: write for a capable reader who did not do this work and lacks the author's context. The five skills whose reader is specifically an engineer (investigate, update-pr-description, code-review, architectural-analysis, project-documentation) each name that audience instead of defaulting, and may scope the frame per section so technical specifics a reader needs are not simplified away ([D10](artifacts/decision-log.md#d10-audience-frame-generalized-with-a-named-audience-per-engineer-facing-skill)).
 3. The skill drafts the deliverable into an output template that already carries the standard's structural rules:
    - the main point first,
    - descriptive front-loaded headings,
@@ -97,7 +97,7 @@ The rule is applied in stages, never as one large block of instructions: its str
 | The readability pass or audience frame would drop a fact to read more simply. | Fidelity wins. Every fact in the draft is preserved: every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact. Flattening "exceeded 340ms in three of ten windows" to "was sometimes slow," or "only when X and Y both hold" to "generally," is a fidelity failure, not a simplification ([D11](artifacts/decision-log.md#d11-the-standardized-self-check-a-bounded-set-of-behaviorally-anchored-criteria)). |
 | The self-check is asked to judge subjective clarity. | The self-check evaluates concrete, behaviorally-anchored yes/no criteria (see [D11](artifacts/decision-log.md#d11-the-standardized-self-check-a-bounded-set-of-behaviorally-anchored-criteria)), never "is this clear?" |
 | The deliverable mixes prose with code blocks, diagrams, rendered markup, or citation identifiers. | The self-check and rewrite operate on prose regions only. Content inside code fences, diagram bodies, rendered markup, and inline citation identifiers is neither evaluated nor altered; citation identifiers in particular survive the rewrite unchanged so they still resolve to their registry ([D15](artifacts/decision-log.md#d15-the-self-check-and-rewrite-operate-on-prose-regions-only)). |
-| The audience frame conflicts with a skill whose real reader is an expert. | The skill sharpens the audience frame to its actual reader (an engineer, a pull-request reviewer) instead of the default non-expert framing, and may scope the frame per section so technical specifics a reader needs are not simplified away ([D10](artifacts/decision-log.md#d10-audience-frame-generalized-with-per-skill-sharpening)). |
+| The audience frame conflicts with a skill whose real reader is an expert. | The skill names its actual reader (an engineer, a pull-request reviewer) instead of the default frame, and may scope the frame per section so technical specifics a reader needs are not simplified away ([D10](artifacts/decision-log.md#d10-audience-frame-generalized-with-a-named-audience-per-engineer-facing-skill)). |
 | A skill already runs its own readability pass or plain-language self-check. | The standard's dispatched reviewer replaces the skill's existing readability pass, and the standardized self-check subsumes the skill's existing plain-language pass, so the deliverable gets one readability review, not two conflicting ones ([D4](artifacts/decision-log.md#d4-a-new-dedicated-readability-editor-reviewer-that-replaces-existing-readability-passes)). |
 | A skill enforces its own word-level blocklist that overlaps the shared one. | The shared blocklist is authoritative for the words it covers; a skill's own list is kept only for the domain-specific terms the shared list does not cover, layered on top rather than duplicating it ([D6](artifacts/decision-log.md#d6-reuse-the-existing-vocabulary-blocklist-with-skill-local-lists-layered-on-top)). |
 | A skill's output is a durable committed file, not ephemeral text (project-documentation). | The standard applies at generation time. A committed document is written readable, but a later manual edit or partial re-run is not re-checked against the rule; that is an accepted gap, not a guarantee the file stays conformant forever ([D16](artifacts/decision-log.md#d16-the-standard-applies-at-generation-time-only)). |
@@ -140,17 +140,15 @@ The rule is applied in stages, never as one large block of instructions: its str
 
 ## Open Items
 
-- **OI-1:** The per-skill audience-frame sharpening for the skills whose readers are engineers (investigate, update-pr-description, code-review, architectural-analysis, project-documentation).
-  - **Resolves when:** Each skill's audience is named while its wiring is planned.
-  - **Blocks implementation:** No.
+None. Both items raised during specification were resolved by the user: investigate and update-pr-description are classified as synthesis skills ([D5](artifacts/decision-log.md#d5-synthesis-skills-run-the-dispatched-rewrite-pass-defined-by-a-single-checkable-criterion)), and each engineer-facing skill names its audience ([D10](artifacts/decision-log.md#d10-audience-frame-generalized-with-a-named-audience-per-engineer-facing-skill)).
 
 ## Summary
 
 - **Outcome delivered:** Every reader-facing Han skill produces output a non-author reader can find, understand, and use, by applying one shared readability rule as it writes.
 - **Primary actors:** The operator who reads skill output; the contributor who wires and evolves the standard.
-- **Decisions settled by evidence:** 12 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 4 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by evidence:** 11 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 5 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** junior-developer, information-architect, test-engineer, edge-case-explorer — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** A testable scope boundary and an explicit synthesis criterion replaced two ill-defined category words; the self-check became a bounded criteria set with a fact-preservation check; the audience frame was generalized; prose-only scoping, generation-time-only coverage, and existing-pass replacement were added — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 1
+- **Remaining open items:** 0
 </content>
