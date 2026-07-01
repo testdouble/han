@@ -95,6 +95,8 @@ separately when you want those opt-in packages.
   architecture skill applies.
 - [Evidence](./docs/evidence.md). What counts as evidence in Han, how to characterize how strong it is, and
   what to do when no evidence exists at all.
+- [Readability](./docs/readability.md). The shared output standard every reader-facing skill applies as it
+  writes, so its human-facing deliverable leads with the main point and reads consistently across skills.
 - [Changelog](./CHANGELOG.md). What's new in each version of the plugin.
 
 ### How-To Guides
