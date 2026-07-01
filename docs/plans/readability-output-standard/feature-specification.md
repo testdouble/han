@@ -67,13 +67,13 @@ The rule is applied in stages, never as one large block of instructions: its str
 
 ### Synthesis skills run a dedicated readability rewrite pass
 
-- **Entry condition:** The skill has a **synthesis or editor step** — a distinct pass, after the full draft exists, that reviews or consolidates the whole draft before it is presented (whether by dispatching a review agent or running an in-process multi-pass review). By that criterion, the synthesis skills are research, stakeholder-summary, code-overview, gap-analysis (at its consolidated report sizes), code-review, architectural-analysis, and project-documentation ([D5](artifacts/decision-log.md#d5-synthesis-skills-run-the-dispatched-rewrite-pass-defined-by-a-single-checkable-criterion)).
+- **Entry condition:** The skill has a **synthesis or editor step** — a distinct pass, after the full draft exists, that reviews or consolidates the whole draft before it is presented (whether by dispatching a review agent or running an in-process multi-pass review). By that criterion, the synthesis skills are research, stakeholder-summary, code-overview, gap-analysis (at its consolidated report sizes), code-review, architectural-analysis, project-documentation, investigate, and update-pr-description ([D5](artifacts/decision-log.md#d5-synthesis-skills-run-the-dispatched-rewrite-pass-defined-by-a-single-checkable-criterion)).
 - **Sequence:** After the draft is written (Primary Flow step 3) and before the self-check (step 4), the skill dispatches a dedicated readability-editor reviewer that audits and rewrites the draft against a small, behaviorally-anchored rubric, preserving every fact ([D4](artifacts/decision-log.md#d4-a-new-dedicated-readability-editor-reviewer-that-replaces-existing-readability-passes)). A synthesis skill that cannot dispatch an agent today gains that capability as part of wiring the standard in ([D5](artifacts/decision-log.md#d5-synthesis-skills-run-the-dispatched-rewrite-pass-defined-by-a-single-checkable-criterion)). Where a skill already runs a readability pass of its own (code-overview's structure-and-cold-read review; stakeholder-summary's plain-language self-check pass), the dedicated reviewer replaces that readability pass rather than stacking a second one on top ([D4](artifacts/decision-log.md#d4-a-new-dedicated-readability-editor-reviewer-that-replaces-existing-readability-passes)). Any imperative or conditional content carried in from the skill's own source material is delimited so the rewrite treats it as text to preserve, not as instructions to follow.
 - **Exit:** The rewritten draft, with every fact preserved, continues to the self-check and is presented.
 
 ### Non-synthesis skills apply the rule inline only
 
-- **Entry condition:** The skill has no synthesis or editor step. By the criterion above, this covers investigate, update-pr-description, html-summary, issue-triage, runbook, and architectural-decision-record.
+- **Entry condition:** The skill has no synthesis or editor step. By the criterion above, this covers html-summary, issue-triage, runbook, and architectural-decision-record.
 - **Sequence:** The skill applies the template, audience frame, and self-check (Primary Flow) but dispatches no dedicated readability reviewer. The self-check's fact-preservation criterion is the fidelity guard on these skills' output, since no rewrite pass runs ([D11](artifacts/decision-log.md#d11-the-standardized-self-check-a-bounded-set-of-behaviorally-anchored-criteria)).
 - **Exit:** The deliverable is presented after the self-check.
 
@@ -140,10 +140,7 @@ The rule is applied in stages, never as one large block of instructions: its str
 
 ## Open Items
 
-- **OI-1:** Whether investigate and update-pr-description count as synthesis skills. Each dispatches an agent (a correctness validator; a description writer), but that step is not clearly an editorial consolidation of the whole draft ([D5](artifacts/decision-log.md#d5-synthesis-skills-run-the-dispatched-rewrite-pass-defined-by-a-single-checkable-criterion)). They default to the non-synthesis path (self-check only).
-  - **Resolves when:** Each skill's actual flow is read against the synthesis criterion during implementation planning.
-  - **Blocks implementation:** No — a defensible default is set; implementation confirms it.
-- **OI-2:** The per-skill audience-frame sharpening for the skills whose readers are engineers (investigate, update-pr-description, code-review, architectural-analysis, project-documentation).
+- **OI-1:** The per-skill audience-frame sharpening for the skills whose readers are engineers (investigate, update-pr-description, code-review, architectural-analysis, project-documentation).
   - **Resolves when:** Each skill's audience is named while its wiring is planned.
   - **Blocks implementation:** No.
 
@@ -155,5 +152,5 @@ The rule is applied in stages, never as one large block of instructions: its str
 - **Decisions settled by user input:** 4 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** junior-developer, information-architect, test-engineer, edge-case-explorer — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** A testable scope boundary and an explicit synthesis criterion replaced two ill-defined category words; the self-check became a bounded criteria set with a fact-preservation check; the audience frame was generalized; prose-only scoping, generation-time-only coverage, and existing-pass replacement were added — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 2
+- **Remaining open items:** 1
 </content>
