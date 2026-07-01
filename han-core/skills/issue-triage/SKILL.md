@@ -23,6 +23,7 @@ allowed-tools: Read, Write, Bash(find *), Bash(mkdir *)
 - Severity and reproducibility are estimates based on what is known. For a Bug, Regression, Performance, or Security issue, mark them Unknown when not inferable. For a Feature Request, Question, or Other issue, omit them entirely when they are not inferable (see Step 4) rather than rendering Unknown.
 - The recommended next step is the single most appropriate han skill (or "clarify with reporter") to run after triage completes.
 - Project context (CLAUDE.md, project-discovery.md) is read only to identify Suspected Areas. Never use it to supply information the reporter omitted.
+- Load and apply the readability rule (`../../references/readability-rule.md`) as you write the triage document. Hold its default audience frame: a capable reader who did not do this work and lacks the author's context.
 
 # Issue Triage
 
@@ -108,5 +109,16 @@ Resolve the output path:
 - Otherwise use `$HOME/.claude/triages/{kebab-case-summary}.md`, where `{kebab-case-summary}` is the Step 2 Summary lowercased with non-alphanumeric runs replaced by single hyphens.
 
 Run `mkdir -p` on the directory that will contain the file (for the default, `mkdir -p "$HOME/.claude/triages"`). Write the report using the template at [template.md](./references/template.md), filling every section from Steps 1-6 and writing the Step 6 result verbatim into Recommended Next Step. Omit the Suspected Areas section if Step 5 determined nothing is inferable, and omit Severity and Reproducibility per the Step 4 omit rule.
+
+Before presenting, run the standardized readability self-check from `../../references/readability-rule.md` over the document's prose regions only — never inside code fences, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
 
 Present the completed triage report to the user. When the Recommended Next Step is a han skill (`/investigate`, `/research`, `/plan-a-feature`, or `/plan-implementation`), state plainly that this triage report is the handoff document — the operator passes the report itself to that skill rather than re-summarizing the issue. No separate brief is produced; the report already serves as the handoff.

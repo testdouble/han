@@ -16,6 +16,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(mkdir *), Bash(find *)
 
 - **YAGNI applies to ADRs themselves.** Apply the evidence-based YAGNI rule from [../../references/yagni-rule.md](../../references/yagni-rule.md). An ADR is worth recording only when there is a concrete forcing function today — a real decision the team is actively making, an existing code path or architectural choice that will be locked in by this record, an applicable regulation, a customer commitment, or a documented incident that drove the choice. ADRs about decisions that don't have to be made yet, "for future flexibility", "best practice says we should pick X", or symmetry with other ADRs ("we have one for auth, so we should have one for billing") are YAGNI candidates and the ADR should not be written. When proposed, recommend deferral with the trigger that would justify writing the ADR (a real decision arising, a real incident, a real regulation taking effect). The user always wins; the rule's job is to make the cost of writing speculative architectural records visible — every ADR is a future-reader's load and a pattern future agents will treat as committed.
 - **The companion evidence rule applies to the ADR's supporting evidence.** Apply the evidence rule from [../../references/evidence-rule.md](../../references/evidence-rule.md) to the citations that justify the ADR's decision and rejected alternatives. Name the trust class of each citation (codebase, web, provided); mark single-source web claims that drive the chosen option; and when no evidence at any tier supports a claimed trade-off, label it rather than presenting it as a weak preference.
+- **The readability rule shapes the ADR's prose.** Load and apply the readability standard from [../../references/readability-rule.md](../../references/readability-rule.md) as you write the ADR. Hold its default audience frame: a capable reader who did not make this decision and lacks your context. The frame governs how each section reads, never whether a required technical fact appears.
 
 ## Project Context
 
@@ -91,7 +92,7 @@ Merge the three agents' findings into the Decision, Decision Drivers, and Conseq
 
 4. **Fill in metadata:** Status per Step 1 mode (`proposed` for new, `accepted` for converted; use `deprecated` or `superseded` when updating). Date Created / Last Updated: current date and time.
 
-5. **Fill each required section** following the template's HTML comments for guidance.
+5. **Fill each required section** following the template's HTML comments for guidance. **Readability:** write the prose in each section per [../../references/readability-rule.md](../../references/readability-rule.md) — lead with the main point, give each paragraph one idea carried by its first sentence, number sequential steps and bullet non-sequential items, and disclose detail in layers. Keep the template's prescribed section structure (Context, Decision Drivers, Considered Options, Decision, Consequences, Notes); the rule governs the prose within them, and its descriptive-heading rule applies to any sub-headings you add, not the prescribed section names.
 
 6. **Notes section must include:**
    - **Key files table** — important files related to this decision:
@@ -122,3 +123,16 @@ Read back the ADR file and confirm:
 4. Agent configuration file references (CLAUDE.md/AGENTS.md) correctly point to the new ADR
 5. If converting: source document was handled (deleted or updated with link)
 6. Fix any issues found
+
+## Step 7: Readability Self-Check
+
+Run the standardized readability self-check from [../../references/readability-rule.md](../../references/readability-rule.md) over the ADR's prose regions only — never inside code fences, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label. An ADR's section headings are prescribed by the template (Context, Decision, Consequences, …), so apply this to any sub-headings you added, not the prescribed section names.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.

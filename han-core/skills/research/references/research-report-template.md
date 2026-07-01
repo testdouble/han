@@ -3,6 +3,16 @@
 <!-- One-sentence statement of the open-ended question being researched. -->
 <!-- State the evidence mode used: strict (default) or exploratory (operator opted in). -->
 
+<!--
+READABILITY. This report is written to the shared readability standard the skill
+loads (`../../references/readability-rule.md`), applied to prose regions only
+(never inside code fences, diagram bodies, or the `A#`/`V#` citation identifiers,
+which survive unchanged so they still resolve). Structural rules the standard
+enforces here: main point first, descriptive headings, one idea per paragraph
+with its first sentence carrying it, numbered lists for steps and bullets for
+non-sequential items, and progressive disclosure. See the rule; do not restate it.
+-->
+
 ## Summary
 
 <!--

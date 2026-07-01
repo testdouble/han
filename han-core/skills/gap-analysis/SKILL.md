@@ -30,6 +30,7 @@ allowed-tools: Read, Write, Glob, Grep, Agent, Bash(find *), Bash(git *)
 - **Purpose-conditioned prioritization is a labeled skill judgment, never the analyzer's.** The `han-core:gap-analyzer` produces a neutral, unprioritized gap list and must stay that way. When the user states *why* they are running the comparison (e.g., "before a redesign pass," "to scope the next sprint"), the skill may add one explicitly-labeled "Where to start" pointer view that names the few gaps most blocking that stated purpose. This is the skill's own synthesis judgment — the same kind it already makes when it clusters gaps into themes and derives confidence — layered on top of the neutral list, never replacing it, and omitted entirely when no purpose was given.
 - **Gap IDs are stable for the life of the report.** Map `GAP-NNN` from the `han-core:gap-analyzer` output to `G-NNN` in the report, preserving order. Cross-references in Sections 3 and 4 use the same `G-NNN` IDs.
 - **The report template lives at [gap-analysis-report-template.md](./references/gap-analysis-report-template.md).** It was designed by the `han-core:information-architect` agent. The skill renders the template by filling placeholders and removing the optional sections that were not requested or generated.
+- **The report is written to the shared readability standard.** The skill loads and applies [../../references/readability-rule.md](../../references/readability-rule.md) as it writes the report, holding the default audience frame: a capable reader who did not do this work and lacks the author's context. The stable gap IDs (`G-NNN`) are citation identifiers and survive any rewrite or self-check unchanged.
 
 # Run a Gap Analysis
 
@@ -185,7 +186,24 @@ Read [gap-analysis-report-template.md](./references/gap-analysis-report-template
 9. **Render the "Where to start" view only if a purpose was captured.** If Step 1 recorded a purpose, render the optional **Where to start** block in Section 1 (after the magnitude table): up to five gaps that most block that stated purpose, each as `G-NNN — one-line plain-language reason it blocks {purpose}`, under the explicit label "Where to start (skill judgment for your stated purpose: {purpose})." This is the skill's labeled synthesis judgment from the Operating Principles — it adds no new gaps, changes no categories or confidence, and cites only existing `G-NNN` IDs. If no purpose was captured, omit the block entirely; never invent a purpose to justify it.
 10. **Update the optional-section markers in the front matter.** If Section 3 was not rendered, remove `- technical_details` from `sections_included`. If Section 4 was not rendered (because the user passed `no swarm`), remove `- swarm_findings`. Update the "How to Read This Report" frame so it does not promise sections that are not present — replace each promise with a single line stating the section was not included for this report. The "Where to start" block and the "Analysis caveats" subsection are conditional content inside existing sections, not top-level sections, so they do not get their own `sections_included` entries.
 
+**Readability.** Draft every prose region to the standard in [../../references/readability-rule.md](../../references/readability-rule.md): lead with the main point, give sections descriptive headings that name their content, keep one idea per paragraph with the first sentence carrying it, number sequential steps and bullet non-sequential items, and reveal detail in layers (Section 1 before 2, 2 before 3). Do not duplicate the rule's text; apply it. The rule governs prose only — leave code fences, any diagram bodies, and the `G-NNN` gap IDs untouched, since those IDs are citation identifiers that must survive every rewrite and the self-check unchanged.
+
 Write the rendered report to the path resolved in Step 1.
+
+## Step 6.5: Readability Rewrite and Self-Check
+
+**Readability editor (consolidated reports only).** When the run produced a consolidated report — the medium and large sizes where `han-core:project-manager` consolidated Section 4 — dispatch the `han-core:readability-editor` agent in a single Agent call to audit and rewrite the report against the rule. Pass it the report file path, the rule path [../../references/readability-rule.md](../../references/readability-rule.md), and the default audience frame (a capable reader who did not do this work and lacks the author's context). Direct it to preserve every fact and to rewrite prose regions only — never inside code fences, diagram bodies, or the `G-NNN` gap-ID citation identifiers. Apply its rewrite to the report file. At small size and on the `no swarm` path this is the lightweight gap-analyzer-only pass, so skip this dispatch; the template above and the self-check below still apply.
+
+**Self-check (all sizes, after any rewrite, before presenting).** Run the standardized readability self-check from [../../references/readability-rule.md](../../references/readability-rule.md) over the report's prose regions only — never inside code fences, diagram bodies, or the `G-NNN` gap-ID citation identifiers. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
 
 ## Step 7: Present the Report
 

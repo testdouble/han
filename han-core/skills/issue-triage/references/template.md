@@ -1,3 +1,5 @@
+<!-- Readability: draft the prose per `../../references/readability-rule.md` — main point first, descriptive headings, one idea per paragraph with its first sentence carrying it, numbered lists for steps and bullets for non-sequential items, progressive disclosure. Do not restate the rule text. -->
+
 # {One-sentence summary of the issue in plain terms}
 
 ## Issue Type

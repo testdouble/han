@@ -20,6 +20,8 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *)
 
 # Project Documentation
 
+**Readability.** As you write the documentation, load and apply the readability rule at [`../../references/readability-rule.md`](../../references/readability-rule.md). The output is a committed file, so the standard applies at generation time. Hold a named audience above the default: a technically-literate reader who needs to understand the feature's behavior before reading or modifying its code. Scope that frame per section so the technical specifics the reader needs are not simplified away.
+
 ## Step 1: Evaluate and Gather Context
 
 **Guard check:** If the request is about an **architectural decision**, suggest `architectural-decision-record` instead. If it's about a **coding convention**, suggest `coding-standard` instead. Proceed only after confirming this is project documentation.
@@ -41,6 +43,8 @@ After all agents complete, merge their findings into a unified **discovery summa
 ## Step 3: Write the Documentation
 
 Use the template at [template.md](./references/template.md) as the structural guide. The template's HTML comments explain when to include each section and what to cover.
+
+**Readability.** Draft into the template so the structure carries the rule at [`../../references/readability-rule.md`](../../references/readability-rule.md): main point first, descriptive headings, one idea per paragraph with the first sentence carrying it, numbered lists for steps and bullets for non-sequential items, and progressive disclosure that reveals the core before the detail.
 
 **File location:** `docs/{feature-name}.md` (in the directory determined in Step 1)
 
@@ -97,7 +101,24 @@ Prompt: "Audit the feature doc at {doc_path} for findability, orientation, and c
 
 Apply every actionable edit the agent returns. For findings that require a judgment only the author can make (scope, audience ambiguity), surface them to the user with a recommended resolution; do not silently resolve.
 
-## Step 8: Verification
+## Step 8: Readability Rewrite
+
+Dispatch the `han-core:readability-editor` agent in a single `Agent` call to audit and rewrite the settled doc against the readability rule, preserving every fact. Pass it the document path, the rule path (`../../references/readability-rule.md`), and the named audience: a technically-literate reader who needs to understand the feature's behavior before reading or modifying its code. The agent rewrites **prose regions only** — never inside code fences, diagram bodies (for example the body of a Mermaid chart), or rendered markup. Apply its rewrite to the document.
+
+## Step 9: Readability Self-Check
+
+Run the standardized readability self-check from `../../references/readability-rule.md` over the document's prose regions only — never inside code fences, diagram bodies, or rendered markup. Confirm each criterion and fix any failure before finalizing:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears. The standard applies at generation time; a later manual edit of the committed file is not re-checked.
+
+## Step 10: Verification
 
 1. **Documentation file:** Follows template structure and leads with behavior (Summary, How It Works, Primary Flows appear before the `## Technical Reference` region), no `{placeholder}` values remain, absolute file paths, reference code is short snippets or file pointers rather than long source blocks, no empty CONDITIONAL sections, Mermaid diagrams are syntactically valid (open with ```` ```mermaid ````, declare a diagram type, and parse)
 2. **Agent config file:** Reference correctly formatted, link path valid, placed in right section
