@@ -125,7 +125,7 @@ Cost scales with the chosen size. The two required agents (`junior-developer`, `
 - **Medium change.** Typically 4–6 agents plus the manual pass.
 - **Large change.** Typically 6–9 agents plus the manual pass.
 
-When the review produces at least one corrective finding, one additional `adversarial-validator` runs after the roster to validate the finding list (Step 7.4); a clean review skips it.
+When the review produces at least one corrective finding, one additional `adversarial-validator` runs after the roster to validate the finding list (Step 7.4); a clean review skips it. One `han-core:readability-editor` then rewrites the assembled review's prose against the shared readability standard (Step 8.5), leaving every task ID, severity, `file_path:line_number` reference, and code snippet unchanged.
 
 Agents run on their default models. Finding caps of 30 per pass keep output bounded. Security findings are uncapped. The skill is built for per-branch cadence, not tight-loop iteration over the same code. Fix the findings and re-run.
 
@@ -189,4 +189,5 @@ URL: https://itrevolution.com/product/accelerate/
 - [`data-engineer`](../../agents/han-core/data-engineer.md), [`devops-engineer`](../../agents/han-core/devops-engineer.md). Conditional dispatches for changes touching schemas/migrations/queries (data) or infra/CI/observability (devops).
 - [`on-call-engineer`](../../agents/han-core/on-call-engineer.md). Conditional dispatch when the change adds or modifies application source with runtime resilience surface (outbound calls, retry logic, queue/buffer handling, async/await code, error-handling on failure paths, idempotency, schema migrations co-deployed with dependent code, new production code paths). Hard boundary against `devops-engineer`: this agent reads application source only.
 - [`adversarial-validator`](../../agents/han-core/adversarial-validator.md). Dispatched once at Step 7.4 to re-attack the consolidated finding list against the code and confirm, demote, or drop each finding. Runs whenever the review produced at least one corrective finding.
+- [`readability-editor`](../../agents/han-core/readability-editor.md). Dispatched at Step 8.5 to rewrite the review's prose against the shared readability standard for the change's author and reviewers, leaving task IDs, severities, `file_path:line_number` references, and code snippets unchanged.
 - [`SKILL.md` for /code-review](../../../han-coding/skills/code-review/SKILL.md). The internal process definition.

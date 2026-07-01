@@ -69,7 +69,7 @@ A PR description rendered in-channel, optionally pushed to the open PR. When the
 
 ## Cost and latency
 
-The skill reads the git diff, stat, log, and any source files needed to understand the change, then dispatches a single `junior-developer` agent in Step 4 to author the PR description. The agent runs on its default model. Typical runs are around a minute for a typical PR.
+The skill reads the git diff, stat, log, and any source files needed to understand the change, then dispatches a single `junior-developer` agent in Step 4 to author the PR description and a single `han-core:readability-editor` agent to rewrite it against the readability standard. Both agents run on their default models. Typical runs are around a minute for a typical PR.
 
 ## In more detail
 
@@ -103,4 +103,5 @@ URL: https://martinfowler.com/articles/feature-toggles.html
 - [`/post-code-review-to-pr`](./post-code-review-to-pr.md). Post a code review to the same PR.
 - [`/code-review`](../han-coding/code-review.md). Local code review without touching GitHub.
 - [`junior-developer`](../../agents/han-core/junior-developer.md). Authors the PR description with a fresh-reviewer perspective.
+- [`readability-editor`](../../agents/han-core/readability-editor.md). Rewrites the drafted description against the shared readability standard for the reviewer who will read the code, preserving every fact and reference identifier.
 - [`SKILL.md` for /update-pr-description](../../../han-github/skills/update-pr-description/SKILL.md). The internal process definition.

@@ -93,7 +93,7 @@ The report is presented for review. Accept it, ask for specific revisions, or re
 
 ## Cost and latency
 
-The skill dispatches `research-analyst` angles in parallel (one at small, two to three at medium, one per domain or option cluster at large), plus `codebase-explorer` when a codebase bears on the question, followed by one `adversarial-validator` pass. `research-analyst` and `adversarial-validator` run on `sonnet`; `codebase-explorer` on `haiku`. The most expensive single step is the parallel research wave at large size. The skill is built for a per-decision cadence — research the question, get the recommendation, move on. It is not a tight-loop tool.
+The skill dispatches `research-analyst` angles in parallel (one at small, two to three at medium, one per domain or option cluster at large), plus `codebase-explorer` when a codebase bears on the question, followed by one `adversarial-validator` pass and one `han-core:readability-editor` rewrite of the report draft. `research-analyst`, `adversarial-validator`, and `readability-editor` run on `sonnet`; `codebase-explorer` on `haiku`. The most expensive single step is the parallel research wave at large size. The skill is built for a per-decision cadence — research the question, get the recommendation, move on. It is not a tight-loop tool.
 
 ## In more detail
 
@@ -131,6 +131,7 @@ URL: https://hbr.org/2007/09/performing-a-project-premortem
 - [`/plan-a-feature`](../han-planning/plan-a-feature.md). Pair downstream: turn a recommended option into a behavioral spec.
 - [`research-analyst`](../../agents/han-core/research-analyst.md). The agent the skill dispatches for the web / prior-art / option-comparison angles.
 - [`adversarial-validator`](../../agents/han-core/adversarial-validator.md). The agent that attacks the evidence and recommendation before the report is presented.
+- [`readability-editor`](../../agents/han-core/readability-editor.md). Dispatched after validation to rewrite the report draft against the shared readability standard, preserving every fact and citation identifier.
 - [`codebase-explorer`](../../agents/han-core/codebase-explorer.md). Dispatched for the codebase-grounded angle when a repository bears on the question.
 - [Evidence](../../evidence.md). The canonical evidence rule. The trust classes, the corroboration gate, and the no-evidence label originated in `/research` and are now extracted as a plugin-wide rule other skills and agents share.
 - [`SKILL.md` for /research](../../../han-core/skills/research/SKILL.md). The internal process definition.
