@@ -78,11 +78,11 @@ A feature doc under the project's documentation root plus integration:
 
 ## Cost and latency
 
-The skill dispatches two to three `codebase-explorer` agents in parallel (Step 2), one `content-auditor` agent in update mode (Step 6), and one `information-architect` agent before verification (Step 7). All run on their default models. For a medium-size feature, expect a few minutes total. The skill is built for per-feature cadence. Avoid tight-loop iteration on the same doc without changes.
+The skill dispatches two to three `codebase-explorer` agents in parallel (Step 2), one `content-auditor` agent in update mode (Step 6), one `information-architect` agent before verification (Step 7), and one `readability-editor` agent to rewrite the settled doc (Step 8). All run on their default models. For a medium-size feature, expect a few minutes total. The skill is built for per-feature cadence. Avoid tight-loop iteration on the same doc without changes.
 
 ## In more detail
 
-The skill walks an eight-step process:
+The skill walks a ten-step process:
 
 1. **Evaluate and gather context.** Guard check for ADR/coding-standard topics, resolve the docs directory, derive the target filename, flag whether the content audit will run.
 2. **Explore the codebase.** Two to three `codebase-explorer` agents in parallel; merge into a unified D1/D2/D3 discovery summary.
@@ -91,7 +91,9 @@ The skill walks an eight-step process:
 5. **Cross-reference.** Grep for the feature name across existing docs; add bidirectional references.
 6. **Content audit** (when updating). Dispatch `content-auditor`; restore facts classified Missing.
 7. **Information-architecture review.** Dispatch `information-architect` against the written doc; apply findability, scannability, and ordering edits.
-8. **Verification.** Template followed, no placeholders, paths valid, cross-references valid, IA edits applied.
+8. **Readability rewrite.** Dispatch `readability-editor` to rewrite the settled doc against the shared readability standard for a technically-literate reader, preserving every fact and leaving code fences and diagram bodies untouched.
+9. **Readability self-check.** Run the standardized readability self-check over the doc's prose regions and correct any failure.
+10. **Verification.** Template followed, no placeholders, paths valid, cross-references valid, IA and readability edits applied.
 
 ## Sources
 
@@ -126,4 +128,5 @@ URL: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 - [`codebase-explorer`](../../agents/han-core/codebase-explorer.md). Dispatched in parallel for code discovery.
 - [`content-auditor`](../../agents/han-core/content-auditor.md). Dispatched in update mode to ensure no facts are lost.
 - [`information-architect`](../../agents/han-core/information-architect.md). Dispatched before verification to audit findability, scannability, and section ordering.
+- [`readability-editor`](../../agents/han-core/readability-editor.md). Dispatched after the IA review to rewrite the settled doc against the shared readability standard, preserving every fact.
 - [`SKILL.md` for /project-documentation](../../../han-core/skills/project-documentation/SKILL.md). The internal process definition.

@@ -68,7 +68,7 @@ One file: `stakeholder-summary.md`, written in the same directory as the source 
 
 ## Cost and latency
 
-Single-pass authoring with no sub-agent dispatch. Reads the source spec, drafts the summary, writes it once, then runs three self-check passes (internal-consistency, plain-language, and reading-order), each re-reading the file from disk before presenting it. Built for tight-loop iteration: re-run it after the spec changes.
+Reads the source spec, drafts the summary, then dispatches one `han-core:readability-editor` agent to rewrite the draft for the non-technical stakeholder while preserving every fact (Step 5), and runs three self-check passes (internal-consistency, the standardized readability self-check, and reading-order), each re-reading the file from disk before presenting it. Built for tight-loop iteration: re-run it after the spec changes.
 
 ## Related documentation
 
@@ -77,3 +77,4 @@ Single-pass authoring with no sub-agent dispatch. Reads the source spec, drafts 
 - [`/plan-a-phased-build`](../han-planning/plan-a-phased-build.md). The natural next step once the summary lands stakeholder feedback.
 - [`/plan-implementation`](../han-planning/plan-implementation.md). Turns the spec into an implementation plan after stakeholders sign off.
 - [`/html-summary`](./html-summary.md). Converts the `stakeholder-summary.md` this skill produces into a self-contained HTML executive report.
+- [`readability-editor`](../../agents/han-core/readability-editor.md). Dispatched in Step 5 to rewrite the drafted summary for the non-technical stakeholder against the shared readability standard, preserving every fact.
