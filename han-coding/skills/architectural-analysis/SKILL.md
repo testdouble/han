@@ -25,6 +25,7 @@ Read these before dispatching anything. They constrain every step below.
 - **Single pass, no iteration round.** This skill is a fan-out / fan-in, not an iterative loop. If a band proves too small, the user re-runs at a larger size — the skill does not self-escalate mid-run.
 - **System-altitude work is deferred by default.** `han-core:software-architect` defers cross-service / bounded-context / trust-boundary findings rather than absorbing them. `han-core:system-architect` is added to the roster only at large size and only when a boundary-crossing seam is actually present. When it is not dispatched, those deferrals are surfaced in the report so the user can dispatch `han-core:system-architect` separately.
 - **The report template lives at [references/architectural-analysis-report-template.md](./references/architectural-analysis-report-template.md).** The skill renders that template by filling placeholders and removing the sections whose agent was not dispatched. It does not invent a structure inline.
+- **The synthesized report is written for a named reader.** As the skill writes the final report's synthesized prose, it loads and applies [`../../references/readability-rule.md`](../../references/readability-rule.md), holding one audience above the writing: the engineer weighing the module's design and deciding whether to change it. Scope that frame per section so the technical specifics that reader needs — file paths, finding IDs, exact conditions, pseudocode — are preserved, never simplified away.
 
 # Run an Architectural Analysis
 
@@ -125,9 +126,9 @@ Launch the synthesis layer with one `Agent` call per architect, in a single mess
 
 Wait for the synthesis layer to return.
 
-## Step 8: Render and Present the Report
+## Step 8: Render the Report
 
-Read [references/architectural-analysis-report-template.md](./references/architectural-analysis-report-template.md). Render it and present the result directly in the conversation. Render rules:
+Read [references/architectural-analysis-report-template.md](./references/architectural-analysis-report-template.md). Render it into the report draft; you present it after the readability pass in Step 11. Render rules:
 
 1. **Fill the front matter and "How to Read" frame.** Set the focus area, the chosen size with its one-line justification, the dispatched roster, and git availability.
 2. **Carry agent output verbatim.** Each analysis section is the corresponding agent's full output, unedited. The skill writes only the Executive Summary and the section prefaces.
@@ -136,4 +137,25 @@ Read [references/architectural-analysis-report-template.md](./references/archite
 5. **Resolve system-altitude content.** If `han-core:system-architect` was dispatched, render its `SA#` recommendations in the System-Architecture Recommendations section. If it was not, omit that section and instead render `han-core:software-architect`'s deferred boundary-crossing findings under "System-level concerns deferred", with the one-line note that the user can dispatch `han-core:system-architect` separately for recommendations at that altitude.
 6. **Write the Executive Summary last**, after every other section is filled: the focus area and size, the 3–5 most critical findings across all dispatched dimensions, the highest-impact recommendations, and an explicit note on any dimension that was clean or any signalled domain omitted by the band cap.
 
-Close by telling the user, in a short message: the size class and roster used (and why), git availability, the count of findings by dimension, and any open items — boundary-crossing concerns deferred to `han-core:system-architect`, or signalled domains the band cap omitted that would justify a re-run at a larger size.
+**Readability.** As you write the report's synthesized prose — the Executive Summary, the "How to Read" frame, and the section prefaces — apply [`../../references/readability-rule.md`](../../references/readability-rule.md): main point first, descriptive headings, one idea per paragraph with the first sentence carrying it, numbered lists for steps and bullets for non-sequential items, and progressive disclosure. Finding IDs and `file:line` references are citation identifiers; they survive any rewrite and self-check unchanged.
+
+## Step 9: Rewrite the Report for Readability
+
+Dispatch `han-core:readability-editor` with one `Agent` call to audit and rewrite the report draft against the readability rule. Pass it the draft report text, the rule path [`../../references/readability-rule.md`](../../references/readability-rule.md), and the named audience: the engineer weighing the module's design and deciding whether to change it. It preserves every fact and edits **prose regions only** — never inside code fences, pseudocode sketches, Mermaid or other diagram bodies, or finding-ID and `file:line` citation identifiers. Scope its rewrite to the report's synthesized prose (the Executive Summary, the "How to Read" frame, and the section prefaces); leave every analysis section's verbatim agent output unchanged. Apply its rewrite. This pass does not touch the discovery, risk, or architect agent spine (Steps 4–7).
+
+## Step 10: Run the Readability Self-Check
+
+Run the standardized readability self-check from [`../../references/readability-rule.md`](../../references/readability-rule.md) over the report's prose regions only — never inside code fences, pseudocode sketches, diagram bodies, or finding-ID / `file:line` citation identifiers. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required technical fact appears.
+
+## Step 11: Present the Report
+
+Present the rendered report directly in the conversation. Close by telling the user, in a short message: the size class and roster used (and why), git availability, the count of findings by dimension, and any open items — boundary-crossing concerns deferred to `han-core:system-architect`, or signalled domains the band cap omitted that would justify a re-run at a larger size.

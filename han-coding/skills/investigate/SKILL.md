@@ -25,6 +25,7 @@ allowed-tools: Read, Glob, Grep, Agent
 - The `han-core:adversarial-validator` agent handles all three validation strategies (challenge evidence, challenge fix, challenge assumptions) internally.
 - Apply the evidence rule from [../../references/evidence-rule.md](../../references/evidence-rule.md) to every finding. Codebase findings (file path, line number, log line, test output) carry the trust-class label "codebase" and stand on their citation. Web-source context (RFCs, vendor docs, Stack Overflow, blog posts) carries the trust-class label "web" and is subject to the corroboration gate when it drives the proposed fix. When the investigation hits a point where no evidence at any tier resolves a question, label the no-evidence state rather than guessing.
 - Lazy-create the output sections. Include a section in the plan file only when the investigation produced meaningful content for it; omit any section that would be empty, and keep the sections that remain in the template's order. Never emit a heading with placeholder or "N/A" content.
+- Load and apply the readability rule at [../../references/readability-rule.md](../../references/readability-rule.md) as you write the findings, holding the named audience: the engineer who will implement the fix and may be paged on the bug. Scope that frame per section so the technical specifics the engineer needs (function names, exact failing conditions, file:line citations) are preserved, never simplified away.
 
 # Investigate
 
@@ -74,6 +75,19 @@ After all validation is complete, incorporate the `han-core:adversarial-validato
 ## Step 5: Summary and User Review
 
 Add the **Summary** section at the top of the plan file with one sentence each for: root cause (what caused the problem), fix (what the planned changes will do), why correct (reference the strongest evidence), validation outcome (what validation confirmed or changed), and remaining risks (reference the Confidence Assessment).
+
+Once the write-up draft is complete, dispatch `han-core:readability-editor` (one Agent call) to audit and rewrite the findings against the readability rule. This is separate from the Step 4 adversarial-validator pass: that pass checks the fix is correct (accuracy); this pass checks how the write-up reads. Keep both. Pass the editor the plan file path, the rule path [../../references/readability-rule.md](../../references/readability-rule.md), and the named audience: the engineer who will implement the fix and may be paged on the bug. It must preserve every fact and operate on prose regions only — never inside code fences, function signatures in code blocks, diagram bodies, or file:line citation identifiers. Apply its rewrite to the plan file.
+
+Then run the standardized readability self-check from [../../references/readability-rule.md](../../references/readability-rule.md) over the write-up's prose regions only — never inside code fences, function signatures, diagram bodies, or file:line citation identifiers. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point (the root cause / the answer).
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required technical fact appears.
 
 Present the plan file to the user for approval. The user can approve the plan (triggering implementation) or provide feedback for revisions.
 

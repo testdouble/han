@@ -11,6 +11,13 @@ FIXED ORDER: when more than one section is present, render them in this order an
 vary it — Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,
 What's Good.
 
+READABILITY: the finding prose and narrative sections follow ../../references/readability-rule.md
+— each finding leads with what to do and why, one idea per paragraph, short active sentences,
+plain words. The standard governs prose only; it never rewrites task IDs, severities,
+file_path:line_number references, EXPLOIT fields, the fixed section headings and their order,
+the Review Summary table, or code snippets. The prescribed section headings are fixed, not
+subject to the descriptive-heading rule.
+
 PROSE ONCE: each finding's prose lives in exactly one place — its finding block, or its
 full security block. The Review Summary table row is an index entry, not prose; a
 `Tension with …` pointer note is a pointer, not prose.

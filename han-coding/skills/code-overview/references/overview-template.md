@@ -8,6 +8,7 @@ remove the guidance comments, and keep the section order exactly as written.
 
 ## Shared rules (apply to both modes)
 
+- **Apply the shared readability standard to the prose.** Render the prose under [`../../references/readability-rule.md`](../../references/readability-rule.md): main point first, descriptive headings that name their content, one idea per paragraph with the first sentence carrying it, numbered lists for steps and bullets for non-sequential items, and detail revealed in layers. The rule governs the prose only; the Mermaid chart bodies, code fences, and file/symbol references are left exact. Do not restate the rule here; apply it.
 - **Open with an orienting paragraph, not a metadata block.** The document begins
   with a title and a short intro paragraph naming what is being examined. Do not
   emit `Mode:`, `Generated:`, or a bare `Target:` field — that metadata does not

@@ -31,6 +31,8 @@ Severity calibration is governed by **Step 3.3** (the authoritative home for siz
 
 **Automated tool boundary:** If the project has a linter or formatter, trust it. Only flag style issues that automated tools can't catch.
 
+**Readability standard:** The review report is a reader-facing deliverable. As it writes the finding prose and narrative, the skill loads and applies [`../../references/readability-rule.md`](../../references/readability-rule.md), holding the named audience: the author and reviewers of the change under review. The standard governs how each finding reads (lead with what to do and why, one idea per paragraph, short active sentences, plain words), never whether a required technical fact appears. It applies to the prose in finding bodies and narrative sections only; it never rewrites task IDs, severities, `file_path:line_number` references, `EXPLOIT:` fields, category labels, the fixed section headings and their order, the Review Summary table structure, or any code snippet. The dedicated `han-core:readability-editor` rewrite (Step 8.5) and the readability self-check (Step 9.2) carry the standard into the report.
+
 ### Task ID Assignment
 
 Assign a unique task ID to each review item:
@@ -393,6 +395,14 @@ Use the template at [template.md](./references/template.md) for the output struc
 
 Each finding's prose appears exactly once — in its finding block, or in its full security block. The Review Summary table row is an index entry, not a second copy of the prose; a `Tension with …` pointer note is a pointer, not prose. For security findings, render one full `SEC-###` block per finding and a single short Remediation note (see [agent-finding-classification.md](./references/agent-finding-classification.md)); do not add a per-finding cross-reference under Critical. Render the **What's Good** section only when there is a specific, substantive positive worth recording — omit it when there is nothing substantive to say rather than forcing generic praise.
 
+## Step 8.5: Rewrite the Finding Prose for Readability
+
+Dispatch `han-core:readability-editor` over the assembled review to rewrite its prose against the shared readability standard for the change's author and reviewers, preserving every fact. Pass the agent the drafted review text and the rule path [`../../references/readability-rule.md`](../../references/readability-rule.md), with the named audience (the author and reviewers of the change under review).
+
+Constrain the rewrite tightly. The editor rewrites **prose only** — the sentences inside finding bodies, the Remediation note, the narrative in the What's Good and Review Recommendation sections. It must leave every structural token byte-for-byte: task IDs (`CRIT-001`, `SEC-001`, and the rest), severity labels, `file_path:line_number` references, `EXPLOIT:` fields, category labels, the fixed section headings and their order, the Review Summary table structure and its cells, any `Tension with …` pointer, and every code snippet or fenced block. It preserves every fact: each finding's recommended action, its severity, its location, its quantities, and its named entities survive with their precision intact. The descriptive-heading criterion does not apply to the report's prescribed section headings, which are fixed.
+
+Apply the editor's rewrite to the review draft. If it reports it could not preserve a fact while satisfying a criterion, keep the fact.
+
 ## Step 9: Verify Review Output
 
 Before presenting the review, run the self-consistency check first, then verify the structural items below.
@@ -430,4 +440,17 @@ Then verify:
 16. Finding blocks omit the `[Category]` label for generic categories (already carried by the table and the task-ID prefix) and keep it only for content-bearing categories — ADR violations (naming the record), standards violations (naming the standard), and security. The `file_path:line_number` reference remains on every block.
 17. When proven security vulnerabilities exist, exactly one Remediation note follows the SEC-### blocks and references the SEC-### IDs without restating the finding descriptions. When there are no security findings, neither the Security Vulnerabilities section nor the Remediation note is rendered.
 18. The `### ✅ What's Good` section is rendered only when a specific, substantive positive exists; it is omitted entirely rather than filled with generic praise.
+
+### Step 9.2: Readability self-check
+
+Run the standardized readability self-check from [`../../references/readability-rule.md`](../../references/readability-rule.md) over the report's prose regions only — never inside task IDs, severity labels, `file_path:line_number` references, `EXPLOIT:` fields, category labels, the Review Summary table, or any code snippet. Confirm each criterion and fix any failure before presenting:
+
+1. Each finding's prose leads with its main point (what to do and why), not with background.
+2. Descriptive-heading check: this applies to any sub-headings a finding body adds, not to the report's prescribed section headings, which are fixed.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists) is present.
+6. Every fact is preserved — every finding's recommended action, severity, location, quantity, and named entity survives with its precision intact.
+
+Fidelity wins: the standard governs how each finding reads, never whether a required technical fact appears.
 
