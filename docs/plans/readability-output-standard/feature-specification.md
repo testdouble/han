@@ -80,7 +80,7 @@ The rule is applied in stages, never as one large block of instructions: its str
 ### A contributor adds a new reader-facing skill
 
 - **Entry condition:** A contributor is authoring a new skill whose primary deliverable is human-facing prose (per the inclusion test).
-- **Sequence:** The contributor follows the wiring procedure from its named home: embed the structural rules in the skill's output template, have the skill load and apply the shared rule, and add the standardized self-check. If the new skill has a synthesis or editor step, the contributor also wires the dispatched rewrite pass and adds the skill to the in-scope enumeration.
+- **Sequence:** The contributor follows the wiring procedure from its named home: embed the structural rules in the skill's output template, have the skill load and apply the shared rule, and add the standardized self-check. If the new skill has a synthesis or editor step, the contributor also wires the dispatched rewrite pass and adds the skill to the in-scope enumeration ([D3](artifacts/decision-log.md#d3-skill-scope-all-thirteen-reader-facing-prose-skills)).
 - **Exit:** The new skill produces output under the standard with no per-skill re-statement of the rules.
 
 ### The shared rule evolves
@@ -113,8 +113,8 @@ The rule is applied in stages, never as one large block of instructions: its str
 | Shared readability rule | inbound | Each in-scope skill loads and applies the rule as it produces output. | The rule must be present in the skill's plugin before the skill is wired to load it. |
 | Vocabulary blocklist (the existing writing-voice profile) | outbound | The readability rule points skills at the existing blocklist for word-level rules instead of duplicating them ([D6](artifacts/decision-log.md#d6-reuse-the-existing-vocabulary-blocklist-with-skill-local-lists-layered-on-top)). | The blocklist becomes relevant to skill output at runtime for the first time; it continues to govern operator documentation unchanged. Skill-local word lists supplement it, never override it. |
 | Dedicated readability-editor reviewer | outbound | Synthesis skills dispatch the reviewer for the rewrite pass, replacing any readability pass they run today ([D4](artifacts/decision-log.md#d4-a-new-dedicated-readability-editor-reviewer-that-replaces-existing-readability-passes)). | Runs after the draft exists and before the self-check. Synthesis skills without dispatch capability gain it. |
-| Canonical rule copy and its per-plugin copies | outbound | The canonical copy is duplicated byte-for-byte into the four plugins that ship in-scope skills: core, coding, reporting, and github ([D9](artifacts/decision-log.md#d9-vendoring-manual-byte-identical-copies-into-the-four-plugins-that-ship-in-scope-skills)). | All copies stay byte-identical. The reporting and github plugins receive a shared-rule reference for the first time. |
-| Operator summary, contributor guide, and concepts index | outbound | A plain-language operator summary of the rule sits beside the existing YAGNI and evidence summaries; the contributor guide and a per-skill application surface carry the wiring procedure; the concepts index lists readability as a distinct output-quality standard, not as a fourth universal decision mechanic ([D12](artifacts/decision-log.md#d12-operator-summary-contributor-front-door-and-concepts-index-placement)). | The summary mirrors the structure of the existing summaries and is updated when the rule changes. The concepts index framing is updated to place readability in its own category. |
+| Canonical rule copy and its per-plugin copies | outbound | The canonical copy lives with the other shared rules in the core plugin's references ([D13](artifacts/decision-log.md#trivial-decisions)) and is duplicated byte-for-byte into the four plugins that ship in-scope skills: core, coding, reporting, and github ([D9](artifacts/decision-log.md#d9-vendoring-manual-byte-identical-copies-into-the-four-plugins-that-ship-in-scope-skills)). | All copies stay byte-identical. The reporting and github plugins receive a shared-rule reference for the first time. |
+| Operator summary, contributor guide, and concepts index | outbound | A plain-language operator summary of the rule sits beside the existing YAGNI and evidence summaries and is named to match them ([D14](artifacts/decision-log.md#trivial-decisions)); the contributor guide and a per-skill application surface carry the wiring procedure; the concepts index lists readability as a distinct output-quality standard, not as a fourth universal decision mechanic ([D12](artifacts/decision-log.md#d12-operator-summary-contributor-front-door-and-concepts-index-placement)). | The summary mirrors the structure of the existing summaries and is updated when the rule changes. The concepts index framing is updated to place readability in its own category. |
 
 ## Out of Scope
 
@@ -128,7 +128,7 @@ The rule is applied in stages, never as one large block of instructions: its str
 
 ### Readability-formula diagnostic (Flesch / grade level) as an optional one-glance check
 
-- **Why deferred:** Fails the evidence test. No operator has asked for a numeric readability diagnostic, and the formulas are documented as poor comprehension proxies; including one now would be speculative machinery.
+- **Why deferred:** Fails the evidence test. No operator has asked for a numeric readability diagnostic, and the formulas are documented as poor comprehension proxies ([D8](artifacts/decision-log.md#d8-readability-formulas-and-linting-are-not-the-enforcement-mechanism)); including one now would be speculative machinery.
 - **Reopen when:** An operator asks for a rough numeric diagnostic, or a measured case shows the qualitative self-check is missing a class of unreadable output a formula would catch.
 - **Source:** Research report option O6; conversation.
 
@@ -140,7 +140,7 @@ The rule is applied in stages, never as one large block of instructions: its str
 
 ## Open Items
 
-- **OI-1:** Whether investigate and update-pr-description count as synthesis skills. Each dispatches an agent (a correctness validator; a description writer), but that step is not clearly an editorial consolidation of the whole draft. They default to the non-synthesis path (self-check only).
+- **OI-1:** Whether investigate and update-pr-description count as synthesis skills. Each dispatches an agent (a correctness validator; a description writer), but that step is not clearly an editorial consolidation of the whole draft ([D5](artifacts/decision-log.md#d5-synthesis-skills-run-the-dispatched-rewrite-pass-defined-by-a-single-checkable-criterion)). They default to the non-synthesis path (self-check only).
   - **Resolves when:** Each skill's actual flow is read against the synthesis criterion during implementation planning.
   - **Blocks implementation:** No — a defensible default is set; implementation confirms it.
 - **OI-2:** The per-skill audience-frame sharpening for the skills whose readers are engineers (investigate, update-pr-description, code-review, architectural-analysis, project-documentation).

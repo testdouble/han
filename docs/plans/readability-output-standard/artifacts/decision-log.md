@@ -6,12 +6,12 @@ Evidence sources draw on two trust classes: **codebase** (the trusted current-st
 
 ## Trivial decisions
 
-- D13: Canonical location of the rule — the rule's canonical copy lives with the other shared rules in the core plugin's references, alongside `yagni-rule.md` and `evidence-rule.md`. — Referenced in spec: Preconditions, Coordinations.
+- D13: Canonical location of the rule — the rule's canonical copy lives with the other shared rules in the core plugin's references, alongside `yagni-rule.md` and `evidence-rule.md`. — Referenced in spec: Coordinations.
 - D14: Naming follows the existing pattern — the rule is named to match `yagni-rule.md` / `evidence-rule.md`, and its operator summary matches `docs/yagni.md` / `docs/evidence.md` (considered a novel name; rejected because the value is recognizability as a sibling of the existing rules). — Referenced in spec: Coordinations.
 
 ## Full decisions
 
-### D1: Standard shape — shared rule file on the YAGNI/evidence model
+### D1: Standard shape: shared rule file on the YAGNI/evidence model
 
 - **Question:** How should the readability standard be delivered — as one shared rule that every reader-facing skill applies, as per-skill restated guidance with no shared file, or as a docs-only concept re-implemented per skill (the sizing model)?
 - **Decision:** One shared readability rule that reader-facing skills load and apply at runtime, the same way they use the shared YAGNI and evidence rules. Output stays consistent because the rules live in one place, not because each skill restates them.
@@ -39,7 +39,7 @@ Evidence sources draw on two trust classes: **codebase** (the trusted current-st
 - **Dependent decisions:** D11
 - **Referenced in spec:** What the standard requires, Primary Flow, Edge Cases and Failure Modes
 
-### D3: Skill scope — all thirteen reader-facing prose skills
+### D3: Skill scope: all thirteen reader-facing prose skills
 
 - **Question:** Which reader-facing skills does the standard commit to wiring now, and is "reader-facing prose skill" a testable boundary?
 - **Decision:** All thirteen skills whose primary deliverable is human-facing prose a non-author reads end to end: research, gap-analysis, project-documentation, issue-triage, runbook, architectural-decision-record, code-overview, investigate, code-review, architectural-analysis, stakeholder-summary, html-summary, and update-pr-description. A written inclusion test guides which future skills join; the enumerated list is authoritative and kept in sync with the test.
@@ -169,7 +169,7 @@ Evidence sources draw on two trust classes: **codebase** (the trusted current-st
   - An open-ended, illustrative-only criteria set — rejected because it left structural and fidelity checks unspecified, so a reader could not tell what the self-check actually covers.
   - Porting all structural rules into the self-check — rejected because it would reintroduce the curse of instructions (D2); only the highest-value template-unguaranteeable checks are included.
 - **Linked technical notes:** —
-- **Driven by findings:** F10, F11, F15
+- **Driven by findings:** F10, F11, F12, F15
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome, Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes
 
