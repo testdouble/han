@@ -89,7 +89,7 @@ The skill walks a five-step process:
 2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan file using the template at [`references/template.md`](../../../han-coding/skills/investigate/references/template.md).
 3. **Plan the fix.** The skill resolves project config (CLAUDE.md → project-discovery.md → docs/ Glob fallback), reads ADRs and coding standards relevant to the fix, and writes the Planned Fix section with file-level changes justified by specific evidence items.
 4. **Adversarial validation.** `adversarial-validator` agents receive the full evidence summary, root cause analysis, and planned fix. They challenge evidence, challenge the fix, and challenge assumptions. Counter-evidence becomes `V#` findings that reshape the plan.
-5. **Summary and user review.** The skill writes the Summary section at the top of the report and presents the plan for approval.
+5. **Summary and user review.** The skill writes the Summary section at the top of the report, dispatches `readability-editor` to rewrite the write-up for the engineer who will implement the fix (preserving every fact and `file:line` reference), runs a readability self-check over the prose, and presents the plan for approval.
 
 ## Sources
 

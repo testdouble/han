@@ -93,7 +93,7 @@ The skill is built for tight-loop iteration after an incident: write the runbook
 
 ## In more detail
 
-The skill walks a seven-step process:
+The skill walks an eight-step process:
 
 1. **Determine mode.** Creating new, Updating existing, or Validating existing.
 2. **YAGNI preflight.** Gate the work on real evidence: alert that has fired, incident, recurring task, live failure mode, customer commitment. Recommend deferral when no trigger exists; the user can override and the override is recorded.
@@ -102,6 +102,7 @@ The skill walks a seven-step process:
 5. **Write the runbook.** Copy the template, fill the metadata, fill each required section, fill applicable optional sections, delete the headings for optional sections that do not apply, delete the author guidance block.
 6. **Integration.** CLAUDE.md or AGENTS.md entry if the project lists runbooks; back-reference from incident reports or post-mortems; comment in alert-definition files that point to the runbook.
 7. **Verification.** Re-read the file, confirm no placeholders remain, confirm Origin contains real evidence (or an explicit override), confirm Symptoms is concrete, confirm every step shows command and expected output, confirm Verify is distinct from per-step output, confirm Escalate leads with conditions, confirm Rollback is filled or explicitly marked not applicable, confirm empty optional sections are deleted, confirm the change-history creation entry exists.
+8. **Readability self-check.** Run the standardized readability self-check over the runbook's prose regions, confirm each criterion, and fix any failure before presenting. The skill runs no rewrite pass, so this self-check is the output's fidelity guard.
 
 The template is reviewed by [`information-architect`](../../agents/han-core/information-architect.md) and [`junior-developer`](../../agents/han-core/junior-developer.md) inputs that landed during its design pass. Progressive disclosure runs in two directions: from observable symptom toward likely cause and adjacent failures, and from quick fix toward branching procedure with verification and rollback. The metadata block carries the front-door signals (Severity, Reversible, Last validated) that a tired reader needs before committing to any step.
 

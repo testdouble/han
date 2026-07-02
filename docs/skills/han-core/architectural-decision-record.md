@@ -78,7 +78,7 @@ The skill dispatches one or two `codebase-explorer` agents in create-new mode (S
 
 ## In more detail
 
-The skill walks a six-step process:
+The skill walks a seven-step process:
 
 1. **Determine mode.** Creating new / Converting existing / Updating existing.
 2. **Discover project structure.** Find the ADR directory (or create one), enumerate existing ADRs, check format compatibility, and discover the filename hierarchy taxonomy from existing ADRs' filenames plus the project's subsystems, bounded contexts, and technologies.
@@ -86,6 +86,7 @@ The skill walks a six-step process:
 4. **Write the ADR.** Conversion-mapping for source documents, hierarchically-prefixed filename (top-level subsystem/context, optional second level), fill the template with concrete content. The Notes section includes a key-files table with Glob-verified paths.
 5. **Integration.** `CLAUDE.md` / `AGENTS.md` reference, cross-references in both directions, source-document handling.
 6. **Verification.** Metadata filled, sections substantive, cross-references valid, source-document handled.
+7. **Readability self-check.** Run the standardized readability self-check over the ADR's prose regions, confirm each criterion, and fix any failure before presenting. The skill runs no rewrite pass, so this self-check is the output's fidelity guard.
 
 ## YAGNI
 
