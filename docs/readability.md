@@ -52,7 +52,7 @@ The self-check and any rewrite operate on **prose regions only**. Code fences, d
 
 ## Scope: which skills are reader-facing
 
-A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end. Thirteen skills meet that test today. Skills whose primary output is code, or a governed structured artifact (a specification, plan, work-item, or coding standard), are out of scope.
+A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end; the table below enumerates the skills that meet that test today. Skills whose primary output is code, or a governed structured artifact (a specification, plan, work-item, or coding standard), are out of scope.
 
 | Skill | Reader | Rewrite pass |
 |---|---|---|
