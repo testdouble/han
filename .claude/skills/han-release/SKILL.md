@@ -24,18 +24,18 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Agent, AskUserQuestion, Bash(git *
 
 ## Pre-requisites
 
-- gh CLI: !`which gh || echo MISSING`
-- jq: !`which jq || echo MISSING`
+- gh CLI: !`which gh 2>/dev/null || echo "not installed"`
+- jq: !`which jq 2>/dev/null || echo "not installed"`
 - git repo: !`git rev-parse --is-inside-work-tree 2>/dev/null || echo NO`
 
-**If `gh` or `jq` is MISSING, or this is not a git repo:** tell the operator which prerequisite is missing and that it must be installed/configured before `/han-release` can run, then **immediately stop**. The skill cannot proceed without all three.
+**If `gh` or `jq` reads `not installed`, or this is not a git repo:** tell the operator which prerequisite is missing and that it must be installed/configured before `/han-release` can run, then **immediately stop**. The skill cannot proceed without all three.
 
 ## Project Context
 
 - repo: !`gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || git config --get remote.origin.url`
-- current branch: !`git branch --show-current`
+- current branch: !`git branch --show-current 2>/dev/null || echo unknown`
 - default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##' || echo unknown`
-- working tree: !`git status --porcelain`
+- working tree: !`git status --porcelain 2>/dev/null || echo NO`
 - parent plugin name: !`jq -r .name .claude-plugin/marketplace.json 2>/dev/null`
 - plugins (name source version): !`jq -r '.plugins[] | "\(.name)\t\(.source)\t\(.version)"' .claude-plugin/marketplace.json 2>/dev/null`
 - latest release tag: !`git fetch --tags --quiet >/dev/null 2>&1; git tag -l 'v*.*.*' --sort=-v:refname | head -n1`

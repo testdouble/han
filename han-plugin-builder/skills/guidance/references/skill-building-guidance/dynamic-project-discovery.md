@@ -33,21 +33,20 @@ For context injection commands, use:
 ```
 This injects the actual default branch name at skill load time.
 
-### Rule: Use `which` for tool availability, not `--version`
+### Rule: Use `which` (guarded) for tool availability, not `--version`
 
-Check tool availability with `which {command}` in the Pre-requisites section.
+Check tool availability with `which {command} 2>/dev/null || echo "not installed"` in the Pre-requisites section.
 
 **Before (problematic):**
 ```
 - gh CLI: !`gh --version`
 ```
-Two problems: (1) it returns a verbose version string the skill doesn't need, and (2) if `gh` isn't installed, the non-zero exit code can cause the skill to fail before it can inform the user gracefully.
 
 **After (correct):**
 ```
-- gh CLI: !`which gh`
+- gh CLI: !`which gh 2>/dev/null || echo "not installed"`
 ```
-Returns the path if found, empty if not — no error exit code. The skill's Pre-requisites logic can check for empty output and stop with a user-facing message.
+A missing tool makes `which` (or `--version`) exit non-zero and print to stderr, which can abort the skill. `2>/dev/null` drops the stderr and `|| echo "not installed"` forces a clean exit plus a sentinel the Pre-requisites logic checks.
 
 ### Rule: Discover project structure dynamically
 
@@ -70,10 +69,10 @@ When a required external tool is missing, the skill should inform the user and s
 ```markdown
 ## Pre-requisites
 
-- gh CLI: !`which gh`
-- jq: !`which jq`
+- gh CLI: !`which gh 2>/dev/null || echo "not installed"`
+- jq: !`which jq 2>/dev/null || echo "not installed"`
 
-If any of the above are empty, inform the user which tool is missing and stop.
+If any of the above read `not installed` (or are empty), inform the user which tool is missing and stop.
 ```
 
 The Pre-requisites section runs before any substantive steps. If a required tool isn't found, the skill tells the user what to install rather than failing partway through execution.
@@ -81,7 +80,7 @@ The Pre-requisites section runs before any substantive steps. If a required tool
 ## Summary Checklist
 
 1. Never hardcode branch names — use `origin/HEAD` or `git symbolic-ref --short refs/remotes/origin/HEAD`
-2. Use `which {command}` for tool availability checks, not `{command} --version`
+2. Use `which {command} 2>/dev/null || echo "not installed"` for tool availability checks, not `{command} --version`
 3. Discover project structure with `find` — don't assume paths exist
 4. Gate execution on Pre-requisites and handle empty output gracefully
 

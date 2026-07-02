@@ -11,7 +11,7 @@ allowed-tools: Read, Glob, Grep, Agent, Bash(git *), Bash(gh *)
 
 ## Pre-requisites
 
-- gh CLI: !`which gh`
+- gh CLI: !`which gh 2>/dev/null || echo "not installed"`
 
 **If the gh CLI is not found:**
 - Inform the user that it needs to be installed and configured before this skill can be used
@@ -19,17 +19,17 @@ allowed-tools: Read, Glob, Grep, Agent, Bash(git *), Bash(gh *)
 
 ## Project Context
 
-- current branch: !`git branch --show-current`
-- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD`
-- branch summary: !`git log origin/HEAD..HEAD --oneline`
-- branch stats: !`git diff origin/HEAD...HEAD --stat`
-- branch changes: !`git diff origin/HEAD...HEAD`
+- current branch: !`git branch --show-current 2>/dev/null || echo unknown`
+- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
+- branch summary: !`git log origin/HEAD..HEAD --oneline 2>/dev/null || echo unknown`
+- branch stats: !`git diff origin/HEAD...HEAD --stat 2>/dev/null || echo unknown`
+- branch changes: !`git diff origin/HEAD...HEAD 2>/dev/null || echo unknown`
 
 ## Step 1: Validate Branch State
 
 Before generating a PR description, verify the branch has content to describe:
 
-1. **If `default branch` is empty** — `origin/HEAD` is not set. Use `AskUserQuestion` to ask the user for the default branch name (e.g., `main`, `master`, `develop`). Use that branch as the base for all git commands in subsequent steps.
+1. **If `default branch` is empty or `unknown`** — `origin/HEAD` is not set. Use `AskUserQuestion` to ask the user for the default branch name (e.g., `main`, `master`, `develop`). Use that branch as the base for all git commands in subsequent steps, and recompute `branch summary`, `branch stats`, and `branch changes` against it — their Project Context values may read `unknown` because they were derived from the unset `origin/HEAD`.
 
 2. **If `branch summary` is empty** — there are no commits on this branch relative to the default branch. Inform the user and stop.
 

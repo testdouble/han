@@ -15,20 +15,20 @@ When running a PR code review, follow the process outlined here.
 
 ## Pre-requisites
 
-- gh CLI: !`which gh`
-- jq: !`which jq`
+- gh CLI: !`which gh 2>/dev/null || echo "not installed"`
+- jq: !`which jq 2>/dev/null || echo "not installed"`
 
 If `gh` is not found, inform the user it must be installed and configured; if `jq` is not found, inform the user it must be installed. In either case, immediately stop.
 
 ## Project Context
 
-- current branch: !`git branch --show-current`
-- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD`
-- changed files: !`gh pr diff --name-only`
+- current branch: !`git branch --show-current 2>/dev/null || echo unknown`
+- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
+- changed files: !`gh pr diff --name-only 2>/dev/null || echo "no pr"`
 
 ## Step 1: Validate PR State
 
-If `changed files` is empty or `gh pr view --json number,url` fails, inform the user no reviewable PR exists for the current branch and stop.
+If `changed files` is empty or reads `no pr`, or `gh pr view --json number,url` fails, inform the user no reviewable PR exists for the current branch and stop.
 
 ## Step 2: Run Code Review
 

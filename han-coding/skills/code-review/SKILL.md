@@ -10,7 +10,7 @@ When running a code review, follow the process outlined here.
 
 ## Project Context
 
-- git installed: !`which git`
+- git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 
@@ -51,7 +51,7 @@ Resolve project config: read CLAUDE.md's `## Project Discovery` section for docs
 
 ### Detect review context
 
-Check the `git installed` value from Project Context above. If it is empty, skip directly to **Mode C** below.
+Check the `git installed` value from Project Context above. If it is empty or reads `not installed`, skip directly to **Mode C** below.
 
 1. Run `${CLAUDE_SKILL_DIR}/scripts/detect-review-context.sh` to detect the git environment. Capture the output — it contains key-value pairs describing git availability, branch name, default branch, and changed files.
 
