@@ -13,7 +13,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git symbolic-ref *), B
 
 ## Project Context
 
-- Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD`
+- Default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - README: !`find . -maxdepth 1 -name "README*" -type f`

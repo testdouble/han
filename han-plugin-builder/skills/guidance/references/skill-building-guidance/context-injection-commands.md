@@ -92,21 +92,15 @@ See also: [Script Execution Instructions](./script-execution-instructions.md) fo
 
 Shell scripts can safely use pipes, redirects, subcommands, and complex logic because they run as normal bash processes, not through the skill context injection system.
 
-### Rule: Use `which` to check if a tool is installed
+### Rule: Use `which` (guarded) to check if a tool is installed
 
-Use `which {command}` as the preferred way to determine if an executable tool is installed. For example:
+Use `which {command} 2>/dev/null || echo "not installed"` to check whether a tool is installed:
 ```
-- gh CLI: !`which gh`
-- jq: !`which jq`
+- gh CLI: !`which gh 2>/dev/null || echo "not installed"`
+- jq: !`which jq 2>/dev/null || echo "not installed"`
 ```
 
-A `` !`gh --version` `` style check also runs, but it has two problems:
-1. It returns more output than needed (full version string vs just a path)
-2. If the tool is not installed, running `{command} --version` returns a non-zero exit code, which can cause the skill to exit immediately before it has a chance to inform the user
-
-`which` is preferred because:
-- It returns the path if found, or empty output if not — no error exit code
-- The skill's Pre-requisites gate logic can then check for empty output and stop gracefully with a user-facing message
+When the tool is missing, `which` exits non-zero and may print to stderr — either can abort the skill or dirty the injected value. `2>/dev/null` drops the stderr and `|| echo "not installed"` forces a clean exit plus a sentinel the Pre-requisites gate checks. Prefer this over `{command} --version`, which fails the same way. The same guard fits any command that fails when its subject is absent — e.g. `git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown` when `origin/HEAD` may be unset.
 
 ### Rule: Use `find` instead of `ls` for file detection
 
@@ -164,7 +158,6 @@ This bites skills that document or analyze other skills. A skill whose SKILL.md 
 | Redirects | `command 2>/dev/null` | Unnecessary; empty output is valid |
 | Subcommand substitution | `$(command)` | Permissions/execution failures |
 | Chained commands | `cmd1 && cmd2` | Permissions/execution failures |
-| Fallback defaults | `command \|\| echo "X"` | Use empty checks in step logic instead |
 | Output limiting | `command \| head -N` | Let full output inject |
 | `ls` for detection | `ls filename` | Use `find` instead; `ls` fails on missing files |
 | Heredocs | `<<'EOF' ... EOF` | Extract to shell scripts |
@@ -218,18 +211,18 @@ Examples organized by purpose:
 - `` !`find . -maxdepth 4 -type d -path "*/.claude/rules/coding-standards"` `` — check for a path-scoped rules directory
 
 **Tool availability:**
-- `` !`which gh` `` — check for the gh CLI
-- `` !`which jq` `` — check for jq
-- `` !`which git` `` — check for git
+- `` !`which gh 2>/dev/null || echo "not installed"` `` — check for the gh CLI
+- `` !`which jq 2>/dev/null || echo "not installed"` `` — check for jq
+- `` !`which git 2>/dev/null || echo "not installed"` `` — check for git
 
 ## Summary Checklist
 
 1. Use `` !`command` `` in `## Pre-requisites` or `## Project Context`
 2. Single commands only — no pipes, redirects, subcommands, or chaining
-3. Use `which {command}` for tool availability checks
+3. Use `which {command} 2>/dev/null || echo "not installed"` for tool availability checks
 4. Use `find` for file/directory detection, not `ls`
 5. Extract complex operations into shell scripts
-6. Handle empty output in step logic — do not use `2>/dev/null`, `|| echo`, or `| head`
+6. Handle empty output in step logic — don't trim it with `| head`
 7. Do not duplicate commands across sections
 8. Use separate `Bash()` entries in `allowed-tools`
 9. Never use the literal bang-backtick pattern in SKILL.md prose — the loader parses raw text regardless of markdown escaping

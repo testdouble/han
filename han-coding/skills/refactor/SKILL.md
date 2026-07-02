@@ -17,8 +17,8 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(find *), Bash(np
 
 ## Project Context
 
-- git installed: !`git --version 2>/dev/null`
-- current branch: !`git branch --show-current 2>/dev/null`
+- git installed: !`which git 2>/dev/null || echo "not installed"`
+- current branch: !`git branch --show-current 2>/dev/null || echo unknown`
 - working tree: !`git status --porcelain 2>/dev/null | head -5`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`

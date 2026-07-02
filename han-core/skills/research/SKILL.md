@@ -8,7 +8,7 @@ allowed-tools: Read, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *)
 
 ## Project Context
 
-- git installed: !`which git`
+- git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 

@@ -25,7 +25,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git config *), Bash(whoami), 
 
 ## Project Context
 
-- Git user: !`git config user.name` (!`git config user.email`)
+- Git user: !`git config user.name || echo unset` (!`git config user.email || echo unset`)
 - OS username: !`whoami`
 - Today's date: !`date +%Y-%m-%d`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
@@ -67,7 +67,7 @@ If the scenario does pass the preflight, capture the evidence — the user will 
 
 3. **Enumerate existing runbooks.** Use Glob to find existing `.md` files in the runbooks directory and any service subdirectories. Read filenames to detect whether the project organizes runbooks flat (`docs/runbooks/{scenario}.md`), per-service (`docs/runbooks/{service}/{scenario}.md`), or alert-keyed (`docs/runbooks/alerts/{AlertName}.md`).
 
-4. **Resolve author information.** If git user or email is empty in the project context above, ask the user for their name and email.
+4. **Resolve author information.** If git user or email is empty or reads `unset` in the project context above, ask the user for their name and email.
 
 5. **Check existing runbook format.** If existing runbooks were found, read one to understand the project's format. If it differs from [runbook-template.md](./references/runbook-template.md), ask the user whether to match the existing format or use this skill's template. Default to matching the existing format when the project already has more than two runbooks — consistency is the larger value.
 
