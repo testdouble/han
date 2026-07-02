@@ -76,4 +76,5 @@ Its rubric is the six behaviorally-anchored criteria of the shared standard, not
 - [`content-auditor`](./content-auditor.md). The fact-preservation auditor. It checks a doc update kept the facts; this agent rewrites for readability while keeping them.
 - [`information-architect`](./information-architect.md). Audits documentation structure and findability and returns recommendations; this agent rewrites prose in place.
 - [`/code-overview`](../../skills/han-coding/code-overview.md). A synthesis skill that dispatches this agent as its readability pass.
+- [`/edit-for-readability`](../../skills/han-core/edit-for-readability.md). The standalone skill that dispatches this agent to rewrite a file, pasted text, or a conversation draft on demand.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent's domain and rubric are kept narrow and named.

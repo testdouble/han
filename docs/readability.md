@@ -83,7 +83,7 @@ On a synthesis skill, the `readability-editor` preserves every fact as it rewrit
 - **Not a comprehension score.** The standard commits to observable properties of the text and a concrete self-check, not to a promise about a reader's comprehension or a readability-formula target. Formulas are weak comprehension proxies that reward gaming; they are not the measure the standard optimizes.
 - **Not CI or prose linting.** Most reader-facing output is ephemeral conversational or scratch text with no build surface to lint. The standard applies at generation time, not as a pipeline gate.
 - **Not a rewrite of the operator-documentation voice.** The existing writing-voice profile continues to govern operator docs. This standard reuses its blocklist but does not rewrite it.
-- **Not a guarantee a committed file stays conformant.** The one in-scope skill that writes a committed file ([`/project-documentation`](./skills/han-core/project-documentation.md)) is covered at generation time. A later manual edit is not re-checked. That is an accepted gap, stated plainly.
+- **Not a guarantee a committed file stays conformant.** The one in-scope skill that writes a committed file ([`/project-documentation`](./skills/han-core/project-documentation.md)) is covered at generation time. A later manual edit is not re-checked automatically. Run [`/edit-for-readability`](./skills/han-core/edit-for-readability.md) to re-apply the standard to an edited file on demand.
 
 ## Design principles
 
@@ -96,6 +96,7 @@ On a synthesis skill, the `readability-editor` preserves every fact as it rewrit
 
 - [`han-core/references/readability-rule.md`](../han-core/references/readability-rule.md). The canonical rule every reader-facing skill loads at runtime.
 - [`readability-editor`](./agents/han-core/readability-editor.md). The agent the synthesis skills dispatch for the rewrite pass.
+- [`/edit-for-readability`](./skills/han-core/edit-for-readability.md). The standalone skill that applies this standard on demand to a file, pasted text, or a conversation draft.
 - [Concepts](./concepts.md). The skill / agent split, and where readability sits among the plugin's mechanics.
 - [YAGNI](./yagni.md) and [Evidence](./evidence.md). The other shared rules, vendored and summarized the same way.
 - [Contributing](../CONTRIBUTING.md). The wiring procedure a contributor follows to bring a new skill under the standard.

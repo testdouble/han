@@ -36,6 +36,7 @@ Operator documentation for the `/project-documentation` skill in the han plugin.
 - **PR descriptions.** Use [`/update-pr-description`](../han-github/update-pr-description.md).
 - **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures what to do when an alert fires or a known failure mode occurs; project documentation describes how the feature or system works.
 - **An ephemeral, understand-now overview of code or a PR.** Use [`/code-overview`](../han-coding/code-overview.md). It produces a throwaway orientation aid in a scratch file, not durable docs in the repo tree.
+- **Rewriting existing prose for readability.** Use [`/edit-for-readability`](./edit-for-readability.md). It rewrites a target you already have against the readability standard; this skill writes and maintains the documentation itself.
 
 ## How to invoke it
 

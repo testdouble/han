@@ -7,7 +7,8 @@ description: >
   for repository analysis and config detection. Does not create architectural decision records —
   use architectural-decision-record for ADRs. Does not create or update coding standards — use
   coding-standard instead. Does not generate PR descriptions — use update-pr-description for that.
-  Does not produce runbooks for operational scenarios — use runbook for that. Does not produce an
+  Does not produce runbooks for operational scenarios — use runbook for that. Does not rewrite
+  existing prose for readability — use edit-for-readability for that. Does not produce an
   ephemeral, understand-now overview of code or a PR — use code-overview for that.
 argument-hint: "[feature-name or document-path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *), Bash(find *)

@@ -32,6 +32,12 @@ Skills that produce context every other skill benefits from.
 - **[`/project-discovery`](./han-core/project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a concise reference section into AGENTS.md or CLAUDE.md for other skills.
 - **[`/project-documentation`](./han-core/project-documentation.md).** Create and maintain documentation for features, systems, and components.
 
+### Editing & readability
+
+Skills for rewriting an existing deliverable to read plainly.
+
+- **[`/edit-for-readability`](./han-core/edit-for-readability.md).** Rewrite the prose of a target you already have — a file, pasted text, or a draft from the conversation — against the shared readability standard, preserving every fact. Dispatches `readability-editor`; the standalone, on-demand counterpart to the readability pass the synthesis skills run inside their own output.
+
 ### Conventions & decisions
 
 Skills for recording how the team works.
