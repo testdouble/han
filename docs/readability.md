@@ -35,6 +35,7 @@ The rule names the output properties, and they shape each skill's template so th
 - **No blocklisted words.** The existing writing-voice blocklist is reused for word-level rules.
 - **Numbered lists for steps, bullets for the rest.**
 - **Progressive disclosure.** Reveal the core first and detail in layers.
+- **Technical detail follows the prose.** Keep implementation and technical references (symbol names, file paths, flags, exact code) out of the readable paragraphs where you can. Where a reference has to appear inline, keep it as small as the sentence needs. Otherwise the detail comes after the prose that describes it, in code fences the prose has already explained.
 
 The applied set is kept deliberately tight. Structural rules that fit only a minority of deliverables are left out on purpose, so the set stays small enough to apply without the compliance decay that comes from stacking instructions.
 

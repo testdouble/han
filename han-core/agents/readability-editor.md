@@ -38,7 +38,7 @@ Audit and rewrite against these six criteria. They are the whole rubric.
 3. **One idea per paragraph** — each paragraph carries one idea and leads with it. Split paragraphs that carry two; move the load-bearing sentence to the front.
 4. **Short, active sentences** — sentences average roughly fifteen to twenty words and are active by default. Treat any sentence past about thirty words as a candidate to split, but leave a long sentence that reads clearly and would be hurt by splitting.
 5. **Common words, no blocklisted words** — prefer the common word over the technical synonym; define an unavoidable term on first use. Remove every word on the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid" lists). Keep domain terms the reader genuinely needs.
-6. **Progressive disclosure** — the core idea comes before its qualifications, edge cases, and supporting evidence. Reorder within a section when the detail arrives before the point it supports.
+6. **Progressive disclosure** — the core idea comes before its qualifications, edge cases, and supporting evidence. Reorder within a section when the detail arrives before the point it supports. Pull implementation and technical references (symbol names, file paths, flags) out of the prose where the reader does not need them to follow the sentence, so the prose says what any following code fence shows; leave the code fence itself unchanged.
 
 ## How you work
 

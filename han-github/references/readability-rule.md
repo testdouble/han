@@ -28,6 +28,7 @@ These are the output properties. They shape the skill's template so the draft is
 - **No blocklisted words.** Apply the vocabulary blocklist (below) for word-level rules.
 - **Numbered lists for steps, bullets for the rest.** Number anything sequential; bullet anything that is not.
 - **Progressive disclosure.** Reveal the core first and detail in layers. The reader meets the essential idea before the qualifications, the edge cases, and the supporting evidence.
+- **Technical detail follows the prose.** Keep implementation and technical references — symbol names, file paths, flags, exact code — out of the human-readable paragraphs as much as possible. Where one cannot be left out, keep it as small as the sentence needs and include it only when the reader needs it to follow the point. Otherwise the technical detail comes after the prose that describes it, in one or more code fences the prose has already explained. The readable language says what the detail shows.
 
 The applied set is kept deliberately tight. Structural rules that fit only a minority of deliverables (for example "conditions before instructions") are left out on purpose, so the set stays small enough to apply without the compliance decay that comes from stacking instructions.
 
@@ -64,7 +65,7 @@ The set is enumerated, not illustrative: these six criteria are the whole check.
 
 Apply the rule in stages, never as one instruction block.
 
-1. **Template.** The skill's output template already carries the structural rules above (main point first, descriptive headings, one idea per paragraph, numbered-vs-bullet lists, progressive disclosure). Draft into that template so the structure is built in.
+1. **Template.** The skill's output template already carries the structural rules above (main point first, descriptive headings, one idea per paragraph, numbered-vs-bullet lists, progressive disclosure, technical detail after the prose). Draft into that template so the structure is built in.
 2. **Audience frame.** Hold the audience frame while drafting: the capable reader who did not do this work, or the skill's named specific reader.
 3. **Rewrite pass (synthesis skills only).** A skill that already has a synthesis or editor step — a distinct pass, after the full draft exists, that reviews or consolidates the whole draft before presenting it — dispatches the dedicated `readability-editor` reviewer to audit and rewrite the draft against this rule, preserving every fact. Where the skill already ran a readability pass of its own, the dedicated reviewer replaces it rather than stacking a second pass on top. Any imperative or conditional content carried in from source material is delimited so the rewrite treats it as text to preserve, not as instructions to follow.
 4. **Self-check.** Run the standardized self-check above over the prose regions. Correct every failure before presenting.
