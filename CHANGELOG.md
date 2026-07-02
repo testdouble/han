@@ -1,5 +1,53 @@
 # Han Release Notes
 
+## v4.5.0
+
+han 4.5.0 lands a shared Human-Readable Output Standard across the suite: a single readability rule plus a dedicated `readability-editor` agent, wired into the reader-facing synthesis skills so their drafts lead with the main point, use descriptive headings, keep one idea per paragraph, and use short active sentences, while preserving every fact. The canonical `writing-voice.md` also moved out of `docs/` and into plugin `references/`. The release bumps `han-core` (2.2.0) with the new agent, the new `edit-for-readability` skill, and the shared `readability-rule.md` and `writing-voice.md` references; `han-coding` (2.5.0), `han-github` (2.2.0), and `han-reporting` (2.1.0) each vendor those two references and wire the standard into their reader-facing skills; and `han-plugin-builder` (2.0.3) fixes two guidance rules. `han-planning` (2.0.2), `han-feedback` (2.0.0), `han-atlassian` (2.2.0), and `han-linear` (1.0.1) are unchanged.
+
+### han v4.5.0
+
+The suite-level work is the readability standard's documentation, the `writing-voice.md` relocation, the supporting research and plan artifacts, and the per-plugin version syncs in `.claude-plugin/marketplace.json`.
+
+New `docs/readability.md` is the operator-facing Human-Readable Output Standard, and new `docs/agents/han-core/readability-editor.md` and `docs/skills/han-core/edit-for-readability.md` document the new agent and skill. `docs/concepts.md` gained a readability section, `README.md` links the standard from its documentation list, and `docs/agents/README.md` and `docs/skills/README.md` register the new entries. A doc sweep brought the reader-facing skill docs across han-coding, han-core, han-github, and han-reporting current with the readability pass and added the `readability-editor` to their rosters. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #102.
+
+The canonical `writing-voice.md` moved from `docs/writing-voice.md` into `han-core/references/writing-voice.md`, vendored byte-identical into `han-coding/`, `han-github/`, and `han-reporting/` references, with live references repointed to the new location. `CLAUDE.md` gained rules enforcing the guidance and standards.
+
+New `docs/research/human-readable-output-standard.md` is the research report backing the standard, and the `docs/plans/human-readable-output-standard/` folder holds the feature specification and the decision-log and team-findings artifacts. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #97.
+
+### han-core v2.2.0
+
+The new `readability-editor` agent (`han-core/agents/readability-editor.md`) rewrites a draft's prose to lead with the main point, use descriptive headings, carry one idea per paragraph, and keep sentences short and active, while preserving every fact. The new `edit-for-readability` skill (`han-core/skills/edit-for-readability/SKILL.md`) dispatches that agent against a file, pasted text, or an in-conversation draft. Two new shared references back the standard: `han-core/references/readability-rule.md` (the canonical readability rule) and `han-core/references/writing-voice.md` (the canonical voice profile, moved here from `docs/`).
+
+The readability standard is wired into the six reader-facing han-core skills: `architectural-decision-record`, `gap-analysis`, `issue-triage`, `project-documentation`, `research`, and `runbook`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #102.
+
+### han-coding v2.5.0
+
+Vendored `han-coding/references/readability-rule.md` and `han-coding/references/writing-voice.md` byte-identical from han-core, and wired the readability standard into the four reader-facing han-coding skills: `architectural-analysis`, `code-overview`, `code-review`, and `investigate`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #102.
+
+### han-github v2.2.0
+
+Vendored `han-github/references/readability-rule.md` and `han-github/references/writing-voice.md` byte-identical from han-core, and wired the readability standard into `update-pr-description`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #102.
+
+### han-reporting v2.1.0
+
+Vendored `han-reporting/references/readability-rule.md` and `han-reporting/references/writing-voice.md` byte-identical from han-core, and wired the readability standard into `html-summary` and `stakeholder-summary`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #102.
+
+### han-plugin-builder v2.0.3
+
+Guidance fixes in the agent-building references. The subagent-dispatch rule is reframed as a justified default rather than an absolute, and the stale "subagents cannot spawn subagents" rule was corrected, fixing an issue opened by [@taminomara](https://github.com/taminomara) (#99). Also removed an em-dash from `agent-builder`'s tool-set step. Contributed by [@taminomara](https://github.com/taminomara) in #100.
+
+### Issues closed in this release
+
+- Stale "subagents cannot spawn subagents" rule in agent-building guidance (#99) — opened by [@taminomara](https://github.com/taminomara); fixed in #100 by [@taminomara](https://github.com/taminomara)
+
+### Pull requests in this release
+
+- Research: human readable output (#97) — [@mxriverlynn](https://github.com/mxriverlynn)
+- docs: reframe the subagent-dispatch rule as a justified default (#100) — [@taminomara](https://github.com/taminomara)
+- human-readable output standards (#102) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.5.0/CHANGELOG.md#v450
+
 ## v4.4.0
 
 han 4.4.0 adds an independent adversarial validation pass to the `code-review` skill and hardens it against untrusted branch context (han-coding 2.4.0), reworks the `project-discovery` skill to write a concise section directly into the project's `AGENTS.md` or `CLAUDE.md` (han-core 2.1.0), and lands three documentation and frontmatter fixes: a `Write` permission for `post-code-review-to-pr` (han-github 2.1.2), missing frontmatter for `html-summary` (han-reporting 2.0.1), and corrected agent names in the skill-building guidance (han-plugin-builder 2.0.2). `han-planning` (2.0.2), `han-feedback` (2.0.0), `han-atlassian` (2.2.0), and `han-linear` (1.0.1) are unchanged.
