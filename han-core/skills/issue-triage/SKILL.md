@@ -121,4 +121,4 @@ Before presenting, run the standardized readability self-check from `../../refer
 
 Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
 
-Present the completed triage report to the user. When the Recommended Next Step is a han skill (`/investigate`, `/research`, `/plan-a-feature`, or `/plan-implementation`), state plainly that this triage report is the handoff document — the operator passes the report itself to that skill rather than re-summarizing the issue. No separate brief is produced; the report already serves as the handoff.
+Present the completed triage report to the user. When the Recommended Next Step is a han skill (`/investigate`, `/research`, `/plan-a-feature`, or `/plan-implementation`), state plainly that this triage report is the handoff document — the user passes the report itself to that skill rather than re-summarizing the issue. No separate brief is produced; the report already serves as the handoff.

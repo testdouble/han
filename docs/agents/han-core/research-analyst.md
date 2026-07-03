@@ -39,7 +39,7 @@ Dispatch via the `Agent` tool with `subagent_type: han-core:research-analyst`.
 Give it:
 
 1. **A framed question or sub-angle.** The specific decision, unknown, or domain this analyst owns. If the question implies discrete alternatives, name them.
-2. **Provided material, by reference (optional).** Docs or links the operator supplied. The agent holds these to web-source scrutiny.
+2. **Provided material, by reference (optional).** Docs or links the user supplied. The agent holds these to web-source scrutiny.
 3. **No codebase contents.** The web-facing angle is deliberately isolated. Codebase evidence comes from a separate `codebase-explorer` dispatch, not this one.
 
 Example prompts:

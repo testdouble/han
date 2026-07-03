@@ -1,7 +1,7 @@
 # Research: {Question Title}
 
 <!-- One-sentence statement of the open-ended question being researched. -->
-<!-- State the evidence mode used: strict (default) or exploratory (operator opted in). -->
+<!-- State the evidence mode used: strict (default) or exploratory (user opted in). -->
 
 <!--
 READABILITY. This report is written to the shared readability standard the skill
@@ -123,6 +123,6 @@ source stays in the table above. Number in the order discovered. -->
 
 - **Link / location:** {full URL — or `repo/path.ext:line` — or `provided: {reference}`}
 - **Retrieved:** {YYYY-MM-DD for web sources; "n/a" for codebase or provided material}
-- **Trust class:** codebase (trusted current-state anchor) | web (outside the trust boundary) | provided (operator-supplied — interested-party scrutiny)
+- **Trust class:** codebase (trusted current-state anchor) | web (outside the trust boundary) | provided (user-supplied — interested-party scrutiny)
 - **Summary:** {one short paragraph: what this source says that is relevant to the results}
 - **Evidence status:** corroborated by {A#} | single source (caveated) | contradicted by {A#}

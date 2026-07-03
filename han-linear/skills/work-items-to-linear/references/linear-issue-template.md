@@ -38,10 +38,10 @@ When the skill creates an issue for a slice, it maps the slice fields like this:
 - **Description (Linear) <- the entire slice body.** Everything below the heading (Summary, Description, optional notes, References, Tests, Acceptance criteria) is rendered into the issue description and passed as **Markdown with no format conversion** (Linear accepts Markdown directly).
 - **Team <- the required target team.** Every slice posts into the one team you name. The skill resolves the team against the workspace before any create.
 - **Workflow state <- the team's initial state by default.** The skill defaults to the team's own default/initial state and applies a `--state` override only when given, resolved against the team's real workflow states.
-- **Labels <- discovery.** The skill never assumes a label exists. When categorization is not specified up front, it presents the team's real labels and lets the operator choose, or proceed without one. Linear has no issue-type concept, so the skill never asks for or sets one.
+- **Labels <- discovery.** The skill never assumes a label exists. When categorization is not specified up front, it presents the team's real labels and lets the user choose, or proceed without one. Linear has no issue-type concept, so the skill never asks for or sets one.
 - **Parent issue <- optional sub-issue nesting.** A named parent issue (resolved against the target team) nests each created issue as a sub-issue.
 - **Project <- optional grouping.** A named Linear Project (resolved at workspace scope, confirming the target team participates) groups the created issues.
-- **Assignee <- none by default.** Set only when the operator names one, resolved against the team's members.
+- **Assignee <- none by default.** Set only when the user names one, resolved against the team's members.
 - **Creator <- the Linear MCP identity.** The skill never sets the creator; Linear records the authenticated user automatically.
 
 ## Dependencies (`**Depends on.**`)

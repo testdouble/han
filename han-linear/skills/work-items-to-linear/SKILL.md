@@ -28,7 +28,7 @@ The breakdown work — drafting slices, assigning symbolic IDs, specifying depen
 - **Dependencies are within-file only.** Every SYM named in a `Depends on` line must resolve to another slice in the same file. A `Depends on` that names an unknown SYM, names the slice itself, or forms a cycle is a format error to surface for repair, never published.
 - **Symbolic-ID prefixes:** accept whatever the input uses. Any uppercase prefix shape is valid (`W-N`, `V2-N`, `EV-N`, ...); the prefix has no effect on team placement.
 - **Resolve against the live team before writing.** Read the team's real workflow states, labels, Projects, and members, and resolve every named option against them before creating any issue. Nothing is assigned, categorized, grouped, or moved unless asked.
-- **No issue types.** Linear has no issue-type concept. The skill never asks for or sets one. Categorization is via the team's real labels, chosen by the operator.
+- **No issue types.** Linear has no issue-type concept. The skill never asks for or sets one. Categorization is via the team's real labels, chosen by the user.
 - **Every slice issue MUST carry the reference artifacts an implementer needs** — API/event contracts, design references, schema docs, runbooks, ADRs, coding standards. Full include/exclude list in [references/reference-artifact-inventory.md](references/reference-artifact-inventory.md).
 - **NEVER include process artifacts in issue descriptions.** Excluded: iteration histories, decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an `artifacts/` subfolder of the plan that is not a contract or design reference.
 - **No image upload or embedding.** Design references are carried as links, not uploaded into Linear. See [references/linear-issue-template.md](references/linear-issue-template.md).
@@ -37,7 +37,7 @@ The breakdown work — drafting slices, assigning symbolic IDs, specifying depen
 
 ### 0. Linear MCP preflight (hard requirement)
 
-This skill cannot run without a configured and connected Linear MCP server. Confirm it is reachable by calling `mcp__plugin_linear_linear__list_teams`. If the tool is unavailable, the call errors, or no workspace is accessible, **stop immediately** and tell the operator the skill requires the Linear MCP server to be installed, configured, and authenticated. Do not fall back to any other publishing target.
+This skill cannot run without a configured and connected Linear MCP server. Confirm it is reachable by calling `mcp__plugin_linear_linear__list_teams`. If the tool is unavailable, the call errors, or no workspace is accessible, **stop immediately** and tell the user the skill requires the Linear MCP server to be installed, configured, and authenticated. Do not fall back to any other publishing target.
 
 If the integration exposes more than one Linear workspace, note which are available and confirm which one to use before resolving the team.
 
@@ -47,7 +47,7 @@ If the path is not provided, ask for it. The input is a single `work-items.md` p
 
 ### 2. Gather the run options
 
-Read these from the arguments and conversation; do not guess defaults the operator did not ask for:
+Read these from the arguments and conversation; do not guess defaults the user did not ask for:
 
 - **Target team** — `--team <name or key>`. **Required.** If absent, ask for it in Step 3.
 - **Project** — `--project <name or ID>`. Optional. Groups every created issue under a Linear Project.
@@ -63,12 +63,12 @@ Resolve everything concretely now so failures surface before any issue is create
 - **Team (required).** Confirm the named team with `mcp__plugin_linear_linear__list_teams`. If none is named, ask. If the name matches more than one team, present the matches and ask which one. Do not proceed without exactly one team.
 - **Read the team's configuration** with `mcp__plugin_linear_linear__list_issue_statuses`, `mcp__plugin_linear_linear__list_issue_labels`, and `mcp__plugin_linear_linear__list_users`. These reads are independent and may run together.
 - **State.** If `--state` was given, match it against the team's real states. The default is the team's initial/default state. If a named state does not exist, present the team's real states and ask.
-- **Labels.** If `--label`s were given, match each against the team's labels. When categorization was not specified, present the team's real labels and let the operator choose one, several, or none. If the team defines no labels, say so and proceed without categorization.
+- **Labels.** If `--label`s were given, match each against the team's labels. When categorization was not specified, present the team's real labels and let the user choose one, several, or none. If the team defines no labels, say so and proceed without categorization.
 - **Assignee.** If named, resolve it with `mcp__plugin_linear_linear__get_user`: the literal token `me` resolves to the authenticated Linear identity, and a name or email resolves to that member. If unset, leave issues unassigned. The creator is recorded automatically by Linear as the authenticated user; never set it.
 - **Project (optional).** Resolve a named Project at **workspace scope** with `mcp__plugin_linear_linear__list_projects` (Projects are not strictly team-scoped), and confirm the target team participates in it.
 - **Parent (optional).** Resolve a named parent issue with `mcp__plugin_linear_linear__get_issue` and confirm it belongs to the target team.
 
-For any option that cannot be resolved, do not silently drop or invent it. Distinguish "no such option exists in the team" (present the team's real options for that field) from "it exists but belongs to a different team" (name that team). Ask the operator to pick or correct before continuing.
+For any option that cannot be resolved, do not silently drop or invent it. Distinguish "no such option exists in the team" (present the team's real options for that field) from "it exists but belongs to a different team" (name that team). Ask the user to pick or correct before continuing.
 
 ### 4. Validate the format with evidence-based repair
 
@@ -90,7 +90,7 @@ When a check fails, attempt evidence-based repair. Pull evidence from the source
 
 After validation, report findings in plain language. For each: (1) what is wrong — slice SYM, line reference, failing invariant; (2) the proposed fill — corrected line, new bullet, removed link; (3) the evidence — file path with line number, document section, or named source.
 
-Then give the operator three actions: **Continue with fills** (apply the repairs to the source `work-items.md` and proceed), **Correct the fills** (operator provides the right values; apply those and proceed), or **Stop** (exit without creating issues). If validation passes with no findings, proceed to Step 5.
+Then give the user three actions: **Continue with fills** (apply the repairs to the source `work-items.md` and proceed), **Correct the fills** (user provides the right values; apply those and proceed), or **Stop** (exit without creating issues). If validation passes with no findings, proceed to Step 5.
 
 ### 5. Show the plan for confirmation
 
@@ -104,7 +104,7 @@ Creating Linear issues writes to a shared system, so confirm before doing it. Pr
 | W-1 | ... | None |
 | W-2 | ... | W-1 |
 
-State the total count of issues to create and how many slices are being skipped because they already carry an identifier. Do not create anything until the operator confirms.
+State the total count of issues to create and how many slices are being skipped because they already carry an identifier. Do not create anything until the user confirms.
 
 ### 6. Create one issue per slice
 
@@ -118,7 +118,7 @@ Walk the slices in file order. Skip any slice whose heading already carries a `(
 
 After each successful create, capture the returned Linear identifier and rewrite that slice's heading in place from `## <SYM-N> — <title>` to `## <SYM-N> (<LINEAR-ID>) — <title>` using Edit, so dependencies resolve and re-runs skip it. Report each creation as `created: <SYM-N> -> <LINEAR-ID>`.
 
-**If a create succeeds but the heading annotation fails**, stop. Report the orphaned Linear identifier so the operator can annotate the heading by hand or delete the issue. Do not continue creating, and do not run the link pass — the file state is inconsistent until the operator resolves it.
+**If a create succeeds but the heading annotation fails**, stop. Report the orphaned Linear identifier so the user can annotate the heading by hand or delete the issue. Do not continue creating, and do not run the link pass — the file state is inconsistent until the user resolves it.
 
 ### 7. Link dependencies as native relations
 
@@ -126,11 +126,11 @@ Once every slice has a Linear identifier, build the SYM-to-identifier map from t
 
 Relations are made after all issues exist because a `blocked by` relation needs both endpoints to exist, and file order is not guaranteed to be blocker-first.
 
-- **Stale-annotation check.** For each unique identifier in the map, confirm it resolves to an accessible issue in the team with `mcp__plugin_linear_linear__get_issue`. Surface any that do not resolve to the operator before making any relation; never link to a missing or wrong issue.
+- **Stale-annotation check.** For each unique identifier in the map, confirm it resolves to an accessible issue in the team with `mcp__plugin_linear_linear__get_issue`. Surface any that do not resolve to the user before making any relation; never link to a missing or wrong issue.
 - **Make the relations.** For each slice's `**Depends on.**` line (skip `None.`), call `mcp__plugin_linear_linear__save_issue` on the dependent issue with `blockedBy` set to each blocker's identifier. Relations are append-only and de-duplicated, so a re-run does not duplicate them; no per-relation pre-read is needed.
 
 Report each as `linked: <SYM-A>(<LINEAR-A>) blocked_by <SYM-B>(<LINEAR-B>)`.
 
 ### 8. Report
 
-Summarize: the team, the Project and parent (if any), the workflow state, the labels and assignee (or "none" / "unassigned"). List every created issue as `<SYM-N> — <LINEAR-ID>` with its URL, the count of native "blocked by" relations created, and any slices skipped because they already carried an identifier. If any step failed, report the error and confirm the source `work-items.md` annotations reflect exactly which issues were created, so the operator can re-run safely.
+Summarize: the team, the Project and parent (if any), the workflow state, the labels and assignee (or "none" / "unassigned"). List every created issue as `<SYM-N> — <LINEAR-ID>` with its URL, the count of native "blocked by" relations created, and any slices skipped because they already carried an identifier. If any step failed, report the error and confirm the source `work-items.md` annotations reflect exactly which issues were created, so the user can re-run safely.

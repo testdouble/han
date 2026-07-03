@@ -9,7 +9,7 @@ This page supplements [YAGNI](./yagni.md). YAGNI's evidence test answers *is the
 ## TL;DR
 
 - **Three principles ground the rule.** Evidence drawn from closer to the originating event or data carries more weight than evidence at greater remove (proximity). Independently corroborated evidence beats single-source evidence (corroboration). The absence of evidence is a distinct state worth naming, not the bottom of a tier list (no-evidence labeling).
-- **Trust classes name the boundary.** Codebase evidence is the trusted current-state anchor. Web evidence sits outside the trust boundary. Operator-provided material gets interested-party scrutiny.
+- **Trust classes name the boundary.** Codebase evidence is the trusted current-state anchor. Web evidence sits outside the trust boundary. User-provided material gets interested-party scrutiny.
 - **Proximity is a heuristic, not a ranked ladder.** Running code beats documentation in many situations, but not all. Formal-methods contexts, specification-compliance contexts, and regulatory contexts invert the ordering. The rule names the principle and walks you through the inversions. It does not hand you a numbered list to apply blindly.
 - **The corroboration gate is scoped to web sources.** A single web claim that drives a recommendation gets marked single-source and cannot stand alone. Codebase evidence at a specific file path and line is not weakened by being a single citation. That asymmetry is intentional and matches how `/research` already behaves.
 - **No evidence is a state with a name and a response.** When a claim has no evidence at any tier, the response is to label it, defer the dependent decision, and name the trigger that would reopen it. The same defer-with-trigger pattern YAGNI uses.
@@ -64,7 +64,7 @@ The corroboration gate and the proximity heuristic both rest on a vocabulary tha
 
 - **Codebase** is the trusted current-state anchor. The current source code, the current tests, the current configuration, the current build output. When codebase evidence contradicts other evidence, surface the conflict explicitly and treat the codebase as authoritative on what the system does today.
 - **Web** sits outside the trust boundary. Documentation pages, blog posts, Stack Overflow, GitHub issues, RFCs, vendor whitepapers, LLM-generated content. Web sources can be wrong, stale, adversarially shaped, or contextually misapplied. The corroboration gate applies here.
-- **Provided** is operator-supplied material. Files you pasted in, links you handed to a skill, screenshots, transcripts. Apply interested-party scrutiny: the operator's intent in providing the material is itself a piece of context. Operator-provided material is held to the same scrutiny as a web source.
+- **Provided** is user-supplied material. Files you pasted in, links you handed to a skill, screenshots, transcripts. Apply interested-party scrutiny: the user's intent in providing the material is itself a piece of context. User-provided material is held to the same scrutiny as a web source.
 
 These trust classes are the same ones [`/research`](./skills/han-core/research.md) already uses. The canonical rule extracts them so other skills and agents can apply the same vocabulary.
 

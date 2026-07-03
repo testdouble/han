@@ -50,4 +50,4 @@ When validation finds a missing or excluded artifact:
 - **Missing Design link** — inspect the feature spec's Visual Reference table and inline design references; propose the design frame IDs and document path, cited by spec section.
 - **Process-artifact link found** — propose removal, evidenced by the exclude list above. If load-bearing, propose the `See plan: D-N` breadcrumb restatement.
 
-Every proposed fill cites a concrete source: a file path with line number, a document section, or a named source. Fills without evidence are surfaced as gaps for the operator to resolve, not silently applied.
+Every proposed fill cites a concrete source: a file path with line number, a document section, or a named source. Fills without evidence are surfaced as gaps for the user to resolve, not silently applied.
