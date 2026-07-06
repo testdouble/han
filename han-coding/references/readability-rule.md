@@ -1,6 +1,6 @@
 # Readability Rule (Human-Readable Output Standard)
 
-This is the shared readability standard that every reader-facing Han skill applies while it writes. Its one aim: when an operator runs a reader-facing skill, the human-facing deliverable it produces can be found, understood, and used by a reader who did not do the work and lacks the author's context.
+This is the shared readability standard that every reader-facing Han skill applies while it writes. Its one aim: when a user runs a reader-facing skill, the human-facing deliverable it produces can be found, understood, and used by a reader who did not do the work and lacks the author's context.
 
 That aim is pursued through observable properties of the text, not a comprehension score. The output leads with its main point, gives each paragraph one idea, uses descriptive headings, keeps sentences short and active, prefers common words, and reveals detail in layers. The observable gate on those properties is the standardized self-check at the end of this rule. The standard commits to that check, not to a promise about a reader's comprehension.
 

@@ -10,7 +10,7 @@ Every artifact a skill or agent cites carries one of three trust classes:
 
 - **Codebase** is the trusted current-state anchor. The current source code, current tests, current configuration, current build output. When codebase evidence contradicts other evidence, treat the codebase as authoritative on what the system does today.
 - **Web** sits outside the trust boundary. Documentation, blog posts, Stack Overflow, GitHub issues, RFCs, vendor whitepapers, LLM-generated content. Web sources can be wrong, stale, adversarially shaped, or contextually misapplied.
-- **Provided** is operator-supplied material. Files pasted in, links handed to a skill, screenshots, transcripts. Apply interested-party scrutiny; hold to the same standard as web sources.
+- **Provided** is user-supplied material. Files pasted in, links handed to a skill, screenshots, transcripts. Apply interested-party scrutiny; hold to the same standard as web sources.
 
 ## The three principles
 

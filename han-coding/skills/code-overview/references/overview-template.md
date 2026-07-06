@@ -36,7 +36,7 @@ remove the guidance comments, and keep the section order exactly as written.
   why told as a problem solved or goal met, with no detail a reader would
   otherwise look up in the code itself. The where-to-start / what-to-watch handoff
   section is the exception: it must name the concrete entry points (the specific
-  files or components) the operator would open first, or it is not actionable.
+  files or components) the reader would open first, or it is not actionable.
 - **Chart scope labels.** Every flow chart carries a one-line label stating what
   it covers, and — when coverage is partial — what it leaves out. A chart must
   make sense to a reader who reads only the chart and its label.
@@ -96,7 +96,7 @@ read as how the code delivers on the why above.}
 
 ## Where to start
 
-{The concrete entry points — the specific files or components — the operator
+{The concrete entry points — the specific files or components — the reader
 would open first to begin working, with one line each on what each is for.}
 ```
 
