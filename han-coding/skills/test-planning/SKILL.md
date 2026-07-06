@@ -19,7 +19,7 @@ allowed-tools: Bash(git *), Bash(find *), Bash(ls *), Read, Grep, Glob, Agent
 
 ## Project Context
 
-- git installed: !`which git`
+- git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 
@@ -27,7 +27,7 @@ allowed-tools: Bash(git *), Bash(find *), Bash(ls *), Read, Grep, Glob, Agent
 
 Resolve project config: read CLAUDE.md's `## Project Discovery` section for test command (under `### Commands and Tests`, not `### Frameworks and Tooling`), language, and framework; fall back to project-discovery.md. Store found values for use in later steps.
 
-**Scope determination:** Check `git installed` from Project Context. If empty, skip to **Mode C** below.
+**Scope determination:** Check `git installed` from Project Context. If empty or `not installed`, skip to **Mode C** below.
 
 Run `${CLAUDE_SKILL_DIR}/scripts/detect-test-context.sh` and parse its output. If `git-available: false`, skip to **Mode C** below.
 

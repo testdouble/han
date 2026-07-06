@@ -18,8 +18,8 @@ allowed-tools: Read, Glob, Grep, Agent, Write, Bash(git *), Bash(gh *), Bash(fin
 
 ## Project Context
 
-- git installed: !`which git`
-- gh installed: !`which gh`
+- git installed: !`which git 2>/dev/null || echo "not installed"`
+- gh installed: !`which gh 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 
@@ -45,11 +45,11 @@ Read these before doing anything. They constrain every step below.
 
 **Bind `$size`.** If the user passed `small`, `medium`, or `large` as the first positional argument, bind `$size` to it. Anything else is part of the target, not a size; bind `$size` to the literal `none provided`.
 
-**Note tool availability.** Read `git installed` and `gh installed` from Project Context. If `git installed` is empty, git is unavailable — see the degraded paths below.
+**Note tool availability.** Read `git installed` and `gh installed` from Project Context. If `git installed` is empty or reads `not installed`, git is unavailable — see the degraded paths below.
 
 **Resolve the target and mode by this fixed precedence**, so an ambiguous string never silently selects the wrong mode:
 
-1. **An explicit pull request reference or URL** (e.g. `#82`, `https://github.com/owner/repo/pull/82`) → **PR mode** against that pull request. Requires `gh`; if `gh installed` is empty, tell the user `gh` is needed to read a named pull request and offer code mode against a local target instead.
+1. **An explicit pull request reference or URL** (e.g. `#82`, `https://github.com/owner/repo/pull/82`) → **PR mode** against that pull request. Requires `gh`; if `gh installed` is empty or reads `not installed`, tell the user `gh` is needed to read a named pull request and offer code mode against a local target instead.
 2. **An existing file or directory path** (confirm it resolves with Glob or find) → **code mode** on that path.
 3. **A symbol** (a function, class, type, or other named code entity) → **code mode** on that symbol. Resolve it with Grep across the repository.
 4. **No target string given** → **PR mode** against the current branch's changes (the local diff). This requires git, not a remote pull request.

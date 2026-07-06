@@ -8,7 +8,7 @@ allowed-tools: Read, Glob, Grep, Agent, Bash(find *)
 
 ## Project Context
 
-- git installed: !`which git`
+- git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 
@@ -37,7 +37,7 @@ Read these before dispatching anything. They constrain every step below.
 
 **Resolve project context.** If `CLAUDE.md` is present (see Project Context), read its `## Project Discovery` section for conventions. Fall back to `project-discovery.md` if present. These resolve language, framework, and convention questions so the agents infer less. If neither exists, the agents fall back to surrounding-code inference — note this in the agent briefs.
 
-**Note git availability.** Read the `git installed` value from Project Context. If it is empty, git is unavailable: the analysts will skip churn- and recency-based reasoning and the report must state this. If it is non-empty, the analysts may use git history for churn and likelihood evidence.
+**Note git availability.** Read the `git installed` value from Project Context. If it is empty or reads `not installed`, git is unavailable: the analysts will skip churn- and recency-based reasoning and the report must state this. If it shows a path, the analysts may use git history for churn and likelihood evidence.
 
 **State the driving concern, if any.** If the user named a concern ("I suspect a race in the retry queue", "we want to split this module"), capture it. It biases every agent's attention without narrowing scope. Pass it into every brief.
 

@@ -19,17 +19,17 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *)
 
 ## Pre-requisites
 
-- git: !`which git`
+- git: !`which git 2>/dev/null || echo "not installed"`
 - repo root marker: !`find . -maxdepth 3 -name "plugin.json" -path "*/.claude-plugin/*" -type f`
 - skill roots: !`find . -maxdepth 2 -type d -name skills -path './han-*/skills' ! -path './han-plugin-builder/skills' 2>/dev/null | sed 's|^\./||' | sort`
 - agents directory: !`find . -maxdepth 2 -type d -name agents -path './han-*/agents' 2>/dev/null | sed 's|^\./||' | sort`
 
-**If any of the above are empty:** this skill is intended to run inside the Han plugin repository. Tell the operator which marker is missing and stop. Do not attempt to operate on a different repo.
+**If any of the above are empty or read `not installed`:** this skill is intended to run inside the Han plugin repository. Tell the operator which marker is missing and stop. Do not attempt to operate on a different repo.
 
 ## Project Context
 
-- current branch: !`git branch --show-current`
-- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD`
+- current branch: !`git branch --show-current 2>/dev/null || echo unknown`
+- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 
 ## Step 1: Detect mode and scope
 
