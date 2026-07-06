@@ -1,6 +1,10 @@
 # How To: Provide Feedback on Han
 
-A walkthrough for getting feedback to the Han maintainers in a shape they can act on. There are two kinds of feedback and two paths. When you have an idea, a feature request, or a rough "this felt off" observation, you sharpen it with [`/issue-triage`](../skills/han-core/issue-triage.md) before you post it. When you have just finished a working session and want to report how the skills performed, you install the opt-in `han-feedback` plugin and let [`/han-feedback`](../skills/han-feedback/han-feedback.md) summarize the session and post it for you.
+A walkthrough for getting feedback to the Han maintainers in a shape they can act on. There are two kinds of feedback and two paths.
+
+When you have an idea, a feature request, or a rough "this felt off" observation, you sharpen it with [`/issue-triage`](../skills/han-core/issue-triage.md) before you post it.
+
+When you have just finished a working session and want to report how the skills performed, you install the opt-in `han-feedback` plugin. Then [`/han-feedback`](../skills/han-feedback/han-feedback.md) summarizes the session and posts it for you.
 
 > See also: [How-to index](./README.md) · [Choosing a Han plugin](../choosing-a-han-plugin.md) · [Skills](../skills/README.md)
 
@@ -21,7 +25,9 @@ Either way the maintainers receive feedback that is specific enough to act on ra
 
 ## Path A: An idea, a request, or a vague observation
 
-Use this path when the feedback is not tied to a single session: a feature you wish Han had, a skill that behaved in a way that surprised you, a rough idea you want to float. The problem with raw ideas is that they are usually missing the context a maintainer needs to act, and you cannot always see what is missing from the inside. `/issue-triage` is built for exactly that gap. It classifies the input, then lists what is absent for that type of input before anyone tries to act on it.
+Use this path when the feedback is not tied to a single session: a feature you wish Han had, a skill that behaved in a way that surprised you, a rough idea you want to float. The problem with raw ideas is that they are usually missing the context a maintainer needs to act, and you cannot always see what is missing from the inside.
+
+`/issue-triage` is built for exactly that gap. It classifies the input, then lists what is absent for that type of input before anyone tries to act on it.
 
 1. **Run [`/issue-triage`](../skills/han-core/issue-triage.md) with your idea or observation, in your own words.** Do not polish it first. The skill is designed to work on messy, incomplete input, and cleaning it up changes what counts as missing information. A template that works well:
 
@@ -31,7 +37,7 @@ Use this path when the feedback is not tied to a single session: a feature you w
 
     > `/issue-triage` *"It would be nice if the code review skill could skip files I have not touched. Right now it reviews everything on the branch and that is slow on big branches."*
 
-    The skill classifies the input (here, a feature request), records the reported behavior and the expected behavior, and produces a **Missing Information** list: the things a maintainer would need before they could act. For a feature request that is usually the use case and the success criteria; for a complaint it is usually reproduction details and scope.
+    The skill classifies the input (here, a feature request) and records the reported behavior and the expected behavior. It also produces a **Missing Information** list: the things a maintainer would need before they could act. For a feature request that is usually the use case and the success criteria; for a complaint it is usually reproduction details and scope.
 
 2. **Fill the gaps the triage names.** Read the **Missing Information** section and the **Recommended Next Step**. When the recommendation is "Clarify before proceeding," that is the signal that your feedback is still too thin to act on. Answer the questions it raised, in the text, before you post. This is the whole point of the path: you are closing the gaps now so a maintainer does not have to ask later.
 
@@ -55,7 +61,7 @@ Use this path right after a working session where one or more Han skills ran and
 
     > `/han-feedback`
 
-    The skill looks back through the conversation for invocations of any `han-*` plugin's skills and agents (`han-core`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` plugin), then writes a dated feedback file to `~/.claude/han-feedback/` recording the skills and agents used and covering what worked, what didn't, an overall summary, and a rating. It reads only what is visible in the current context window, so run it while the full session is still in context. If the session was already compacted, the skill asks you to list what you used.
+    The skill looks back through the conversation for invocations of any `han-*` plugin's skills and agents (`han-core`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` plugin). It then writes a dated feedback file to `~/.claude/han-feedback/`, recording the skills and agents used and covering what worked, what didn't, an overall summary, and a rating. It reads only what is visible in the current context window, so run it while the full session is still in context. If the session was already compacted, the skill asks you to list what you used.
 
     You can prime it with a concrete observation before it writes anything: *"I just finished a session with `/investigate` and it found the root cause faster than I expected"* gives the skill a specific moment to build on. The more specific you are, the more useful the result.
 
@@ -71,7 +77,7 @@ Use this path right after a working session where one or more Han skills ran and
 
 - **You do not have the `gh` CLI.** Both paths still work. Each produces text (a triage document or a feedback file) that you paste into the issue form at [github.com/testdouble/han/issues/new](https://github.com/testdouble/han/issues/new). The `gh` CLI only saves you the copy-and-paste.
 
-- **The triage says "Clarify before proceeding" and you cannot fill the gap.** That usually means the idea is not yet ready to be an issue. Sit with it until you can name the use case or reproduce the behavior, or post it anyway with the open questions stated explicitly so a maintainer knows what is unresolved. An honest "here is the gap" beats a confident issue built on a guess.
+- **The triage says "Clarify before proceeding" and you cannot fill the gap.** That usually means the idea is not yet ready to be an issue. Sit with it until you can name the use case or reproduce the behavior. Or post it anyway, with the open questions stated explicitly, so a maintainer knows what is unresolved. An honest "here is the gap" beats a confident issue built on a guess.
 
 - **You ran several Han skills across more than one session.** `/han-feedback` reads one session at a time and writes one file per day per skill set. Run it at the end of each session rather than trying to reconstruct several at once from memory.
 

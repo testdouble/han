@@ -39,7 +39,7 @@ That single `dependencies` array is the whole mechanism. Installing `han-example
 
 ### Step 2: Add the skill that builds on core
 
-Add the skill (or agent) that does the new work. Put it where Claude Code scans by default, at `han-example/skills/<name>/SKILL.md`. This is the skill that builds on core: it can dispatch a `han-core` agent, call a core skill as a step, or read a core reference file, because installing your plugin guarantees core is present and enabled alongside it.
+Add the skill (or agent) that does the new work. Put it where Claude Code scans by default, at `han-example/skills/<name>/SKILL.md`. This is the skill that builds on core: it can dispatch a `han-core` agent, call a core skill as a step, or read a core reference file. Installing your plugin guarantees core is present and enabled alongside it, so this works.
 
 This is the step where the dependency earns its place. If your skill never reaches into core, the declaration in Step 1 is doing nothing for you, and you should ask whether you needed a dependency at all. The whole reason to depend on `han-core` is so this skill can stand on it.
 
@@ -64,13 +64,13 @@ You are done when a clean install of your plugin loads both your plugin and the 
 3. Run your new skill and confirm the core behavior it builds on is available. If your skill dispatches a `han-core` agent or calls a core skill, exercise that path, not the parts that are yours alone.
 4. Disable your plugin and confirm Claude Code enables and disables the dependency along with it, rather than leaving an orphan behind.
 
-If the dependency does not show up in the install output, the most common causes are a misspelled dependency name, a missing marketplace registration, or (on the own-marketplace variation below) a missing `allowCrossMarketplaceDependenciesOn` entry or a marketplace your reader has not added.
+If the dependency does not show up in the install output, look for one of three common causes: a misspelled dependency name, a missing marketplace registration, or a missing `allowCrossMarketplaceDependenciesOn` entry. On the own-marketplace variation below, the cause can also be a marketplace your reader has not added.
 
 ## Variations
 
 ### Your plugin ships from a marketplace you own
 
-Take this variation when your plugin ships from a marketplace you own, separate from Han's, and you want it to build on `han-core`. Everything from the happy path applies, with one addition: because your plugin and `han-core` now live in different marketplaces, the cross-marketplace rule comes into play, and you have three extra things to get right.
+Take this variation when your plugin ships from a marketplace you own, separate from Han's, and you want it to build on `han-core`. Everything from the happy path applies, with one addition. Because your plugin and `han-core` now live in different marketplaces, the cross-marketplace rule comes into play, and you have three extra things to get right.
 
 First, declare the dependency as an object that names Han's marketplace, not a plain string. Han's marketplace is named `han`, so:
 
@@ -101,7 +101,7 @@ Third, tell your reader to add the Han marketplace before installing. Claude Cod
 
 With those three pieces in place, installing your plugin resolves `han-core` from the Han marketplace and installs it alongside your own. A word on scope before you commit to this path: Han is built and maintained for the Han suite's own plugins. Extending it from an outside marketplace works through the standard Claude Code mechanism, but Han does not publish a stability contract for outside dependents, so pin a `version` range on the dependency and re-check it when you upgrade.
 
-### You want to depend on the whole suite, not just core
+### You want to depend on the whole suite, not only core
 
 Depend on `han` instead of `han-core` when your plugin needs the planning, coding, GitHub, or reporting skills too, not only the core skills and agents. The declaration is the same shape, with `han` in the `dependencies` array. Be aware that this pulls the entire suite in, so prefer `han-core` when core is all your skill builds on.
 

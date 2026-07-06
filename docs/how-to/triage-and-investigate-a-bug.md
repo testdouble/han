@@ -16,8 +16,8 @@ A walkthrough for getting from "something is broken" to a root cause backed by f
 
 Depending on whether you investigate now or triage for later, you end with **one** of:
 
-- For an immediate investigation: an investigation report with the symptoms, numbered evidence (`E1, E2, …`), root-cause analysis, a fix plan, and validation findings (`V1, V2, …`) from an adversarial pass that already tried to break the fix.
-- For a triage: a structured issue document that classifies what you know and what you do not, plus a recommendation for the right next skill (often `/investigate`, sometimes `/research` or `/plan-a-feature`).
+- For an immediate investigation: an investigation report with the symptoms, numbered evidence (`E1, E2, …`), root-cause analysis, and a fix plan. It also includes validation findings (`V1, V2, …`) from an adversarial pass that already tried to break the fix.
+- For a triage: a structured issue document that classifies what you know and what you do not. It also gives a recommendation for the right next skill (often `/investigate`, sometimes `/research` or `/plan-a-feature`).
 
 When you have a report whose recommendation has survived adversarial review, the investigation is complete. When you have a triage document filed in the right place, the issue is captured and ready to pick up later.
 
@@ -55,7 +55,13 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
     > `/investigate webhook deliveries to {customer's URL} are returning 200 from our side but the customer is reporting they never arrive. Started after the deploy on 2026-05-20. Sample failing delivery ID: wh_8f3a. Stack trace attached.`
 
-    Han dispatches at least two `evidence-based-investigator` agents in parallel, each working a different angle (the error path, the data flow). When the symptom calls for it, a specialist also dispatches: `concurrency-analyst` when you mention intermittent / race / timeout symptoms in the prompt, `behavioral-analyst` when you describe a data-flow or error-propagation symptom, `data-engineer` when you describe a schema, query, or migration symptom. Mention the symptom flavor explicitly to route the right specialist in.
+    Han dispatches at least two `evidence-based-investigator` agents in parallel, each working a different angle (the error path, the data flow). When the symptom calls for it, a specialist also joins:
+
+    - `concurrency-analyst`, when you mention intermittent, race, or timeout symptoms in the prompt.
+    - `behavioral-analyst`, when you describe a data-flow or error-propagation symptom.
+    - `data-engineer`, when you describe a schema, query, or migration symptom.
+
+    Mention the symptom flavor explicitly to route the right specialist in.
 
 2. **Bring in the logs.** Han's agents do not see production logs unless you give them. As the investigation runs, paste the log excerpts that line up with the symptoms:
 
@@ -83,7 +89,7 @@ The workflow has two short phases. Phase 1 decides whether to investigate now or
 
 - **The report is a feature request, not a bug.** `/issue-triage` will sometimes return "this is a missing capability, not a defect" and recommend `/plan-a-feature`. Follow the recommendation; do not force a fix on a non-bug.
 
-- **The investigation finds no root cause.** When the evidence does not converge on a single root cause, the report says so and names what additional evidence (a log range, a specific reproduction, a specific user account) would close the gap. Gather what is named and re-run; do not let the skill guess.
+- **The investigation finds no root cause.** When the evidence does not converge on a single root cause, the report says so. It names what additional evidence (a log range, a specific reproduction, a specific user account) would close the gap. Gather what is named and re-run; do not let the skill guess.
 
 - **The bug is intermittent.** Mention the intermittent nature in the prompt. Han routes a `concurrency-analyst` into the investigation alongside the generalist investigators. Without that signal, intermittent failures often get classified as a data-flow problem and the analysis misses the race.
 

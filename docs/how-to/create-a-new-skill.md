@@ -1,16 +1,16 @@
 # How To: Create a New Skill
 
-A walkthrough for building a new Claude Code skill from scratch with [`/skill-builder`](../skills/han-plugin-builder/skill-builder.md): describe what the skill should do, answer the interview that walks the skill's design tree decision-by-decision, and end with a real skill on disk that has already passed a guidance-conformance review. This is the recipe for *using* the builder; the [skill-building guidance](../../han-plugin-builder/skills/guidance/references/skill-building-guidance/) is canonical for the rules the builder enforces.
+A walkthrough for building a new Claude Code skill from scratch with [`/skill-builder`](../skills/han-plugin-builder/skill-builder.md). You describe what the skill should do, answer the interview that walks the skill's design tree decision-by-decision, and end with a real skill on disk that has already passed a guidance-conformance review. This is the recipe for *using* the builder; the [skill-building guidance](../../han-plugin-builder/skills/guidance/references/skill-building-guidance/) is canonical for the rules the builder enforces.
 
 > See also: [How-to index](./README.md) · [`/skill-builder`](../skills/han-plugin-builder/skill-builder.md) · [`/guidance`](../skills/han-plugin-builder/guidance.md) · [Create a new agent](./create-a-new-agent.md)
 
-The happy path below builds a skill into a plugin that already exists, because that is the common case: you have a plugin and you want to add a slash command to it. When the skill belongs in a brand-new plugin, the [Variations](#variations) section covers the one extra thing the builder does for you.
+The happy path below builds a skill into a plugin that already exists. That is the common case: you have a plugin and you want to add a slash command to it. When the skill belongs in a brand-new plugin, the [Variations](#variations) section covers the one extra thing the builder does for you.
 
 ## Before you begin
 
 - You have installed the opt-in `han-plugin-builder` plugin. The `han` meta-plugin does not bundle it, so install it on its own first with `/plugin install han-plugin-builder@han`. See [Choosing a Han plugin](../choosing-a-han-plugin.md) for where it sits in the suite.
-- You know roughly what the skill should do and what should trigger it. You do not need a finished design; the interview walks the tree for you. But a sharp one-line request ("a skill that turns a changelog into release notes, triggered when I say 'draft release notes'") lets the builder start walking immediately, where a thin one ("build a skill") makes it ask for this first.
-- You have a sense of whether this is a skill at all. A skill is a deterministic, flowchartable process. If the work is a judgment layer that reasons over messy input rather than following steps, it is an agent, and the builder will stop and redirect you to [`/agent-builder`](../skills/han-plugin-builder/agent-builder.md). [Create a new agent](./create-a-new-agent.md) is the matching guide. When you are not sure which you want, [`/guidance`](../skills/han-plugin-builder/guidance.md) answers "is this better as a skill or an agent?" before you start.
+- You know roughly what the skill should do and what should trigger it. You do not need a finished design; the interview walks the tree for you. But a sharp one-line request, like "a skill that turns a changelog into release notes, triggered when I say 'draft release notes'," lets the builder start walking immediately. A thin one, like "build a skill," makes it ask for this first.
+- You have a sense of whether this is a skill at all. A skill is a deterministic, flowchartable process. If the work is a judgment layer that reasons over messy input rather than following steps, it is an agent. The builder will stop and redirect you to [`/agent-builder`](../skills/han-plugin-builder/agent-builder.md). [Create a new agent](./create-a-new-agent.md) is the matching guide. When you are not sure which you want, [`/guidance`](../skills/han-plugin-builder/guidance.md) answers "is this better as a skill or an agent?" before you start.
 
 ## What you'll end up with
 
@@ -48,7 +48,7 @@ The workflow runs as one continuous interview, but it moves through three natura
 
 2. **Read the closing summary.** The builder reports which decisions it settled by evidence versus by you, the fixes the review applied with the guidance document behind each, and the triggering and functional tests it derived from your use cases.
 
-3. **Run the tests it hands you.** Exercise the triggering tests (does the skill activate on the prompts the use cases described, and stay quiet on the neighbors' prompts?) and the functional tests (does the workflow do what the use cases said?) against the model tier the skill targets. This is how you confirm the description disambiguates and the steps hold.
+3. **Run the tests it hands you.** Exercise the triggering tests: does the skill activate on the prompts the use cases described, and stay quiet on the neighbors' prompts? Then exercise the functional tests: does the workflow do what the use cases said? Run both against the model tier the skill targets. This is how you confirm the description disambiguates and the steps hold.
 
 ## Variations
 
