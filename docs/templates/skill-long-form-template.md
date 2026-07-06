@@ -57,7 +57,7 @@ Example prompts:
 
 ## YAGNI (when applicable)
 
-{If this skill produces or reviews an artifact that can accrete speculative items (plan steps, abstractions, infrastructure additions, observability hooks, configuration knobs, ADRs, coding standards, tests, or build phases), describe the YAGNI posture this skill takes: which items it gates, which named anti-patterns force a finding, whether the rule is enforcing (defer-by-default) or advisory-only, and how the deferral surfaces in the artifact. Cross-reference [YAGNI](../../yagni.md). Skills that do not produce or review such artifacts can omit this section.}
+{If this skill produces or reviews an artifact that can accrete speculative items (plan steps, abstractions, infrastructure additions, observability hooks, configuration knobs, ADRs, coding standards, tests, or build phases), describe the YAGNI posture this skill takes. Name which items it gates, which named anti-patterns force a finding, and whether the rule is enforcing (defer-by-default) or advisory-only. Explain how the deferral surfaces in the artifact. Cross-reference [YAGNI](../../yagni.md). Skills that do not produce or review such artifacts can omit this section.}
 
 ## Cost and latency
 
