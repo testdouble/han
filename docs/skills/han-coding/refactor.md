@@ -15,7 +15,7 @@ Operator documentation for the `/refactor` skill in the han plugin. This documen
 - **Execution skill.** Like [`/tdd`](./tdd.md), this skill modifies your source tree rather than producing a document. It is the second of the two execution skills in `han-coding`.
 - **Behavior preservation is the definition.** A refactoring changes structure, never observable behavior. A step that turns out to require a behavior change is deferred, not absorbed; a step that reddens the suite is reverted, not patched forward.
 - **Tests are the license.** The skill refuses to start until the full suite is green and the target's behavior is covered. An uncovered target gets a choice: narrow the scope, or write characterization tests first (explicitly labeled as a lower-confidence net).
-- **Named targets, never "clean this up".** The skill requires a named target: files, a module, a named smell, or the findings of a prior review. Open-ended cleanup requests get asked to name one, because both the refactoring literature and the empirical record on coding agents show open-ended runs identify few real opportunities and tend to make structure worse.
+- **Named targets, never "clean this up".** The skill requires a named target: files, a module, a named smell, or the findings of a prior review. Open-ended cleanup requests get asked to name one. Both the refactoring literature and the empirical record on coding agents show open-ended runs identify few real opportunities and tend to make structure worse.
 - **The declared scope is a contract.** Each planned step declares its blast radius. A step that spreads beyond it triggers a stop-and-report, because spreading edits are how a refactoring silently becomes a rewrite.
 
 ## When to use it
@@ -43,7 +43,14 @@ Give it:
 2. **Optionally, the source findings.** When you pass a `/code-review` or `/architectural-analysis` report, the skill extracts the refactoring-shaped findings and traces each applied change back to its finding ID in the summary.
 3. **Nothing about the test framework.** The skill resolves test, lint, build, and type-check commands from your project the same way `/tdd` does.
 
-The skill runs autonomously after your initial request: it reports the plan and proceeds. It stops and waits only when (a) the target has no test coverage (you choose: narrow the target or write characterization tests first), (b) the suite is red before it starts, (c) the request was open-ended with no named target, or (d) you explicitly asked to approve the plan first. Stop rules during the run (scope spread, a step that requires a behavior change, two consecutive reverted steps) end with a report of where things stand; everything already applied is green and stands.
+The skill runs autonomously after your initial request: it reports the plan and proceeds. It stops and waits only when:
+
+- the target has no test coverage (you choose: narrow the target or write characterization tests first),
+- the suite is red before it starts,
+- the request was open-ended with no named target, or
+- you explicitly asked to approve the plan first.
+
+Stop rules during the run (scope spread, a step that requires a behavior change, two consecutive reverted steps) end with a report of where things stand. Everything already applied is green and stands.
 
 Example prompts:
 
@@ -57,7 +64,13 @@ Restructured code in your working tree, not a report. Specifically:
 
 - **A refactoring plan**, shown before the first edit: numbered items, each one named refactoring with the evidence behind it and the files it should touch.
 - **One verified step at a time.** Each step shows the runner's summary line after the change. Red steps are reverted and either retried smaller or deferred with what was learned.
-- **A final summary**: each refactoring applied (named, with its evidence and finding IDs where a report was the source), YAGNI deferrals with reopen triggers, items deferred because they required behavior changes, anything spotted but deliberately left alone (bugs, out-of-scope smells, fodder for `/issue-triage`), the standards and ADRs the code now conforms to, and the final test, lint, and build output shown rather than asserted.
+- **A final summary**, covering:
+  - each refactoring applied (named, with its evidence and finding IDs where a report was the source)
+  - YAGNI deferrals with reopen triggers
+  - items deferred because they required behavior changes
+  - anything spotted but deliberately left alone (bugs, out-of-scope smells, fodder for `/issue-triage`)
+  - the standards and ADRs the code now conforms to
+  - the final test, lint, and build output, shown rather than asserted
 
 ## How to get the most out of it
 
@@ -80,9 +93,9 @@ Restructured code in your working tree, not a report. Specifically:
 
 The skill fills a specific gap in the suite. [`/code-review`](../han-coding/code-review.md) and [`/architectural-analysis`](../han-coding/architectural-analysis.md) recommend refactorings but never modify code; the refactor step of [`/tdd`](./tdd.md) modifies code but is deliberately scoped to what the current red-green cycle touched. Nothing executed a refactoring recommendation against existing code with safety discipline. This skill is that executor, which is why it deliberately does no analysis of its own: it consumes findings (or a user-named target) rather than dispatching analyst agents to discover them.
 
-The workflow shape (named target, plan before edit, small steps, verification after each, hard stop rules) is not style preference. It tracks the strongest converging evidence in both literatures: practitioner consensus from Fowler, Feathers, and Beck on behavior preservation, test gates, and scope control, and the 2024-2026 empirical studies of coding agents showing that named targets dramatically outperform open-ended prompts, that incremental verification loops are the most reliable correctness improver, and that conservative scope beats aggressive sweeps. The research behind the design, including the adversarial validation of it, is recorded in [docs/research/refactor-skill-research.md](../../research/refactor-skill-research.md).
+The workflow shape (named target, plan before edit, small steps, verification after each, hard stop rules) is not style preference. It tracks the strongest converging evidence in both literatures. Practitioner consensus from Fowler, Feathers, and Beck covers behavior preservation, test gates, and scope control. The 2024-2026 empirical studies of coding agents show that named targets dramatically outperform open-ended prompts, that incremental verification loops are the most reliable correctness improver, and that conservative scope beats aggressive sweeps. The research behind the design, including the adversarial validation of it, is recorded in [docs/research/refactor-skill-research.md](../../research/refactor-skill-research.md).
 
-The honest limitations, in the same spirit as `/tdd`'s. The green-suite-first gate is enforced by discipline and shown evidence (pasted runner output, stop rules), not by a mechanism that can physically prevent an edit; if you watch one thing, watch that the suite output before the first edit is real and green. The refactor-only-commit guardrail is established human practice whose effectiveness as an agent instruction is not independently validated, which is exactly why the skill pairs it with per-step verification rather than relying on it. And a passing suite proves the behaviors your tests exercise are unchanged, not that all behavior is; coverage of the target is the gate precisely because the guarantee is only as wide as the net.
+The honest limitations are in the same spirit as `/tdd`'s. The green-suite-first gate is enforced by discipline and shown evidence (pasted runner output, stop rules), not by a mechanism that can physically prevent an edit. If you watch one thing, watch that the suite output before the first edit is real and green. The refactor-only-commit guardrail is established human practice whose effectiveness as an agent instruction is not independently validated. That is exactly why the skill pairs it with per-step verification rather than relying on it. A passing suite proves the behaviors your tests exercise are unchanged, not that all behavior is. Coverage of the target is the gate precisely because the guarantee is only as wide as the net.
 
 ## Sources
 
@@ -114,7 +127,14 @@ URL: https://martinfowler.com/articles/preparatory-refactoring-example.html
 
 ### Empirical studies of LLM and agent refactoring, 2024-2026
 
-Named refactoring targets over open-ended prompts (arXiv 2411.04444), the field record of agent refactoring tangling and low-level bias (arXiv 2511.04824), incremental compile-and-test feedback as the most reliable correctness improver (arXiv 2511.03153, 2510.26480), and conservative scope beating aggressive sweeps (arXiv 2605.07001). These drove the named-target requirement, the per-step verification, and the stop rules.
+Separate empirical findings support this design:
+
+- named refactoring targets over open-ended prompts (arXiv 2411.04444)
+- the field record of agent refactoring tangling and low-level bias (arXiv 2511.04824)
+- incremental compile-and-test feedback as the most reliable correctness improver (arXiv 2511.03153, 2510.26480)
+- conservative scope beating aggressive sweeps (arXiv 2605.07001)
+
+These drove the named-target requirement, the per-step verification, and the stop rules.
 
 URL: https://arxiv.org/abs/2411.04444
 
@@ -125,6 +145,6 @@ URL: https://arxiv.org/abs/2411.04444
 - [YAGNI](../../yagni.md). The evidence gate every planned refactoring passes, with the named anti-patterns and the deferral format.
 - [`/tdd`](./tdd.md). The sibling execution skill. Its refactor step owns cleanup inside a red-green cycle; this skill owns restructuring outside one. Preparatory refactoring here, then drive the behavior change there.
 - [`/code-review`](../han-coding/code-review.md) and [`/architectural-analysis`](../han-coding/architectural-analysis.md). Where the strongest input comes from: their findings are this skill's work orders.
-- [`/investigate`](../han-coding/investigate.md). For when the "refactoring" you want is actually a bug to diagnose and fix.
+- [`/investigate`](../han-coding/investigate.md). For when the "refactoring" you want is really a bug to diagnose and fix.
 - [Research: refactor skill design](../../research/refactor-skill-research.md). The evidence-based, adversarially validated research behind this skill's design.
 - [Skill building guidance](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/). The progressive disclosure, description frontmatter, and bash-permission rules this skill follows.

@@ -6,7 +6,7 @@ Operator documentation for the `/edit-for-readability` skill in the han plugin. 
 
 ## TL;DR
 
-- **What it does.** Rewrites the prose of a target you already have — a file, pasted text, or a draft from the conversation — against the shared Human-Readable Output Standard, preserving every fact.
+- **What it does.** Rewrites the prose of a target you already have (a file, pasted text, or a draft from the conversation) against the shared Human-Readable Output Standard, preserving every fact.
 - **When to use it.** You have something already written that was never run through the readability standard, and you want it to lead with its point, read plainly, and reveal detail in layers.
 - **What you get back.** The target rewritten (in place for a file, inline for text or a conversation draft), plus the editor's rubric verdict and fact-preservation ledger.
 

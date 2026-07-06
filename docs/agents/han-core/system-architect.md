@@ -7,16 +7,16 @@ Operator documentation for the `system-architect` agent in the han plugin. This 
 ## TL;DR
 
 - **What it does.** Adversarially synthesizes boundary-crossing findings into cross-service / bounded-context topology recommendations: context-map relationships, integration patterns, data ownership, failure-domain containment, API-contract evolution across service seams. Assumes the current topology is wrong (bounded contexts leak, integrations are sync-by-default, data ownership is contested, failure domains are uncontained) until evidence says otherwise.
-- **When to dispatch it.** The work crosses a service boundary, a bounded-context seam, or a trust boundary, and you want recommendations at the altitude where the unit of design is a service or context, not a class or module. Conditionally dispatched by `/architectural-analysis` (large size, when a system-seam signal is present), `/architectural-decision-record`, `/gap-analysis`, `/iterative-plan-review`, and `/plan-implementation` when the work crosses a service or bounded-context boundary. `/plan-a-feature` excludes it from the default roster and includes it only when you explicitly ask.
+- **When to dispatch it.** The work crosses a service boundary, a bounded-context seam, or a trust boundary. You want recommendations at the altitude where the unit of design is a service or context, not a class or module. Conditionally dispatched by `/architectural-analysis` (large size, when a system-seam signal is present), `/architectural-decision-record`, `/gap-analysis`, `/iterative-plan-review`, and `/plan-implementation` when the work crosses a service or bounded-context boundary. `/plan-a-feature` excludes it from the default roster and includes it only when you explicitly ask.
 - **What you get back.** Numbered `SA#` recommendations, each with the seam it crosses, the relationship type (ACL, conformist, partnership, OHS, and so on), integration style (sync, async event, saga, batch), data ownership, failure-domain containment, and rationale. Plus a current context-map sketch.
 
 ## Key concepts
 
 - **System altitude, not software altitude.** The unit of design is a service, a bounded context, or a cross-process integration. Class-level and module-level concerns belong to [`software-architect`](./software-architect.md). The agent redirects them explicitly rather than dressing them in system-level vocabulary.
-- **Context-map relationships are load-bearing.** Every integration between bounded contexts is classified by name (partnership, customer-supplier, conformist, anti-corruption layer (ACL), shared kernel, open host service (OHS), published language, separate ways) and the choice is justified against the teams' power and collaboration dynamics. *"They call each other's APIs"* is not a relationship.
+- **Context-map relationships are load-bearing.** Every integration between bounded contexts is classified by name: partnership, customer-supplier, conformist, anti-corruption layer (ACL), shared kernel, open host service (OHS), published language, or separate ways. The choice is justified against the teams' power and collaboration dynamics. *"They call each other's APIs"* is not a relationship.
 - **Sync-vs-async is a topology decision, not a convenience.** Synchronous request/reply is appropriate only when the caller cannot proceed without the answer and the latency is acceptable. Other cases benefit from domain events, event-carried state transfer, or sagas. The agent challenges sync-by-default.
 - **Data ownership is named.** Each concept crossing a seam has exactly one system of record. The agent refuses to recommend a data flow that leaves ownership ambiguous.
-- **Failure domain is always stated.** Every recommendation names the timeout budget, retry posture, circuit-breaker placement, DLQ behavior, and fallback path. A recommendation without a failure-domain statement is incomplete by the agent's own rules.
+- **Failure domain is always stated.** Every recommendation names the timeout budget, retry posture, circuit-breaker placement, DLQ (dead-letter queue) behavior, and fallback path. A recommendation without a failure-domain statement is incomplete by the agent's own rules.
 - **Coordinates with devops-engineer and data-engineer.** Operational readiness belongs to [`devops-engineer`](./devops-engineer.md). Schema/index/query design belongs to [`data-engineer`](./data-engineer.md). The agent cross-references their findings rather than restating them.
 
 ## When to use it
@@ -25,7 +25,7 @@ Operator documentation for the `system-architect` agent in the han plugin. This 
 
 - A feature or change crosses a service boundary, a bounded-context seam, or a trust boundary, and you want recommendations at the topology altitude.
 - Upstream analysts (structural, behavioral, concurrency, risk) have produced findings that describe cross-service coupling, shared databases between contexts, sync call chains, or ambiguous data ownership.
-- A migration is being planned (splitting a monolith, extracting a service, replacing a shared database with events, introducing an anti-corruption layer between teams) and the topology trade-offs need to be made explicit.
+- A migration is being planned (splitting a monolith, extracting a service, replacing a shared database with events, introducing an anti-corruption layer between teams). The topology trade-offs need to be made explicit.
 - `/plan-implementation` is planning a feature whose scope spans more than one service, and the implementation plan should include system-architecture recommendations.
 - `/architectural-analysis` produced deferred system-level concerns in the `software-architect` summary, and you want those concerns synthesized into recommendations.
 - A context map would be useful but nobody has drawn one. The agent produces a current-state sketch as part of its output.
@@ -110,7 +110,7 @@ The agent refuses to:
 
 ## YAGNI
 
-Cross-service topology recommendations from this agent must cite the seam-crossing evidence that justifies them: a measured data-ownership conflict between bounded contexts, a failure-domain leak surfaced by an actual incident, a synchronous integration shape that has caused cascading failures, or a regulatory rule that forces a specific contract evolution. Speculative service splits, *for-future-flexibility* event topics, multi-region or HA topology for workloads that haven't proven single-region pressure, and *just-in-case* idempotency at every wire-crossing without a documented retry path are YAGNI candidates and are not recommended. Recommendations that cannot pass the evidence test are deferred with a named *reopen-when* trigger (typically a measured contention cost, an incident, or a customer commitment).
+Cross-service topology recommendations from this agent must cite the seam-crossing evidence that justifies them. That evidence includes a measured data-ownership conflict between bounded contexts, a failure-domain leak surfaced by an actual incident, a synchronous integration shape that has caused cascading failures, or a regulatory rule that forces a specific contract evolution. Speculative service splits, *for-future-flexibility* event topics, multi-region or HA topology for workloads that haven't proven single-region pressure, and *just-in-case* idempotency at every wire-crossing without a documented retry path are YAGNI candidates and are not recommended. Recommendations that cannot pass the evidence test are deferred with a named *reopen-when* trigger (typically a measured contention cost, an incident, or a customer commitment).
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
@@ -120,7 +120,7 @@ The agent's principles and vocabulary are grounded in established system-archite
 
 ### Eric Evans: *Domain-Driven Design: Tackling Complexity in the Heart of Software* (2003)
 
-Evans's strategic DDD (bounded context, ubiquitous language, context map, and the named relationships: partnership, customer-supplier, conformist, anti-corruption layer, shared kernel, open host service, published language, separate ways, big ball of mud) is the primary citable framework for the agent's recommendations. Every cross-context integration is classified using this vocabulary.
+Evans's strategic DDD is the primary citable framework for the agent's recommendations: bounded context, ubiquitous language, context map, and the named relationships (partnership, customer-supplier, conformist, anti-corruption layer, shared kernel, open host service, published language, separate ways, big ball of mud). Every cross-context integration is classified using this vocabulary.
 
 URL: https://www.domainlanguage.com/ddd/
 
@@ -144,7 +144,7 @@ URL: https://c4model.com/
 
 ### Eric Brewer, Daniel Abadi: CAP Theorem and PACELC
 
-Brewer's CAP theorem and Abadi's PACELC extension are the citable principles when a recommendation forces a choice between consistency and availability, or when the agent names latency/consistency trade-offs in normal operation.
+Brewer's CAP theorem and Abadi's PACELC extension are the citable principles when a recommendation forces a choice between consistency and availability. The agent also cites them when naming latency/consistency trade-offs in normal operation.
 
 URL: http://www.julianbrowne.com/article/brewers-cap-theorem
 
@@ -168,19 +168,19 @@ URL: https://pragprog.com/titles/mnee2/release-it-second-edition/
 
 ### Sam Newman: *Building Microservices* (2021, 2nd ed.)
 
-Newman's work on service boundaries, consumer-driven contract testing, schema evolution across services, and the trade-offs of synchronous vs. asynchronous integration informs the agent's integration-style recommendations and its skepticism about sync-by-default.
+Newman's work covers service boundaries, consumer-driven contract testing, schema evolution across services, and the trade-offs of synchronous vs. asynchronous integration. It informs the agent's integration-style recommendations and its skepticism about sync-by-default.
 
 URL: https://samnewman.io/books/building_microservices_2nd_edition/
 
 ### Matthew Skelton & Manuel Pais: *Team Topologies* (2019)
 
-Skelton and Pais's four team patterns (stream-aligned, platform, enabling, complicated-subsystem) and interaction modes (collaboration, X-as-a-Service, facilitating) give the agent the vocabulary for the Conway's Law alignment principle: whether the integration shape matches the team shape.
+Skelton and Pais's four team patterns (stream-aligned, platform, enabling, complicated-subsystem) and interaction modes (collaboration, X-as-a-Service, facilitating) give the agent its vocabulary for the Conway's Law alignment principle. That principle asks whether the integration shape matches the team shape.
 
 URL: https://teamtopologies.com/
 
 ### Melvin Conway: *How Do Committees Invent?* (1968)
 
-Conway's original observation, that systems mirror the communication structures of the organizations that build them, is the citable principle when the agent flags a topology that does not match its owning teams.
+Conway's original observation is that systems mirror the communication structures of the organizations that build them. It is the citable principle when the agent flags a topology that does not match its owning teams.
 
 URL: https://www.melconway.com/Home/Committees_Paper.html
 

@@ -17,7 +17,7 @@ Operator documentation for the `edge-case-explorer` agent in the han plugin. Thi
 - **Trace inputs to the immediate caller, deeper at boundaries.** Internal function-to-function chains are trusted unless a clear external-data or type-coercion signal appears. Exhaustive mode traces to origin.
 - **Code location per finding.** Every `EC#` cites the affected `file:line` and references the input it touches. Untraceable edge cases are dropped.
 - **Discovers and catalogs, does not write tests.** Output is a prioritization plan. `test-engineer` or your team writes the tests.
-- **`/code-review` adds a failure-mode-target dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction that findings must ultimately trace to a failure mode in code on the scoped file list, even when callers outside the file list provide the evidence for that failure mode. The agent's Protocol 1 caller-read still applies; the file-list scope is on the failure-mode target, not the evidence source. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
+- **`/code-review` adds a failure-mode-target dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction that findings must ultimately trace to a failure mode in code on the scoped file list. That holds even when callers outside the file list provide the evidence for that failure mode. The agent's Protocol 1 caller-read still applies; the file-list scope is on the failure-mode target, not the evidence source. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged.
 
 ## When to use it
 
@@ -75,7 +75,14 @@ The agent runs on `sonnet`. Focused mode runs in a couple of minutes for a focus
 
 ## YAGNI
 
-The agent enforces the **Speculative Edge Case** rule. Edge cases for input shapes no real upstream produces, code paths that don't exist yet, hypothetical adversaries the code does not face, or boundary conditions only symmetry would surface (*"we covered the lower bound, so we should cover the upper bound"* when only one bound is reachable) are YAGNI candidates. They move to Dropped Edge Cases with a named *reopen-when* trigger. When many speculative low-bound/high-bound items can be replaced by one durable boundary test that catches the realistic failure modes, the agent recommends the single test.
+The agent enforces the **Speculative Edge Case** rule. These are YAGNI candidates:
+
+- Edge cases for input shapes no real upstream produces.
+- Code paths that don't exist yet.
+- Hypothetical adversaries the code does not face.
+- Boundary conditions only symmetry would surface (*"we covered the lower bound, so we should cover the upper bound"* when only one bound is reachable).
+
+They move to Dropped Edge Cases with a named *reopen-when* trigger. When many speculative low-bound/high-bound items can be replaced by one durable boundary test that catches the realistic failure modes, the agent recommends the single test.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 

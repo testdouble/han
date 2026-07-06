@@ -7,7 +7,7 @@ Operator documentation for the `software-architect` agent in the han plugin. Thi
 ## TL;DR
 
 - **What it does.** Adversarially synthesizes intra-codebase analysis (structural, behavioral, concurrency, risk findings) into recommended software-architecture changes aligned with SOLID, high cohesion, and loose coupling. Assumes the current module structure is wrong (too coupled, too scattered, missing an abstraction at an infrastructure seam, or over-abstracted with interfaces that have one implementation) until evidence says otherwise.
-- **When to dispatch it.** After the three architectural analysts plus `risk-analyst` have produced findings for a focus area that lives inside a single codebase or bounded context, and you want synthesis into recommended changes with pseudocode sketches. Always dispatched by `/architectural-analysis` (it runs on the synthesis spine at every size). Conditionally dispatched by `/architectural-decision-record`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the work touches intra-codebase module boundaries or abstractions.
+- **When to dispatch it.** Dispatch after the three architectural analysts and `risk-analyst` have produced findings for a focus area that lives inside a single codebase or bounded context. Then dispatch it when you want synthesis into recommended changes with pseudocode sketches. Always dispatched by `/architectural-analysis` (it runs on the synthesis spine at every size). Conditionally dispatched by `/architectural-decision-record`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the work touches intra-codebase module boundaries or abstractions.
 - **What you get back.** Numbered `A#` recommendations, each cross-referencing the upstream findings it addresses, the SOLID or cohesion/coupling principle it grounds, the recommended change with pseudocode, and the risk if deferred.
 
 ## Key concepts
@@ -98,7 +98,7 @@ The agent refuses to:
 
 ## YAGNI
 
-Architectural recommendations from this agent must cite the change-history, coupling, or cohesion evidence that justifies them. Single-implementation interfaces, abstract base classes introduced before three concrete uses exist (the Rule of Three), and *"future flexibility"* abstractions are YAGNI candidates and are not recommended. When the upstream `structural-analyst` / `behavioral-analyst` / `concurrency-analyst` findings genuinely require a new abstraction, the agent prefers the strictly simpler version that satisfies the same finding: a single function over a class, a class over a class hierarchy, one concrete implementation over an interface with one implementation. Recommendations that cannot pass the evidence test are deferred with a named *reopen-when* trigger (typically a second or third concrete use case, a measured coupling cost, or a documented incident).
+Architectural recommendations from this agent must cite the change-history, coupling, or cohesion evidence that justifies them. Single-implementation interfaces, abstract base classes introduced before three concrete uses exist (the Rule of Three), and *"future flexibility"* abstractions are YAGNI candidates and are not recommended. When the upstream `structural-analyst` / `behavioral-analyst` / `concurrency-analyst` findings genuinely require a new abstraction, the agent prefers the strictly simpler version that satisfies the same finding. It favors a single function over a class, a class over a class hierarchy, and one concrete implementation over an interface with one implementation. Recommendations that cannot pass the evidence test are deferred with a named *reopen-when* trigger (typically a second or third concrete use case, a measured coupling cost, or a documented incident).
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
@@ -132,7 +132,7 @@ URL: https://martinfowler.com/books/refactoring.html
 
 ### Gamma, Helm, Johnson, Vlissides: *Design Patterns: Elements of Reusable Object-Oriented Software* (1994)
 
-The Gang of Four's pattern catalog is the agent's vocabulary when a finding matches a known structural remedy: Strategy for an OCP violation, Adapter for an interface-translation concern, Facade for a too-exposed subsystem. The agent cites the pattern by name.
+The Gang of Four's pattern catalog is the agent's vocabulary when a finding matches a known structural remedy. Examples include Strategy for an OCP violation, Adapter for an interface-translation concern, and Facade for a too-exposed subsystem. The agent cites the pattern by name.
 
 URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
 

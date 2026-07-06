@@ -1,6 +1,6 @@
 # Sizing
 
-Sizing is one of the two foundational mechanics of the han plugin. Every skill that dispatches a swarm of specialist agents (`/architectural-analysis`, `/code-overview`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`) first classifies the work as **small**, **medium**, or **large**, then uses that classification to decide how many agents to dispatch, which agents to dispatch, how many rounds to iterate, and how aggressively to calibrate findings.
+Sizing is one of the two foundational mechanics of the han plugin. Every skill that dispatches a swarm of specialist agents first classifies the work as **small**, **medium**, or **large**. That classification decides how many agents to dispatch, which agents to dispatch, how many rounds to iterate, and how aggressively to calibrate findings. The sizing-aware skills are `/architectural-analysis`, `/code-overview`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, and `/research`.
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [YAGNI](./yagni.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
 
@@ -8,7 +8,7 @@ Sizing is one of the two foundational mechanics of the han plugin. Every skill t
 
 - **Three bands.** Small / medium / large. Each band caps the team or swarm size and the iteration depth.
 - **Default is small.** Every sizing-aware skill starts the classification at **small** and only escalates to medium or large when concrete signals clearly require it. When a signal is borderline, the skill stays at the smaller band.
-- **Auto-classified.** When you do not pass `$size`, the skill reads concrete signals (file count, subsystems touched, security/data/infra surface, cross-cutting concerns) and announces the chosen size with a one-line justification before dispatching agents.
+- **Auto-classified.** When you do not pass `$size`, the skill reads concrete signals: file count, subsystems touched, security/data/infra surface, and cross-cutting concerns. It announces the chosen size with a one-line justification before dispatching agents.
 - **Always overridable.** Pass the size as the first positional argument when invoking the skill (`/code-review medium`, `/plan-a-feature small "describe the feature"`, and so on). The skill honors the override and still scales the team and round caps to the chosen size.
 - **Conservative by design.** Fewer agents producing higher-signal findings is the goal; quantity is not the metric. The skill prefers under-dispatching that you can re-run at a larger size to over-dispatching that drowns you in low-signal findings.
 
@@ -18,7 +18,7 @@ Specialist agents are expensive: in tokens, in latency, and in your attention to
 
 - A two-line README fix would dispatch the full security, structural, behavioral, concurrency, data, devops, test, and edge-case roster. You would drown in low-signal findings and burn tokens for nothing.
 - A genuinely cross-service change would get the same default roster as a single-file rename. The skill would miss specialists whose domain it touches, and the change would arrive under-reviewed.
-- Findings would not calibrate to scope: a `Suggestion` about a hypothetical scaling concern would land alongside a `Critical` about a real exploit, and the team would have to triage the false equivalence themselves.
+- Findings would not calibrate to scope. A `Suggestion` about a hypothetical scaling concern would land alongside a `Critical` about a real exploit, and the team would have to triage the false equivalence themselves.
 
 Sizing fixes all three. It picks a roster proportional to the actual change, calibrates each agent's brief to the size, and tells you up front what was chosen and why.
 

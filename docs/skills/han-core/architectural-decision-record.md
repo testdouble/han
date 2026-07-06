@@ -15,7 +15,10 @@ Operator documentation for the `/architectural-decision-record` skill in the han
 - **Three modes.** Creating new, Converting existing (from a general doc or meeting notes), Updating existing (status change, superseding, adding notes).
 - **Decision, not rule.** ADRs record *what was decided and why*, with rejected alternatives. A coding rule goes in a coding standard; a decision goes here.
 - **Codebase-grounded.** When creating a new ADR with sparse context, the skill dispatches one or two `codebase-explorer` agents to find the code and docs that motivate the decision.
-- **Architectural review before writing.** Unless the skill is running in update-only mode, three agents run in parallel against the proposed decision: an architect (`software-architect` for intra-codebase decisions, `system-architect` for cross-service decisions) to surface structural risks and the strongest case for each rejected alternative; `risk-analyst` to score the chosen option and each alternative on likelihood, severity, blast radius, and reversibility; and `junior-developer` to catch unexplained jargon and unjustified dismissals.
+- **Architectural review before writing.** Unless the skill is running in update-only mode, three agents run in parallel against the proposed decision:
+  - an architect (`software-architect` for intra-codebase decisions, `system-architect` for cross-service decisions), to surface structural risks and the strongest case for each rejected alternative
+  - `risk-analyst`, to score the chosen option and each alternative on likelihood, severity, blast radius, and reversibility
+  - `junior-developer`, to catch unexplained jargon and unjustified dismissals
 - **Hierarchically-prefixed filenames.** `{top-level}[-{second-level}]-{kebab-case-title}.md`. A one- or two-level hierarchy prefix (for example, `auth-tokens-rotation.md`) discovered at runtime from existing ADRs and project context, so related decisions sort together in a directory listing.
 - **Status lifecycle.** `proposed` → `accepted` → `superseded` / `deprecated`. The skill handles status transitions explicitly.
 
@@ -74,7 +77,7 @@ An ADR in the project's ADR directory, plus integration:
 
 ## Cost and latency
 
-The skill dispatches one or two `codebase-explorer` agents in create-new mode (Step 3), followed by three parallel review agents (an architect, either `software-architect` or `system-architect`, plus `risk-analyst` and `junior-developer`) that run against the proposed decision unless the ADR is update-only (status change). All agents run on their default models. Typical runs are a few minutes; the architectural review adds a short fan-out.
+The skill dispatches one or two `codebase-explorer` agents in create-new mode (Step 3). Then, unless the ADR is update-only (a status change), three parallel review agents run against the proposed decision: an architect (either `software-architect` or `system-architect`), plus `risk-analyst` and `junior-developer`. All agents run on their default models. Typical runs are a few minutes; the architectural review adds a short fan-out.
 
 ## In more detail
 

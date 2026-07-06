@@ -66,7 +66,7 @@ The structured output is designed to be consumed by `/gap-analysis`, which trans
 - **Be explicit about direction.** Default is current → desired. State *"bidirectional"* or *"reversed"* up front when needed.
 - **Scope narrowly when you can.** A bounded comparison area produces sharper gaps than a full-document compare.
 - **Provide both artifacts in their canonical form.** A URL plus a code directory works. A summary of either input degrades the agent's evidence pairs.
-- **Pair with a validator swarm — the default.** `/gap-analysis` runs `adversarial-validator` and `junior-developer` (actor-perspective sweep) against every gap by default, with `evidence-based-investigator` added when the current state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` when you want a raw analyzer-only pass for rapid first-pass scoping.
+- **Pair with a validator swarm (the default).** `/gap-analysis` runs `adversarial-validator` and `junior-developer` (actor-perspective sweep) against every gap by default, with `evidence-based-investigator` added when the current state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` when you want a raw analyzer-only pass for rapid first-pass scoping.
 
 ## Cost and latency
 

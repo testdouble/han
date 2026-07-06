@@ -71,7 +71,7 @@ Size sets how many specialists join the spine and how aggressively each agent ca
 How the size is chosen:
 
 - **Default to small.** Unless the focus area's signals push it into medium or large, the skill stays at small. Borderline signals stay at the smaller band.
-- **Signal-selected roster.** A specialist is dispatched only when the focus area actually exercises its domain. Larger sizes do not force agents whose signals are absent. They only raise the cap and widen what each agent escalates.
+- **Signal-selected roster.** A specialist is dispatched only when the focus area exercises its domain. Larger sizes do not force agents whose signals are absent. They only raise the cap and widen what each agent escalates.
 - **Calibration directive.** Every dispatched agent receives a directive scoped to the size. The smaller the size, the narrower the severity bands the agent escalates, and the more aggressively benign-outcome concerns are dropped.
 
 How to override the size:
@@ -124,11 +124,11 @@ The skill walks an eight-step process:
 1. **Validate the focus area and resolve project context.** Bind `$size` if it was passed. Confirm the focus area resolves to real files and identify its boundary. Read CLAUDE.md / project-discovery.md for conventions. Note git availability. If the focus area does not resolve, stop and ask you to clarify.
 2. **Detect signals and classify size.** Grep and Glob the focus area for concurrency, security, data, DevOps, and system-seam signals. Default to small and escalate only on clear higher-band signals. A passed `$size` overrides the classification but not the signal-based specialist selection.
 3. **Build the roster and announce it.** Assemble the spine plus the signalled specialists within the band cap, and state the size, roster, and per-specialist justification in one line before dispatching. The analysis is read-only, so there is no blocking gate.
-4. **Dispatch the discovery wave in parallel.** `structural-analyst`, `behavioral-analyst`, and any signalled discovery specialists run concurrently, each with a brief carrying the focus area, the driving concern, project conventions, git availability, and a size-scoped calibration directive.
+4. **Dispatch the discovery wave in parallel.** `structural-analyst`, `behavioral-analyst`, and any signalled discovery specialists run concurrently. Each receives a brief carrying the focus area, the driving concern, project conventions, git availability, and a size-scoped calibration directive.
 5. **Compile the discovery findings.** Collect verbatim output from every discovery agent, preserving every numbered item and prefix. A "no concurrency patterns found" result is kept verbatim.
 6. **Dispatch the risk analyst.** Pass `risk-analyst` the verbatim `S`/`B`/`C` findings (its documented input contract). It produces `R#` items cross-referencing the upstream findings.
 7. **Dispatch the synthesis architects.** `software-architect` always runs, consuming all discovery output plus the `R#` items. `system-architect` runs only when it is on the roster, consuming the same plus the DevOps and data findings as its documented optional inputs.
-8. **Render and present the report.** Read the template, fill it, drop the sections whose agent was not dispatched, write the Executive Summary last, and present the report in-channel with a short closing summary of size, roster, finding counts, and open items.
+8. **Render and present the report.** Read the template, fill it, and drop the sections whose agent was not dispatched. Write the Executive Summary last. Present the report in-channel with a short closing summary of size, roster, finding counts, and open items.
 
 ## Sources
 

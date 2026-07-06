@@ -22,7 +22,7 @@ han/
         template.md
 ```
 
-### Rule: Include only entity sections the plugin actually has
+### Rule: Include only entity sections the plugin has
 
 The README may include sections for Skills, Custom Agents, Hooks, MCP, and LSP, but only include sections for entity types the plugin provides. Every plugin has at least one skill, so the Skills section is always present. Don't include empty sections.
 
@@ -62,7 +62,7 @@ In the Skills section, list every skill using `/skill-name` format with a one-li
 
 ### Rule: Add Getting Started for plugins with guided workflows
 
-When skills build on each other's output (for example, one skill writes a reference file that other skills consume) include a Getting Started section between the description and the Skills list. Number the steps in the recommended order and explain what each step produces and why it matters for subsequent steps.
+Include a Getting Started section between the description and the Skills list when skills build on each other's output. For example, one skill might write a reference file that other skills then consume. Number the steps in the recommended order and explain what each step produces and why it matters for subsequent steps.
 
 Single-skill plugins and plugins where all skills are independent skip this section entirely.
 

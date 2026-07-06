@@ -20,7 +20,11 @@ Operator documentation for the `devops-engineer` agent in the han plugin. This d
 
 ## Summary
 
-An adversarial DevOps / Site Reliability engineer that audits a feature, change, service, pipeline, or environment and writes a production-readiness report. Its default stance is that the current system will break in production. Every finding is backed by a specific location, a named operational principle, and a concrete blast-radius statement. Questioning is a core behavior. The agent generates and logs the hard questions a senior DevOps engineer would ask in a readiness review, and it flags any question it cannot answer as an Open Question so the team can resolve it rather than letting the audit rest on an invented production profile. The adversarial stance is paired with pragmatic sequencing: every blocker-severity finding includes a P0 next step the team can ship today, plus P1/P2 improvements for later sprints and quarters, so the agent does not become a bottleneck teams route around.
+An adversarial DevOps / Site Reliability engineer that audits a feature, change, service, pipeline, or environment and writes a production-readiness report. Its default stance is that the current system will break in production. Every finding is backed by a specific location, a named operational principle, and a concrete blast-radius statement.
+
+Questioning is a core behavior. The agent generates and logs the hard questions a senior DevOps engineer would ask in a readiness review. It flags any question it cannot answer as an Open Question, so the team can resolve it rather than letting the audit rest on an invented production profile.
+
+The adversarial stance is paired with pragmatic sequencing. Every blocker-severity finding includes a P0 next step the team can ship today, plus P1/P2 improvements for later sprints and quarters, so the agent does not become a bottleneck teams route around.
 
 ## When to use it
 
@@ -64,7 +68,7 @@ Thin prompts (*"audit the infra"*) still work but produce more Open Questions an
 - A summary in the tool-call response: a 1–3 sentence readiness posture, a severity count table (Blocks rollout / Degrades reliability / Operational friction / Polish / YAGNI candidate), an Open Questions count, and the path to the full report.
 - A full report on disk with: scope, production context, question log (Answered / Assumed / Open), assumptions, open questions, numbered findings tied to operational principles and locations, and a DevOps Improvement Summary that sequences shipping vs. improving with explicit P0/P1/P2 steps.
 
-Every finding is traceable to an operational principle (DORA key, Twelve-Factor factor, Four Golden Signal, SLO policy, AWS Well-Architected practice, SLSA level, or a named failure mode), a concrete location in the repo, and a question in the log. If something is not traceable, the agent is instructed to drop it.
+Every finding is traceable to an operational principle, a concrete location in the repo, and a question in the log. Principles include a DORA key, a Twelve-Factor factor, a Four Golden Signal, an SLO policy, an AWS Well-Architected practice, an SLSA level, or a named failure mode. If something is not traceable, the agent is instructed to drop it.
 
 ## How to get the most out of it
 
@@ -83,7 +87,22 @@ The agent runs on `opus`. A single audit is slower and more expensive than a typ
 
 ## YAGNI
 
-The agent enforces the **Premature Operational Machinery** rule. Runbooks for alerts that have never fired (the canonical example: Sentry runbooks for staging-only Sentry where data isn't reaching production), SLOs and error budgets for traffic the system doesn't yet receive, multi-region or HA infrastructure for workloads that haven't proven single-region pressure, dashboards for failure modes that have never occurred, and observability instrumentation for telemetry that isn't reaching its destination yet are YAGNI candidates. Acceptable evidence operational machinery is needed now: the alert has fired (cite the incident), the SLO is being measured against real traffic (cite the metric), the failure mode is documented (cite the post-mortem), or the workload has measured single-region pressure (cite the metric). Recommendations that fail the evidence test are deferred with a named *reopen-when* trigger.
+The agent enforces the **Premature Operational Machinery** rule. These are YAGNI candidates:
+
+- Runbooks for alerts that have never fired (the canonical example: Sentry runbooks for staging-only Sentry where data isn't reaching production).
+- SLOs and error budgets for traffic the system doesn't yet receive.
+- Multi-region or HA infrastructure for workloads that haven't proven single-region pressure.
+- Dashboards for failure modes that have never occurred.
+- Observability instrumentation for telemetry that isn't reaching its destination yet.
+
+Acceptable evidence operational machinery is needed now:
+
+- The alert has fired (cite the incident).
+- The SLO is being measured against real traffic (cite the metric).
+- The failure mode is documented (cite the post-mortem).
+- The workload has measured single-region pressure (cite the metric).
+
+Recommendations that fail the evidence test are deferred with a named *reopen-when* trigger.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
@@ -93,13 +112,13 @@ The agent's protocols and vocabulary are grounded in published frameworks and re
 
 ### DORA: Software Delivery Performance Metrics
 
-The DORA research program (DevOps Research and Assessment, now at Google Cloud) established the four keys (Deployment Frequency, Lead Time for Changes, Change Failure Rate, and Failed Deployment Recovery Time, formerly MTTR) as the industry-standard measurement of software delivery. The agent walks all four as a protocol and uses them as the citable principle on delivery-performance findings. A later refinement added Reliability as a fifth metric.
+The DORA research program (DevOps Research and Assessment, now at Google Cloud) established the four keys as the industry-standard measurement of software delivery. The four keys are Deployment Frequency, Lead Time for Changes, Change Failure Rate, and Failed Deployment Recovery Time (formerly MTTR). The agent walks all four as a protocol and uses them as the citable principle on delivery-performance findings. A later refinement added Reliability as a fifth metric.
 
 URL: https://dora.dev/guides/dora-metrics-four-keys/
 
 ### Google: Site Reliability Engineering (SRE Book and Workbook)
 
-The two books from Google's SRE organization are the canonical source for error budgets, service level objectives, toil, blameless postmortems, and cascading-failure patterns. The agent cites SLI / SLO / error-budget / burn-rate vocabulary directly from this body of work and uses the "Monitoring Distributed Systems" chapter as the source for the Four Golden Signals (latency, traffic, errors, saturation).
+The two books from Google's SRE organization are the canonical source for error budgets, service level objectives, toil, blameless postmortems, and cascading-failure patterns. The agent cites SLI / SLO / error-budget / burn-rate vocabulary directly from this body of work. It uses the "Monitoring Distributed Systems" chapter as the source for the Four Golden Signals (latency, traffic, errors, saturation).
 
 URLs: https://sre.google/sre-book/table-of-contents/ and https://sre.google/workbook/table-of-contents/
 

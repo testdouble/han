@@ -1,6 +1,6 @@
 # How To: Research a Decision and Capture It
 
-A walkthrough for getting from an open-ended question ("which library", "which pattern", "which hosting move") to an adversarially-validated recommendation, then locking the chosen direction in as an ADR so the team has a single canonical record of what was decided and why.
+This walkthrough moves you from an open-ended question ("which library", "which pattern", "which hosting move") to an adversarially-validated recommendation. Then it locks the chosen direction in as an architectural decision record (ADR), so the team keeps a single canonical record of what was decided and why.
 
 > See also: [How-to index](./README.md) · [Quickstart](../quickstart.md) · [Skills](../skills/README.md)
 
@@ -13,7 +13,7 @@ A walkthrough for getting from an open-ended question ("which library", "which p
 
 ## What you'll end up with
 
-- A research report with a plain-language summary on top, results with minimal jargon, indexed options (`O1, O2, …`) when applicable, the recommendation and its evidence basis, validation findings (`V1, V2, …`), and an indexed Sources registry (`A1, A2, …`) at the bottom with every source's link, retrieval date, trust class, summary, and evidence status all in one entry.
+- A research report, with a plain-language summary on top and results in minimal jargon. It includes indexed options (`O1, O2, …`) when applicable, the recommendation with its evidence basis, and validation findings (`V1, V2, …`). At the bottom, an indexed Sources registry (`A1, A2, …`) lists every source's link, retrieval date, trust class, summary, and evidence status, all in one entry.
 - An architectural decision record (ADR) capturing the choice, the rejected alternatives, and the reasons. Filed in your project's ADR directory.
 
 When you have both, the decision is researched, validated, and locked in as a single canonical record the team can refer back to.
@@ -40,7 +40,7 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 
 2. **Read the recommendation and the validation section together.** The recommendation lives near the top of the report; the validation findings sit immediately below. The validator frequently downgrades a single-source recommendation, surfaces a stale benchmark, or rewrites the recommendation into a "no clear winner" form when the evidence does not support a single answer. Read both sections side by side.
 
-3. **Decide whether the evidence is strong enough to act on.** If the recommendation rests on corroborated evidence from independent sources and survived adversarial validation, move to Phase 2. If it rests on a single source, on staleness, or on the report's own reasoning (exploratory mode), decide whether you want a follow-up run to close the gap or whether the recommendation is strong enough for your situation.
+3. **Decide whether the evidence is strong enough to act on.** If the recommendation rests on corroborated evidence from independent sources and survived adversarial validation, move to Phase 2. If it rests on a single source, on staleness, or on the report's own reasoning (exploratory mode), decide what to do next. Either run a follow-up to close the gap, or judge the recommendation strong enough for your situation as it stands.
 
 ### Phase 2: Capture the decision as an ADR
 
@@ -52,13 +52,13 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 
     > `/architectural-decision-record the choice of using Postgres-backed Solid Queue for background jobs, with Sidekiq and GoodJob as alternatives. We chose Solid Queue because we want to avoid adding Redis, the throughput meets our needs, and the Rails 8 integration is first-class. Reference the research report at docs/research/background-jobs.md.`
 
-    The skill writes an ADR using your project's ADR template (or a sensible default if none exists), with the decision, the alternatives, the consequences, and a link back to the research report so future readers can see the evidence the decision rested on.
+    The skill writes an ADR using your project's ADR template, or a sensible default if none exists. It includes the decision, the alternatives, the consequences, and a link back to the research report, so future readers can see the evidence the decision rested on.
 
 2. **Review the ADR.** Check that it names the right alternatives, the right reasons, and the right consequences. The skill pulls from the research report directly, so the body should match the recommendation; if it does not, push back.
 
 ## Variations
 
-- **The research came back as "no clear winner".** This is not a failure. It means the evidence does not yet support a single recommendation. The report names the deciding criteria, the specific evidence that would settle the question. Gather what is named and re-run, or pick one based on local constraints and capture the choice with an ADR that explicitly notes the evidence gap.
+- **The research came back as "no clear winner".** This is not a failure. It means the evidence does not yet support a single recommendation. The report names the deciding criteria, the specific evidence that would settle the question. Gather what is named and re-run. Or pick one based on local constraints, and capture the choice with an ADR that explicitly notes the evidence gap.
 
 - **You want a take more than you want a sourced answer.** Add an explicit opt-out phrase to the prompt: `evidence optional`, `allow unsourced`, or `exploratory`. These signal intent to the skill rather than acting as exact magic strings, so a similar phrasing also works. The skill switches to exploratory mode, lets unevidenced reasoning inform the recommendation, and labels every claim's evidence status either way. Use this for early exploration; switch back to strict mode before committing to the direction.
 

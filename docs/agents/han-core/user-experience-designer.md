@@ -12,16 +12,18 @@ Operator documentation for the `user-experience-designer` agent in the han plugi
 
 ## Key concepts
 
-- **Named UX and IxD frameworks.** Findings cite Nielsen's 10 heuristics, WCAG 2.2, universal design (Mace 1997), affordance and signifier theory (Norman), Saffer's microinteractions (trigger / rules / feedback / loops and modes), Cooper's goal-directed design, Fitts's Law, Hick's Law, and named dark-pattern categories.
+- **Named UX and interaction-design (IxD) frameworks.** Findings cite Nielsen's 10 heuristics, WCAG 2.2, universal design (Mace 1997), affordance and signifier theory (Norman), Saffer's microinteractions (trigger / rules / feedback / loops and modes), Cooper's goal-directed design, Fitts's Law, Hick's Law, and named dark-pattern categories.
 - **Interaction design is in scope.** The agent audits the interactive layer alongside the broader user experience: microinteractions, input modality coverage (pointer, keyboard, touch, voice, conversational/agent), and motion as a functional channel. Not separate disciplines, but folded into the same protocols.
 - **Persona spectrum, not a single persona.** Findings consider first-time users, occasional users, habitual experts, and accessibility users. Not "the user."
 - **Jobs-to-Be-Done framing.** Every audit is grounded in a concrete user goal before critique begins. If the goal cannot be defensibly stated, the agent flags it as an Open Question rather than inventing a user.
 - **Open Questions as first-class output.** Questions the audit could not answer (arrival path, prior knowledge, device context) are listed separately.
 - **Does not review content structure.** For documentation, READMEs, API references, and ADR collections, dispatch `information-architect` instead or in parallel.
 
-## Summary
+## Default posture: adversarial and question-driven
 
-An adversarial UX designer that audits a feature, screen, or flow and writes a findings report. Its default stance is that the current experience is less than optimal. Every finding is backed by evidence and tied to an established UX principle. Questioning is a core behavior. The agent generates and logs the hard questions a senior designer would ask, and it flags any question it cannot answer as an Open Question so the team can resolve it rather than letting the audit rest on an invented user.
+The agent is an adversarial UX designer that audits a feature, screen, or flow and writes a findings report. Its default stance is that the current experience is less than optimal. Every finding is backed by evidence and tied to an established UX principle.
+
+Questioning is a core behavior. The agent generates and logs the hard questions a senior designer would ask. It flags any question it cannot answer as an Open Question, so the team can resolve it rather than letting the audit rest on an invented user.
 
 ## When to use it
 
@@ -58,8 +60,8 @@ Thin prompts (*"review the UI"*) still work but produce more Open Questions and 
 
 ## What you get back
 
-- A summary in the tool-call response: a 1–3 sentence posture, a severity count table (Blocks task / Degrades task / Friction / Polish), an Open Questions count, and the path to the full report.
-- A full report on disk with: scope, user context, question log (Answered / Assumed / Open), assumptions, open questions, numbered findings tied to principles and locations, and a UX Improvement Summary that sequences shipping vs. improving.
+- A summary in the tool-call response includes a 1–3 sentence posture, a severity count table (Blocks task / Degrades task / Friction / Polish), and an Open Questions count. It also gives the path to the full report.
+- A full report on disk with scope, user context, and a question log (Answered / Assumed / Open). It also lists assumptions, open questions, numbered findings tied to principles and locations, and a UX Improvement Summary that sequences shipping vs. improving.
 
 Every finding is traceable to a UX principle, a UI location, and a question in the log. If something is not traceable, the agent is instructed to drop it.
 
@@ -68,7 +70,7 @@ Every finding is traceable to a UX principle, a UI location, and a question in t
 - **Provide a user goal.** The single biggest lever. A jobs-to-be-done statement (*"When I {situation}, I want to {motivation}, so I can {outcome}"*) collapses whole classes of Open Questions.
 - **Name the persona spectrum.** Tell the agent which permanent, temporary, and situational constraints matter for this audit (for example, *"users are on Android in transit, often one-handed"*). This focuses the accessibility and universal-design protocols.
 - **Say what ships when.** If a deadline is looming, ask the agent to sequence findings into *"must-fix-now"* vs. *"track-and-improve."* It already does this, but a reminder sharpens the judgment.
-- **Treat Open Questions as work.** They are not rhetorical. Each one is something the team must answer (in brief, in analytics, in user research, or in a product decision) to fully trust the severity of the findings that depend on it.
+- **Treat Open Questions as work.** They are not rhetorical. Each one is something the team must answer (in brief, in analytics, in user research, or in a product decision). Answering it is what lets the team fully trust the severity of the findings that depend on it.
 - **Re-run after changes.** The agent is cheap to re-dispatch once a brief or fix has landed. Open Questions from the first pass become Answered in the second.
 - **Pair with a reviewer agent.** The agent generates findings. It does not evaluate its own output. If you want adversarial validation of the UX report, follow it with `adversarial-validator` or a fresh agent pass. See [multi-agent-economics.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md) for why self-evaluation is a bad default.
 
@@ -106,7 +108,7 @@ URLs: https://ixdf.org/literature/topics/affordances and https://ixdf.org/litera
 
 ### Dan Saffer: Microinteractions
 
-Dan Saffer's *Microinteractions* defines the unit of interaction design as a single contained moment (a toggle, a save, a react, an undo) and decomposes it into four parts: trigger, rules, feedback, and loops/modes. The agent uses this framework inside its affordance protocol so that every meaningful interaction in the focus area can be audited for whether each of the four parts is present and discoverable. The `Microinteraction Silence` anti-pattern is derived directly from this framework and catches actions that mutate state without perceptible feedback.
+Dan Saffer's *Microinteractions* defines the unit of interaction design as a single contained moment (a toggle, a save, a react, an undo). It decomposes that moment into four parts: trigger, rules, feedback, and loops/modes. The agent uses this framework inside its affordance protocol. Every meaningful interaction in the focus area can be audited for whether each of the four parts is present and discoverable. The `Microinteraction Silence` anti-pattern is derived directly from this framework and catches actions that mutate state without perceptible feedback.
 
 URL: https://www.oreilly.com/library/view/microinteractions/9781449342821/
 
@@ -130,19 +132,19 @@ URL: https://dovetail.com/ux/hicks-law/
 
 ### Microsoft Inclusive Design Toolkit: Persona Spectrum
 
-Microsoft's toolkit reframes disability as a mismatch between a person and their environment and maps abilities across permanent, temporary, and situational constraints. The agent requires every audit to enumerate the persona spectrum it is scoping to (one-handed, low-bandwidth, second-language reading, assistive-tech use, cognitive fatigue) and flags `Persona of One` as an explicit anti-pattern when findings collapse the spectrum into a single ideal user.
+Microsoft's toolkit reframes disability as a mismatch between a person and their environment and maps abilities across permanent, temporary, and situational constraints. The agent requires every audit to enumerate the persona spectrum it is scoping to (one-handed, low-bandwidth, second-language reading, assistive-tech use, cognitive fatigue). It flags `Persona of One` as an explicit anti-pattern when findings collapse the spectrum into a single ideal user.
 
 URL: https://inclusive.microsoft.design/tools-and-activities/InclusiveActivityCards.pdf
 
 ### Harry Brignull: Dark Patterns (Deceptive Design)
 
-UX designer Harry Brignull coined "dark patterns" in 2010 to describe design choices that steer users against their own interests. A 2022 European Commission report found 97% of popular EU-facing sites used at least one. The agent scans consent, subscription, cancellation, delete, and permission flows for named classes (confirmshaming, roach motel, sneak into basket, misdirection, forced continuity, trick questions, privacy zuckering, nagging), and the `Dark Pattern Blindness` anti-pattern forces this scan even on flows that look successful by conversion metrics.
+UX designer Harry Brignull coined "dark patterns" in 2010 to describe design choices that steer users against their own interests. A 2022 European Commission report found 97% of popular EU-facing sites used at least one. The agent scans consent, subscription, cancellation, delete, and permission flows for named classes (confirmshaming, roach motel, sneak into basket, misdirection, forced continuity, trick questions, privacy zuckering, nagging). The `Dark Pattern Blindness` anti-pattern forces this scan even on flows that look successful by conversion metrics.
 
 URL: https://en.wikipedia.org/wiki/Dark_pattern
 
 ### Clayton Christensen: Jobs to Be Done (via Nielsen Norman Group)
 
-The Jobs-to-Be-Done framework frames research around the progress a user is trying to make, not demographic personas. The agent uses the JTBD statement format in its Critical Inquiry protocol to force a concrete user goal before critique begins, which blocks the `Invented User` anti-pattern and complements the persona spectrum.
+The Jobs-to-Be-Done framework frames research around the progress a user is trying to make, not demographic personas. The agent uses the JTBD statement format in its Critical Inquiry protocol to force a concrete user goal before critique begins. That requirement blocks the `Invented User` anti-pattern and complements the persona spectrum.
 
 URL: https://www.nngroup.com/articles/personas-jobs-be-done/
 

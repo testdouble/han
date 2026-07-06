@@ -25,7 +25,7 @@ Operator documentation for the `/investigate` skill in the han plugin. This docu
 - A bug, failure, or unexpected behavior needs a root cause backed by code-level evidence.
 - An integration or API call is misbehaving and you want a trace from symptoms to data flow to recent changes.
 - You suspect a regression and want the investigation to consider git history alongside the code.
-- You want the proposed fix adversarially validated, not just designed, before writing any code.
+- You want the proposed fix adversarially validated, not only designed, before writing any code.
 - You want a durable report that names the exact file, function, and line where the problem originates, plus the evidence that proves it.
 
 **Do not invoke for:**
@@ -79,7 +79,7 @@ The plan is presented for approval before any code is written. Approve to trigge
 
 ## Cost and latency
 
-The skill dispatches at least two `evidence-based-investigator` agents in parallel, plus zero to three specialist analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) depending on bug classification, followed by `adversarial-validator` agents for the validation pass, then one `han-core:readability-editor` rewrite of the write-up. Agents run on their default models. For a medium-complexity bug, expect one investigation round, one validation round, and one readability pass, roughly five to eight sub-agent dispatches. The skill is built for per-bug cadence, not tight-loop iteration. Fix the bug and move on.
+The skill dispatches at least two `evidence-based-investigator` agents in parallel, plus zero to three specialist analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) depending on bug classification. `adversarial-validator` agents then run the validation pass, followed by one `han-core:readability-editor` rewrite of the write-up. Agents run on their default models. For a medium-complexity bug, expect one investigation round, one validation round, and one readability pass, roughly five to eight sub-agent dispatches. The skill is built for per-bug cadence, not tight-loop iteration. Fix the bug and move on.
 
 ## In more detail
 
@@ -89,7 +89,7 @@ The skill walks a five-step process:
 2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan file using the template at [`references/template.md`](../../../han-coding/skills/investigate/references/template.md).
 3. **Plan the fix.** The skill resolves project config (CLAUDE.md → project-discovery.md → docs/ Glob fallback), reads ADRs and coding standards relevant to the fix, and writes the Planned Fix section with file-level changes justified by specific evidence items.
 4. **Adversarial validation.** `adversarial-validator` agents receive the full evidence summary, root cause analysis, and planned fix. They challenge evidence, challenge the fix, and challenge assumptions. Counter-evidence becomes `V#` findings that reshape the plan.
-5. **Summary and user review.** The skill writes the Summary section at the top of the report, dispatches `readability-editor` to rewrite the write-up for the engineer who will implement the fix (preserving every fact and `file:line` reference), runs a readability self-check over the prose, and presents the plan for approval.
+5. **Summary and user review.** The skill writes the Summary section at the top of the report. It then dispatches `readability-editor` to rewrite the write-up for the engineer who will implement the fix, preserving every fact and `file:line` reference. Finally it runs a readability self-check over the prose and presents the plan for approval.
 
 ## Sources
 

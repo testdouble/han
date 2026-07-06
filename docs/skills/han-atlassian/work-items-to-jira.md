@@ -16,8 +16,8 @@ Operator documentation for the `/work-items-to-jira` skill in the opt-in `han-at
 - **The Atlassian MCP server is required.** The skill checks the server is connected before it does any work. If the server is missing or not authenticated, the skill stops. It drives Jira entirely through the MCP server; there is no `gh`-style CLI and no shell-script pipeline.
 - **Sensible Jira defaults, all overridable.** Each ticket is created as a **Story**, **unassigned**, in the project's **Backlog**, with the **reporter** taken from the authenticated Atlassian MCP identity. You can override the issue type, set an assignee, name a target column, and parent every ticket under an epic or a story.
 - **Parenting is optional, and the parent decides the child type.** Pass `--parent <KEY>` to parent every created ticket. Name an **epic** and each item is a standard issue (Story by default) under the epic. Name a **story** (any standard issue) and each item is a **subtask** under the story, defaulting to the project's subtask issue type. You cannot parent under a subtask. Leave `--parent` out and tickets sit at the project's top level. `--epic <KEY>` is a deprecated alias for `--parent`. If a company-managed Jira project rejects parenting an item under an epic, the skill surfaces the project's legacy "Epic Link" field requirement rather than dropping the parent silently.
-- **Within-file dependencies.** Every SYM named in a `Depends on` line must resolve to another slice in the same file. After all tickets exist, the skill records each dependency in the dependent ticket (rewriting its `Depends on` line to the blockers' Jira keys) and creates a native "is blocked by" link when the configured MCP exposes an issue-link capability.
-- **Reference artifacts, not process artifacts.** Every ticket description carries the artifacts an implementer needs (API and event contracts, design references, schema docs, ADRs, coding standards) and never the process artifacts that record how the plan was reached (iteration histories, decision logs, review findings). The full include and exclude lists live in [the reference artifact inventory](../../../han-atlassian/skills/work-items-to-jira/references/reference-artifact-inventory.md).
+- **Within-file dependencies.** Every SYM named in a `Depends on` line must resolve to another slice in the same file. After all tickets exist, the skill records each dependency in the dependent ticket by rewriting its `Depends on` line to the blockers' Jira keys. It also creates a native "is blocked by" link when the configured MCP exposes an issue-link capability.
+- **Reference artifacts, not process artifacts.** Every ticket description carries the artifacts an implementer needs: API and event contracts, design references, schema docs, ADRs, coding standards. It never carries the process artifacts that only record how the plan was reached, such as iteration histories, decision logs, or review findings. The full include and exclude lists live in [the reference artifact inventory](../../../han-atlassian/skills/work-items-to-jira/references/reference-artifact-inventory.md).
 - **No screenshot embedding.** The GitHub sibling copies PNGs into the target code repo and embeds same-repo URLs. That mechanism is GitHub-specific and is not part of this skill. Design references are carried as links in the ticket; add image attachments in Jira by hand if a ticket needs them.
 - **Evidence-based repair.** When a format check fails, the skill proposes a fix backed by a concrete source (a file path with line number, a plan section, an ADR ID) and lets you continue with the fills, correct them, or stop.
 - **Idempotent resume.** After a ticket is created, its slice heading in the source file is annotated with the Jira key. A re-run skips already-annotated slices, so a partial run resumes cleanly.
@@ -40,7 +40,7 @@ Operator documentation for the `/work-items-to-jira` skill in the opt-in `han-at
 
 Run `/work-items-to-jira` in Claude Code.
 
-The skill ships in the opt-in `han-atlassian` plugin, which the `han` meta-plugin does not bundle. Install it on its own first with `/plugin install han-atlassian@han` (it pulls `han-core`, `han-planning`, and `han-coding` along the way), and make sure the Atlassian MCP server is configured and authenticated. See [Choosing a Han plugin](../../choosing-a-han-plugin.md) for where it sits in the suite.
+The skill ships in the opt-in `han-atlassian` plugin, which the `han` meta-plugin does not bundle. Install it on its own first with `/plugin install han-atlassian@han`; it pulls `han-core`, `han-planning`, and `han-coding` along the way. Then make sure the Atlassian MCP server is configured and authenticated. See [Choosing a Han plugin](../../choosing-a-han-plugin.md) for where it sits in the suite.
 
 Give it:
 
@@ -94,7 +94,7 @@ The skill walks a short, deterministic process:
 0. **Atlassian MCP preflight.** Call `getAccessibleAtlassianResources` to confirm the server is connected and get the cloud ID. Stop here if it is unavailable.
 1. **Locate the work-items file.** Read the single `work-items.md` from `/plan-work-items`.
 2. **Gather the run options.** Project or board, parent, issue type, assignee, column, taken from the arguments.
-3. **Resolve the target against Jira.** Confirm the project, resolve the parent and read its hierarchy level to decide whether children are standard issues (epic parent) or subtasks (story parent), validate the issue type against the project's metadata at the right hierarchy level, resolve the assignee account ID, and hold the column for the placement step.
+3. **Resolve the target against Jira.** Confirm the project. Resolve the parent and read its hierarchy level to decide whether children are standard issues (epic parent) or subtasks (story parent). Validate the issue type against the project's metadata at the right hierarchy level. Resolve the assignee account ID. Hold the column for the placement step.
 4. **Validate the format with evidence-based repair.** Check heading shape, `Depends on` syntax, within-file blockers, references present, and no process artifacts. Propose evidence-backed fixes and give you continue / correct / stop.
 5. **Show the plan for confirmation.** Present the destination and the table of tickets to create, and wait for an explicit yes.
 6. **Create one ticket per slice.** `createJiraIssue` with project, the resolved type, summary, description, optional parent (epic or story), optional assignee. Annotate each slice heading with the returned key.
@@ -108,7 +108,7 @@ The skill drives Jira through the Atlassian MCP server. Each source below is cit
 
 ### Atlassian Remote MCP Server
 
-The skill's Jira operations — discovering accessible sites and the cloud ID, listing visible projects, reading a project's issue-type metadata, looking up an assignee's account ID, creating and editing issues, and transitioning an issue between statuses — are the named tools the Atlassian Remote MCP server exposes. The skill calls them directly rather than through a CLI.
+The Atlassian Remote MCP server exposes the named tools the skill's Jira operations use. These include discovering accessible sites and the cloud ID, listing visible projects, reading a project's issue-type metadata, looking up an assignee's account ID, creating and editing issues, and transitioning an issue between statuses. The skill calls them directly rather than through a CLI.
 
 URL: https://www.atlassian.com/platform/remote-mcp-server
 

@@ -14,16 +14,16 @@ Operator documentation for the `/runbook` skill in the han plugin. This document
 
 - **Three modes.** Creating new, Updating existing (edit in place, new change-history entry), Validating existing (refresh `Last validated` after running the procedure end-to-end).
 - **One runbook per invocation.** The skill produces a single file. Rerun the skill per scenario; do not try to batch.
-- **YAGNI preflight.** Before the skill writes anything, it requires the scenario to be real: an alert that has fired, a documented incident, a recurring task, a live failure mode on a service receiving traffic, or a customer / stakeholder commitment. Speculative runbooks are deferred.
-- **Symptom-first structure.** The template promotes Symptoms to a top-level section directly under the metadata block so a reader arriving from an alert link can confirm "this is the right runbook" in under ten seconds.
+- **YAGNI preflight.** Before the skill writes anything, it requires the scenario to be real. That means an alert that has fired, a documented incident, a recurring task, a live failure mode on a service receiving traffic, or a customer / stakeholder commitment. Speculative runbooks are deferred.
+- **Symptom-first structure.** The template promotes Symptoms to a top-level section directly under the metadata block. That way, a reader arriving from an alert link can confirm "this is the right runbook" in under ten seconds.
 - **Imperative commands with expected output.** Every step in the procedure shows the exact command and what success looks like. Prose paragraphs in place of commands are an authoring failure the skill prompts against.
-- **Staleness made visible.** Owner, Last validated, Last edited, Reversible, Origin, and a Change history with validation status all sit in the metadata so decay shows up in the artifact instead of hiding inside it.
+- **Staleness made visible.** Owner, Last validated, Last edited, Reversible, Origin, and a Change history with validation status all sit in the metadata. That way, decay shows up in the artifact instead of hiding inside it.
 
 ## When to use it
 
 **Invoke when:**
 
-- An alert just fired for the first time and you mitigated it manually; capture what you did before you forget.
+- An alert recently fired for the first time and you mitigated it manually; capture what you did before you forget.
 - A documented incident or post-mortem produced a procedure that should be reusable.
 - The team performs a recurring task (cert rotation, index rebuild, monthly data export) and the procedure should be captured so it does not live only in one person's head.
 - A known failure mode on a live service needs a documented response before the next on-call rotation.
@@ -35,7 +35,7 @@ Operator documentation for the `/runbook` skill in the han plugin. This document
 - **An architectural or design decision.** Use [`/architectural-decision-record`](./architectural-decision-record.md). An ADR records a decision and its alternatives; a runbook captures an operational procedure.
 - **Coding rules or conventions.** Use [`/coding-standard`](../han-coding/coding-standard.md).
 - **An incident investigation in flight.** Use [`/investigate`](../han-coding/investigate.md) for evidence-based root-cause work. Run `/runbook` after the investigation lands a procedure that the team will reuse.
-- **A speculative runbook for an alert that has not fired.** The skill's YAGNI preflight will defer it. Wait until the alert actually fires or until evidence accumulates.
+- **A speculative runbook for an alert that has not fired.** The skill's YAGNI preflight will defer it. Wait until the alert fires or until evidence accumulates.
 
 ## How to invoke it
 
@@ -75,21 +75,21 @@ A single runbook file plus light integration:
 
 ## YAGNI
 
-A runbook requires **evidence the scenario is real today**: an alert that has fired, a documented incident, a recurring task that exists, a live failure mode on a service receiving production traffic, or a customer or stakeholder commitment to document the procedure. Runbooks for hypothetical alerts, "we might need this someday," or symmetry with other runbooks ("we have one for the database, so we should have one for the cache") are YAGNI candidates and are deferred.
+A runbook requires **evidence the scenario is real today**. That means an alert that has fired, a documented incident, a recurring task that exists, a live failure mode on a service receiving production traffic, or a customer or stakeholder commitment to document the procedure. Runbooks for hypothetical alerts, "we might need this someday," or symmetry with other runbooks ("we have one for the database, so we should have one for the cache") are YAGNI candidates. They are deferred.
 
 The canonical project anti-pattern: Sentry runbooks for staging-only Sentry where data isn't reaching production. The alerts will never fire because no signal flows, and the runbook becomes a load-bearing pattern future agents will copy.
 
-When the preflight finds no current trigger, the skill recommends deferring the runbook and names the trigger that would justify revisiting (the alert firing, the first occurrence of the failure mode, the first run of the recurring task, a customer commitment landing). The user always wins; if they override, the override is recorded explicitly in the runbook's Origin field so future readers can see the runbook was written without standard evidence.
+When the preflight finds no current trigger, the skill recommends deferring the runbook. It names the trigger that would justify revisiting: the alert firing, the first occurrence of the failure mode, the first run of the recurring task, or a customer commitment landing. The user always wins; if they override, the override is recorded explicitly in the runbook's Origin field so future readers can see the runbook was written without standard evidence.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
-The companion [evidence rule](../../evidence.md) applies to the citations that ground the scenario: name the trust class of each piece of evidence (alert history, incident report, on-call rotation pattern); cite the actual artifact (dashboard URL, ticket ID, log query) rather than paraphrased recollection; surface single-source claims as such rather than presenting them as settled.
+The companion [evidence rule](../../evidence.md) applies to the citations that ground the scenario. Name the trust class of each piece of evidence (alert history, incident report, on-call rotation pattern). Cite the actual artifact (dashboard URL, ticket ID, log query) rather than paraphrased recollection. Surface single-source claims as such rather than presenting them as settled.
 
 ## Cost and latency
 
 The skill is deterministic and does not dispatch agents. A typical run is one or two short rounds of clarifying questions (the YAGNI evidence, missing metadata, the exact commands) followed by a single file write. Runs are fast; the cost is dominated by the back-and-forth needed to capture the procedure accurately.
 
-The skill is built for tight-loop iteration after an incident: write the runbook now while the commands are fresh, then rerun the skill in validate mode the next time someone executes the procedure to refresh `Last validated`.
+The skill is built for tight-loop iteration after an incident: write the runbook now while the commands are fresh. Then rerun the skill in validate mode the next time someone executes the procedure, to refresh `Last validated`.
 
 ## In more detail
 
@@ -101,7 +101,7 @@ The skill walks an eight-step process:
 4. **Gather context.** Title, severity, triggers, reversibility, origin, owner, prerequisites, symptoms, the procedure with exact commands and expected output, verification, escalation conditions and channels, rollback.
 5. **Write the runbook.** Copy the template, fill the metadata, fill each required section, fill applicable optional sections, delete the headings for optional sections that do not apply, delete the author guidance block.
 6. **Integration.** CLAUDE.md or AGENTS.md entry if the project lists runbooks; back-reference from incident reports or post-mortems; comment in alert-definition files that point to the runbook.
-7. **Verification.** Re-read the file, confirm no placeholders remain, confirm Origin contains real evidence (or an explicit override), confirm Symptoms is concrete, confirm every step shows command and expected output, confirm Verify is distinct from per-step output, confirm Escalate leads with conditions, confirm Rollback is filled or explicitly marked not applicable, confirm empty optional sections are deleted, confirm the change-history creation entry exists.
+7. **Verification.** Re-read the file and confirm no placeholders remain. Confirm Origin contains real evidence (or an explicit override), Symptoms is concrete, and every step shows command and expected output. Confirm Verify is distinct from per-step output, Escalate leads with conditions, and Rollback is filled or explicitly marked not applicable. Confirm empty optional sections are deleted and the change-history creation entry exists.
 8. **Readability self-check.** Run the standardized readability self-check over the runbook's prose regions, confirm each criterion, and fix any failure before presenting. The skill runs no rewrite pass, so this self-check is the output's fidelity guard.
 
 The template is reviewed by [`information-architect`](../../agents/han-core/information-architect.md) and [`junior-developer`](../../agents/han-core/junior-developer.md) inputs that landed during its design pass. Progressive disclosure runs in two directions: from observable symptom toward likely cause and adjacent failures, and from quick fix toward branching procedure with verification and rollback. The metadata block carries the front-door signals (Severity, Reversible, Last validated) that a tired reader needs before committing to any step.
@@ -112,13 +112,13 @@ The skill's structure is grounded in established runbook practice and the projec
 
 ### Google SRE Workbook — On-Call
 
-The "playbook entry" pattern in Google SRE — every alert ties to a playbook entry with severity, impact, debugging, and mitigation — anchors the skill's per-scenario structure and the alert-to-runbook linking convention. The corroborated 3x MTTR improvement claim is the only quantitative evidence in the field for runbook value.
+The "playbook entry" pattern in Google SRE (every alert ties to a playbook entry with severity, impact, debugging, and mitigation) anchors the skill's per-scenario structure and the alert-to-runbook linking convention. The corroborated 3x MTTR improvement claim is the only quantitative evidence in the field for runbook value.
 
 URL: https://sre.google/workbook/on-call/
 
 ### GitLab Production Runbooks
 
-GitLab's per-service runbooks repository demonstrates the production-grade pattern the skill mirrors: kebab-case filenames, runbooks organized by service or alert, owned by the team that operates the service, updated in the same pull requests as the infrastructure they describe. The skill's flat / per-service / alert-keyed convention detection traces to this practice.
+GitLab's per-service runbooks repository demonstrates the production-grade pattern the skill mirrors: kebab-case filenames, runbooks organized by service or alert. Each is owned by the team that operates the service and updated in the same pull requests as the infrastructure it describes. The skill's flat / per-service / alert-keyed convention detection traces to this practice.
 
 URL: https://runbooks.gitlab.com/
 
@@ -130,7 +130,7 @@ URL: https://github.com/openshift/runbooks
 
 ### `han-core/references/yagni-rule.md`
 
-The skill's YAGNI preflight applies the project's own evidence-based YAGNI rule. The canonical anti-pattern — "runbook for an alert that has never fired" — comes directly from this rule and from the `devops-engineer` agent definition that codifies it.
+The skill's YAGNI preflight applies the project's own evidence-based YAGNI rule. The canonical anti-pattern, "runbook for an alert that has never fired," comes directly from this rule and from the `devops-engineer` agent definition that codifies it.
 
 URL: [`han-core/references/yagni-rule.md`](../../../han-core/references/yagni-rule.md)
 

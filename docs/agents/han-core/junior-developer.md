@@ -21,7 +21,17 @@ Operator documentation for the `junior-developer` agent in the han plugin. This 
 
 ## Summary
 
-A generalist engineer with three to five years of experience who shows up in two places. First, it *reviews completed artifacts* (plans, designs, feature proposals, ADR drafts, PRDs, code branches, coding-standards documents) and writes a full review report with the clarifying questions a respected junior-to-mid teammate would ask. Second, it *actively participates in live conversations* (chiming into design reviews, architecture debates, planning sessions, standups, and chat threads while plans and designs are still being shaped, not after they are written) pushing back with the two to five clarifying questions that would most change the decision, in the moment, before the team commits. In both modes, its default stance is that every artifact or discussion contains hidden assumptions, muddied scope, and claims made without evidence, and that a respected teammate willing to say *"I don't understand this in plain terms"* is the person who catches those gaps before specialists are dispatched. Questioning is the core behavior: the agent generates and logs the hard questions a generalist would ask of *anyone and anything* it does not understand, flags any question it cannot answer as an Open Question so the team can resolve it, and traces every finding back to a specific question. The agent is adversarial toward the artifact or the decision under discussion, never toward the people it is talking to, and defers to specialist sibling agents (UX, DevOps, security, architecture, testing) whenever a concern requires specialist-depth tools or training.
+A generalist engineer with three to five years of experience who shows up in two places.
+
+First, it *reviews completed artifacts* (plans, designs, feature proposals, ADR drafts, PRDs, code branches, coding-standards documents). It writes a full review report with the clarifying questions a respected junior-to-mid teammate would ask.
+
+Second, it *actively participates in live conversations*: design reviews, architecture debates, planning sessions, standups, and chat threads, while plans and designs are still being shaped rather than after they are written. It pushes back with the two to five clarifying questions that would most change the decision, in the moment, before the team commits.
+
+In both modes, its default stance is that every artifact or discussion contains hidden assumptions, muddied scope, and claims made without evidence. A respected teammate willing to say *"I don't understand this in plain terms"* is the person who catches those gaps before specialists are dispatched.
+
+Questioning is the core behavior. The agent generates and logs the hard questions a generalist would ask of *anyone and anything* it does not understand. It flags any question it cannot answer as an Open Question, so the team can resolve it, and traces every finding back to a specific question.
+
+The agent is adversarial toward the artifact or the decision under discussion, never toward the people it is talking to. It defers to specialist sibling agents (UX, DevOps, security, architecture, testing) whenever a concern requires specialist-depth tools or training.
 
 ## When to use it
 
@@ -98,12 +108,28 @@ Thin prompts (*"look at this plan"* or *"chime in on this chat"*) still work but
 
 **In artifact-review mode:**
 
-- A summary in the tool-call response: a one-to-three-sentence posture (is the artifact mostly clear, muddied in places, or fundamentally unclear?), a severity count table (Blocks decision / Muddies artifact / Worth clarifying / Polish), an Open Questions count, a Specialist handoffs count, and the path to the full report.
-- A full report on disk with: scope, a plain-language restatement of the artifact, the full question log (Answered / Assumed / Open), assumptions, open questions, numbered findings tied to protocols and locations, and a Junior-Developer Review Summary with six named sections: *What I Don't Understand Yet*, *What the Artifact Seems to Assume*, *Where the Artifact Conflicts with How We Already Work*, *Where a Specialist Should Take Over*, *What "Done" Looks Like and What It Doesn't*, and *The Artifact in Plain Terms*.
+- A summary in the tool-call response:
+  - A one-to-three-sentence posture (is the artifact mostly clear, muddied in places, or fundamentally unclear?).
+  - A severity count table (Blocks decision / Muddies artifact / Worth clarifying / Polish).
+  - An Open Questions count.
+  - A Specialist handoffs count.
+  - The path to the full report.
+- A full report on disk with:
+  - Scope.
+  - A plain-language restatement of the artifact.
+  - The full question log (Answered / Assumed / Open).
+  - Assumptions.
+  - Open questions.
+  - Numbered findings tied to protocols and locations.
+  - A Junior-Developer Review Summary with six named sections: *What I Don't Understand Yet*, *What the Artifact Seems to Assume*, *Where the Artifact Conflicts with How We Already Work*, *Where a Specialist Should Take Over*, *What "Done" Looks Like and What It Doesn't*, and *The Artifact in Plain Terms*.
 
 **In conversational mode:**
 
-- A short conversational response (no file written): a plain-language restatement of what the team is discussing, the two to five clarifying questions that would most change the decision (tagged Answered / Assumed / Open), any hidden assumptions the discussion is resting on, and any specialist sibling the team should pull in next. Scoped to the question on the table, not a full seven-protocol sweep.
+- A short conversational response (no file written), scoped to the question on the table rather than a full seven-protocol sweep:
+  - A plain-language restatement of what the team is discussing.
+  - The two to five clarifying questions that would most change the decision (tagged Answered / Assumed / Open).
+  - Any hidden assumptions the discussion is resting on.
+  - Any specialist sibling the team should pull in next.
 
 In both modes, every question or finding is traceable to a specific uncertainty and a location in the artifact, conversation, or codebase. Every specialist handoff is named explicitly (for example, *"Specialist to consult: `user-experience-designer`"*) so the team knows which sibling agent to dispatch next. If something is not traceable, the agent is instructed to drop it.
 
@@ -123,11 +149,11 @@ The agent runs on `opus`. A single review is slower and more expensive than a ty
 
 ## YAGNI
 
-The agent applies the **YAGNI Evidence Sweep** protocol when stress-testing a plan, design, or branch of code changes. The generalist posture is well-suited to the rule: a junior teammate is the natural voice that asks *do we need this right now?* about every abstraction, configuration knob, defensive code path at trusted internal boundaries, single-implementation interface, or symmetry-driven addition (*"we have create, so we should have delete"*). Findings are raised as `Category: YAGNI candidate` with the anti-pattern named. Resolution is either *cite the missing evidence*, *replace with a strictly simpler version*, or *defer with a reopen-when trigger*.
+The agent applies the **YAGNI Evidence Sweep** protocol when stress-testing a plan, design, or branch of code changes. The generalist posture is well-suited to the rule. A junior teammate is the natural voice that asks *do we need this right now?* The question applies to every abstraction, configuration knob, defensive code path at trusted internal boundaries, single-implementation interface, and symmetry-driven addition (*"we have create, so we should have delete"*). Findings are raised as `Category: YAGNI candidate` with the anti-pattern named. Resolution is either *cite the missing evidence*, *replace with a strictly simpler version*, or *defer with a reopen-when trigger*.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
-Alongside the YAGNI sweep, the agent applies the companion [evidence rule](../../evidence.md) to characterize each surviving item's evidence: name the trust class of the citation (codebase, web, provided), mark single-source web claims that drive an inclusion, and label items secretly relying on the absence of evidence rather than on positive evidence.
+Alongside the YAGNI sweep, the agent applies the companion [evidence rule](../../evidence.md) to characterize each surviving item's evidence. It names the trust class of the citation (codebase, web, provided), marks single-source web claims that drive an inclusion, and labels items secretly relying on the absence of evidence rather than on positive evidence.
 
 ## Sources
 
@@ -135,7 +161,7 @@ The agent's posture and protocols draw on published work on adversarial collabor
 
 ### Kahneman, Mellers, and Tetlock: Adversarial Collaboration
 
-The term "adversarial collaboration" was formalized by Daniel Kahneman and developed further with Barbara Mellers and Philip Tetlock as a method for resolving disagreement between researchers with opposing views by jointly designing studies to test the disagreement. The agent's posture (adversarial toward the artifact, collaborative with the people who produced it) is the applied-engineering version of this stance. The agent asks the questions a respected teammate would ask in good faith, in service of a decision the team will make together.
+The term "adversarial collaboration" was formalized by Daniel Kahneman and developed further with Barbara Mellers and Philip Tetlock. It names a method for resolving disagreement between researchers with opposing views by jointly designing studies to test the disagreement. The agent's posture (adversarial toward the artifact, collaborative with the people who produced it) is the applied-engineering version of this stance. The agent asks the questions a respected teammate would ask in good faith, in service of a decision the team will make together.
 
 URL: https://www.edge.org/conversation/daniel_kahneman-adversarial-collaboration
 
@@ -159,7 +185,7 @@ URL: https://journals.sagepub.com/doi/abs/10.1111/j.1529-1006.2004.00018.x
 
 ### Nielsen Norman Group: The Five Whys
 
-Root-cause analysis via repeated "why" questioning, popularized at Toyota and adopted widely in software and design practice. The agent's Evidence-and-Reasoning Check (Protocol 3) and Clarifying-Question Sweep (Protocol 1) apply a softer version of this pattern: asking *"says who?"* and *"what is the evidence?"* on repeated claims that sound true because they have been said often, not because they have been proven.
+Root-cause analysis via repeated "why" questioning, popularized at Toyota and adopted widely in software and design practice. The agent's Evidence-and-Reasoning Check (Protocol 3) and Clarifying-Question Sweep (Protocol 1) apply a softer version of this pattern. They ask *"says who?"* and *"what is the evidence?"* on repeated claims that sound true because they have been said often, not because they have been proven.
 
 URL: https://www.nngroup.com/articles/5-whys/
 

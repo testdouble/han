@@ -17,7 +17,7 @@ Operator documentation for the `structural-analyst` agent in the han plugin. Thi
 - **Coupling has texture.** The agent distinguishes afferent (who depends on this?) from efferent (what does this depend on?), and stable-dependency from volatile-dependency, rather than counting imports as a single number.
 - **Negative results are valuable.** When a dimension surfaces no issues, the agent says so explicitly. *"Well-structured"* is a finding too.
 - **Discovers findings, does not synthesize.** Recommendations belong to `software-architect`. Risk assessment belongs to `risk-analyst`.
-- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction to default the severity of every finding to SUGG and escalate to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (such as `/architectural-analysis`) receive the agent's default skeptical posture.
+- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction: default the severity of every finding to SUGG. Escalate to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (such as `/architectural-analysis`) receive the agent's default skeptical posture.
 
 ## When to use it
 
@@ -48,7 +48,7 @@ Example prompts:
 ## What you get back
 
 - Numbered `S#` findings, each with: dimension (Boundaries / Coupling / Dependency Direction / Abstraction / Duplication), relevant file paths, verbatim code in fenced blocks, and an impact statement.
-- A **Structural Summary** with the focus area analyzed, the 2-3 key concerns, any well-structured areas, and any dimensions that could not be fully assessed (for example, when git is unavailable for churn analysis).
+- A **Structural Summary** with the focus area analyzed, the 2-3 key concerns, and any well-structured areas. It also names any dimensions that could not be fully assessed (for example, when git is unavailable for churn analysis).
 
 ## How to get the most out of it
 

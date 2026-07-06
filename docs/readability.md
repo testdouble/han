@@ -1,6 +1,6 @@
 # Readability
 
-Readability is the output-quality standard of the han plugin. Every reader-facing skill applies one shared readability rule while it writes, so its human-facing deliverable leads with the main point, uses plain language, reveals detail in layers, and reads consistently across skills instead of being restated skill by skill.
+Readability is the output-quality standard of the han plugin. Every reader-facing skill applies one shared readability rule while it writes. That keeps every deliverable consistent: each one leads with the main point, uses plain language, and reveals detail in layers, instead of each skill restating the rule on its own.
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [YAGNI](./yagni.md) · [Evidence](./evidence.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
 
@@ -15,7 +15,7 @@ Readability is the output-quality standard of the han plugin. Every reader-facin
 
 ## Why readability matters
 
-A skill's output is only useful if the person who did not do the work can find, understand, and use it. An investigation that buries its root cause under three paragraphs of context, a stakeholder summary that opens with methodology instead of the decision, or a code overview whose headings all read "Analysis" makes the reader do the author's work over again. Without a shared standard:
+A skill's output is only useful if the person who did not do the work can find, understand, and use it. An investigation can bury its root cause under three paragraphs of context. A stakeholder summary can open with methodology instead of the decision. A code overview's headings can all read "Analysis." Each of these makes the reader redo the author's work. Without a shared standard:
 
 - Each skill re-derives its own plain-language guidance, and the output reads differently from one skill to the next.
 - The main point lands wherever the drafting happened to leave it, not at the top.
@@ -37,7 +37,7 @@ The rule names the output properties, and they shape each skill's template so th
 - **Progressive disclosure.** Reveal the core first and detail in layers.
 - **Technical detail follows the prose.** Keep implementation and technical references (symbol names, file paths, flags, exact code) out of the readable paragraphs where you can. Where a reference has to appear inline, keep it as small as the sentence needs. Otherwise the detail comes after the prose that describes it, in code fences the prose has already explained.
 
-The applied set is kept deliberately tight. Structural rules that fit only a minority of deliverables are left out on purpose, so the set stays small enough to apply without the compliance decay that comes from stacking instructions.
+The applied set is kept deliberately tight. Structural rules that fit only a minority of deliverables are left out on purpose. That keeps the set small enough to apply without the compliance decay that comes from stacking instructions.
 
 ## How the standard is applied
 
@@ -52,7 +52,7 @@ The self-check and any rewrite operate on **prose regions only**. Code fences, d
 
 ## Scope: which skills are reader-facing
 
-A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end; the table below enumerates the skills that meet that test today. Skills whose primary output is code, or a governed structured artifact (a specification, plan, work-item, or coding standard), are out of scope.
+A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end. The table below lists the skills that meet that test today. Skills whose primary output is code, or a governed structured artifact (a specification, plan, work-item, or coding standard), are out of scope.
 
 | Skill | Reader | Rewrite pass |
 |---|---|---|
@@ -70,7 +70,7 @@ A skill is in scope when its primary deliverable is human-facing prose that a no
 | [`/html-summary`](./skills/han-reporting/html-summary.md) | The non-technical stakeholder | Self-check only (prose content; visual layout keeps its own conventions) |
 | [`/update-pr-description`](./skills/han-github/update-pr-description.md) | The reviewer evaluating the pull request, who will read the code | Synthesis: dispatches `readability-editor` |
 
-The enumerated list is authoritative. A contributor adding a new skill applies the inclusion test above and, if it passes, wires the standard in (see [Contributing](../CONTRIBUTING.md#wiring-the-readability-standard-into-a-skill)).
+This list is authoritative. A contributor adding a new skill applies the inclusion test above and, if it passes, wires the standard in (see [Contributing](../CONTRIBUTING.md#wiring-the-readability-standard-into-a-skill)).
 
 ## Fidelity: the fact-preservation guard
 

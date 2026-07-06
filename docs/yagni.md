@@ -1,6 +1,6 @@
 # YAGNI
 
-YAGNI (*You Aren't Gonna Need It*) is the second foundational mechanic of the han plugin. Every skill that produces an artifact, and every agent that reviews one, applies an evidence-based YAGNI rule before committing items: feature behaviors, plan steps, code recommendations, ADRs, coding standards, runbooks, observability hooks, alerts, indexes, tests, abstractions, configuration knobs, build phases. Items survive when evidence justifies them. Items without evidence get deferred (recorded for later, not silently dropped).
+YAGNI (*You Aren't Gonna Need It*) is the second foundational mechanic of the han plugin. Every skill that produces an artifact, and every agent that reviews one, applies an evidence-based YAGNI rule before committing items. That covers feature behaviors, plan steps, code recommendations, ADRs, coding standards, runbooks, observability hooks, alerts, indexes, tests, abstractions, configuration knobs, and build phases. Items survive when evidence justifies them. Items without evidence get deferred (recorded for later, not silently dropped).
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [Sizing](./sizing.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
 

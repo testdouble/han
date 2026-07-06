@@ -6,8 +6,8 @@ Operator documentation for the `/han-feedback` skill in the opt-in `han-feedback
 
 ## TL;DR
 
-- **What it does.** Captures structured post-session feedback on the Han skills and agents you just used across the whole `han-*` plugin family, and optionally posts it as a GitHub issue to testdouble/han for maintainers to act on.
-- **When to use it.** At the end of any session where one or more `han-*` skills or agents ran — when you have observations about what worked, what didn't, or where a run surprised you.
+- **What it does.** Captures structured post-session feedback on the Han skills and agents you recently used across the whole `han-*` plugin family, and optionally posts it as a GitHub issue to testdouble/han for maintainers to act on.
+- **When to use it.** At the end of any session where one or more `han-*` skills or agents ran, when you have observations about what worked, what didn't, or where a run surprised you.
 - **What you get back.** A dated markdown feedback file at `~/.claude/han-feedback/{date}-{skill-names}.md` recording the skills and agents used, and (if you confirm) an open GitHub issue at testdouble/han.
 
 ## Key concepts
@@ -17,14 +17,14 @@ Operator documentation for the `/han-feedback` skill in the opt-in `han-feedback
 - **Session scope.** The skill works from the current context window. It can only find `han-*` invocations visible in the conversation at the time you run it. If the session was compacted before you run `/han-feedback`, earlier invocations may not appear. Run it before compaction to catch everything.
 - **Feedback file.** A plain markdown file written to `~/.claude/han-feedback/`. The filename encodes the date and the skills covered. One file per day per run; existing files for today are not overwritten.
 - **Sensitive-content gate.** Before offering to post, the skill displays the full file and asks you to confirm it contains no personal identifiers, internal operational details, or client-specific information. An ambiguous response stops the posting flow. The posting target is a public GitHub repository.
-- **Rating dimensions.** The rating table uses a named default set (output accuracy, evidence discipline, finding signal-to-noise, output length vs. decision count, turn efficiency), adjusted to the skill type only when it clearly calls for it. When prior feedback files exist, the skill reads the most recently modified one to anchor the format so your feedback collection stays consistent.
+- **Rating dimensions.** The rating table uses a named default set: output accuracy, evidence discipline, finding signal-to-noise, output length vs. decision count, and turn efficiency. It adjusts to the skill type only when that clearly calls for it. When prior feedback files exist, the skill reads the most recently modified one to anchor the format so your feedback collection stays consistent.
 - **Context window limitation.** Invocations from compacted turns are not visible. The skill counts any invocation as used regardless of whether it completed successfully.
 
 ## When to use it
 
 **Invoke when:**
 
-- You just finished a session that used one or more `han-*` skills or agents and have observations worth sharing.
+- You recently finished a session that used one or more `han-*` skills or agents and have observations worth sharing.
 - A skill or agent run surprised you (better or worse than expected) and you want to log it while it is fresh.
 - A maintainer asked for feedback on a specific skill or agent after a release.
 
@@ -49,21 +49,21 @@ Give it:
 Example prompts:
 
 - `/han-feedback`. *Run at the end of a session that used `/han-planning:plan-a-feature` and `/han-planning:plan-implementation`.*
-- `/han-feedback`. *"I just finished a session with `/han-coding:investigate` and it found the root cause faster than I expected."* — use this framing to prime the skill with a concrete observation before it generates the feedback.
+- `/han-feedback`. *"I just finished a session with `/han-coding:investigate` and it found the root cause faster than I expected."* Use this framing to prime the skill with a concrete observation before it generates the feedback.
 
 ## What you get back
 
 One feedback file per run:
 
-- **`~/.claude/han-feedback/{date}-{skill-names}.md`** — the feedback file. Contains `**Skills used:**` and `**Agents used:**` headers (each listing the components with their full plugin namespace, like `han-planning:plan-a-feature` or `han-core:risk-analyst`), context and outcome lines, three sections (What worked well, What didn't work, Overall), and a rating table. The date is today in ISO format; the filename's skill names are the plugin namespace stripped and joined with hyphens.
-- **A GitHub issue URL** (conditional) — if you confirm posting, the skill runs `gh issue create` against testdouble/han and returns the issue URL.
+- **`~/.claude/han-feedback/{date}-{skill-names}.md`.** The feedback file. Contains `**Skills used:**` and `**Agents used:**` headers, each listing the components with their full plugin namespace, like `han-planning:plan-a-feature` or `han-core:risk-analyst`. It also has context and outcome lines, three sections (What worked well, What didn't work, Overall), and a rating table. The date is today in ISO format; the filename's skill names are the plugin namespace stripped and joined with hyphens.
+- **A GitHub issue URL** (conditional). If you confirm posting, the skill runs `gh issue create` against testdouble/han and returns the issue URL.
 
 ## How to get the most out of it
 
 - **Run before context compaction.** The skill reads the current context window. If you compact a long session before running `/han-feedback`, earlier skill invocations drop out of visibility. Run it while the full session is still in context.
 - **Be specific.** The skill synthesizes feedback from the session, but it benefits from concrete moments you name upfront. A phrase like "the step where it asked me about the database schema when the schema was right there in the code" gives the skill something to work with.
 - **Review the file before confirming.** The sensitive-content gate is there because feedback files capture session context, which can include internal team details or client project names. Read what was written before confirming it is clean.
-- **Post when the feedback is ready.** The manual posting command is always provided if you decline — you can edit the file and post it yourself with `gh issue create --repo testdouble/han --body-file ~/.claude/han-feedback/{filename}`.
+- **Post when the feedback is ready.** The manual posting command is always provided if you decline. You can edit the file and post it yourself with `gh issue create --repo testdouble/han --body-file ~/.claude/han-feedback/{filename}`.
 
 ## Cost and latency
 

@@ -19,7 +19,13 @@ Operator documentation for the `data-engineer` agent in the han plugin. This doc
 
 ## Summary
 
-An adversarial data / database engineer that audits a schema, migration, data pipeline, stream contract, ORM layer, or data-access module and writes a principled data-engineering review. Its default stance is that the current data design is more normalized than the workload needs, more denormalized than it should be, and indexed for a workload that does not exist, until each of its eleven protocols proves otherwise. Every finding is backed by a specific schema, migration, query, document shape, or access-code location, a named data-engineering principle (a normal form, a Codd rule, a dimensional-modeling pattern, an ACID property, an index-strategy rule, a named access failure like N+1 or write skew, a named migration anti-pattern, a named governance failure), and a concrete data-level impact statement. The agent's signature question, *"What problem does that solve?"*, is applied to every table, column, key, index, constraint, document shape, stream contract, and ORM choice in scope, and unanswered versions become first-class Open Questions rather than disguised assumptions. The adversarial stance is paired with pragmatic sequencing: every destructive remediation is sequenced through expand-and-contract, and every blocker-severity finding carries a P0 next step the team can ship today, plus P1/P2 improvements so the agent does not become a bottleneck teams route around.
+An adversarial data / database engineer that audits a schema, migration, data pipeline, stream contract, ORM layer, or data-access module and writes a principled data-engineering review. Its default stance is that the current data design is more normalized than the workload needs, more denormalized than it should be, and indexed for a workload that does not exist. Each of its eleven protocols must prove otherwise.
+
+Every finding is backed by a specific location (a schema, migration, query, document shape, or access-code location), a named data-engineering principle, and a concrete data-level impact statement. Principles include a normal form, a Codd rule, a dimensional-modeling pattern, an ACID property, an index-strategy rule, a named access failure like N+1 or write skew, a named migration anti-pattern, or a named governance failure.
+
+The agent's signature question, *"What problem does that solve?"*, is applied to every table, column, key, index, constraint, document shape, stream contract, and ORM choice in scope. Unanswered versions become first-class Open Questions rather than disguised assumptions.
+
+The adversarial stance is paired with pragmatic sequencing. Every destructive remediation is sequenced through expand-and-contract. Every blocker-severity finding carries a P0 next step the team can ship today, plus P1/P2 improvements, so the agent does not become a bottleneck teams route around.
 
 ## When to use it
 
@@ -28,7 +34,7 @@ An adversarial data / database engineer that audits a schema, migration, data pi
 - A new schema, migration, or data model is landing and needs a principled review before it is encoded in production data: a review that is not a code review and not a security review.
 - A feature or branch introduces new tables, columns, indexes, foreign keys, or destructive migrations (rename, drop, type change, NOT NULL addition) and the team wants expand-and-contract discipline verified explicitly.
 - An ORM layer, repository, or hand-rolled query file is showing symptoms (slow endpoints, timeouts, connection-pool pressure, report queries hitting the OLTP primary) and the team wants an access-pattern audit with EXPLAIN-plan grounding.
-- A storage-engine choice is being made or questioned (relational vs document, OLTP vs OLAP, cache vs source of truth, search index vs materialized view, event-sourced vs stateful) and the team wants a fit argument that starts from workload, not fashion.
+- A storage-engine choice is being made or questioned (relational vs document, OLTP vs OLAP, cache vs source of truth, search index vs materialized view, event-sourced vs stateful). The team wants a fit argument that starts from workload, not fashion.
 - A data contract at a service or stream boundary needs review: schema registry settings, compatibility mode, field evolution, canonicalization of identifiers, time, and money.
 - A regulated data surface (PII / PHI / PCI / GDPR / HIPAA / SOC 2) needs its data-level controls audited: classification, encryption, row-level security, tokenization, retention, right-to-erasure.
 - A multi-tenant schema is being built or hardened and cross-tenant isolation needs to be enforced at the database layer, not only at the application.
@@ -66,7 +72,7 @@ Thin prompts (*"audit the database"*) still work but produce more Open Questions
 - A summary in the tool-call response: a 1–3 sentence data-engineering posture, a severity count table (Blocks correctness / Degrades operations / Operational friction / Polish / YAGNI candidate), an Open Questions count, and the path to the full report.
 - A full report on disk with: scope, data context, question log (Answered / Assumed / Open), assumptions, open questions, numbered DATA-### findings tied to data-engineering principles and locations, and a Data Engineering Improvement Summary that sequences shipping vs. improving with explicit P0/P1/P2 steps and an expand-and-contract path for every destructive remediation.
 
-Every finding is traceable to a data-engineering principle (a normal form, a Codd rule, a dimensional-modeling pattern, an ACID property, an isolation-level guarantee, an index-strategy rule, a CAP / PACELC trade-off, a named access failure, a named migration anti-pattern, or a named governance failure), a concrete location in the repo, and a question in the log. If something is not traceable, the agent is instructed to drop it.
+Every finding is traceable to a data-engineering principle, a concrete location in the repo, and a question in the log. Principles include a normal form, a Codd rule, a dimensional-modeling pattern, an ACID property, an isolation-level guarantee, an index-strategy rule, a CAP / PACELC trade-off, a named access failure, a named migration anti-pattern, or a named governance failure. If something is not traceable, the agent is instructed to drop it.
 
 ## How to get the most out of it
 
@@ -87,7 +93,22 @@ The agent runs on `opus`. A single audit is slower and more expensive than a typ
 
 ## YAGNI
 
-The agent enforces the **Speculative Data Machinery** rule. Indexes for queries that don't run, audit columns nobody reads, denormalization for read patterns that don't exist, partitioning for data volumes the project doesn't have, and event-sourcing or CQRS topology for a single-writer OLTP workload are YAGNI candidates. Acceptable evidence the data machinery is needed now: the query the index supports runs in production today (cite the query and its observed latency), the audit column is read by an active consumer (cite the consumer), the read pattern the denormalization supports is measurable in current traffic, or the partition pressure is measurable in current data volumes. Recommendations that fail the evidence test are deferred with a named *reopen-when* trigger.
+The agent enforces the **Speculative Data Machinery** rule. These are YAGNI candidates:
+
+- Indexes for queries that don't run.
+- Audit columns nobody reads.
+- Denormalization for read patterns that don't exist.
+- Partitioning for data volumes the project doesn't have.
+- Event-sourcing or CQRS topology for a single-writer OLTP workload.
+
+Acceptable evidence the data machinery is needed now:
+
+- The query the index supports runs in production today (cite the query and its observed latency).
+- The audit column is read by an active consumer (cite the consumer).
+- The read pattern the denormalization supports is measurable in current traffic.
+- The partition pressure is measurable in current data volumes.
+
+Recommendations that fail the evidence test are deferred with a named *reopen-when* trigger.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
@@ -127,7 +148,7 @@ URLs: https://www.cs.berkeley.edu/~brewer/cs262b-2004/PODC-keynote.pdf and https
 
 ### Bailis et al.: Highly Available Transactions and Isolation Level Semantics
 
-Peter Bailis and colleagues' research on transaction isolation (particularly the formal treatment of read-committed, repeatable-read, snapshot, serializable snapshot isolation (SSI), and the named anomalies: dirty read, non-repeatable read, phantom, write skew, lost update) is the canonical reference the agent draws on for concurrency findings.
+Peter Bailis and colleagues' research on transaction isolation is the canonical reference the agent draws on for concurrency findings. It covers the formal treatment of read-committed, repeatable-read, snapshot, and serializable snapshot isolation (SSI), and the named anomalies: dirty read, non-repeatable read, phantom, write skew, and lost update.
 
 URL: https://arxiv.org/abs/1302.0309
 

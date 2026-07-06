@@ -6,7 +6,7 @@ Operator documentation for the `/agent-builder` skill in the opt-in `han-plugin-
 
 ## TL;DR
 
-- **What it does.** Builds a new Claude Code agent (subagent) from scratch through a relentless, evidence-based interview that walks the agent's design tree decision-by-decision, then reviews the finished agent against the plugin-building guidance and applies every fix it finds.
+- **What it does.** Builds a new Claude Code agent (subagent) from scratch through a relentless, evidence-based interview that walks the agent's design tree decision-by-decision. It then reviews the finished agent against the plugin-building guidance and applies every fix it finds.
 - **When to use it.** When you want to create, author, scaffold, or design a new agent or subagent and want it to conform to the domain-focus, description-length, model-selection, and self-containment rules without your having to remember them.
 - **What you get back.** A real, self-contained agent file on disk (`{plugin}/agents/{agent-name}.md`) that has already passed a guidance-conformance review.
 
@@ -15,7 +15,7 @@ Operator documentation for the `/agent-builder` skill in the opt-in `han-plugin-
 - **Interview-driven, one question at a time.** The skill interviews you relentlessly, walking each branch of the design tree and resolving dependencies between decisions one at a time. It never batches questions.
 - **Explore before asking.** Any question the repository can answer (the target plugin's existing agents, sibling descriptions, the skills that would dispatch this agent, conventions, the guidance) it answers by exploring instead of asking you.
 - **Recommend, then ask.** Every question surfaced to you comes with a recommended answer and its rationale, grounded in evidence. You accept, amend, or redirect.
-- **The design tree.** Foundational decisions (which plugin, the single narrow domain, generate-or-evaluate) settle before identity (role identity under 50 tokens, domain vocabulary, anti-patterns), which settle before triggering (the description), which settle before capabilities (model tier, tools) and body structure (inlined protocol, graceful degradation).
+- **The design tree.** Foundational decisions (which plugin, the single narrow domain, generate-or-evaluate) settle before identity (role identity under 50 tokens, domain vocabulary, anti-patterns). Identity settles before triggering (the description), which settles before capabilities (model tier, tools) and body structure (inlined protocol, graceful degradation).
 - **One role per agent.** An agent generates *or* evaluates, never both, because self-evaluation bias means the reasoning that created a blind spot also rates it as correct. If your request bundles both, the skill recommends splitting it.
 - **Agents are self-contained.** Unlike a skill, an agent is a single flat `.md` file with no `references/` folder, no `scripts/`, and no context injection. Everything the agent needs is inlined. The skill enforces this throughout.
 - **Self-contained review.** `han-plugin-builder` depends on nothing and ships no agents, so the review is done inline by reading the guidance, not by dispatching a review team.
@@ -42,7 +42,7 @@ The skill ships in the opt-in `han-plugin-builder` plugin, which the `han` meta-
 
 Give it:
 
-1. **One or two sentences on the agent's domain and what it produces.** A thin request ("build an agent") makes the skill ask for this first; a sharp one ("an agent that audits SQL migrations for unsafe operations and returns findings") lets it start walking the tree immediately.
+1. **One or two sentences on the agent's domain and what it produces.** A thin request ("build an agent") makes the skill ask for this first. A sharp one ("an agent that audits SQL migrations for unsafe operations and returns findings") lets it start walking the tree immediately.
 2. **The target plugin, if you know it.** If you do not name one, the skill infers candidates and confirms the plugin ships agents (or is the right home for the first one).
 3. **The skill that will dispatch it, if one exists.** Knowing the caller tells the skill what the agent receives and returns.
 
@@ -55,17 +55,17 @@ Example prompts:
 
 A single self-contained agent file:
 
-- **`{plugin}/agents/{agent-name}.md`**, the agent definition: frontmatter (`name`, a four-component `description` under 1024 characters, a minimal `tools` allowlist, and an explicit `model`) and a body in order: the Role Identity paragraph (under 50 tokens), a `## Domain Vocabulary` section (15-30 precise terms), an `## Anti-Patterns` section (5-10 named patterns with detection signals), and the inlined protocol the agent follows, with graceful-degradation wording on tool-dependent steps.
+- **`{plugin}/agents/{agent-name}.md`**, the agent definition. Frontmatter carries `name`, a four-component `description` under 1024 characters, a minimal `tools` allowlist, and an explicit `model`. The body follows in order: the Role Identity paragraph (under 50 tokens), a `## Domain Vocabulary` section (15-30 precise terms), an `## Anti-Patterns` section (5-10 named patterns with detection signals), and the inlined protocol the agent follows, with graceful-degradation wording on tool-dependent steps.
 - **A new plugin scaffold**, if the agent belongs in a brand-new plugin: the `.claude-plugin/plugin.json` and marketplace entry, built per the configuration guidance.
 
-The skill closes by summarizing the agent's shape (role, model, tools, vocabulary and anti-pattern counts), the decisions settled by evidence versus by you, the fixes the review pass applied (with the guidance document behind each), and how the agent is dispatched: the qualified `defining-plugin:agent-name` and the skill that would call it.
+The skill closes by summarizing the agent's shape (role, model, tools, vocabulary and anti-pattern counts) and the decisions settled by evidence versus by you. It also reports the fixes the review pass applied (with the guidance document behind each) and how the agent is dispatched: the qualified `defining-plugin:agent-name` and the skill that would call it.
 
 ## How to get the most out of it
 
 - **Name the domain narrowly.** A focused domain activates deep expertise; a broad one averages shallow knowledge across competing domains. The skill pushes for precision, but starting narrow helps.
 - **Decide generate-or-evaluate up front.** If you want an agent that both produces and judges, the skill will split it. Knowing which role you want avoids a mid-interview redirect.
 - **Push back on the model tier.** The skill recommends a tier from the cognitive load (opus for synthesis and judgment, sonnet for structured procedures, haiku for fast lookups). If your sense of the work differs, say so.
-- **Trust the review pass.** The Step 6 conformance review fixes role-identity length, description budget, self-containment violations, and an over-broad tool set before you see them, including dropping the `Agent` tool unless the agent's own protocol dispatches sub-agents, since dispatch flows from skills to agents by default.
+- **Trust the review pass.** The Step 6 conformance review fixes role-identity length, description budget, self-containment violations, and an over-broad tool set before you see them. That includes dropping the `Agent` tool unless the agent's own protocol dispatches sub-agents, since dispatch flows from skills to agents by default.
 - **Wire up the caller.** An agent is dispatched by a skill. If the calling skill does not exist yet, the skill recommends [`/skill-builder`](./skill-builder.md) to build it.
 
 ## YAGNI
@@ -78,7 +78,7 @@ No agents are dispatched; the review is inline. Cost is dominated by the intervi
 
 ## In more detail
 
-The workflow runs in seven steps: capture the request and confirm an agent is the right entity (a judgment layer, not a flowchartable process) with a single role; discover the target plugin, its sibling agents, and the calling skill; build the design tree in dependency order; run the interview loop one branch at a time; write the single self-contained file; run the full guidance-conformance review; and present the result with the dispatch wiring. Each design-tree decision maps to a specific governing document (domain focus, description length, model selection, external files, multi-agent economics, dispatch namespacing), read only when that decision is on the table. The review pass re-reads each document that applies and corrects the file directly rather than reporting problems back to you.
+The workflow runs in seven steps: capture the request and confirm an agent is the right entity (a judgment layer, not a flowchartable process) with a single role; discover the target plugin, its sibling agents, and the calling skill; and build the design tree in dependency order. Then it runs the interview loop one branch at a time; writes the single self-contained file; runs the full guidance-conformance review; and presents the result with the dispatch wiring. Each design-tree decision maps to a specific governing document (domain focus, description length, model selection, external files, multi-agent economics, dispatch namespacing), read only when that decision is on the table. The review pass re-reads each document that applies and corrects the file directly rather than reporting problems back to you.
 
 ## Sources
 

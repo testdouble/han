@@ -8,7 +8,7 @@ Operator documentation for the `content-auditor` agent in the han plugin. This d
 
 - **What it does.** Audits an updated documentation set against the original source content to ensure no important facts were lost. Classifies each fact as Present / Correctly Removed / Missing. Validates removals against the codebase. Identifies content that must be restored.
 - **When to dispatch it.** A document was rewritten, migrated, or consolidated and you need to verify nothing was silently dropped. Dispatched by `/project-documentation` when updating an existing doc, by `/gap-analysis` as a swarm specialist when the desired state is documentation, and by `/iterative-plan-review` team mode when the plan under review is documentation.
-- **What you get back.** Numbered `A#` audit items, each with the fact, its source, the classification, and evidence (where the fact appears in the new doc, what codebase check confirmed a removal, or why the fact must be restored). Plus an Audit Summary with counts.
+- **What you get back.** Numbered `A#` audit items, each with the fact, its source, the classification, and evidence. Evidence might be where the fact appears in the new doc, what codebase check confirmed a removal, or why the fact must be restored. It also includes an Audit Summary with counts.
 
 ## Key concepts
 

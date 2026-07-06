@@ -13,7 +13,7 @@ Operator documentation for the `/post-code-review-to-pr` skill in the han plugin
 ## Key concepts
 
 - **Wraps `/code-review`.** The skill delegates the actual review to `/code-review`, adds a pre-post clarity check from `junior-developer`, then handles the GitHub-posting step.
-- **Branch context flows automatically.** Because the wrapped `/code-review` runs Step 1.5 (branch context loading) on the same branch, the PR description fetched via `gh pr view` is summarized into a `$branch_context` block and plumbed to every dispatched agent. Agents avoid re-raising items the PR description has already deferred or resolved. No extra dependency for `/post-code-review-to-pr` users — `gh` is already required to post the review.
+- **Branch context flows automatically.** Because the wrapped `/code-review` runs Step 1.5 (branch context loading) on the same branch, it fetches the PR description via `gh pr view` and summarizes it into a `$branch_context` block. That block is plumbed to every dispatched agent, so agents avoid re-raising items the PR description has already deferred or resolved. No extra dependency for `/post-code-review-to-pr` users: `gh` is already required to post the review.
 - **Self-authored PR handling.** GitHub rejects formal reviews from PR authors, so when the author and the current gh user match, the skill posts as a PR comment rather than a review. When they differ, it posts as a formal review.
 - **Review event type chosen from severity.** `REQUEST_CHANGES` when any CRIT or WARN finding exists; `COMMENT` when only SUGG findings exist. Self-authored PRs always post as comments.
 - **Optional fix plan.** After the review lands, the skill offers to create an implementation plan for every Critical and Warning item, ordered by severity, with file paths and line numbers.
@@ -24,7 +24,7 @@ Operator documentation for the `/post-code-review-to-pr` skill in the han plugin
 **Invoke when:**
 
 - You have an open PR and want a full code review posted as PR comments (or a formal review) on GitHub.
-- A PR is ready for review and you want `/code-review`'s size-aware roster (`junior-developer` and `adversarial-security-analyst` always, plus `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, and `devops-engineer` conditionally based on what the changed files touch), plus the manual file-by-file review, with the results visible on GitHub.
+- A PR is ready for review and you want `/code-review`'s size-aware roster: `junior-developer` and `adversarial-security-analyst` always, plus `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, and `devops-engineer` conditionally, based on what the changed files touch. You also get the manual file-by-file review, with the results visible on GitHub.
 - You want the review to drive a fix plan afterward for the Critical and Warning findings.
 
 **Do not invoke for:**
@@ -56,7 +56,7 @@ A full review plus GitHub integration:
 
 - **The full `/code-review` output in-channel.** Review Summary table, Review Recommendation, and all findings organized by severity, plus any optional sections (What's Good, Security Vulnerabilities, Remediation) that are present. The code-review skill renders a section only when it has content, so the body builder treats every section other than the table and the recommendation as optional. See the `/code-review` documentation for the detailed shape.
 - **An offer to post to GitHub.** `AskUserQuestion` with "Yes, post to GitHub" / "No, just the local review."
-- **When accepted.** The skill gathers PR metadata (`owner/repo`, `pr_number`, `head_sha`, author login, current user login), runs a `junior-developer` clarity pass on the draft review body (flagging unclear wording, misaligned severity, accusatory tone, and broken location references), applies the edits, writes the final review body to a temp file, and posts it. Self-authored PRs become comments. PRs you did not author become formal reviews with the event type derived from severity.
+- **When accepted.** The skill gathers PR metadata (`owner/repo`, `pr_number`, `head_sha`, author login, current user login) and runs a `junior-developer` clarity pass on the draft review body. That pass flags unclear wording, misaligned severity, accusatory tone, and broken location references. The skill applies the edits, writes the final review body to a temp file, and posts it. Self-authored PRs become comments. PRs you did not author become formal reviews with the event type derived from severity.
 - **An offer to create a fix plan.** Only when CRIT or WARN findings exist. An implementation plan listing each finding by task ID, with specific code changes, file paths, and line numbers, ordered by priority (Critical first).
 
 ## How to get the most out of it

@@ -7,13 +7,13 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 ## TL;DR
 
 - **What it does.** Assumes investigation evidence is wrong and the planned fix will fail. Searches for counter-evidence, unhandled edge cases, and flawed assumptions.
-- **When to dispatch it.** An investigation has produced a root cause and a fix plan, and you want the analysis adversarially validated before code lands. Always dispatched by `/investigate` and by `/research` (the adversarial-validation step at the end of every research pass). Required by `/gap-analysis` swarms at every size (which run by default) and by `/iterative-plan-review` team mode. Also dispatched by `/code-overview`, where it re-reads the code to verify a drafted overview's claims for accuracy rather than to validate a fix, and by `/code-review`, where it re-reads the change at Step 7.4 to confirm, demote, or drop each finding on the consolidated finding list.
+- **When to dispatch it.** An investigation has produced a root cause and a fix plan, and you want the analysis adversarially validated before code lands. Always dispatched by `/investigate` and by `/research` (the adversarial-validation step at the end of every research pass). Required by `/gap-analysis` swarms at every size (which run by default) and by `/iterative-plan-review` team mode. Also dispatched by `/code-overview`, where it re-reads the code to verify a drafted overview's claims for accuracy rather than to validate a fix. `/code-review` also dispatches it, at Step 7.4, to re-read the change and confirm, demote, or drop each finding on the consolidated finding list.
 - **What you get back.** Numbered `V#` validation items, each with a strategy, hypothesis, investigation steps, result (Confirmed / Refuted / Partially Refuted), and an impact statement. Plus a confidence assessment and remaining risks.
 
 ## Key concepts
 
 - **Default posture: everything is wrong until proven right.** The agent assumes the investigation reached the wrong conclusion and the fix will fail. The work is to *try to disprove* the analysis, not confirm it.
-- **Four strategies, three always required.** Challenge the evidence, challenge the fix, challenge the assumptions — the agent must attempt all three. A fourth, challenge the evidence-gathering integrity, applies whenever the inputs include gathered evidence, external sources, or research artifacts (always for an investigation evidence summary or a research run): was any item planted, injected, astroturfed, stale, or single-sourced. Skipping an applicable strategy makes the validation incomplete.
+- **Four strategies, three always required.** The agent must always attempt three strategies: challenge the evidence, challenge the fix, and challenge the assumptions. A fourth strategy, challenge the evidence-gathering integrity, applies whenever the inputs include gathered evidence, external sources, or research artifacts. That is always the case for an investigation evidence summary or a research run. It asks whether any item was planted, injected, astroturfed, stale, or single-sourced. Skipping an applicable strategy makes the validation incomplete.
 - **Counter-evidence has the same rigor as evidence.** A refutation requires the same `file_path:line_number` plus snippet plus reasoning that the original investigation required. *"Looks wrong"* is not a refutation.
 - **Stale-evidence check is mandatory.** The agent verifies that cited files and line numbers still match the codebase. Evidence from an old branch is not evidence.
 - **Confidence assessment is not optional.** Every run closes with a High / Medium / Low confidence level and a rationale grounded in what the validation found.
@@ -35,7 +35,7 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 
 - Discovering the root cause in the first place. Use `evidence-based-investigator` or `/investigate`.
 - Drafting a fix or plan. Use `/plan-implementation` or write the plan yourself; this agent validates plans, it does not write them.
-- Performing the code review itself. Use `/code-review` for correctness, style, and compliance; it dispatches this validator internally at Step 7.4 to re-check its finding list, but the validator judges whether a finding's *reasoning* holds against the code, not whether the code is clean.
+- Performing the code review itself. Use `/code-review` for correctness, style, and compliance. It dispatches this validator internally at Step 7.4 to re-check its finding list. But the validator judges whether a finding's *reasoning* holds against the code, not whether the code is clean.
 - Architectural assessment. Use `/architectural-analysis`. The validator does not synthesize architectural recommendations.
 - Self-evaluation of an agent's own output. The validator must run against another agent's output, not its own.
 
@@ -56,7 +56,7 @@ Example prompts:
 
 ## What you get back
 
-- A minimum of 5 numbered `V#` validation items spread across the applicable strategies (Challenge the Evidence, Challenge the Fix, Challenge the Assumptions, and — when the inputs include gathered or external evidence — Challenge the Evidence-Gathering Integrity). Each item names the strategy, the hypothesis under test, what was investigated (files read, commands run, greps performed), the result (Confirmed / Refuted / Partially Refuted), and the impact.
+- A minimum of 5 numbered `V#` validation items spread across the applicable strategies: Challenge the Evidence, Challenge the Fix, and Challenge the Assumptions. When the inputs include gathered or external evidence, items also cover Challenge the Evidence-Gathering Integrity. Each item names the strategy, the hypothesis under test, what was investigated (files read, commands run, greps performed), the result (Confirmed / Refuted / Partially Refuted), and the impact.
 - A **Confidence Assessment** (High / Medium / Low) with a rationale that points at the validation items behind the call.
 - A **Remaining Risks** section listing known unknowns, areas not fully validated, and assumptions the agent could not verify.
 

@@ -1,12 +1,12 @@
 # Quickstart
 
-New to the han plugin? Pick the path that matches what you are trying to do right now. Each path is a short sequence (a few skills) that compose into a useful result. You can follow one path end to end, or jump off at any step.
+Pick the path below that matches what you are trying to do right now. Each path is a short sequence, a few skills, that combine into a useful result. You can follow one path end to end, or jump off at any step.
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [How-to guides](./how-to/README.md) · [Skills](./skills/README.md) · [Agents](./agents/README.md) · [Sizing](./sizing.md) · [YAGNI](./yagni.md)
 
 > **Have not installed Han yet?** Read [Choosing a Han plugin](./choosing-a-han-plugin.md) first to pick between the full suite and core only, then come back here.
 
-If you want the full end-to-end recipe for one of these paths (specific prompts, what to do between steps, what to expect at each one), the [how-to guides](./how-to/README.md) cover planning, bug triage, and research workflows in depth. The quickstart points you at the right path; the how-to walks you through it.
+The [how-to guides](./how-to/README.md) cover planning, bug triage, and research workflows in depth, with specific prompts, what to do between steps, and what to expect at each one. Read one when you want the full end-to-end recipe for a path. The quickstart points you at the right path; the how-to walks you through it.
 
 ## Which path are you on?
 
@@ -102,7 +102,7 @@ You can reference multiple skills in one prompt and Claude runs them in sequence
 
 ## A note on sizing
 
-The sizing-aware skills (`/architectural-analysis`, `/code-overview`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**, **medium**, or **large** before dispatching agents, default to small, and scale the team and iteration depth to the chosen band. Pass the size as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See [Sizing](./sizing.md) for the full model.
+The sizing-aware skills (`/architectural-analysis`, `/code-overview`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**, **medium**, or **large** before dispatching agents. They default to small, and scale the team and iteration depth to the chosen band. Pass the size as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See [Sizing](./sizing.md) for the full model.
 
 ## A note on YAGNI
 

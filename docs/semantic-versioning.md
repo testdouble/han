@@ -36,9 +36,9 @@ Examples:
 
 ## One Bump Per Branch
 
-**The rule:** a plugin's version bumps **exactly once per unmerged branch**. Additional changes on the same branch do not add further bumps, unless a later change escalates to a higher semver octet. In which case the bump is **recalculated from the branch's baseline**, not stacked on top of the previous bump.
+**The rule:** a plugin's version bumps **exactly once per unmerged branch**. Additional changes on the same branch do not add further bumps, unless a later change escalates to a higher semver octet. When that happens, the bump is **recalculated from the branch's baseline**, not stacked on top of the previous bump.
 
-The priority order is **major > minor > patch**. The baseline is whatever version of the plugin is on `main` at the point the branch diverged (or, for a branch that renames or resets a plugin, the reset version established on the branch. See "Plugin rename or reset" below).
+The priority order is **major > minor > patch**. The baseline is whatever version of the plugin is on `main` at the point the branch diverged. For a branch that renames or resets a plugin, the baseline is instead the reset version established on the branch (see "Plugin rename or reset" below).
 
 ### How to apply the rule
 
@@ -72,7 +72,7 @@ The final version merged to `main` is **v2.0.0**, not v2.1.1 or v1.1.1.
 
 ### Plugin rename or reset
 
-If a branch renames a plugin, splits one plugin into two, or otherwise resets a plugin's version baseline to a new value (for example, setting a renamed plugin to **v1.0.0** as the start of its new identity), the reset **is** the branch's one bump. It carries the effective weight of a major change. Subsequent changes on the same branch (new skills, bug fixes, removals) do not bump further, because no change can escalate higher than the reset.
+If a branch renames a plugin, splits one plugin into two, or otherwise resets a plugin's version baseline to a new value, the reset **is** the branch's one bump. For example, a renamed plugin might reset to **v1.0.0** as the start of its new identity. The reset carries the effective weight of a major change, so subsequent changes on the same branch (new skills, bug fixes, removals) do not bump further; no change can escalate higher than the reset.
 
 For example, if a branch renames `foo` to `bar` and sets `bar`'s version to **v1.0.0**, then adding a new skill to `bar` on the same branch does **not** bump to v1.1.0. The version stays at **v1.0.0**. The rename/reset already covers the branch's change set.
 
@@ -80,15 +80,19 @@ After bumping (or not bumping), sync the current `plugin.json` version to that p
 
 ## Suite Versioning: Parent and Child Plugins
 
-Han ships as a suite: a parent meta-plugin (`han`) plus child plugins (`han-core`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` extension). The parent has no skills or agents of its own; it installs its **bundled** children (`han-core`, `han-coding`, `han-github`, `han-reporting`) through its `dependencies`. Not every child is bundled: `han-feedback` ships in the same marketplace and depends on `han-core`, but the parent deliberately does not depend on it, so it is opt-in and installed on its own. Each plugin carries its own independent version line, and the git tag for a release tracks the **parent** version (the release `vX.Y.Z` is the parent `han` version).
+Han ships as a suite: a parent meta-plugin (`han`) plus child plugins (`han-core`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` extension). The parent has no skills or agents of its own; it installs its **bundled** children (`han-core`, `han-coding`, `han-github`, `han-reporting`) through its `dependencies`.
+
+Not every child is bundled. `han-feedback` ships in the same marketplace and depends on `han-core`, but the parent deliberately does not depend on it, so it is opt-in and installed on its own.
+
+Each plugin carries its own independent version line, and the git tag for a release tracks the **parent** version (the release `vX.Y.Z` is the parent `han` version).
 
 Three rules govern how a release versions the suite:
 
-1. **The parent always bumps on every release.** Every release is a release of the suite, so the parent `han` version increments even when only a single child changed. The parent's bump level is the highest level across the whole release: if any bundled child has a major change (or a bundled child was removed from the parent's `dependencies`), the parent is major; if a bundled child has a minor change or a brand-new bundled child plugin is introduced, the parent is at least minor; otherwise (only child patches or repo-level doc and config fixes) the parent is patch. A change reaches the parent because anyone who installed the meta-plugin receives that child. An opt-in child the parent does not depend on (such as `han-feedback`) does not by itself force a parent minor or major bump, because installing `han` never delivers it; its own changes still bump its own version line, and the release that introduces it still bumps the parent at least patch like any other release.
+1. **The parent always bumps on every release.** Every release is a release of the suite, so the parent `han` version increments even when only a single child changed. The parent's bump level matches the highest level across the whole release. If any bundled child has a major change, or a bundled child was removed from the parent's `dependencies`, the parent is major. If a bundled child has a minor change, or a brand-new bundled child plugin is introduced, the parent is at least minor. Otherwise, when only child patches or repo-level doc and config fixes occurred, the parent is patch. A change reaches the parent because anyone who installed the meta-plugin receives that child. An opt-in child the parent does not depend on, such as `han-feedback`, does not by itself force a parent minor or major bump, because installing `han` never delivers it. Its own changes still bump its own version line, and the release that introduces it still bumps the parent at least patch like any other release.
 
 2. **A child bumps only when its own directory changed.** Apply the major/minor/patch rules above to the changes inside that child's own directory (`han-core/`, `han-github/`, and so on). A child with no changes in a release keeps its version. Children version independently of each other: `han-github` going to `2.0.0` says nothing about `han-core`, which stays wherever its own changes put it.
 
-3. **A brand-new plugin is not bumped by the release that introduces it.** When a new `han-*` plugin first appears, the version in its `plugin.json` is its established baseline (normally `1.0.0`). It does not increment as part of the release that adds it; the introduction itself is the baseline, the same way a rename or reset (above) is its own branch's one bump. This is the general rule for every future extension, so the numbering for each new plugin starts consistently.
+3. **A brand-new plugin is not bumped by the release that introduces it.** When a new `han-*` plugin first appears, the version in its `plugin.json` is its established baseline (normally `1.0.0`). It does not increment as part of the release that adds it. The introduction itself is the baseline, the same way a rename or reset (above) is its own branch's one bump. This is the general rule for every future extension, so the numbering for each new plugin starts consistently.
 
 Repo-root changes that do not live inside any plugin directory (`docs/`, `README.md`, `CONTRIBUTING.md`) are suite-level: they count toward the parent's bump level (normally patch) and never bump a child.
 
@@ -108,7 +112,7 @@ The release is tagged `v3.1.0` (the parent version). The changelog records each 
 
 ### A note on per-plugin tags and version constraints
 
-Claude Code resolves a *version-constrained* dependency (a `dependencies` entry that pins a semver range, like `{ "name": "han-core", "version": "~2.1.0" }`) using per-plugin git tags named `{plugin-name}--v{version}`, for example `han-core--v2.1.0`. The `claude plugin tag --push` command creates these. Han does **not** need them today: every dependency in `han`'s and `han-feedback`'s `plugin.json` is a bare string with no version range, so dependencies float to whatever the marketplace serves and the single suite tag `vX.Y.Z` is sufficient. If a future `han-*` plugin ever pins a dependency to a version range, the matching `{plugin-name}--v{version}` tags become required for resolution. See the [Plugin Dependencies docs](https://code.claude.com/docs/en/plugin-dependencies).
+Claude Code resolves a *version-constrained* dependency (a `dependencies` entry that pins a semver range, like `{ "name": "han-core", "version": "~2.1.0" }`) using per-plugin git tags. These tags are named `{plugin-name}--v{version}`, for example `han-core--v2.1.0`. The `claude plugin tag --push` command creates these. Han does **not** need them today. Every dependency in `han`'s and `han-feedback`'s `plugin.json` is a bare string with no version range, so dependencies float to whatever the marketplace serves. The single suite tag `vX.Y.Z` is sufficient. If a future `han-*` plugin ever pins a dependency to a version range, the matching `{plugin-name}--v{version}` tags become required for resolution. See the [Plugin Dependencies docs](https://code.claude.com/docs/en/plugin-dependencies).
 
 ## Summary Checklist
 

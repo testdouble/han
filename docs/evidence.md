@@ -30,9 +30,9 @@ Evidence-based reasoning is not the same as scientific rigor. The bar is "you ca
 
 ### Principle 1: Proximity to origin
 
-Evidence drawn from closer to the originating event or data carries more weight than evidence at greater remove. A reproducible failure observed in production carries more weight than a Stack Overflow answer that describes the same symptom. The current source code carries more weight than an architecture diagram from a year ago. A passing test that actually exercises the code path carries more weight than a docstring claiming the path works.
+Evidence drawn from closer to the originating event or data carries more weight than evidence at greater remove. A reproducible failure observed in production carries more weight than a Stack Overflow answer that describes the same symptom. The current source code carries more weight than an architecture diagram from a year ago. A passing test that exercises the code path carries more weight than a docstring claiming the path works.
 
-Apply this as a heuristic, not as a ranked ladder. A numbered list of source types ("production observation > tests > codebase > commits > docs > blogs > LLM output") looks operational but breaks immediately at the first tier boundary: a passing test that does not exercise the failing input is not stronger evidence than a clearly-documented contract that says the input should work. The principle is real; the strict ordering it appears to imply is not.
+Apply this as a heuristic, not as a ranked ladder. A numbered list of source types ("production observation > tests > codebase > commits > docs > blogs > LLM output") looks operational but breaks immediately at the first tier boundary. A passing test that does not exercise the failing input is not stronger evidence than a clearly-documented contract that says the input should work. The principle is real; the strict ordering it appears to imply is not.
 
 Specifically, the proximity ordering inverts in three contexts:
 
@@ -44,7 +44,7 @@ When you cite this principle in a skill or an agent's output, name the source's 
 
 ### Principle 2: Independent corroboration
 
-A claim corroborated by two or more independent sources carries more weight than a claim resting on one source. This applies most sharply to web sources, which sit outside Han's trust boundary and have no built-in verification mechanism. A single Stack Overflow answer, a single blog post, a single arXiv pre-print, or a single LLM-generated explanation that drives a recommendation must be marked single-source and cannot be the sole basis for the recommendation.
+A claim corroborated by two or more independent sources carries more weight than a claim resting on one source. This applies most sharply to web sources, which sit outside Han's trust boundary and have no built-in verification mechanism. A single Stack Overflow answer, a single blog post, a single arXiv pre-print, or a single LLM-generated explanation that drives a recommendation must be marked single-source. It cannot be the sole basis for the recommendation.
 
 The corroboration gate as written applies to web sources that bear on a recommendation. It does not apply to codebase evidence. A single file path at a specific line number is not weakened by being a single citation. The current source code is the current state of the system. Demanding a second independent code path to confirm a root cause would either be vacuously satisfied (the file path is the second source) or would reject valid single-file findings.
 
@@ -54,9 +54,9 @@ When sources contradict each other, surface the conflict. Record both, name the 
 
 When a claim has no evidence at any tier, label it. Defer the dependent decision. Name the concrete trigger that would justify revisiting.
 
-The wrong response is to treat "no evidence" as identical to "very weak evidence" and proceed anyway. That collapses two distinct states into one and loses signal. A claim with very weak evidence still gives you something to test against. A claim with no evidence gives you nothing, and proceeding as if you had something is how cargo-culting takes root.
+The wrong response is to treat "no evidence" as identical to "very weak evidence" and proceed anyway. That collapses two distinct states into one and loses signal. A claim with very weak evidence still gives you something to test against. A claim with no evidence gives you nothing. Proceeding as if you had something is how cargo-culting takes root.
 
-The response Han uses is the same defer-with-trigger pattern [YAGNI](./yagni.md#the-deferred-yagni-section-format) uses: record the claim, record why no evidence exists yet, record the concrete trigger that would justify revisiting, and move on to the next item that has evidence to work with. Real triggers are a measured metric, an incident that fires, a customer commitment, a regulation taking effect, or a dependency landing. Aspirational triggers ("when we have time to investigate") are not triggers.
+The response Han uses is the same defer-with-trigger pattern [YAGNI](./yagni.md#the-deferred-yagni-section-format) uses. Record the claim, record why no evidence exists yet, record the concrete trigger that would justify revisiting, and move on to the next item that has evidence to work with. Real triggers are a measured metric, an incident that fires, a customer commitment, a regulation taking effect, or a dependency landing. Aspirational triggers ("when we have time to investigate") are not triggers.
 
 ## Trust classes
 

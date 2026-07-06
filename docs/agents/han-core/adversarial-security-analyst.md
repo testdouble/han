@@ -7,15 +7,15 @@ Operator documentation for the `adversarial-security-analyst` agent in the han p
 ## TL;DR
 
 - **What it does.** Adversarial security analysis of first-party code and dependencies. Proves real vulnerabilities exist with file-level evidence and demonstrated exploit paths. Never reports theoretical risks.
-- **When to dispatch it.** A change touches auth, input handling, isolation, crypto, uploads, or SQL/ORM, and you want exploit-path findings rather than CWE checklists. Always dispatched by `/code-review`. Dispatched on a security signal by `/architectural-analysis` (security-signal roster on medium/large), `/gap-analysis` (swarm specialist), `/plan-a-feature` (spec-stage team), `/plan-implementation` (implementation team), and `/iterative-plan-review` (team mode), and by `/test-planning` for negative security tests.
+- **When to dispatch it.** A change touches auth, input handling, isolation, crypto, uploads, or SQL/ORM, and you want exploit-path findings rather than CWE checklists. Always dispatched by `/code-review`. Dispatched on a security signal by `/architectural-analysis` (security-signal roster on medium/large), `/gap-analysis` (swarm specialist), `/plan-a-feature` (spec-stage team), `/plan-implementation` (implementation team), and `/iterative-plan-review` (team mode). Also dispatched by `/test-planning` for negative security tests.
 - **What you get back.** A `security-analysis.md` file with `SEC-###` findings, each tagged with OWASP category, file:line location, exact code snippet, and a step-by-step exploit description. Plus an in-channel summary with severity counts.
 
 ## Key concepts
 
 - **Default stance: every system is insecure until proven otherwise.** The agent assumes all code is vulnerable, all PII leaks, and the attack surface is wider than it looks. The work is to *prove* exploitability, not catalog the absence of risk.
 - **Evidence standard is non-negotiable.** First-party findings require `file_path:line_number` plus a step-by-step exploit path. Dependency findings require a CVE or known-vulnerability reference matched against the exact version in the lock file. If the standard cannot be met, no finding is reported.
-- **OWASP Top 10 sweep, then four attack-angle protocols.** The agent walks all ten OWASP categories explicitly (clearing each with a one-line note when no finding applies) then runs four cross-cutting protocols: input-to-sink tracing, auth/authz decision audit, secret and PII pattern search, and dependency vulnerability check.
-- **Framework-handled false-positives are excluded.** When the project's framework provides default protection for a vulnerability class (CSRF tokens, parameterized queries via ORM, automatic XSS escaping), the agent verifies the protection is in place rather than flagging the category.
+- **OWASP Top 10 sweep, then four attack-angle protocols.** The agent walks all ten OWASP categories explicitly, clearing each with a one-line note when no finding applies. Then it runs four cross-cutting protocols: input-to-sink tracing, auth/authz decision audit, secret and PII pattern search, and dependency vulnerability check.
+- **Framework-handled false-positives are excluded.** The project's framework may provide default protection for a vulnerability class, such as CSRF tokens, parameterized queries via ORM, or automatic XSS escaping. When it does, the agent verifies the protection is in place rather than flagging the category.
 - **Severity bands.** Critical (proven exploit, sensitive data at risk), High (proven exploit, limited blast radius), Medium (proven exploit, low blast radius). No Low severity. If it doesn't rise to Medium, it isn't a security finding.
 
 ## When to use it

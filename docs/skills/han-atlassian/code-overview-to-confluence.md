@@ -6,14 +6,14 @@ Operator documentation for the `/code-overview-to-confluence` skill in the opt-i
 
 ## TL;DR
 
-- **What it does.** Runs the core [`/code-overview`](../han-coding/code-overview.md) skill to produce a progressive-disclosure overview of unfamiliar code or a PR's changes and write it to a scratch file, shows you the file to review, and then, after you confirm, publishes it to a Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
-- **When to use it.** You want code or a pull request explained *and* the overview posted to a specific Confluence space or page, not just to a local file.
+- **What it does.** Runs the core [`/code-overview`](../han-coding/code-overview.md) skill to produce a progressive-disclosure overview of unfamiliar code or a PR's changes, and writes it to a scratch file. Shows you the file to review. After you confirm, publishes it to a Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
+- **When to use it.** You want code or a pull request explained *and* the overview posted to a specific Confluence space or page, not only to a local file.
 - **What you get back.** A working-draft markdown overview in a scratch file that you can review, plus a created or updated Confluence page at the location you named (if you choose to publish). No code is changed.
 
 ## Key concepts
 
-- **A thin orchestrator over two skills.** The overview work — target resolution, mode and size selection, the parallel `codebase-explorer` exploration, the synthesis, and the readability-review pass — all belongs to [`/code-overview`](../han-coding/code-overview.md). The publishing work, the location resolution, and the create-or-update call all belong to [`/markdown-to-confluence`](./markdown-to-confluence.md). This skill only validates its inputs, runs the overview to a scratch file, lets you review it, takes your publish choice, and hands the file to the publisher.
-- **One overview, one page.** `/code-overview` produces a single scratch file (what the code does, how it flows, where to start, and — in PR mode — what changed and what to watch when reviewing), with no companion artifacts. So this skill publishes one Confluence page. It is the single-page sibling of [`/investigate-to-confluence`](./investigate-to-confluence.md) and [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md), not the parent-plus-children tree of [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md).
+- **A thin orchestrator over two skills.** The overview work (target resolution, mode and size selection, the parallel `codebase-explorer` exploration, the synthesis, and the readability-review pass) all belongs to [`/code-overview`](../han-coding/code-overview.md). The publishing work, the location resolution, and the create-or-update call all belong to [`/markdown-to-confluence`](./markdown-to-confluence.md). This skill only validates its inputs, runs the overview to a scratch file, lets you review it, takes your publish choice, and hands the file to the publisher.
+- **One overview, one page.** `/code-overview` produces a single scratch file (what the code does, how it flows, where to start, and, in PR mode, what changed and what to watch when reviewing), with no companion artifacts. So this skill publishes one Confluence page. It is the single-page sibling of [`/investigate-to-confluence`](./investigate-to-confluence.md) and [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md), not the parent-plus-children tree of [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md).
 - **It explains code, it does not review or change it.** `/code-overview` is read-only and raises no findings, severities, or recommended changes; it only helps a reader get oriented. This wrapper inherits that exactly. For a quality review, use [`/code-review`](../han-coding/code-review.md); to post a review to a PR, use [`/post-code-review-to-pr`](../han-github/post-code-review-to-pr.md).
 - **The Atlassian MCP server is required.** The skill checks the server is connected before it runs any overview, so a missing server fails fast. If the server is missing or not authenticated, the skill stops and points you at `/code-overview` for a local-only run. It never silently falls back to local.
 - **The overview lands in a scratch file first.** `/code-overview` always writes its overview to a scratch file outside your repo (for example `/tmp/code-overview-<slug>.md`), so it never gets committed unless you move it there yourself.
@@ -32,7 +32,7 @@ Operator documentation for the `/code-overview-to-confluence` skill in the opt-i
 **Do not invoke for:**
 
 - **A local-only overview.** Use [`/code-overview`](../han-coding/code-overview.md). This skill is for when the overview also needs to land in Confluence.
-- **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the overview and just want it posted, without running a new overview.
+- **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the overview and only want it posted, without running a new overview.
 - **Reviewing code quality.** Use [`/code-review`](../han-coding/code-review.md), or [`/post-code-review-to-pr`](../han-github/post-code-review-to-pr.md) to post a review to a PR. This skill explains; it does not judge.
 - **Root-causing a bug.** Use [`/investigate-to-confluence`](./investigate-to-confluence.md).
 - **Documenting an already-understood feature.** Use [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md).
@@ -61,7 +61,7 @@ Example prompts:
 
 Two artifacts:
 
-- **The working draft.** A markdown overview in a scratch file outside your repo (for example `/tmp/code-overview-<slug>.md`) that [`/code-overview`](../han-coding/code-overview.md) writes: in code mode, what the code does and why, the main flow as a Mermaid chart, context and uses, and where to start; in PR mode, what the change does, the changes grouped by intent, how the change flows, and what to watch when reviewing. This file is the source content for Confluence and the thing you review before publishing. It lives in a scratch file, not your repo, so it does not get committed unless you move it there yourself. No code is changed.
+- **The working draft.** A markdown overview in a scratch file outside your repo (for example `/tmp/code-overview-<slug>.md`) that [`/code-overview`](../han-coding/code-overview.md) writes. In code mode, it covers what the code does and why, the main flow as a Mermaid chart, context and uses, and where to start. In PR mode, it covers what the change does, the changes grouped by intent, how the change flows, and what to watch when reviewing. This file is the source content for Confluence and the thing you review before publishing. It lives in a scratch file, not your repo, so it does not get committed unless you move it there yourself. No code is changed.
 - **The Confluence page.** A page created at, or updated in place at, the location you named, either as an unpublished draft (the default) or live, per your choice. The skill reports the page URL on success and tells you which mode it used; for a draft, you still review and publish it yourself in Confluence. Mermaid diagrams publish as Mermaid source in code blocks (see below).
 
 If you keep it local only at the confirmation step, you still keep the scratch-file draft; nothing is published.
@@ -76,14 +76,14 @@ If you keep it local only at the confirmation step, you still keep the scratch-f
 
 ## Cost and latency
 
-The skill itself dispatches no agents. Its cost is whatever [`/code-overview`](../han-coding/code-overview.md) costs (one to five `codebase-explorer` agents scaled to size, plus the `information-architect` and `junior-developer` readability-review pass, all on their default models), plus the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes to resolve the location and publish the page. For a small target, expect a couple of minutes total, the same shape as `/code-overview`, with a short publish step at the end; a large target costs more as the explorer count grows.
+The skill itself dispatches no agents. Its cost is whatever [`/code-overview`](../han-coding/code-overview.md) costs: one to five `codebase-explorer` agents scaled to size, plus the `information-architect` and `junior-developer` readability-review pass, all on their default models. On top of that, it costs the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes to resolve the location and publish the page. For a small target, expect a couple of minutes total, the same shape as `/code-overview`, with a short publish step at the end. A large target costs more as the explorer count grows.
 
 ## In more detail
 
 The skill walks a short, deterministic five-step process:
 
 1. **Validate inputs.** Confirm the Atlassian MCP server is reachable (calling `getAccessibleAtlassianResources`) and that a Confluence destination was provided. If the server is unavailable, stop before running anything. If no destination was given, ask for one. The skill does not resolve the page tree here; it only confirms a location exists.
-2. **Produce the overview to a scratch file.** Invoke `/code-overview` with all your context forwarded verbatim — the target, any size you gave, and the conversation context. `/code-overview` already writes to a scratch file and changes no code, so no extra instructions are needed. Capture that path.
+2. **Produce the overview to a scratch file.** Invoke `/code-overview` with all your context forwarded verbatim (the target, any size you gave, and the conversation context). `/code-overview` already writes to a scratch file and changes no code, so no extra instructions are needed. Capture that path.
 3. **Show the file for review.** Tell you the exact scratch-file path so you can open and read the overview before deciding anything.
 4. **Confirm the publish choice.** Ask how to publish: save as a draft (the recommended default), publish live, or keep it local only. If you keep it local only, the skill stops and reports the scratch-file path.
 5. **Publish with `/markdown-to-confluence`.** Hand the scratch-file path, the Confluence destination, and your chosen publish mode to [`/markdown-to-confluence`](./markdown-to-confluence.md), which resolves the location, posts the page, and reports its URL.

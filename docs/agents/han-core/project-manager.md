@@ -21,7 +21,17 @@ Operator documentation for the `project-manager` agent in the han plugin. This d
 
 ## Summary
 
-A seasoned, facilitative project manager that coordinates discussions between the team's specialist sibling agents and synthesizes their input into a final plan the team can commit to. Its default posture is adversarial toward the work on the table (plans, processes, proposed solutions, recommendations, inconsistencies, undocumented assumptions) and collaborative toward the team members who produced them. It is strict about evidence: every recommendation, claim, and proposal must be backed by valid, contextually relevant evidence, and the agent pushes back hard when it is not. It runs round-robin facilitation so every relevant specialist is heard regardless of subject-matter expertise in the topic on the table, and it tracks a live RAID log of risks, assumptions, issues, and decisions so nothing load-bearing goes undocumented. Final decisions belong to the PM, but the PM does not decide until every relevant specialist has been heard. When it does decide, it records the decision, the rejected alternatives, and the evidence. When a specialist is not needed on a plan, the PM tells them so explicitly rather than letting their attention drift onto unrelated work. Focused on outcomes (shipping working software quickly while protecting the future operability of the system at scale) not on implementation detail, which remains the specialists' domain.
+A seasoned, facilitative project manager that coordinates discussions between the team's specialist sibling agents and synthesizes their input into a final plan the team can commit to. Its default posture is adversarial toward the work on the table (plans, processes, proposed solutions, recommendations, inconsistencies, undocumented assumptions) and collaborative toward the team members who produced them.
+
+It is strict about evidence. Every recommendation, claim, and proposal must be backed by valid, contextually relevant evidence, and the agent pushes back hard when it is not.
+
+It runs round-robin facilitation, so every relevant specialist is heard regardless of subject-matter expertise in the topic on the table. It also tracks a live RAID log of risks, assumptions, issues, and decisions, so nothing load-bearing goes undocumented.
+
+Final decisions belong to the PM, but the PM does not decide until every relevant specialist has been heard. When it does decide, it records the decision, the rejected alternatives, and the evidence.
+
+When a specialist is not needed on a plan, the PM tells them so explicitly rather than letting their attention drift onto unrelated work.
+
+The PM focuses on outcomes (shipping working software quickly while protecting the future operability of the system at scale), not on implementation detail, which remains the specialists' domain.
 
 ## When to use it
 
@@ -31,7 +41,7 @@ The agent has two modes (facilitation and synthesis). Invoke the right one for t
 
 - A planning session, design review, architecture debate, migration discussion, or cross-specialist coordination conversation needs a project-management voice to keep the team on the real work, surface hidden assumptions, and enforce evidence-based reasoning.
 - Multiple specialists are weighing in on a plan and the conversation needs round-robin facilitation so every relevant voice is heard rather than letting the loudest specialist dominate.
-- A discussion is drifting into implementation minutiae that the specialists can resolve on their own, or skating past a systemic concern because it looks *"like just implementation,"* and the team needs a facilitator to re-focus on outcomes.
+- A discussion is drifting into implementation minutiae that the specialists can resolve on their own, or skating past a systemic concern because it looks *"like just implementation."* The team needs a facilitator to re-focus on outcomes.
 - A claim in the discussion is surviving because it has been repeated, not because it has been proven, and someone needs to put it in the claim ledger and ask what evidence would resolve it.
 - Open questions, undocumented assumptions, and inconsistencies are piling up in a conversation and need to be tracked live so they can be resolved before a plan can be considered done.
 - The team wants to know which specialists still need to be consulted before synthesis can happen, and which specialists can be explicitly sent home because the plan does not touch their domain.
@@ -95,13 +105,40 @@ Thin prompts (*"make a plan for X"*) still work but produce more open items and 
 
 **In facilitation mode:**
 
-- A summary in the tool-call response: a one-to-three-sentence posture (is the conversation ready for synthesis, needs more specialists, or needs to return to outcome clarification?), a counts table (evidenced / anecdotal / disputed claims, risks, assumptions, issues, decisions committed, open questions, specialist handoffs), a next-step recommendation, and the path to the full facilitation summary.
-- A full facilitation summary on disk with: the outcome statement, the driving constraint and stakeholders, the specialist participation record (who's in, who's invited, who's been sent home), the claim ledger (each claim categorized Evidenced / Anecdotal / Disputed), the live RAID log, scope and definition-of-done findings, inconsistency and standards-conflict findings, future-state concerns, open questions, specialist handoffs, and the recommended next step.
+- A summary in the tool-call response:
+  - A one-to-three-sentence posture (is the conversation ready for synthesis, needs more specialists, or needs to return to outcome clarification?).
+  - A counts table (evidenced / anecdotal / disputed claims, risks, assumptions, issues, decisions committed, open questions, specialist handoffs).
+  - A next-step recommendation.
+  - The path to the full facilitation summary.
+- A full facilitation summary on disk with:
+  - The outcome statement.
+  - The driving constraint and stakeholders.
+  - The specialist participation record (who's in, who's invited, who's been sent home).
+  - The claim ledger (each claim categorized Evidenced / Anecdotal / Disputed).
+  - The live RAID log.
+  - Scope and definition-of-done findings.
+  - Inconsistency and standards-conflict findings.
+  - Future-state concerns.
+  - Open questions.
+  - Specialist handoffs.
+  - The recommended next step.
 
 **In synthesis mode:**
 
-- A summary in the tool-call response: a one-to-three-sentence posture on whether the plan is committable today or blocked pending a specialist handoff or open item, a counts table (decisions committed, rejected alternatives, risks, assumptions, dependencies, remaining open items, specialist handoffs for implementation), a ship recommendation, and the path to the full synthesized plan.
-- A full synthesized plan on disk with: the outcome statement, context (driving constraint, stakeholders, future-state concern, out-of-scope boundary), the participation record, numbered decisions (each with rationale, evidence, rejected alternatives, specialist owner, revisit criterion, and any recorded dissent), the RAID log carried forward, the definition-of-done and smallest-viable-slice record, specialist handoffs for implementation, and any remaining open items.
+- A summary in the tool-call response:
+  - A one-to-three-sentence posture on whether the plan is committable today or blocked pending a specialist handoff or open item.
+  - A counts table (decisions committed, rejected alternatives, risks, assumptions, dependencies, remaining open items, specialist handoffs for implementation).
+  - A ship recommendation.
+  - The path to the full synthesized plan.
+- A full synthesized plan on disk with:
+  - The outcome statement.
+  - Context (driving constraint, stakeholders, future-state concern, out-of-scope boundary).
+  - The participation record.
+  - Numbered decisions (each with rationale, evidence, rejected alternatives, specialist owner, revisit criterion, and any recorded dissent).
+  - The RAID log carried forward.
+  - The definition-of-done and smallest-viable-slice record.
+  - Specialist handoffs for implementation.
+  - Any remaining open items.
 
 In both modes, every claim and decision is traceable to a specific citation (evidence) or a specific question (when evidence is missing). When evidence is missing and cannot be gathered in the current run, the plan is not synthesized cleanly. The blocking open items are named and the agent recommends returning to facilitation.
 
@@ -123,11 +160,11 @@ The agent runs on `opus`. A single facilitation or synthesis pass is slower and 
 
 ## YAGNI
 
-The agent applies the **YAGNI Evidence Gate** protocol during facilitation and synthesis. Every committed proposal in a discussion (every plan step, abstraction, infrastructure addition, configuration knob, ADR, coding standard, test, or build phase) must cite at least one piece of acceptable evidence that it is needed *now*. Uncited proposals are challenged in the discussion. If no evidence surfaces, they move to a `## Deferred (YAGNI)` section in the synthesized output with a named *reopen-when* trigger. The agent never silently drops a deferral. You always see the deferred item and the trigger that would justify reopening it, so the choice to keep or release the item stays conscious.
+The agent applies the **YAGNI Evidence Gate** protocol during facilitation and synthesis. A discussion can commit many kinds of proposals: a plan step, abstraction, infrastructure addition, configuration knob, ADR, coding standard, test, or build phase. Each one must cite at least one piece of acceptable evidence that it is needed *now*. Uncited proposals are challenged in the discussion. If no evidence surfaces, they move to a `## Deferred (YAGNI)` section in the synthesized output with a named *reopen-when* trigger. The agent never silently drops a deferral. You always see the deferred item and the trigger that would justify reopening it, so the choice to keep or release the item stays conscious.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
-Alongside the YAGNI gate, the agent applies the companion [evidence rule](../../evidence.md) to characterize the quality of evidence each surviving item rests on: name the trust class of the citation (codebase, web, provided), mark single-source web claims that cannot stand alone, and label claims with no evidence at any tier as a distinct deferred state rather than weak evidence.
+Alongside the YAGNI gate, the agent applies the companion [evidence rule](../../evidence.md) to characterize the quality of evidence each surviving item rests on. It names the trust class of the citation (codebase, web, provided), marks single-source web claims that cannot stand alone, and labels claims with no evidence at any tier as a distinct deferred state rather than weak evidence.
 
 ## Sources
 
@@ -135,7 +172,7 @@ The agent's posture and protocols draw on established project-management practic
 
 ### PMI: The Facilitative Project Manager
 
-The Project Management Institute publishes guidance on facilitative project management: the project manager as process expert whose job is to enable effective decision-making by the group, not to make decisions alone. The agent's round-robin protocol, its insistence on hearing every relevant voice before decision, and its posture of driving ownership of a decision to the level where accountability sits are taken directly from this practice.
+The Project Management Institute publishes guidance on facilitative project management. It defines the project manager as a process expert whose job is to enable effective decision-making by the group, not to make decisions alone. The agent's round-robin protocol is taken directly from this practice. So is its insistence on hearing every relevant voice before decision, and its posture of driving ownership of a decision to the level where accountability sits.
 
 URL: https://www.pmi.org/learning/library/the-facilitative-project-manager-6970
 
@@ -153,25 +190,25 @@ URLs: https://asana.com/resources/raid-log and https://www.smartsheet.com/conten
 
 ### Decision Logs and Agile Decision-Making
 
-Decision logs are the Agile-era discipline for recording the *what* and the *why* of a decision so the team can revisit it cleanly later if evidence changes. The agent's Protocol 9 (Decision Synthesis) records decision ID, rationale, rejected alternatives, evidence, specialist owner, and revisit criterion: the full decision-log shape, applied inside a synthesized plan rather than as a separate artifact.
+Decision logs are the Agile-era discipline for recording the *what* and the *why* of a decision so the team can revisit it cleanly later if evidence changes. The agent's Protocol 9 (Decision Synthesis) records decision ID, rationale, rejected alternatives, evidence, specialist owner, and revisit criterion. That is the full decision-log shape, applied inside a synthesized plan rather than as a separate artifact.
 
 URLs: https://projectmanagementcompass.substack.com/p/building-decision-logs-that-protect and https://www.projectmanagertemplate.com/post/decision-logs-the-ultimate-guide
 
 ### Round-Robin Facilitation
 
-Round-robin is a facilitation technique in which every relevant participant speaks in turn, deliberately, so quieter voices are heard before the loudest voice takes the room. The agent's Protocol 2 implements round-robin across the specialist sibling agents it knows about, and explicitly captures *"no concerns from my side"* as a valid, recorded answer so participation is never silently assumed.
+Round-robin is a facilitation technique in which every relevant participant speaks in turn, deliberately, so quieter voices are heard before the loudest voice takes the room. The agent's Protocol 2 implements round-robin across the specialist sibling agents it knows about. It explicitly captures *"no concerns from my side"* as a valid, recorded answer, so participation is never silently assumed.
 
 URLs: https://www.mindtools.com/a81qk8y/round-robin-brainstorming/ and https://goodgroupdecisions.com/round-robin/
 
 ### Amazon: Have Backbone; Disagree and Commit
 
-Jeff Bezos's *"Have Backbone; Disagree and Commit"* is the canonical articulation of the principle that teammates may disagree with a decision, but once the evidence has been weighed and every relevant voice has been heard, the team commits to executing it. And the dissent, with its cited evidence, is recorded so the decision can be revisited later if evidence changes. The agent encodes this in Protocol 9 (Decision Synthesis), which records the dissent and its cited evidence alongside the committed decision so the call can be revisited later if evidence changes.
+Jeff Bezos's *"Have Backbone; Disagree and Commit"* is the canonical articulation of this principle. Teammates may disagree with a decision, but once the evidence has been weighed and every relevant voice has been heard, the team commits to executing it. And the dissent, with its cited evidence, is recorded so the decision can be revisited later if evidence changes. The agent encodes this in Protocol 9 (Decision Synthesis), which records the dissent and its cited evidence alongside the committed decision so the call can be revisited later if evidence changes.
 
 URLs: https://en.wikipedia.org/wiki/Disagree_and_commit and https://www.amazon.jobs/content/en/our-workplace/leadership-principles
 
 ### Servant Leadership in Agile and Scrum
 
-The servant-leader framing (from Robert Greenleaf, applied to Agile by Ken Schwaber and Jeff Sutherland) casts the facilitator as someone who serves the team by removing impediments, protecting focus, and enabling decision-making rather than imposing it. The agent's posture (adversarial toward the work, collaborative toward the people) and its practice of sending specialists home when their domain is not touched both come from this tradition.
+The servant-leader framing (from Robert Greenleaf, applied to Agile by Ken Schwaber and Jeff Sutherland) casts the facilitator as someone who serves the team. That means removing impediments, protecting focus, and enabling decision-making rather than imposing it. The agent's posture (adversarial toward the work, collaborative toward the people) and its practice of sending specialists home when their domain is not touched both come from this tradition.
 
 URLs: https://www.toptal.com/project-managers/agile/agile-servant-leadership and https://www.atlassian.com/agile/scrum/scrum-master-project-manager
 

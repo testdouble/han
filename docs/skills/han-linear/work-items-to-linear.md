@@ -18,9 +18,9 @@ Operator documentation for the `/work-items-to-linear` skill in the opt-in `han-
 - **No issue types.** Linear has no issue-type concept, so the skill never asks for or sets one. Categorization is done with the team's real labels, chosen by you.
 - **Grouping the Linear way.** You can group the created issues under a Linear **Project** and nest them as **sub-issues** under a **parent issue**. Both are optional and independent. A Project is resolved at workspace scope and confirmed against the team; a parent issue is resolved within the team.
 - **Native dependency relations.** Every SYM named in a `Depends on` line must resolve to another slice in the same file. After all issues exist, the skill creates a native Linear "blocked by" relation from each dependent issue to its blockers. Relations are append-only and de-duplicated, so a re-run never doubles them.
-- **Reference artifacts, not process artifacts.** Every issue description carries the artifacts an implementer needs (API and event contracts, design references, schema docs, ADRs, coding standards) and never the process artifacts that record how the plan was reached (iteration histories, decision logs, review findings). The full include and exclude lists live in [the reference artifact inventory](../../../han-linear/skills/work-items-to-linear/references/reference-artifact-inventory.md).
+- **Reference artifacts, not process artifacts.** Every issue description carries the artifacts an implementer needs: API and event contracts, design references, schema docs, ADRs, coding standards. It never carries the process artifacts that record how the plan was reached: iteration histories, decision logs, review findings. The full include and exclude lists live in [the reference artifact inventory](../../../han-linear/skills/work-items-to-linear/references/reference-artifact-inventory.md).
 - **No image embedding.** Design references are carried as links in the issue. Add image attachments in Linear by hand if an issue needs them.
-- **Evidence-based repair.** When a format check fails, the skill proposes a fix backed by a concrete source (a file path with line number, a plan section, an ADR ID) and lets you continue with the fills, correct them, or stop.
+- **Evidence-based repair.** When a format check fails, the skill proposes a fix backed by a concrete source: a file path with line number, a plan section, or an ADR ID. You can continue with the fills, correct them, or stop.
 - **Idempotent resume.** After an issue is created, its slice heading in the source file is annotated with the Linear identifier. A re-run skips already-annotated slices, so a partial run resumes cleanly.
 
 ## When to use it
@@ -44,7 +44,7 @@ Run `/work-items-to-linear` in Claude Code.
 
 The skill ships in the opt-in `han-linear` plugin, which the `han` meta-plugin does not bundle. Install it on its own first with `/plugin install han-linear@han` (it pulls `han-core` along the way). See [Choosing a Han plugin](../../choosing-a-han-plugin.md) for where it sits in the suite.
 
-**First-run setup: the Linear MCP server.** The skill drives Linear through the official Linear MCP server, a hosted remote server at `https://mcp.linear.app/mcp`. Install the Linear plugin or MCP server in Claude Code, then authorize it: the server uses OAuth, so the first run opens a browser flow where you grant access to your Linear workspace. The MCP server handles the OAuth exchange. The skill never sees or stores a token. Once the server is connected and authorized, the skill's preflight passes. For the full setup reference, see Linear's MCP documentation at https://linear.app/docs/mcp.
+**First-run setup: the Linear MCP server.** The skill drives Linear through the official Linear MCP server, a hosted remote server at `https://mcp.linear.app/mcp`. Install the Linear plugin or MCP server in Claude Code, then authorize it. The server uses OAuth, so the first run opens a browser flow where you grant access to your Linear workspace. The MCP server handles the OAuth exchange. The skill never sees or stores a token. Once the server is connected and authorized, the skill's preflight passes. For the full setup reference, see Linear's MCP documentation at https://linear.app/docs/mcp.
 
 Give it:
 
@@ -83,13 +83,13 @@ Issues in Linear plus one file change on disk:
 
 ## YAGNI (when applicable)
 
-YAGNI does not gate this skill's output. The work-items file is an already-committed decomposition, and this skill publishes it without adding new behavioral commitments or speculative infrastructure. The closest thing to a gate here is the reference-artifact rule: issue descriptions carry the contracts, designs, and standards an implementer needs and leave out the process artifacts that only record how the plan was reached. That is content hygiene, not YAGNI.
+YAGNI does not gate this skill's output. The work-items file is an already-committed decomposition, and this skill publishes it without adding new behavioral commitments or speculative infrastructure. The closest thing to a gate here is the reference-artifact rule: issue descriptions carry the contracts, designs, and standards an implementer needs. They leave out the process artifacts that only record how the plan was reached. That is content hygiene, not YAGNI.
 
 If the plan behind the work items has not been through a YAGNI sweep, run [`/iterative-plan-review`](../han-planning/iterative-plan-review.md) on the plan before you break it into work items. See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
 ## Cost and latency
 
-The skill dispatches no agents. Its work runs in the conversation context: a few Linear MCP reads to preflight and resolve the target against the live team, the format validation with evidence-based repair, one create call per item, a relation call per dependency, and a small batch of reads to check existing identifiers on a resume. The most time-consuming runs are large work-items files, because issue creation is one call per item. The skill is built for a once-per-breakdown cadence, and the heading annotations mean a re-run after an interruption only creates the issues that remain.
+The skill dispatches no agents. Its work runs in the conversation context. A few Linear MCP reads preflight the server and resolve the target against the live team. Then format validation runs with evidence-based repair, one create call fires per item, a relation call fires per dependency, and a small batch of reads checks existing identifiers on a resume. The most time-consuming runs are large work-items files, because issue creation is one call per item. The skill is built for a once-per-breakdown cadence, and the heading annotations mean a re-run after an interruption only creates the issues that remain.
 
 ## In more detail
 
@@ -111,7 +111,7 @@ The skill drives Linear through the Linear MCP server. Each source below is cite
 
 ### Linear MCP server
 
-The skill's Linear operations, listing teams, reading a team's workflow states, labels, and members, listing Projects, creating and updating issues, setting native "blocked by" relations, and reading an issue to confirm it resolves, are the tools the official Linear MCP server exposes. The skill calls them directly rather than through a CLI.
+The official Linear MCP server exposes the operations the skill uses: listing teams, reading a team's workflow states, labels, and members, listing Projects, creating and updating issues, setting native "blocked by" relations, and reading an issue to confirm it resolves. The skill calls them directly rather than through a CLI.
 
 URL: https://linear.app/docs/mcp
 

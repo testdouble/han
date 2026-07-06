@@ -7,12 +7,12 @@ Operator documentation for the `on-call-engineer` agent in the han plugin. This 
 ## TL;DR
 
 - **What it does.** Audits application source code for the named code-level resilience anti-patterns that wake on-call engineers at 3am.
-- **When to dispatch it.** A change is about to ship and you want a veteran on-call engineer to read the source for the patterns that reliably cause 3am pages — before the page happens. Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the change touches application-source resilience surface (timeouts, retries, idempotency, backpressure, kill switches, failure-path observability).
+- **When to dispatch it.** A change is about to ship and you want a veteran on-call engineer to read the source for the patterns that reliably cause 3am pages, before the page happens. Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the change touches application-source resilience surface (timeouts, retries, idempotency, backpressure, kill switches, failure-path observability).
 - **What you get back.** A code-level resilience report keyed to `file_path:line_number`, naming the anti-pattern, the production failure mode it leads to, and a sequenced remediation (smallest safe step today, next iteration, paved path).
 
 ## Key concepts
 
-- **Default stance: *"This will page someone at 3am."*** Every finding cites the source line, names the anti-pattern, names the named production failure mode (cascading failure, retry storm, thundering herd, metastable failure, gray failure, connection pool exhaustion, poison pill, queue runaway, slow memory leak, OOM-kill, thread pool starvation, data corruption, eventual-consistency violation, fan-out amplification), and gives the production-impact statement in concrete terms.
+- **Default stance: *"This will page someone at 3am."*** Every finding cites the source line, names the anti-pattern, and names the production failure mode it leads to. The named failure modes include cascading failure, retry storm, thundering herd, metastable failure, gray failure, connection pool exhaustion, poison pill, queue runaway, slow memory leak, OOM-kill, thread pool starvation, data corruption, eventual-consistency violation, and fan-out amplification. Each finding also gives the production-impact statement in concrete terms.
 - **Adversarial to the artifact, empathetic to the engineer.** The agent has been the engineer whose code caused the page. The posture is toward the code and the pattern, never toward the human. Findings are written so the author can read them without feeling judged. Four named tone anti-patterns (sugarcoated criticism, thin blame, tourist citation, bibliographic empathy) are auto-checked against the agent's own findings before output.
 - **Named code-level anti-pattern vocabulary.** Missing or incomplete timeouts (including DNS/TLS uncovered), retries without backoff and jitter, non-idempotent operations in retry paths, catch-and-swallow exception handling, unbounded queues/buffers/result sets, missing backpressure, blocking I/O in async contexts, missing bulkheads, hardcoded environment assumptions, schema migrations co-deployed with dependent code, missing correlation IDs, assuming dependencies are always available, missing rate limiting on fan-out, eventual-consistency violations, data integrity bugs, kill-switch absence, ODD-gate failure.
 - **Metastable-failure detection as primary new contribution.** The Bronson et al. HotOS'21 / OSDI'22 vocabulary (a degraded steady state that persists after the trigger is removed, sustained by a positive feedback loop) is not carried by any other agent in the plugin. This agent makes it citable in code review.
@@ -20,13 +20,19 @@ Operator documentation for the `on-call-engineer` agent in the han plugin. This 
 
 ## Summary
 
-A 20+ year on-call veteran that reads application source code in a change and proves that real, named, file-and-line-located code-level resilience risks exist. Its default stance is that the code will fail in production and the author will not be the one paged for it. Every finding is backed by a `file_path:line_number` reference, the named anti-pattern, the named production failure mode it leads to, and a concrete production-impact statement. Adversarial language is directed at the artifact, never at any human. Every wakes-someone-up severity finding is paired with the smallest safe step the team can ship today, then a sequenced "next iteration" and "paved path next quarter" so the agent does not become a bottleneck. The agent runs a tone-anti-pattern sweep against its own findings (sugarcoating, thin blame, tourist citation, bibliographic empathy) before emitting them.
+A 20+ year on-call veteran that reads application source code in a change and proves that real, named, file-and-line-located code-level resilience risks exist. Its default stance is that the code will fail in production and the author will not be the one paged for it.
+
+Every finding is backed by a `file_path:line_number` reference, the named anti-pattern, the named production failure mode it leads to, and a concrete production-impact statement.
+
+Adversarial language is directed at the artifact, never at any human. The agent runs a tone-anti-pattern sweep against its own findings (sugarcoating, thin blame, tourist citation, bibliographic empathy) before emitting them.
+
+Every wakes-someone-up severity finding is paired with the smallest safe step the team can ship today, then a sequenced "next iteration" and "paved path next quarter." This keeps the agent from becoming a bottleneck.
 
 ## When to use it
 
 **Dispatch when:**
 
-- A change is approaching production and you want a code-level review focused specifically on "what will wake someone up at 3am" — not style, not architecture, not security exploits.
+- A change is approaching production and you want a code-level review focused specifically on "what will wake someone up at 3am," not style, not architecture, not security exploits.
 - A new feature path is being added and you want a check that the basics are present in the source: timeouts, idempotency, backpressure, kill switches, correlation IDs, observability of the failure path.
 - A team is shipping into a service with prior on-call pain and wants a structured pass over the diff before merging.
 - A retry loop, queue handler, fan-out, schema migration, or other classically-load-bearing pattern is being added or modified.
@@ -66,8 +72,19 @@ Thin prompts (*"audit the code"*) still work but produce more Open Questions and
 
 ## What you get back
 
-- A summary in the tool-call response: a 1–3 sentence on-call posture statement that leads with the most likely production failure shape, a severity count table (Wakes someone up / Degrades reliability / On-call friction / Polish / YAGNI candidate), an Open Questions count, and the path to the full report.
-- A full report on disk with: scope (and anything explicitly deferred to a sibling agent), failure profile (the most likely production failure shape and its triggering conditions), question log (Answered / Assumed / Open), assumptions, open questions, numbered `OCE-###` findings each tied to a named anti-pattern, a named production failure mode, a `file_path:line_number` location, evidence, production impact, related questions, severity, and three remediations (today / next iteration / paved path next quarter), plus an On-Call Improvement Summary.
+- A summary in the tool-call response:
+  - A 1–3 sentence on-call posture statement that leads with the most likely production failure shape.
+  - A severity count table (Wakes someone up / Degrades reliability / On-call friction / Polish / YAGNI candidate).
+  - An Open Questions count.
+  - The path to the full report.
+- A full report on disk with:
+  - Scope (and anything explicitly deferred to a sibling agent).
+  - Failure profile (the most likely production failure shape and its triggering conditions).
+  - Question log (Answered / Assumed / Open).
+  - Assumptions.
+  - Open questions.
+  - Numbered `OCE-###` findings, each tied to a named anti-pattern, a named production failure mode, a `file_path:line_number` location, evidence, production impact, related questions, severity, and three remediations (today / next iteration / paved path next quarter).
+  - An On-Call Improvement Summary.
 
 Every finding is traceable to a question in the log and an anti-pattern in the agent's vocabulary. If something is not traceable, the agent is instructed to drop it.
 
@@ -84,9 +101,9 @@ Every finding is traceable to a question in the log and an anti-pattern in the a
 
 ## YAGNI
 
-The agent enforces a **Premature Operability Machinery** rule at the code level. Circuit breakers, bulkheads, retry helpers, idempotency tables, feature flags, kill switches, structured-logging middleware, correlation-id wrappers, dead-letter queues, and custom error types are first-class candidates for the evidence test: is there evidence the system needs this artifact *now*? Acceptable evidence: a named upstream finding the artifact resolves, an existing code path that breaks without it, three current concrete uses, a measured incident or workload, an applicable regulation. Recommendations that fail the evidence test are deferred as YAGNI candidates with a named reopening trigger (first real incident class observed, measured throughput crossing a threshold, third concurrent use of the helper, etc.).
+The agent enforces a **Premature Operability Machinery** rule at the code level. Circuit breakers, bulkheads, retry helpers, idempotency tables, feature flags, kill switches, structured-logging middleware, correlation-id wrappers, dead-letter queues, and custom error types are first-class candidates for the evidence test. Is there evidence the system needs this artifact *now*? Acceptable evidence: a named upstream finding the artifact resolves, an existing code path that breaks without it, three current concrete uses, a measured incident or workload, an applicable regulation. Recommendations that fail the evidence test are deferred as YAGNI candidates with a named reopening trigger (first real incident class observed, measured throughput crossing a threshold, third concurrent use of the helper, etc.).
 
-This rule deliberately mirrors `devops-engineer`'s Premature Operational Machinery rule but applies it at the application source line rather than at the infrastructure level. The two agents are coordinated: an artifact that fails YAGNI at the code level often fails at the infrastructure level too, and the recommendations point at the same simpler-version alternative.
+This rule deliberately mirrors `devops-engineer`'s Premature Operational Machinery rule but applies it at the application source line rather than at the infrastructure level. The two agents are coordinated. An artifact that fails YAGNI at the code level often fails at the infrastructure level too, and the recommendations point at the same simpler-version alternative.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 
@@ -100,13 +117,13 @@ The agent's protocols and vocabulary are grounded in published frameworks and re
 
 ### Michael Nygard, *Release It! Second Edition* (Pragmatic Programmers, 2018)
 
-The canonical practitioner reference for production stability. The agent's anti-pattern vocabulary (Integration Points, Chain Reaction, Cascading Failure, Blocked Threads, Slow Responses, Dogpile, Unbounded Result Sets, SLA Inversion, Force Multiplier) and its corresponding stability-pattern vocabulary (Timeout, Circuit Breaker with half-open recovery, Bulkhead, Steady State, Fail Fast, Handshaking, Back Pressure, Shed Load, Governor) come directly from this book.
+The canonical practitioner reference for production stability. The agent's anti-pattern vocabulary (Integration Points, Chain Reaction, Cascading Failure, Blocked Threads, Slow Responses, Dogpile, Unbounded Result Sets, SLA Inversion, Force Multiplier) comes directly from this book. So does its corresponding stability-pattern vocabulary (Timeout, Circuit Breaker with half-open recovery, Bulkhead, Steady State, Fail Fast, Handshaking, Back Pressure, Shed Load, Governor).
 
 URL: https://pragprog.com/titles/mnee2/release-it-second-edition/
 
 ### Marc Brooker / AWS Builders' Library and personal blog
 
-Brooker's writing on retries, timeouts, deadline propagation, idempotency, load shedding, metastable failure, and bistable caches is the agent's resilience-math anchor. Specific cited artifacts: the 243× retry-amplification scenario across five layers with three retries each, the token-bucket adaptive retry combined with circuit breaker recommendation, the deadline propagation formula, the goodput-over-throughput framing for load shedding, the open-loop cache as bistable system. The AWS-Brooker provenance is acknowledged in the agent's vocabulary — the math is sound but the defaults are tuned for AWS service retry behavior, so callers calibrate to the host platform.
+Brooker's writing on retries, timeouts, deadline propagation, idempotency, load shedding, metastable failure, and bistable caches is the agent's resilience-math anchor. Specific cited artifacts: the 243× retry-amplification scenario across five layers with three retries each, the token-bucket adaptive retry combined with circuit breaker recommendation, the deadline propagation formula, the goodput-over-throughput framing for load shedding, the open-loop cache as bistable system. The AWS-Brooker provenance is acknowledged in the agent's vocabulary: the math is sound, but the defaults are tuned for AWS service retry behavior, so callers calibrate to the host platform.
 
 URLs:
 - https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
@@ -118,13 +135,13 @@ URLs:
 
 ### Bronson et al., *Metastable Failures in Distributed Systems* (HotOS'21 / OSDI'22)
 
-The formal academic definition of metastable failure: a degraded state triggered by an external event that persists after the trigger is removed, sustained by a positive feedback loop. Aggressive retry policies, unbounded queue depths, missing circuit breakers, missing load shedding, and tight synchronous coupling are named as the design patterns that predispose systems to metastability. This is the agent's primary new contribution — vocabulary not present in any other han agent.
+The formal academic definition of metastable failure: a degraded state triggered by an external event that persists after the trigger is removed, sustained by a positive feedback loop. Aggressive retry policies, unbounded queue depths, missing circuit breakers, missing load shedding, and tight synchronous coupling are named as the design patterns that predispose systems to metastability. This is the agent's primary new contribution: vocabulary not present in any other han agent.
 
 URL: https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf
 
 ### Peng Huang et al., *Gray Failure: The Achilles' Heel of Cloud-Scale Systems* (HotOS 2017)
 
-The differential-observability paper: an application can see degradation that monitoring does not. Heartbeat-based health checks pass while request-level performance fails. Fan-out at cloud scale makes this nearly universal. The agent uses this vocabulary when flagging catch-and-swallow exception handling or ODD-gate failures: the failure mode being prevented is gray failure, where the on-call engineer learns about the problem from a support ticket rather than the dashboard.
+The differential-observability paper: an application can see degradation that monitoring does not. Heartbeat-based health checks pass while request-level performance fails. Fan-out at cloud scale makes this nearly universal. The agent uses this vocabulary when flagging catch-and-swallow exception handling or ODD-gate failures. The failure mode being prevented is gray failure, where the on-call engineer learns about the problem from a support ticket rather than the dashboard.
 
 URL: https://blog.acolyer.org/2017/06/15/gray-failure-the-achilles-heel-of-cloud-scale-systems/
 
@@ -178,7 +195,7 @@ URL: https://blog.thepete.net/blog/2023/12/05/expand/contract-making-a-breaking-
 
 ### Dan Luu, *Reading Postmortems*
 
-Synthesis of recurring patterns across hundreds of real postmortems. Five categories: error handling bugs, configuration changes, hardware failure with failover that does not work under stress, human process errors, missing or inadequate monitoring. The agent cites the Yuan et al. (OSDI 2014) finding (92% of catastrophic failures from incorrectly handled errors, 35% from empty handlers) with the explicit scope caveat: the study examined distributed data-infrastructure systems (Cassandra, HBase, HDFS, MapReduce, Redis), not web services or microservices broadly. The anti-pattern is universal; the headline percentage is not.
+Synthesis of recurring patterns across hundreds of real postmortems. Five categories: error handling bugs, configuration changes, hardware failure with failover that does not work under stress, human process errors, missing or inadequate monitoring. The agent cites the Yuan et al. (OSDI 2014) finding (92% of catastrophic failures from incorrectly handled errors, 35% from empty handlers) with an explicit scope caveat. The study examined distributed data-infrastructure systems (Cassandra, HBase, HDFS, MapReduce, Redis), not web services or microservices broadly. The anti-pattern is universal; the headline percentage is not.
 
 URL: https://danluu.com/postmortem-lessons/
 

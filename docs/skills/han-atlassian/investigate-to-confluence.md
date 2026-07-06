@@ -6,8 +6,8 @@ Operator documentation for the `/investigate-to-confluence` skill in the opt-in 
 
 ## TL;DR
 
-- **What it does.** Runs the core [`/investigate`](../han-coding/investigate.md) skill to root-cause a bug or unexpected behavior and write the investigation report to a temporary file, shows you the file to review, and then, after you confirm, publishes it to a Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
-- **When to use it.** You want something diagnosed *and* the findings posted to a specific Confluence space or page, not just to a local file.
+- **What it does.** Runs the core [`/investigate`](../han-coding/investigate.md) skill to root-cause a bug or unexpected behavior, and writes the investigation report to a temporary file. Shows you the file to review. After you confirm, publishes it to a Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
+- **When to use it.** You want something diagnosed *and* the findings posted to a specific Confluence space or page, not only to a local file.
 - **What you get back.** A working-draft markdown report under `/tmp/` that you can review, plus a created or updated Confluence page at the location you named (if you choose to publish). No code is changed.
 
 ## Key concepts
@@ -32,7 +32,7 @@ Operator documentation for the `/investigate-to-confluence` skill in the opt-in 
 **Do not invoke for:**
 
 - **Local-only investigation.** Use [`/investigate`](../han-coding/investigate.md). This skill is for when the findings also need to land in Confluence.
-- **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the report and just want it posted, without running a new investigation.
+- **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the report and only want it posted, without running a new investigation.
 - **Documenting an already-understood feature.** Use [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md).
 - **Planning or specifying a new feature.** Use [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md).
 - **Publishing to Jira.** Use [`/work-items-to-jira`](./work-items-to-jira.md).
@@ -74,7 +74,7 @@ If you keep it local only at the confirmation step, you still keep the `/tmp/` d
 
 ## Cost and latency
 
-The skill itself dispatches no agents. Its cost is whatever [`/investigate`](../han-coding/investigate.md) costs (at least two `evidence-based-investigator` agents in parallel, any conditional specialist analysts the symptom calls for, and one or more `adversarial-validator` agents, all on their default models), plus the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes to resolve the location and publish the page. For a typical bug, expect a few minutes total, the same shape as `/investigate`, with a short publish step at the end.
+The skill itself dispatches no agents. Its cost is whatever [`/investigate`](../han-coding/investigate.md) costs: at least two `evidence-based-investigator` agents in parallel, any conditional specialist analysts the symptom calls for, and one or more `adversarial-validator` agents, all on their default models. On top of that, it costs the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes to resolve the location and publish the page. For a typical bug, expect a few minutes total, the same shape as `/investigate`, with a short publish step at the end.
 
 ## In more detail
 

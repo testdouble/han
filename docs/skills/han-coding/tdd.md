@@ -41,11 +41,11 @@ Run `/tdd` in Claude Code.
 
 Give it:
 
-1. **What to build.** A behavior, a feature, or a path to a specification or plan. A sharp version names the observable behavior ("the fee calculator rounds half-up to the cent"); a thin version ("build the fee thing") still works because Step 2 turns it into a behavior list you review before any code is written.
+1. **What to build.** A behavior, a feature, or a path to a specification or plan. A sharp version names the observable behavior ("the fee calculator rounds half-up to the cent"). A thin version ("build the fee thing") still works too, because Step 2 turns it into a behavior list you review before any code is written.
 2. **Any context to respect.** A `feature-specification.md`, a linked issue, or a plan. The skill reads it as the source of behaviors for the test list.
 3. **Nothing about the test framework.** The skill resolves the test, lint, and build commands from your project itself (see *What you get back*). You do not need to pass them.
 
-The skill runs autonomously after your initial request. Before the loop it reports scope (the behavior to build, the resolved test, lint, and build commands, the standards and ADRs it found, the current branch, a branch recommendation if you are on the default branch), then proceeds without waiting. That report is informational, not a gate. The one exception: if your request or the provided context explicitly says you want to review, verify, or approve the plan or test list before implementation, the skill builds the test list, presents it with the scope report, and waits for your approval before writing any code. The only input that can otherwise block it is a test command it cannot resolve or infer, because there is no way to run tests without one.
+The skill runs autonomously after your initial request. Before the loop, it reports scope: the behavior to build, the resolved test, lint, and build commands, the standards and ADRs it found, the current branch, and a branch recommendation if you are on the default branch. It then proceeds without waiting; that report is informational, not a gate. The one exception: if your request or the provided context explicitly says you want to review, verify, or approve the plan or test list before implementation, the skill builds the test list and presents it with the scope report. It then waits for your approval before writing any code. The only input that can otherwise block it is a test command it cannot resolve or infer, because there is no way to run tests without one.
 
 Example prompts:
 
@@ -58,9 +58,14 @@ Code in your working tree, not a report. Specifically:
 
 - **A test list**, shown to you before the loop starts and updated as behaviors are completed and as new scenarios are discovered (discovered scenarios are deferred, never built mid-loop).
 - **Tests and production code**, grown one behavior per cycle. Each cycle shows you the real test-runner output for red (the test failing for the intended reason) and green (the new test passing, all prior tests still passing).
-- **A final summary**: behaviors implemented, the state of the test list including any deferred items with their reopen triggers, which coding standards and ADRs were applied and where, any YAGNI deferrals from refactor, and the final test, lint, and build status with output shown rather than asserted.
+- **A final summary**, covering:
+  - behaviors implemented
+  - the state of the test list, including any deferred items with their reopen triggers
+  - which coding standards and ADRs were applied and where
+  - any YAGNI deferrals from refactor
+  - the final test, lint, and build status, with output shown rather than asserted
 
-The skill resolves your test, lint, and build commands from CLAUDE.md's `## Project Discovery` section, falling back to `project-discovery.md`, falling back to a one-time discovery script that infers them from your manifest files (package.json, pyproject.toml, go.mod, Cargo.toml, Gemfile, mix.exs, pom.xml, gradle, .csproj, or a Makefile test target). Commands the script infers are treated as best-effort suggestions, surfaced in the scope report so you can correct them if you are watching, not trusted blindly. If none of those resolve the test command, the skill asks you for it before the loop starts, because the loop cannot run without it. That is the only input that can block an otherwise autonomous run.
+The skill resolves your test, lint, and build commands from CLAUDE.md's `## Project Discovery` section, falling back to `project-discovery.md`. If neither exists, it falls back to a one-time discovery script that infers them from your manifest files (package.json, pyproject.toml, go.mod, Cargo.toml, Gemfile, mix.exs, pom.xml, gradle, .csproj, or a Makefile test target). Commands the script infers are treated as best-effort suggestions, surfaced in the scope report so you can correct them if you are watching, not trusted blindly. If none of those resolve the test command, the skill asks you for it before the loop starts, because the loop cannot run without it. That is the only input that can block an otherwise autonomous run.
 
 ## How to get the most out of it
 
@@ -87,9 +92,9 @@ The rule is enforcing in refactor (speculative structure is deferred by default)
 
 The skill is structurally modeled on two existing skills. The loop and its stop condition follow [`/iterative-plan-review`](../han-planning/iterative-plan-review.md): front-loaded constraints, a deterministic per-cycle process, a bounded list. The project and command discovery follows [`/test-planning`](../han-coding/test-planning.md): resolve from CLAUDE.md's `## Project Discovery`, fall back to `project-discovery.md`, fall back to a one-time script.
 
-One design decision is worth knowing. Classic TDD says green should "commit whatever sins are necessary" and clean up in refactor. Taken literally, that would mean ignoring coding standards while going green. The skill splits the difference: standards that govern *correctness and architectural placement* (which boundary code must go through, where it is allowed to live, which contract it honors) are obeyed in green, because violating an ADR boundary is not a temporary sin you tidy later, it is the wrong code. Stylistic and structural standards, the kind you genuinely can defer, are the refactor hat. This keeps the green step minimal (the Three Laws still hold) while making sure the code that survives the cycle respects the project's architecture.
+One design decision is worth knowing. Classic TDD says green should "commit whatever sins are necessary" and clean up in refactor. Taken literally, that would mean ignoring coding standards while going green. The skill splits the difference. Standards that govern *correctness and architectural placement* (which boundary code must go through, where it is allowed to live, which contract it honors) are obeyed in green. Violating an ADR boundary is not a temporary sin you tidy later; it is the wrong code. Stylistic and structural standards, the kind you genuinely can defer, are the refactor hat. This keeps the green step minimal (the Three Laws still hold) while making sure the code that survives the cycle respects the project's architecture.
 
-The hardest honest limitation: the observed-failure gate is enforced by discipline and shown evidence (pasted runner output, the first-run-pass stop rule, strict step sequencing), not by a mechanism that can physically prevent a premature write. No skill in the plugin model can enforce a "you must have observed X before doing Y" constraint with certainty. The skill makes the failure visible and diagnosable instead, which is the strongest available guarantee. If you watch one thing while it runs, watch that the red output is real and fails for the reason intended.
+The hardest honest limitation: the observed-failure gate is enforced by discipline and shown evidence (pasted runner output, the first-run-pass stop rule, strict step sequencing). It is not enforced by a mechanism that can physically prevent a premature write. No skill in the plugin model can enforce a "you must have observed X before doing Y" constraint with certainty. The skill makes the failure visible and diagnosable instead, which is the strongest available guarantee. If you watch one thing while it runs, watch that the red output is real and fails for the reason intended.
 
 ## Sources
 

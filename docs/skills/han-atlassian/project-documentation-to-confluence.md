@@ -6,8 +6,8 @@ Operator documentation for the `/project-documentation-to-confluence` skill in t
 
 ## TL;DR
 
-- **What it does.** Runs the core [`/project-documentation`](../han-core/project-documentation.md) skill to write feature documentation to a temporary file, shows you the file to review, and then, after you confirm, publishes it to a Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
-- **When to use it.** You want a feature, system, or component documented *and* posted to a specific Confluence space or page, not just to a local file.
+- **What it does.** Runs the core [`/project-documentation`](../han-core/project-documentation.md) skill to write feature documentation to a temporary file, and shows you the file to review. After you confirm, publishes it to a Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
+- **When to use it.** You want a feature, system, or component documented *and* posted to a specific Confluence space or page, not only to a local file.
 - **What you get back.** A working-draft markdown file under `/tmp/` that you can review, plus a created or updated Confluence page at the location you named (if you choose to publish).
 
 ## Key concepts
@@ -30,7 +30,7 @@ Operator documentation for the `/project-documentation-to-confluence` skill in t
 **Do not invoke for:**
 
 - **Local-only documentation.** Use [`/project-documentation`](../han-core/project-documentation.md). This skill is for when the doc also needs to land in Confluence.
-- **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the file and just want it posted, without generating new documentation.
+- **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you already have the file and only want it posted, without generating new documentation.
 - **Technology stack discovery.** Use [`/project-discovery`](../han-core/project-discovery.md).
 - **Architectural decisions.** Use [`/architectural-decision-record`](../han-core/architectural-decision-record.md).
 - **Coding conventions.** Use [`/coding-standard`](../han-coding/coding-standard.md).
@@ -74,7 +74,7 @@ If you keep it local only at the confirmation step, you still keep the `/tmp/` d
 
 ## Cost and latency
 
-The skill itself dispatches no agents. Its cost is whatever [`/project-documentation`](../han-core/project-documentation.md) costs (two to three `codebase-explorer` agents in parallel, one `content-auditor` in update mode, and one `information-architect` before verification, all on their default models), plus the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes to resolve the location and publish the page. For a medium feature, expect a few minutes total, the same shape as `/project-documentation`, with a short publish step at the end.
+The skill itself dispatches no agents. Its cost is whatever [`/project-documentation`](../han-core/project-documentation.md) costs: two to three `codebase-explorer` agents in parallel, one `content-auditor` in update mode, and one `information-architect` before verification, all on their default models. On top of that, it costs the handful of fast Atlassian MCP calls [`/markdown-to-confluence`](./markdown-to-confluence.md) makes to resolve the location and publish the page. For a medium feature, expect a few minutes total, the same shape as `/project-documentation`, with a short publish step at the end.
 
 ## In more detail
 

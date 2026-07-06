@@ -12,7 +12,7 @@ Operator documentation for the `/stakeholder-summary` skill in the han plugin. T
 
 ## Key concepts
 
-- **Stakeholder-shaped, not engineer-shaped.** The document is for non-technical readers. No file paths, no API shapes, no database tables — just the customer problem, the experience, the before-and-after, and the open questions.
+- **Stakeholder-shaped, not engineer-shaped.** The document is for non-technical readers. It skips file paths, API shapes, and database tables, and covers only the customer problem, the experience, the before-and-after, and the open questions.
 - **Diagrams replace prose.** A user-experience flowchart and before-and-after data-flow diagrams carry most of the weight. The text frames them, but the diagrams do the explaining.
 - **Feedback before kickoff.** The closing questions ask stakeholders to confirm framing and scope, not to make technical decisions.
 
@@ -50,25 +50,25 @@ If a `stakeholder-summary.md` already exists in the target directory, the skill 
 
 One file: `stakeholder-summary.md`, written in the same directory as the source spec. It opens with a title heading, then has six sections in fixed order:
 
-1. **What problem are we solving?** — customer-voice framing plus the capabilities introduced.
-2. **What does this open up?** — outcomes the feature unblocks.
-3. **What will the user experience look like?** — paragraph plus a Mermaid `flowchart TD`.
-4. **How does the data flow today vs. after this change?** — Mermaid `flowchart LR` diagrams for today and each after-this-change path.
-5. **What is intentionally not in this slice?** — explicit deferrals from the source spec.
-6. **What we are asking stakeholders.** — open questions in stakeholder language.
+1. **What problem are we solving?** Customer-voice framing plus the capabilities introduced.
+2. **What does this open up?** Outcomes the feature unblocks.
+3. **What will the user experience look like?** A paragraph plus a Mermaid `flowchart TD`.
+4. **How does the data flow today vs. after this change?** Mermaid `flowchart LR` diagrams for today and each after-this-change path.
+5. **What is intentionally not in this slice?** Explicit deferrals from the source spec.
+6. **What we are asking stakeholders.** Open questions in stakeholder language.
 
 ## How to get the most out of it
 
-- **Write the spec first.** The summary derives from the spec — the cleaner the spec, the better the summary. Pair with [`/plan-a-feature`](../han-planning/plan-a-feature.md) before this.
+- **Write the spec first.** The summary derives from the spec: the cleaner the spec, the better the summary. Pair with [`/plan-a-feature`](../han-planning/plan-a-feature.md) before this.
 - **Name your audience.** Leadership, customers, and product reviewers read for different things. Tell the skill who will receive it.
-- **Confirm the "intentionally not in this slice" list.** That section is where stakeholder pushback usually happens — make sure it matches what the spec actually defers.
+- **Confirm the "intentionally not in this slice" list.** That section is where stakeholder pushback usually happens. Make sure it matches what the spec defers.
 - **Pair with `/plan-a-phased-build` next.** Once stakeholders greenlight the shape, sequence the build.
 - **Render it to HTML with `/html-summary`.** When you want an executive-styled, self-contained HTML version of the summary to open in a browser or hand off, run [`/html-summary`](./html-summary.md) on the `stakeholder-summary.md` this skill produces.
-- **Cross-repo planning folders are supported.** If the source spec lives outside the current working directory (for example, a planning folder for a different project), the skill reads that project's `CLAUDE.md` to pick up its vocabulary and naming conventions — not the cwd's.
+- **Cross-repo planning folders are supported.** If the source spec lives outside the current working directory (for example, a planning folder for a different project), the skill reads that project's `CLAUDE.md`. That gives it the other project's vocabulary and naming conventions, not the cwd's.
 
 ## Cost and latency
 
-Reads the source spec, drafts the summary, then dispatches one `han-core:readability-editor` agent to rewrite the draft for the non-technical stakeholder while preserving every fact (Step 5), and runs three self-check passes (internal-consistency, the standardized readability self-check, and reading-order), each re-reading the file from disk before presenting it. Built for tight-loop iteration: re-run it after the spec changes.
+It reads the source spec, drafts the summary, then dispatches one `han-core:readability-editor` agent (Step 5) to rewrite the draft for the non-technical stakeholder, preserving every fact. It then runs three self-check passes: internal-consistency, the standardized readability self-check, and reading-order. Each pass re-reads the file from disk before presenting it. Built for tight-loop iteration: re-run it after the spec changes.
 
 ## Related documentation
 

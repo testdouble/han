@@ -12,7 +12,9 @@ Run this once after cloning:
 ./install-hooks.sh
 ```
 
-This installs a pre-push hook that automatically rebuilds `dist/claude-marketplace/` and `marketplace.json` before each push. If generated files changed, it commits them and asks you to push again so the generated commit is included.
+This installs a pre-push hook that automatically rebuilds `dist/claude-marketplace/` and `marketplace.json` before each push.
+
+If the hook finds that those generated files changed, it commits them and asks you to push again, so the generated commit is included.
 
 ### 2. Open Claude from the repo root
 
@@ -43,7 +45,7 @@ If you previously installed `testdouble/han` from GitHub, remove it so it doesn'
 1. Run `/plugin`
 2. Switch to the **Marketplace** tab (singular: this is the plugin browser, not the marketplace config tab)
 3. Find and select the plugin you want to test
-4. Install it in **user scope** so it's available across all your Claude instances, not just this project
+4. Install it in **user scope** so it's available across all your Claude instances, not only this project
 
 ## Workflow
 
@@ -60,4 +62,4 @@ When you're done testing, remove the local marketplace and re-add the remote `te
 The local-marketplace setup above is the canonical Han workflow because it mirrors how users install the suite. For quick, throwaway iteration, Claude Code also supports two lighter approaches documented in the official [Create Plugins](https://code.claude.com/docs/en/plugins) guide:
 
 - **`claude --plugin-dir ./han-core`** loads a single plugin directory for one session with no marketplace or install step. Useful for a fast check of one plugin's changes.
-- **`/reload-plugins`** reloads skills, agents, hooks, and plugin MCP/LSP servers without restarting. Changes to a `SKILL.md` body are picked up immediately by the running session, but changes to agents, hooks, and MCP servers need `/reload-plugins` (or a restart) to take effect.
+- **`/reload-plugins`** reloads skills, agents, hooks, and plugin MCP/LSP servers without restarting. Changes to a `SKILL.md` body are picked up immediately by the running session. Changes to agents, hooks, and MCP servers need `/reload-plugins` (or a restart) to take effect.

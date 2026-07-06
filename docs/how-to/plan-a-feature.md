@@ -44,7 +44,7 @@ Each phase is a natural pause point. When you reach the end of one, look at what
 
     > `/plan-a-feature on building out the bulk CSV export for admin list views, using the existing single-row export as a starting point. It needs to email a download link when the file is ready, support filters that mirror the list view, and cap exports at 100k rows. Write the plan to docs/features/bulk-export/ as we go.`
 
-    Han runs an evidence-based interview that walks the design tree: foundational decisions first (what, who, outcome, trigger), then behavioral (flows, states, coordinations), then boundary (edge cases, out of scope), then interaction (UI / API surface). The skill explores the codebase, ADRs, and coding standards before surfacing each question, so most questions arrive with a recommended answer already attached.
+    Han runs an evidence-based interview that walks the design tree. It covers foundational decisions first (what, who, outcome, trigger), then behavioral (flows, states, coordinations), then boundary (edge cases, out of scope), then interaction (UI / API surface). The skill explores the codebase, ADRs, and coding standards before surfacing each question, so most questions arrive with a recommended answer already attached.
 
 2. **Walk through every open item and decide.** When the skill surfaces a question, accept the recommendation, redirect it, or ask for an alternative. Decisions you make here flow into the spec; decisions you defer land in an Open Items section so they do not silently disappear.
 

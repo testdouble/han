@@ -9,9 +9,11 @@ architectural analysis into a team of specialists you can dispatch from Claude C
 ## What this plugin does
 
 Han turns planning, implementation, review, and documentation work that would normally take a team into a
-set of deterministic skills you run from Claude Code. Each skill dispatches specialist agents (project
-managers, adversarial reviewers, investigators, architectural analysts, testing and security specialists)
-to do the judgment-heavy work, then folds their findings into an artifact you can trust.
+set of deterministic skills you run from Claude Code.
+
+Each skill dispatches specialist agents, such as project managers, adversarial reviewers, investigators,
+architectural analysts, and testing and security specialists, to do the judgment-heavy work. It then folds
+their findings into an artifact you can trust.
 
 The skills are designed to compose. You can plan a feature, then plan its implementation, then iterate on
 the plan, then build it test-first, then review the resulting code, then write the PR description. All

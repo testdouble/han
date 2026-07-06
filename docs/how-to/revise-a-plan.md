@@ -1,6 +1,6 @@
 # How To: Revise a Plan After the Build Has Started
 
-A walkthrough of how to change a plan once work is already underway, when a later work item needs refining or a decision you made earlier turns out to be wrong, using han's planning skills to update the documents in place rather than rewriting them.
+This walkthrough shows you how to change a plan once work is already underway. That happens when a later work item needs refining, or when a decision you made earlier turns out to be wrong. It uses han's planning skills to update the documents in place, rather than rewriting them.
 
 > See also: [How-to index](./README.md) · [Plan a feature, end to end](./plan-a-feature.md) · [Skills](../skills/README.md)
 
@@ -20,7 +20,7 @@ If you have not planned the work yet, this is the wrong guide. Start with [Plan 
 
 ## Go back to the planning steps
 
-When a plan needs to change mid-build, the instinct is to edit the code and move on. Go back to the planning steps instead. It sounds counter-intuitive, so here is the short version of why: code is now cheap, and that means plans are more important than ever. When generating the code is the easy part, the plan is the thing that holds the work together, and a plan that has drifted from what you are actually building is worse than no plan at all.
+When a plan needs to change mid-build, the instinct is to edit the code and move on. Go back to the planning steps instead. It sounds counter-intuitive, so here is the short version of why: code is now cheap, and that means plans are more important than ever. When generating the code is the easy part, the plan is the thing that holds the work together. A plan that has drifted from what you are actually building is worse than no plan at all.
 
 If you want the longer argument, [The Disposable Blueprint](https://jdforsythe.github.io/10-principles/principles/disposable-blueprint/) makes the case well, and the whole "10 Principles" series around it is worth reading.
 
@@ -34,7 +34,7 @@ The workflow is grouped into three phases. Phase 1 is the only decision you have
 
 The rule of thumb: change the document closest to the work item that still gets the change right. Do not reopen the spec for something that is really an implementation detail, and do not patch a work item when the behavior underneath it actually moved.
 
-If you planned this a while ago and need a reminder of which document is which: the **feature specification** is the *what* (the behavior), the **implementation plan** is the *how* (the build), and the **work items** are the *chunks* (the grabbable pieces). Match the change to the level it actually lives at, working top-down from behavior toward the work item.
+If you planned this a while ago, here's a reminder of which document is which. The **feature specification** is the *what* (the behavior). The **implementation plan** is the *how* (the build). The **work items** are the *chunks* (the grabbable pieces). Match the change to the level it actually lives at, working top-down from behavior toward the work item.
 
 1. **If the behavior of the feature itself needs to change, go back to [`/plan-a-feature`](../skills/han-planning/plan-a-feature.md).** This is the right choice when the change is about *what* the feature does, not how it is built. A new state, a different trigger, a flow you got wrong, a constraint that moved. The specification is the source of truth for behavior, so that is where a behavioral change starts.
 
@@ -44,7 +44,7 @@ If you planned this a while ago and need a reminder of which document is which: 
 
     > `update {work items file}: {what you want changed in the item}`
 
-    The file is full of cross-references and back-links to the spec and the implementation plan, and those exist for exactly this reason: they give Claude enough context to understand what the item is for and how it fits without you having to re-explain the whole plan.
+    The file is full of cross-references and back-links to the spec and the implementation plan. Those exist for exactly this reason: they give Claude enough context to understand what the item is for and how it fits, without you having to re-explain the whole plan.
 
 ### Phase 2: Update that document
 
@@ -54,9 +54,9 @@ If you planned this a while ago and need a reminder of which document is which: 
 
     The decision log and team findings carry forward, so the `D#` and `F#` IDs stay stable and prior references keep pointing where they should.
 
-2. **Expect to be asked how to apply the change.** The skills do not blindly clobber your existing work. `/plan-implementation` asks whether to overwrite the existing plan or append iteration notes before it proceeds, and `/plan-work-items` (which you will reach in Phase 3) writes a date-suffixed file next to the original rather than overwriting it, then tells you which file it wrote. Answer the prompt, and note the filename if a new one was created so you point the next step at the right file.
+2. **Expect to be asked how to apply the change.** The skills do not blindly clobber your existing work. `/plan-implementation` asks whether to overwrite the existing plan or append iteration notes before it proceeds. `/plan-work-items` (which you will reach in Phase 3) writes a date-suffixed file next to the original instead of overwriting it, and tells you which file it wrote. Answer the prompt, and note the filename if a new one was created so you point the next step at the right file.
 
-3. **Read what changed.** Look at the revised document and confirm the change landed the way you meant it. This is also the moment to notice anything the change knocked loose elsewhere in the same document, which Phase 3 will help you catch across documents.
+3. **Read what changed.** Look at the revised document and confirm the change landed the way you meant it. This is also the moment to notice anything the change knocked loose elsewhere in the same document. Phase 3 will help you catch those across documents.
 
 ### Phase 3: Re-review and propagate the change
 
@@ -74,13 +74,13 @@ If you planned this a while ago and need a reminder of which document is which: 
 
     > `/plan-work-items update {work items file} with the changes made to {implementation plan file}`
 
-    `/plan-work-items` writes the refreshed list to a date-suffixed file next to the original rather than overwriting it, and tells you which file it wrote, so reconcile the two and keep the one you want.
+    `/plan-work-items` writes the refreshed list to a date-suffixed file next to the original, rather than overwriting it, and tells you which file it wrote. Reconcile the two, and keep the one you want.
 
     If you only changed the implementation plan, you skip the first prompt and start from the second. If you only edited a single work item, there is nothing downstream of it, so there is nothing to propagate.
 
 ## Variations
 
-- **The change is bigger than you thought.** Sometimes a refinement to a work item turns out to be a behavioral change wearing a disguise. If editing the work-items file makes you reach back into the spec to explain what you are doing, that is the signal: stop, go up a level, and re-run `/plan-a-feature` for that slice instead. Then propagate back down through Phase 3.
+- **The change is bigger than you thought.** Sometimes a refinement to a work item turns out to be a behavioral change wearing a disguise. If editing the work-items file makes you reach back into the spec to explain what you are doing, that is the signal. Stop, go up a level, and re-run `/plan-a-feature` for that slice instead. Then propagate back down through Phase 3.
 
 - **The feature was built in phases.** If you used [`/plan-a-phased-build`](../skills/han-planning/plan-a-phased-build.md) and have per-phase specs and plans, the same decision tree applies, scoped to the phase you are changing. Update the document inside that phase's folder, then propagate downstream within the phase.
 

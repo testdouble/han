@@ -56,7 +56,7 @@ Example prompts:
 
 ## YAGNI (when applicable)
 
-{If this agent reviews artifacts, produces recommendations, or otherwise contributes items the team will commit, describe the YAGNI posture: which items it gates, which named anti-patterns it enforces (Speculative Test, Speculative Edge Case, Speculative Data Machinery, Premature Operational Machinery, Evidence Gate, Evidence Sweep, and so on), and how findings or deferrals surface in the agent's output. Cross-reference [YAGNI](../../yagni.md). Pure-discovery agents that do not produce committed items can omit this section.}
+{If this agent reviews artifacts, produces recommendations, or otherwise contributes items the team will commit, describe its YAGNI posture. Name which items it gates and which named anti-patterns it enforces (Speculative Test, Speculative Edge Case, Speculative Data Machinery, Premature Operational Machinery, Evidence Gate, Evidence Sweep, and so on). Explain how findings or deferrals surface in the agent's output. Cross-reference [YAGNI](../../yagni.md). Pure-discovery agents that do not produce committed items can omit this section.}
 
 ## Cost and latency
 

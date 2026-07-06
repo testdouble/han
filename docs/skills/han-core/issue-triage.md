@@ -66,7 +66,7 @@ A triage report file with these sections:
 - **Suspected Areas.** Code or system areas the issue plausibly touches, based on the report and project context. Omitted when nothing is inferable.
 - **Severity.** An estimate: Critical, High, Medium, Low, or Unknown. Omitted entirely for a feature request, question, or other issue when it is not inferable, rather than rendering Unknown noise.
 - **Reproducibility.** An estimate: Always, Intermittent, Rare, or Unknown. Omitted on the same rule as Severity.
-- **Recommended Next Step.** The single most appropriate han skill to run next, or "Clarify with reporter before proceeding" when critical reproduction or scope details are missing. When the gap is a problem-space unknown — which options are in play, prior art, build-vs-buy, or which direction to take — the recommendation routes to `/research` so the problem can be researched before it is specified.
+- **Recommended Next Step.** The single most appropriate han skill to run next, or "Clarify with reporter before proceeding" when critical reproduction or scope details are missing. When the gap is a problem-space unknown (which options are in play, prior art, build-vs-buy, or which direction to take), the recommendation routes to `/research` so the problem can be researched before it is specified.
 
 ## Output contract
 
@@ -114,7 +114,7 @@ This is the exact output contract the skill follows. It is intentionally strict 
 ## How to get the most out of it
 
 - **Paste the raw text.** The skill is designed to work on incomplete, messy input. Editing the report before passing it in changes what counts as missing information.
-- **Use the output as a handoff document.** The triage report is the input for the next skill. Pass it to the recommended skill — `/investigate`, `/research`, `/plan-a-feature`, or `/plan-implementation` — rather than re-summarizing the issue from scratch. The skill says so explicitly when the recommendation is a han skill; there is no separate brief to produce.
+- **Use the output as a handoff document.** The triage report is the input for the next skill. Pass it to the recommended skill (`/investigate`, `/research`, `/plan-a-feature`, or `/plan-implementation`) rather than re-summarizing the issue from scratch. The skill says so explicitly when the recommendation is a han skill; there is no separate brief to produce.
 - **Run it before `/investigate` on ambiguous issues.** Investigation works best with a sharp problem statement. Triage produces one. A few seconds of triage avoids a wasted investigation run on a problem that was not yet well-defined.
 - **Follow the Recommended Next Step.** When the report still has critical gaps, the recommendation will say so explicitly. That is the signal to go back to the reporter before running the next skill.
 
@@ -173,7 +173,7 @@ The skill dispatches no sub-agents. It reads the report and, only to sharpen the
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/investigate`](../han-coding/investigate.md). The natural next skill when the issue is a bug or failure with enough context to trace.
-- [`/research`](./research.md). The natural next skill when the gap is a problem-space unknown — options, prior art, build-vs-buy, or which direction to take — rather than a missing user-supplied fact.
+- [`/research`](./research.md). The natural next skill when the gap is a problem-space unknown (options, prior art, build-vs-buy, or which direction to take) rather than a missing user-supplied fact.
 - [`/plan-a-feature`](../han-planning/plan-a-feature.md). The natural next skill when the issue is a feature request with enough context to spec.
 - [`/plan-implementation`](../han-planning/plan-implementation.md). The next skill when triage confirms a well-defined problem and a spec already exists.
 - [How to provide feedback on Han](../../how-to/provide-feedback.md). Uses this skill to shape an idea or vague observation about Han into a postable GitHub issue.

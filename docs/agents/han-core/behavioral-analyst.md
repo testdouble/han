@@ -17,7 +17,7 @@ Operator documentation for the `behavioral-analyst` agent in the han plugin. Thi
 - **Error paths are not optional.** The agent walks try/catch blocks, error returns, and failure paths explicitly. Happy-path-only analysis is an anti-pattern.
 - **Implicit state counts.** Closures, module-level singletons, memoization caches, and thread-local state are flagged alongside explicit variables and databases.
 - **Discovers findings, does not synthesize.** Recommendations belong to `software-architect`. Risk assessment belongs to `risk-analyst`. Bug investigation belongs to `evidence-based-investigator`.
-- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction to default the severity of every finding to SUGG and escalate to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (`/architectural-analysis`, `/investigate`) receive the agent's default skeptical posture.
+- **`/code-review` adds a default-SUGG dispatcher directive at Step 3.5.** When dispatched from `/code-review`, the skill appends an instruction to default the severity of every finding to SUGG. It escalates to WARN or CRIT only when the change actively introduces or worsens the issue. This is `/code-review`'s tailoring; the agent's general behavior outside `/code-review` is unchanged. Other callers (`/architectural-analysis`, `/investigate`) receive the agent's default skeptical posture.
 
 ## When to use it
 

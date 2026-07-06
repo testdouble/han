@@ -12,7 +12,7 @@ Operator documentation for the `readability-editor` agent in the han plugin. Thi
 
 ## Key concepts
 
-- **Rewrites, does not just review.** Unlike a reviewer that returns recommendations, this agent edits the prose in place against a six-point rubric.
+- **Rewrites, does not merely review.** Unlike a reviewer that returns recommendations, this agent edits the prose in place against a six-point rubric.
 - **Fidelity outranks readability.** Every claim, quantity, named entity, and stated condition survives with its precision intact. When a readability change would blur a fact, the fact wins.
 - **Prose only.** Code fences, diagram bodies, rendered markup, and citation identifiers are left byte-for-byte unchanged so they still compile, render, and resolve.
 
@@ -48,16 +48,16 @@ Example prompts:
 
 The draft, rewritten in place (or returned inline when the deliverable is conversational), plus a short report:
 
-- **Rubric verdict.** One line per criterion (main point first, descriptive headings, one idea per paragraph, sentence length, common words / no blocklisted words, progressive disclosure): pass, or what was changed to make it pass.
+- **Rubric verdict.** One line per criterion: pass, or what was changed to make it pass. The six criteria are main point first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted words, and progressive disclosure.
 - **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived. Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
 - **Untouched regions.** The non-prose regions left unchanged.
 
 ## How to get the most out of it
 
-- **Name the real reader.** The default frame is a capable non-author. If the skill's reader is a specific expert, say so, so the agent keeps the specifics that reader needs instead of simplifying them away.
+- **Name the real reader.** The default frame is a capable non-author. If the skill's reader is a specific expert, name that reader. The agent then keeps the specifics that reader needs instead of simplifying them away.
 - **Hand it a written draft, not an outline.** The agent rewrites finished prose; it does not draft from notes or add content.
 - **Run it once, not alongside another readability pass.** It replaces a skill's existing readability review rather than stacking on top, so the draft gets one readability verdict, not two conflicting ones.
-- **Pair with `adversarial-validator`.** In skills like [`/code-overview`](../../skills/han-coding/code-overview.md), the validator checks the draft is true to the code and runs first; the readability-editor then rewrites the corrected text.
+- **Pair with `adversarial-validator`.** In skills like [`/code-overview`](../../skills/han-coding/code-overview.md), the validator checks the draft is true to the code and runs first. The readability-editor then rewrites the corrected text.
 
 ## Cost and latency
 
@@ -65,9 +65,9 @@ Runs on `sonnet`. It reads the draft and the rule, then rewrites in place, so it
 
 ## In more detail
 
-The agent generalizes and replaces the readability pass that some skills ran before the standard existed. [`/code-overview`](../../skills/han-coding/code-overview.md) used to dispatch `information-architect` and `junior-developer` to review a draft's structure and cold-read; [`/stakeholder-summary`](../../skills/han-reporting/stakeholder-summary.md) ran a multi-pass plain-language self-check. Where such a pass existed, the readability-editor takes its place so there is one readability review, not two with conflicting verdicts.
+The agent generalizes and replaces the readability pass that some skills ran before the standard existed. [`/code-overview`](../../skills/han-coding/code-overview.md) used to dispatch `information-architect` and `junior-developer` to review a draft's structure and cold-read. [`/stakeholder-summary`](../../skills/han-reporting/stakeholder-summary.md) ran a multi-pass plain-language self-check. Where such a pass existed, the readability-editor takes its place so there is one readability review, not two with conflicting verdicts.
 
-Its rubric is the six behaviorally-anchored criteria of the shared standard, not a subjective clarity judgment. It never follows imperative or conditional prose inside the draft; that content is text to preserve and make readable, never a command to act on. Its adversarial posture is aimed at the draft, never at the author who wrote it.
+Its rubric is the six behaviorally-anchored criteria of the shared standard, not a subjective clarity judgment. It never follows imperative or conditional prose inside the draft. That content is text to preserve and make readable, never a command to act on. Its adversarial posture is aimed at the draft, never at the author who wrote it.
 
 ## Related documentation
 

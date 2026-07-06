@@ -1,16 +1,20 @@
 # How To: Accelerate Your Understanding of Unfamiliar Code
 
-A walkthrough for getting from "I have never seen this code before" to a mental model you can act on, fast, and then turning that model into a grounded, written artifact that you, your teammates, and Claude can all read again later instead of re-deriving it from scratch every time.
+A walkthrough for getting from "I have never seen this code before" to a mental model you can act on, fast. Then it turns that model into a grounded, written artifact that you, your teammates, and Claude can all read again later, instead of re-deriving it from scratch every time.
 
 > See also: [How-to index](./README.md) · [Quickstart](../quickstart.md) · [Skills](../skills/README.md)
 
 ## Before you begin
 
-Landing in code you do not know can an imposter-syndrome inducing experience for an engineer. And, the research literature on code comprehension is consistent about why: you understand new code by building a mental model in layers, the control flow first, then the data flow and the goals on top of it, and you do it by following "information scent," the cues in names, call chains, and module boundaries that tell you where to look next. An LLM is good at this kind of foraging, because it navigates a codebase the same way you would, reading files, running grep, and following references. That is what this guide is built on.
+Landing in code you do not know can be an imposter-syndrome-inducing experience for an engineer.
 
-There is one finding worth carrying through every step. A controlled study of developers working on legacy code with an AI assistant found that they finished their tasks faster but understood the code no better, and the one thing that separated the people who did build understanding from the people who did not was verification: the people who understood the code checked what the AI told them against the real source far more often. So the whole shape of this guide is "let Claude orient you, then check it against the code," not "read the summary and move on."
+The research literature on code comprehension is consistent about why. You understand new code by building a mental model in layers: the control flow first, then the data flow, then the goals on top of it. You do this by following "information scent," the cues in names, call chains, and module boundaries that tell you where to look next.
 
-- You have a target you can name sharply. A file, a directory, a symbol, or a pull request. "The whole backend" is too thin; `/code-overview` will ask you to narrow it. If you genuinely do not know where the feature lives yet, that is fine, you start broad and drill in, but you still name the broad thing.
+An LLM is good at this kind of foraging, because it navigates a codebase the same way you would: reading files, running grep, and following references. That is what this guide is built on.
+
+There is one finding worth carrying through every step. A controlled study of developers working on legacy code with an AI assistant found that they finished their tasks faster but understood the code no better. The one thing that separated the people who built understanding from the people who did not was verification: the people who understood the code checked what the AI told them against the real source far more often. So the whole shape of this guide is "let Claude orient you, then check it against the code," not "read the summary and move on."
+
+- You have a target you can name sharply. A file, a directory, a symbol, or a pull request. "The whole backend" is too thin; `/code-overview` will ask you to narrow it. If you genuinely do not know where the feature lives yet, that is fine: you start broad and drill in, but you still name the broad thing.
 - You have the project checked out and, for the PR path, git available locally. The orientation step reads real source, so it needs the source.
 - You know roughly what you are trying to do with the code. Reviewing a PR, fixing a bug, extending a module, and getting onboarded are different goals, and they send you down different branches of this guide. Hold the goal in mind; the variations at the end key off it.
 - For the team-knowledge-base part at the end, you have a configured Atlassian MCP server. That part is optional. The in-repo path works with nothing but the plugin.
@@ -42,7 +46,9 @@ The workflow has three phases. Phase 1 orients you fast and throwaway. Phase 2 g
 
     > `/code-overview` with no argument on a feature branch, for *"explain what the changes on this branch do before I review them."*
 
-    The skill classifies the target as small, medium, or large, dispatches that many `codebase-explorer` agents to read the real source in parallel, and writes the overview itself. It leads with what the code does and why, then the main flow as a Mermaid chart, then the context and uses, then where to start. That ordering is progressive disclosure on purpose: the most important understanding comes first, so if you stop reading after the purpose statement you are still oriented correctly. The overview raises no findings about whether the code is any good; it is orientation, not judgment.
+    The skill classifies the target as small, medium, or large, dispatches that many `codebase-explorer` agents to read the real source in parallel, and writes the overview itself. It leads with what the code does and why, then the main flow as a Mermaid chart, then the context and uses, then where to start. That ordering puts the most important understanding first, so if you stop reading after the purpose statement you are still oriented correctly.
+
+    The overview raises no findings about whether the code is any good; it is orientation, not judgment.
 
 2. **Open the overview where the charts render, and read it against the code.** The skill writes the file to a scratch location outside the repo and shows you the path. Read it, but do not stop at reading. Open the entry points it names in the where-to-start section and confirm they say what the overview says they say. This is the verification step the research is emphatic about: the value comes from checking the explanation against the real source, not from consuming it passively. The overview is grounded in actual files and real paths precisely so you can do this quickly.
 
@@ -68,7 +74,7 @@ Reach for this phase when the orientation showed you that you need more than a m
 
 ### Phase 3: Make the understanding durable and shared
 
-This is the phase that makes the whole effort pay off more than once. An overview is a scratch file; a chat session ends. If the understanding only ever lives in those places, the next person, or you in three months, or Claude in a fresh session, pays the full cost of building it again. Worse, an LLM asked to re-explain a module from memory each time can confabulate it differently each time. The defense is a grounded artifact written down once and corrected once.
+This is the phase that makes the whole effort pay off more than once. An overview is a scratch file; a chat session ends. If the understanding only ever lives in those places, the next person, or you in three months, or Claude in a fresh session, pays the full cost of building it again. Worse, an LLM asked to re-explain a module from memory each time can invent a different explanation each time. The defense is a grounded artifact written down once and corrected once.
 
 1. **Run [`/project-discovery`](../skills/han-core/project-discovery.md) first if the project has not been scanned.** It finds the docs directory and aligns the doc's code fences with the project's actual stack, so the durable doc lands in the right place in the right language.
 
@@ -76,7 +82,9 @@ This is the phase that makes the whole effort pay off more than once. An overvie
 
     > `/project-documentation document the authentication system` for *"turn what I now understand about auth into a doc the repo keeps."*
 
-    The skill explores the code again with `codebase-explorer` agents so the doc is grounded in the source rather than in your recollection, leads with behavior (summary, how it works, primary flows) before the technical reference, and, importantly for this workflow, adds a reference to the new doc in `CLAUDE.md`. That last step is what makes the doc readable by both audiences: you can open it, and every future Claude session reads it as project context automatically, so the next time anyone asks about this code the answer starts from a checked artifact instead of a fresh, possibly-wrong re-derivation.
+    The skill explores the code again with `codebase-explorer` agents, so the doc is grounded in the source rather than in your recollection. It leads with behavior (summary, how it works, primary flows) before the technical reference. For this workflow, it also adds a reference to the new doc in `CLAUDE.md`.
+
+    That last step is what makes the doc readable by both audiences. You can open it, and every future Claude session reads it as project context automatically. So the next time anyone asks about this code, the answer starts from a checked artifact instead of a fresh, possibly-wrong re-derivation.
 
 3. **Review the doc against the code one more time.** Same discipline as every other step. The skill grounds the doc in real files, so check that the examples and paths are right. When you correct something here, you correct it for everyone who reads the doc later, human or AI.
 
@@ -103,7 +111,7 @@ This is the phase that makes the whole effort pay off more than once. An overvie
 
 - **The overview is throwaway, the doc is durable.** `/code-overview` writes to a scratch file outside the repo and is never committed or maintained; it is a point-in-time map. `/project-documentation` writes a maintained doc into the repo tree. Reach for the first to understand now and the second to remember later. Mixing them up is the most common mistake.
 - **Everything is grounded in real source, so check it against real source.** Every skill in this guide reads actual files and cites real paths. That grounding exists so you can verify, which the research says is the step that turns reading into understanding. Open the files the artifacts name.
-- **Once a doc is referenced from `CLAUDE.md`, Claude reads it on its own.** The reference `/project-documentation` adds is not decoration. In later sessions, when Claude explores the codebase, it reads that doc as project context, so the understanding you captured flows into every future planning, review, and overview pass without you doing anything else.
+- **Once a doc is referenced from `CLAUDE.md`, Claude reads it on its own.** The reference `/project-documentation` adds is not decoration. In later sessions, when Claude explores the codebase, it reads that doc as project context. So the understanding you captured flows into every future planning, review, and overview pass without you doing anything else.
 - **Sizing is read from the target, not the prompt length.** `/code-overview` and `/architectural-analysis` classify the target and scale their agent rosters, defaulting to small and escalating only on a clear signal. Pass `small`, `medium`, or `large` as the first argument when you already know the target is bigger than the default. See [Sizing](../sizing.md).
 
 ## Where to go next

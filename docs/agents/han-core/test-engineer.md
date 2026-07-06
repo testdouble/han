@@ -46,8 +46,8 @@ Dispatch via the `Agent` tool with `subagent_type: han-core:test-engineer`. Give
 
 Example prompts:
 
-- *"Plan tests for `src/billing/invoice.ts`. We just refactored the proration logic and added a credit-application path."*
-- *"Audit test coverage in `packages/auth/` and recommend new tests. Focus on the OAuth-state validation we just added."*
+- *"Plan tests for `src/billing/invoice.ts`. We recently refactored the proration logic and added a credit-application path."*
+- *"Audit test coverage in `packages/auth/` and recommend new tests. Focus on the OAuth-state validation we recently added."*
 
 ## What you get back
 
@@ -55,7 +55,7 @@ Example prompts:
   - **Scope.** Files and areas analyzed.
   - **Summary.** Same text returned to the caller.
   - **Coverage Assessment.** Qualitative summary of current behavioral coverage.
-  - **Findings.** `T#` recommendations ordered by priority. Each includes priority, test level (unit / integration / end-to-end), entry point with `file:line`, gap type (Untested / Partially tested), full test approach (behavior, stubs, input/action, expected output, expected commands), and a brittleness assessment.
+  - **Findings.** `T#` recommendations ordered by priority. Each includes priority, test level (unit / integration / end-to-end), entry point with `file:line`, and gap type (Untested / Partially tested). It also includes the full test approach (behavior, stubs, input/action, expected output, expected commands) and a brittleness assessment.
   - **Deferred / Skipped Tests.** `S#` entries explaining why brittleness outweighs value.
   - **Coverage Estimate.** Expected behavioral coverage after recommended tests are written.
 - An in-channel summary with priority counts and the path to the file.
@@ -74,7 +74,7 @@ The agent runs on `sonnet`. A focused test-planning pass runs in a few minutes. 
 
 ## YAGNI
 
-The agent enforces the **Speculative Test** rule. Tests for code paths that don't exist yet, hypothetical adversaries the change does not touch, branches that internal callers fully control, or symmetry/completeness coverage (*"we tested create, so we should test delete"* when delete isn't implemented) are YAGNI candidates. They move to Deferred / Skipped Tests with a named *reopen-when* trigger. When many speculative low-level tests can be replaced by one durable behavioral test that catches the same realistic failure modes, the agent recommends the single test.
+The agent enforces the **Speculative Test** rule. These are YAGNI candidates: tests for code paths that don't exist yet, hypothetical adversaries the change does not touch, and branches that internal callers fully control. So is symmetry/completeness coverage (*"we tested create, so we should test delete"* when delete isn't implemented). They move to Deferred / Skipped Tests with a named *reopen-when* trigger. When many speculative low-level tests can be replaced by one durable behavioral test that catches the same realistic failure modes, the agent recommends the single test.
 
 See [YAGNI](../../yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 

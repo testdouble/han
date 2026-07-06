@@ -1,10 +1,10 @@
 # How To: Create a New Agent
 
-A walkthrough for building a new Claude Code agent (subagent) from scratch with [`/agent-builder`](../skills/han-plugin-builder/agent-builder.md): describe the agent's domain and what it produces, answer the interview that walks the agent's design tree decision-by-decision, and end with a single self-contained agent file on disk that has already passed a guidance-conformance review. This is the recipe for *using* the builder; the [agent-building guidance](../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/) is canonical for the rules the builder enforces.
+A walkthrough for building a new Claude Code agent (subagent) from scratch with [`/agent-builder`](../skills/han-plugin-builder/agent-builder.md). You describe the agent's domain and what it produces. Then you answer the interview that walks the agent's design tree decision-by-decision. You end with a single self-contained agent file on disk that has already passed a guidance-conformance review. This is the recipe for *using* the builder; the [agent-building guidance](../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/) is canonical for the rules the builder enforces.
 
 > See also: [How-to index](./README.md) · [`/agent-builder`](../skills/han-plugin-builder/agent-builder.md) · [`/guidance`](../skills/han-plugin-builder/guidance.md) · [Create a new skill](./create-a-new-skill.md)
 
-The happy path below builds an agent into a plugin that already ships agents and a skill that will dispatch it, because that is the case the builder is built around: an agent earns its place by being dispatched. When the agent belongs in a brand-new plugin, the [Variations](#variations) section covers the scaffold the builder adds.
+The happy path below builds an agent into a plugin that already ships agents and a skill that will dispatch it. That is the case the builder is built around: an agent earns its place by being dispatched. When the agent belongs in a brand-new plugin, the [Variations](#variations) section covers the scaffold the builder adds.
 
 ## Before you begin
 
@@ -44,7 +44,7 @@ The workflow runs as one continuous interview that moves through three natural s
 
 ### Stage 3: Write, review, and wire up
 
-1. **Let the builder write the single file and run the conformance review.** Everything the agent needs is inlined into one flat `.md` file: no `references/` folder, no `scripts/`, no context injection. After writing it, the builder re-reads every guidance document that applies and corrects the file directly: role-identity length, the description budget, self-containment violations, and an over-broad tool set, including dropping the `Agent` tool unless the agent's own protocol dispatches sub-agents, since dispatch flows from skills to agents by default. You see the result after the fixes land.
+1. **Let the builder write the single file and run the conformance review.** Everything the agent needs is inlined into one flat `.md` file: no `references/` folder, no `scripts/`, no context injection. After writing it, the builder re-reads every guidance document that applies and corrects the file directly: role-identity length, the description budget, self-containment violations, and an over-broad tool set. That includes dropping the `Agent` tool unless the agent's own protocol dispatches sub-agents, since dispatch flows from skills to agents by default. You see the result after the fixes land.
 
 2. **Read the closing summary and the dispatch wiring.** The builder reports the agent's shape, which decisions it settled by evidence versus by you, the fixes the review applied with the guidance behind each, and how the agent is dispatched: the qualified `defining-plugin:agent-name` and the skill that calls it.
 

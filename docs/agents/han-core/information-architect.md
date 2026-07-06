@@ -20,7 +20,11 @@ Operator documentation for the `information-architect` agent in the han plugin. 
 
 ## Summary
 
-An adversarial information architect that audits a documentation set (a README, a plugin docs tree, an API reference, an ADR repository, a tutorial series) and writes a findings report focused on findability, orientation, and comprehension. Its default stance is that the current structure is harder to navigate and harder to understand than it needs to be. Every finding is tied to an established IA principle and a named reader audience with a concrete task. Questioning is a core behavior. The agent generates and logs the hard questions a senior information architect would ask, and it flags any question it cannot answer as an Open Question so the team can resolve it rather than letting the audit rest on an invented reader.
+An adversarial information architect audits a documentation set (a README, a plugin docs tree, an API reference, an ADR repository, a tutorial series). It writes a findings report focused on findability, orientation, and comprehension. Its default stance is that the current structure is harder to navigate and harder to understand than it needs to be.
+
+Every finding is tied to an established IA principle and a named reader audience with a concrete task.
+
+Questioning is a core behavior. The agent generates and logs the hard questions a senior information architect would ask. It flags any question it cannot answer as an Open Question, so the team can resolve it rather than letting the audit rest on an invented reader.
 
 ## When to use it
 
@@ -63,7 +67,15 @@ Thin prompts (*"review the docs"*) still work but produce more Open Questions an
 ## What you get back
 
 - A summary in the tool-call response: a 1–3 sentence posture, a severity count table (Blocks comprehension / Degrades comprehension / Friction / Polish), an Open Questions count, and the path to the full report.
-- A full report on disk with: scope, reader context, content inventory summary, question log (Answered / Assumed / Open), assumptions, open questions, numbered findings tied to IA principles and locations, and an IA Improvement Summary that sequences shipping vs. improving.
+- A full report on disk with:
+  - Scope.
+  - Reader context.
+  - Content inventory summary.
+  - Question log (Answered / Assumed / Open).
+  - Assumptions.
+  - Open questions.
+  - Numbered findings tied to IA principles and locations.
+  - An IA Improvement Summary that sequences shipping vs. improving.
 
 Every finding is traceable to an IA principle, a documentation location, and a question in the log. If something is not traceable, the agent is instructed to drop it.
 
@@ -84,7 +96,7 @@ The two agents own different artifacts:
 - `user-experience-designer` audits live interactive surfaces (screens, form flows, component libraries, rendered UIs) against Nielsen heuristics, WCAG, universal design, affordance/signifier frameworks, Fitts and Hick, and dark-pattern detection. Its Protocol 6 covers on-screen hierarchy and wayfinding *within a UI*.
 - `information-architect` audits text-first content structure (documentation, READMEs, API references, ADRs) against Rosenfeld/Morville, Dan Brown, LATCH, EPPO, DITA, minimalism, and audience/task mapping.
 
-Where a surface blends both (a docs site with navigation UI, a rendered marketplace page with content), dispatch both in parallel and let each own its scope. Progressive disclosure appears in both, but in each it maps to a different remediation: UX remediates the interactive disclosure (details elements, modals, accordions); IA remediates the content disclosure (what belongs on the landing page vs. a deep page).
+Where a surface blends both (a docs site with navigation UI, a rendered marketplace page with content), dispatch both in parallel and let each own its scope. Progressive disclosure appears in both, but each maps to a different remediation. UX remediates the interactive disclosure (details elements, modals, accordions). IA remediates the content disclosure (what belongs on the landing page vs. a deep page).
 
 ## Cost and latency
 
@@ -108,7 +120,7 @@ URL: https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/bult.2010.17203606
 
 ### Richard Saul Wurman: LATCH (1989, Information Anxiety)
 
-LATCH (Location, Alphabet, Time, Category, Hierarchy) is the canonical set of organizing schemes. The agent uses LATCH to critique grouping decisions: when a documentation set is grouped "by category" but the category itself is not how readers look for the content, that is a LATCH misfit. Also grounds the `Category Fiction` anti-pattern.
+LATCH (Location, Alphabet, Time, Category, Hierarchy) is the canonical set of organizing schemes. The agent uses LATCH to critique grouping decisions. When a documentation set is grouped "by category" but the category itself is not how readers look for the content, that is a LATCH misfit. LATCH also grounds the `Category Fiction` anti-pattern.
 
 URL: https://en.wikipedia.org/wiki/Richard_Saul_Wurman
 
@@ -126,25 +138,25 @@ URL: https://en.wikipedia.org/wiki/Minimalism_(technical_communication)
 
 ### JoAnn Hackos: Topic-Based Authoring and DITA (Introduction to DITA, 2011; Information Development, 2007)
 
-JoAnn Hackos's work on topic-based authoring and DITA established the concept/task/reference topic-type split the agent uses as its information model in Protocol 4. Hackos also grounds the agent's audience-and-task mapping approach in Protocol 3. Tying content to named reader jobs rather than author narrative structure.
+JoAnn Hackos's work on topic-based authoring and DITA established the concept/task/reference topic-type split the agent uses as its information model in Protocol 4. Hackos also grounds the agent's audience-and-task mapping approach in Protocol 3, tying content to named reader jobs rather than author narrative structure.
 
 URL: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 
 ### Peter Pirolli & Stuart Card: Information Foraging and Information Scent
 
-Pirolli and Card's information-foraging theory explains how readers follow "scent" from one piece of content to the next, and the agent uses information scent as its lens in Protocol 6 (labeling) and its anti-pattern `Ghost Navigation`. Nielsen Norman Group has popularized the scent vocabulary for interface design. The agent applies it to content structure.
+Pirolli and Card's information-foraging theory explains how readers follow "scent" from one piece of content to the next. The agent uses information scent as its lens in Protocol 6 (labeling) and its anti-pattern `Ghost Navigation`. Nielsen Norman Group has popularized the scent vocabulary for interface design. The agent applies it to content structure.
 
 URL: https://www.nngroup.com/articles/information-scent/
 
 ### Abby Covert: How to Make Sense of Any Mess (2014)
 
-Abby Covert reframes IA as sense-making across any medium, not just the web, and emphasizes that IA is the shared understanding of intent, nouns, and relationships before any navigation is drawn. The agent uses Covert's framing to resist treating the table of contents as the architecture. The `TOC-As-Architecture` anti-pattern is directly derived from this.
+Abby Covert reframes IA as sense-making across any medium, not just the web. She emphasizes that IA is the shared understanding of intent, nouns, and relationships before any navigation is drawn. The agent uses Covert's framing to resist treating the table of contents as the architecture. The `TOC-As-Architecture` anti-pattern is directly derived from this.
 
 URL: https://abbycovert.com/make-sense/
 
 ### Stewart Brand / Peter Morville: Pace Layering (Ambient Findability, 2005)
 
-Stewart Brand's pace-layering concept, adapted by Peter Morville to IA in *Ambient Findability*, models different layers of a content system as changing at different rates: tags and labels evolve fast, taxonomies slower, ontologies slowest. The agent uses pace layering to distinguish surface-level rename remediations from deeper structural ones, and to prioritize which layers a team should stabilize before iterating on the fast ones.
+Stewart Brand's pace-layering concept, adapted by Peter Morville to IA in *Ambient Findability*, models different layers of a content system as changing at different rates. Tags and labels evolve fast, taxonomies slower, ontologies slowest. The agent uses pace layering to distinguish surface-level rename remediations from deeper structural ones, and to prioritize which layers a team should stabilize before iterating on the fast ones.
 
 URL: https://jarango.com/2021/01/14/the-culture-layer/
 

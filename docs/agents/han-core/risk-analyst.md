@@ -14,7 +14,7 @@ Operator documentation for the `risk-analyst` agent in the han plugin. This docu
 
 - **Receives pre-digested findings.** The agent does not discover new problems. The upstream analysts have already done that work. The agent's job is to evaluate what happens if each finding is not addressed.
 - **Four-dimensional assessment.** Likelihood (how likely is it to bite?), severity (what happens when it bites?), blast radius (how much is affected?), reversibility (how hard is it to undo?). All four are required for every assessment.
-- **Evidence-based, not speculative.** Likelihood ratings are grounded in git history and usage patterns. Blast radius is grounded in dependency-graph traces. The agent uses `Read`, `Grep`, and `Glob` against the codebase to verify, not just label.
+- **Evidence-based, not speculative.** Likelihood ratings are grounded in git history and usage patterns. Blast radius is grounded in dependency-graph traces. The agent uses `Read`, `Grep`, and `Glob` against the codebase to verify, not merely label.
 - **Groups related findings.** When multiple upstream findings describe facets of the same underlying risk, the agent groups them rather than assessing each in isolation.
 - **Low-risk results matter.** When an upstream finding carries low risk, the agent says so explicitly. Not everything needs fixing.
 
