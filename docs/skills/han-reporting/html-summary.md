@@ -70,7 +70,7 @@ Sections the source markdown does not cover are omitted rather than padded. The 
 
 ## Cost and latency
 
-Single-pass authoring with no sub-agent dispatch. Reads the source markdown and the skill's references, writes the HTML once, self-checks against the layout and writing-convention rules, then runs `scripts/inline-mermaid.sh` to vendor the mermaid bundle into the file. The most expensive step is producing the HTML body; the inline step is a fast local script. Built for tight-loop iteration — re-run it after the source summary changes.
+Single-pass authoring with no sub-agent dispatch. Reads the source markdown and the skill's references, writes the HTML once, self-checks against the layout and writing-convention rules and runs the shared readability standard's self-check over the prose (the fidelity guard, since the skill runs no separate rewrite pass), then runs `scripts/inline-mermaid.sh` to vendor the mermaid bundle into the file. The most expensive step is producing the HTML body; the inline step is a fast local script. Built for tight-loop iteration — re-run it after the source summary changes.
 
 ## Related documentation
 

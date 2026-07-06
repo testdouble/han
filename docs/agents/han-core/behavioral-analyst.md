@@ -7,7 +7,7 @@ Operator documentation for the `behavioral-analyst` agent in the han plugin. Thi
 ## TL;DR
 
 - **What it does.** Analyzes the runtime behavior of a specified codebase focus area: data flow, error propagation, state management, and integration boundaries. Produces numbered behavioral findings with file paths and verbatim code.
-- **When to dispatch it.** You want a principled runtime-behavior pass on a module or focus area, independent of static structure or concurrency. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`. Dispatched by `/investigate` when the symptom matches a data-flow or error-propagation bug. Dispatched by `/plan-implementation` by signal when plan sections describe runtime behavior, data flow, error propagation, or state. Conditionally dispatched by `/iterative-plan-review` when the review covers runtime behavior, data flow, error propagation, or state.
+- **When to dispatch it.** You want a principled runtime-behavior pass on a module or focus area, independent of static structure or concurrency. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`. Dispatched by `/investigate` when the symptom matches a data-flow or error-propagation bug. Dispatched by `/plan-implementation` by signal when plan sections describe runtime behavior, data flow, error propagation, or state. Conditionally dispatched by `/iterative-plan-review` when the review covers runtime behavior, data flow, error propagation, or state. Dispatched by `/plan-a-feature` by signal when the feature specification touches runtime behavior, data flow, error propagation, or state.
 - **What you get back.** Numbered `B#` findings, each tied to a behavioral dimension (Data Flow / Error Propagation / State Management / Integration Boundaries), file paths, verbatim code, and an impact statement.
 
 ## Key concepts
@@ -98,3 +98,4 @@ URL: https://martinfowler.com/bliki/TwoHardThings.html
 - [`/code-review`](../../skills/han-coding/code-review.md). Conditionally dispatches this agent.
 - [`/plan-implementation`](../../skills/han-planning/plan-implementation.md). Dispatches this agent by signal when plan sections describe runtime behavior, data flow, error propagation, or state.
 - [`/iterative-plan-review`](../../skills/han-planning/iterative-plan-review.md). Conditionally dispatches this agent when the review covers runtime behavior, data flow, error propagation, or state.
+- [`/plan-a-feature`](../../skills/han-planning/plan-a-feature.md). Dispatches this agent by signal when the feature specification touches runtime behavior, data flow, error propagation, or state.
