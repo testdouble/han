@@ -16,6 +16,7 @@ Operator documentation for the `/tdd` skill in the han plugin. This document hel
 - **The observed-failure gate.** No production code changes unless a test has been run and watched to fail for the intended reason in that loop. A test that passes the first time it runs means red was never seen, which is a process violation, not a success.
 - **Two hats.** Making a test pass and improving structure are different jobs done at different times. The skill never refactors while a test is red. Make it run, then make it right.
 - **BDD framing.** Tests describe observable behavior, named in your project's existing convention, asserting outcomes through the public interface, never private state. For user-facing behavior the skill works outside-in: a failing acceptance test on the outside, red-green-refactor on the inside.
+- **Next-test selection by simplest transformation.** When several candidate tests remain, the skill picks the one whose passing requires the simplest change to the code: a constant before a variable, a conditional before a loop. That is the Transformation Priority Premise, made concrete by the ZOMBIES ordering (Zero, One, Many, then Boundaries, Interface, Exceptions). Chosen this way, each green step is the smallest generalization the code can make, and the design grows instead of lurching.
 - **Standards split across green and refactor.** Going green obeys only the standards that govern correctness and where code is allowed to live (an ADR boundary you cross is wrong code, not deferrable mess). Full stylistic and structural conformance, plus YAGNI, happen in refactor.
 
 ## When to use it
@@ -111,6 +112,18 @@ URL: https://tidyfirst.substack.com/p/canon-tdd
 The verbatim Three Laws the observed-failure gate is built on, including "compilation failures are failures" and "the one failing unit test".
 
 URL: https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html
+
+### Robert C. Martin, "The Transformation Priority Premise" and "Transformation Priority and Sorting"
+
+The ranked list of transformations behind the skill's next-test selection, the decision-point rule (when two changes could pass the test, prefer the simpler one), and the sorting demonstration that test order steers which algorithm emerges.
+
+URL: https://blog.cleancoder.com/uncle-bob/2013/05/27/TheTransformationPriorityPremise.html
+
+### James Grenning, "TDD Guided by ZOMBIES"
+
+The Zero, One, Many, Boundaries, Interface, Exceptions, Simple ordering the test list follows when one behavior expands into several candidate tests.
+
+URL: https://blog.wingman-sw.com/tdd-guided-by-zombies
 
 ### Martin Fowler, "Test Driven Development", "Mocks Aren't Stubs", "GivenWhenThen"
 
