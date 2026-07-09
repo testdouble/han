@@ -56,18 +56,19 @@ this file captures the history, rationale, evidence, and rejected alternatives.
 - **Dependent decisions:** D4
 - **Referenced in spec:** Outcome, Primary Flow, Alternate Flows and States
 
-### D4: Self-check skills gain a delegated pass
+### D4: Full delegation replaces inline drafting and self-check
 
-- **Question:** What happens to skills that apply the standard inline today as a drafting guide and an end-of-run self-check, with deliberately no rewrite pass?
-- **Decision:** These skills — issue-triage, architectural-decision-record, runbook, and html-summary — delegate to `han-communication`'s readability capability, which performs an actual rewrite pass. They gain a readability-editor / edit-for-readability dispatch they did not have before.
-- **Rationale:** This is forced by D3. Once the reference files are neither vendored nor reachable cross-plugin, an inline self-check that reads the rule is impossible, so the only way to keep applying the standard is to delegate — and delegation runs a rewrite. There is no middle path that keeps "no vendoring."
-- **Evidence:** `han-core/skills/issue-triage/SKILL.md`, `han-core/skills/architectural-decision-record/SKILL.md`, `han-core/skills/runbook/SKILL.md`, and `han-reporting/skills/html-summary/SKILL.md` each read `../../references/readability-rule.md` for an inline self-check and state "This skill runs no rewrite pass."
+- **Question:** Removing the vendored reference files breaks three distinct inline uses of the standard — applying it while drafting, running the end-of-run self-check, and (for some skills) dispatching the editor rewrite. How do consuming skills apply the standard after the move?
+- **Decision:** Full delegation, uniformly. Every prose-producing consuming skill drops both its drafting-time application of the rule and its inline self-check, and instead delegates a single readability-editor / edit-for-readability rewrite pass over its finished output. Skills that already dispatched the editor retarget it to `han-communication`; skills that only drafted-and-self-checked (issue-triage, architectural-decision-record, runbook, html-summary) gain a rewrite dispatch they did not have before.
+- **Rationale:** The user chose full delegation for the strongest single source of truth. The readability rule is applied in three inline stages that all read the reference file: an audience frame that shapes drafting, a discrete self-check after drafting, and — layered on top — the editor rewrite. Once the file is neither vendored nor reachable cross-plugin, none of the file-reading stages can run, so delegation to the editor is the only way to keep applying the standard without reintroducing duplicated criteria.
+- **Evidence:** user input; the readability rule (`han-core/references/readability-rule.md`) defines the template / audience-frame / self-check stages; skills apply it while drafting (`research/SKILL.md`, `stakeholder-summary/SKILL.md`, `update-pr-description/SKILL.md`, `code-review/SKILL.md` all say they apply the rule "as they write"); about nine skills also run an inline self-check reading `../../references/readability-rule.md`; four (`issue-triage`, `architectural-decision-record`, `runbook`, `html-summary`) run only the drafting guide and self-check and state "This skill runs no rewrite pass."
 - **Rejected alternatives:**
-  - Keep a lightweight inline self-check for these four skills — rejected because it requires a vendored copy of the rule inside each plugin, which contradicts D3.
+  - A hybrid: skills that already dispatch the editor keep delegating, while skills that only self-checked keep a lightweight self-check written as their own skill-native criteria (no new dispatch). Rejected by the user in favor of a single source of truth — skill-native criteria can drift from the canonical rule, and the writing-voice blocklist check would still have to move to the editor because the blocklist lives in the moved file.
+  - The earlier "no middle path" framing that treated a rewrite pass as strictly forced — corrected: a hybrid middle path does exist; full delegation is a conscious choice, not a forced one ([F3](team-findings.md#f3-no-middle-path-was-overstated)).
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F1, F2, F3
 - **Dependent decisions:** —
-- **Referenced in spec:** Alternate Flows and States, Edge Cases and Failure Modes
+- **Referenced in spec:** Outcome, Alternate Flows and States, Out of Scope
 
 ### D5: Which plugins declare the dependency
 
@@ -77,20 +78,27 @@ this file captures the history, rationale, evidence, and rejected alternatives.
 - **Evidence:** grep inventory — `han-coding` (architectural-analysis, code-review, investigate, code-overview), `han-core` (research, project-documentation, gap-analysis, issue-triage, architectural-decision-record, runbook), `han-github` (update-pr-description), and `han-reporting` (stakeholder-summary, html-summary) reference the readability-editor agent, the edit-for-readability skill, the readability rule, or the writing-voice profile; `han-planning`, `han-atlassian`, `han-linear`, `han-feedback`, and `han-plugin-builder` reference none of them.
 - **Rejected alternatives:**
   - Give every plugin a direct dependency — rejected because `han-planning` and the opt-in plugins do not consume the capability directly; a direct dependency there would be unearned and misleading.
+- **Caveat on opt-in plugins:** `han-atlassian` wraps prose-producing skills (project-documentation, investigate, code-overview), so it genuinely needs the capability resolvable at runtime. It receives `han-communication` transitively through `han-core` only if the plugin loader resolves dependencies transitively — unconfirmed ([OI-1](../feature-specification.md#open-items)). If transitive resolution is not guaranteed, each opt-in plugin that wraps a prose skill declares `han-communication` directly. The fallback is cheap, so this does not block the decision ([F4](team-findings.md#f4-transitive-resolution-asserted-as-fact-while-unverified)).
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F4
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome, Edge Cases and Failure Modes, Out of Scope, Coordinations
 
-### D7: Docs, indexes, and pointers follow the move
+### D7: Docs, indexes, tooling, and pointers follow the move
 
-- **Question:** What documentation must change when the four assets move?
-- **Decision:** The long-form docs for the agent and skill move to `docs/agents/han-communication/` and `docs/skills/han-communication/`; the agent and skill indexes, the CLAUDE.md project map, CONTRIBUTING.md, and every top-level pointer to the canonical location of the readability rule and writing-voice profile update to name `han-communication` as the owner.
-- **Rationale:** The suite's convention is one canonical long-form doc per skill and per agent, with complete indexes and up-to-date cross-references. Moving the assets without moving and repointing their docs would leave the indexes and the project map describing a location that no longer holds the canonical copies.
-- **Evidence:** CLAUDE.md documents the canonical-source and index conventions and currently names `han-core/references/` as the canonical home of the readability rule and writing-voice profile; long-form docs currently live at `docs/agents/han-core/readability-editor.md` and `docs/skills/han-core/edit-for-readability.md`.
+- **Question:** What documentation and repo tooling must change when the four assets move?
+- **Decision:** The change reaches every surface that names the old home of the four assets, in four classes:
+  1. **Relocated long-form docs.** The agent and skill docs move to `docs/agents/han-communication/` and `docs/skills/han-communication/` (new directories). Their own outbound relative links (to sibling agent docs like content-auditor and information-architect, and the mutual agent↔skill links) are rewritten to resolve from the new location.
+  2. **Inbound links to those two docs.** Every doc that links to the relocating docs at their `han-core` path is repointed — roughly 17 inbound links across the agent and skill indexes, `docs/concepts.md`, `docs/readability.md`, and the long-form docs of the consuming skills in `han-coding`, `han-github`, `han-reporting`, and `han-core`.
+  3. **Canonical-location pointers and qualified-name strings.** Every pointer to the canonical location of the readability rule or writing-voice profile, and every `han-core:readability-editor` qualified-name string printed in operator docs (~9 docs), updates to `han-communication`.
+  4. **Vendoring instructions and tooling that assume vendored copies.** CONTRIBUTING.md's "Wiring the readability standard into a skill" section and CLAUDE.md's "Writing voice" section, "Voice is uniform" convention, and project-map tree comments are **rewritten** (not just repointed) to describe a single canonical copy reached by delegation, with no vendored copies. The repo-maintenance skills that hard-reference the writing-voice profile by path (`.claude/skills/han-release/references/changelog-rules.md`, `.claude/skills/han-update-documentation`), the five skill-internal template files that hardcode the rule's relative path, and `.github/pull_request_template.md` are updated to the new home or the delegation model.
+- **Guard:** Historical artifacts are **not** repointed — `CHANGELOG.md` and `docs/research/**` describe point-in-time state and must keep it. A new CHANGELOG entry records the extraction instead.
+- **Rationale:** The suite's convention is one canonical long-form doc per skill and per agent, complete indexes, up-to-date cross-references, and a project map that matches disk. A pointer relabel is not enough where a doc teaches the vendoring procedure the move abolishes: left intact, CONTRIBUTING.md would keep instructing contributors to re-vendor a copy, reintroducing the duplication the feature removes.
+- **Evidence:** CLAUDE.md documents the canonical-source and index conventions and currently names `han-core/references/` as canonical plus vendored copies in three plugins; long-form docs currently live at `docs/agents/han-core/readability-editor.md` and `docs/skills/han-core/edit-for-readability.md`; the full stale-pointer and tooling inventory is recorded across findings F6–F10 in [team-findings.md](team-findings.md).
 - **Rejected alternatives:**
-  - Leave the docs under `han-core` and only update the plugin files — rejected because it breaks the one-canonical-doc-per-plugin convention and leaves the indexes and project map pointing at the wrong owner.
+  - Repoint links only, without rewriting the vendoring instructions — rejected because CONTRIBUTING.md and CLAUDE.md would then teach a workflow the architecture no longer supports ([F6](team-findings.md#f6-contributingmd-teaches-vendoring-the-move-abolishes), [F7](team-findings.md#f7-claudemd-asserts-vendored-copies-that-will-be-deleted)).
+  - Blanket grep-and-replace across the whole repo — rejected because it would corrupt CHANGELOG and research history.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F6, F7, F8, F9, F10
 - **Dependent decisions:** —
 - **Referenced in spec:** Edge Cases and Failure Modes
