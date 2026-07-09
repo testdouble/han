@@ -28,3 +28,15 @@ feature-specification.md. Findings live in
 - **Stability assessment:** No foundational issue surfaced — all findings were refinements of round-1's own additions. Three major: the Preconditions/Codex resolvability contradiction (F23), the too-narrow preservation commitment (F28, runbook steps are numbered headings and can be split/renumbered without "reordering"), and D10's overstated "full parity" plus a missed opt-in Codex install path (F29). The rest were more dependency-narration and template files the fixed lists missed (F25–F27, F30) plus a CONTRIBUTING rule that needs re-derivation (F31). The recurring "the list missed another file" pattern was closed structurally: D7 classes 3–5 are now executed by a comprehensive grep at implementation time, with the named files as non-exhaustive seeds rather than the scope boundary. The round-1 scratch finding GAP-106 that was previously dropped is now promoted (F30), closing the pipeline gap V5 flagged.
 - **Next step:** Run a focused R3 validation pass to confirm the comprehensive-grep reframing and the widened preservation/Codex commitments hold, and that no new contradiction was introduced. Expectation: convergence (few findings, none major).
 
+## R3
+
+- **Mode:** team
+- **Spec-aware mode:** engaged (no feature-technical-notes.md; behavioral only)
+- **Specialists engaged:** han-core:junior-developer, han-core:adversarial-validator
+- **Findings raised:** F32, F33, F34, F35
+- **Changed in plan:** Edge Cases and Failure Modes, Open Items, Review History (added); decision-log D4, D7
+- **Changed in tech-notes:** —
+- **Stability assessment:** Convergence reached on the foundations — junior-developer raised nothing (spec internally consistent, ready for implementation planning), and adversarial-validator independently reproduced D5's host/trigger inventory and D10's Codex manifest inventory from the repo, and confirmed no file-discovery gap survives D7's comprehensive-grep method. The four findings were all refinements of round-2's own additions: a rewrite-depth case the comprehensive grep finds but the classification undersold (F32, docs/readability.md), an order-significant non-numbered list the preservation commitment missed (F33), an understated Codex blast-radius in OI-2 (F34), and the missing mandatory Review History section (F35). All resolved by evidence.
+- **Round cap:** R3 is the Large-size cap. Review closes here. The residual deferrals (readability-rule/editor rubric mechanism for step-order protection; the four newly-delegating skills' Codex dispatch mechanism; the comprehensive grep executed at build time) are correctly owned by `plan-implementation`, not open behavioral questions.
+
+

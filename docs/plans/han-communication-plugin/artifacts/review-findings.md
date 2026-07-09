@@ -132,6 +132,30 @@ file starts at F12. Iteration history lives in
 - **Changed in plan:** Edge Cases and Failure Modes; Open Items; decision-log D10
 - **Changed in tech-notes:** —
 
+### F33: Preservation commitment misses order-significant non-numbered lists
+
+- **Agent:** adversarial-validator
+- **Category:** correctness
+- **Finding:** The widened D4 commitment protected numbered steps, heading numerals, and numeric cross-references, but the runbook template also carries a "Likely cause — ordered by likelihood" bulleted list that the Resolve steps branch on. Its order is operationally load-bearing but it is neither numbered nor non-prose, so the editor's reordering authorization could still disturb it.
+- **Evidence considered:** runbook template ("ordered by likelihood… The Resolve section will branch on them"); editor rubric authorizes reordering within a section.
+- **Resolution:** Extended the commitment to preserve the order of any list whose sequence is operationally load-bearing, even when not numbered.
+- **Resolved by:** evidence
+- **Raised in round:** R3
+- **Changed in plan:** Edge Cases and Failure Modes; decision-log D4
+- **Changed in tech-notes:** —
+
+### F34: OI-2 understated the delegation blast-radius on Codex
+
+- **Agent:** adversarial-validator
+- **Category:** correctness
+- **Finding:** OI-2's "pre-existing, not introduced by this feature" held only for the ~9 skills that already dispatched the editor. Full delegation (D4) makes four more skills delegate for the first time, so on Codex the affected set grows from ~9 to ~13; for those four, any dependence on Codex agent-dispatch would be newly introduced, not pre-existing.
+- **Evidence considered:** D4 (four skills gain a first-ever dispatch); the spec's "invokes the skill, or dispatches the agent" ambiguity.
+- **Resolution:** OI-2 now states the ~9→~13 expansion and routes the four newly-delegating skills through the edit-for-readability skill wrapper (which Codex manifests already expose), so "not introduced by this feature" stays true; the final mechanism is confirmed in `plan-implementation`.
+- **Resolved by:** evidence
+- **Raised in round:** R3
+- **Changed in plan:** Open Items
+- **Changed in tech-notes:** —
+
 ## Minor edits
 
 - F16: D7 hardcodes "five" skill-internal template files; a sixth (`html-summary/references/writing-conventions.md`) hardcodes the same rule path. Made D7's template-file scope count-free. — adversarial-validator, evidence-based-investigator — decision-log D7
@@ -144,3 +168,5 @@ file starts at F12. Iteration history lives in
 - F27: `han-coding/skills/investigate/references/template.md` hardcodes the rule as a plugin-root path (`han-coding/references/readability-rule.md`), a form the earlier dot-relative inventory missed; folded into D7's comprehensive-grep coverage. — gap-analyzer — decision-log D7
 - F30: `docs/how-to/build-a-plugin-that-depends-on-han.md` was raised in the round-1 gap-analyzer scratch (GAP-106) but neither promoted nor recorded as rejected; folded into D7's comprehensive-grep coverage so the scratch-to-findings pipeline has no silent drop. — adversarial-validator — decision-log D7
 - F31: CONTRIBUTING.md states "`han-core` depends on nothing" as a *rule* (not just narration) that D1 falsifies; D7 now requires re-deriving that rule, not editing the string. — adversarial-validator — decision-log D7
+- F32: `docs/readability.md` restates the abolished vendoring model, the pre-delegation staged-application model, and a "self-check only" table D4 falsifies; D7 now flags it as a rewrite-depth case with a general rule that any caught file restating the abolished model is rewritten, not repointed. — adversarial-validator — decision-log D7
+- F35: The plan was missing its mandated `## Review History` section (iterative-plan-review Step 6), and the Summary forward-referenced it; added the section and reconciled the reference. — adversarial-validator — Review History
