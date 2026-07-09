@@ -8,9 +8,33 @@ this file captures the history, rationale, evidence, and rejected alternatives.
 
 ## Trivial decisions
 
-- D6: Meta-plugin bundles han-communication — the `han` meta-plugin adds `han-communication` to its `dependencies` so installing `han` still delivers the readability capability (considered leaving it out; rejected because `han` promises the full suite and readability is used across it). — Referenced in spec: Outcome, Coordinations.
-- D8: Marketplace lists han-communication — the Test Double marketplace manifest gains a `han-communication` entry (considered omitting it; rejected because a plugin other plugins depend on must be resolvable from the marketplace). — Referenced in spec: Coordinations.
-- D9: Qualified-name contract changes namespace only — invocation sites move from `han-core:readability-editor` / `han-core:edit-for-readability` to the `han-communication:`-qualified names; the invocation contract is otherwise unchanged. — Referenced in spec: Edge Cases and Failure Modes.
+These decisions were settled without contention. Each carries the same cross-reference fields as the full decisions so its spec anchor resolves to a real heading.
+
+### D6: Meta-plugin bundles han-communication
+
+- **Decision:** The `han` meta-plugin adds `han-communication` to its `dependencies`, so installing `han` still delivers the readability capability.
+- **Rejected alternative:** Leave it out — rejected because `han` promises the full suite and readability is used across it.
+- **Linked technical notes:** —
+- **Driven by findings:** —
+- **Dependent decisions:** —
+- **Referenced in spec:** Outcome, Coordinations
+
+### D8: Marketplace lists han-communication
+
+- **Decision:** The Test Double marketplace manifest gains a `han-communication` entry.
+- **Rejected alternative:** Omit it — rejected because a plugin other plugins depend on must be resolvable from the marketplace.
+- **Linked technical notes:** —
+- **Driven by findings:** —
+- **Dependent decisions:** —
+- **Referenced in spec:** Coordinations
+
+### D9: Qualified-name contract changes namespace only
+
+- **Decision:** Invocation sites move from `han-core:readability-editor` / `han-core:edit-for-readability` to the `han-communication:`-qualified names; the invocation contract is otherwise unchanged.
+- **Linked technical notes:** —
+- **Driven by findings:** —
+- **Dependent decisions:** —
+- **Referenced in spec:** Edge Cases and Failure Modes
 
 ## Full decisions
 

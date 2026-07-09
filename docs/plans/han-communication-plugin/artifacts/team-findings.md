@@ -62,6 +62,7 @@ han-core:gap-analyzer.
 - **Resolution:** Reworded Out of Scope to scope preservation to the editor agent's rewrite behavior and state the consuming-skill change explicitly.
 - **Resolved by:** evidence
 - **Affected decisions:** —
+- **Affected tech-notes:** —
 - **Changed in spec:** Out of Scope
 
 ### F6: CONTRIBUTING.md teaches vendoring the move abolishes
@@ -116,4 +117,4 @@ han-core:gap-analyzer.
 
 ## Minor edits
 
-- F11: Runtime mechanic (cross-plugin file-read scoping) leaked into the spec's Deferred section; trimmed to the behavioral claim, mechanic kept on D3 — junior-developer — Deferred (YAGNI)
+- F11: Runtime mechanic (cross-plugin file-read scoping) leaked into the spec's Deferred section; trimmed to the behavioral claim, mechanic kept on D3 — junior-developer — Affected decisions: — — Affected tech-notes: — — Changed in spec: Deferred (YAGNI)
