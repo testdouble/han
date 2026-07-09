@@ -37,6 +37,18 @@ feature-specification.md. Findings live in
 - **Changed in plan:** Edge Cases and Failure Modes, Open Items, Review History (added); decision-log D4, D7
 - **Changed in tech-notes:** —
 - **Stability assessment:** Convergence reached on the foundations — junior-developer raised nothing (spec internally consistent, ready for implementation planning), and adversarial-validator independently reproduced D5's host/trigger inventory and D10's Codex manifest inventory from the repo, and confirmed no file-discovery gap survives D7's comprehensive-grep method. The four findings were all refinements of round-2's own additions: a rewrite-depth case the comprehensive grep finds but the classification undersold (F32, docs/readability.md), an order-significant non-numbered list the preservation commitment missed (F33), an understated Codex blast-radius in OI-2 (F34), and the missing mandatory Review History section (F35). All resolved by evidence.
-- **Round cap:** R3 is the Large-size cap. Review closes here. The residual deferrals (readability-rule/editor rubric mechanism for step-order protection; the four newly-delegating skills' Codex dispatch mechanism; the comprehensive grep executed at build time) are correctly owned by `plan-implementation`, not open behavioral questions.
+- **Round cap:** R3 was the cap for the original full-delegation plan. **Superseded:** the plan was later revised to the staged guidance-plus-editor model (D11), which reopened the review — see R4 below. R3's claim that no open behavioral question remained no longer holds; OI-3 (the guidance-skill mechanism spike) is exactly such a question.
+
+## R4 (post-revision review of the staged model)
+
+- **Mode:** team
+- **Spec-aware mode:** engaged (behavioral spec; no technical-notes file)
+- **Specialists engaged:** han-core:junior-developer, han-core:adversarial-validator, han-core:gap-analyzer
+- **Findings raised:** F36, F37, F38, F39, F40, F41, F42, F43, F44, F45
+- **Changed in plan:** Edge Cases and Failure Modes, Open Items (OI-3 hardened), Summary, Review History; decision-log D3, D7, D9, D11, provenance note; artifacts/readability-guidance-research.md
+- **Changed in tech-notes:** —
+- **Stability assessment:** This round validated the D11 revision that had bypassed review, and it caught a make-or-break issue: the adversarial-validator found the repo's own `skill-composition.md` documents the readability-guidance mechanism as a discouraged "data-fetch composition" anti-pattern (F39). Surfaced to the user, who chose to prototype (option 3). An inline (non-forked) prototype resumed 3/3 — a weak positive signal only; `skill-composition.md` was not updated. OI-3 was hardened into a rigorous, blocking spike with a named fallback. The round also fixed revision-propagation defects: a stale D7 line that called the preserved staged model "abolished" (F36), the editor's now-unresolvable rule-path argument (F37), impossible edge-case examples (F40), the unrecorded F20 reversal (F41), a stale Review History (F42), and an unreconstructable decision count (F43).
+- **Next step:** The mechanism decision is not closed — it depends on the OI-3 spike, which is `plan-implementation`'s first task and gates the thirteen-consumer rewire. If the spike fails, revert to full delegation (the R1–R3 plan) or vendor the rule for the four non-synthesis skills.
+
 
 

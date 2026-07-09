@@ -156,6 +156,42 @@ file starts at F12. Iteration history lives in
 - **Changed in plan:** Open Items
 - **Changed in tech-notes:** —
 
+### F39: readability-guidance is the repo's documented data-fetch composition anti-pattern, and the revision bypassed review
+
+- **Agent:** adversarial-validator
+- **Category:** correctness / process
+- **Finding:** `han-plugin-builder/.../skill-composition.md` documents "call a sub-skill to retrieve reference content for the caller to use immediately" as **data-fetch composition** and says "Do not do this," citing a forked-sub-skill early-exit failure that instruction tuning does not reliably fix. The `readability-guidance` skill (D11) is that shape. The earlier design-research pass missed this doc, and the revision was written into the plan and Review History as if reviewed when it had not been. Also corrected: the "same mechanism as the editor" claim was false (editor uses the Agent tool / isolated subagent, not the same-context Skill tool).
+- **Evidence considered:** `skill-composition.md` (data-fetch "avoid"; the api_retry early-exit failure; inline-duplication default); the editor dispatch sites use the Agent tool.
+- **Resolution:** Surfaced to the user, who chose to prototype the mechanism (option 3). Built and ran an inline (non-forked) prototype: caller resumed 3/3 — a weak signal, not a reliability result. Did **not** update `skill-composition.md` (bar not met). Hardened OI-3 into a rigorous, blocking spike (heavy consumer, many runs, induced api_retry, inline-vs-fork), captured the anti-pattern as a Known risk on D11 with the inline-vs-fork mitigating distinction and a named fallback, and softened D11's "precedent"/"same as editor" framing. This R4 round is itself the missing adversarial review.
+- **Resolved by:** user input (direction) + evidence (prototype + repo guidance)
+- **Raised in round:** R4
+- **Changed in plan:** Open Items (OI-3); decision-log D11, D3; artifacts/readability-guidance-research.md
+- **Changed in tech-notes:** —
+
+### F36: D7 called the preserved staged model abolished
+
+- **Agent:** gap-analyzer, junior-developer
+- **Category:** internal-contradiction
+- **Finding:** D7 class 3 (written under full delegation) said `docs/readability.md`'s staged-application model is "pre-delegation/abolished" and that its "self-check only" table is "falsified by D4." The revised D4 *preserves* the staged model and makes those exact four skills the no-rewrite set, so the table is now true. Left as-is, D7 would direct an implementer to rewrite away a still-correct model.
+- **Evidence considered:** revised D4; Out of Scope ("the four-stage model... unchanged"); `docs/readability.md` self-check table.
+- **Resolution:** D7 class 3 rewritten — only the *vendoring* model is abolished; the staged-application model and self-check table are preserved and must not be rewritten away.
+- **Resolved by:** evidence
+- **Raised in round:** R4
+- **Changed in plan:** decision-log D7
+- **Changed in tech-notes:** —
+
+### F37: Editor rule-path argument breaks post-move
+
+- **Agent:** gap-analyzer
+- **Category:** correctness
+- **Finding:** Nine synthesis skills pass the editor a within-plugin rule path (`../../references/readability-rule.md`) at dispatch. Once vendored copies are gone, that path won't resolve, and no caller can form a valid cross-plugin path (D3's whole premise). D9's "invocation contract otherwise unchanged" missed this.
+- **Evidence considered:** the 9 editor-dispatch sites pass a rule path; D3 (no cross-plugin file path).
+- **Resolution:** D9 updated — the editor drops the caller-supplied rule-path argument and reads `han-communication`'s own canonical rule by default (same plugin). D9 renamed accordingly; the spec Edge Cases row updated.
+- **Resolved by:** evidence
+- **Raised in round:** R4
+- **Changed in plan:** Edge Cases and Failure Modes; decision-log D9
+- **Changed in tech-notes:** —
+
 ## Minor edits
 
 - F16: D7 hardcodes "five" skill-internal template files; a sixth (`html-summary/references/writing-conventions.md`) hardcodes the same rule path. Made D7's template-file scope count-free. — adversarial-validator, evidence-based-investigator — decision-log D7
@@ -170,3 +206,10 @@ file starts at F12. Iteration history lives in
 - F31: CONTRIBUTING.md states "`han-core` depends on nothing" as a *rule* (not just narration) that D1 falsifies; D7 now requires re-deriving that rule, not editing the string. — adversarial-validator — decision-log D7
 - F32: `docs/readability.md` restates the abolished vendoring model, the pre-delegation staged-application model, and a "self-check only" table D4 falsifies; D7 now flags it as a rewrite-depth case with a general rule that any caught file restating the abolished model is rewritten, not repointed. — adversarial-validator — decision-log D7
 - F35: The plan was missing its mandated `## Review History` section (iterative-plan-review Step 6), and the Summary forward-referenced it; added the section and reconciled the reference. — adversarial-validator — Review History
+- F38: `CLAUDE.md`'s project map and "Indexes stay complete" convention enumerate the plugins by name and omit `han-communication`; the comprehensive grep would miss it (no readability strings), so D7 class 5 now explicitly covers plugin enumerations. — gap-analyzer — decision-log D7
+- F40: The preservation edge-case row's own examples (runbook, HTML report) are impossible under the staged model, since those skills never dispatch the editor; replaced with a synthesis-skill example and a note. — adversarial-validator — Edge Cases and Failure Modes
+- F41: The revision silently reversed F20's resolution (the size-conditional editor skip is restored under the staged model); recorded here so the reversal is not a silent contradiction between artifacts. F20's outcome is superseded by revised D4. — adversarial-validator — Alternate Flows and States
+- F42: The Review History section and review-iteration-history R3 closing note still described the pre-revision full-delegation state and dangling-referenced a "follow-up review round"; refreshed both for R4. — junior-developer, adversarial-validator — Review History
+- F43: The Summary's "7 evidence / 4 user" split was not reconstructable from the decision log; added a provenance note (6 user, 5 evidence) and corrected the Summary. — gap-analyzer, junior-developer — Summary; decision-log provenance
+- F44: Review History claimed "no load-bearing mechanic qualified," but the same-context surfacing mechanism is load-bearing and its reliability is contested; reworded to note it is tracked as OI-3 rather than a settled note. — junior-developer — Review History
+- F45: No documented fallback existed if the OI-3 spike fails; OI-3 and D11 now name the fallback (full delegation via the editor, or vendoring the rule for the four non-synthesis skills). — adversarial-validator — Open Items; decision-log D11

@@ -36,6 +36,21 @@ Can `han-communication` expose a `readability-guidance` skill that other skills 
 
 - `multi-agent-economics.md` states each agent dispatch adds latency and token cost, with a single-agent-sufficiency heuristic. The exact multipliers are labeled illustrative (web-sourced), so treat the efficiency claim as directional, not measured.
 
+## Correction: the repo's own composition guidance (missed in the first pass)
+
+The initial research above missed `han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-composition.md`, which the R4 adversarial review surfaced. That doc distinguishes **orchestration composition** (a caller hands a whole artifact-owning workflow to a sub-skill — supported; what the readability-editor already is) from **data-fetch composition** (calling a sub-skill "only to retrieve a few structured values… for the calling skill to use immediately" — "Do not do this"). A `readability-guidance` skill that surfaces reference content for the caller to apply is the data-fetch shape. The documented failure: a **forked** (`context: fork`) data-fetch sub-skill returns, an `api_retry` event anchors the caller on the sub-skill's output, and the caller bypasses its remaining steps — "not reliably fixed by any frontmatter or instruction tuning." The doc's default for shared values is inline duplication (vendoring). This materially weakens the original "precedented, low-risk" framing, and it corrects a factual error: the readability-editor is dispatched via the **Agent** tool (isolated subagent), not the same-context **Skill** tool the guidance skill would use.
+
+## Prototype spike (in-session, 2026-07-09) — weak positive signal, not a reliability result
+
+Built a minimal **inline (non-forked)** `rg-proto-guidance` skill plus a four-step `rg-proto-consumer` that invokes it mid-workflow, and ran the composition three times. The caller resumed and completed all four steps 3/3 (no early exit). This is a weak signal only:
+
+- The tester (this model) was motivated to complete the run; the documented failure is unconscious anchoring, not reproducible on demand.
+- No `api_retry` fired; the failure mode's trigger was never exercised.
+- The proto skills were trivial; real consumers carry far more state across the Skill call, which the doc ties directly to a higher loss-of-workflow risk.
+- The proto used no `context: fork`; the documented failure is fork-specific, so this tested the safer variant.
+
+**Design lead:** the guidance skill should be inline (no `context: fork`), and framed so it surfaces content into the shared context rather than "returning a value" — a shape distinct from the forked data-fetch the doc warns against. The in-session run does not establish reliability; `skill-composition.md` is not updated on this evidence.
+
 ## Conclusion
 
 Mechanically feasible (precedented, documented same-context composition, no new cross-plugin risk), pending a prototype of the two behavioral unknowns. The efficiency intuition holds for skills that need no rewrite, but the suite's own design says single-pass loading is insufficient for synthesis output. The strongest design is therefore **both**, staged: `readability-guidance` restores in-voice drafting + self-check cross-plugin (for all consumers), and the `readability-editor` rewrite is retained for synthesis skills only. This preserves `docs/readability.md`'s staged model that a single full-delegation rewrite pass would otherwise collapse, and it removes the forced rewrite the earlier full-delegation plan added to the four non-synthesis skills. It also rehabilitates the hybrid rejected earlier (team-findings F3), whose only blocker — sourcing the blocklist cross-plugin — the guidance skill removes.
