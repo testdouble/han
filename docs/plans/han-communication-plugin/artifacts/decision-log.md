@@ -19,12 +19,12 @@ These decisions were settled without contention. Each carries the same cross-ref
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome, Coordinations
 
-### D8: Marketplace lists han-communication
+### D8: Marketplace and manifest descriptions follow the move
 
-- **Decision:** The Test Double marketplace manifest gains a `han-communication` entry.
-- **Rejected alternative:** Omit it — rejected because a plugin other plugins depend on must be resolvable from the marketplace.
+- **Decision:** The Test Double marketplace manifest gains a `han-communication` entry; the new dependency edges are added to each affected `plugin.json`; and every plugin `description` field that narrates the dependency set (`han`, `han-coding`, `han-atlassian`, and the new `han-communication`), plus its mirror in `marketplace.json`, is updated so no description under-states the graph. Adding the marketplace entry is not the only manifest change.
+- **Rejected alternative:** Treat the new marketplace entry as the only manifest change — rejected because several `plugin.json` descriptions narrate dependencies in prose and would then contradict the actual dependency arrays ([F14](review-findings.md#f14-d8-wrongly-claims-the-marketplace-entry-is-the-only-manifest-change)).
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F14
 - **Dependent decisions:** —
 - **Referenced in spec:** Coordinations
 
@@ -61,8 +61,9 @@ These decisions were settled without contention. Each carries the same cross-ref
 - **Rejected alternatives:**
   - Move the agent and skill but leave the writing-voice profile canonical in `han-core` — rejected because the readability rule and the agent both depend on the writing-voice profile, so `han-communication` would then depend on `han-core` while `han-core` depends on `han-communication`: a cycle.
   - Move the agent and skill only, leaving both reference documents in `han-core` — rejected because it drops the "move their reference documents" part of the request and leaves the standard's owner split from the capability that applies it.
+- **Implementation constraint:** the move must preserve the `skills/{name}/SKILL.md` + `references/{file}.md` two-level layout inside `han-communication`. The edit-for-readability skill reaches the readability rule through a plain filesystem-relative path (`../../references/...`), not a plugin template variable, so flattening or re-nesting the layout would silently break that reference ([F18](review-findings.md#minor-edits)).
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F18
 - **Dependent decisions:** D3
 - **Referenced in spec:** Outcome
 
@@ -71,7 +72,7 @@ These decisions were settled without contention. Each carries the same cross-ref
 - **Question:** After the move, how do the skills that currently read the readability rule and writing-voice profile from a copy inside their own plugin use the standard?
 - **Decision:** Stop vendoring copies into consuming plugins. Each consuming skill stops reading the reference files inline and instead delegates readability and voice enforcement to `han-communication` by invoking the `edit-for-readability` skill or dispatching the `readability-editor` agent. The single canonical copy of each reference document lives only in `han-communication`.
 - **Rationale:** The plugin runtime has no supported way for a skill to read a file inside a declared dependency plugin — `${CLAUDE_PLUGIN_ROOT}` resolves only to the reading plugin's own install directory. With no vendored copy and no cross-plugin path, delegation is the only way a consuming skill can apply a standard owned by another plugin. The user chose delegation over keeping vendored copies.
-- **Evidence:** user input; `han-plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md` line 109 documents `${CLAUDE_PLUGIN_ROOT}` as the plugin's own install directory only; the readability rule and writing-voice profile are currently vendored byte-identical into `han-coding/references/`, `han-github/references/`, and `han-reporting/references/` alongside the `han-core/references/` canonical copies.
+- **Evidence:** user input; the readability rule and writing-voice profile are currently vendored byte-identical into `han-coding/references/`, `han-github/references/`, and `han-reporting/references/` alongside the `han-core/references/` canonical copies (verified: all four copies of each file are byte-identical, and no copies exist elsewhere). The own-plugin-only scoping of `${CLAUDE_PLUGIN_ROOT}` is an inference: `han-plugin-builder/skills/guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md` line 109 defines it as "the plugin install directory" and every use in the repo refers to the reading plugin's own tree, but no guidance file states an explicit cross-plugin-read prohibition — the "no supported cross-plugin file read" claim rests on that consistent usage plus the absence of any documented mechanism ([F22](review-findings.md#minor-edits)).
 - **Rejected alternatives:**
   - Keep vendoring byte-identical copies into each consuming plugin (canonical in `han-communication`) — rejected by user choice; it preserves the duplication the move is meant to remove.
   - Reference the canonical copy cross-plugin by path — rejected because the runtime does not support reading a dependency plugin's files by path.
@@ -89,10 +90,11 @@ These decisions were settled without contention. Each carries the same cross-ref
 - **Rejected alternatives:**
   - A hybrid: skills that already dispatch the editor keep delegating, while skills that only self-checked keep a lightweight self-check written as their own skill-native criteria (no new dispatch). Rejected by the user in favor of a single source of truth — skill-native criteria can drift from the canonical rule, and the writing-voice blocklist check would still have to move to the editor because the blocklist lives in the moved file.
   - The earlier "no middle path" framing that treated a rewrite pass as strictly forced — corrected: a hybrid middle path does exist; full delegation is a conscious choice, not a forced one ([F3](team-findings.md#f3-no-middle-path-was-overstated)).
+- **Preservation commitment:** because full delegation forces skills that never had a rewrite pass (runbook, issue-triage, ADR, html-summary) through the editor, the delegated pass must preserve the order of operationally-sequenced steps and the structure of non-prose output — it rewrites surrounding prose only, never reorders numbered procedure steps, and leaves code, commands, markup, diagrams, and layout unchanged. The editor already excludes code fences, diagrams, and rendered markup; extending that guarantee to cover step order (either by amending the shared rubric or by instructing the editor per-dispatch) is a mechanism choice deferred to `plan-implementation` ([F12](review-findings.md#f12-the-forced-readability-pass-can-reorder-operationally-sequenced-steps)).
 - **Linked technical notes:** —
-- **Driven by findings:** F1, F2, F3
+- **Driven by findings:** F1, F2, F3, F12
 - **Dependent decisions:** —
-- **Referenced in spec:** Outcome, Alternate Flows and States, Out of Scope
+- **Referenced in spec:** Outcome, Alternate Flows and States, Out of Scope, Edge Cases and Failure Modes
 
 ### D5: Which plugins declare the dependency
 
@@ -111,11 +113,12 @@ These decisions were settled without contention. Each carries the same cross-ref
 ### D7: Docs, indexes, tooling, and pointers follow the move
 
 - **Question:** What documentation and repo tooling must change when the four assets move?
-- **Decision:** The change reaches every surface that names the old home of the four assets, in four classes:
-  1. **Relocated long-form docs.** The agent and skill docs move to `docs/agents/han-communication/` and `docs/skills/han-communication/` (new directories). Their own outbound relative links (to sibling agent docs like content-auditor and information-architect, and the mutual agent↔skill links) are rewritten to resolve from the new location.
-  2. **Inbound links to those two docs.** Every doc that links to the relocating docs at their `han-core` path is repointed — roughly 17 inbound links across the agent and skill indexes, `docs/concepts.md`, `docs/readability.md`, and the long-form docs of the consuming skills in `han-coding`, `han-github`, `han-reporting`, and `han-core`.
-  3. **Canonical-location pointers and qualified-name strings.** Every pointer to the canonical location of the readability rule or writing-voice profile, and every `han-core:readability-editor` qualified-name string printed in operator docs (~9 docs), updates to `han-communication`.
-  4. **Vendoring instructions and tooling that assume vendored copies.** CONTRIBUTING.md's "Wiring the readability standard into a skill" section and CLAUDE.md's "Writing voice" section, "Voice is uniform" convention, and project-map tree comments are **rewritten** (not just repointed) to describe a single canonical copy reached by delegation, with no vendored copies. The repo-maintenance skills that hard-reference the writing-voice profile by path (`.claude/skills/han-release/references/changelog-rules.md`, `.claude/skills/han-update-documentation`), the five skill-internal template files that hardcode the rule's relative path, and `.github/pull_request_template.md` are updated to the new home or the delegation model.
+- **Decision:** The change reaches every surface that names the old home of the four assets or narrates the dependency graph, in five classes:
+  1. **Relocated long-form docs.** The agent and skill docs move to `docs/agents/han-communication/` and `docs/skills/han-communication/` (new directories). Their own outbound relative links are rewritten to resolve from the new location — audited exhaustively rather than against a named list, since a single relocating doc links to several siblings (content-auditor, information-architect, adversarial-validator) and at least one cross-plugin target in `han-plugin-builder` guidance ([F17](review-findings.md#minor-edits)).
+  2. **Inbound links to those two docs.** Every doc that links to the relocating docs at their `han-core` path is repointed — the inbound links across the agent and skill indexes, `docs/concepts.md`, `docs/readability.md`, and the long-form docs of the consuming skills in `han-coding`, `han-github`, `han-reporting`, and `han-core`.
+  3. **Canonical-location pointers and qualified-name strings.** Every pointer to the canonical location of the readability rule or writing-voice profile, and every `han-core:readability-editor` qualified-name string printed in operator docs, updates to `han-communication`.
+  4. **Vendoring instructions and tooling that assume vendored copies.** CONTRIBUTING.md's "Wiring the readability standard into a skill" section and CLAUDE.md's "Writing voice" section, "Voice is uniform" convention, and project-map tree comments are **rewritten** (not just repointed) to describe a single canonical copy reached by delegation, with no vendored copies. The CONTRIBUTING/CLAUDE rewrite also states the **standing dependency rule**: any plugin that hosts or triggers a delegating skill declares `han-communication` as a direct dependency, so a future wrapping plugin does not silently break ([F21](review-findings.md#f21-no-standing-convention-protects-future-wrapping-plugins)). The repo-maintenance skills that hard-reference the writing-voice profile by path (`.claude/skills/han-release/references/changelog-rules.md`, `.claude/skills/han-update-documentation`), every skill-internal template and reference file that hardcodes the rule's relative path (including `han-reporting/skills/html-summary/references/writing-conventions.md`, which sits one directory deeper), and `.github/pull_request_template.md` are updated to the new home or the delegation model ([F16](review-findings.md#minor-edits)).
+  5. **Dependency-graph narration.** Prose that describes which plugins depend on which — in `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`, `docs/concepts.md`, `docs/choosing-a-han-plugin.md`, and `docs/how-to/extend-han-with-plugin-dependencies.md` — is updated to include `han-communication` and the new dependency edges. The "which plugin do you need?" guide gains a `han-communication` entry, and the how-to examples that teach "`han-core` depends on nothing" are corrected ([F13](review-findings.md#f13-d7-misses-dependency-graph-narration-in-prose-docs)).
 - **Guard:** Historical artifacts are **not** repointed — `CHANGELOG.md` and `docs/research/**` describe point-in-time state and must keep it. A new CHANGELOG entry records the extraction instead.
 - **Rationale:** The suite's convention is one canonical long-form doc per skill and per agent, complete indexes, up-to-date cross-references, and a project map that matches disk. A pointer relabel is not enough where a doc teaches the vendoring procedure the move abolishes: left intact, CONTRIBUTING.md would keep instructing contributors to re-vendor a copy, reintroducing the duplication the feature removes.
 - **Evidence:** CLAUDE.md documents the canonical-source and index conventions and currently names `han-core/references/` as canonical plus vendored copies in three plugins; long-form docs currently live at `docs/agents/han-core/readability-editor.md` and `docs/skills/han-core/edit-for-readability.md`; the full stale-pointer and tooling inventory is recorded across findings F6–F10 in [team-findings.md](team-findings.md).
@@ -123,6 +126,20 @@ These decisions were settled without contention. Each carries the same cross-ref
   - Repoint links only, without rewriting the vendoring instructions — rejected because CONTRIBUTING.md and CLAUDE.md would then teach a workflow the architecture no longer supports ([F6](team-findings.md#f6-contributingmd-teaches-vendoring-the-move-abolishes), [F7](team-findings.md#f7-claudemd-asserts-vendored-copies-that-will-be-deleted)).
   - Blanket grep-and-replace across the whole repo — rejected because it would corrupt CHANGELOG and research history.
 - **Linked technical notes:** —
-- **Driven by findings:** F6, F7, F8, F9, F10
+- **Driven by findings:** F6, F7, F8, F9, F10, F13, F16, F17, F21
 - **Dependent decisions:** —
 - **Referenced in spec:** Edge Cases and Failure Modes
+
+### D10: Codex packaging parity
+
+- **Question:** The suite ships a parallel Codex packaging surface alongside the primary one. How does `han-communication` reach Codex-based installs?
+- **Decision:** `han-communication` gets full Codex parity: a `.codex-plugin/plugin.json` manifest, an entry in the Codex marketplace catalog (`.agents/plugins/marketplace.json`), and a line in the README's Codex install instructions. Because the Codex `plugin.json` manifests carry no `dependencies` field, the plan does not assume Codex resolves dependencies — the README Codex install guidance names `han-communication` explicitly so a Codex user installs it alongside the plugins that rely on it.
+- **Rationale:** Every non-meta plugin already ships a `.codex-plugin/plugin.json`, and the Codex marketplace and README install section list plugins individually. Omitting `han-communication` there would leave Codex installs of the readability-consuming plugins unable to resolve the delegated capability — the same broken-install state the primary-loader edge case forbids, but reached through a surface the earlier scope never touched.
+- **Evidence:** `.codex-plugin/plugin.json` exists for han-atlassian, han-coding, han-core, han-feedback, han-github, han-planning, han-plugin-builder, han-reporting (verified via `find`); `.agents/plugins/marketplace.json` exists; the Codex `plugin.json` schema in-repo carries no `dependencies` key; `README.md`'s Codex section lists per-plugin `codex plugin add` commands.
+- **Rejected alternatives:**
+  - Assume Codex resolves dependencies like the primary loader — rejected because the Codex manifests declare no dependencies, so there is nothing to resolve; the capability must be installed explicitly.
+  - Skip Codex parity — rejected because it leaves Codex installs of six plugins with an unresolvable delegation target ([F15](review-findings.md#f15-the-codex-packaging-surface-is-entirely-unaddressed)).
+- **Linked technical notes:** —
+- **Driven by findings:** F15
+- **Dependent decisions:** —
+- **Referenced in spec:** Edge Cases and Failure Modes, Coordinations
