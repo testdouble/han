@@ -166,7 +166,7 @@ These decisions were settled without contention. Each carries the same cross-ref
   - Skip the guidance skill and keep full delegation (editor-only) — the fallback if the spike fails, not adopted now (D4).
 - **Prototype gate — cleared (2026-07-09):** the mechanism runs against the repo's composition guidance, so the spike went beyond "content appears in context": a realistic heavy consumer, 46 runs across four arms, an inline-vs-forked comparison, and a worst-case adversarial arm. It cleared the gate for the thirteen-consumer rewire with one residual caveat — `api_retry` could not be induced, so that specific failure path is reduced by inference rather than measured ([OI-3](../feature-specification.md#open-items)).
 - **Documentation:** as a new skill, `readability-guidance` gets its own long-form doc under `docs/skills/han-communication/` and an entry in the skills index, per the suite's one-doc-per-skill convention; and every consumer skill's drafting section is rewired from "read the vendored rule file" to "invoke `han-communication:readability-guidance`" (this is the D7 documentation-and-tooling scope applied to the new mechanism).
-- **Linked technical notes:** —
+- **Linked technical notes:** [T1](feature-technical-notes.md#t1-same-context-composition-the-guidance-skill-is-inline-not-forked) (same-context composition; the guidance skill is inline, not forked — captured in review round R5 once the spike settled the mechanic).
 - **Driven by findings:** —
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome, Primary Flow, Out of Scope, Open Items

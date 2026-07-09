@@ -50,5 +50,16 @@ feature-specification.md. Findings live in
 - **Stability assessment:** This round validated the D11 revision that had bypassed review, and it caught a make-or-break issue: the adversarial-validator found the repo's own `skill-composition.md` documents the readability-guidance mechanism as a discouraged "data-fetch composition" anti-pattern (F39). Surfaced to the user, who chose to prototype (option 3). An inline (non-forked) prototype resumed 3/3 — a weak positive signal only; `skill-composition.md` was not updated. OI-3 was hardened into a rigorous, blocking spike with a named fallback. The round also fixed revision-propagation defects: a stale D7 line that called the preserved staged model "abolished" (F36), the editor's now-unresolvable rule-path argument (F37), impossible edge-case examples (F40), the unrecorded F20 reversal (F41), a stale Review History (F42), and an unreconstructable decision count (F43).
 - **Next step:** The mechanism decision is not closed — it depends on the OI-3 spike, which is `plan-implementation`'s first task and gates the thirteen-consumer rewire. If the spike fails, revert to full delegation (the R1–R3 plan) or vendor the rule for the four non-synthesis skills.
 
+## R5 (post-spike consistency review of the OI-3 resolution)
+
+- **Mode:** lightweight
+- **Spec-aware mode:** engaged (behavioral spec; technical-notes file created this round)
+- **Specialists engaged:** self-review
+- **Findings raised:** F46
+- **Changed in plan:** Primary Flow; Review History (spec-aware line, rounds, findings, technical-notes line)
+- **Changed in tech-notes:** T1 (created)
+- **Stability assessment:** Structural changes Low. This round verified the OI-3-resolution edits (feature spec, decision-log D11, research note, and the shipped `skill-composition.md`) for internal consistency after the spike, and confirmed the open-item count (1), trial counts (46 total, 34 same-context, zero early exits), and cross-file claims all agree. One finding: the OI-3 edit had leaked the `context: fork` frontmatter mechanic into a Primary Flow behavioral sentence (F46). Because the spike settled that mechanic, it graduated from the OI-3 open item to technical note T1, and the Primary Flow sentence was restated behaviorally. The api_retry residual risk is recorded as an accepted, documented limitation with named fallbacks, not an unresolved question. No ambiguities required user input; no YAGNI candidates.
+- **Next step:** The spec and its artifacts are internally consistent and the OI-3 gate is cleared for the inline variant. No blocking open items remain (OI-2 is non-blocking). Ready for `plan-implementation`.
+
 
 

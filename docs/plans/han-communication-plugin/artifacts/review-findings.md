@@ -192,6 +192,18 @@ file starts at F12. Iteration history lives in
 - **Changed in plan:** Edge Cases and Failure Modes; decision-log D9
 - **Changed in tech-notes:** —
 
+### F46: Primary Flow named the `context: fork` frontmatter mechanic in a behavioral sentence
+
+- **Agent:** self-review
+- **Category:** mechanics leaking into spec
+- **Finding:** The OI-3-resolution edit added to Primary Flow step 3: "The guidance skill is **inline**: it must not declare `context: fork`, which the OI-3 spike showed isolates the guidance so its content never reaches the caller." `context: fork` is a frontmatter-field mechanic, and Primary Flow is a behavioral section, so naming it there violates the spec's operating-principles rule. Earlier rounds deliberately kept the same-context-composition mechanic out of a technical note because it was contested and tracked as OI-3; the spike has now settled it, so it qualifies as a load-bearing settled mechanic that belongs in a technical note.
+- **Evidence considered:** `plan-a-feature` operating-principles rule (no library mechanics or frontmatter fields in behavioral sentences); the R4 Review History note that the mechanic was tracked as OI-3 with no technical-notes file; the resolved OI-3 spike (inline validated, forked disqualified).
+- **Resolution:** Load-bearing — the property affects observable behavior (whether the surfaced standard reaches the caller). Created `feature-technical-notes.md` lazily with T1 capturing the same-context composition mechanic and the inline (not forked) constraint. Restated Primary Flow step 3 behaviorally (the guidance surfaces the standard into the caller's own context and hands control back; the caller keeps it and finishes its own workflow) with an inline `([T1](...))` link. The `context: fork` mentions that remain in the Open Items, Summary, and Review History meta-sections are explanatory (they describe the spike), not behavioral, and are left in place.
+- **Resolved by:** evidence
+- **Raised in round:** R5
+- **Changed in plan:** Primary Flow; Review History (spec-aware line, rounds, findings, technical-notes line); decision-log D11 (Linked technical notes)
+- **Changed in tech-notes:** T1 (created)
+
 ## Minor edits
 
 - F16: D7 hardcodes "five" skill-internal template files; a sixth (`html-summary/references/writing-conventions.md`) hardcodes the same rule path. Made D7's template-file scope count-free. — adversarial-validator, evidence-based-investigator — decision-log D7
