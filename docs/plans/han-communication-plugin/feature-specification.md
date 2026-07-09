@@ -15,11 +15,11 @@ After this change, the Han suite has one home for its readability capability and
 
 - **Actors** — an operator running any Han skill that produces prose output (a report, spec, overview, triage document, ADR, runbook, PR description, or stakeholder summary); a contributor maintaining the suite; the plugin loader that resolves a plugin's declared dependencies at install time.
 - **Triggers** — an operator runs a skill whose output must meet the shared readability standard; a contributor installs one of the Han plugins; a contributor edits the readability rule or the writing-voice profile.
-- **Preconditions** — the plugin that hosts the running skill declares a dependency on `han-communication` (directly or transitively), so the readability-editor agent and the edit-for-readability skill are resolvable by their qualified names.
+- **Preconditions** — every plugin that hosts a delegating skill, or that can trigger one by wrapping or bundling another plugin's delegating skill, declares a **direct** dependency on `han-communication`. The plan does not rely on transitive dependency resolution, so the readability-editor agent and the edit-for-readability skill are always resolvable by their qualified names ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)).
 
 ## Primary Flow
 
-1. A contributor installs a Han plugin that produces prose output (for example the `han` meta-plugin, or `han-coding` on its own). The plugin loader resolves that plugin's declared dependency on `han-communication` — the foundational plugin that depends on nothing ([D1](artifacts/decision-log.md#d1-introduce-han-communication-as-a-foundational-plugin)) — and installs it alongside ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)).
+1. A contributor installs a Han plugin that produces prose output (for example the `han` meta-plugin, or `han-coding` on its own). The plugin loader resolves that plugin's declared **direct** dependency on `han-communication` — the foundational plugin that depends on nothing ([D1](artifacts/decision-log.md#d1-introduce-han-communication-as-a-foundational-plugin)) — and installs it alongside ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)).
 2. An operator runs a skill that produces prose — for example a code review, an investigation report, or a stakeholder summary.
 3. When the skill reaches the point where its output must meet the shared readability standard, it delegates that work to `han-communication`: it invokes the `edit-for-readability` skill, or dispatches the `readability-editor` agent, by its `han-communication`-qualified name ([D3](artifacts/decision-log.md#d3-delegate-rather-than-inline-the-standard)).
 4. The readability capability reads the readability rule and the writing-voice profile from `han-communication`'s own copy — the single canonical copy in the suite — and rewrites the draft's prose regions against the standard, preserving every fact.
@@ -44,7 +44,7 @@ After this change, the Han suite has one home for its readability capability and
 | Condition | Required Behavior |
 |-----------|-------------------|
 | A plugin that produces prose output is installed without `han-communication` present. | The plugin declares `han-communication` as a dependency, so a supported install always resolves it. A skill that reaches a delegation point with the capability unresolved is a broken install, not a supported state ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)). |
-| An opt-in plugin (`han-atlassian`, `han-linear`, `han-feedback`) runs a skill that produces prose. | The readability capability must be resolvable when the skill runs. `han-atlassian` wraps prose-producing skills (project-documentation, investigate, code-overview), so this path is real, not hypothetical. Whether the capability resolves transitively through the opt-in plugin's dependency on `han-core` is unconfirmed ([OI-1](#open-items)); if it does not, each affected opt-in plugin declares `han-communication` directly ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)). |
+| An opt-in plugin (`han-atlassian`, `han-linear`, `han-feedback`) runs a skill that produces prose. | `han-atlassian` wraps prose-producing skills (project-documentation, investigate, code-overview) that delegate to `han-communication`, so it declares `han-communication` as a **direct** dependency — the plan never relies on reaching it transitively through `han-core`. `han-linear` and `han-feedback` host and trigger no delegating skill, so they declare no dependency ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)). |
 | A skill invokes the readability capability by its old `han-core`-qualified name after the move. | The invocation fails, because the agent and skill no longer live in `han-core`. Every invocation site is updated to the `han-communication`-qualified name as part of the move ([D9](artifacts/decision-log.md#d9-qualified-name-contract-changes-namespace-only)). |
 | A contributor reads a doc or top-level guidance file that still points at the old canonical location of the rule or profile. | Every pointer to the canonical location is updated to `han-communication`, so no doc directs a reader to a location that no longer holds the canonical copy ([D7](artifacts/decision-log.md#d7-docs-indexes-tooling-and-pointers-follow-the-move)). |
 
@@ -52,15 +52,15 @@ After this change, the Han suite has one home for its readability capability and
 
 | Coordinating System | Direction | Interaction | Ordering / Consistency Requirement |
 |---------------------|-----------|-------------|-----------------------------------|
-| `han-communication` | inbound | `han-core`, `han-coding`, `han-github`, and `han-reporting` skills delegate readability and voice enforcement to it | The delegating skill's plugin must declare the dependency so the capability resolves before the skill runs ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)) |
-| `han` meta-plugin | outbound | Adds `han-communication` to its bundled dependency set | Installing `han` must continue to deliver the readability capability ([D6](artifacts/decision-log.md#d6-meta-plugin-bundles-han-communication)) |
+| `han-communication` | inbound | `han-core`, `han-coding`, `han-github`, `han-reporting`, and `han-atlassian` skills delegate readability and voice enforcement to it | Every plugin that hosts or triggers a delegating skill declares a direct dependency, with no transitive reliance, so the capability resolves before the skill runs ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)) |
+| `han` meta-plugin | outbound | Adds `han-communication` to its own direct dependency set | Installing `han` must deliver the readability capability without relying on transitive resolution of its other dependencies' dependencies ([D6](artifacts/decision-log.md#d6-meta-plugin-bundles-han-communication)) |
 | Marketplace manifest | outbound | Lists `han-communication` as an available plugin | A plugin that other plugins depend on must be resolvable from the marketplace ([D8](artifacts/decision-log.md#d8-marketplace-lists-han-communication)) |
 
 ## Out of Scope
 
 - Changing the content of the readability rule or the writing-voice profile. This feature relocates them unchanged.
 - Changing how the readability-editor agent rewrites prose, or the criteria in the readability standard. The editor agent's rewrite behavior is unchanged. Consuming skills' behavior does change: they stop applying the standard while drafting and stop self-checking inline, and instead delegate a rewrite pass ([D4](artifacts/decision-log.md#d4-full-delegation-replaces-inline-drafting-and-self-check)).
-- Giving `han-planning` a dependency on `han-communication`. No planning skill uses the readability capability or reference documents ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)).
+- Giving `han-planning`, `han-linear`, or `han-feedback` a dependency on `han-communication`. None of them hosts or triggers a skill that delegates to the readability capability, and the plan does not rely on transitive resolution that would pull it in anyway ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)).
 - Adding the readability capability to skills that do not produce prose output. Only the current consumers change how they reach the standard.
 
 ## Deferred (YAGNI)
@@ -72,16 +72,14 @@ After this change, the Han suite has one home for its readability capability and
 
 ## Open Items
 
-- **OI-1:** Confirm the plugin loader resolves declared dependencies transitively, so the opt-in plugins (`han-atlassian`, `han-linear`, `han-feedback`) reach `han-communication` through `han-core` without naming it directly.
-  - **Resolves when:** a contributor verifies transitive dependency resolution in the plugin runtime, or the opt-in plugins are given an explicit dependency to be safe.
-  - **Blocks implementation:** No — the fallback (name the dependency explicitly on the opt-in plugins) is low-cost and can be applied if transitive resolution is not guaranteed.
+None. The one prior open item — whether the plugin loader resolves dependencies transitively — is closed by the decision to declare `han-communication` as a direct dependency on every plugin that relies on it, so transitive resolution is never depended upon ([D5](artifacts/decision-log.md#d5-which-plugins-declare-the-dependency)).
 
 ## Summary
 
 - **Outcome delivered:** One foundational plugin owns the readability capability and the single canonical writing standard; every consuming skill reaches it by delegation, with no duplicated reference copies.
 - **Primary actors:** operators running prose-producing Han skills; contributors maintaining the suite.
-- **Decisions settled by evidence:** 7 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 2 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by evidence:** 6 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 3 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** junior-developer, information-architect, gap-analyzer — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** the review team showed delegation replaces three inline uses of the standard (drafting, self-check, rewrite), not one — corrected in D4 and the spec; and it expanded the documentation-and-tooling scope well beyond the initial D7 (inbound doc links, `docs/readability.md`, CONTRIBUTING/CLAUDE.md vendoring instructions, repo-maintenance skills, and template files). — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 1
+- **Remaining open items:** 0

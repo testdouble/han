@@ -49,11 +49,11 @@ han-core:gap-analyzer.
 
 - **Agent:** junior-developer
 - **Finding:** The Edge Cases table stated the opt-in plugins get `han-communication` transitively "through their dependency on han-core" as settled behavior, while OI-1 flags that same resolution as unconfirmed. The repo guidance documents only one-level dependency auto-install, not transitive resolution. `han-atlassian` genuinely needs the capability (it wraps prose skills), so the risk is real, not formal.
-- **Resolution:** Reworded the Edge Cases row to state the requirement behaviorally and mark transitive resolution as unconfirmed, pointing at OI-1; added a caveat to D5 naming the explicit-dependency fallback. Kept OI-1 open (non-blocking; fallback is cheap).
-- **Resolved by:** evidence
+- **Resolution:** The user directed that every plugin relying on `han-communication` declare it as a direct dependency, so the plan never leans on transitive resolution. D5 was rewritten to make direct declaration the rule (host-or-trigger set: `han-core`, `han-coding`, `han-github`, `han-reporting`, `han` meta, and `han-atlassian`); OI-1 is closed and removed; the Edge Cases, Coordinations, Actors/Preconditions, Out of Scope, and Open Items sections were updated to match.
+- **Resolved by:** user input
 - **Affected decisions:** D5
 - **Affected tech-notes:** —
-- **Changed in spec:** Edge Cases and Failure Modes, Open Items
+- **Changed in spec:** Actors and Triggers, Primary Flow, Edge Cases and Failure Modes, Coordinations, Out of Scope, Open Items
 
 ### F5: "Behavior is preserved" contradicts D4
 
