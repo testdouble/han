@@ -96,9 +96,51 @@ file starts at F12. Iteration history lives in
 - **Changed in plan:** — (decision-log D7)
 - **Changed in tech-notes:** —
 
+### F23: Preconditions overstates resolvability on the Codex surface
+
+- **Agent:** junior-developer, adversarial-validator
+- **Category:** internal-contradiction
+- **Finding:** After D10 was added, Preconditions still asserted "direct dependency → always resolvable," but the Codex surface resolves no dependencies — there, declaring the dependency does not make the capability resolvable; only the operator following explicit install guidance does. Two install actors now carry two different resolvability guarantees, and Preconditions named only one.
+- **Evidence considered:** D10 (Codex manifests carry no dependencies; install guidance names the plugin explicitly); the Codex edge-case row.
+- **Resolution:** Split Preconditions into a primary-loader clause and a Codex clause, and named the Codex install actor in Actors.
+- **Resolved by:** evidence
+- **Raised in round:** R2
+- **Changed in plan:** Actors and Triggers
+- **Changed in tech-notes:** —
+
+### F28: The preservation commitment was too narrow
+
+- **Agent:** adversarial-validator
+- **Category:** correctness
+- **Finding:** D4's preservation commitment said only "never reorders numbered procedure steps." A runbook's `Resolve` steps are numbered **headings** (`### 1. …`), not a markdown list, and the editor's rubric rewrites heading text; the escalation list is priority-ranked; and the rubric's "split a dense paragraph" move could renumber or split steps and desync numeric cross-references (`Step N failed`) without ever "reordering." So a faithful rubric application could still corrupt operational usability while honoring the narrow commitment.
+- **Evidence considered:** the runbook template (numbered-heading steps, keyed `Step N` failure blocks, ordered escalation); the editor rubric (rewrites heading text, authorizes splitting and reordering).
+- **Resolution:** Widened the commitment to preserve each step's position and identity — no reorder, renumber, split, or merge; preserve heading-borne numerals; keep numeric cross-references consistent. Mechanism still deferred to `plan-implementation`.
+- **Resolved by:** evidence
+- **Raised in round:** R2
+- **Changed in plan:** Edge Cases and Failure Modes; decision-log D4
+- **Changed in tech-notes:** —
+
+### F29: D10's "full Codex parity" overstates, and misses the opt-in install path
+
+- **Agent:** adversarial-validator
+- **Category:** correctness
+- **Finding:** D10 claimed "full Codex parity," but (a) the README Codex section has a primary command block and a separate opt-in-plugin sentence; a `han-atlassian` Codex installer reads the opt-in sentence, where D10's single "install line" would not naturally land, so that installer gets no signal to install `han-communication`; and (b) no `.codex-plugin/plugin.json` in the repo exposes an `agents` field, so whether Codex can dispatch the readability-editor agent at all is unverified — "full parity" claims more than is demonstrable.
+- **Evidence considered:** README Codex section (two install tiers); all eight `.codex-plugin/plugin.json` files carry `skills` but no `agents` field.
+- **Resolution:** D10 now requires naming `han-communication` in both Codex install paths, qualifies "parity" to file-and-manifest parity, and records the unverified Codex agent-dispatch capability as OI-2 (pre-existing, non-blocking, not introduced by this feature).
+- **Resolved by:** evidence
+- **Raised in round:** R2
+- **Changed in plan:** Edge Cases and Failure Modes; Open Items; decision-log D10
+- **Changed in tech-notes:** —
+
 ## Minor edits
 
 - F16: D7 hardcodes "five" skill-internal template files; a sixth (`html-summary/references/writing-conventions.md`) hardcodes the same rule path. Made D7's template-file scope count-free. — adversarial-validator, evidence-based-investigator — decision-log D7
 - F17: D7's outbound-link example list ("content-auditor and information-architect") omits the `adversarial-validator` link and a cross-plugin link into `han-plugin-builder` guidance in the same doc; reworded D7 to require an exhaustive outbound-link audit rather than a named list. — adversarial-validator — decision-log D7
 - F18: `edit-for-readability`'s relative rule path resolves only if the `skills/{name}/SKILL.md` + `references/{file}.md` two-level layout is preserved in `han-communication`; added the constraint to D2. — adversarial-validator — decision-log D2
 - F22: D3's evidence wording overstated the `${CLAUDE_PLUGIN_ROOT}` guidance (the cited line defines the variable but does not explicitly document own-plugin-only scoping); softened D3 to note the own-plugin-only scoping is an inference from consistent usage plus the absence of any supported cross-plugin read. — evidence-based-investigator — decision-log D3
+- F24: The Summary's "Key adjustments from review" and "Sub-agents consulted" bullets were not reconciled with the round-1 additions (Codex, dependency-graph narration, the review's own agents); rewrote both to reflect the iterative review. — junior-developer, adversarial-validator — Summary
+- F25: `docs/skills/README.md` (the canonical skills index) narrates a per-plugin "Depends on `han-core`…" line for four plugins that gain the new dependency; added to D7's dependency-narration coverage. — adversarial-validator, gap-analyzer — decision-log D7
+- F26: `han/README.md` (the meta-plugin's own README) narrates `han`'s dependency set and was outside D7's named list; folded into D7's comprehensive-grep coverage. — gap-analyzer — decision-log D7
+- F27: `han-coding/skills/investigate/references/template.md` hardcodes the rule as a plugin-root path (`han-coding/references/readability-rule.md`), a form the earlier dot-relative inventory missed; folded into D7's comprehensive-grep coverage. — gap-analyzer — decision-log D7
+- F30: `docs/how-to/build-a-plugin-that-depends-on-han.md` was raised in the round-1 gap-analyzer scratch (GAP-106) but neither promoted nor recorded as rejected; folded into D7's comprehensive-grep coverage so the scratch-to-findings pipeline has no silent drop. — adversarial-validator — decision-log D7
+- F31: CONTRIBUTING.md states "`han-core` depends on nothing" as a *rule* (not just narration) that D1 falsifies; D7 now requires re-deriving that rule, not editing the string. — adversarial-validator — decision-log D7
