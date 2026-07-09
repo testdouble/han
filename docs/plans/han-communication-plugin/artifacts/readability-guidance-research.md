@@ -72,6 +72,8 @@ Findings:
 
 On this evidence, `skill-composition.md` **is** updated to record the inline resource-surfacing variant as a supported exception — scoped honestly to "reliable under adversarial same-context testing; api_retry not directly exercised," not "the failure is disproven."
 
+The full evidence report, the harness skill definitions, and all 46 trial artifacts are preserved under [`oi-3-spike/`](oi-3-spike/) next to this note, so the spike is reproducible independent of the session that ran it.
+
 ## Conclusion
 
 Mechanically feasible (precedented, documented same-context composition, no new cross-plugin risk), pending a prototype of the two behavioral unknowns. The efficiency intuition holds for skills that need no rewrite, but the suite's own design says single-pass loading is insufficient for synthesis output. The strongest design is therefore **both**, staged: `readability-guidance` restores in-voice drafting + self-check cross-plugin (for all consumers), and the `readability-editor` rewrite is retained for synthesis skills only. This preserves `docs/readability.md`'s staged model that a single full-delegation rewrite pass would otherwise collapse, and it removes the forced rewrite the earlier full-delegation plan added to the four non-synthesis skills. It also rehabilitates the hybrid rejected earlier (team-findings F3), whose only blocker — sourcing the blocklist cross-plugin — the guidance skill removes.
