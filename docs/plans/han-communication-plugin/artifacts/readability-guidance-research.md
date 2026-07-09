@@ -51,6 +51,27 @@ Built a minimal **inline (non-forked)** `rg-proto-guidance` skill plus a four-st
 
 **Design lead:** the guidance skill should be inline (no `context: fork`), and framed so it surfaces content into the shared context rather than "returning a value" — a shape distinct from the forked data-fetch the doc warns against. The in-session run does not establish reliability; `skill-composition.md` is not updated on this evidence.
 
+## Rigorous spike (subagent harness, 2026-07-09) — inline validated, forked disqualified, api_retry not exercised
+
+The OI-3 spike replaced the weak in-session proto with a harness that fixes its two correctable flaws: unbiased testers and a heavy consumer. Five real project skills were created in `.claude/skills/` (plumbing verified first: a freshly-created project skill hot-loads and renders into a sub-agent's context via the Skill tool). The consumer was a heavy six-step incident post-mortem builder that reads a telemetry file, extracts four facts it must carry across the guidance call, drafts a five-section report, self-checks, and writes an artifact ending in a machine-checkable `CONSUMER_COMPLETE` token. Each trial ran in a **fresh sub-agent told only to run the skill** — never that early-exit was being measured — which removes the motivated-tester bias. Completion was judged from the artifacts on disk, not from sub-agent self-report.
+
+Four arms, 46 trials:
+
+| Arm | Mechanism | Completed | Early exits |
+|-----|-----------|-----------|-------------|
+| Inline | same-context Skill call + explicit continuation instruction | 12/12 | 0 |
+| Forked | `context: fork` | 12/12 | 0 |
+| Baseline | direct file read, no Skill call (isolates consumer flakiness) | 12/12 | 0 |
+| Adversarial inline | Skill call, all continuation guardrails stripped, worst-case "you are done" anchor | 10/10 | 0 |
+
+Findings:
+
+- **Zero early exits across all 34 same-context Skill-call invocations.** The baseline's 12/12 confirms the consumer is not flaky, so the Skill call itself introduced no completion loss. The adversarial arm is the strongest signal: it removes the mitigation the composition doc says only *reduces* the failure and adds a maximal stop-anchor, and testers still resumed 10/10 — several explicitly reasoning that the anchor "applies only to the readability step, not my overall task."
+- **Forked is disqualified for a different reason than early-exit.** Multiple forked-arm testers reported unprompted that `context: fork` isolated the guidance so its content never reached the caller — only a summary/marker returned. A resource-surfacing skill that never surfaces its content is useless. This independently confirms the design lead: **the skill must be inline.**
+- **The api_retry trigger was never fired.** It is an infrastructure-level fault (transient 429/500/overload) that no sub-agent harness can inject, and it is the specific documented trigger of the early-exit failure. So neither arm exercised the exact failure path — which is also why the forked arm did not reproduce the documented forked early-exit. The result reduces the risk by inference (adversarial arm holding without the mitigation), not by measurement, and is specific to the harness model (Opus 4.8). Absence of reproduction is not proof the failure cannot occur.
+
+On this evidence, `skill-composition.md` **is** updated to record the inline resource-surfacing variant as a supported exception — scoped honestly to "reliable under adversarial same-context testing; api_retry not directly exercised," not "the failure is disproven."
+
 ## Conclusion
 
 Mechanically feasible (precedented, documented same-context composition, no new cross-plugin risk), pending a prototype of the two behavioral unknowns. The efficiency intuition holds for skills that need no rewrite, but the suite's own design says single-pass loading is insufficient for synthesis output. The strongest design is therefore **both**, staged: `readability-guidance` restores in-voice drafting + self-check cross-plugin (for all consumers), and the `readability-editor` rewrite is retained for synthesis skills only. This preserves `docs/readability.md`'s staged model that a single full-delegation rewrite pass would otherwise collapse, and it removes the forced rewrite the earlier full-delegation plan added to the four non-synthesis skills. It also rehabilitates the hybrid rejected earlier (team-findings F3), whose only blocker — sourcing the blocklist cross-plugin — the guidance skill removes.
