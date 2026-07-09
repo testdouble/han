@@ -18,7 +18,9 @@ Two patterns hide under the word "composition," and they behave very differently
 - **Data-fetch composition.** A skill calls another skill just to retrieve a few
   values (config paths, a command, a setting). **Avoid it. Do discovery inline
   instead.** The early-exit failure mode this caused is documented below and has
-  not been reliably fixed by any frontmatter or instruction tuning.
+  not been reliably fixed by any frontmatter or instruction tuning. One narrow,
+  separately-tested exception (surfacing a whole shared standard inline) is
+  carved out at the end of that section.
 
 Knowing which one you are reaching for is the whole decision. The rest of this
 document is the guidance for each.
@@ -136,6 +138,45 @@ than a shared data-fetch sub-skill. Reserve composition for orchestration, where
 whole substantial workflow, not a few values, is what you would otherwise be
 duplicating.
 
+### The one exception: surfacing a shared standard inline
+
+There is a single shape that looks like data-fetch but is supported, because it
+was validated on its own rather than assumed: an **inline** sub-skill that
+surfaces a shared *standard or reference set* into the caller's context and then
+hands control straight back for the caller to apply. The motivating case is a
+guidance skill that reads one canonical copy of a writing or review standard and
+surfaces it into whichever skill is about to produce output, so the standard
+lives in one place instead of being vendored into every plugin that needs it.
+
+Three properties separate this from the data-fetch pattern you should avoid:
+
+1. **It is inline, never `context: fork`.** The documented early-exit failure is
+   fork-specific: a forked sub-skill returns a value, an `api_retry` fires, and
+   the caller anchors on that value as its final answer. An inline sub-skill
+   renders into the shared context and never returns a value to anchor on. A
+   dedicated spike ran a heavy consumer skill through an inline guidance skill
+   many times, including a worst-case run with every continuation guardrail
+   removed and a deliberately final-sounding closing line, and the caller resumed
+   and finished every time with no early exit. The forked variant of the same
+   skill was disqualified for a separate reason: the fork isolated the guidance
+   so its content never reached the caller.
+2. **It surfaces a whole standard, not a few values.** Retrieving a docs
+   directory or a test command is still data-fetch; do that inline (above). This
+   exception is for surfacing a substantial shared reference that would otherwise
+   be duplicated into every consumer, which is closer to orchestration's
+   "duplicating a whole skill's worth of work" test than to fetching a setting.
+3. **The caller still owns and finishes its own workflow.** The sub-skill adds
+   content to the context and returns; it does not produce the caller's
+   deliverable. Keep an explicit "proceed to the next step" instruction after the
+   invocation as cheap insurance, even though the spike completed without it.
+
+One honest limit on that evidence: the spike could not induce a real `api_retry`,
+which is the specific trigger of the forked failure. The worst-case run removed
+the mitigation `api_retry` is said to defeat and still held, so treat this
+exception as reliable under adversarial same-context testing, not as proof the
+failure can never occur. If you reach for it, keep the sub-skill inline, keep the
+continuation instruction, and use it only for a genuinely shared standard.
+
 ## The `context: fork` field
 
 `context: fork` is a documented Claude Code feature (see the [Skills
@@ -156,6 +197,10 @@ Ask what you would be duplicating if you did not compose:
   careful Skill call.
 - **A few values** (paths, commands, settings): stay inline. Duplicate the small
   discovery logic. Do not reach for a sub-skill.
+- **A whole shared standard or reference set** that every consumer would
+  otherwise vendor a copy of: an inline sub-skill may surface it into the
+  caller's context, under the narrow exception above. Keep it inline (never
+  `context: fork`) and keep an explicit continuation instruction after the call.
 
 Cross-references:
 - [Skill Decomposition](./skill-decomposition.md). When to split skills.
