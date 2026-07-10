@@ -80,6 +80,7 @@ GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han-c
 - **[`/post-code-review-to-pr`](./han-github/post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
 - **[`/update-pr-description`](./han-github/update-pr-description.md).** Generate a PR description from the current branch's changes, conforming to the repository's PR template when one exists.
 - **[`/work-items-to-issues`](./han-github/work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
+- **[`/work-the-issue-queue`](./han-github/work-the-issue-queue.md).** Autonomously work a queue of `/work-items-to-issues` issues in dependency order on one shared branch: a fresh Agent-Teams teammate implements each slice test-first with `/tdd`, the lead runs a fanned-out `/code-review`, fixes Criticals, verifies the gates, and closes the issue. Requires Agent Teams; opens no pull requests.
 
 ## han-reporting
 

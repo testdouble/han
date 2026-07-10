@@ -19,7 +19,7 @@ Operator documentation for the `/work-items-to-issues` skill in the han plugin. 
 - **Screenshots copied into the target repo.** When the plan folder has a `ui-designs/` subfolder, UI items embed their screenshots inline. The skill copies each PNG into the target repo first, then embeds a same-repo raw URL. It does this because the automated implementation tooling cannot resolve a URL that points into a different repository. See [the screenshot embed rules](../../../han-github/skills/work-items-to-issues/references/screenshot-embed-rules.md).
 - **Evidence-based repair.** When a format check fails, the skill proposes a fix backed by a concrete source: a file path with line number, a plan section, or an ADR ID. You can continue with the fills, correct them, or stop. Fills without evidence are surfaced as gaps, not applied silently.
 - **Idempotent publish.** The publish pipeline resumes cleanly after a partial failure. Items already annotated with their issue number are skipped, and screenshot uploads overwrite in place.
-- **No label, no assignee by default.** Issues are created unlabeled and unassigned. You can pass an optional `--label` and `--assignee` when you want them.
+- **Label is a deliberate choice; no assignee by default.** Issues are unassigned unless you pass `--assignee`. The label is optional, and publishing unlabeled is fine. Pass `--label` to set it, or leave it off and the skill lists the repo's existing labels at the confirmation step and asks you to pick one, name a new one, or choose none. A shared label lets you select the issues as a set later (for example, a queue runner like `/work-the-issue-queue` finds its work by label), but no label is a good answer when nothing downstream needs one. If the repo defines no labels, the skill says so and lets you name one or proceed without.
 
 ## When to use it
 
@@ -44,7 +44,7 @@ Give it:
 
 1. **The `work-items.md` path.** The single file produced by `/plan-work-items`. If you do not provide it, the skill asks.
 2. **The target repo or repos, optional.** The skill derives the item-to-repo map from the file's cross-repo work-order prose and corroborates it against the file paths in each item. Naming the repo (as `org/repo`) removes ambiguity when the prose is thin.
-3. **A label, optional.** Pass `--label <name>` to upsert that label and apply it to every issue. The default is no label.
+3. **A label, optional.** Pass `--label <name>` to upsert that label and apply it to every issue. Leave it off and the skill surfaces the repo's existing labels at the confirmation step and asks you to pick one, name a new one, or choose none. Unlabeled is a valid outcome; the prompt just makes the choice deliberate.
 4. **An assignee, optional.** Pass `--assignee <user>` to assign every issue to that user. The default is no assignee.
 
 Example prompts:
@@ -89,7 +89,7 @@ The skill walks a six-step process:
 1. **Locate the work-items file.** Read the single `work-items.md` from `/plan-work-items`. Note any target repo, label, or assignee you named.
 2. **Build the item-to-repo map.** Read the cross-repo work-order prose for the primary mapping, then corroborate it against the file paths inside each item. When the two disagree for an item, the skill surfaces the conflict before proceeding.
 3. **Validate the format with evidence-based repair.** Check the file against the format invariants the publish scripts depend on (heading shape, `Depends on` syntax, within-repo blockers, screenshot URL scheme, references present, no process artifacts). When a check fails, propose a fix backed by a concrete source and give you three actions: continue with the fills, correct them, or stop.
-4. **Show the item-to-repo map for confirmation.** Present the table and wait. Nothing is written or created until you confirm.
+4. **Confirm the map and choose a label.** Present the table, decide the label (use the one you passed, or surface the repo's existing labels for you to pick one, name a new one, or choose none), and wait. The label is optional; unlabeled is fine. Nothing is written or created until you confirm.
 5. **Write the per-repo work-items files.** For each target repo, write a filtered `<repo-name>.work-items.md` next to the source. This is the file the publish scripts read.
 6. **Publish each per-repo file.** Run the publish pipeline, which runs three idempotent scripts in order. First, upload the screenshots into the target repo. Then create one issue per item, annotating each heading with its `(#NNN)`. Finally, post the within-repo `blocked_by` links.
 
