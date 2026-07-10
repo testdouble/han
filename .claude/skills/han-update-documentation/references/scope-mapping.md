@@ -13,7 +13,7 @@ A single changed file can pull multiple entities into scope. Always add every en
 | `{plugin}/skills/{name}/SKILL.md` | skill `{name}` |
 | `{plugin}/skills/{name}/references/**` | skill `{name}` |
 | `{plugin}/skills/{name}/scripts/**` | skill `{name}` |
-| `han-core/agents/{name}.md` | agent `{name}` |
+| `{plugin}/agents/{name}.md` | agent `{name}` |
 | `docs/skills/{name}.md` | skill `{name}` |
 | `docs/skills/README.md` | skills-index |
 | `docs/agents/{name}.md` | agent `{name}` |
@@ -22,7 +22,7 @@ A single changed file can pull multiple entities into scope. Always add every en
 | `docs/quickstart.md` | quickstart |
 | `docs/sizing.md` | sizing |
 | `docs/yagni.md` | yagni |
-| `han-core/references/writing-voice.md` | writing-voice |
+| `han-communication/references/writing-voice.md` | writing-voice |
 | `han-plugin-builder/skills/guidance/references/**/*.md` | the guidance file itself |
 | `docs/templates/**/*.md` | the template file itself |
 | `README.md` | root-readme |

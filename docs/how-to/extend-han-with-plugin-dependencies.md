@@ -42,7 +42,7 @@ A plain name floats to whatever version the marketplace currently provides. An o
 
 Han is its own worked example. It ships as a family of plugins in one marketplace, wired together with exactly the `dependencies` array above.
 
-`han-core` is the base layer. It carries the planning, investigation, review, and documentation skills, plus every agent those skills dispatch, and it depends on nothing:
+`han-core` is the base layer in this simplified example, so it is shown depending on nothing. (In the real suite it takes one dependency — on the foundational `han-communication` plugin that owns the shared readability standard — the first dependency `han-core` has ever had; the example keeps it dependency-free to show the base case.) It carries the planning, investigation, review, and documentation skills, plus every agent those skills dispatch except the readability-editor:
 
     {
       "name": "han-core",
@@ -106,7 +106,7 @@ The plugins are all listed in one `marketplace.json`, each with a relative `sour
       ]
     }
 
-Notice the topology that falls out of this: `han` depends on `han-core`, `han-github`, and `han-reporting`; `han-github`, `han-reporting`, and `han-feedback` all depend on `han-core`; `han-core` depends on nothing. The graph is acyclic, with `han-core` at the bottom.
+Notice the topology that falls out of this: `han` depends on `han-core`, `han-github`, and `han-reporting`; `han-github`, `han-reporting`, and `han-feedback` all depend on `han-core`; `han-core` depends on nothing in this example. The graph is acyclic, with the base layer at the bottom. (In the full suite, the foundational `han-communication` plugin sits beneath `han-core` as the true base — it depends on nothing and owns the shared readability standard — and every prose-producing plugin declares a direct dependency on it.)
 
 `han-feedback` sits in the graph as a leaf that nothing else points to: it depends on core, but the meta-plugin does not depend on it, which is what makes it opt-in. That is the shape you copy when you extend Han. Where you copy it to, and whether the meta-plugin bundles it, are the only things that change, and that is the subject of the next guide.
 

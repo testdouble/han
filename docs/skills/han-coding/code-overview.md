@@ -94,7 +94,7 @@ Classification defaults to small and escalates only on a clear signal; a borderl
 
 ## Cost and latency
 
-The skill runs on the default model tier and dispatches a lean roster: one to five `han-core:codebase-explorer` agents in parallel, scaled to size, then a synthesis pass the skill performs itself, then two review passes in order: `adversarial-validator` (accuracy, re-reading the code) first, then `han-core:readability-editor` (a readability rewrite of the corrected draft, preserving every fact). The skill applies the accuracy corrections and the rewrite. The most expensive single step is the parallel exploration wave at large size. It is built for quick, on-demand orientation, so it is cheap at small size and safe to run often; it is read-only and re-runnable, so there is no approval gate before it works.
+The skill runs on the default model tier and dispatches a lean roster: one to five `han-core:codebase-explorer` agents in parallel, scaled to size, then a synthesis pass the skill performs itself, then two review passes in order: `adversarial-validator` (accuracy, re-reading the code) first, then `han-communication:readability-editor` (a readability rewrite of the corrected draft, preserving every fact). The skill applies the accuracy corrections and the rewrite. The most expensive single step is the parallel exploration wave at large size. It is built for quick, on-demand orientation, so it is cheap at small size and safe to run often; it is read-only and re-runnable, so there is no approval gate before it works.
 
 ## In more detail
 
@@ -143,5 +143,5 @@ URL: https://www.spinellis.gr/codereading/
 - [Sizing](../../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`codebase-explorer`](../../agents/han-core/codebase-explorer.md). The agent this skill dispatches, scaled to size, to discover entry points, context, uses, and flow.
 - [`adversarial-validator`](../../agents/han-core/adversarial-validator.md). The agent that re-reads the code to challenge the drafted overview's claims for accuracy before you see it, so the description matches what the code does.
-- [`readability-editor`](../../agents/han-core/readability-editor.md). Rewrites the drafted overview against the shared readability standard, preserving every fact, before you see it. Runs after the accuracy validator, not alongside it.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Rewrites the drafted overview against the shared readability standard, preserving every fact, before you see it. Runs after the accuracy validator, not alongside it.
 - [`SKILL.md` for /code-overview](../../../han-coding/skills/code-overview/SKILL.md). The internal process definition.

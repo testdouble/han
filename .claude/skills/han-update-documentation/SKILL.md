@@ -128,7 +128,7 @@ Apply every finding from Steps 3 and 4 in place.
 
 **Creating a missing long-form doc.** Copy `docs/templates/skill-long-form-template.md` (for a skill) or `docs/templates/agent-long-form-template.md` (for an agent) into the target path. Fill in the orientation frame, TL;DR, and Key concepts from the entity's frontmatter description and step body. Leave a `<!-- TODO: human review -->` marker only at sections that require operator judgment (Sources, In more detail, examples). Surface those markers in Step 6's report so the operator can finish them.
 
-**Apply the writing voice.** Every edit follows `han-core/references/writing-voice.md`: no em-dashes, direct second person, no flattery or hype words, no `actually`, `just`, `leverage`, `utilize`, `showcase`, `robust` (as a vague positive), `It's worth noting`, or `Importantly`. When fixing a doc, do not introduce voice violations even if the surrounding doc has them.
+**Apply the writing voice.** Every edit follows `han-communication/references/writing-voice.md`: no em-dashes, direct second person, no flattery or hype words, no `actually`, `just`, `leverage`, `utilize`, `showcase`, `robust` (as a vague positive), `It's worth noting`, or `Importantly`. When fixing a doc, do not introduce voice violations even if the surrounding doc has them.
 
 **Apply YAGNI to documentation edits.** Do not add speculative sections, *for-future-flexibility* warnings, or examples for behavior the skill does not have. The YAGNI rule that gates plan steps also gates docs (see `docs/yagni.md`).
 

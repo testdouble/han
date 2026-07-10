@@ -68,7 +68,7 @@ One file: `stakeholder-summary.md`, written in the same directory as the source 
 
 ## Cost and latency
 
-It reads the source spec, drafts the summary, then dispatches one `han-core:readability-editor` agent (Step 5) to rewrite the draft for the non-technical stakeholder, preserving every fact. It then runs three self-check passes: internal-consistency, the standardized readability self-check, and reading-order. Each pass re-reads the file from disk before presenting it. Built for tight-loop iteration: re-run it after the spec changes.
+It reads the source spec, drafts the summary, then dispatches one `han-communication:readability-editor` agent (Step 5) to rewrite the draft for the non-technical stakeholder, preserving every fact. It then runs three self-check passes: internal-consistency, the standardized readability self-check, and reading-order. Each pass re-reads the file from disk before presenting it. Built for tight-loop iteration: re-run it after the spec changes.
 
 ## Related documentation
 
@@ -77,4 +77,4 @@ It reads the source spec, drafts the summary, then dispatches one `han-core:read
 - [`/plan-a-phased-build`](../han-planning/plan-a-phased-build.md). The natural next step once the summary lands stakeholder feedback.
 - [`/plan-implementation`](../han-planning/plan-implementation.md). Turns the spec into an implementation plan after stakeholders sign off.
 - [`/html-summary`](./html-summary.md). Converts the `stakeholder-summary.md` this skill produces into a self-contained HTML executive report.
-- [`readability-editor`](../../agents/han-core/readability-editor.md). Dispatched in Step 5 to rewrite the drafted summary for the non-technical stakeholder against the shared readability standard, preserving every fact.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched in Step 5 to rewrite the drafted summary for the non-technical stakeholder against the shared readability standard, preserving every fact.

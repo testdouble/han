@@ -6,12 +6,12 @@ Readability is the output-quality standard of the han plugin. Every reader-facin
 
 ## TL;DR
 
-- **One shared rule, applied as skills write.** Reader-facing skills load and apply the readability rule at runtime, the same way they use the shared YAGNI and evidence rules. Output stays consistent because the rule lives in one place, not because each skill restates it.
+- **One shared rule, applied as skills write.** Reader-facing skills source the readability standard by invoking `han-communication:readability-guidance`, which surfaces the rule into the calling skill's own context as it writes. Output stays consistent because the rule lives in one place, not because each skill restates it.
 - **A different kind of standard.** Sizing, YAGNI, and evidence are near-universal decision mechanics. Readability is an output standard scoped to the skills whose deliverable is prose a non-author reads. It is its own category, not a fourth universal mechanic.
 - **Applied in stages, never as one block.** The rule's structural rules shape each skill's output template; its testable criteria run as a discrete self-check after the draft exists. Stacking it all as one instruction would reproduce the failure it exists to dodge.
-- **Synthesis skills rewrite; the rest self-check.** A skill with a synthesis or editor step dispatches the [`readability-editor`](./agents/han-core/readability-editor.md) to rewrite the draft, preserving every fact. Every in-scope skill runs the standardized self-check.
+- **Synthesis skills rewrite; the rest self-check.** A skill with a synthesis or editor step dispatches the [`readability-editor`](./agents/han-communication/readability-editor.md) to rewrite the draft, preserving every fact. Every in-scope skill runs the standardized self-check.
 - **Fidelity wins.** No required fact is dropped to read more simply. Every claim, quantity, named entity, and stated condition survives with its precision intact.
-- **The canonical rule lives in [`han-core/references/readability-rule.md`](../han-core/references/readability-rule.md).** Every reader-facing skill loads that file at runtime. This page is the operator-facing summary.
+- **The canonical rule lives in [`han-communication/references/readability-rule.md`](../han-communication/references/readability-rule.md).** Every reader-facing skill sources it cross-plugin by invoking `han-communication:readability-guidance`. This page is the operator-facing summary.
 
 ## Why readability matters
 
@@ -41,11 +41,11 @@ The applied set is kept deliberately tight. Structural rules that fit only a min
 
 ## How the standard is applied
 
-Each skill applies the rule in stages, one at a time:
+Each skill sources the standard by invoking `han-communication:readability-guidance` at its drafting point — the guidance skill surfaces the rule and writing-voice profile into the skill's own context — then applies it in stages, one at a time:
 
 1. **Template.** The skill's output template carries the structural rules, so the draft is structured from the start.
 2. **Audience frame.** While drafting, the skill writes for a capable reader who did not do the work and lacks the author's context. Five engineer-facing skills name a more specific reader instead (see the table below).
-3. **Rewrite pass (synthesis skills only).** A skill with a synthesis or editor step dispatches the [`readability-editor`](./agents/han-core/readability-editor.md) to audit and rewrite the draft against the rule, preserving every fact.
+3. **Rewrite pass (synthesis skills only).** A skill with a synthesis or editor step dispatches the [`readability-editor`](./agents/han-communication/readability-editor.md) to audit and rewrite the draft against the rule, preserving every fact.
 4. **Self-check.** A discrete pass over the prose regions evaluates six behaviorally-anchored yes/no criteria: main point first, descriptive headings, one idea per paragraph, sentence length, no blocklisted word, and every fact preserved. Anything it fails is corrected before the deliverable is presented.
 
 The self-check and any rewrite operate on **prose regions only**. Code fences, diagram bodies, rendered markup, and inline citation identifiers are neither evaluated nor altered, so they still compile, render, and resolve.
@@ -83,21 +83,22 @@ On a synthesis skill, the `readability-editor` preserves every fact as it rewrit
 - **Not a comprehension score.** The standard commits to observable properties of the text and a concrete self-check, not to a promise about a reader's comprehension or a readability-formula target. Formulas are weak comprehension proxies that reward gaming; they are not the measure the standard optimizes.
 - **Not CI or prose linting.** Most reader-facing output is ephemeral conversational or scratch text with no build surface to lint. The standard applies at generation time, not as a pipeline gate.
 - **Not a rewrite of the operator-documentation voice.** The existing writing-voice profile continues to govern operator docs. This standard reuses its blocklist but does not rewrite it.
-- **Not a guarantee a committed file stays conformant.** The one in-scope skill that writes a committed file ([`/project-documentation`](./skills/han-core/project-documentation.md)) is covered at generation time. A later manual edit is not re-checked automatically. Run [`/edit-for-readability`](./skills/han-core/edit-for-readability.md) to re-apply the standard to an edited file on demand.
+- **Not a guarantee a committed file stays conformant.** The one in-scope skill that writes a committed file ([`/project-documentation`](./skills/han-core/project-documentation.md)) is covered at generation time. A later manual edit is not re-checked automatically. Run [`/edit-for-readability`](./skills/han-communication/edit-for-readability.md) to re-apply the standard to an edited file on demand.
 
 ## Design principles
 
-- **One source of truth.** The rule lives in one canonical file and is vendored byte-for-byte into every plugin that ships an in-scope skill. A contributor changes the rule in one place.
+- **One source of truth.** The rule lives in one canonical file in the foundational `han-communication` plugin; no plugin vendors a copy. Every consuming skill sources it cross-plugin by invoking `han-communication:readability-guidance`, so a contributor changes the rule in one place.
 - **Applied in stages, not stacked.** The template, the audience frame, the rewrite pass, and the self-check each carry part of the rule, so no single step stacks enough instructions to decay.
 - **Fidelity outranks readability.** The one rule the standard never bends: a required fact is never dropped to read more simply.
 - **Loading is not compliance.** Loading the rule does not make output readable. The template, the audience frame, the rewrite pass, and the self-check are what make it take effect.
 
 ## Related reading
 
-- [`han-core/references/readability-rule.md`](../han-core/references/readability-rule.md). The canonical rule every reader-facing skill loads at runtime.
-- [`readability-editor`](./agents/han-core/readability-editor.md). The agent the synthesis skills dispatch for the rewrite pass.
-- [`/edit-for-readability`](./skills/han-core/edit-for-readability.md). The standalone skill that applies this standard on demand to a file, pasted text, or a conversation draft.
+- [`han-communication/references/readability-rule.md`](../han-communication/references/readability-rule.md). The canonical rule every reader-facing skill sources via `han-communication:readability-guidance`.
+- [`/readability-guidance`](./skills/han-communication/readability-guidance.md). The skill that surfaces the standard into a calling skill's context for in-voice drafting and self-check.
+- [`readability-editor`](./agents/han-communication/readability-editor.md). The agent the synthesis skills dispatch for the rewrite pass.
+- [`/edit-for-readability`](./skills/han-communication/edit-for-readability.md). The standalone skill that applies this standard on demand to a file, pasted text, or a conversation draft.
 - [Concepts](./concepts.md). The skill / agent split, and where readability sits among the plugin's mechanics.
-- [YAGNI](./yagni.md) and [Evidence](./evidence.md). The other shared rules, vendored and summarized the same way.
+- [YAGNI](./yagni.md) and [Evidence](./evidence.md). The other shared rules, summarized the same way (they remain vendored per-plugin; readability is now sourced cross-plugin from `han-communication`).
 - [Contributing](../CONTRIBUTING.md). The wiring procedure a contributor follows to bring a new skill under the standard.
-- [Writing voice](../han-core/references/writing-voice.md). The voice profile whose blocklist the standard reuses for word-level rules.
+- [Writing voice](../han-communication/references/writing-voice.md). The voice profile whose blocklist the standard reuses for word-level rules.

@@ -36,7 +36,7 @@ Operator documentation for the `/project-documentation` skill in the han plugin.
 - **PR descriptions.** Use [`/update-pr-description`](../han-github/update-pr-description.md).
 - **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures what to do when an alert fires or a known failure mode occurs; project documentation describes how the feature or system works.
 - **An ephemeral, understand-now overview of code or a PR.** Use [`/code-overview`](../han-coding/code-overview.md). It produces a throwaway orientation aid in a scratch file, not durable docs in the repo tree.
-- **Rewriting existing prose for readability.** Use [`/edit-for-readability`](./edit-for-readability.md). It rewrites a target you already have against the readability standard; this skill writes and maintains the documentation itself.
+- **Rewriting existing prose for readability.** Use [`/edit-for-readability`](../han-communication/edit-for-readability.md). It rewrites a target you already have against the readability standard; this skill writes and maintains the documentation itself.
 
 ## How to invoke it
 
@@ -129,5 +129,5 @@ URL: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 - [`codebase-explorer`](../../agents/han-core/codebase-explorer.md). Dispatched in parallel for code discovery.
 - [`content-auditor`](../../agents/han-core/content-auditor.md). Dispatched in update mode to ensure no facts are lost.
 - [`information-architect`](../../agents/han-core/information-architect.md). Dispatched before verification to audit findability, scannability, and section ordering.
-- [`readability-editor`](../../agents/han-core/readability-editor.md). Dispatched after the IA review to rewrite the settled doc against the shared readability standard, preserving every fact.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched after the IA review to rewrite the settled doc against the shared readability standard, preserving every fact.
 - [`SKILL.md` for /project-documentation](../../../han-core/skills/project-documentation/SKILL.md). The internal process definition.

@@ -1,6 +1,6 @@
 # readability-editor
 
-Operator documentation for the `readability-editor` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han-core/agents/readability-editor.md`](../../../han-core/agents/readability-editor.md).
+Operator documentation for the `readability-editor` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han-communication/agents/readability-editor.md`](../../../han-communication/agents/readability-editor.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All agents](../README.md) · [All skills](../../skills/README.md) · [Readability](../../readability.md)
 
@@ -25,23 +25,23 @@ Operator documentation for the `readability-editor` agent in the han plugin. Thi
 
 **Do not dispatch for:**
 
-- **Checking a documentation update did not lose facts.** Use [`content-auditor`](./content-auditor.md) instead.
-- **Auditing documentation structure and findability.** Use [`information-architect`](./information-architect.md) instead.
-- **Judging whether a draft's claims are true to the code.** Use [`adversarial-validator`](./adversarial-validator.md) instead; this agent edits the writing, not the facts.
+- **Checking a documentation update did not lose facts.** Use [`content-auditor`](../han-core/content-auditor.md) instead.
+- **Auditing documentation structure and findability.** Use [`information-architect`](../han-core/information-architect.md) instead.
+- **Judging whether a draft's claims are true to the code.** Use [`adversarial-validator`](../han-core/adversarial-validator.md) instead; this agent edits the writing, not the facts.
 
 ## How to invoke it
 
-Dispatch via the `Agent` tool with `subagent_type: han-core:readability-editor`.
+Dispatch via the `Agent` tool with `subagent_type: han-communication:readability-editor`.
 
 Give it:
 
-1. **A focus area.** The path to the draft file (or the draft text inline), and the shared readability rule to apply.
+1. **A focus area.** The path to the draft file (or the draft text inline). The agent reads its own co-located canonical readability rule, so you do not pass a rule path.
 2. **A brief (optional).** The skill's named reader when it is not the default frame (an engineer implementing a fix, a pull-request reviewer, a non-technical stakeholder), so the agent edits for the right audience and keeps the technical specifics that reader needs.
 3. **An output path (optional).** When the draft is a file, the agent rewrites it in place; name the path.
 
 Example prompts:
 
-- *"Rewrite the draft at `scratch/investigation.md` for the engineer who will implement the fix, applying the readability rule at `references/readability-rule.md`. Preserve every fact; leave code blocks and citation IDs untouched."*
+- *"Rewrite the draft at `scratch/investigation.md` for the engineer who will implement the fix, applying the shared readability standard. Preserve every fact; leave code blocks and citation IDs untouched."*
 - *"Audit and rewrite this stakeholder summary for a non-technical reader against the readability rule, keeping every number and named entity exact."*
 
 ## What you get back
@@ -73,8 +73,8 @@ Its rubric is the six behaviorally-anchored criteria of the shared standard, not
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Readability](../../readability.md). The shared Human-Readable Output Standard this agent applies, its required properties, and the per-skill application table.
-- [`content-auditor`](./content-auditor.md). The fact-preservation auditor. It checks a doc update kept the facts; this agent rewrites for readability while keeping them.
-- [`information-architect`](./information-architect.md). Audits documentation structure and findability and returns recommendations; this agent rewrites prose in place.
+- [`content-auditor`](../han-core/content-auditor.md). The fact-preservation auditor. It checks a doc update kept the facts; this agent rewrites for readability while keeping them.
+- [`information-architect`](../han-core/information-architect.md). Audits documentation structure and findability and returns recommendations; this agent rewrites prose in place.
 - The reader-facing synthesis skills that dispatch this agent as their readability rewrite pass: [`/architectural-analysis`](../../skills/han-coding/architectural-analysis.md), [`/code-overview`](../../skills/han-coding/code-overview.md), [`/code-review`](../../skills/han-coding/code-review.md), [`/investigate`](../../skills/han-coding/investigate.md), [`/gap-analysis`](../../skills/han-core/gap-analysis.md), [`/project-documentation`](../../skills/han-core/project-documentation.md), [`/research`](../../skills/han-core/research.md), [`/update-pr-description`](../../skills/han-github/update-pr-description.md), and [`/stakeholder-summary`](../../skills/han-reporting/stakeholder-summary.md). The [Readability](../../readability.md) per-skill table is authoritative.
-- [`/edit-for-readability`](../../skills/han-core/edit-for-readability.md). The standalone skill that dispatches this agent to rewrite a file, pasted text, or a conversation draft on demand.
+- [`/edit-for-readability`](../../skills/han-communication/edit-for-readability.md). The standalone skill that dispatches this agent to rewrite a file, pasted text, or a conversation draft on demand.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent's domain and rubric are kept narrow and named.

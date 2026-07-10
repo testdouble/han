@@ -79,7 +79,7 @@ The plan is presented for approval before any code is written. Approve to trigge
 
 ## Cost and latency
 
-The skill dispatches at least two `evidence-based-investigator` agents in parallel, plus zero to three specialist analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) depending on bug classification. `adversarial-validator` agents then run the validation pass, followed by one `han-core:readability-editor` rewrite of the write-up. Agents run on their default models. For a medium-complexity bug, expect one investigation round, one validation round, and one readability pass, roughly five to eight sub-agent dispatches. The skill is built for per-bug cadence, not tight-loop iteration. Fix the bug and move on.
+The skill dispatches at least two `evidence-based-investigator` agents in parallel, plus zero to three specialist analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) depending on bug classification. `adversarial-validator` agents then run the validation pass, followed by one `han-communication:readability-editor` rewrite of the write-up. Agents run on their default models. For a medium-complexity bug, expect one investigation round, one validation round, and one readability pass, roughly five to eight sub-agent dispatches. The skill is built for per-bug cadence, not tight-loop iteration. Fix the bug and move on.
 
 ## In more detail
 
@@ -127,7 +127,7 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`/research`](../han-core/research.md). The question-shaped sibling. Use it when nothing is broken and you want options, prior art, or how something works before committing.
 - [`evidence-based-investigator`](../../agents/han-core/evidence-based-investigator.md). The agent the skill dispatches in parallel for multi-angle evidence gathering.
 - [`adversarial-validator`](../../agents/han-core/adversarial-validator.md). The agent that challenges evidence and fix after the plan is drafted.
-- [`readability-editor`](../../agents/han-core/readability-editor.md). Dispatched after validation to rewrite the write-up for the engineer who will implement the fix, preserving every fact and `file:line` reference. Separate from the accuracy validation pass.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched after validation to rewrite the write-up for the engineer who will implement the fix, preserving every fact and `file:line` reference. Separate from the accuracy validation pass.
 - [Evidence](../../evidence.md). The canonical evidence rule the skill applies to every finding. Codebase findings stand on their citation; web-source context is subject to the corroboration gate when it drives the proposed fix; no-evidence states are labeled rather than guessed at.
 - [`concurrency-analyst`](../../agents/han-core/concurrency-analyst.md), [`behavioral-analyst`](../../agents/han-core/behavioral-analyst.md), [`data-engineer`](../../agents/han-core/data-engineer.md). Specialist analysts dispatched alongside the investigators when the symptom classification calls for them.
 - [`/iterative-plan-review`](../han-planning/iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.

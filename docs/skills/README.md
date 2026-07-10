@@ -8,9 +8,16 @@ All skills in the Han suite, grouped by the plugin that ships them. `han-core` c
 
 Start on the [Quickstart](../quickstart.md). It picks the right skill for what you are trying to do right now. If the skill / agent split is fuzzy, read [Concepts](../concepts.md) first.
 
+## han-communication
+
+The foundational communication plugin. It owns the single canonical readability standard and writing-voice profile, and the skills and agent that apply them. It depends on nothing and sits beneath every other plugin; the plugins that produce prose output depend on it.
+
+- **[`/readability-guidance`](./han-communication/readability-guidance.md).** Surface the shared readability standard into a calling skill's own context so it drafts in voice and runs its self-check against one canonical copy. Invoked by the prose-producing skills at their drafting point; it hands control straight back and produces no deliverable of its own.
+- **[`/edit-for-readability`](./han-communication/edit-for-readability.md).** Rewrite the prose of a target you already have (a file, pasted text, or a draft from the conversation) against the shared readability standard, preserving every fact. Dispatches `readability-editor`; the standalone, on-demand counterpart to the readability pass the synthesis skills run inside their own output.
+
 ## han-core
 
-The base plugin. It carries the research, analysis, documentation, and operations skills, plus every agent those skills dispatch. Grouped by purpose below.
+The base plugin. It carries the research, analysis, documentation, and operations skills, plus the specialist agents those skills dispatch. (The readability-editor agent lives in the foundational `han-communication` plugin.) Grouped by purpose below.
 
 ### Triage & research
 
@@ -31,12 +38,6 @@ Skills that produce context every other skill benefits from.
 
 - **[`/project-discovery`](./han-core/project-discovery.md).** Scan the repository for languages, frameworks, tooling, and structure. Writes a concise reference section into AGENTS.md or CLAUDE.md for other skills.
 - **[`/project-documentation`](./han-core/project-documentation.md).** Create and maintain documentation for features, systems, and components.
-
-### Editing & readability
-
-Skills for rewriting an existing deliverable to read plainly.
-
-- **[`/edit-for-readability`](./han-core/edit-for-readability.md).** Rewrite the prose of a target you already have (a file, pasted text, or a draft from the conversation) against the shared readability standard, preserving every fact. Dispatches `readability-editor`; the standalone, on-demand counterpart to the readability pass the synthesis skills run inside their own output.
 
 ### Conventions & decisions
 
@@ -62,7 +63,7 @@ The planning layer: the skills for specifying *what* a feature does, planning *h
 
 ## han-coding
 
-The coding layer: the skills you reach for while working in code. Writing it, reviewing it, analyzing it, testing it, investigating it, and standardizing it. Depends on `han-core`; bundled by the `han` meta-plugin.
+The coding layer: the skills you reach for while working in code. Writing it, reviewing it, analyzing it, testing it, investigating it, and standardizing it. Depends on `han-core` and `han-communication`; bundled by the `han` meta-plugin.
 
 - **[`/tdd`](./han-coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail), works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness) and refactor (full conformance plus YAGNI). It writes code, not a document.
 - **[`/refactor`](./han-coding/refactor.md).** Restructure existing code without changing its behavior. Takes a named target (files, a module, a named smell, or the findings of a prior `/code-review` or `/architectural-analysis`), refuses to start without a green suite covering that target, plans a sequence of small named refactorings, re-runs the full suite after every step, and stops hard when changes spread beyond the declared scope. It writes code, not a document; cleanup inside an active TDD cycle belongs to `/tdd`'s refactor step instead.
@@ -75,7 +76,7 @@ The coding layer: the skills you reach for while working in code. Writing it, re
 
 ## han-github
 
-GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han-core`.
+GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han-core` and `han-communication`.
 
 - **[`/post-code-review-to-pr`](./han-github/post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
 - **[`/update-pr-description`](./han-github/update-pr-description.md).** Generate a PR description from the current branch's changes, conforming to the repository's PR template when one exists.
@@ -83,7 +84,7 @@ GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han-c
 
 ## han-reporting
 
-Skills for turning the work back into something sharable with non-technical stakeholders. Depends on `han-core`.
+Skills for turning the work back into something sharable with non-technical stakeholders. Depends on `han-core` and `han-communication`.
 
 - **[`/stakeholder-summary`](./han-reporting/stakeholder-summary.md).** Turn a feature specification into a plain-language stakeholder summary with Mermaid diagrams for user experience and data flow, to get non-technical feedback before implementation kicks off.
 - **[`/html-summary`](./han-reporting/html-summary.md).** Convert a `stakeholder-summary.md` (from [`/stakeholder-summary`](./han-reporting/stakeholder-summary.md)) into a single self-contained HTML executive report: bottom line and asks up front, mermaid diagrams inlined, styled with a Test Double-derived palette. Produces the HTML file only; does not publish it.
@@ -96,7 +97,7 @@ The opt-in feedback plugin. It captures observations about the Han suite itself.
 
 ## han-atlassian
 
-The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira through the Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han-atlassian@han`. Requires a configured Atlassian MCP server. Depends on `han-core`, `han-planning`, and `han-coding`, because its wrapper skills run skills from each.
+The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira through the Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han-atlassian@han`. Requires a configured Atlassian MCP server. Depends on `han-core`, `han-planning`, `han-coding`, and `han-communication`, because its wrapper skills run skills from each and source the shared readability standard.
 
 - **[`/markdown-to-confluence`](./han-atlassian/markdown-to-confluence.md).** Publish one local Markdown file to a user-specified Confluence location, creating a new page or updating an existing one. Defaults to an unpublished draft. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place. Posts an existing file; it does not generate documentation.
 - **[`/project-documentation-to-confluence`](./han-atlassian/project-documentation-to-confluence.md).** Run `/project-documentation` to write feature documentation to a temporary file, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.

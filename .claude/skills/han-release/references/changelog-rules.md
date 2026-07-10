@@ -123,7 +123,7 @@ Full changelog: {compare-or-blob link — see release-notes-format.md}
 
 Match the register of the existing `## v{X.Y.Z}` entries already in `CHANGELOG.md`: neutral, descriptive, technical present tense ("The `/gap-analysis` swarm flips from opt-in to opt-out..."). This is **not** the first-person blog voice; it is the clipped changelog register those entries already use. The two newest existing sections are pasted into the dispatch prompt as the register model — follow them.
 
-Hard constraints from [`han-core/references/writing-voice.md`](../../../../han-core/references/writing-voice.md), applied verbatim to generated changelog prose:
+Hard constraints from [`han-communication/references/writing-voice.md`](../../../../han-communication/references/writing-voice.md), applied verbatim to generated changelog prose:
 
 - No em-dash (`—`) anywhere, ever. Use a colon, comma, parentheses, or two sentences.
 - `use`, never `leverage` or `utilize`.

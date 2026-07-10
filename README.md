@@ -43,8 +43,9 @@ Han ships as multiple plugins:
 
 | Plugin | Type | What it brings |
 | --- | --- | --- |
-| **`han`** | parent | the parent plugin that brings in `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
-| `han-core` | bundled | research, analysis, and documentation skills plus every agent |
+| **`han`** | parent | the parent plugin that brings in `han-communication`, `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
+| `han-communication` | bundled | the foundational plugin beneath every other: the shared readability standard and writing-voice profile, plus the skills and agent that apply them |
+| `han-core` | bundled | research, analysis, and documentation skills plus every agent except the readability-editor |
 | `han-planning` | bundled | planning skills you reach for before implementation |
 | `han-coding` | bundled | coding skills you reach for while working in code |
 | `han-github` | bundled | GitHub-facing skills like posting a code review on a PR |
@@ -54,7 +55,7 @@ Han ships as multiple plugins:
 | `han-linear` | opt-in | skill for publishing work items to Linear (requires a Linear MCP server) |
 | `han-plugin-builder` | opt-in | carries the guidance and skills for building your own skills, agents, and plugins |
 
-Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-core`, `han-planning`,
+Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-communication`, `han-core`, `han-planning`,
 `han-coding`, `han-github`, and `han-reporting`), and is the right choice for most people. If you do
 not want the planning, coding, GitHub, or reporting skills, install `han-core@han` instead, and add other
 specific plugins as desired.
@@ -69,9 +70,12 @@ Add this repo as a Codex marketplace:
 codex plugin marketplace add testdouble/han
 ```
 
-Codex does not yet support meta-plugins like `han@han` (see openai/codex#23531,) so install the Han packages directly:
+Codex does not yet support meta-plugins like `han@han` (see openai/codex#23531,) and it resolves no
+dependencies, so install the Han packages directly — starting with the foundational `han-communication`,
+which the prose-producing packages depend on:
 
 ```
+codex plugin add han-communication@han
 codex plugin add han-core@han
 codex plugin add han-planning@han
 codex plugin add han-coding@han
@@ -80,7 +84,9 @@ codex plugin add han-reporting@han
 ```
 
 Install `han-feedback`, `han-atlassian`, `han-linear`, or `han-plugin-builder`
-separately when you want those opt-in packages.
+separately when you want those opt-in packages. Because Codex resolves no dependencies, install
+`han-communication` alongside `han-atlassian` (its wrapped prose-producing skills source the shared
+readability standard from it).
 
 ## Documentation
 

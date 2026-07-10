@@ -1,6 +1,6 @@
 # /edit-for-readability
 
-Operator documentation for the `/edit-for-readability` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han-core/skills/edit-for-readability/SKILL.md`](../../../han-core/skills/edit-for-readability/SKILL.md).
+Operator documentation for the `/edit-for-readability` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`han-communication/skills/edit-for-readability/SKILL.md`](../../../han-communication/skills/edit-for-readability/SKILL.md).
 
 > See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [Readability](../../readability.md)
 
@@ -13,7 +13,7 @@ Operator documentation for the `/edit-for-readability` skill in the han plugin. 
 ## Key concepts
 
 - **The standalone readability pass.** Synthesis skills (`/research`, `/project-documentation`, `/investigate`, and the rest) bake the standard into their own output at generation time. This skill exists for the gap that leaves: a file or draft written or hand-edited *outside* one of those skills, so it was never checked against the standard.
-- **Dispatches the readability-editor.** The judgment-heavy rewrite belongs to the [`readability-editor`](../../agents/han-core/readability-editor.md) agent. The skill resolves the target, dispatches the agent over it, and delivers the result; it does not restate the rubric itself, so it never drifts from the standard.
+- **Dispatches the readability-editor.** The judgment-heavy rewrite belongs to the [`readability-editor`](../../agents/han-communication/readability-editor.md) agent. The skill resolves the target, dispatches the agent over it, and delivers the result; it does not restate the rubric itself, so it never drifts from the standard.
 - **Fidelity outranks readability.** Every claim, quantity, named entity, and stated condition survives with its precision intact. When a readability change would blur a fact, the fact wins, and the editor's ledger records it.
 - **Prose only.** Code fences, diagram bodies, rendered markup, and citation identifiers (`A1`, `[F5]`, and the like) are left byte-for-byte unchanged, so they still compile, render, and resolve.
 
@@ -28,7 +28,7 @@ Operator documentation for the `/edit-for-readability` skill in the han plugin. 
 
 **Do not invoke for:**
 
-- **Writing new feature or system documentation.** Use [`/project-documentation`](./project-documentation.md). It creates and maintains docs; this skill only rewrites prose you already have.
+- **Writing new feature or system documentation.** Use [`/project-documentation`](../han-core/project-documentation.md). It creates and maintains docs; this skill only rewrites prose you already have.
 - **Restructuring or reviewing code.** Use [`/refactor`](../han-coding/refactor.md) to restructure code and [`/code-review`](../han-coding/code-review.md) to audit it. This skill edits prose, not code.
 - **Judging the underlying work.** The skill rewrites the writing and raises no findings about the bug, the plan, the architecture, or whether a claim is true.
 
@@ -66,7 +66,7 @@ The rewritten target plus the editor's report:
 
 ## Cost and latency
 
-The skill dispatches one [`readability-editor`](../../agents/han-core/readability-editor.md) agent on its default model (`sonnet`). Cost scales with the length of the target, not with a codebase sweep. It is a single pass over one target; it is not built for tight-loop iteration on the same text.
+The skill dispatches one [`readability-editor`](../../agents/han-communication/readability-editor.md) agent on its default model (`sonnet`). Cost scales with the length of the target, not with a codebase sweep. It is a single pass over one target; it is not built for tight-loop iteration on the same text.
 
 ## In more detail
 
@@ -74,7 +74,7 @@ The skill runs a short, four-step process:
 
 1. **Resolve the target and the reader.** Classify the target as a file on disk, pasted text, or a draft from the conversation. A file is edited in place; text or a draft is copied verbatim to a scratch file so the editor has something to rewrite. Ambiguous or missing targets stop and ask. The reader defaults to a capable non-author unless a specific reader is named.
 2. **Confirm before an in-place file rewrite.** For a file target, the skill names the file and gets a go-ahead before dispatching, because the in-place rewrite is the one action that changes a file you own. Scratch copies of pasted text or a conversation draft skip the gate, because the original is untouched.
-3. **Dispatch the readability-editor.** One `Agent` call hands the editor the target path, the readability rule, and the reader frame, with the instruction to operate on prose regions only and preserve every fact. The editor owns the rubric.
+3. **Dispatch the readability-editor.** One `Agent` call hands the editor the target path and the reader frame, with the instruction to operate on prose regions only and preserve every fact. The editor reads its own co-located canonical rule and owns the rubric.
 4. **Deliver the result.** Report the rewrite with the editor's rubric verdict, fact-preservation ledger, and untouched regions. If the ledger flags a fact that could not be preserved while satisfying a criterion, the skill relays it rather than presenting the result as clean.
 
 ## Sources
@@ -83,17 +83,17 @@ The skill applies the shared Human-Readable Output Standard rather than an exter
 
 ### The Human-Readable Output Standard
 
-The canonical rule the skill applies, loaded at runtime from [`han-core/references/readability-rule.md`](../../../han-core/references/readability-rule.md). The [Readability](../../readability.md) page is the operator-facing summary of its required properties, staged application, and fidelity guard.
+The canonical rule the skill applies, owned by `han-communication` at [`han-communication/references/readability-rule.md`](../../../han-communication/references/readability-rule.md) and read by the editor it dispatches. The [Readability](../../readability.md) page is the operator-facing summary of its required properties, staged application, and fidelity guard.
 
 ### The writing-voice profile
 
-The word-level blocklist the standard reuses lives in [`han-core/references/writing-voice.md`](../../../han-core/references/writing-voice.md).
+The word-level blocklist the standard reuses lives in [`han-communication/references/writing-voice.md`](../../../han-communication/references/writing-voice.md).
 
 ## Related documentation
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Readability](../../readability.md). The shared standard this skill applies on demand, its required properties, and the fidelity guard.
-- [`readability-editor`](../../agents/han-core/readability-editor.md). The agent this skill dispatches to do the rewrite.
-- [`/project-documentation`](./project-documentation.md). Use to write new docs; this skill rewrites prose that already exists.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). The agent this skill dispatches to do the rewrite.
+- [`/project-documentation`](../han-core/project-documentation.md). Use to write new docs; this skill rewrites prose that already exists.
 - [`/refactor`](../han-coding/refactor.md). The code counterpart: restructure code without changing behavior, where this skill rewrites prose without changing facts.
-- [`SKILL.md` for /edit-for-readability](../../../han-core/skills/edit-for-readability/SKILL.md). The internal process definition.
+- [`SKILL.md` for /edit-for-readability](../../../han-communication/skills/edit-for-readability/SKILL.md). The internal process definition.
