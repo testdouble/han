@@ -137,6 +137,9 @@ readability standard from it).
 Han is an open source product of [Test Double](https://testdouble.com), and maintained by the following people:
 
 - [River Lynn Bailey](https://github.com/mxriverlynn): Creator, and primary maintainer
+- [Tamika Nomara](https://github.com/taminomara): Core contributor
+- [Aaron Frerichs](https://github.com/afrerich): Core contributor
+- [All contributors](https://github.com/testdouble/han/graphs/contributors): Misc and greatly appreciated!
 
 ## LEGAL NOTICES
 

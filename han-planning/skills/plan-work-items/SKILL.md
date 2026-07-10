@@ -84,6 +84,7 @@ Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) 
 - The artifact inventory from Step 4.
 - The Rules section of this skill verbatim.
 - A directive to draft vertical slices: each work item is a narrow but complete path through the appropriate layers (schema, API, UI, tests), demoable or verifiable on its own. Classify each work item as **HITL** (requires human interaction: an architectural decision, a design review) or **AFK** (can be implemented and merged without a sync). Prefer AFK over HITL. Prefer many thin work items over few thick ones.
+- A directive on unverified assumptions: do not mark a work item HITL only because the plan calls an assumption unverified. First check two things. (a) Can you settle it by reading the code? Do that, and move on if it holds. (b) If the assumption turns out wrong, does something break, or does it fall back to a safe default? Mark it HITL only when you cannot settle it from code **and** getting it wrong causes real breakage. Otherwise it is AFK. Reserve HITL for genuine architectural or design calls.
 - A directive to return the proposed breakdown as a numbered list. Do not write any files.
 
 Return the han-core:project-manager's output verbatim. Proceed to Step 6.

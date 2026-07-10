@@ -99,6 +99,15 @@ skipped step.
 
 ### Assumptions
 
+<!--
+Status is exactly one of: `Verified` (a source cite settles it: file:line, ADR,
+or standard), `Runtime-only` (cannot be known until it runs), or `Open` (not yet
+checked). One status per assumption. If it is confirmed from source, it is
+`Verified`. Do not tack on "but unverified at runtime". A separate runtime
+unknown gets its own row. Mixing the two hides a settled fact and makes later
+steps gate on it for no reason.
+-->
+
 | ID | Assumption | What Changes If Wrong | Verifier | Status |
 |----|------------|-----------------------|----------|--------|
 | A1 | … | … | … | … |
