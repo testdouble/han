@@ -5,7 +5,8 @@ description: >
   build a behavior test list, then drive each behavior through
   red-green-refactor with an enforced observed-failure gate. Use when the user
   wants to implement, build, or write code test-first, "do TDD", follow
-  "red-green-refactor", drive code from tests, or grow a feature
+  "red-green-refactor", drive code from tests, choose the next test by the
+  Transformation Priority Premise (TPP) or ZOMBIES ordering, or grow a feature
   behavior-by-behavior with tests leading. This skill writes and changes code;
   it does not produce a test plan document (use test-planning), review or audit
   existing code (use code-review), restructure existing code outside a TDD
@@ -131,7 +132,12 @@ specified desired behavior (raise on invalid input); it is wrong only when the
 raised error *is the bug being fixed*.
 
 Order the list outside-in by user value: the next item is the most important
-thing the system does not yet do. For an item that is **user-observable
+thing the system does not yet do. When one behavior expands into several
+candidate tests (the empty case, the single case, the many case, the
+boundaries), order those tests simplest-first — Zero → One → Many — so each
+test forces the smallest generalization of the code. The ranking behind that
+order is in [references/test-selection.md](./references/test-selection.md);
+pull it when the order is not obvious. For an item that is **user-observable
 behavior at a system boundary**, write the outer acceptance test for it *first*
 (it will be red until its inner behaviors exist) and record it as the outer
 loop for that item. For internal or utility behavior with no meaningful system
@@ -153,7 +159,15 @@ and wait for approval before entering the loop.
 
 Pick exactly one item from the list. Choose one that teaches you something and
 that you are confident you can implement in one cycle (Beck's "one step
-test"). Then run these three phases in order. Do not collapse them.
+test"). When several items qualify, prefer the one whose passing requires the
+simplest transformation of the code: a test needing only a constant return
+comes before one forcing a conditional, and a conditional before a loop — the
+Transformation Priority Premise, made concrete by the ZOMBIES ordering, both
+in [references/test-selection.md](./references/test-selection.md); pull that
+reference when the choice is not obvious. If every remaining item forces a
+big leap (a loop or recursion with no smaller test in between), a simpler test
+is missing: add it to the list and pick it. Then run these three phases in
+order. Do not collapse them.
 
 **Read once, don't reread.** Within a single loop iteration, do not reread a
 file you have already read in this iteration unless you have edited it. When
