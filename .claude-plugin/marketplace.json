@@ -14,6 +14,12 @@
       "version": "4.5.1"
     },
     {
+      "name": "han-communication",
+      "source": "./han-communication",
+      "description": "Foundational communication plugin for the Han suite. Owns the single canonical readability standard and writing-voice profile, the readability-guidance skill that surfaces them into a calling skill's context for in-voice drafting, the readability-editor agent that runs the adversarial rewrite, and the edit-for-readability skill. Depends on nothing and sits beneath every other plugin; the plugins that produce prose output depend on it.",
+      "version": "1.0.0"
+    },
+    {
       "name": "han-core",
       "source": "./han-core",
       "description": "Evidence-based research, architecture, and documentation skills for software projects, plus the adversarial specialist agents the rest of the suite dispatches. Includes issue triage, open-ended research, architectural decision records (ADRs), gap analysis, project discovery, project and feature documentation, and runbooks. Feature- and implementation-planning skills live in han-planning, which depends on han-core.",
