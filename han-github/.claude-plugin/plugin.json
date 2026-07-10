@@ -3,6 +3,7 @@
   "description": "Github specific extensions to the Han plugin for agentic planning and coding. Provides skills to post code reviews as PR comments, update a PR description with a consistent format, etc.",
   "version": "2.2.1",
   "dependencies": [
+    "han-communication",
     "han-core"
   ]
 }
