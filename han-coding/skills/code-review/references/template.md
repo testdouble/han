@@ -11,7 +11,7 @@ FIXED ORDER: when more than one section is present, render them in this order an
 vary it — Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,
 What's Good.
 
-READABILITY: the finding prose and narrative sections follow ../../references/readability-rule.md
+READABILITY: the finding prose and narrative sections follow the shared readability standard (sourced via han-communication:readability-guidance)
 — each finding leads with what to do and why, one idea per paragraph, short active sentences,
 plain words. The standard governs prose only; it never rewrites task IDs, severities,
 file_path:line_number references, EXPLOIT fields, the fixed section headings and their order,

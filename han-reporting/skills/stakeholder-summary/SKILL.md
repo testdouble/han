@@ -24,7 +24,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 - **High level only.** A stakeholder summary is for getting feedback before kickoff. Skip anything that would only matter once implementation has started: schemas, sequencing, file boundaries, test plans, rollout strategy, telemetry. If a detail is only meaningful to engineers, it does not belong in this document.
 - **Diagrams carry weight.** Use Mermaid for both the user experience flow and the data flow before-and-after. Diagrams are not decoration — they replace paragraphs of prose, so they must be readable on their own.
 - **Open questions are stakeholder-shaped.** The closing questions are framed in customer or product language, not engineering language. They ask stakeholders to confirm framing, scope, and trade-offs — not to make technical decisions.
-- **Apply the shared readability standard.** As it writes and refines the summary, the skill loads and applies [`../../references/readability-rule.md`](../../references/readability-rule.md), holding the named audience: the non-technical stakeholder. The plain-language rules above are this skill's domain-specific supplement to the shared standard, not a replacement for it. The standard's dedicated `han-core:readability-editor` rewrite pass (Step 5) is this skill's readability rewrite; it and the standardized self-check (Step 6, Pass B) take the place of the freehand plain-language rewrite this skill used to run, so the summary gets one readability review, not two. The standard governs how the summary reads, never whether a required fact from the spec survives.
+- **Apply the shared readability standard.** As it writes and refines the summary, the skill sources the standard by invoking `han-communication:readability-guidance` and applies it, holding the named audience: the non-technical stakeholder. The plain-language rules above are this skill's domain-specific supplement to the shared standard, not a replacement for it. The standard's dedicated `han-communication:readability-editor` rewrite pass (Step 5) is this skill's readability rewrite; it and the standardized self-check (Step 6, Pass B) take the place of the freehand plain-language rewrite this skill used to run, so the summary gets one readability review, not two. The standard governs how the summary reads, never whether a required fact from the spec survives.
 
 # Stakeholder Summary
 
@@ -64,7 +64,7 @@ If a piece of content cannot be translated without losing meaning, leave it out.
 
 ## Step 4: Draft the Stakeholder Summary
 
-Use the template at [`references/stakeholder-summary-template.md`](./references/stakeholder-summary-template.md). Write the file at the resolved output path, filling in each section in order:
+Invoke `han-communication:readability-guidance` to surface the shared readability standard into your context, then draft against it. Use the template at [`references/stakeholder-summary-template.md`](./references/stakeholder-summary-template.md). Write the file at the resolved output path, filling in each section in order:
 
 1. **Title** — `# {{Feature Name}} — Stakeholder Summary`. Derive the feature name from the source spec's title or H1.
 2. **What problem are we solving?** One or two short paragraphs from the customer's point of view, followed by a short bulleted list of the capabilities the feature introduces (each as a bold name plus one sentence in the customer's voice).
@@ -86,9 +86,9 @@ Use the template at [`references/stakeholder-summary-template.md`](./references/
 
 ## Step 5: Readability Rewrite
 
-Dispatch `han-core:readability-editor` over the drafted summary to rewrite it for the non-technical stakeholder against the shared readability standard, preserving every fact from the source spec. This is the skill's dedicated readability rewrite; it replaces the freehand plain-language rewrite the skill used to do at the end of Step 4.
+Dispatch `han-communication:readability-editor` over the drafted summary to rewrite it for the non-technical stakeholder against the shared readability standard, preserving every fact from the source spec. This is the skill's dedicated readability rewrite; it replaces the freehand plain-language rewrite the skill used to do at the end of Step 4.
 
-- **`han-core:readability-editor`** — rewrite the summary at the output path against [`../../references/readability-rule.md`](../../references/readability-rule.md) for the named audience (the non-technical stakeholder), preserving every fact: every capability, exclusion, quantity, named system-in-customer-terms, and stated condition survives with its precision intact. It operates on **prose regions only**: it does not touch the Mermaid diagram bodies (their customer-readable node and edge labels are checked separately in Step 6, Pass C), and it leaves no engineering artifacts behind. Pass it the output-file path, the rule path, and the named audience. It rewrites the file in place and returns a rubric verdict and a fact-preservation ledger.
+- **`han-communication:readability-editor`** — rewrite the summary at the output path against the shared readability standard for the named audience (the non-technical stakeholder), preserving every fact: every capability, exclusion, quantity, named system-in-customer-terms, and stated condition survives with its precision intact. It operates on **prose regions only**: it does not touch the Mermaid diagram bodies (their customer-readable node and edge labels are checked separately in Step 6, Pass C), and it leaves no engineering artifacts behind. Pass it the output-file path and the named audience; the editor reads han-communication's own canonical rule, so pass no rule path. It rewrites the file in place and returns a rubric verdict and a fact-preservation ledger.
 
 Apply its rewrite. If the editor reports it could not preserve a fact while satisfying a criterion, keep the fact.
 
@@ -120,7 +120,7 @@ After applying any contradiction-driven edits, Read the file from disk again bef
 
 ### Pass B: Standardized readability self-check
 
-**First, use the Read tool to load the output file from disk.** The readability-editor already rewrote the summary in Step 5; this pass confirms the standardized self-check from [`../../references/readability-rule.md`](../../references/readability-rule.md) holds, over the document's prose regions only — never inside the Mermaid diagram bodies. Confirm each of the six criteria and fix any failure with Edit:
+**First, use the Read tool to load the output file from disk.** The readability-editor already rewrote the summary in Step 5; this pass confirms the standardized self-check (the shared standard is in your context from `han-communication:readability-guidance`) holds, over the document's prose regions only — never inside the Mermaid diagram bodies. Confirm each of the six criteria and fix any failure with Edit:
 
 1. The opening line states the main point (the customer problem, before any capability).
 2. Each heading names its content and is not a generic label.

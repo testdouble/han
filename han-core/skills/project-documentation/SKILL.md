@@ -21,7 +21,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *)
 
 # Project Documentation
 
-**Readability.** As you write the documentation, load and apply the readability rule at [`../../references/readability-rule.md`](../../references/readability-rule.md). The output is a committed file, so the standard applies at generation time. Hold a named audience above the default: a technically-literate reader who needs to understand the feature's behavior before reading or modifying its code. Scope that frame per section so the technical specifics the reader needs are not simplified away.
+**Readability.** As you write the documentation, source the standard by invoking `han-communication:readability-guidance` and apply it. The output is a committed file, so the standard applies at generation time. Hold a named audience above the default: a technically-literate reader who needs to understand the feature's behavior before reading or modifying its code. Scope that frame per section so the technical specifics the reader needs are not simplified away.
 
 ## Step 1: Evaluate and Gather Context
 
@@ -45,7 +45,7 @@ After all agents complete, merge their findings into a unified **discovery summa
 
 Use the template at [template.md](./references/template.md) as the structural guide. The template's HTML comments explain when to include each section and what to cover.
 
-**Readability.** Draft into the template so the structure carries the rule at [`../../references/readability-rule.md`](../../references/readability-rule.md): main point first, descriptive headings, one idea per paragraph with the first sentence carrying it, numbered lists for steps and bullets for non-sequential items, and progressive disclosure that reveals the core before the detail.
+**Readability.** Invoke `han-communication:readability-guidance` to surface the shared readability standard into your context, then draft into the template so the structure carries that standard: main point first, descriptive headings, one idea per paragraph with the first sentence carrying it, numbered lists for steps and bullets for non-sequential items, and progressive disclosure that reveals the core before the detail.
 
 **File location:** `docs/{feature-name}.md` (in the directory determined in Step 1)
 
@@ -104,11 +104,11 @@ Apply every actionable edit the agent returns. For findings that require a judgm
 
 ## Step 8: Readability Rewrite
 
-Dispatch the `han-core:readability-editor` agent in a single `Agent` call to audit and rewrite the settled doc against the readability rule, preserving every fact. Pass it the document path, the rule path (`../../references/readability-rule.md`), and the named audience: a technically-literate reader who needs to understand the feature's behavior before reading or modifying its code. The agent rewrites **prose regions only** — never inside code fences, diagram bodies (for example the body of a Mermaid chart), or rendered markup. Apply its rewrite to the document.
+Dispatch the `han-communication:readability-editor` agent in a single `Agent` call to audit and rewrite the settled doc against the readability standard, preserving every fact. Pass it the document path and the named audience: a technically-literate reader who needs to understand the feature's behavior before reading or modifying its code; the editor reads han-communication's own canonical rule, so pass no rule path. The agent rewrites **prose regions only** — never inside code fences, diagram bodies (for example the body of a Mermaid chart), or rendered markup. Apply its rewrite to the document.
 
 ## Step 9: Readability Self-Check
 
-Run the standardized readability self-check from `../../references/readability-rule.md` over the document's prose regions only — never inside code fences, diagram bodies, or rendered markup. Confirm each criterion and fix any failure before finalizing:
+Run the standardized readability self-check (the shared standard is in your context from `han-communication:readability-guidance`) over the document's prose regions only — never inside code fences, diagram bodies, or rendered markup. Confirm each criterion and fix any failure before finalizing:
 
 1. The opening line states the main point.
 2. Each heading names its content and is not a generic label.

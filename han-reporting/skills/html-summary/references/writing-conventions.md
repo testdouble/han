@@ -8,7 +8,7 @@ Do not use superlatives in any user-visible HTML output. A superlative is any wo
 
 ### Relationship to the shared blocklist
 
-The shared writing-voice blocklist referenced by `../../../references/readability-rule.md` (its "Avoided words and phrases" and "AI slop to avoid" sections) is authoritative for the words it covers. The list below is retained on top of it for the domain-specific superlatives and softeners the shared list does not cover — it supplements the shared list rather than duplicating it. Where both cover a word, the shared list wins.
+The shared writing-voice blocklist (its "Avoided words and phrases" and "AI slop to avoid" sections), surfaced via `han-communication:readability-guidance`, is authoritative for the words it covers. The list below is retained on top of it for the domain-specific superlatives and softeners the shared list does not cover — it supplements the shared list rather than duplicating it. Where both cover a word, the shared list wins.
 
 ### Banned words and phrases
 

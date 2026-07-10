@@ -21,7 +21,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git config *), Bash(whoami), 
 - **One runbook per invocation.** The skill produces a single runbook file. Multi-runbook batches conflate scope; rerun the skill per scenario.
 - **Imperative commands with expected output.** The template requires every step to show the exact command and what success looks like. Prose paragraphs in place of commands are an authoring failure the skill prompts against.
 - **Staleness is the failure mode.** The template requires owner, last-validated, last-edited, and a change-history entry so decay is visible rather than hidden. The skill does not enforce a review cadence — that is a team-level workflow concern — but the metadata fields make the cadence auditable.
-- **Readability standard.** Load and apply the readability rule from [../../references/readability-rule.md](../../references/readability-rule.md) as you write the runbook. Hold its default audience frame: a capable reader who did not do this work and lacks the author's context — here, the operator following the runbook during an incident.
+- **Readability standard.** Source the standard by invoking `han-communication:readability-guidance` and apply it as you write the runbook. Hold its default audience frame: a capable reader who did not do this work and lacks the author's context — here, the operator following the runbook during an incident.
 
 ## Project Context
 
@@ -120,7 +120,7 @@ When the user gives you a recent incident, post-mortem, or alert as the scenario
 
 6. **Delete the author guidance comment block** at the top of the template once the file is filled in.
 
-7. **Readability.** As you write the prose regions, apply [../../references/readability-rule.md](../../references/readability-rule.md): lead each section with its main point, use descriptive headings, keep one idea per paragraph with the first sentence carrying it, number the procedure's steps and bullet non-sequential items, and reveal detail in layers. Do not duplicate the rule text. A runbook's procedures are already numbered steps, which aligns with the rule.
+7. **Readability.** Invoke `han-communication:readability-guidance` to surface the shared readability standard into your context, then as you write the prose regions apply it: lead each section with its main point, use descriptive headings, keep one idea per paragraph with the first sentence carrying it, number the procedure's steps and bullet non-sequential items, and reveal detail in layers. Do not duplicate the rule text. A runbook's procedures are already numbered steps, which aligns with the rule.
 
 8. **If updating an existing runbook:** edit the existing file in place. Append a new change-history entry on top with the date, your name, what changed and why, and the validation status. Update `Last edited` to today; update `Last validated` only if you actually ran the procedure end-to-end against production or a faithful staging environment.
 
@@ -149,7 +149,7 @@ Fix any issues found before presenting the runbook to the user.
 
 ## Step 8: Readability Self-Check
 
-Run the standardized readability self-check from [../../references/readability-rule.md](../../references/readability-rule.md) over the runbook's prose regions only — never inside code fences, command blocks, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
+Run the standardized readability self-check (the shared standard is in your context from `han-communication:readability-guidance`) over the runbook's prose regions only — never inside code fences, command blocks, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
 
 1. The opening line states the main point.
 2. Each heading names its content and is not a generic label.

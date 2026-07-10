@@ -17,14 +17,14 @@ allowed-tools: Read, Write, Glob, Grep, Agent
 
 # Edit for Readability
 
-Take a target the user already has and rewrite its prose against the shared readability standard, preserving every fact. The judgment-heavy rewrite belongs to the `han-core:readability-editor` agent; this skill's job is to resolve what the target is, dispatch the editor over it, and deliver the result.
+Take a target the user already has and rewrite its prose against the shared readability standard, preserving every fact. The judgment-heavy rewrite belongs to the `han-communication:readability-editor` agent; this skill's job is to resolve what the target is, dispatch the editor over it, and deliver the result.
 
 ## Operating principles
 
 - **This is the standalone readability pass.** The readability standard applies at generation time, so synthesis skills (research, project-documentation, investigate, code-review, and the rest) already bake it into their own output. This skill exists for the gap the standard names explicitly: a file or draft that was written or hand-edited *outside* one of those skills, and so was never checked against the standard. Reach for it on an existing target, not as a step inside another skill.
 - **Fidelity outranks readability on every conflict.** Every claim, quantity, named entity, and stated condition or qualifier in the target survives the rewrite with its precision intact. The editor enforces this and returns a fact-preservation ledger; the skill's job is to pass the whole target through and surface that ledger, never to let a fact be dropped for the sake of a smoother sentence.
 - **Prose only.** The editor rewrites prose regions and leaves code fences, diagram bodies, rendered markup, and citation identifiers (`A1`, `[F5]`, and the like) byte-for-byte unchanged. Do not ask it to touch anything else.
-- **The editor holds the standard.** Do not restate the six rubric criteria here or inline the rule text into the dispatch. Point the editor at the rule file and let it apply the current standard, so this skill never drifts from `readability-rule.md`.
+- **The editor holds the standard.** Do not restate the six rubric criteria here or inline the rule text into the dispatch. The editor reads its own co-located canonical rule and applies the current standard, so this skill never drifts from `readability-rule.md`.
 
 ## Step 1: Resolve the target and the reader
 
@@ -52,10 +52,9 @@ Skip the confirmation when the target is a scratch copy (pasted text or a conver
 
 ## Step 3: Dispatch the readability-editor
 
-Dispatch `han-core:readability-editor` with one `Agent` call (`subagent_type: "han-core:readability-editor"`). In the prompt, give it:
+Dispatch `han-communication:readability-editor` with one `Agent` call (`subagent_type: "han-communication:readability-editor"`). In the prompt, give it:
 
 - The path to the target file — the real file for a file target, or the scratch file for pasted text or a conversation draft.
-- The readability rule path: `../../references/readability-rule.md`.
 - The reader frame from Step 1: the default capable-reader frame, or the specific reader the user named.
 - The instruction to operate on prose regions only — never inside code fences, diagram bodies, rendered markup, or citation identifiers, which survive unchanged — and to apply its rewrite to the file in place, preserving every fact.
 

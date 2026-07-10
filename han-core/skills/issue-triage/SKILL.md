@@ -23,7 +23,7 @@ allowed-tools: Read, Write, Bash(find *), Bash(mkdir *)
 - Severity and reproducibility are estimates based on what is known. For a Bug, Regression, Performance, or Security issue, mark them Unknown when not inferable. For a Feature Request, Question, or Other issue, omit them entirely when they are not inferable (see Step 4) rather than rendering Unknown.
 - The recommended next step is the single most appropriate han skill (or "clarify with reporter") to run after triage completes.
 - Project context (CLAUDE.md, project-discovery.md) is read only to identify Suspected Areas. Never use it to supply information the reporter omitted.
-- Load and apply the readability rule (`../../references/readability-rule.md`) as you write the triage document. Hold its default audience frame: a capable reader who did not do this work and lacks the author's context.
+- Source the standard by invoking `han-communication:readability-guidance` and apply it as you write the triage document. Hold its default audience frame: a capable reader who did not do this work and lacks the author's context.
 
 # Issue Triage
 
@@ -110,7 +110,7 @@ Resolve the output path:
 
 Run `mkdir -p` on the directory that will contain the file (for the default, `mkdir -p "$HOME/.claude/triages"`). Write the report using the template at [template.md](./references/template.md), filling every section from Steps 1-6 and writing the Step 6 result verbatim into Recommended Next Step. Omit the Suspected Areas section if Step 5 determined nothing is inferable, and omit Severity and Reproducibility per the Step 4 omit rule.
 
-Before presenting, run the standardized readability self-check from `../../references/readability-rule.md` over the document's prose regions only — never inside code fences, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
+Before presenting, run the standardized readability self-check (the shared standard is in your context from `han-communication:readability-guidance`) over the document's prose regions only — never inside code fences, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
 
 1. The opening line states the main point.
 2. Each heading names its content and is not a generic label.
