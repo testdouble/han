@@ -209,14 +209,21 @@ Then verify every line below. If any fails, print the problem and **stop** — d
    --assignee <assignee> --json number,title,assignees,body --limit 200`. The default
    `<assignee>` is `@me`. When `--assignee any` was passed, **omit** the `--assignee` flag
    entirely (so every assignee and unassigned issues are included).
-   - **Empty result → inform and stop.** If the list comes back with **zero** open issues, do not
-     report an empty queue as success — that reads as "all done" when the real cause is almost
-     always a label or scope mismatch. Stop and say so in plain language, naming the resolved
-     `--label` and `--assignee`: "No open issues carry the `<label>` label"
-     (for `@me`, add "assigned to you"). Then name the two likely fixes: the queue was published
-     without a matching label (re-run `work-items-to-issues` with `--label <label>`, or re-run
-     this skill with the `--label` you actually used), or the work is assigned to someone else
-     (try `--assignee any`). Do **not** create a team.
+   - **Empty result → disambiguate before stopping.** Zero open issues does not by itself mean
+     "all done" — but it does not always mean a mismatch either. Before reporting anything, run the
+     same query with `--state closed` (same `--label` and `--assignee` scope) to tell a completed
+     queue from a misconfigured one:
+     - **Closed issues exist, none open → queue complete.** Every issue carrying the `<label>`
+       label under this scope is already closed. Report it as success in plain language: "All N
+       `<label>` issues are already closed — queue complete." Do **not** create a team. (This is
+       the resumability case: a full re-run after the queue is drained.)
+     - **No issues at all under this scope (zero open, zero closed) → label or scope mismatch.**
+       This reads as "all done" when the real cause is almost always a label or scope mismatch.
+       Stop and say so in plain language, naming the resolved `--label` and `--assignee`: "No issues
+       carry the `<label>` label" (for `@me`, add "assigned to you"). Then name the two likely
+       fixes: the queue was published without a matching label (re-run `work-items-to-issues` with
+       `--label <label>`, or re-run this skill with the `--label` you actually used), or the work is
+       assigned to someone else (try `--assignee any`). Do **not** create a team.
 2. For each issue, read its native blockers (see
    [references/dependency-graph.md](references/dependency-graph.md) for the exact `gh api`
    recipe): `GET repos/<org/repo>/issues/<N>/dependencies/blocked_by`.
