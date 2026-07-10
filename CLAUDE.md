@@ -40,7 +40,7 @@ and / or the appropriate han-plugin-builder skill:
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
 │   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, readability-rule.md, writing-voice.md)
-├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues
+├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues, work-the-issue-queue
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/

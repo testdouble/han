@@ -5,7 +5,8 @@ description: >
   issues, one per slice, in each slice's target repo. Use when you want to turn a work-items file
   into GitHub issues, publish work items as issue tickets, or create implementation tickets that
   can be worked on and tracked on GitHub. Does not produce the work-items file itself — use
-  plan-work-items to break a plan into work items first. Does not review code or post pull request
+  plan-work-items to break a plan into work items first. Does not implement or work the published
+  issues — use work-the-issue-queue to burn down the queue. Does not review code or post pull request
   comments — use post-code-review-to-pr for that.
 argument-hint: "[path to work-items.md] [target repo(s), e.g. org/repo] [--label <name> (optional)] [--assignee <user> (optional)]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(gh *), Bash(git *), Bash(find *)
@@ -32,7 +33,7 @@ The breakdown work — drafting slices, assigning symbolic IDs, specifying depen
 
 If the path is not provided, ask for it. The input is a single `work-items.md` produced by `/plan-work-items`. Read it.
 
-If the user named a target repo (or repos), a label, or an assignee, note them for Steps 2 and 6. By default, issues are created with **no label and no assignee** — only apply a label or assignee when the user explicitly asked for one.
+If the user named a target repo (or repos), a label, or an assignee, note them for later steps. The **assignee** defaults to none — apply one only when the user explicitly asked. The **label** is decided at Step 4: when the user named one it is used, and when the user named none Step 4 offers the choice so it is deliberate. A label is optional; publishing unlabeled is a valid outcome.
 
 ### 2. Build the SYM→repo map
 
@@ -77,9 +78,9 @@ Then give the user three actions:
 
 If validation passes with no findings, proceed silently to Step 4.
 
-### 4. Show the SYM→repo map for confirmation
+### 4. Confirm the map and choose a label
 
-Present a table for user review:
+Present the SYM→repo table for user review:
 
 | SYM | Title | Target repo |
 | --- | --- | --- |
@@ -87,7 +88,20 @@ Present a table for user review:
 | W-2 | … | `acme/acme-api` |
 | W-5 | Frontend type widening and drift comparator | `acme/acme-web` |
 
-Wait for confirmation before writing files or creating issues.
+Then decide the **label** before anything is created. A label is optional, and publishing
+unlabeled is a valid choice — the issues may simply be tracked on the board with nothing
+downstream consuming them.
+
+- **A label was named in Step 1.** Use it as-is; it is applied to every issue.
+- **No label was named.** Rather than defaulting silently, offer the choice so it is deliberate.
+  For each target repo, list the repo's existing labels (`gh label list --repo <org/repo>`) and
+  present them, then let the user pick one existing label, name a new one to create, or choose no
+  label. A shared label makes the issues selectable as a set later — for example a queue runner
+  like `work-the-issue-queue` finds its work by label — but no label is a perfectly good answer
+  when nothing downstream needs one. If a repo defines no labels at all, say so and let the user
+  name one or proceed without a label for that repo.
+
+Wait for confirmation of both the map and the label before writing files or creating issues.
 
 ### 5. Write per-repo work-items files
 
@@ -103,7 +117,7 @@ The source `work-items.md` is not modified by the publish step. The per-repo fil
 
 For each per-repo file, publish it by running `${CLAUDE_SKILL_DIR}/scripts/publish-work-items.sh <per-repo-work-items-file> <org>/<target-repo> <plan-folder> [--label <name>] [--assignee <user>]`. Pass the per-repo work-items file written in Step 5, the target repo as `<org>/<target-repo>`, and the plan folder that contains the `ui-designs/` subfolder.
 
-Created issues are unassigned and carry no label by default. Append `--label <name>` and/or `--assignee <user>` only when the user asked for a label or assignee (Step 1). Both flags are optional and may be omitted.
+Created issues are unassigned by default; append `--assignee <user>` only when the user asked (Step 1). Pass `--label <name>` with the label settled in Step 4 — the existing or new label the user chose. Omit `--label` only when the user explicitly chose no label, or the target repo defines none. Both flags are optional at the script level and may be omitted.
 
 The wrapper runs three idempotent scripts in order:
 
