@@ -8,8 +8,10 @@
 # symbolic IDs to issue numbers.
 #
 # By default issues are created with no label and no assignee. Pass
-# `--label <name>` to upsert that label and apply it to every issue, and/or
-# `--assignee <user>` to assign every issue to that user. Both are optional.
+# `--label <name>` to apply that label to every issue (creating it only if it
+# does not already exist — an existing label's color/description are left
+# intact), and/or `--assignee <user>` to assign every issue to that user. Both
+# are optional.
 #
 # Idempotent: slices whose heading already includes `(#NNN)` are skipped.
 
@@ -32,8 +34,18 @@ done
 [ -f "$WORK_ITEMS" ] || { echo "work-items file not found: $WORK_ITEMS" >&2; exit 1; }
 
 if [ -n "$LABEL" ]; then
-  gh label create "$LABEL" --repo "$TARGET_REPO" --force >/dev/null
-  echo "label '$LABEL' upserted on $TARGET_REPO"
+  # Create the label without `--force`, which would reset an existing label's
+  # color/description. A create that fails on an existing label leaves it
+  # untouched, so fall back to confirming it exists (exact name match) and
+  # reuse it; anything else is a real error.
+  if gh label create "$LABEL" --repo "$TARGET_REPO" >/dev/null 2>&1; then
+    echo "label '$LABEL' created on $TARGET_REPO"
+  elif gh label list --repo "$TARGET_REPO" --json name --jq '.[].name' | grep -qxF "$LABEL"; then
+    echo "label '$LABEL' already exists on $TARGET_REPO — reusing as-is"
+  else
+    echo "ERROR: could not create or find label '$LABEL' on $TARGET_REPO" >&2
+    exit 1
+  fi
 fi
 
 tmpdir=$(mktemp -d)
