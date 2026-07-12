@@ -1,0 +1,16 @@
+{
+  "name": "han",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Dev tooling for the han plugin suite (lint, format, and shell tests).",
+  "scripts": {
+    "prepare": "prek install",
+    "lint": "prek run --all-files",
+    "test": "bats --recursive test/"
+  },
+  "devDependencies": {
+    "@j178/prek": "^0.4.9",
+    "bats": "^1.11.1",
+    "prettier": "^3.4.2"
+  }
+}

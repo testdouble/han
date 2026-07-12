@@ -1,0 +1,53 @@
+# Pre-commit hooks for the han plugin suite, run with prek.
+#
+# prek is installed as an npm devDependency (@j178/prek); `npm install` fetches
+# it and installs the git hook automatically (the package.json "prepare" script).
+# Run every hook manually with `npm run lint` (prek run --all-files).
+
+# Files no hook ever touches: static archives and vendored assets.
+exclude: "^(docs/plans/|docs/research/|han-reporting/skills/html-summary/assets/)"
+
+repos:
+  # Prettier owns formatting for Markdown, JSON, YAML, and JS: 120-column prose,
+  # ordered-list numbering, and unwrapped .github templates (.prettierrc.json),
+  # with ignore rules in .prettierignore. Running the local devDependency keeps
+  # Prettier's version in package.json only, not duplicated in a hook mirror.
+  # It runs first so the hygiene fixers below never fight it.
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: npx prettier --write --ignore-unknown
+        language: system
+        types_or: [markdown, json, yaml, javascript]
+
+  # Lint shell scripts. prek builds the environment; no Docker, no global install.
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+
+  # Hygiene checks. The whitespace/EOL fixers exclude the file types Prettier
+  # already normalizes (Markdown, JSON, YAML, JS), so Prettier owns those and
+  # these cover the rest (shell scripts, dotfiles, LICENSE) with no overlap.
+  # check-yaml and check-json are intentionally omitted: Prettier parses and so
+  # validates those types already.
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.(md|markdown|json|ya?ml|jsx?|mjs|cjs)$'
+      - id: end-of-file-fixer
+        exclude: '\.(md|markdown|json|ya?ml|jsx?|mjs|cjs)$'
+      - id: fix-byte-order-marker
+        exclude: '\.(md|markdown|json|ya?ml|jsx?|mjs|cjs)$'
+      - id: mixed-line-ending
+        args: [--fix=lf]
+        exclude: '\.(md|markdown|json|ya?ml|jsx?|mjs|cjs)$'
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-executables-have-shebangs
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: check-vcs-permalinks
