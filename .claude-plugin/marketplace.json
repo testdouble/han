@@ -66,6 +66,12 @@
       "source": "./han-plugin-builder",
       "description": "Guidance for building Claude Code skills, agents, and plugins. The guidance skill answers authoring questions and, run with init, vendors the full guidance set into a repo as a path-scoped rule index so the right guidance surfaces while editing skill and agent files. Opt-in and dependency-free: installed on its own, not pulled in by the han meta-plugin.",
       "version": "2.0.4"
+    },
+    {
+      "name": "han-experimental",
+      "source": "./han-experimental",
+      "description": "Experimental, not-yet-stabilized skills for the Han suite. Home of review-skill-or-agent, which reviews a finished Claude Code skill or agent against the plugin-authoring guidance and quality dimensions and produces a severity-ranked report. Depends on han-core and han-plugin-builder. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
+      "version": "0.1.0"
     }
   ]
 }
