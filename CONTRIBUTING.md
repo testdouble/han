@@ -11,6 +11,7 @@ This page is for contributors: anyone adding, editing, or restructuring skills, 
 - **Every skill and every agent gets a long-form doc.** No exceptions. See the [coverage rule](./docs/templates/coverage-rule.md).
 - Use the [long-form skill template](./docs/templates/skill-long-form-template.md) or the [agent template](./docs/templates/agent-long-form-template.md).
 - The root [CLAUDE.md](./CLAUDE.md) carries the at-a-glance project map for assistants and contributors.
+- Before your first commit, run `npm install`. It installs the pinned dev tools and wires up the git hook. See [Setting up your environment](#setting-up-your-environment).
 
 ## Before you start
 
@@ -20,6 +21,31 @@ Read these once:
 - **[`han-plugin-builder/skills/guidance/references/skill-building-guidance/`](./han-plugin-builder/skills/guidance/references/skill-building-guidance/).** The skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution.
 - **[`han-plugin-builder/skills/guidance/references/agent-building-guidelines/`](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/).** The agent-authoring rules: external files, model selection, domain focus, graceful degradation, multi-agent economics.
 - **[Root `CLAUDE.md`](./CLAUDE.md).** Repo conventions, doc map, and where each kind of file lives.
+
+## Setting up your environment
+
+Han's dev tooling is managed as npm devDependencies, so a single `npm install` sets everything up at pinned versions with nothing installed globally. It installs [prek](https://github.com/j178/prek) (the git-hook runner), [Prettier](https://prettier.io) (formatting), and [Bats](https://github.com/bats-core/bats-core) (shell tests), and wires up the git pre-commit hook automatically.
+
+One-time setup, from the repo root:
+
+1. Install [Node.js](https://nodejs.org/) (the current LTS is fine).
+2. Run `npm install`. It installs the pinned tools into `node_modules/` and runs `prek install` to add the git hook. Nothing lands on your global PATH, so tool versions never clash with your other projects.
+
+Everyday use:
+
+- Every commit runs the lint hooks (Prettier, ShellCheck, and file hygiene) on your staged files.
+- `npm run lint` runs every hook over the whole repo (`prek run --all-files`).
+- `npm test` runs the shell tests (`bats --recursive test/`).
+
+CI runs the same lint hooks and the tests on every pull request.
+
+How Prettier treats your files:
+
+- It formats Markdown, JSON, YAML, and JavaScript. Prose reflows to 120 columns and ordered lists keep their `1.`, `2.`, `3.` numbering (configured in `.prettierrc.json`).
+- PR and issue templates under `.github/` are unwrapped rather than wrapped, because GitHub renders every newline in a PR or issue body as a line break.
+- The static archives under `docs/plans/` and `docs/research/`, and the vendored assets under `han-reporting/skills/html-summary/assets/`, are left untouched (`.prettierignore`).
+
+Shell scripts are linted with ShellCheck. Tests live in `test/` as `*.bats` files and run in CI rather than on commit; run them locally with `npm test`.
 
 ## Which plugin does the change belong in?
 
@@ -111,6 +137,7 @@ Before opening the PR, run through this checklist:
 - [ ] Internal links resolve.
 - [ ] No em-dashes anywhere in the doc.
 - [ ] No *"actually," "just," "leverage," "utilize," "showcase," "robust" (vague), "It's worth noting," "Importantly,"* or other voice violations.
+- [ ] `npm run lint` passes (Prettier, ShellCheck, and the hygiene hooks).
 
 ## Related Documentation
 
