@@ -11,7 +11,7 @@
       "name": "han",
       "source": "./han",
       "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han-communication, han-core, han-planning, han-coding, han-github, and han-reporting so installing it pulls them all in. Does not bundle the opt-in han-feedback, han-atlassian, or han-plugin-builder plugins.",
-      "version": "4.5.1"
+      "version": "4.6.0"
     },
     {
       "name": "han-communication",
@@ -29,19 +29,19 @@
       "name": "han-planning",
       "source": "./han-planning",
       "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, and iterative-plan-review. Depends on han-core; bundled by the han meta-plugin.",
-      "version": "2.0.3"
+      "version": "2.0.4"
     },
     {
       "name": "han-coding",
       "source": "./han-coding",
       "description": "Code-writing and execution skills for the Han suite. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. Depends on han-core and han-communication; bundled by the han meta-plugin.",
-      "version": "2.5.1"
+      "version": "2.6.0"
     },
     {
       "name": "han-github",
       "source": "./han-github",
       "description": "GitHub-specific extensions to Han. Provides skills to post code reviews as PR comments, update a PR description with a consistent format, and other GitHub-facing workflows.",
-      "version": "2.2.1"
+      "version": "2.2.2"
     },
     {
       "name": "han-reporting",
@@ -71,7 +71,7 @@
       "name": "han-plugin-builder",
       "source": "./han-plugin-builder",
       "description": "Guidance for building Claude Code skills, agents, and plugins. The guidance skill answers authoring questions and, run with init, vendors the full guidance set into a repo as a path-scoped rule index so the right guidance surfaces while editing skill and agent files. Opt-in and dependency-free: installed on its own, not pulled in by the han meta-plugin.",
-      "version": "2.0.4"
+      "version": "2.0.5"
     }
   ]
 }

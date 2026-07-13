@@ -1,7 +1,7 @@
 {
   "name": "han",
   "description": "Evidence-based planning, investigation, documentation, and review for solo and small-team product engineers. Installs the full Han suite by pulling in han-communication (the shared readability standard beneath everything), han-core, its planning skills (han-planning), its code-writing skills (han-coding), its GitHub extensions (han-github), and its reporting skills (han-reporting).",
-  "version": "4.5.1",
+  "version": "4.6.0",
   "dependencies": [
     "han-communication",
     "han-core",
