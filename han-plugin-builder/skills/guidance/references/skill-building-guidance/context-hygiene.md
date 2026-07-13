@@ -48,6 +48,16 @@ For each changed file:
 4. Record the file path and line number for each finding
 ```
 
+### Rule: Build a self-sufficient region at the point of use
+
+The previous rule cuts redundant tokens. This one keeps the tokens a step needs together. Both protect the model's limited attention.
+
+When a step acts, give it a region that already carries what the step needs — so the model isn't left reconstructing which reference applies where. A single instruction applied to the data in front of it is cheap; the model does that constantly and well. What's costly is a step that makes it hold several references at once and route each to a different, overlapping set of targets — "run the items from [A], but apply [B] to items 2 and 3 and [C] to items 1 and 4." Every extra binding the model has to track and route in one pass is another chance to mis-route. That routing is work you can do for it.
+
+A region is **self-sufficient** when the routing is already resolved: the step names what applies to what, with nothing left for the model to reconstruct. That is stronger than merely moving the references next to the step — it removes the bookkeeping rather than shortening the reach. A step that Reads one `references/checklist.md` and applies it is fine (a **loadable pointer**: one thing, in focus, applied uniformly). A step that hands the model three references and a mapping of which applies where is an **in-head reference** — collapse that mapping before the model sees it.
+
+This is the idea progressive disclosure already runs on: a `references/` file is a self-sufficient region, Read into focus only when a step needs it. Keep the source normalized, and build the region a step acts from at the point of use. See [Resolve variation at the point of use](./writing-effective-instructions.md) for the form this takes when a step drives many similar items.
+
 ### Rule: Position critical content at the edges, not the middle
 
 Front-load constraints, prerequisites, and context that shapes the entire skill execution. Back-load checklists, validation criteria, and summary structures. Avoid placing the skill's most important instructions in the middle steps, where they receive the least attention weight.
@@ -127,6 +137,7 @@ Stale tokens are worse than absent tokens. When a reference file describes a con
 |---|---|---|
 | Kitchen sink SKILL.md | Token competition dilutes attention on every instruction | [Progressive Disclosure](./progressive-disclosure.md) |
 | Restating toolchain rules | Wastes attention budget; drifts when config changes | [Progressive Disclosure](./progressive-disclosure.md) |
+| In-head join (matrix joined against a separate list) | Attention fragments across the blocks the model must join | [Writing Effective Instructions](./writing-effective-instructions.md) |
 | Stale references | Model faithfully follows outdated instructions | [Documentation Maintenance](./documentation-maintenance.md) |
 | Critical instruction buried in middle steps | Lost-in-the-middle reduces attention weight | [Workflow Patterns](./workflow-patterns.md) |
 | Verbose frontmatter descriptions | Token cost paid in every conversation | [Skill Description Frontmatter](./skill-description-frontmatter.md) |
@@ -139,10 +150,12 @@ Stale tokens are worse than absent tokens. When a reference file describes a con
 4. Treat stale documentation as a functional bug — audit when dependencies change
 5. Extract domain knowledge to `references/` to keep the SKILL.md body lean
 6. Place the most important instruction or example last within any list (recency bias)
+7. Give each step a self-sufficient region to act from — reachable when it runs, with nothing to join from elsewhere
 
 Cross-references:
 - [Progressive Disclosure](./progressive-disclosure.md) — The three-level architecture that controls context loading
 - [Workflow Patterns](./workflow-patterns.md) — Recency bias and lost-in-the-middle within step design
 - [Writing Effective Instructions](./writing-effective-instructions.md) — Conciseness and structure rules for SKILL.md body
+- [Multi-Agent Economics](../agent-building-guidelines/multi-agent-economics.md) — Self-contained briefs across the sub-agent boundary
 - [Skill Description Frontmatter](./skill-description-frontmatter.md) — Frontmatter token efficiency and trigger accuracy
 - [Documentation Maintenance](./documentation-maintenance.md) — Audit process for stale context
