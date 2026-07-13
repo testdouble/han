@@ -276,6 +276,53 @@ Functions with network calls or file writes must name the side effect.
 ```
 Each convention is independently parseable: heading, rule, example.
 
+### Rule: Resolve variation at the point of use
+
+When a step drives several similar items that each take a slightly different set of inputs — dispatching sub-agents with different reference files, applying rules each scoped to different files — do not express the variation as a matrix the model must join against a separate list. Reading a table, extracting each item's cells, and binding them to a separate enumeration makes the model do an in-head join. That such a join trips the model is a reasoned bet — by analogy to documented weaknesses in large-table lookup and multi-hop binding, though no study tests it at this small a scale — so prefer to remove the join rather than rely on the model to get it right. Give each item its resolved, self-contained set instead.
+
+Keep the *source* normalized — author the shared parts once — but denormalize into the point of use, resolving the variation with a deterministic step (a script, or the driver that assembles each dispatch) where one exists. This does not contradict [Progressive Disclosure](./progressive-disclosure.md): a reference resolved by a Read co-locates its content at the point of use, so it is not an in-head join. See [Context Hygiene](./context-hygiene.md) for the loadable-pointer vs. in-head-reference distinction.
+
+**Before (variation as a matrix the model must join):**
+```markdown
+## Step 4: Dispatch Reviewers
+
+Files each reviewer receives:
+
+| Reviewer | api.ts | schema.sql | auth.ts |
+|---|---|---|---|
+| security | no | no | yes |
+| data | no | yes | no |
+| api | yes | no | no |
+
+Prompts:
+1. Review for injection and authz.
+2. Review schema normalization and indexes.
+3. Review endpoint contracts.
+```
+The model must read the matrix, extract each reviewer's "yes" columns, and bind them to the right numbered prompt before it can dispatch anything.
+
+**After (each item resolved and self-contained):**
+```markdown
+## Step 4: Dispatch Reviewers
+
+Dispatch one reviewer per block. Each block lists exactly what that reviewer gets:
+
+### security reviewer
+- Files: `auth.ts`
+- Prompt: Review for injection and authz.
+
+### data reviewer
+- Files: `schema.sql`
+- Prompt: Review schema normalization and indexes.
+
+### api reviewer
+- Files: `api.ts`
+- Prompt: Review endpoint contracts.
+```
+Nothing to join: each reviewer's files and prompt sit together.
+
+At small scale — two or three items, two or three inputs, no growth — a compact table you or a script reads once while assembling each item is fine; the join cost lands on an LLM only when the model itself must resolve the matrix at read time. Reach for resolved, self-contained items as the count of items and varying inputs grows.
+
 ### Rule: Include canonical examples for conventions the skill enforces
 
 When a skill teaches or enforces patterns, include 2-3 representative "do this / not this" examples. The model pattern-matches examples more reliably than it follows abstract rules — research shows 3 well-chosen examples match 9 in effectiveness. Place the most representative example last — the model weights it more heavily. Put examples in `references/` if they are substantial (following the progressive disclosure model), or inline in SKILL.md if they are brief (1-3 lines each).
@@ -349,6 +396,7 @@ If validation fails, the script prints which checks failed. Fix each issue befor
 8. Use scripts for deterministic validation instead of language instructions
 9. After Skill tool calls mid-workflow, explicitly instruct Claude to proceed immediately — never rely on implicit continuation
 10. Can an agent extract every convention from this SKILL.md without ambiguity? If a section requires inference about where one instruction ends and the next begins, restructure it
+11. When a step drives several varying items, give each its resolved, self-contained inputs — don't make the model join a matrix against a separate list
 
 Cross-references:
 - [Progressive Disclosure](./progressive-disclosure.md) — The three-level architecture that determines where content belongs

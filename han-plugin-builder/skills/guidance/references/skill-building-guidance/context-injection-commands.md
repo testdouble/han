@@ -32,40 +32,56 @@ Do not duplicate commands across both sections. A tool availability check belong
 
 ## Command Guidelines
 
-### Rule: Keep commands simple — single commands only
+### Rule: Keep every command an auto-approvable read-only form
 
-Context injection commands must be simple. No pipes, subcommand substitution, or `&&`-chaining — these cause repeated execution failures and permission prompts. The one compound form that is allowed, and is sometimes required, is a single trailing `2>/dev/null || echo <sentinel>` guard on a command that exits non-zero when its subject is absent (see the guarded-`which` rule below).
+Context injection runs at skill load, and it never prompts. If a command is not auto-approvable, the loader hard-rejects it and stops loading the skill. You see the error for the first failing command only; every command after it is masked, so one bad command takes the whole skill down. There is no prompt to fall back on, so keeping commands simple is not a style preference here. It is what keeps the skill loadable.
 
-The reason is structural. The skill loader does not run context injection commands through a full interactive shell. It matches each command against the `allowed-tools` Bash patterns and runs it as a single auto-approved invocation. Anything that turns one command into a compound expression defeats that match:
+A command auto-approves only when every command in it, and every stage of a pipe or part of a chain, is one of:
 
-- **Subcommand substitution** (`$(...)`) and **chaining** (`cmd1 && cmd2`) produce a command string that no single `Bash()` prefix covers, so the loader cannot auto-approve it and the command stalls or fails.
-- **Pipes** (`cmd | sed ...`) have the same problem: the piped stage is a second command the prefix match never sees.
-- **Redirects** (`2>/dev/null`) alone are unnecessary when the command exits 0 with empty output — empty output is a valid result the step logic can check for. But a command that exits *non-zero* when its subject is absent (`which` on a missing tool, `git symbolic-ref` with no `origin/HEAD`, `git config user.name` with no identity) aborts the skill on that exit. Guard it with a trailing `2>/dev/null || echo <sentinel>` so it exits 0 and injects a value the step logic checks. That trailing guard is the one permitted compound form.
+1. A built-in **read-only** command in an allowed form. The loader ships a fixed allowlist that already covers most inspection tools, including `cat`, `ls`, `head`, `tail`, `wc`, `grep`, `find` (without the dangerous predicates below), `which`, `echo`, `date`, and the read-only `git` and `gh` subcommands such as `git status`, `git log`, `git diff`, `git rev-parse`, and `git config --get`. Commands on this list need no `allowed-tools` entry.
+2. Matched by an explicit `Bash()` rule in the skill's `allowed-tools`.
 
-The fix in every case is the same: replace the compound expression with one flag-driven command that returns the value directly. For example, instead of piping `git symbolic-ref` through `sed` to strip a prefix, use the `--short` flag. Instead of substituting a subshell into an `export`, reference `origin/HEAD` directly.
+Pipes and `&&` / `;` / `||` chains are not forbidden. The loader splits them and checks each part against the two rules above, so `git log --oneline | head` and `git rev-parse HEAD && git branch --show-current` load fine because every part is an allowlisted read-only form. What breaks a skill is a part that is neither allowlisted nor declared, or one of the constructs the classifier refuses outright.
 
-**Before (compound forms that fail):**
-```
-!`export DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d '/' -f4-) && echo $DEFAULT_BRANCH`
-!`git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/@@'`
-!`find . -maxdepth 3 ... 2>/dev/null | head -10`
-!`test -f Makefile && echo "yes" || echo "no"`
-```
+**Four constructs are refused every time, and declaring a `Bash()` rule does not rescue them:**
 
-**After (current, working):**
+- **Command substitution** `$(...)` injects the error `Contains command_substitution`.
+- **Process substitution** `<(...)` or `>(...)` injects `Contains process_substitution`.
+- **Subshells** `( ... )` and **background** `&`, reported as "not a simple read-only command".
+- **Dangerous sub-forms of otherwise-safe tools**: `find` with `-exec`, `-execdir`, `-delete`, `-ok`, or `-fprint*`; `sed` with in-place editing; and similar. These stay blocked even when a matching prefix rule such as `Bash(find *)` is present. The danger check overrides the grant, so a broad `Bash(find *)` cannot re-enable `find -exec`.
+
+Even though a pipe of read-only commands loads, prefer one flag-driven command when it exists. Not because pipes fail, but because every extra stage is one more part that has to stay on the allowlist, and one part that slips off aborts the whole skill load with an error that names only that part. A flag on the primary command usually replaces the pipe outright. Instead of piping `git symbolic-ref` through `sed` to strip a prefix, use the `--short` flag.
+
+**Prefer (one allowlisted command, nothing to slip off):**
 ```
 !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
-!`find . -maxdepth 3 ...`
+!`find . -maxdepth 3 -name "project-discovery.md" -type f`
 !`find . -maxdepth 1 -name "Makefile" -type f`
 ```
 
-Do not confuse a *compound expression that defeats the prefix match* (a pipe, a `$(...)` substitution, or an `&&`-chain — always wrong) with a *single trailing guard* (`2>/dev/null || echo <sentinel>` — allowed, and required when the command exits non-zero on an absent subject). `git config user.name || echo unset` is the guard, not a violation. The `git symbolic-ref` "After" above keeps its guard for the same reason: `origin/HEAD` may be unset.
+**Avoid:**
+```
+!`export DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d '/' -f4-) && echo $DEFAULT_BRANCH`
+!`test -f Makefile && echo "yes" || echo "no"`
+```
+
+The first line is refused outright because of the `$(...)`. The second loads, but a single `find` with `-name` returns the same answer with nothing to slip off the allowlist.
+
+**Keep each injected value small.** Injected output is inserted once at load and stays in context for the whole skill run, so a large blob is a standing cost that can bury the signal. Bound it at the source rather than after the fact: prefer a command that returns only what the step needs, such as `git log -n 10 --oneline` over piping a full log into `head`, `git diff --stat` or `--name-only` over a full diff, and `find` with `-maxdepth` and `-name` over listing a whole tree. A native limit cuts at a meaningful boundary and stays a single command.
+
+`| head -N` is a last resort, not a ban. It loads, because `head` is allowlisted, so when a command has no native limit and you only need a capped preview, `cmd | head -20` is fine. Two cautions. Never `| head` a result the step logic then checks for completeness, because it can drop the very line you were looking for; use a bounded query or gather it in a step instead. And if you are capping a flood, that is usually a sign the data should be gathered in a step during the run, not injected at load.
+
+One compound form is not only allowed but recommended: the trailing `2>/dev/null || echo <sentinel>` guard. It is a `||` chain, and it loads because both parts qualify. The sentinel side is a bare `echo`, which is allowlisted, and the primary side is an allowlisted read-only command or one your `allowed-tools` declares. Use it on any command that exits non-zero when its subject is absent, so the command exits 0 and injects a value the step logic can check. `git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown` keeps its guard because `origin/HEAD` may be unset.
+
+One edge is worth knowing. The read-only `git config` form on the allowlist is `git config --get`, so write `git config --get user.name`, not the bare `git config user.name`. The bare form is accepted as a lone command but not as a part of a `&&` / `;` / `||` chain, where it then needs an explicit `Bash(git config *)` rule. Using `--get` keeps the guarded form self-sufficient: `git config --get user.name || echo unset` loads on the allowlist alone.
+
+This reflects the loader's current behavior. The exact allowlist can shift between Claude Code versions, so when a command is not clearly a plain read-only form, prefer the simplest single-command version or move the logic into a script (next rule).
 
 ### Rule: Use shell scripts for complex operations
 
-When a task requires pipes, redirects, subcommand substitution, JSON construction, or multi-step logic, extract it into a shell script and call the script from skill steps (not from context injection).
+When a task requires command substitution, process substitution, heredocs, JSON construction, or multi-step logic, extract it into a shell script and call the script from skill steps (not from context injection).
 
-A common case is posting structured data to an API. Building a JSON payload inline with a heredoc, then piping it to a CLI, mixes heredocs, pipes, and substitution in one command. None of that survives the context injection match.
+A common case is posting structured data to an API. Building a JSON payload inline with a heredoc, then piping it to a CLI, mixes a heredoc and command substitution into one command. The heredoc and the substitution are both refused at load, so none of it runs. Put it in a script instead.
 
 **Before (inline in SKILL.md, fails):**
 ```
@@ -152,17 +168,17 @@ This bites skills that document or analyze other skills. A skill whose SKILL.md 
 
 ## What NOT to Use in Context Injection
 
-| Pattern | Example | Why It Fails |
+| Pattern | Example | What happens |
 |---------|---------|--------------|
-| Pipes | `command \| sed ...` | Permissions/execution failures |
-| Redirects | `command 2>/dev/null` | Unnecessary; empty output is valid |
-| Subcommand substitution | `$(command)` | Permissions/execution failures |
-| Chained commands | `cmd1 && cmd2` | Permissions/execution failures |
-| Output limiting | `command \| head -N` | Let full output inject |
+| Command substitution | `$(command)` | Refused every time (`Contains command_substitution`), even when declared |
+| Process substitution | `<(command)`, `>(command)` | Refused every time (`Contains process_substitution`), even when declared |
+| Subshell or background | `( cmd )`, `cmd &` | Refused as "not a simple read-only command" |
+| Dangerous tool flags | `find ... -exec`, `find ... -delete`, `sed -i` | Refused even with a matching `Bash()` prefix rule |
+| A stage that is neither allowlisted nor declared | `command \| custom-bin` | Aborts the whole skill load; the error names only the offending stage |
+| Large injected output | full `git diff`, unbounded `git log`, whole-tree `find` | Bound at the source (`-n`, `--stat`, `--name-only`, `-maxdepth`); a big value persists in context for the whole run. `\| head -N` is a last resort, not broken |
 | `ls` for detection | `ls filename` | Use `find` instead; `ls` fails on missing files |
 | Heredocs | `<<'EOF' ... EOF` | Extract to shell scripts |
-| Complex inline logic | `test -f X && echo Y \|\| echo N` | Use `find` for detection instead |
-| Literal syntax in prose | Showing the bang-backtick pattern as an example | Loader parses raw text; use "bang-backtick syntax" instead |
+| Literal bang-backtick syntax in prose | Showing the pattern as an example | Loader parses raw text; use "bang-backtick syntax" instead |
 
 ## Referencing Injected Context in Steps
 
@@ -199,8 +215,8 @@ Examples organized by purpose:
 - `` !`gh pr diff --name-only 2>/dev/null || echo "no pr"` `` — PR changed files (fails when no PR exists)
 
 **User identity:**
-- `` !`git config user.name || echo unset` `` — git user name (exits 1 when identity is unset)
-- `` !`git config user.email || echo unset` `` — git user email
+- `` !`git config --get user.name || echo unset` `` — git user name (exits 1 when identity is unset)
+- `` !`git config --get user.email || echo unset` `` — git user email
 - `` !`whoami` `` — OS username
 
 **File/directory discovery:**
@@ -218,12 +234,12 @@ Examples organized by purpose:
 ## Summary Checklist
 
 1. Use `` !`command` `` in `## Pre-requisites` or `## Project Context`
-2. Single commands only — no pipes, subcommand substitution, or `&&`-chaining; the one allowed compound is a trailing `2>/dev/null || echo <sentinel>` guard (items 3-4)
+2. Every command, and every pipe stage or chain part, must be an allowlisted read-only form or explicitly declared in `allowed-tools`; a part that is neither aborts the whole skill load. Never use command substitution `$(...)`, process substitution `<(...)`, subshells, or `&`, which are refused even when declared. Pipes and `&&` / `;` / `||` chains are fine when every part qualifies, but prefer one flag-driven command; the trailing `2>/dev/null || echo <sentinel>` guard is the recommended compound (items 3-4)
 3. Use `which {command} 2>/dev/null || echo "not installed"` for tool availability checks
 4. Guard any read that exits non-zero when its subject is absent (`git symbolic-ref … origin/HEAD`, `git log/diff origin/HEAD…`, `gh pr diff`, `git config user.name/email`) with a trailing `2>/dev/null || echo <sentinel>`, and gate its consumer on that sentinel
 5. Use `find` for file/directory detection, not `ls`
 6. Extract complex operations into shell scripts
-7. Handle empty output in step logic — don't trim it with `| head`
+7. Handle empty output in step logic; keep injected values small by bounding at the source (`git log -n`, `--stat`, `find -maxdepth`), and never trim a result you then check for completeness
 8. Do not duplicate commands across sections
 9. Use separate `Bash()` entries in `allowed-tools`
 10. Never use the literal bang-backtick pattern in SKILL.md prose — the loader parses raw text regardless of markdown escaping

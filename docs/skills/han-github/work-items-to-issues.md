@@ -44,7 +44,7 @@ Give it:
 
 1. **The `work-items.md` path.** The single file produced by `/plan-work-items`. If you do not provide it, the skill asks.
 2. **The target repo or repos, optional.** The skill derives the item-to-repo map from the file's cross-repo work-order prose and corroborates it against the file paths in each item. Naming the repo (as `org/repo`) removes ambiguity when the prose is thin.
-3. **A label, optional.** Pass `--label <name>` to upsert that label and apply it to every issue. The default is no label.
+3. **A label, optional.** Pass `--label <name>` to apply that label to every issue (it is created only if it does not already exist, so an existing label keeps its color and description). The default is no label.
 4. **An assignee, optional.** Pass `--assignee <user>` to assign every issue to that user. The default is no assignee.
 
 Example prompts:
