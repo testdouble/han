@@ -1,0 +1,9 @@
+{
+  "name": "han-experimental",
+  "description": "Experimental, not-yet-stabilized skills for the Han suite. Home of review-skill-or-agent, which reviews a finished Claude Code skill or agent against the plugin-authoring guidance and quality dimensions and produces a severity-ranked report. Depends on han-core (for the reviewer agents it dispatches) and han-plugin-builder (for the authoring guidance it grounds against). Opt-in: installed on its own, not pulled in by the han meta-plugin. Skills here may change or graduate to another plugin without notice.",
+  "version": "0.1.0",
+  "dependencies": [
+    "han-core",
+    "han-plugin-builder"
+  ]
+}
