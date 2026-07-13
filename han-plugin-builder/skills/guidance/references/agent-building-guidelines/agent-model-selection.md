@@ -5,13 +5,13 @@ paths:
 
 # Choosing the Right Model for Agent Definitions
 
-Agents support a `model` frontmatter field that skills do not. Choosing the right model is about matching capability and speed to the task the agent performs. **Cost is not a factor in model selection.** Choose based on what the task demands, not price.
+Han agents run across hosts with different model namespaces. Omit the `model` field in portable agent definitions so the host uses the operator's configured model. **Cost is not a factor when an operator chooses that model.** Choose based on what the work demands, not price.
 
 ## The `model` Field
 
-The `model` field in agent frontmatter controls which AI model the agent uses.
+The `model` field is host-specific. Claude Code accepts its own aliases and model IDs, while other hosts resolve different names.
 
-**Valid values:**
+**Claude Code values:**
 
 | Value     | Behavior                                          |
 |-----------|---------------------------------------------------|
@@ -20,31 +20,28 @@ The `model` field in agent frontmatter controls which AI model the agent uses.
 | `haiku`   | Fastest model. Low-latency, lightweight tasks.    |
 | `inherit` | Uses the same model as the user's main session.   |
 
-**Default behavior:** If `model` is omitted, the agent defaults to `inherit`. A full model ID (for example `claude-opus-4-8`) is also accepted in place of an alias.
+If `model` is omitted, Claude Code defaults to `inherit`. Other hosts apply their own default or configured sub-agent model.
 
-**Syntax example:**
+**Portable syntax:**
 
 ```yaml
 ---
 name: my-agent
 description: "Does a specific thing"
 tools: Read, Glob, Grep
-model: sonnet
 ---
 ```
 
-**Resolution order.** When an agent runs, Claude Code resolves the model from the first source that is set:
+**Claude Code resolution order.** When an agent runs, Claude Code resolves the model from the first source that is set:
 
 1. The `CLAUDE_CODE_SUBAGENT_MODEL` environment variable.
-2. The model chosen at dispatch time (Claude's own decision when it delegates).
-3. The agent definition's `model` frontmatter (the value this doc is about).
-4. The main conversation's model (the `inherit` default).
+2. The model chosen at dispatch time.
+3. The agent definition's `model` frontmatter.
+4. The main conversation's model.
 
-The frontmatter `model` is the level you control as an agent author, but an operator's env var or a dispatch-time choice can override it.
+Han omits agent-level and dispatch-time model values. This keeps Claude aliases out of non-Claude hosts and leaves model selection with the operator. A host-specific plugin may pin a model only when it does not claim cross-host compatibility.
 
-**Scope: this rule governs agent definition files only, not skill dispatch.** "Always set model explicitly" applies to the `model:` frontmatter of an agent definition (`**/agents/**/*.md`). It does NOT mean a skill should pass a `model` override on its Agent tool calls. A skill that hard-codes a tier name at dispatch (`pass model: "sonnet"`) sends a Claude-specific identifier across the host boundary, which fails on non-Claude hosts that have their own model namespace, and it silently supersedes each dispatched agent's own frontmatter tier. Skills should pass no model override; let each agent's frontmatter tier govern on Claude Code, and let the host default govern elsewhere.
-
-## Model Characteristics
+## Claude Code Model Characteristics
 
 | Model   | Capability | Speed   | Best For                                                                                   |
 |---------|------------|---------|--------------------------------------------------------------------------------------------|
@@ -52,35 +49,35 @@ The frontmatter `model` is the level you control as an agent author, but an oper
 | `sonnet`| High       | Fast    | Code generation, data analysis, agentic tool use, structured workflows                     |
 | `haiku` | Moderate   | Fastest | Real-time lookups, high-volume processing, simple pattern matching, quick searches         |
 
-## Decision Criteria
+## Operator Decision Criteria
 
-Walk through these questions in order to select the right model for an agent:
+Use these questions when configuring the host's session or sub-agent model. Do not encode the answer in a portable agent definition.
 
-### 1. Does the agent need to match the user's session model?
+### 1. Should agents match the session model?
 
-Use `inherit` (or omit the field). This is rare. Only appropriate when the agent's task is generic enough that the user's own model choice should carry through. Most agents have a specific cognitive profile that warrants an explicit model.
+Use the host's inheritance or default behavior. This is Han's portable default and lets the operator change models without editing plugin files.
 
-### 2. Does the agent require complex reasoning, nuanced judgment, or multi-dimensional analysis?
+### 2. Does the work require complex reasoning, nuanced judgment, or multi-dimensional analysis?
 
-Use `opus`. Signs that an agent needs opus:
+Choose the strongest model available on the host. Signs include:
 
 - Synthesizing findings across many files and drawing non-obvious conclusions
 - Auditing for subtle omissions or inconsistencies
 - Exploring large codebases where judgment calls determine search direction
 - Making qualitative assessments that require weighing competing factors
 
-### 3. Does the agent perform focused, targeted work with clear procedures?
+### 3. Does the work follow focused procedures?
 
-Use `sonnet`. Signs that an agent fits sonnet:
+Choose a balanced general-purpose model. Signs include:
 
 - Following defined protocols or checklists
 - Gathering evidence along well-defined paths
 - Validating against known criteria
 - Executing structured investigation steps
 
-### 4. Does the agent perform simple, fast lookups or high-volume processing?
+### 4. Does the work consist of simple, high-volume lookups?
 
-Use `haiku`. Signs that an agent fits haiku:
+Choose the host's fastest capable model. Signs include:
 
 - Quick file searches or pattern matching
 - Straightforward Q&A about code
@@ -89,12 +86,12 @@ Use `haiku`. Signs that an agent fits haiku:
 
 ### Summary Decision Table
 
-| Task Characteristic                                       | Model    |
-|-----------------------------------------------------------|----------|
-| Must match user's session model                           | `inherit`|
-| Complex reasoning, nuanced judgment, synthesis            | `opus`   |
-| Focused procedures, structured investigation, checklists  | `sonnet` |
-| Fast lookups, simple patterns, high volume                | `haiku`  |
+| Task characteristic                                    | Host configuration                  |
+|--------------------------------------------------------|-------------------------------------|
+| Must match the user's session model                    | Inherit or use the host default     |
+| Complex reasoning, nuanced judgment, synthesis         | Strongest available model           |
+| Focused procedures, structured investigation, checks  | Balanced general-purpose model      |
+| Fast lookups, simple patterns, high volume             | Fastest model that meets the demand |
 
 ## A Note on Cost
 
@@ -129,14 +126,14 @@ The shape: fast lookup and classification agents fit haiku; structured-protocol 
 | statusline-setup  | `sonnet`  | Focused configuration task with a clear procedure.                  |
 | claude-code-guide | `haiku`   | Fast Q&A lookups against Claude Code documentation.                 |
 
-These examples reinforce the decision criteria: opus for synthesis and judgment, sonnet for structured procedures, haiku for fast lookups, inherit for generic tasks.
+These examples show how a host operator can choose a model: stronger models for synthesis and judgment, balanced models for structured procedures, faster models for lookups, or the session model for generic tasks.
 
 ## Summary Checklist
 
-1. Always set `model` explicitly. Do not rely on the `inherit` default unless `inherit` is the intentional choice.
-2. Follow the decision criteria flow: inherit → opus → sonnet → haiku.
-3. Never choose a model based on cost.
-4. When unsure, prefer `sonnet` as the default. It balances capability and speed well.
+1. Omit `model` from an agent that must run across hosts.
+2. Never pass a host-specific model name from a portable skill.
+3. Let the operator configure the host's session or sub-agent model.
+4. Never choose a model based on cost.
 
 ## Cross-References
 

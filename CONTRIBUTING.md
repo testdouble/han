@@ -56,7 +56,7 @@ When a change adds, removes, or moves a skill between plugins, update the market
 
 ## Adding an agent
 
-1. Create `han-core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. See [agent-domain-focus.md](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
+1. Create `han-core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`) and the agent body. Omit `model` so each supported host uses the operator's configured model. See [agent-model-selection.md](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md) for the portability rule and [agent-domain-focus.md](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md) for how narrow and named the domain vocabulary should be.
 2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/han-core/{name}.md` and fill it in. Every agent gets a long-form doc.
 3. Add the agent to the [Agents Index](./docs/agents/README.md) under the right role group.
 
