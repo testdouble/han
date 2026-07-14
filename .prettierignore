@@ -1,14 +1,12 @@
 # Markdown is the product, not just prose about it: skills, agents, and reference
 # files are read as raw source by agents, so a transform that renders the same can
 # still change what an agent is told to do. Prettier has two such transforms that
-# cannot be turned off, because they are core CommonMark normalizations:
-#   * It renumbers ordered lists, while the prose cross-references to those steps
-#     ("see Step 6") stay put and end up pointing at the wrong ones.
-#   * It strips the spaces inside inline code spans, so a heading spec written as
-#     ` — ` becomes `—` next to prose that still says "with surrounding spaces".
-# Both survive proseWrap: preserve and embeddedLanguageFormatting: off, so there is
-# no configuration that formats this repo's Markdown without corrupting it.
-*.md
+# cannot be turned off, because they are core CommonMark normalizations: it
+# renumbers ordered lists, and it strips the padding spaces inside inline code
+# spans. The source is kept robust to both (ordered lists are already sequential,
+# and no prose wraps a padded spec like ` — ` in backticks), so proseWrap: preserve
+# plus embeddedLanguageFormatting: off formats this repo's Markdown without
+# corrupting it. Keep it that way when editing.
 
 # Static historical artifacts: left as written.
 docs/plans/
@@ -16,6 +14,11 @@ docs/research/
 
 # Vendored third-party assets: checked in verbatim, never reformat.
 han-reporting/skills/html-summary/assets/
+
+# A schematic HTML sketch, not real HTML: Prettier hard-errors trying to parse it.
+# The prek hook never hands it over (it filters to markdown, JSON, YAML, and JS),
+# but ignore it here too so a direct `prettier .` stays green.
+han-reporting/skills/html-summary/references/html-template.html
 
 # Dependencies and generated files.
 node_modules/

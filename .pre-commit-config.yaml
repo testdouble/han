@@ -6,11 +6,13 @@
 exclude: "^(docs/plans/|docs/research/|han-reporting/skills/html-summary/assets/)"
 
 repos:
-  # Prettier owns formatting for JSON, YAML, and JS at 120 columns. Markdown is
-  # deliberately excluded in .prettierignore: agents read skills and reference
-  # files as raw source, and Prettier's list renumbering and code-span trimming
-  # change what those files say. Running the local devDependency keeps Prettier's
-  # version in package.json only, not duplicated in a hook mirror.
+  # Prettier owns formatting for Markdown, JSON, YAML, and JS at 120 columns.
+  # Markdown runs with proseWrap: preserve and embeddedLanguageFormatting off (see
+  # .prettierrc.json). Agents read skills and reference files as raw source, so the
+  # source is kept robust to the two normalizations Prettier cannot turn off —
+  # ordered-list renumbering and inline code-span trimming — and Prettier then
+  # leaves what those files say unchanged. Running the local devDependency keeps
+  # Prettier's version in package.json only, not duplicated in a hook mirror.
   # It runs first so the hygiene fixers below never fight it.
   - repo: local
     hooks:

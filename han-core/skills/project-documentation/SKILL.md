@@ -58,6 +58,7 @@ Lead with behavior. These rules make the doc an overview first and a reference s
 4. **Reference is supporting detail.** Place schema, core types, constants, implementation notes, API bodies, and component listings under the `## Technical Reference` region, below the behavioral spine. Treat them as lookup material, not the document's main body.
 
 Apply to every section:
+
 5. **Absolute file paths** from repo root (e.g., `src/services/auth.ts`, not `./auth.ts`).
 6. **Prefer pointers over long code.** In Technical Reference, point to the file and function and include a short illustrative snippet only where the source is non-obvious. Do not reproduce long (10-30 line) source blocks; link to the source instead.
 7. **Code fence language identifiers** must match the project's actual languages (from Step 1).
@@ -65,7 +66,7 @@ Apply to every section:
 9. **Skip CONDITIONAL sections** from the template that don't apply. Don't include empty sections.
 10. **One plain-language description** in the title area summarizing what the feature does.
 11. **Separate backend and frontend content.** Use `### Backend` / `### Frontend` sub-headings for cross-cutting features; skip sub-headings for single-layer features.
-12. **Diagrams are Mermaid, not ASCII.** Render the Architecture diagram, any Primary Flow diagram, and the Component Hierarchy as Mermaid in a ```` ```mermaid ```` fence — `flowchart` for structure and trees, `sequenceDiagram` for actor-to-system exchanges. Label nodes with parts a reader recognizes and label edges with what passes between them. Keep each diagram to the parts that matter; a reader should grasp the shape at a glance.
+12. **Diagrams are Mermaid, not ASCII.** Render the Architecture diagram, any Primary Flow diagram, and the Component Hierarchy as Mermaid in a ` ```mermaid ` fence — `flowchart` for structure and trees, `sequenceDiagram` for actor-to-system exchanges. Label nodes with parts a reader recognizes and label edges with what passes between them. Keep each diagram to the parts that matter; a reader should grasp the shape at a glance.
 
 **Updating existing documents:** Read the entire existing document first and note all content sources (existing doc, content migrated from CLAUDE.md or other files, any other inputs). Preserve the existing structure; don't reorganize unless requested. Identify sections needing changes based on Step 2 exploration. Add new sections where the template suggests them. If the existing doc has no plain-language behavioral layer (no Summary, How It Works, or Primary Flows), add those sections at the top so the updated doc leads with behavior. Flag removals as provisional for the Content Audit (Step 6). Update code examples to match current source and update cross-references in both directions.
 
@@ -121,7 +122,7 @@ Fidelity wins: the standard governs how the content is said, never whether a req
 
 ## Step 10: Verification
 
-1. **Documentation file:** Follows template structure and leads with behavior (Summary, How It Works, Primary Flows appear before the `## Technical Reference` region), no `{placeholder}` values remain, absolute file paths, reference code is short snippets or file pointers rather than long source blocks, no empty CONDITIONAL sections, Mermaid diagrams are syntactically valid (open with ```` ```mermaid ````, declare a diagram type, and parse)
+1. **Documentation file:** Follows template structure and leads with behavior (Summary, How It Works, Primary Flows appear before the `## Technical Reference` region), no `{placeholder}` values remain, absolute file paths, reference code is short snippets or file pointers rather than long source blocks, no empty CONDITIONAL sections, Mermaid diagrams are syntactically valid (open with ` ```mermaid `, declare a diagram type, and parse)
 2. **Agent config file:** Reference correctly formatted, link path valid, placed in right section
 3. **Cross-references:** Links point to real files, related docs link back to new doc
 4. **IA review applied:** Step 7 edits were applied, or any skipped edits were surfaced to the user

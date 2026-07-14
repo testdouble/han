@@ -42,7 +42,7 @@ The format below is what `/plan-work-items` emits and what the publish pipeline 
 
 These are the patterns the publish scripts grep for; violating them breaks the pipeline. The skill's Step 3 validation checks each invariant before publishing and proposes evidence-based repairs.
 
-- **Heading line** begins with `## ` followed by `<SYM-N>` (uppercase letters or digits, dash, digits), then ` — ` (em-dash with surrounding spaces), then the title.
+- **Heading line** begins with `## ` followed by `<SYM-N>` (uppercase letters or digits, dash, digits), then an em-dash with surrounding spaces, then the title.
 - **Heading rewrite.** After issue creation, `scripts/create-issues.sh` rewrites each heading in place to `## <SYM-N> (#NNN) — <title>`. The `(#NNN)` annotation is how `link-blockers.sh` resolves symbolic IDs to GitHub issue numbers, and how `create-issues.sh` knows to skip already-created slices on re-run. Both shapes — with and without `(#NNN)` — are valid input.
 - **Slice body** ends at the next `## ` heading or end of file.
 - **Screenshot URLs** use the exact path scheme `.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png`, where `<feature-slug>` is the kebab-cased basename of the plan folder. The upload script extracts this path verbatim from the per-repo file and reads the slug back out of it, so the slug written into the URL is authoritative.

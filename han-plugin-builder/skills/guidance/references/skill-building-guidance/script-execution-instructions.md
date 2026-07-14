@@ -28,7 +28,7 @@ Each step has three elements:
 
 Fenced code blocks with comments as pseudocode are ambiguous:
 
-```markdown
+````markdown
 <!-- BAD — do not do this -->
     ```
     # generate a unique temp file path
@@ -40,7 +40,7 @@ Fenced code blocks with comments as pseudocode are ambiguous:
     # post the review
     scripts/post-pr-review.sh {args}
     ```
-```
+````
 
 Problems:
 
