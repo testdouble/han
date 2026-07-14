@@ -68,7 +68,8 @@ the spec link populated so a reader can navigate from spec → decision log and
 find the outcome.
 -->
 
-- D{N}: {decision title} — {one-sentence outcome} (considered {alternative}; rejected because {one clause}). — Referenced in spec: {sections}.
+- D{N}: {decision title} — {one-sentence outcome} (considered {alternative}; rejected because {one clause}). —
+  Referenced in spec: {sections}.
 
 ## Full decisions
 
@@ -80,7 +81,8 @@ find the outcome.
 - **Evidence:** <!-- Codebase paths, ADR numbers, coding standards, or "user input" -->
 - **Rejected alternatives:**
   - ... — rejected because ...
-- **Linked technical notes:** <!-- T# IDs from feature-technical-notes.md whose mechanic enables this decision's behavior, or — -->
+- **Linked technical notes:**
+  <!-- T# IDs from feature-technical-notes.md whose mechanic enables this decision's behavior, or — -->
 - **Driven by findings:** <!-- F# IDs from team-findings.md, or — -->
 - **Dependent decisions:** <!-- D# IDs of later decisions that rested on this one -->
 - **Referenced in spec:** <!-- feature-specification.md sections that cite this decision -->

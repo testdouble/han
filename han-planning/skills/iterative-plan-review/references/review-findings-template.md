@@ -52,14 +52,18 @@ feature-technical-notes.md in sync.
 ### F1: {Finding title}
 
 - **Agent:** <!-- specialist sub-agent name, or `self-review` in lightweight mode -->
-- **Category:** <!-- assumption refuted / overlap / ambiguity / edge case / unhandled failure mode / standards conflict / mechanics leaking into spec (spec-aware mode only) -->
-- **Finding:** <!-- What was surfaced, with citations to specific codebase paths, file:line, ADR IDs, or coding-standard sections -->
+- **Category:**
+  <!-- assumption refuted / overlap / ambiguity / edge case / unhandled failure mode / standards conflict / mechanics leaking into spec (spec-aware mode only) -->
+- **Finding:**
+  <!-- What was surfaced, with citations to specific codebase paths, file:line, ADR IDs, or coding-standard sections -->
 - **Evidence considered:** <!-- Code paths, docs, ADRs, conventions that back the finding -->
-- **Resolution:** <!-- What the skill did about it — the plan edit applied, the clarification captured, or why the finding was deferred -->
+- **Resolution:**
+  <!-- What the skill did about it — the plan edit applied, the clarification captured, or why the finding was deferred -->
 - **Resolved by:** <!-- evidence / user input / re-reframing / deferred to open item -->
 - **Raised in round:** <!-- R# ID(s) from review-iteration-history.md -->
 - **Changed in plan:** <!-- plan sections that were updated, or — -->
-- **Changed in tech-notes:** <!-- spec-aware mode only and only when feature-technical-notes.md exists: T# IDs added or edited, or — -->
+- **Changed in tech-notes:**
+  <!-- spec-aware mode only and only when feature-technical-notes.md exists: T# IDs added or edited, or — -->
 
 ### F2: {Finding title}
 

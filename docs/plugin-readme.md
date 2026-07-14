@@ -1,14 +1,18 @@
 # Plugin README
 
-Every plugin needs a README.md at its root directory for human readers on GitHub. The README is not loaded by the plugin system. It exists purely for discoverability and onboarding when someone browses the repository.
+Every plugin needs a README.md at its root directory for human readers on GitHub. The README is not loaded by the plugin
+system. It exists purely for discoverability and onboarding when someone browses the repository.
 
 ## The Rules
 
 ### Rule: Every plugin must have a root-level README.md
 
-Place a `README.md` in the plugin's root directory (next to `.claude-plugin/`). This file is for human readers browsing the repository on GitHub. It is not loaded by the plugin system and has no effect on skill behavior.
+Place a `README.md` in the plugin's root directory (next to `.claude-plugin/`). This file is for human readers browsing
+the repository on GitHub. It is not loaded by the plugin system and has no effect on skill behavior.
 
-Skill directories must NOT have their own README files. All skill documentation belongs in `SKILL.md` and `references/`. See [Naming Conventions](../han-plugin-builder/skills/guidance/references/skill-building-guidance/naming-conventions.md) for details.
+Skill directories must NOT have their own README files. All skill documentation belongs in `SKILL.md` and `references/`.
+See [Naming Conventions](../han-plugin-builder/skills/guidance/references/skill-building-guidance/naming-conventions.md)
+for details.
 
 ```
 han/
@@ -24,9 +28,12 @@ han/
 
 ### Rule: Include only entity sections the plugin has
 
-The README may include sections for Skills, Custom Agents, Hooks, MCP, and LSP, but only include sections for entity types the plugin provides. Every plugin has at least one skill, so the Skills section is always present. Don't include empty sections.
+The README may include sections for Skills, Custom Agents, Hooks, MCP, and LSP, but only include sections for entity
+types the plugin provides. Every plugin has at least one skill, so the Skills section is always present. Don't include
+empty sections.
 
 **Before (empty sections):**
+
 ```markdown
 ## Skills
 
@@ -42,6 +49,7 @@ The README may include sections for Skills, Custom Agents, Hooks, MCP, and LSP, 
 ```
 
 **After (only relevant sections):**
+
 ```markdown
 ## Skills
 
@@ -50,7 +58,9 @@ The README may include sections for Skills, Custom Agents, Hooks, MCP, and LSP, 
 
 ### Rule: List all skills with slash-command syntax
 
-In the Skills section, list every skill using `/skill-name` format with a one-line description. Condense the description from the skill's frontmatter. Keep it shorter than the full frontmatter description but still clear about what the skill does.
+In the Skills section, list every skill using `/skill-name` format with a one-line description. Condense the description
+from the skill's frontmatter. Keep it shorter than the full frontmatter description but still clear about what the skill
+does.
 
 ```markdown
 ## Skills
@@ -62,36 +72,42 @@ In the Skills section, list every skill using `/skill-name` format with a one-li
 
 ### Rule: Add Getting Started for plugins with guided workflows
 
-Include a Getting Started section between the description and the Skills list when skills build on each other's output. For example, one skill might write a reference file that other skills then consume. Number the steps in the recommended order and explain what each step produces and why it matters for subsequent steps.
+Include a Getting Started section between the description and the Skills list when skills build on each other's output.
+For example, one skill might write a reference file that other skills then consume. Number the steps in the recommended
+order and explain what each step produces and why it matters for subsequent steps.
 
 Single-skill plugins and plugins where all skills are independent skip this section entirely.
 
 **When to include:**
+
 ```markdown
 # Han Plugin
 
 {description}
 
-## Getting Started        <!-- Skills have dependency chains -->
+## Getting Started <!-- Skills have dependency chains -->
 
 ### 1. Discover Your Project
+
 ...
 
 ## Skills
 ```
 
 **When to skip:**
+
 ```markdown
 # Brand Messaging Plugin
 
 {description}
 
-## Skills                 <!-- Single skill, no dependencies -->
+## Skills <!-- Single skill, no dependencies -->
 ```
 
 ### Rule: Skills Reference provides detailed per-skill documentation
 
-After the Installation section, include a Skills Reference section with detailed documentation for each skill. Each entry includes:
+After the Installation section, include a Skills Reference section with detailed documentation for each skill. Each
+entry includes:
 
 1. A heading with the slash-command name and display name.
 2. A paragraph description (more detailed than the one-liner in the Skills section).
@@ -105,27 +121,29 @@ Separate entries with horizontal rules (`---`).
 
 ### `/investigate` - Evidence-based Investigation
 
-Evidence-based investigation of issues, bugs, API calls, integrations, and other
-aspects of software development that need a deep dive to find the root cause and
-solutions. Use when you need in-depth understanding of problems, a full analysis
-of the reasons, and an evidence-based solution with adversarial validation.
+Evidence-based investigation of issues, bugs, API calls, integrations, and other aspects of software development that
+need a deep dive to find the root cause and solutions. Use when you need in-depth understanding of problems, a full
+analysis of the reasons, and an evidence-based solution with adversarial validation.
 
 **Files:** `SKILL.md`, `references/template.md`
 
 **Example prompts:**
-- `/investigate`. *"Why are webhook deliveries failing intermittently?"*
-- `/investigate`. *"Users are seeing stale data after updating their profile"*
-- `/investigate`. *"The background job queue is backing up during peak hours"*
+
+- `/investigate`. _"Why are webhook deliveries failing intermittently?"_
+- `/investigate`. _"Users are seeing stale data after updating their profile"_
+- `/investigate`. _"The background job queue is backing up during peak hours"_
 
 ---
 
 ### `/project-discovery` - Project Discovery
+
 ...
 ```
 
 ### Rule: Use the template
 
-Follow the structural template at `templates/plugin-readme-template.md`. The template includes HTML comments marking which sections are optional and should be removed when not applicable.
+Follow the structural template at `templates/plugin-readme-template.md`. The template includes HTML comments marking
+which sections are optional and should be removed when not applicable.
 
 ## Summary Checklist
 

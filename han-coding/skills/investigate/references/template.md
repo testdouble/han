@@ -136,6 +136,6 @@
 
 <!-- CONDITIONAL: Include this section only when standards, conventions, ADRs, or patterns inferred from surrounding code govern the fix. These are the standards the fix was written against. If nothing governs the fix, omit the section per the section rule at the top. -->
 
-| Standard | Source | Applies To |
-|----------|--------|------------|
+| Standard                              | Source                                                     | Applies To                          |
+| ------------------------------------- | ---------------------------------------------------------- | ----------------------------------- |
 | Description of standard or convention | File path, ADR number, or "inferred from surrounding code" | Which files or changes this governs |

@@ -63,8 +63,12 @@ Steelman each option before weighing it.
 
 ## Recommendation
 
-- **Recommendation:** {the recommended option — reference its O# when options exist — or "No clear winner: {deciding criteria or missing information}"}
-- **Evidence basis:** {explicitly state what the recommendation rests on: which parts are corroborated evidence (cite A#), which rest on a single source (cite A#), and — exploratory mode only — which rest on unevidenced reasoning. In strict mode the recommendation never rests on reasoning alone; if only reasoning is available, this is "No clear winner" with what evidence would settle it.}
+- **Recommendation:** {the recommended option — reference its O# when options exist — or "No clear winner: {deciding
+  criteria or missing information}"}
+- **Evidence basis:** {explicitly state what the recommendation rests on: which parts are corroborated evidence (cite
+  A#), which rest on a single source (cite A#), and — exploratory mode only — which rest on unevidenced reasoning. In
+  strict mode the recommendation never rests on reasoning alone; if only reasoning is available, this is "No clear
+  winner" with what evidence would settle it.}
 
 ## Validation
 
@@ -72,7 +76,8 @@ Steelman each option before weighing it.
 
 ### V1: {hypothesis challenged}
 
-- **Strategy:** Challenge the Evidence | Challenge the Options Framing | Challenge the Recommendation | Challenge the Evidence-Gathering Integrity
+- **Strategy:** Challenge the Evidence | Challenge the Options Framing | Challenge the Recommendation | Challenge the
+  Evidence-Gathering Integrity
 - **Investigation:** {what was checked}
 - **Result:** Confirmed / Refuted / Partially Refuted
 - **Impact:** {what changed, or why this supports the recommendation}
@@ -92,7 +97,8 @@ rewritten into the "No clear winner" form. -->
 ### Confidence Assessment
 
 - **Confidence:** High / Medium / Low
-- **Remaining Risks:** {single sources relied on, staleness, uncovered scope, and — exploratory mode — how much the recommendation leans on reasoning}
+- **Remaining Risks:** {single sources relied on, staleness, uncovered scope, and — exploratory mode — how much the
+  recommendation leans on reasoning}
 
 ## Sources
 
@@ -111,10 +117,10 @@ source stays a single table row. Entry depth scales with the band; the section
 itself is always present.
 -->
 
-| ID | Source | Link / location | Retrieved | Trust class | Summary (one line) | Evidence status |
-|---|---|---|---|---|---|---|
-| A1 | {short title} | {URL / `repo/path.ext:line` / `provided: …`} | {YYYY-MM-DD or n/a} | codebase / web / provided | {one line on what it says} | corroborated by {A#} / single source (caveated) / contradicted by {A#} |
-| A2 | … | … | … | … | … | … |
+| ID  | Source        | Link / location                              | Retrieved           | Trust class               | Summary (one line)         | Evidence status                                                        |
+| --- | ------------- | -------------------------------------------- | ------------------- | ------------------------- | -------------------------- | ---------------------------------------------------------------------- |
+| A1  | {short title} | {URL / `repo/path.ext:line` / `provided: …`} | {YYYY-MM-DD or n/a} | codebase / web / provided | {one line on what it says} | corroborated by {A#} / single source (caveated) / contradicted by {A#} |
+| A2  | …             | …                                            | …                   | …                         | …                          | …                                                                      |
 
 <!-- Full prose detail ONLY for sources the recommendation rests on. Every other
 source stays in the table above. Number in the order discovered. -->
@@ -123,6 +129,7 @@ source stays in the table above. Number in the order discovered. -->
 
 - **Link / location:** {full URL — or `repo/path.ext:line` — or `provided: {reference}`}
 - **Retrieved:** {YYYY-MM-DD for web sources; "n/a" for codebase or provided material}
-- **Trust class:** codebase (trusted current-state anchor) | web (outside the trust boundary) | provided (user-supplied — interested-party scrutiny)
+- **Trust class:** codebase (trusted current-state anchor) | web (outside the trust boundary) | provided (user-supplied
+  — interested-party scrutiny)
 - **Summary:** {one short paragraph: what this source says that is relevant to the results}
 - **Evidence status:** corroborated by {A#} | single source (caveated) | contradicted by {A#}

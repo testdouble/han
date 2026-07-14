@@ -1,8 +1,11 @@
 # /{skill-name}
 
-Operator documentation for the `/{skill-name}` skill in the han plugin. This document helps you decide *when* and *how* to use the skill. For what the skill does internally, read the skill definition at [`{plugin}/skills/{skill-name}/SKILL.md`](../../../{plugin}/skills/{skill-name}/SKILL.md).
+Operator documentation for the `/{skill-name}` skill in the han plugin. This document helps you decide _when_ and _how_
+to use the skill. For what the skill does internally, read the skill definition at
+[`{plugin}/skills/{skill-name}/SKILL.md`](../../../{plugin}/skills/{skill-name}/SKILL.md).
 
-> See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) · [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
+> See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) ·
+> [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
 
 ## TL;DR
 
@@ -41,12 +44,13 @@ Give it:
 
 Example prompts:
 
-- `/{skill-name}`. *"{Concrete example 1}"*
-- `/{skill-name} {arg}`. *"{Concrete example 2}"*
+- `/{skill-name}`. _"{Concrete example 1}"_
+- `/{skill-name} {arg}`. _"{Concrete example 2}"_
 
 ## What you get back
 
-{Describe every artifact the skill produces: file names, where they land, and what each section or ID scheme means. If multiple files are cross-referenced, explain how the cross-references work.}
+{Describe every artifact the skill produces: file names, where they land, and what each section or ID scheme means. If
+multiple files are cross-referenced, explain how the cross-references work.}
 
 ## How to get the most out of it
 
@@ -57,19 +61,27 @@ Example prompts:
 
 ## YAGNI (when applicable)
 
-{If this skill produces or reviews an artifact that can accrete speculative items (plan steps, abstractions, infrastructure additions, observability hooks, configuration knobs, ADRs, coding standards, tests, or build phases), describe the YAGNI posture this skill takes. Name which items it gates, which named anti-patterns force a finding, and whether the rule is enforcing (defer-by-default) or advisory-only. Explain how the deferral surfaces in the artifact. Cross-reference [YAGNI](../../yagni.md). Skills that do not produce or review such artifacts can omit this section.}
+{If this skill produces or reviews an artifact that can accrete speculative items (plan steps, abstractions,
+infrastructure additions, observability hooks, configuration knobs, ADRs, coding standards, tests, or build phases),
+describe the YAGNI posture this skill takes. Name which items it gates, which named anti-patterns force a finding, and
+whether the rule is enforcing (defer-by-default) or advisory-only. Explain how the deferral surfaces in the artifact.
+Cross-reference [YAGNI](../../yagni.md). Skills that do not produce or review such artifacts can omit this section.}
 
 ## Cost and latency
 
-{Model tier, dispatch fan-out, typical run shape. Name the most expensive single step. Note whether the skill is built for tight-loop iteration or for infrequent high-signal runs.}
+{Model tier, dispatch fan-out, typical run shape. Name the most expensive single step. Note whether the skill is built
+for tight-loop iteration or for infrequent high-signal runs.}
 
 ## In more detail (optional)
 
-{Expanded prose: modes of operation, protocol sketches, decision flow, design rationale. This is the only section where narrative prose is appropriate. Everything above is structured for scannability.}
+{Expanded prose: modes of operation, protocol sketches, decision flow, design rationale. This is the only section where
+narrative prose is appropriate. Everything above is structured for scannability.}
 
 ## Sources
 
-The skill's protocols and vocabulary are grounded in {named practice / named framework}. Each source below is cited because the skill draws specific, named artifacts from it. Not as a reading list, but as the provenance of the principles the skill applies.
+The skill's protocols and vocabulary are grounded in {named practice / named framework}. Each source below is cited
+because the skill draws specific, named artifacts from it. Not as a reading list, but as the provenance of the
+principles the skill applies.
 
 ### {Source 1: Author, Title, Year}
 
@@ -80,7 +92,9 @@ URL: {url}
 ## Related documentation
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the
+  acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [`{sibling-skill}`](../{plugin}/{sibling-skill}.md). {Why and when they pair}
 - [`{agent-this-skill-dispatches}`](../../agents/han-core/{agent}.md). {Role in this skill}
-- [{build-guideline link}](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/{file}.md). {Relevance}
+- [{build-guideline link}](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/{file}.md).
+  {Relevance}

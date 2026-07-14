@@ -19,9 +19,6 @@
     "category": "Developer Tools",
     "capabilities": ["Skills"],
     "websiteURL": "https://github.com/testdouble/han",
-    "defaultPrompt": [
-      "Edit a draft for readability with Han.",
-      "Apply the Han readability standard to this document."
-    ]
+    "defaultPrompt": ["Edit a draft for readability with Han.", "Apply the Han readability standard to this document."]
   }
 }

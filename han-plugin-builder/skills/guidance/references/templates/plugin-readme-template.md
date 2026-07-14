@@ -17,6 +17,7 @@
 **Skill:** `/skill-name`
 
 **Example prompts:**
+
 - "Example prompt 1"
 - "Example prompt 2"
 
@@ -27,6 +28,7 @@
 **Skill:** `/skill-name`
 
 **Example prompts:**
+
 - "Example prompt 1"
 - "Example prompt 2"
 
@@ -37,15 +39,16 @@
 
 ### {N}. Combining Skills in Prompts
 
-{2-3 sentences explaining that users can reference multiple skills in a single prompt and Claude will fire them in sequence, with each skill's output feeding context into the next. Tailor the explanation to the plugin's specific skill combinations.}
+{2-3 sentences explaining that users can reference multiple skills in a single prompt and Claude will fire them in
+sequence, with each skill's output feeding context into the next. Tailor the explanation to the plugin's specific skill
+combinations.}
 
 **Example prompts:**
 
-- "{Example prompt combining two or more skills in a natural sentence.}"
-  Triggers `/first-skill` first, then `/second-skill` {brief explanation of the chain}.
+- "{Example prompt combining two or more skills in a natural sentence.}" Triggers `/first-skill` first, then
+  `/second-skill` {brief explanation of the chain}.
 
-- "{Another example prompt combining a different set of skills.}"
-  Triggers `/skill-a`, then `/skill-b`, then `/skill-c`.
+- "{Another example prompt combining a different set of skills.}" Triggers `/skill-a`, then `/skill-b`, then `/skill-c`.
 
 <!-- End of optional Getting Started section -->
 
@@ -96,11 +99,13 @@ Add your marketplace to Claude Code, then install the plugin:
 
 ### `/skill-name` - Skill Display Name
 
-{Paragraph description of the skill — what it does, when to use it, and what it produces. More detail than the one-liner in the Skills section above.}
+{Paragraph description of the skill — what it does, when to use it, and what it produces. More detail than the one-liner
+in the Skills section above.}
 
 **Files:** `SKILL.md`, `references/template.md`
 
 **Example prompts:**
+
 - `/skill-name` — "Example prompt showing a common use case"
 - `/skill-name` — "Example prompt showing a different use case"
 - `/skill-name` — "Example prompt showing an edge case or advanced usage"
@@ -114,5 +119,6 @@ Add your marketplace to Claude Code, then install the plugin:
 **Files:** `SKILL.md`
 
 **Example prompts:**
+
 - `/another-skill` — "Example prompt 1"
 - `/another-skill` — "Example prompt 2"

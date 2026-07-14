@@ -1,32 +1,54 @@
 # Concepts
 
-Han is built out of two kinds of things: **skills** and **agents**. If you read this page once before you pick a slash command, the rest of the documentation will make sense.
+Han is built out of two kinds of things: **skills** and **agents**. If you read this page once before you pick a slash
+command, the rest of the documentation will make sense.
 
-> See also: [Plugin landing page](../README.md) · [Choosing a plugin](./choosing-a-han-plugin.md) · [Quickstart](./quickstart.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
+> See also: [Plugin landing page](../README.md) · [Choosing a plugin](./choosing-a-han-plugin.md) ·
+> [Quickstart](./quickstart.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
 
 ## TL;DR
 
-- A **skill** is a deterministic process you usually run with a slash command (like `/code-review`), though Claude can also auto-invoke it when your request matches the skill's description. Think: flowchart.
-- An **agent** is a specialist persona with judgment, dispatched by a skill or by you (like `adversarial-security-analyst`). Think: teammate.
-- Skills dispatch agents. The skill follows its flowchart, sends the agent off to do a judgment-heavy subtask (investigate a bug, review architecture, critique a plan), then folds the finding back into its output.
-- **Sizing** decides how many agents get dispatched. The skills that fan out to a swarm classify the work as small, medium, or large first, default to small, and scale the team and the iteration depth from there. See [Sizing](./sizing.md) for the full model.
-- **YAGNI** decides what survives. Every skill that produces an artifact and every agent that reviews one applies an evidence-based rule before committing items: features, plan steps, code recommendations, ADRs, coding standards, runbooks, alerts, indexes, tests, abstractions. Items without evidence get deferred (recorded for later, not silently dropped). See [YAGNI](./yagni.md).
-- **Evidence** decides how confident you are in what survives. Once YAGNI passes an item through, the evidence rule names the trust class of the citation (codebase, web, provided) and applies a corroboration gate to web sources. It also labels claims with no evidence at any tier as a distinct deferred state. See [Evidence](./evidence.md).
+- A **skill** is a deterministic process you usually run with a slash command (like `/code-review`), though Claude can
+  also auto-invoke it when your request matches the skill's description. Think: flowchart.
+- An **agent** is a specialist persona with judgment, dispatched by a skill or by you (like
+  `adversarial-security-analyst`). Think: teammate.
+- Skills dispatch agents. The skill follows its flowchart, sends the agent off to do a judgment-heavy subtask
+  (investigate a bug, review architecture, critique a plan), then folds the finding back into its output.
+- **Sizing** decides how many agents get dispatched. The skills that fan out to a swarm classify the work as small,
+  medium, or large first, default to small, and scale the team and the iteration depth from there. See
+  [Sizing](./sizing.md) for the full model.
+- **YAGNI** decides what survives. Every skill that produces an artifact and every agent that reviews one applies an
+  evidence-based rule before committing items: features, plan steps, code recommendations, ADRs, coding standards,
+  runbooks, alerts, indexes, tests, abstractions. Items without evidence get deferred (recorded for later, not silently
+  dropped). See [YAGNI](./yagni.md).
+- **Evidence** decides how confident you are in what survives. Once YAGNI passes an item through, the evidence rule
+  names the trust class of the citation (codebase, web, provided) and applies a corroboration gate to web sources. It
+  also labels claims with no evidence at any tier as a distinct deferred state. See [Evidence](./evidence.md).
 
 Those three are the whole decision model. Everything else is vocabulary.
 
-- **Readability** is a different kind of standard, not a fourth decision mechanic. Sizing, YAGNI, and evidence decide *what happens* to an item. Readability governs the *output* of the skills whose deliverable is prose a non-author reads, so that output leads with its main point, uses plain language, and reveals detail in layers. It is scoped to those reader-facing skills, not near-universal like the three mechanics. See [Readability](./readability.md).
+- **Readability** is a different kind of standard, not a fourth decision mechanic. Sizing, YAGNI, and evidence decide
+  _what happens_ to an item. Readability governs the _output_ of the skills whose deliverable is prose a non-author
+  reads, so that output leads with its main point, uses plain language, and reveals detail in layers. It is scoped to
+  those reader-facing skills, not near-universal like the three mechanics. See [Readability](./readability.md).
 
-> **Evaluating Han for a larger org?** Han is built for solo product engineers and small teams, not for large teams or enterprise. Read [Why solo and small teams, and not large teams or enterprise?](./why-solo-and-small-teams.md) for the honest fit answer before going further.
+> **Evaluating Han for a larger org?** Han is built for solo product engineers and small teams, not for large teams or
+> enterprise. Read [Why solo and small teams, and not large teams or enterprise?](./why-solo-and-small-teams.md) for the
+> honest fit answer before going further.
 
 ## Skills: the process layer
 
-A skill is a fixed sequence of steps that Claude Code runs. Typing the slash command is the primary way to trigger it, but not the only one.
+A skill is a fixed sequence of steps that Claude Code runs. Typing the slash command is the primary way to trigger it,
+but not the only one.
 
 - You invoke it: `/code-review`, `/plan-a-feature`, `/investigate`. This is the deliberate, primary path.
-- Claude may also auto-invoke it. Skill descriptions are written to match user intent, so a request like "can you make sure this code is solid?" can route into `/code-review` without you typing the command. This is on by default (the frontmatter field `disable-model-invocation` defaults to `false`); no Han skill turns it off. Either way the skill runs the same protocol.
+- Claude may also auto-invoke it. Skill descriptions are written to match user intent, so a request like "can you make
+  sure this code is solid?" can route into `/code-review` without you typing the command. This is on by default (the
+  frontmatter field `disable-model-invocation` defaults to `false`); no Han skill turns it off. Either way the skill
+  runs the same protocol.
 - It follows a defined protocol. Every reader who runs the same skill gets the same shape of output.
-- It is documented by a `SKILL.md` file inside `han-core/skills/{name}/` (or `han-planning/skills/{name}/`, `han-coding/skills/{name}/`, `han-github/skills/{name}/`, and the other plugins' `skills/{name}/` directories).
+- It is documented by a `SKILL.md` file inside `han-core/skills/{name}/` (or `han-planning/skills/{name}/`,
+  `han-coding/skills/{name}/`, `han-github/skills/{name}/`, and the other plugins' `skills/{name}/` directories).
 - It may dispatch one or more agents for the steps that need judgment.
 
 **The test:** could you draw the whole thing as a flowchart? If yes, it is a skill.
@@ -36,15 +58,18 @@ A skill is a fixed sequence of steps that Claude Code runs. Typing the slash com
 An agent is a specialist teammate. A model with a persona, a narrow domain, and an explicit posture.
 
 - An agent has a name like `adversarial-security-analyst`, `project-manager`, or `junior-developer`.
-- An agent applies contextual judgment. *Is this finding really a problem? Does the plan address the risk? Should we ask another specialist?*
+- An agent applies contextual judgment. _Is this finding really a problem? Does the plan address the risk? Should we ask
+  another specialist?_
 - An agent is documented by a single `.md` file inside `han-core/agents/`.
-- You can dispatch an agent directly with the `Agent` tool, but most agents get dispatched *for you* when a skill needs their input.
+- You can dispatch an agent directly with the `Agent` tool, but most agents get dispatched _for you_ when a skill needs
+  their input.
 
 **The test:** does this require reasoning about context rather than following a script? If yes, it is an agent.
 
 ## How they compose
 
-A skill runs its protocol and, at the steps that need judgment, dispatches an agent. The agent returns findings; the skill folds them into the final output.
+A skill runs its protocol and, at the steps that need judgment, dispatches an agent. The agent returns findings; the
+skill folds them into the final output.
 
 ```
 You → /plan-a-feature → (interview loop, codebase discovery)
@@ -57,50 +82,117 @@ You → /plan-a-feature → (interview loop, codebase discovery)
 
 A few concrete pairings from the han plugin:
 
-- **`/plan-a-feature` dispatches `junior-developer` and `project-manager` plus three to five specialists.** The specialists are chosen based on what the feature touches. A data-heavy feature brings in `data-engineer`. A feature with a production surface brings in `devops-engineer`. A user-visible flow brings in `user-experience-designer`.
-- **`/code-review` always dispatches `junior-developer` and `adversarial-security-analyst`, plus the rest of the roster conditionally** (`test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`) based on what the changed files touch. The roster scales with the [size](./sizing.md): a small change runs the minimum roster; a large change runs the full conditional roster. Each agent reviews the branch changes from its own lens, and the skill classifies their findings into the review output.
-- **`/architectural-analysis` always dispatches a spine of `structural-analyst`, `behavioral-analyst`, `risk-analyst`, and `software-architect`, plus the rest of the roster by signal** (`concurrency-analyst` when concurrency primitives are present; `adversarial-security-analyst`, `data-engineer`, `devops-engineer` when the focus area touches auth/PII, data contracts, or operational surface; `on-call-engineer` when application source in the focus area shows on-call resilience signal; `codebase-explorer` for large unfamiliar areas; `system-architect` at large size when a cross-service or bounded-context seam is present). The roster scales with the [size](./sizing.md): small runs the spine plus concurrency; large runs every signalled specialist. The discovery analysts run first, `risk-analyst` scores their findings, and the architects synthesize. When `system-architect` is not dispatched, cross-service and bounded-context concerns are surfaced as deferred so you can dispatch it separately.
-- **`/investigate` dispatches `evidence-based-investigator` plus conditional specialists** (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) based on the symptom, and follows up with `adversarial-validator` to prove the proposed fix will fix the bug rather than mask it.
-- **`/gap-analysis` dispatches `gap-analyzer` once for the primary analysis, then fans out a validator-and-augmenter swarm by default.** `adversarial-validator` and `junior-developer` (running an explicit actor-perspective sweep across human users, API callers, AI agents, and other actor types) are required at every size. `evidence-based-investigator` is required when the current state is concrete. `project-manager` is required at medium and large to consolidate Section 4 of the report. Domain specialists (`adversarial-security-analyst`, `data-engineer`, `user-experience-designer`, and others) are added based on what the gaps touch. Reply `no swarm` to opt out and fall back to a lightweight gap-analyzer-only pass.
-- **`/plan-a-phased-build` dispatches `information-architect` once at runtime** against the rendered build-phase outline, to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension before presenting the document to you. The skill applies plain-language leak findings as required edits, and structural findings when they preserve the document's contract.
+- **`/plan-a-feature` dispatches `junior-developer` and `project-manager` plus three to five specialists.** The
+  specialists are chosen based on what the feature touches. A data-heavy feature brings in `data-engineer`. A feature
+  with a production surface brings in `devops-engineer`. A user-visible flow brings in `user-experience-designer`.
+- **`/code-review` always dispatches `junior-developer` and `adversarial-security-analyst`, plus the rest of the roster
+  conditionally** (`test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`,
+  `concurrency-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`) based on what the changed files touch.
+  The roster scales with the [size](./sizing.md): a small change runs the minimum roster; a large change runs the full
+  conditional roster. Each agent reviews the branch changes from its own lens, and the skill classifies their findings
+  into the review output.
+- **`/architectural-analysis` always dispatches a spine of `structural-analyst`, `behavioral-analyst`, `risk-analyst`,
+  and `software-architect`, plus the rest of the roster by signal** (`concurrency-analyst` when concurrency primitives
+  are present; `adversarial-security-analyst`, `data-engineer`, `devops-engineer` when the focus area touches auth/PII,
+  data contracts, or operational surface; `on-call-engineer` when application source in the focus area shows on-call
+  resilience signal; `codebase-explorer` for large unfamiliar areas; `system-architect` at large size when a
+  cross-service or bounded-context seam is present). The roster scales with the [size](./sizing.md): small runs the
+  spine plus concurrency; large runs every signalled specialist. The discovery analysts run first, `risk-analyst` scores
+  their findings, and the architects synthesize. When `system-architect` is not dispatched, cross-service and
+  bounded-context concerns are surfaced as deferred so you can dispatch it separately.
+- **`/investigate` dispatches `evidence-based-investigator` plus conditional specialists** (`concurrency-analyst`,
+  `behavioral-analyst`, `data-engineer`) based on the symptom, and follows up with `adversarial-validator` to prove the
+  proposed fix will fix the bug rather than mask it.
+- **`/gap-analysis` dispatches `gap-analyzer` once for the primary analysis, then fans out a validator-and-augmenter
+  swarm by default.** `adversarial-validator` and `junior-developer` (running an explicit actor-perspective sweep across
+  human users, API callers, AI agents, and other actor types) are required at every size. `evidence-based-investigator`
+  is required when the current state is concrete. `project-manager` is required at medium and large to consolidate
+  Section 4 of the report. Domain specialists (`adversarial-security-analyst`, `data-engineer`,
+  `user-experience-designer`, and others) are added based on what the gaps touch. Reply `no swarm` to opt out and fall
+  back to a lightweight gap-analyzer-only pass.
+- **`/plan-a-phased-build` dispatches `information-architect` once at runtime** against the rendered build-phase
+  outline, to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension before presenting
+  the document to you. The skill applies plain-language leak findings as required edits, and structural findings when
+  they preserve the document's contract.
 
-You do not need to memorize these pairings to run a skill. You do need to know that they exist. That way, when the skill's output references "finding from `project-manager`" or "the architectural analysts flagged coupling," you know what that means.
+You do not need to memorize these pairings to run a skill. You do need to know that they exist. That way, when the
+skill's output references "finding from `project-manager`" or "the architectural analysts flagged coupling," you know
+what that means.
 
 ## Sizing: the dispatch lever
 
-Every skill that dispatches an agent swarm classifies the work as **small**, **medium**, or **large** before dispatching, then uses the band to cap the team or swarm size, the iteration depth, and the severity bands the agents escalate.
+Every skill that dispatches an agent swarm classifies the work as **small**, **medium**, or **large** before
+dispatching, then uses the band to cap the team or swarm size, the iteration depth, and the severity bands the agents
+escalate.
 
-- **Default is small.** Every sizing-aware skill starts the classification at small and only escalates when concrete signals require it.
-- **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
-- **Sizing-aware skills.** [`/architectural-analysis`](./skills/han-coding/architectural-analysis.md), [`/code-overview`](./skills/han-coding/code-overview.md), [`/code-review`](./skills/han-coding/code-review.md), [`/gap-analysis`](./skills/han-core/gap-analysis.md), [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md), [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md), [`/plan-implementation`](./skills/han-planning/plan-implementation.md), [`/research`](./skills/han-core/research.md).
+- **Default is small.** Every sizing-aware skill starts the classification at small and only escalates when concrete
+  signals require it.
+- **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra
+  surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first
+  positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
+- **Sizing-aware skills.** [`/architectural-analysis`](./skills/han-coding/architectural-analysis.md),
+  [`/code-overview`](./skills/han-coding/code-overview.md), [`/code-review`](./skills/han-coding/code-review.md),
+  [`/gap-analysis`](./skills/han-core/gap-analysis.md),
+  [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md),
+  [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md),
+  [`/plan-implementation`](./skills/han-planning/plan-implementation.md), [`/research`](./skills/han-core/research.md).
 
 Read the full [Sizing](./sizing.md) reference for the bands, the auto-classification process, and the per-skill rules.
 
 ## YAGNI: the inclusion gate
 
-Every skill that produces an artifact and every agent that reviews one runs an evidence-based YAGNI rule before committing items. The rule has two gates: an evidence test (*is this needed now?*) and a simpler-version test (*is there a strictly simpler version that satisfies the same evidence?*). Items without evidence get deferred, recorded under a `## Deferred (YAGNI)` section in the artifact with a named *reopen-when* trigger. Never silently dropped.
+Every skill that produces an artifact and every agent that reviews one runs an evidence-based YAGNI rule before
+committing items. The rule has two gates: an evidence test (_is this needed now?_) and a simpler-version test (_is there
+a strictly simpler version that satisfies the same evidence?_). Items without evidence get deferred, recorded under a
+`## Deferred (YAGNI)` section in the artifact with a named _reopen-when_ trigger. Never silently dropped.
 
-YAGNI applies to the planning skills (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/iterative-plan-review`). It applies to review and standards (`/code-review` advisory-only, `/coding-standard`, `/test-planning`, `/architectural-decision-record`). It also applies to several agents (`project-manager`, `junior-developer`, `software-architect`, `system-architect`, `test-engineer`, `edge-case-explorer`, `data-engineer`, `devops-engineer`, `on-call-engineer`).
+YAGNI applies to the planning skills (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`,
+`/iterative-plan-review`). It applies to review and standards (`/code-review` advisory-only, `/coding-standard`,
+`/test-planning`, `/architectural-decision-record`). It also applies to several agents (`project-manager`,
+`junior-developer`, `software-architect`, `system-architect`, `test-engineer`, `edge-case-explorer`, `data-engineer`,
+`devops-engineer`, `on-call-engineer`).
 
-Read the full [YAGNI](./yagni.md) reference for the gates, the acceptable-evidence list, the named anti-patterns, and the per-skill / per-agent application table.
+Read the full [YAGNI](./yagni.md) reference for the gates, the acceptable-evidence list, the named anti-patterns, and
+the per-skill / per-agent application table.
 
 ## Evidence: the confidence layer
 
-Once YAGNI has gated inclusion, the evidence rule characterizes the quality of the evidence each surviving item rests on. Three principles ground the rule. Evidence closer to the originating event or data carries more weight than evidence at greater remove (proximity, applied as a heuristic, not a ranked ladder). Two independent sources beat one source (corroboration, scoped to web sources). The absence of evidence is its own state with a name and a response (no-evidence labeling). The vocabulary of trust classes (codebase, web, provided) and the corroboration gate originated in [`/research`](./skills/han-core/research.md) and are now extracted into a canonical rule that every evidence-aware skill and agent reads at runtime.
+Once YAGNI has gated inclusion, the evidence rule characterizes the quality of the evidence each surviving item rests
+on. Three principles ground the rule. Evidence closer to the originating event or data carries more weight than evidence
+at greater remove (proximity, applied as a heuristic, not a ranked ladder). Two independent sources beat one source
+(corroboration, scoped to web sources). The absence of evidence is its own state with a name and a response (no-evidence
+labeling). The vocabulary of trust classes (codebase, web, provided) and the corroboration gate originated in
+[`/research`](./skills/han-core/research.md) and are now extracted into a canonical rule that every evidence-aware skill
+and agent reads at runtime.
 
-Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`) and the planning and review skills (`/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`). It also applies to the conventions skills (`/coding-standard`, `/architectural-decision-record`), the operational skills (`/runbook`), and the agents that review artifacts (`project-manager`, `junior-developer`, `evidence-based-investigator`, `gap-analyzer`).
+Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`) and the
+planning and review skills (`/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`). It also applies to the
+conventions skills (`/coding-standard`, `/architectural-decision-record`), the operational skills (`/runbook`), and the
+agents that review artifacts (`project-manager`, `junior-developer`, `evidence-based-investigator`, `gap-analyzer`).
 
-Read the full [Evidence](./evidence.md) reference for the three principles, the trust-class vocabulary, the corroboration gate, the no-evidence response, and the per-skill / per-agent application table.
+Read the full [Evidence](./evidence.md) reference for the three principles, the trust-class vocabulary, the
+corroboration gate, the no-evidence response, and the per-skill / per-agent application table.
 
 ## Readability: the output standard
 
-Sizing, YAGNI, and evidence decide how a skill works. Readability decides how its output reads. Every reader-facing skill (one whose primary deliverable is prose a non-author reads end to end) applies one shared readability rule as it writes. That rule makes the deliverable lead with its main point, give each paragraph one idea, use descriptive headings, keep sentences short and active, prefer common words, and reveal detail in layers.
+Sizing, YAGNI, and evidence decide how a skill works. Readability decides how its output reads. Every reader-facing
+skill (one whose primary deliverable is prose a non-author reads end to end) applies one shared readability rule as it
+writes. That rule makes the deliverable lead with its main point, give each paragraph one idea, use descriptive
+headings, keep sentences short and active, prefer common words, and reveal detail in layers.
 
-The rule is applied in stages, never as one instruction block. Its structural rules shape each skill's output template, and its six behaviorally-anchored criteria run as a discrete self-check after the draft exists. Skills with a synthesis or editor step also dispatch the [`readability-editor`](./agents/han-communication/readability-editor.md) agent to rewrite the draft, preserving every fact. Fidelity outranks readability: no required fact is dropped to read more simply.
+The rule is applied in stages, never as one instruction block. Its structural rules shape each skill's output template,
+and its six behaviorally-anchored criteria run as a discrete self-check after the draft exists. Skills with a synthesis
+or editor step also dispatch the [`readability-editor`](./agents/han-communication/readability-editor.md) agent to
+rewrite the draft, preserving every fact. Fidelity outranks readability: no required fact is dropped to read more
+simply.
 
-Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`, `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`, `/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`). Skills whose output is code or a governed structured artifact are out of scope.
+Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`,
+`/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`,
+`/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`). Skills whose output is
+code or a governed structured artifact are out of scope.
 
-Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope table, and the fidelity guard.
+Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope
+table, and the fidelity guard.
 
 ## When would you invoke an agent directly?
 
@@ -108,38 +200,57 @@ Most of the time you will not. A skill calling an agent is the typical flow.
 
 You might invoke an agent directly when:
 
-- The judgment you want is narrower than any existing skill. *"Give me a security audit of `src/auth/` with `adversarial-security-analyst`"*. No full `/code-review` needed.
-- You want a second opinion after a skill has run. Dispatch `adversarial-validator` against the plan a planning skill produced.
+- The judgment you want is narrower than any existing skill. _"Give me a security audit of `src/auth/` with
+  `adversarial-security-analyst`"_. No full `/code-review` needed.
+- You want a second opinion after a skill has run. Dispatch `adversarial-validator` against the plan a planning skill
+  produced.
 - You are composing a custom workflow that does not match any slash command cleanly.
 
-Direct invocation uses the `Agent` tool with `subagent_type: han-core:{agent-name}` (for example, `han-core:adversarial-security-analyst`).
+Direct invocation uses the `Agent` tool with `subagent_type: han-core:{agent-name}` (for example,
+`han-core:adversarial-security-analyst`).
 
 ## How Han is packaged
 
-Han ships as a family of plugins in one marketplace. `han-core` carries the research, analysis, documentation, and operations skills and every agent.
+Han ships as a family of plugins in one marketplace. `han-core` carries the research, analysis, documentation, and
+operations skills and every agent.
 
-`han-planning` adds the planning skills you reach for before implementation (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`). `han-coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`, `/code-review`, `/architectural-analysis`, `/test-planning`, `/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting skills. Each of these four depends on `han-core`, so installing any of them brings the core along.
+`han-planning` adds the planning skills you reach for before implementation (`/plan-a-feature`, `/plan-implementation`,
+`/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`). `han-coding` adds the coding skills you reach
+for while working in code (`/tdd`, `/refactor`, `/code-review`, `/architectural-analysis`, `/test-planning`,
+`/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
+skills. Each of these four depends on `han-core`, so installing any of them brings the core along.
 
-`han` is a meta-plugin with no components of its own. It depends on `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`, so installing it pulls in the bundled suite.
+`han` is a meta-plugin with no components of its own. It depends on `han-core`, `han-planning`, `han-coding`,
+`han-github`, and `han-reporting`, so installing it pulls in the bundled suite.
 
-The remaining plugins are opt-in. `han-feedback` adds the post-session feedback skill. `han-atlassian` adds the Confluence and Jira skills; it needs a configured Atlassian MCP server, and because its wrapper skills run skills from `han-planning` and `han-coding`, it depends on those two as well. `han-linear` adds the work-items-to-Linear skill and needs a configured Linear MCP server. Each of these three depends on `han-core` like the other layers, but the `han` meta-plugin does not pull them in, so you install each on its own.
+The remaining plugins are opt-in. `han-feedback` adds the post-session feedback skill. `han-atlassian` adds the
+Confluence and Jira skills; it needs a configured Atlassian MCP server, and because its wrapper skills run skills from
+`han-planning` and `han-coding`, it depends on those two as well. `han-linear` adds the work-items-to-Linear skill and
+needs a configured Linear MCP server. Each of these three depends on `han-core` like the other layers, but the `han`
+meta-plugin does not pull them in, so you install each on its own.
 
-`han-plugin-builder` carries the guidance for building skills, agents, and plugins, plus the interview-driven `/skill-builder` and `/agent-builder` skills. It depends on nothing and is also opt-in.
+`han-plugin-builder` carries the guidance for building skills, agents, and plugins, plus the interview-driven
+`/skill-builder` and `/agent-builder` skills. It depends on nothing and is also opt-in.
 
-The practical choice is core only, the bundled suite, or the suite plus whichever opt-in plugins you want. There is no planning-only, coding-only, GitHub-only, or reporting-only install.
+The practical choice is core only, the bundled suite, or the suite plus whichever opt-in plugins you want. There is no
+planning-only, coding-only, GitHub-only, or reporting-only install.
 
-For which one to install and the dependency that surprises people, read [Choosing a Han plugin](./choosing-a-han-plugin.md).
+For which one to install and the dependency that surprises people, read
+[Choosing a Han plugin](./choosing-a-han-plugin.md).
 
 ## What does the plugin include?
 
-- **The skills.** The [skills index](./skills/README.md) groups them by purpose (planning, building, investigation and research, review, discovery, conventions, reporting, operations).
-- **The agents.** The [agents index](./agents/README.md) groups them by role (planning and facilitation, adversarial reviewers, investigation, architecture, testing, gap and content).
+- **The skills.** The [skills index](./skills/README.md) groups them by purpose (planning, building, investigation and
+  research, review, discovery, conventions, reporting, operations).
+- **The agents.** The [agents index](./agents/README.md) groups them by role (planning and facilitation, adversarial
+  reviewers, investigation, architecture, testing, gap and content).
 
 Skim the indexes after you read this page. Pick the one skill you need right now. Come back later to learn the rest.
 
 ## Where to go next
 
-- **Want to get something done?** → [Quickstart](./quickstart.md). Picks a starting skill based on what you are trying to do.
+- **Want to get something done?** → [Quickstart](./quickstart.md). Picks a starting skill based on what you are trying
+  to do.
 - **Want a specific skill?** → [Skills Index](./skills/README.md).
 - **Want a specific agent?** → [Agents Index](./agents/README.md).
 - **Want to know how dispatch scales?** → [Sizing](./sizing.md).
@@ -150,6 +261,9 @@ Skim the indexes after you read this page. Pick the one skill you need right now
 
 ## Related reading
 
-- [`han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`](../han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md). The taxonomy this plugin follows. Applies across all plugins in this repo.
-- [Claude Code Skills reference](https://code.claude.com/docs/en/skills). How skills are defined and invoked in Claude Code itself.
-- [Claude Code Subagents reference](https://code.claude.com/docs/en/sub-agents). How agents are dispatched from inside skills.
+- [`han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md`](../han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md).
+  The taxonomy this plugin follows. Applies across all plugins in this repo.
+- [Claude Code Skills reference](https://code.claude.com/docs/en/skills). How skills are defined and invoked in Claude
+  Code itself.
+- [Claude Code Subagents reference](https://code.claude.com/docs/en/sub-agents). How agents are dispatched from inside
+  skills.

@@ -2,7 +2,5 @@
   "name": "han-planning",
   "description": "Planning-facing skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature (build a feature specification from scratch through a relentless, evidence-based interview that walks the design tree), plan-implementation (turn a feature specification into an implementation plan through a project-manager-led team conversation), plan-a-phased-build (split a body of context into a sequence of independently demoable vertical-slice phases), plan-work-items (break a trusted implementation plan into independently-grabbable, atomic work items), and iterative-plan-review (stress-test an existing plan through multiple codebase-grounded review passes). Depends on han-core; bundled by the han meta-plugin.",
   "version": "2.0.4",
-  "dependencies": [
-    "han-core"
-  ]
+  "dependencies": ["han-core"]
 }

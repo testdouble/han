@@ -11,10 +11,7 @@
     "description": "Alternate description location (merged with root description)",
     "version": "1.0.0"
   },
-  "allowCrossMarketplaceDependenciesOn": [
-    "other-internal-marketplace",
-    "partner-tools-marketplace"
-  ],
+  "allowCrossMarketplaceDependenciesOn": ["other-internal-marketplace", "partner-tools-marketplace"],
   "plugins": [
     {
       "name": "relative-path-plugin",

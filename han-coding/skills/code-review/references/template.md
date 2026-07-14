@@ -31,9 +31,9 @@ full security block. The Review Summary table row is an index entry, not prose; 
 
 <!-- If no issues were found, use the no-issues row instead. -->
 
-| Task ID | Category | File | Description |
-|---------|----------|------|-------------|
-| {TASK-ID} | {Category} | {file:line} | {Brief description of finding} |
+| Task ID                            | Category     | File        | Description                                   |
+| ---------------------------------- | ------------ | ----------- | --------------------------------------------- |
+| {TASK-ID}                          | {Category}   | {file:line} | {Brief description of finding}                |
 | SEC-### ({Critical\|High\|Medium}) | {OWASP: A0X} | {file:line} | {Brief description of security vulnerability} |
 
 <!-- No-issues row if applicable: -->
@@ -58,42 +58,46 @@ full security block. The Review Summary table row is an index entry, not prose; 
 <!-- Finding block format. Keep `file:line` (the actionable anchor). Omit the [Category] label when the category is generic and already conveyed by the table and task-ID prefix (logic, performance, clarity, and similar). Keep a category cue only when it names content a standalone reader needs and the task ID does not supply — an ADR violation that names the record, a standards violation that names the standard, or a security finding. -->
 
 <!-- Generic category (omit the label): -->
-**{TASK-ID}** `{file_path:line_number}`
-{Description of issue.}
+
+**{TASK-ID}** `{file_path:line_number}` {Description of issue.}
+
 ```suggestion
 {Suggested fix}
 ```
 
 <!-- Content-bearing category (keep the label): -->
-**{TASK-ID}** **[{ADR: record / Standard: name / Security}]** `{file_path:line_number}`
-{Description of issue.}
+
+**{TASK-ID}** **[{ADR: record / Standard: name / Security}]** `{file_path:line_number}` {Description of issue.}
+
 ```suggestion
 {Suggested fix}
 ```
 
 ### 🟡 Warnings
 
-**{TASK-ID}** `{file_path:line_number}`
-{Description of concern.}
+**{TASK-ID}** `{file_path:line_number}` {Description of concern.}
 
 ### 🔵 Suggestions
 
-**{TASK-ID}** `{file_path:line_number}`
-{Optional improvement idea.}
+**{TASK-ID}** `{file_path:line_number}` {Optional improvement idea.}
 
 ### 🟡 YAGNI
 
-> These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items.
+> These findings will not be corrected unless explicitly requested. They are documented so the team can decide
+> consciously whether to keep, simplify, or defer the items.
 
 <!-- One line per finding plus a single reopen-trigger clause. -->
 
-**{YAGNI-###}** **[{Named anti-pattern from yagni-rule.md, or "Evidence-test failure" / "Simpler-version available"}]** `{file_path:line_number}` — {description of the code that fails the YAGNI evidence test or has a strictly simpler version available}. Reopen / keep when: {the concrete trigger that would justify keeping this code as written}.
+**{YAGNI-###}** **[{Named anti-pattern from yagni-rule.md, or "Evidence-test failure" / "Simpler-version available"}]**
+`{file_path:line_number}` — {description of the code that fails the YAGNI evidence test or has a strictly simpler
+version available}. Reopen / keep when: {the concrete trigger that would justify keeping this code as written}.
 
 ## 🔐 Security Vulnerabilities
 
 <!-- Render this whole section only when proven vulnerabilities exist. Each finding's full prose lives here and nowhere else — there is no cross-reference under Critical. -->
 
 **SEC-001: [Brief descriptive title]**
+
 - **OWASP:** A0X — Category Name
 - **Location:** `file_path:line_number`
 - **Evidence:** {exact code snippet demonstrating the vulnerability}

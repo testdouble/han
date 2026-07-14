@@ -2,10 +2,5 @@
   "name": "han-atlassian",
   "description": "Atlassian-facing extensions to the Han suite. Adds markdown-to-confluence, which publishes a local Markdown file to a user-specified Confluence page; project-documentation-to-confluence, which runs the core project-documentation skill and then publishes the result there; investigate-to-confluence, which runs the core investigate skill and publishes the resulting investigation report there; code-overview-to-confluence, which runs the core code-overview skill and publishes the resulting overview there; plan-a-feature-to-confluence, which runs the plan-a-feature planning skill and publishes the spec and its companion artifacts there as a page tree; and work-items-to-jira, which creates one Jira ticket per slice from a work-items file. All work through the Atlassian MCP server. Depends on han-core, han-planning, and han-coding (its wrapper skills run skills from each), and on han-communication (its wrapped prose-producing skills source the shared readability standard), and requires a configured Atlassian MCP server. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
   "version": "2.2.0",
-  "dependencies": [
-    "han-communication",
-    "han-core",
-    "han-planning",
-    "han-coding"
-  ]
+  "dependencies": ["han-communication", "han-core", "han-planning", "han-coding"]
 }
