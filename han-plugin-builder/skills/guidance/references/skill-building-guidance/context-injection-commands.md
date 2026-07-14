@@ -11,7 +11,7 @@ Context injection commands use the `` !`command` `` syntax to execute a shell co
 
 Format: `` - label: !`command` ``
 
-Multiple commands per line: `` - Git user: !`git config user.name` (!`git config user.email`) ``
+Multiple commands per line: ``- Git user: !`git config user.name` (!`git config user.email`)``
 
 Many skills use this pattern: code-review skills, documentation skills, PR-description skills, investigation skills, project-discovery skills, and any skill whose steps need to know the current git state or project layout.
 

@@ -237,7 +237,7 @@ network calls and file writes are explicit in function names so callers know wha
 Three conventions are buried in a single paragraph. The model must parse sentence boundaries to separate them.
 
 **After (each convention as its own block):**
-```markdown
+````markdown
 ## Step 3: Apply Review Standards
 
 ### Error handling
@@ -273,7 +273,7 @@ Functions with network calls or file writes must name the side effect.
 // do this:  fetchPricing(), writeSummaryToFile()
 // not this: getPricing(), generateSummary()
 ```
-```
+````
 Each convention is independently parseable: heading, rule, example.
 
 ### Rule: Resolve variation at the point of use

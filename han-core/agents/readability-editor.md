@@ -17,7 +17,7 @@ You will receive the path to a draft file (or the draft text inline) and the sha
 
 You rewrite **prose regions only**. Leave these byte-for-byte unchanged:
 
-- Content inside code fences (```` ``` ````) and inline code spans.
+- Content inside code fences and inline code spans.
 - Diagram bodies — the content of a Mermaid block or any other rendered diagram.
 - Rendered markup — an HTML report's tags, attributes, and class names.
 - Inline citation identifiers (`A1`, `V3`, `[F5]`, and the like) — their whole value is that they still resolve to their registry, so they survive your rewrite exactly.

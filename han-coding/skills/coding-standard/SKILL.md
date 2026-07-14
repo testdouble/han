@@ -109,8 +109,8 @@ When converting an existing document into a coding standard:
 
 1. Read the source document
 2. Map sections to coding standard sections using the mapping at [adr-conversion-mapping.md](./references/adr-conversion-mapping.md)
-4. **If the source document is fully subsumed:** delete it and update references (search `CLAUDE.md`, `AGENTS.md`, and other markdown files)
-5. **If the source document retains useful content:** add a link to the new coding standard in the source document and remove migrated sections
+3. **If the source document is fully subsumed:** delete it and update references (search `CLAUDE.md`, `AGENTS.md`, and other markdown files)
+4. **If the source document retains useful content:** add a link to the new coding standard in the source document and remove migrated sections
 
 ## Step 6: Write the Coding Standard
 

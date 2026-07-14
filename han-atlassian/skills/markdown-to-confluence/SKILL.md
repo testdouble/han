@@ -135,7 +135,7 @@ draft-vs-published.
   changes local only.
 
 **Diagram note:** Markdown produced by Han's documentation skills emits Mermaid
-diagrams in fenced ```mermaid``` code blocks. Confluence does not render Mermaid
+diagrams in fenced `mermaid` code blocks. Confluence does not render Mermaid
 natively without a Mermaid macro, so these blocks publish as code, not rendered
 diagrams. Leave them intact — do not silently strip them — and tell the user the
 diagrams posted as Mermaid source, in case their space has a macro that renders
