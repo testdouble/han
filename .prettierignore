@@ -1,0 +1,10 @@
+# Static historical artifacts: left as written.
+docs/plans/
+docs/research/
+
+# Vendored third-party assets: checked in verbatim, never reformat.
+han-reporting/skills/html-summary/assets/
+
+# Dependencies and generated files.
+node_modules/
+package-lock.json
