@@ -1,1 +1,1 @@
-../../docs/guidance/plugin-entity-taxonomy.md
+../../han-plugin-builder/skills/guidance/references/plugin-entity-taxonomy.md
