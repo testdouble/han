@@ -1,0 +1,12 @@
+{
+  "printWidth": 120,
+  "proseWrap": "always",
+  "overrides": [
+    {
+      "files": ".github/**/*.md",
+      "options": {
+        "proseWrap": "never"
+      }
+    }
+  ]
+}
