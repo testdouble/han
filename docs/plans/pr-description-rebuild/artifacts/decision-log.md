@@ -327,3 +327,93 @@ The skill's current guards are kept unchanged: it stops when the branch has no c
 - **Evidence:** `codebase` — `han-github/skills/update-pr-description/SKILL.md` Step 1 (branch-state validation and the default-branch question) and Step 2.3 (the multiple-template question, including the "None" option).
 - **Driven by findings:** — (added in synthesis to close an uncited-commitment gap)
 - **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes
+- **Amended in review:** [D29](#d29-github-access-is-needed-only-to-publish) adds the guard this entry missed. The skill's `gh` CLI prerequisite check is a hard stop, and it is deliberately not carried forward.
+
+## Decisions added in review
+
+These decisions were added during `iterative-plan-review` round R1. Each cites the finding that forced it, recorded in [review-findings.md](review-findings.md).
+
+### D23: An adversarial pass refutes each claim against its evidence before the gate
+
+- **Outcome:** After the description is authored and before the gate is assembled, a separate pass reads every claim beside the evidence recorded for it and tries to refute it. It answers one question per claim: does this evidence actually support this claim? A claim it refutes is demoted into the blocking tier and shown to the engineer with the challenge that refuted it. The pass reads only. It may attach a challenge and move a claim between tiers, and it may not touch a single word of the description.
+- **Rationale:** [T1](feature-technical-notes.md#t1-claim-provenance-is-captured-at-authoring-time) proves the authoring pass can honestly report the *absence* of evidence but cannot certify its *presence*. That left the measured failure mode wide open, because a fabricated claim usually arrives with a confident pointer at a real hunk rather than with nothing attached, so it was never marked unevidenced and never blocked. Three reviewers found the hole independently. The fix has to come from a pass that did not write the text and is pointed at knocking it down, because that is the only pass with no motive to accept it. The read-only constraint is what keeps [D11](#d11-nothing-rewrites-the-draft-between-authoring-and-the-gate) and T1 standing: a refuting pass allowed to soften a sentence it doubts would make the gate's text a reconstruction again.
+- **Evidence:** `provided` — the user directed that an adversarial validator run across all items before the list is presented to the engineer. `codebase` — the hole it closes is recorded as F25 and F26 in [review-findings.md](review-findings.md), each traced to spec text and to D2's own rationale.
+- **Rejected alternatives:**
+  - *Let the authoring pass self-check its citations.* Rejected: it is the same generative act asking itself for a second opinion, which is precisely the reconstruction T1 rules out.
+  - *Make the refuting pass advisory only.* Rejected: a challenge that changes no tier leaves a refuted claim clearable by the same one-keystroke bulk action, which is the failure being fixed.
+  - *Let a refuted claim block unconditionally.* Rejected as heavier than the evidence supports. Demotion into the blocking tier already forces an individual decision, and the engineer keeps the final word, which is the principle the whole gate rests on.
+- **Linked technical notes:** [T2](feature-technical-notes.md#t2-refutation-is-a-separate-pass-that-reads-the-claims-and-never-touches-the-words)
+- **Driven by findings:** F25, F26
+- **Referenced in spec:** Outcome, Primary Flow, The Gate, Open Items
+
+### D24: The gate is ordered, grouped, counted, and honest about what it does not know
+
+- **Outcome:** The gate opens by stating how many items it holds and how many of them block. Blocking items come first, grouped by kind. The non-blocking tier follows, ordered weakest-evidence-locus first, with each item showing what the skill pointed at when it wrote the claim. Each tier is named for what it structurally is rather than for what it costs, and the bulk action on the non-blocking tier is worded as an act of authorship. The gate states plainly that it shows whether evidence exists, not whether that evidence supports the claim. No disposition is pre-selected. The size fact and any incomplete-read fact are stated once as a preamble and are not items.
+- **Rationale:** [D2](#d2-the-gate-shows-each-claim-with-its-evidence-and-blocks-on-what-the-skill-cannot-vouch-for) removed the "supported" badge because it would teach the engineer to skip exactly the rows a fabricated claim hides in, and then re-created the badge structurally: one tier costing N actions beside one tier costing one action says *the machine is sure about the second* more loudly than any label. Removing the word did not remove the vouch. The answer is not to delete the cheap tier, which would tax every clean run and buy fatigue, but to stop the tier from carrying a verdict it has not earned. Naming the tiers honestly, showing the evidence locus, and putting the weakest evidence where attention is freshest gives the engineer orientation without certification, which is D2's actual principle. The counts and the ordering exist because an engineer who cannot see how much gate remains starts optimizing for exit, and a wave-through that arrives as time management is still a wave-through.
+- **Evidence:** `provided` — the user chose this resolution over both abolishing the bulk path and documenting the hole as accepted risk. `codebase` — F25, F42, F43, F46 in [review-findings.md](review-findings.md).
+- **Rejected alternatives:**
+  - *Dispose of every claim individually.* Rejected: the interaction cost scales with claim count on every run including clean ones, which is the fatigue path to rubber-stamping. D2's "costs nothing on a clean change" property is worth keeping.
+  - *Document the hole in Open Items and change nothing.* Rejected: the spec's Outcome would then overclaim what the gate closes.
+- **Linked technical notes:** [T2](feature-technical-notes.md#t2-refutation-is-a-separate-pass-that-reads-the-claims-and-never-touches-the-words)
+- **Driven by findings:** F25, F42, F43, F46
+- **Referenced in spec:** Primary Flow, The Gate
+
+### D25: The reading-order guide points, and characterizes nothing
+
+- **Outcome:** The guide's bullets name files and areas in a suggested reading order. They do not characterize anything as a risk, a tradeoff, or a decision. With that content rule, the guide asserts nothing that can be true or false about the change, and its exemption from the gate under [D9](#d9-the-reading-order-guide-keeps-its-existing-threshold) is true by construction rather than by assertion.
+- **Rationale:** D9 and D12 exempted the guide because it "asserts nothing about the change." The skill's own content rule refutes that: it defines the bullets as pointers to "a decision, tradeoff, or risk the reviewer should weight." Naming a risk in a file is a falsifiable claim, and the section fires only past eight to ten significant files, which is where fabrication risk is highest. The exemption and the content rule could not both stand. Narrowing the content is the cheaper repair: it keeps the gate from growing on exactly the changes where it is already largest, and a reading-order guide that points is still a reading-order guide.
+- **Evidence:** `codebase` — `han-github/skills/update-pr-description/references/template.md:24` and `han-github/skills/update-pr-description/SKILL.md:110`, both quoted in F27. `provided` — the user chose narrowing over gating the bullets or cutting the section.
+- **Rejected alternatives:**
+  - *Gate the guide's bullets.* Rejected: it grows the gate on large changes, where the item count is already the design's biggest open risk.
+  - *Drop the section.* Rejected: it costs nothing on the runs where it does not fire, and no evidence says the guide is unwanted.
+- **Driven by findings:** F27
+- **Referenced in spec:** Primary Flow, The Gate
+
+### D26: A template section the change does not reach is one judgment, not many
+
+- **Outcome:** An absence the description *asserts to the reviewer*, such as a claim that nothing changed for existing callers, keeps blocking individually. A template section the change simply does not reach is different: the engineer is shown the set of unreached sections and vouches for the set in one act, pulling out any individual section that deserves its own decision.
+- **Rationale:** Under [D8](#d8-repository-template-conformance-is-carried-forward-and-its-fill-passes-through-the-gate) and [D15](#d15-absence-claims-are-structurally-unprovable-like-intent) as first written, a one-line docs fix against an eight-section corporate template produced roughly eight blocking items before a single substantive claim appeared. The smallest, safest change drew the longest and most ceremonious gate, which is the precise training regime for the wave-through reflex. D15's own rationale names the hazard: "a marker that fires routinely, for a reason that is structural rather than suspicious, is a marker the engineer learns to clear without reading." Conflating "the diff proves nothing changed here" with "this section plainly does not apply to a docs fix" dilutes the signal D15 exists to protect. They are different judgments and they now cost differently.
+- **Evidence:** `codebase` — F28 in [review-findings.md](review-findings.md), tracing the item-count blowup through D8's carry-forward of the conformance rules. `provided` — the user chose set-disposal over keeping each note blocking.
+- **Driven by findings:** F28
+- **Referenced in spec:** The Gate, Edge Cases and Failure Modes, Open Items
+
+### D27: The engineer can always leave, and an unverified run does not hand them paste-ready prose
+
+- **Outcome:** The engineer can abandon the gate at any point. Abandoning yields what a fail-closed run yields, and so does a fail-closed run: the claims delivered as an un-assembled list, each beside its evidence and its standing, with the unevidenced and refuted ones named, and nothing published. An unverified run never produces a description the engineer can paste into GitHub without assembling it themselves.
+- **Rationale:** Two holes closed by one rule. First, the only committed exit from a started gate was to complete it, which is a trap in exactly the scenario where the skill performs worst, and the rational response to a trap is to stop entering it. Second, [D13](#d13-the-gate-fails-closed) failed closed to nothing on the no-pull-request path: "nothing is published" is a no-op when there is nothing to publish to, and the engineer received the same paste-ready file a successful run produces. Making the unverified artifact structurally unpasteable is what gives the fail-closed rule teeth where it previously had none, and it is what makes the abandon path safe to offer. An exit the engineer can always take is what makes the block on the way to *publication* legitimate rather than coercive.
+- **Evidence:** `codebase` — F34 and F41 in [review-findings.md](review-findings.md).
+- **Driven by findings:** F34, F41
+- **Referenced in spec:** The Gate, User Interactions, Alternate Flows and States
+
+### D28: The skill's files live outside the working tree, and the description it replaces is kept
+
+- **Outcome:** A file the skill writes lands outside the repository's working tree, so it can never be committed into the change it describes, and a re-run replaces the prior run's file. The description is written to a file whenever the skill does not publish it. Before an existing pull request description is replaced, that description is written to a file too, and the disclosure names it.
+- **Rationale:** Three problems, one place. The spec's Coordinations declared every repository file read-only while Primary Flow wrote one, and it never said where; a description file dropped in the working tree is an untracked file an engineer can accidentally commit into the very pull request being described. [D20](#d20-the-verified-description-is-written-to-a-file) wrote the file "whatever happens next," including on a successful publish where the engineer already has the text on GitHub, which is a completeness argument rather than an evidenced need. And publishing destroyed the existing description irreversibly, with disclosure but no recovery, while D20 had already established the mechanism that makes it recoverable: a terminal is a bad place to keep text you might need, and the description about to be deleted is exactly such text. Preserving it is not merging it, which stays out of scope as a fabrication surface.
+- **Evidence:** `codebase` — F32, F33, F45 in [review-findings.md](review-findings.md). F21 in [team-findings.md](team-findings.md) established the need the file serves, which is specific to the paths where the engineer moves text by hand.
+- **Driven by findings:** F32, F33, F45
+- **Referenced in spec:** Primary Flow, Coordinations, Out of Scope, Deferred (YAGNI)
+
+### D29: GitHub access is needed only to publish
+
+- **Outcome:** The skill needs version control and a branch. GitHub access is needed only for the publish step. When the GitHub CLI is missing, or present but unauthenticated, the run degrades to the no-pull-request flow: the gate runs and the file is delivered. The current skill's hard stop on a missing CLI is deliberately not carried forward.
+- **Rationale:** The current skill stops dead when the CLI is absent, because a skill whose only deliverable is a GitHub write has nothing to offer without it. That stopped being true. [D6](#d6-the-gate-runs-whether-or-not-a-pull-request-exists) runs the gate with no pull request, and [D28](#d28-the-skills-files-live-outside-the-working-tree-and-the-description-it-replaces-is-kept) makes a file the deliverable, so the skill now does most of its job with no GitHub access at all. Keeping the stop would refuse to do work the design explicitly says is worth doing. [D22](#d22-the-existing-branch-state-and-template-discovery-guards-are-carried-forward) claimed to enumerate the guards so that no behavior rested on nothing, and missed this one entirely.
+- **Evidence:** `codebase` — `han-github/skills/update-pr-description/SKILL.md:12-18`, the hard stop, quoted in F29.
+- **Driven by findings:** F29
+- **Referenced in spec:** Primary Flow, Alternate Flows and States, Coordinations
+
+### D30: The unit of direct editing is an item, not the draft
+
+- **Outcome:** The engineer edits an item: a claim, a section's prose, or the intent sentence. The edited text becomes that item's disposition, verified by authorship. The skill never re-derives the item set from edited prose.
+- **Rationale:** [D21](#d21-editing-the-draft-directly-verifies-what-was-edited-and-nothing-else) says "any claim they did not touch is still theirs to dispose of." To know which claims a free-form edit of the whole draft touched, something must read the edited prose and re-derive the claim-to-evidence pairing from it, and that is exactly the reconstruction [T1](feature-technical-notes.md#t1-claim-provenance-is-captured-at-authoring-time) rules out as structurally dishonest. The spec was committing to a rule whose most obvious implementation silently guts the feature. Editing per item keeps the pairing intact, because the item's identity never has to be recovered from the words.
+- **Evidence:** `codebase` — F31 in [review-findings.md](review-findings.md), tracing the collision to T1's own text.
+- **Linked technical notes:** [T2](feature-technical-notes.md#t2-refutation-is-a-separate-pass-that-reads-the-claims-and-never-touches-the-words)
+- **Driven by findings:** F31
+- **Referenced in spec:** The Gate
+
+### D31: A wholly rejected draft is re-authored and re-gated from the top
+
+- **Outcome:** When the engineer rejects every claim, the skill offers to author a fresh draft with their corrections as input. That draft is a new authoring pass, and it produces a new gate, entered from the top. It is offered once and it is declinable, and declining takes the abandon path in [D27](#d27-the-engineer-can-always-leave-and-an-unverified-run-does-not-hand-them-paste-ready-prose).
+- **Rationale:** The spec offered the re-draft while citing [D17](#d17-the-engineer-may-state-intent-before-the-draft-is-written), which says nothing about re-drafting. A second draft is a fresh set of unverified claims, and nothing said it re-gates. Read literally against [D7](#d7-the-engineers-verdict-is-binding-and-re-rendering-does-not-re-draft) and [D11](#d11-nothing-rewrites-the-draft-between-authoring-and-the-gate), which both forbid generative passes over approved material, the row was a loophole through which an ungated draft could reach the pull request. Giving the behavior its own decision closes it.
+- **Evidence:** `codebase` — F36 in [review-findings.md](review-findings.md).
+- **Driven by findings:** F36
+- **Referenced in spec:** Edge Cases and Failure Modes, Alternate Flows and States
