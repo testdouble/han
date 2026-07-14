@@ -51,6 +51,7 @@ RULE=".claude/rules/plugin-building-guidance.md"
 rewrite_skill() {
   file="$1"
   tmp="$(mktemp)"
+  # shellcheck disable=SC2016  # ${CLAUDE_PLUGIN_ROOT} is matched literally, not expanded.
   sed \
     -e 's|${CLAUDE_PLUGIN_ROOT}/skills/guidance/references/|.claude/skills/plugin-guidance/references/|g' \
     -e 's|^name: guidance$|name: plugin-guidance|' \

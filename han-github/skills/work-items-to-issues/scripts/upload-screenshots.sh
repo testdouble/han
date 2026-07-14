@@ -132,8 +132,7 @@ put_file() {
 # authenticated viewers, so the issue body is correct.
 verify_on() {
   local branch="$1" api_path="$2"
-  local attempt
-  for attempt in 1 2 3 4 5; do
+  for _ in 1 2 3 4 5; do
     if gh api "$api_path?ref=$branch" --jq .sha >/dev/null 2>&1; then
       return 0
     fi
