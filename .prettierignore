@@ -1,3 +1,15 @@
+# Markdown is the product, not just prose about it: skills, agents, and reference
+# files are read as raw source by agents, so a transform that renders the same can
+# still change what an agent is told to do. Prettier has two such transforms that
+# cannot be turned off, because they are core CommonMark normalizations:
+#   * It renumbers ordered lists, while the prose cross-references to those steps
+#     ("see Step 6") stay put and end up pointing at the wrong ones.
+#   * It strips the spaces inside inline code spans, so a heading spec written as
+#     ` — ` becomes `—` next to prose that still says "with surrounding spaces".
+# Both survive proseWrap: preserve and embeddedLanguageFormatting: off, so there is
+# no configuration that formats this repo's Markdown without corrupting it.
+*.md
+
 # Static historical artifacts: left as written.
 docs/plans/
 docs/research/

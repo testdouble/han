@@ -6,10 +6,11 @@
 exclude: "^(docs/plans/|docs/research/|han-reporting/skills/html-summary/assets/)"
 
 repos:
-  # Prettier owns formatting for Markdown, JSON, YAML, and JS: 120-column prose,
-  # ordered-list numbering, and unwrapped .github templates (.prettierrc.json),
-  # with ignore rules in .prettierignore. Running the local devDependency keeps
-  # Prettier's version in package.json only, not duplicated in a hook mirror.
+  # Prettier owns formatting for JSON, YAML, and JS at 120 columns. Markdown is
+  # deliberately excluded in .prettierignore: agents read skills and reference
+  # files as raw source, and Prettier's list renumbering and code-span trimming
+  # change what those files say. Running the local devDependency keeps Prettier's
+  # version in package.json only, not duplicated in a hook mirror.
   # It runs first so the hygiene fixers below never fight it.
   - repo: local
     hooks:
@@ -25,11 +26,12 @@ repos:
     hooks:
       - id: shellcheck
 
-  # Hygiene checks. The whitespace/EOL fixers exclude the file types Prettier
-  # already normalizes (Markdown, JSON, YAML, JS), so Prettier owns those and
-  # these cover the rest (shell scripts, dotfiles, LICENSE) with no overlap.
-  # check-yaml and check-json are intentionally omitted: Prettier parses and so
-  # validates those types already.
+  # Hygiene checks. The whitespace/EOL fixers exclude JSON, YAML, and JS because
+  # Prettier owns those, and they exclude Markdown for its own reason: a trailing
+  # double-space is a meaningful hard line break, so a whitespace fixer would
+  # change how the file reads. That leaves these covering the rest (shell scripts,
+  # dotfiles, LICENSE) with no overlap. check-yaml and check-json are intentionally
+  # omitted: Prettier parses and so validates those types already.
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
