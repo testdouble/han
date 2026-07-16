@@ -57,3 +57,44 @@ outcome reaches users then rather than on merge.
 **Supports decisions:** D10
 **Driven by findings:** F6
 **Referenced in spec:** Outcome, Primary flow (Step 4), Open items
+
+## T2: A pull-request check blocks a merge only where a required status check demands it
+
+**Context.** The spec committed to a user-visible behavior in its Outcome and in step 7: the check makes the problems
+impossible to reintroduce, on every change. That claim is only correct because of the mechanic below, and the mechanic
+does not hold here. Without it, the check on a pull request is a signal a person may merge past, not a gate.
+
+**Technical detail.** A check that runs on a pull request reports a status. Reporting a status and preventing a merge
+are separate mechanisms: the merge is blocked only when the hosting platform is configured to require that specific
+status before merging. Absent that configuration, a red check is advisory — visible, and mergeable. This repository has
+no such configuration: the default branch is unprotected, no rules apply to it, and the one ruleset that exists is
+disabled and does not contain a required-status-check rule at all, so enabling it would not change the answer. The
+release-side gate is therefore the only surface in this feature that actually refuses to proceed.
+
+**Why this is not discoverable from the repository.** The pipeline definition lives in the repository and proves the
+check runs. Whether a status is *required* lives in the hosting platform's repository settings, which are not files in
+this codebase and are not visible to anyone reading it. This is why the gap survived: the repository shows the trigger,
+and the trigger looks like enforcement.
+
+**Evidence quality.** live platform configuration, first-party, directly queried and independently re-verified during
+review. This is a stronger tier than T1's: the fact was read from the authoritative system rather than inferred.
+
+- **live configuration (direct).** The default branch returns "not protected"; the rules applying to it are an empty
+  set; the sole ruleset is disabled and its rules are deletion, non-fast-forward, and a pull-request review-count rule,
+  with no required-status-check rule present. Queried by `evidence-based-investigator` and `junior-developer`
+  independently, and re-run during consolidation.
+- **codebase (corroborates that the check runs, and only that).** `.github/workflows/ci.yml:8-11` triggers the lint job
+  on every pull request. This is what F11 read as evidence of enforcement; it establishes execution, not blocking.
+
+The net position: the fact is settled and adverse. Unlike T1, nothing here is unverified — the mechanic is confirmed,
+and it confirms the spec's claim was wrong rather than unproven.
+
+**If this note is wrong.** It is not wrong in the sense T1 might be; it was read from the live system. It can, however,
+become *stale*: enabling a required status check would restore the spec's original claim. That is a settings change no
+step in this spec owns, and the spec now says so rather than assuming it.
+
+**Verification.** Already performed. Re-verify only if the repository's branch-protection configuration changes.
+
+**Supports decisions:** D4, D14, D32
+**Driven by findings:** F28
+**Referenced in spec:** Outcome, Primary flow (Step 7), Coordinations, Open items

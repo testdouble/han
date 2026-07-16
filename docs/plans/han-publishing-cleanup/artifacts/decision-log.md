@@ -113,38 +113,54 @@ stopping and asking rather than guessing".
 
 ### D4: The check blocks on every pull request, and runs locally where hooks are installed
 
-**Outcome.** The check blocks on every pull request. It additionally runs before a commit for contributors who have
-installed the optional local hooks. The guarantee rests on the pull-request half; the local half is a convenience.
+_Heading kept for stable cross-references. Its central claim is false and is corrected below: the check **reports** on
+every pull request; it does not block._
 
-**Rationale.** Rewritten after review. The original entry claimed the check "runs both before a commit lands and on
-every pull request" and that a contributor therefore learns while still working. That is false for anyone who has not
-opted in, and this repository's hooks are opt-in. Claiming the local half as a delivered behavior would have made the
-spec promise something it cannot.
+**Outcome.** The check runs on every pull request and reports a failure a person can merge past. It additionally runs
+before a commit for contributors who have installed the optional local hooks. **Neither surface is a guarantee.** The
+guarantee rests on the release gate ([D32](#d32-the-guarantee-is-stated-per-surface-because-only-the-release-can-refuse)).
 
-The pull-request half is the real guarantee precisely because it does not depend on anyone's local setup. Adding the
-check to the existing lint path means it rides both surfaces for free, so contributors who did install hooks get the
-faster loop at no extra cost.
+**Rationale.** Rewritten twice. The first rewrite corrected the smaller of two overclaims and promoted the larger one.
+It removed the false claim that a contributor learns before committing (true only for those who opted into hooks) and
+certified the pull-request half as "the real guarantee precisely because it does not depend on anyone's local setup."
+That certification rested on evidence that the lint job is *triggered* by every pull request — which establishes that it
+runs, and says nothing about whether it blocks.
+
+Corrected on evidence in the second review: nothing in this repository makes any check blocking. The default branch is
+unprotected, no rules apply to it, and the sole ruleset is disabled and contains no required-check rule
+([T2](feature-technical-notes.md#t2-a-pull-request-check-blocks-a-merge-only-where-a-required-status-check-demands-it)).
+So the honest position is that this decision picks a *placement*, not an enforcement: putting the check in the lint path
+means it rides both surfaces for free and shows a contributor the gap at the moment they created it. That is worth
+having. It is not a guarantee, and the spec no longer sells it as one.
 
 **Evidence.** codebase — `package.json` defines `"lint": "prek run --all-files"` and `.github/workflows/ci.yml`'s lint
-job runs `npm run lint` on every pull request and every push to `main`. codebase — `CONTRIBUTING.md:59` reads "If you
-want pre-commit hooks, run `npx prek install`", so hooks are opt-in and absent from a fresh clone. codebase —
-`.pre-commit-config.yaml` already carries local hooks and shellcheck, so a new local hook is the established pattern.
-codebase — `test/sanity.bats` and `"test": "bats --recursive test/"` give the check a testing home. provided — the user
-selected this option.
+job runs `npm run lint` on every pull request and every push to `main`. This is the evidence the first rewrite mistook
+for enforcement: it proves execution only. live platform configuration — see
+[T2](feature-technical-notes.md#t2-a-pull-request-check-blocks-a-merge-only-where-a-required-status-check-demands-it);
+the default branch is unprotected and the one ruleset is disabled with no required-check rule. codebase —
+`CONTRIBUTING.md:59` reads "If you want pre-commit hooks, run `npx prek install`", so hooks are opt-in and absent from a
+fresh clone. codebase — `.pre-commit-config.yaml` already carries local hooks and shellcheck, so a new local hook is the
+established pattern. codebase — `test/sanity.bats` and `"test": "bats --recursive test/"` give the check a testing home.
+provided — the user selected this option.
 
 **Rejected alternatives.**
 
 - _Claim the local half as a guarantee._ Rejected on evidence: hooks are opt-in, so the claim is false for the default
   contributor.
+- _Claim the pull-request half as a guarantee._ Held after the first review and rejected on evidence in the second:
+  nothing makes it blocking, so it informs rather than guarantees.
 - _Make hook installation mandatory._ Rejected: no evidence anyone wants it, and it changes the contributor setup
   contract to buy a faster loop the pipeline already provides more reliably.
 - _Pipeline only, with no local hook._ Rejected: the local run is free once the check is in the lint path, and it does
   help the contributors who opted in.
-- _Inside the release process only._ Rejected: drift could still land on the default branch between releases.
+- _Inside the release process only._ Rejected originally because "drift could still land on the default branch between
+  releases." **That rejection is now known to be unfounded** — pipeline-only, in the sense of non-blocking, is exactly
+  what ships, so drift *can* land on the default branch. The decision to also run it on pull requests survives on its
+  own merit (early, cheap signal), not on preventing that.
 
-**Driven by findings:** F11
-**Linked technical notes:** —
-**Dependent decisions:** D14, D24
+**Driven by findings:** F11, F28
+**Linked technical notes:** T2
+**Dependent decisions:** D14, D24, D32
 **Referenced in spec:** Primary flow (Step 7), Coordinations
 
 ### D5: The check derives the plugin list from the repository
@@ -178,22 +194,38 @@ source artifact's "Before" diagram: "DISK -.-> |never consulted directly| REL".
 
 ### D6: The bundle is a permanently named exception on the second channel
 
-**Outcome.** The bundle is a named, permanent exception. Its absence from channel two is never flagged, **and the
-version-agreement rule does not apply to it** — a plugin published on one channel has nothing to disagree with.
+**Outcome.** The bundle is a named, permanent exception **to the comparison between channels**. Its absence from channel
+two is never flagged, and it is never asked to agree with a channel-two record it does not have. It is **not** exempt
+from the agreement between channel one's own two records, which it does have.
 
 **Rationale.** The limitation is real, external, and documented with a specific upstream tracking issue. An exception the
 rule does not know about would fire on every run forever, and a check that always reports one known failure trains people
 to ignore it.
 
-Extended after review. The original entry stated the exception as presence-only. The bundle is also structurally exempt
-from version agreement, which was implied rather than stated.
+Corrected during review, twice over. The original entry stated the exception as presence-only. It was then extended to
+exempt the bundle from version agreement entirely, on the rationale that "a plugin published on one channel has nothing
+to disagree with" — which is false. The bundle publishes a version in two records, channel one's storefront listing and
+its own manifest, and D20 deliberately brought that exact pair into the rule. The blanket exemption and D20 collided,
+and the collision resolved the wrong way.
+
+The bundle is also the worst possible plugin to exempt. It bumps on every release, so its listing-versus-manifest
+hand-sync runs more often than any child's, and the release tag is named after its version. If one release's hand-sync
+misses it, the tag says one version, the manifest agrees, and the storefront advertises the previous one — silently and
+permanently, because the rule was told not to look. That is the D10 drift class, on the one plugin the whole suite is
+tagged by, introduced by the fix for drift.
 
 **Evidence.** codebase — `README.md:74` states "Codex does not yet support meta-plugins like `han@han` (see
 openai/codex#23531,) and it resolves no dependencies", and the Codex install instructions list every plugin individually
-rather than the bundle. codebase — `.agents/plugins/marketplace.json` omits `han` and there is no `han/.codex-plugin/`,
-consistent with a deliberate exclusion. codebase — `han/.claude-plugin/plugin.json` exists with no `skills/` directory at
+rather than the bundle. web (corroborating, independently fetched) — `openai/codex#23531` is a real open issue whose body
+confirms Codex has no plugin-dependency mechanism today, so the README's claim is corroborated rather than merely
+repeated. codebase — `.agents/plugins/marketplace.json` omits `han` and there is no `han/.codex-plugin/`, consistent with
+a deliberate exclusion. codebase — `han/.claude-plugin/plugin.json` exists with no `skills/` directory at
 all, which is what makes the bundle permanently zero-skill (see [D19](#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)).
-provided — the source artifact: "the check needs to know about it permanently rather than flagging it forever."
+codebase — `.claude-plugin/marketplace.json` publishes `han` at 4.6.0 and `han/.claude-plugin/plugin.json` publishes
+4.6.0: two records, both carrying a version, currently agreeing. codebase — `docs/semantic-versioning.md:160-172` and
+`.claude/skills/han-release/SKILL.md:148-149` ("The parent always bumps on every release") and `:54` ("The release tag is
+`v{parent target}`"). provided — the source artifact: "the check needs to know about it permanently rather than flagging
+it forever."
 
 **Rejected alternatives.**
 
@@ -202,8 +234,11 @@ provided — the source artifact: "the check needs to know about it permanently 
 - _Publish a bundle to channel two anyway._ Rejected: the channel does not support it.
 - _Let the check flag it and have people ignore that one line._ Rejected: a permanently red check is a disabled check
   with extra steps, which is the failure D1 exists to avoid.
+- _Exempt the bundle from version agreement entirely._ Held briefly after the first review and rejected on evidence: its
+  rationale was factually wrong, and it silently excluded the most frequently hand-synced version pair in the suite from
+  the rule written to protect version pairs.
 
-**Driven by findings:** F5
+**Driven by findings:** F5, F33
 **Linked technical notes:** —
 **Dependent decisions:** D14, D19, D20
 **Referenced in spec:** Channels and targets, Primary flow (Step 3), Edge cases, Deferred (YAGNI)
@@ -256,27 +291,42 @@ the source artifact, which names a count but not the documents.
 ### D8: The tutorial's worked example repoints to surviving real edges
 
 **Outcome.** `docs/how-to/extend-han-with-plugin-dependencies.md` keeps its worked-example structure and repoints it at
-edges that remain true. The opt-in-leaf role passes from `han-feedback` to `han-linear`; the layer-on-top-of-core role
-passes from `han-reporting` to `han-coding`.
+edges that remain true. The opt-in-leaf role passes from `han-feedback` to `han-atlassian`; the layer-on-top-of-core
+role passes from `han-reporting` to `han-coding`.
 
-**Rationale.** The tutorial does not merely mention the two edges; it teaches by walking through them. The roles those
-plugins play are still filled by real plugins, so the lesson survives intact with different subjects. `han-linear` is a
-structural identity for `han-feedback`'s role: it depends on `han-core`, is not in the bundle's dependencies, and is
-installed on its own.
+**Rationale.** The tutorial does not merely mention the deleted edges; it teaches by walking through them. The roles
+those plugins play are still filled by real plugins, so the lesson survives intact with different subjects.
 
-Rationale corrected after review. The original entry justified keeping real plugin names by citing the tutorial's claim
-to print real on-disk versions. That claim is itself false, so it could not support anything. The real justification is
-narrower and still sufficient: the tutorial teaches a topology, the topology still exists, and a reader can still go read
-the real manifests being described. What the tutorial should stop claiming is handled separately in
+Repoint target corrected after the second review. The original entry passed the opt-in-leaf role to `han-linear`, on the
+reasoning that it "is a structural identity for `han-feedback`'s role: it depends on `han-core`, is not in the bundle's
+dependencies, and is installed on its own." The first two thirds of that are true and the load-bearing third is not:
+`han-linear`'s declaration is decorative, which review established and which is why step 5 now deletes three
+declarations rather than two ([F31](review-findings.md#f31-han-linear-is-a-third-untrue-dependency-declaration-and-the-specs-own-deferral-trigger-has-already-fired)).
+Repointing there would have taught a lesson about true dependency edges using an edge that is about to be deleted for
+being false — reproducing, inside the fix, the exact defect the rewrite exists to remove.
+
+The replacement must satisfy two tests, not one: the edge survives this work, **and** the edge is real. `han-atlassian`
+passes both. It fills the same role — depends on `han-core`, absent from the bundle's dependencies, installed on its
+own — and its dependency is one it actually exercises, so it is still true after step 5 runs.
+
+Rationale corrected after the first review. The original entry justified keeping real plugin names by citing the
+tutorial's claim to print real on-disk versions. That claim is itself false, so it could not support anything. The real
+justification is narrower and still sufficient: the tutorial teaches a topology, the topology still exists, and a reader
+can still go read the real manifests being described. What the tutorial should stop claiming is handled separately in
 [D27](#d27-the-tutorial-teaches-shape-and-stops-promising-real-version-numbers).
 
-**Evidence.** codebase — `han-linear/.claude-plugin/plugin.json` declares `"dependencies": ["han-core"]` and is absent
-from `han/.claude-plugin/plugin.json`'s dependencies, matching the tutorial's ":169" role ("a leaf that nothing else
-points to: it depends on core, but the meta-plugin does not bundle it"). codebase —
-`han-coding/.claude-plugin/plugin.json` declares `["han-communication", "han-core"]`, matching the ":108"
-"second layer on top of core" role. codebase — the tutorial never mentions Codex; it teaches `.claude-plugin/plugin.json`
-and `/plugin install …@han` throughout, so `han-linear`'s channel-two absence does not undercut it as an exemplar — and
-step 1 publishes it there before step 6 runs anyway. provided — the user selected this option.
+**Evidence.** codebase — `han-atlassian/.claude-plugin/plugin.json` declares
+`["han-communication", "han-core", "han-planning", "han-coding"]` and is absent from `han/.claude-plugin/plugin.json`'s
+dependencies, matching the tutorial's ":169" role ("a leaf that nothing else points to: it depends on core, but the
+meta-plugin does not bundle it"). codebase — the dependency is verified **by use, not by self-description**:
+`han-atlassian/skills/project-documentation-to-confluence/SKILL.md:50` invokes `han-core:project-documentation` with the
+`Skill` tool, and `:15` of the sibling wrapper skills grants `Skill` and `Agent` in `allowed-tools`, so the plugin both
+can and does call the core plugin. This test is deliberate: the manifest description also asserts the dependency, but a
+description asserting a dependency is exactly the evidence that was false for `han-linear`, so it cannot be what
+qualifies the replacement. codebase — `han-coding/.claude-plugin/plugin.json` declares
+`["han-communication", "han-core"]`, matching the ":108" "second layer on top of core" role. codebase — the tutorial
+never mentions Codex; it teaches `.claude-plugin/plugin.json` and `/plugin install …@han` throughout. provided — the
+user selected the repoint-rather-than-rewrite option.
 
 **Rejected alternatives.**
 
@@ -285,10 +335,15 @@ step 1 publishes it there before step 6 runs anyway. provided — the user selec
 - _Leave it and add a correction note._ Rejected: a tutorial with a note saying its example is wrong is a tutorial nobody
   should follow.
 - _Delete the tutorial._ Rejected: no evidence it is unwanted; the topology it teaches still exists.
+- _Pass the opt-in-leaf role to `han-linear`._ Held after the first review and rejected on evidence in the second: its
+  `han-core` declaration is one of the three step 5 deletes, so the example would be false by the time the tutorial
+  shipped.
+- _Pass the opt-in-leaf role to `han-plugin-builder`._ Rejected: it is opt-in and unbundled, but it depends on nothing
+  at all, so it cannot illustrate a dependency edge.
 
-**Driven by findings:** F9
+**Driven by findings:** F9, F31
 **Linked technical notes:** —
-**Dependent decisions:** D27
+**Dependent decisions:** D13, D27
 **Referenced in spec:** Primary flow (Step 6)
 
 ### D9: The already-false contributor claim is in scope
@@ -405,31 +460,48 @@ three gaps at once, so the multi-gap case is the routine one, not a relic of tod
 
 ### D13: Both untrue declarations are deleted rather than made true
 
-**Outcome.** The reporting plugin's and the feedback plugin's declarations on the core plugin are deleted. Neither is
-made true by introducing a use.
+_Heading kept for stable cross-references. The count is now three — see the correction below._
 
-**Rationale.** Neither plugin uses the core plugin, and neither wants to. The reporting plugin's use genuinely moved to
-the communication plugin and the declaration is a leftover. The feedback plugin cannot invoke another plugin even in
-principle, so no edit short of changing what it is permitted to do could make its declaration true. Deleting is the change
-that makes the declaration match reality; anything else changes reality to match a leftover.
+**Outcome.** The reporting plugin's, the feedback plugin's, and the Linear plugin's declarations on the core plugin are
+deleted. None is made true by introducing a use.
+
+**Rationale.** None of the three uses the core plugin, and none wants to. The reporting plugin's use genuinely moved to
+the communication plugin and the declaration is a leftover. The feedback plugin and the Linear plugin cannot invoke
+another plugin even in principle, so no edit short of changing what they are permitted to do could make their
+declarations true. Deleting is the change that makes the declaration match reality; anything else changes reality to
+match a leftover.
+
+Count corrected after the second review. The entry named two declarations because the source plan did and because the
+survey behind it checked two plugins. `han-linear` carries the same defect with the same signature and was missed. The
+correction matters past arithmetic: `han-linear` was the plugin
+[D8](#d8-the-tutorials-worked-example-repoints-to-surviving-real-edges) had chosen as the tutorial's replacement example
+of a *true* dependency edge, and the spec's Outcome would have stayed false after step 5 shipped as originally scoped
+([F31](review-findings.md#f31-han-linear-is-a-third-untrue-dependency-declaration-and-the-specs-own-deferral-trigger-has-already-fired)).
 
 **Evidence.** codebase — `grep -rn "han-core" han-reporting/` outside its manifest returns nothing; its skills reference
 only `han-communication:readability-guidance` and `han-communication:readability-editor`. codebase —
 `han-feedback/skills/han-feedback/SKILL.md:9` declares
 `allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *)` — no `Agent` and no `Skill`, so it
-structurally cannot invoke `han-core`. Its every "han-core" mention is a string literal it writes into a report. provided
-— the source artifact: "it is not permitted to call other plugins at all, so its claim cannot possibly be true."
+structurally cannot invoke `han-core`. Its every "han-core" mention is a string literal it writes into a report.
+codebase — `han-linear/.claude-plugin/plugin.json:5` declares `"dependencies": ["han-core"]` and `:3` narrates it;
+`grep -rn "han-core" han-linear/` returns only the manifest; and its skill's `allowed-tools` grants
+`Read, Write, Edit, Glob, Grep, Bash(find *)` plus Linear MCP tools, with no `Agent` and no `Skill` — the identical
+signature. `git log -p --follow` shows the declaration present since the plugin was introduced, so it is not a
+regression. provided — the source artifact: "it is not permitted to call other plugins at all, so its claim cannot
+possibly be true."
 
 **Rejected alternatives.**
 
-- _Leave them; the cost is only a needless install._ Rejected: the cost is trust. Once two declarations are decorative,
+- _Leave them; the cost is only a needless install._ Rejected: the cost is trust. Once some declarations are decorative,
   none of them answers "what actually breaks if I change this?"
 - _Give the feedback plugin the ability to invoke the core plugin so its declaration becomes true._ Rejected: inventing a
   use to justify a leftover.
+- _Leave `han-linear` out of scope as a late discovery._ Rejected by the user: it would have left the Outcome's
+  declarations-are-trustworthy promise false on the day the work finished, and left D8 teaching from it.
 
-**Driven by findings:** —
+**Driven by findings:** F31
 **Linked technical notes:** —
-**Dependent decisions:** D7, D18
+**Dependent decisions:** D7, D8, D18, D25
 **Referenced in spec:** Primary flow (Step 5)
 
 ### D14: The release runs the check rather than restating it
@@ -652,24 +724,41 @@ Alternate flows and states
 **Outcome.** Step 1 creates the Linear plugin's channel-two version record at the version channel one already publishes
 for it.
 
-**Rationale.** Step 1 must choose a version and the spec did not say which. The choice determines whether a step 1 to
-step 4 dependency exists at all: create it at the channel-one version and the correction step never touches it; create it
-at some "matching the other codex manifests" value and step 1 has deliberately introduced a defect for a later step to
-repair. This follows directly from D10, and it dissolves the coupling rather than managing it.
+**Rationale.** Step 1 must choose a version and the spec did not say which. The choice determines how much of a step 1
+to step 4 dependency exists: create it at the channel-one version and the record arrives correct; create it at some
+"matching the other codex manifests" value and step 1 has deliberately introduced a defect for a later step to repair.
+This follows directly from D10.
+
+Corrected during review. The original entry claimed this "dissolves the coupling rather than managing it." It does not.
+Creating the record inside the Linear plugin's own directory is itself a change to that directory, which obliges the
+plugin to bump at the next release — and until step 3 lands, a release moves the plugin's channel-one version without
+touching the channel-two record step 1 just created. Step 1 manufactures one instance of the drift step 4 repairs, and
+it does so by existing. This is the same mechanism F1 used to reorder step 4 ahead of nothing and behind the repair; it
+was simply not applied to step 1, which also writes a channel-two version record.
+
+What the decision still buys is real but smaller: the record arrives correct, and the window in which it can go stale is
+bounded by one release rather than open-ended. The coupling is managed, not dissolved, and the step 3 and 4 unit
+([D18](#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)) heals this instance along
+with the eight it was already healing.
 
 **Evidence.** codebase — `han-linear/.claude-plugin/plugin.json` is at `1.0.2`. codebase — every other plugin's
 `.codex-plugin/plugin.json` was created at some `1.x` unrelated to its channel-one number, which is the pattern that
-produced the drift D10 fixes; repeating it here would manufacture a ninth instance.
+produced the drift D10 fixes; repeating it here would manufacture a ninth instance. codebase —
+`docs/semantic-versioning.md:118` ("A child bumps only when its own directory changed") and `:166` (new files are a
+minor bump), which together make step 1's own file creation a bump trigger for `han-linear`.
 
 **Rejected alternatives.**
 
-- _Create it at 1.0.0 to match the other codex manifests._ Rejected: manufactures a defect for step 4 to repair, and
-  perpetuates the pattern D10 exists to end.
+- _Create it at 1.0.0 to match the other codex manifests._ Rejected: manufactures a worse defect for step 4 to repair,
+  and perpetuates the pattern D10 exists to end.
 - _Leave it unstated._ Rejected: it is the single most concrete inter-step coupling in the plan.
+- _Move step 1 after the step 3 and 4 unit so its record is durable on arrival._ Considered during review and rejected:
+  it would delay the only live user-facing error in the plan behind its largest step, which is the trade D11 already
+  refused. The manufactured drift is one instance, healed by a unit that is healing eight others anyway.
 
-**Driven by findings:** F13
+**Driven by findings:** F13, F34
 **Linked technical notes:** —
-**Dependent decisions:** —
+**Dependent decisions:** D18
 **Referenced in spec:** Primary flow (Step 1)
 
 ### D23: Step 2 is a distinct concern retained by instruction
@@ -755,28 +844,42 @@ declarations are the record itself, not a description of it, and are the deletio
 
 **Rationale.** The spec said "no document describes a dependency the suite does not have" without saying whether
 manifests count. Description fields are user-facing prose rendered in the storefront, so they can be false in exactly the
-way the rule cares about. The sweep came back clean, so this costs nothing today — but the next person applying the rule
-needs to know whether manifests are in it, and "we checked and it was fine" is a real result worth recording.
+way the rule cares about, and the next person applying the rule needs to know whether manifests are in it.
+
+Correction after the second review: **the sweep was not clean, and the original entry said it was.** The sweep checked
+the two manifests belonging to the two plugins then believed to carry untrue declarations, and concluded that manifest
+descriptions were a boundary worth stating but a scope that cost nothing. It never checked `han-linear`'s description,
+which narrates "Depends on han-core" — the same false claim its `dependencies` array makes, in the field this decision
+exists to bring into scope. So this decision now has live work behind it rather than a clean bill of health, and the
+lesson generalizes: the sweep was scoped to the plugins already suspected, which is exactly how the third declaration
+stayed hidden ([F31](review-findings.md#f31-han-linear-is-a-third-untrue-dependency-declaration-and-the-specs-own-deferral-trigger-has-already-fired)).
+The re-run covers every plugin's description, not every suspected plugin's.
 
 **Evidence.** codebase — `han-reporting/.claude-plugin/plugin.json` and `han-feedback/.claude-plugin/plugin.json`
-description fields do not narrate dependencies. codebase — `.claude-plugin/marketplace.json`'s description for the bundle
-narrates only the bundle's own dependencies, which this work does not change, so it stays true. codebase —
-`.agents/plugins/marketplace.json` carries no dependency narration at all.
+description fields do not narrate dependencies. codebase — `han-linear/.claude-plugin/plugin.json:3` **does**: it states
+"Depends on han-core", which step 5 falsifies. codebase — `han-atlassian/.claude-plugin/plugin.json:3` narrates its
+dependencies too, and they are true, so it stays as-is — which is what makes the field worth sweeping rather than
+blanket-stripping. codebase — `.claude-plugin/marketplace.json`'s description for the bundle narrates only the bundle's
+own dependencies, which this work does not change, so it stays true. codebase — `.agents/plugins/marketplace.json`
+carries no dependency narration at all.
 
 **Rejected alternatives.**
 
-- _Leave it unstated because the sweep was clean._ Rejected: the rule outlives this sweep and the next reader needs its
-  boundary.
+- _Leave it unstated because the sweep was clean._ Rejected twice over: the rule outlives this sweep and the next reader
+  needs its boundary — and the premise turned out to be false.
+- _Strip dependency narration from every manifest description._ Rejected: some are true and useful, and deleting true
+  prose to avoid re-checking it is the symmetry reasoning this spec rejects.
 
-**Driven by findings:** F27
+**Driven by findings:** F27, F31
 **Linked technical notes:** —
-**Dependent decisions:** —
+**Dependent decisions:** D13
 **Referenced in spec:** Primary flow (Step 6)
 
 ### D26: Corrected documents state the rule and point at the record
 
-**Outcome.** The corrected documents state the dependency rule and point at the manifests as the record, rather than
-restating manifest contents in prose. Hardcoded counts in the affected passages go with them.
+**Outcome.** A document making a **universal claim** about the dependency graph states the rule instead and points at
+the manifests as the record. A document that legitimately **enumerates** the graph keeps the enumeration, drops any
+hardcoded count, and names the manifests as the record. Hardcoded counts in the affected passages go either way.
 
 **Rationale.** The contributor-guide claim in scope fails as a universal quantifier that outlived its truth. The obvious
 fix — swap it for an enumeration of the plugins that do depend on core — has the same half-life: it is false the day
@@ -784,6 +887,25 @@ someone adds a plugin, and nothing in the repository will notice. That is the st
 release process, relocated into prose. Fixing a stale claim with a differently-stale claim is not a fix.
 
 The repository already models the alternative and already has the convention.
+
+Scoped during review. The original entry was reasoned entirely from one sentence shape — the contributor guide's "Every
+plugin depends on `han-core`" — where "each plugin declares its own dependencies; read the manifest" genuinely replaces
+the claim. It was then extended to "corrected documents" plural, including the orientation document and the agent-facing
+project map, where it does not survive: **there is no rule that generates this suite's dependency graph.** The graph is
+irregular by design — the planning plugin depends on the core plugin but not the communication plugin, the coding plugin
+depends on both, two plugins depend on nothing. A document whose job is orientation legitimately narrates that
+irregularity, and for the agent-facing map the whole point is that an agent reads one map instead of eleven manifests.
+The only rule-shaped edit available there is to delete the narration and say "go read the manifests," which removes the
+document's reason to exist and replaces a fixable staleness with a permanent gap.
+
+So the remedy is scoped to the shape it was reasoned from. The distinction that matters is between a claim that is wrong
+because reality is irregular, and a listing that is merely long. The first must go; the second is the document doing its
+job.
+
+A second correction: the original entry leaned on this repository's counting convention as though it settled the matter.
+The convention is scoped to *indexes* ("Verify the indexes list every entity when editing them"). Applying it to prose
+topology narration is a defensible extension and is not a rule the repository already states. Dropping the counts is
+still right; the justification is by extension, not by letter.
 
 **Evidence.** codebase — `CLAUDE.md` § Conventions: "**Indexes stay complete, not counted.** …Verify the indexes list
 every entity when editing them, rather than tracking a running total." codebase — `docs/concepts.md:221` ("Each of these
@@ -794,12 +916,16 @@ everything else pointing at it.
 
 **Rejected alternatives.**
 
-- _Swap the universal claim for an enumeration._ Rejected: same defect, longer fuse.
+- _Swap the universal claim for an enumeration._ Rejected **for universal claims**: same defect, longer fuse. This is
+  not the same as forbidding enumeration in a document whose job is to enumerate — see the scoping above.
+- _Apply "state the rule, point at the record" to every corrected document._ Rejected on evidence during review: there
+  is no rule that generates the real graph, so for the orientation document and the agent-facing project map the remedy
+  reduces to deleting the content those documents exist to carry.
 - _Also de-duplicate the topology narration in the agent-facing project map, which states it three times in one file._
   Rejected: real, but not falsified by this work and therefore outside D7's rule. The correction should not deepen it
   either.
 
-**Driven by findings:** F10
+**Driven by findings:** F10, F36
 **Linked technical notes:** —
 **Dependent decisions:** —
 **Referenced in spec:** Primary flow (Step 6)
@@ -882,22 +1008,35 @@ Outcome's own first promise directly: the documented install command errors, whi
 starts by fixing.
 
 **Evidence.** codebase — both storefront listings reference plugins by relative path
-(`"source": "./han-core"`-style), so a moved or removed directory leaves the entry dangling. codebase — this repository
-has already renamed every plugin directory in a single commit (`d94daa2`, "Rename all plugins to use hyphens instead of
-dots"), which is mechanically identical to delete-old-path-add-new; that commit updated the listings atomically, but it
-establishes that the repository does move plugin directories. codebase — every listing entry resolves today, so this is
-prevention of a demonstrated-possible edit, not a fix for a live break.
+(`"source": "./han-core"`-style), so a moved or removed directory leaves the entry dangling. codebase — every listing
+entry in both storefronts resolves to a real directory today (all 20 verified during review), so this is prevention, not
+a fix for a live break.
+
+The honest justification is cost, not risk: **this behavior is free.** The rule already requires comparing the set of
+plugins in the repository against the set named in each listing, in order to catch a plugin missing from a target. A
+listing entry with nothing behind it is the same comparison read in the other direction. Nothing is built for it that is
+not already being built.
+
+The `d94daa2` rename precedent, cited here originally, is withdrawn as evidence. It was offered to show "the repository
+does move plugin directories," but that commit updated the listings in the same commit — so the one time this actually
+happened, nothing broke. A precedent that demonstrates the failure has never occurred is not evidence the failure needs
+guarding against; leaning on it dressed up "a directory move is possible" as a reason. The behavior stands on being
+free.
 
 **Rejected alternatives.**
 
-- _Defer it; nothing is broken today._ Rejected: it is the same set comparison as the direction already being built, the
-  rename precedent is real, and the failure it prevents is the Outcome's headline promise.
+- _Defer it; nothing is broken today._ Rejected: it is the same set comparison as the direction already being built, so
+  deferring it saves nothing, and the failure it prevents is the Outcome's headline promise.
 - _Keep it justified by "same class of defect."_ Rejected: that is the reasoning the spec's own YAGNI rule names as an
   anti-pattern. The behavior survives; the justification did not.
+- _Have the release repair a dangling entry itself, as it now repairs other membership gaps
+  ([D31](#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing))._ Rejected: this is the one
+  membership gap with two opposite remedies — delete the entry, or restore the plugin — and a release cannot know which
+  was intended. It stops and a person decides.
 
-**Driven by findings:** F16
+**Driven by findings:** F16, F43
 **Linked technical notes:** —
-**Dependent decisions:** —
+**Dependent decisions:** D31
 **Referenced in spec:** Edge cases
 
 ### D30: "Accounted for" is defined so the promise is not circular
@@ -935,6 +1074,217 @@ on the surrounding text" as a Step 3 validation finding, so malformed headings a
 **Linked technical notes:** —
 **Dependent decisions:** —
 **Referenced in spec:** Primary flow (Step 2), Edge cases, User interactions
+
+### D31: The release creates a missing target at the version it is publishing
+
+**Outcome.** A release brings a target up to date by creating a record that does not exist, not only by updating one
+that has fallen behind. A record created this way is written at the version the release is publishing for that plugin —
+for a plugin the release did not bump, that is the version it already has.
+
+**Rationale.** D5 changed what the release can see. It did not change what the release can write, and the difference is
+the whole value of the repair. The release's version-writing step acts only on plugins whose target version differs from
+their current one, and a newly added plugin is assigned no bump, so it always falls into the skip. The listing write
+sets a version on an entry that already exists and has no defined behavior when none does. So for a brand-new plugin —
+exactly the Linear-plugin shape that motivated this work — the "repaired" release would write nothing at all and the
+gate would simply stop. The feature's headline promise would never once fire for the case it exists to serve, and every
+future plugin addition would cost a hand-repair plus a re-run.
+
+Choosing the version is the sub-decision this forces, and the answer falls out of what a release is already doing.
+Every other version the release writes is the version it is publishing; a created record that used anything else would
+arrive disagreeing with its siblings and need a second pass to fix, reintroducing the two-step dance D22 removed from
+step 1. Writing it at the publishing version means creation and agreement resolve together, and the gate that runs
+afterward sees a consistent state on the first pass.
+
+"The version the release is publishing" is defined for every plugin, including the ones a release does not touch. A
+release assigns each plugin a target version, and for a plugin with no changes that target is the version it already
+carries. There is no plugin for which the phrase is undefined, so creation never has to guess.
+
+The four targets are not the same shape, and creation means the right thing in each. Three of them carry a version, so
+creating an entry there writes one. Channel two's storefront listing carries no version at all — creating an entry
+there means adding the plugin's membership and nothing more. This is the same asymmetry the Channels-and-targets
+section already names, and it is why "create the record at the publishing version" is a rule about the three
+version-bearing targets rather than about all four.
+
+This does not make the gate redundant. It still fires on every gap creation cannot close: a listing naming a plugin that
+does not exist (which needs a person to decide whether the plugin or the entry is the mistake — D29), a record that
+cannot be read, and a version value that cannot be parsed (D35).
+
+**Evidence.** codebase — `.claude/skills/han-release/SKILL.md:230` acts only "For every plugin whose `target` differs
+from its `current`"; `:237-238` skips any plugin whose `target == current` and is "a no-op" when the whole plan is
+ahead-path or new; `:160-161` assigns a new child "`baseline = current`, `target = current`, no bump", so a new plugin
+always hits that skip; `:235-236` sets "the `version` of the `plugins[]` element whose `name` equals the plugin name",
+which requires the element to exist. provided — the user chose creation over detection-only when the trade was surfaced
+during review.
+
+**Rejected alternatives.**
+
+- _Detect only; reword the Outcome to "verifies every target"._ Rejected by the user. It is the smaller and more honest
+  version of what the release does today, but it leaves every future plugin addition to a hand-repair and leaves the
+  motivating case unserved by the fix built for it.
+- _Detect now, defer creation to a follow-up with a reopening trigger._ Rejected: it splits one coherent capability
+  across two efforts and leaves the seven steps shipping a release that still cannot repair the defect they exist to
+  repair.
+
+**Driven by findings:** F30
+**Linked technical notes:** —
+**Dependent decisions:** D5, D22, D24, D29, D35
+**Referenced in spec:** Outcome, Primary flow (Step 3), Alternate flows and states, Edge cases, Coordinations
+
+### D32: The guarantee is stated per surface, because only the release can refuse
+
+**Outcome.** The specification states what is enforced where: a release refuses to proceed; a pull request reports a
+failure a person can merge past. The claim that the check makes problems "impossible to reintroduce" is deleted rather
+than left unearned.
+
+**Rationale.** The spec's headline promise had no bearer. A pull-request check prevents a merge only where the hosting
+platform is configured to require that status, and nothing in this repository is: the default branch is unprotected, no
+rules apply to it, and the one ruleset that exists is disabled and contains no required-check rule, so enabling it as
+written would not change the answer. Adding the check to the pipeline makes it run and report. It does not make it
+block.
+
+Two things follow that are easy to miss. First, the real enforcement surface is the release gate, and the spec had the
+two backwards — it treated the check as the guarantee and the gate as a supplement. Second, D1's rationale needed
+restating rather than defending: "a check that blocks everything gets disabled" describes a mechanism that cannot occur
+on a surface where nothing blocks. The ordering D1 argues for is still right, because the rule genuinely does start
+refusing releases at step 3 — but the reason is the gate, not the check. A permanently red advisory check fails
+differently: it gets ignored, and a signal nobody reads protects nothing.
+
+Stating the guarantee per surface is honest and cheap, and it keeps the check worth building: moving discovery from
+release day to the pull request that caused the gap is real value even when the signal is advisory.
+
+**Evidence.** live platform configuration — see T2, queried directly and re-verified during review. codebase —
+`.github/workflows/ci.yml:8-11` triggers the lint job on every pull request, which establishes that it runs and was
+mistaken during planning for evidence that it blocks. provided — the user chose the honest downgrade over owning the
+enforcement when the trade was surfaced during review.
+
+**Rejected alternatives.**
+
+- _Own it: add a required-status-check rule and enable the ruleset in step 7._ Rejected by the user for now, and
+  carried as a decision on Open item 3 rather than dropped. The existing disabled ruleset also demands an approving
+  review, which on a solo-maintained repository would block the maintainer from merging their own work and is the
+  likeliest reason it is off; requiring only the check is the smaller move if this is revisited.
+- _Add an eighth step owning the repository settings._ Rejected: it grows the source plan's seven steps for a change
+  that is a settings toggle rather than work, and the decision to make it is not yet taken.
+
+**Driven by findings:** F28
+**Linked technical notes:** T2
+**Dependent decisions:** D1, D4, D14
+**Referenced in spec:** Outcome, Primary flow (Step 7), Alternate flows and states, Coordinations, Open items
+
+### D33: An already-false statement inside a rewritten passage is corrected
+
+**Outcome.** A false statement inside a passage this work is already rewriting is corrected. A false statement
+elsewhere is not.
+
+**Rationale.** The spec was resolving this case three incompatible ways. D7 and the Out-of-scope section keep
+already-stale documents out, because "the editor is already open" is convenience rather than evidence. D9 pulls an
+already-false contributor claim in. D27 pulls an already-false tutorial promise in. Those are two inclusion rules,
+neither generalized, both apparently contradicting the exclusion rule — and the implementer had no way to tell which
+applied to a new instance.
+
+They are reconcilable, and the reconciliation is what D9 and D27 were already doing without saying so: both false
+statements sit inside sentences the work rewrites anyway. That is a different situation from a stale enumeration three
+files away. The test is not proximity to an open editor, which is the symmetry reasoning this spec rejects; it is
+whether the sentence is being rewritten regardless. Leaving a known-false line inside a paragraph you are actively
+correcting is its own kind of dishonesty, and it costs nothing to fix while you are there.
+
+A live instance forced the question: the orientation document's description of the bundle's own dependencies omits one
+of them, is not falsified by this work, and sits directly between two lines step 6 must edit.
+
+**Evidence.** codebase — `docs/concepts.md:222-223` states the `han` meta-plugin "depends on `han-core`,
+`han-planning`, `han-coding`, `han-github`, and `han-reporting`", while `han/.claude-plugin/plugin.json` declares
+`["han-communication", "han-core", "han-planning", "han-coding", "han-github", "han-reporting"]` — `han-communication`
+is omitted. The surrounding lines are in step 6's scope.
+
+**Rejected alternatives.**
+
+- _Leave already-false neighbors alone, strictly._ Rejected: it contradicts what D9 and D27 already decided, and it
+  requires the implementer to knowingly leave a false sentence in a paragraph they are rewriting.
+- _Fix every already-false statement found while surveying._ Rejected: this is exactly D7's exclusion, and it turns a
+  bounded step into an open-ended documentation audit.
+
+**Driven by findings:** F37
+**Linked technical notes:** —
+**Dependent decisions:** D7, D9, D27
+**Referenced in spec:** Primary flow (Step 6), Out of scope
+
+### D34: A gate stop costs a separate commit, because the release refuses a dirty tree
+
+**Outcome.** The specification states two recoveries rather than one. A partial write is recovered by discarding local
+changes and re-running. A gate stop is recovered by correcting the gap and committing it, and only then re-running.
+
+**Rationale.** The spec gave both cases the same recovery, and for a gate stop it is a no-op that loops. The release
+hard-stops when the working tree is dirty, so the sequence is: gate stops, discard local changes, the gap is still there
+because it lives in the repository rather than in the release's uncommitted work, re-run, identical stop. A maintainer
+following the documented recovery goes in a circle.
+
+That matters more than the friction, because there is no bypass by design (D28, correctly). With the documented
+recovery looping and no disable switch, the move available under release pressure is to hand-edit the targets and force
+through — shipping around the gap, which is the behavior this entire feature exists to end, performed by the person the
+gate was built to protect. D28's stated escape hatch (revert the commit that added the check) is the answer to a *bad
+check*, not to a correct gate stop mid-release.
+
+D31 reduces how often this fires — a release now creates what it can rather than stopping — so the remaining cases are
+gaps creation cannot close. It does not eliminate them, so the recovery still needs stating.
+
+**Evidence.** codebase — `.claude/skills/han-release/SKILL.md:72-74`: "**Working tree must be clean.** If `working
+tree` … is non-empty … Stop and tell the operator to commit or stash them first … This is a hard stop, not a pause
+gate."
+
+**Rejected alternatives.**
+
+- _Add a bypass flag for gate stops._ Rejected: this is D28's disable switch under another name, and the case for it is
+  the pressure that makes shipping around gaps tempting in the first place.
+- _Let the release stash and restore around the gate._ Rejected: implementation mechanics, and it hides a stop that
+  should be visible.
+
+**Driven by findings:** F38
+**Linked technical notes:** —
+**Dependent decisions:** D24, D28, D31
+**Referenced in spec:** Alternate flows and states
+
+### D35: An unreadable record or version is surfaced, not skipped
+
+**Outcome.** A record that cannot be read is a surfaced, blocking failure, never a plugin quietly dropped from the set
+being checked. A record whose version value is absent, empty, or unreadable fails the check by name, exactly as a
+disagreement does, and two unreadable values are never treated as agreeing with each other.
+
+**Rationale.** The rule had no defined behavior for a record that is structurally broken rather than absent or
+disagreeing, and the failure it invites is the one this whole feature exists to end. A plugin whose manifest cannot be
+parsed would silently vanish from the derived list, so the check would faithfully answer "does every plugin appear
+everywhere it should?" about a set that had already excluded the broken one. That is invisible by construction — the
+same shape as the original bug, rebuilt inside the fix.
+
+This is not symmetry reasoning. The argument is not "malformed is handled for work-items headings, so handle it here
+too"; it is that the failure is silent, the trigger is ordinary, and the code the derivation grows out of already
+swallows exactly this error by default. The version half is the same argument one level down: a naive equality
+comparison treats two empty values as agreement, which is a false negative on precisely the hand-sync class D20 was
+written to catch.
+
+This does not make the derivation circular, which is the obvious objection: if a plugin's manifest cannot be read, how
+does anything know the directory is a plugin? Because D19 defines a plugin by what the directory **has**, not by what
+its manifest **says**. The manifest's presence is what makes the directory a plugin; the manifest's contents are what
+the rule then checks. A directory carrying an unreadable manifest is therefore a plugin with a broken record — a
+surfaced failure — rather than a non-plugin the derivation may quietly skip. The two questions are separable, and
+keeping them separate is what closes the silent-drop path.
+
+**Evidence.** codebase — `.claude/skills/han-release/SKILL.md:37,39` both read manifests with `jq … 2>/dev/null`,
+swallowing parse failures into empty output rather than an error; this is the established idiom in the skill D5
+extends. codebase — D20's own evidence establishes that channel one's listing-versus-manifest version is hand-synced
+and unverified, so a broken value is the same manual slip that produced a stale one. The trigger is ordinary: a
+hand-editing slip during steps 1 or 4, or an interrupted write from the release's own target-writing step.
+
+**Rejected alternatives.**
+
+- _Treat an unreadable record as a missing one._ Rejected: it produces the right stop for the wrong reason and would
+  invite a release to "create" a record over a file that already exists and is merely broken.
+- _Leave it to implementation._ Rejected: the silent-skip behavior is the default of the code being extended, so
+  leaving it unstated is choosing it.
+
+**Driven by findings:** F40, F41
+**Linked technical notes:** —
+**Dependent decisions:** D5, D19, D20, D24, D31
+**Referenced in spec:** Edge cases and failure modes
 
 ## Trivial decisions
 
