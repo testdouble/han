@@ -608,7 +608,7 @@ documents, turn on the check. The binding constraints are named; the rest are fr
 > been returned to what this entry always said. Recorded here because the R1 finding's resolution named four
 > specification sections and no decision, which is how a decision and the document citing it came to disagree for a
 > round ([D38](#d38-the-repair-and-the-correction-are-ordered-not-united),
-> [F44](review-findings.md#f44-the-release-repairs-disagreements-so-the-freeze-the-3-4-unit-closes-never-happens),
+> [F44](review-findings.md#f44-the-release-repairs-disagreements-so-the-freeze-the-34-unit-closes-never-happens),
 > [F53](review-findings.md#minor-edits)).
 
 **Rationale.** Two problems with the original total order.

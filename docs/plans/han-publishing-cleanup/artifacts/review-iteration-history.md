@@ -81,3 +81,115 @@ rather than that the earlier work was weak.
 facts about systems outside its own prose — what the release skill can do, what the platform enforces, how many
 releases had run. R2 should verify that R1's own resolutions hold, and specifically stress the newly added D31, whose
 creation capability is the largest untested commitment in the spec and was chosen against the recommendation.
+
+## R2
+
+**Mode:** team
+
+**Spec-aware mode:** engaged. Roster unchanged from R1 and still excludes the mechanic-level specialists per the
+spec-stage rules; every agent received the behavioral-level brief, the YAGNI brief, and the evidence brief, plus R1's
+findings so nothing already resolved was re-raised.
+
+**Size:** large — unchanged. Round cap 3, team cap 5. This is round 2.
+
+**Specialists engaged:** `junior-developer`, `adversarial-validator`, `evidence-based-investigator`, `devops-engineer`,
+`edge-case-explorer`. All five returned output. Two of them (`devops-engineer`, `adversarial-validator`) additionally
+returned a second, independently-run pass, which is treated as corroboration rather than as extra findings — where the
+two passes agreed, the finding is recorded as convergent; where they disagreed, the disagreement is recorded and
+resolved on evidence (see F66).
+
+**Findings raised:** F44, F45, F46, F47, F48, F49, F50, F51, F52, F54, F55, F56, F58, F59, F61, F63, F64 (major); F53,
+F57, F60, F62 (minor); F65, F66 (raised and rejected). Numbering continues from R1, which reached F43.
+
+**Convergence.** The round's findings cluster almost entirely on **D31** — the creation capability the user chose in R1
+against the reviewer's recommendation, and the one R1's own next-step note flagged as the largest untested commitment.
+Five specialists independently found D31's "there is no plugin for which the phrase is undefined" false for the exact
+plugin shape D19 spends a rejected alternative keeping alive (F48). Three found that the bundle's exception is written
+in verbs that predate creation (F50). Three found the gate's approval anchor names a prompt that is off by default
+(F51). Three found the gate-stop recovery does not account for the release's own writes (F54). Three separate greps for
+surviving blocking language found the same two sentences and no others (F61). Convergence at this density on one
+decision is the signal that D31 was under-specified rather than wrong.
+
+**The round's central finding is a collision between two R1 resolutions.** F29 (steps 3+4 become one unit) and F30 (the
+release creates rather than detects) were decided in the same round and never checked against each other. F30 gave the
+release the ability to repair; F29's entire justification was a release freeze that only a non-repairing gate produces.
+The junior-developer reached it from the spec's own three enumerations of "gaps creation cannot close", all of which
+omit version disagreement while a sentence ten lines away claims the gate is live against nine of them; the
+devops-engineer reached it from the gate's placement, observing that every gap the gate can still fire on is
+pre-existing repository state rather than anything the release wrote. Recorded as F44.
+
+**Disagreement resolved.** The two `adversarial-validator` passes split on whether `han-atlassian`'s `han-communication`
+declaration is a **fourth** untrue dependency. Both established the same facts — `han-atlassian` never names it, and its
+wrapped skills invoke it one layer down — and differed on the verdict. Resolved on evidence rather than by preferring an
+agent: `README.md:84-85` documents the declaration's purpose outright, and `evidence-based-investigator` (C4, C5)
+independently confirmed the pattern is applied consistently across the suite. The declaration is real. What was missing
+was the stated test distinguishing it from `han-linear`'s, which is recorded as F62 rather than as a deletion. Step 5
+remains three. Recorded as F66 (rejected).
+
+**Surfaced to the user.** Three findings required judgment only the plan's author could make and were surfaced with
+impact, trade-offs, and a recommendation:
+
+- F44 — does a release overwrite a stale version record for a plugin it did not bump? **User chose yes**, and to restate
+  the unit. Steps 3 and 4 revert to an ordering, which is what D18 always said.
+- F46 — what does a created record contain, given that channel two's record carries authored prose and its listing entry
+  carries an installation policy? **User chose to narrow D31** (the recommendation): the release creates what it can
+  derive and stops at what must be authored.
+- F47 — creation is committed on four targets on evidence that exists for two. **User chose to scope creation to the two
+  channel-two targets** (the recommendation), which is the YAGNI rule's strictly-simpler-version path.
+
+**Verified and confirmed unchanged.** `evidence-based-investigator` re-verified R1's foundational corrections and all
+held: the eight-plus-one drift table is exact (C1); F32's count of eleven releases is exact, re-derived by an
+independent `git merge-base --is-ancestor` sweep over every tag and corroborated by a second agent using a different
+method (C2); T2's live platform configuration is unchanged (C3); F31's set of exactly three untrue declarations is
+closed, checked against every declared edge in every plugin rather than the three suspected (C4). D8's repoint target
+holds (C5, V6). This matters: R1's volume raised the question of whether its own resolutions were sound, and the answer
+is that its facts were right and its reasoning about the interaction between two of them was not.
+
+**Changed in plan:** Channels and targets; Outcome; Primary flow (binding constraints, Step 1, Step 2, Step 3, Step 4,
+Step 6, Step 7); Alternate flows and states; Edge cases and failure modes; Coordinations; User interactions; Deferred
+(YAGNI); Summary; Review History.
+
+**Changed in decision log:** D36, D37, D38, D39, D40 added. Corrections and extensions:
+
+- **D6** — its exception was stated in two verbs, both about looking. D31 added a third the exception never acquired, so
+  a repairing release would publish the bundle to the channel that cannot install it. Restated against what the rule
+  does on that channel rather than against a verb list.
+- **D8** — its evidence verified one of four declared edges and called the manifest true on that basis. All four
+  verified; the stated test that distinguishes a wrapped-skill dependency from a decorative one is now recorded.
+- **D18** — annotated, not edited. It was right: R1's unit claim was never written into it, and F44 restored the spec to
+  what it always said.
+- **D19** — a stale count ("the ten real plugin directories", now eleven) dropped rather than corrected, per this
+  repository's convention that indexes are verified complete rather than counted.
+- **D24** — two corrections. Its R1 approval anchor is unmeetable, and its claim to settle what stops a branch-cut
+  release no longer holds against a release that repairs.
+- **D31** — four corrections: creation scoped to channel two, "membership and nothing more" falsified, the
+  undefined-version universal narrowed, and its scoping by D19 and D6 made explicit.
+- **D33** — its stated rule (sentence) and its applied rule (proximity) disagreed. Bounded to the paragraph.
+- **D34** — completed. The gate stop's recovery never accounted for the release's own writes, and the obvious move
+  disarms the release's only mandatory confirmation.
+- **D35** — extended to the shared listing shape, and its non-circularity argument softened.
+
+**Changed in tech-notes:** none. No finding this round required a new load-bearing mechanic. T1 remains unverified and
+owned by Open item 1; T2 was re-verified and is unchanged.
+
+**YAGNI.** Two new deferrals, both with triggers: distinguishing an empty work-items file from the wrong file (raised by
+`edge-case-explorer`, deferred because nobody has done it and the run already reports two zeroes), and confirming a
+plugin's first publication before a release makes it installable (raised by three agents, deferred because D39's
+reporting is the strictly simpler thing that satisfies the same concern). One first-class YAGNI finding was raised and
+resolved by narrowing rather than deferring (F47). The round also declined two tempting additions on YAGNI grounds: a
+version-inference rule for a plugin shape with zero members (F48), and an apparent-removal detector that would infer
+intent from absence (F58).
+
+**Stability assessment:** not stable, but the trajectory changed. The round produced 17 major findings, three of which
+required user judgment and one of which (F44) reversed an R1 resolution. That is still far past the stop rule. But the
+character is different from R1: R1 falsified claims about the world (what the platform enforces, what the release can
+do, how many releases ran), and R2 falsified almost nothing about the world — every foundational fact it re-checked held
+up. What R2 found was that one decision (D31) was granted late in R1 and never propagated into the six neighbouring
+decisions it changed. That is a containable defect, and it is now contained.
+
+**Next step:** run R3, and scope it narrowly. R2's own resolutions added five decisions and touched eight, all of them
+in the same neighbourhood, and the lesson of F44 is precisely that decisions made in one round and not checked against
+each other are where the next round's findings live. R3 should verify that D36 through D40 do not collide with each
+other or with what they corrected — particularly D36's authored-presence gate stop against D31's "ordinary path" framing,
+and D37's commit commitment against D34's recovery order. The specification's factual foundation is now well-tested and
+should not need re-litigating.

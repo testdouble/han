@@ -712,8 +712,8 @@ The people who experience this feature are maintainers and contributors at a ter
 
 - **Outcome.** Han publishes completely and honestly to both channels, and no release can quietly stop it being so.
 - **Actors.** Han maintainers, contributors, and channel-two installers.
-- **Scope.** Seven steps. The check is last; the release repair and the version correction are one unit; the
-  declaration deletion and document correction are one unit; the work-items fix is independent.
+- **Scope.** Seven steps. The check is last; the release repair precedes the version correction; the declaration
+  deletion and document correction are one unit shipped in a single change; the work-items fix is independent.
 - **Decisions.** See [decision-log.md](artifacts/decision-log.md).
 - **Technical notes.** See [feature-technical-notes.md](artifacts/feature-technical-notes.md).
 - **Sub-agents.** Planning: junior-developer, devops-engineer, edge-case-explorer, information-architect — see
@@ -723,12 +723,19 @@ The people who experience this feature are maintainers and contributors at a ter
 - **Key adjustments from planning.** The execution order was changed to close a window that would have undone step 4;
   the gate was given a placement; the check and release were given one bearer instead of two; the document survey was
   restated as a rule and grew by five locations; and a factual error about the number of version records was corrected.
-- **Key adjustments from review.** The headline enforcement claim was found to have no bearer and was restated per
-  surface — only the release refuses, a pull request merely reports. Steps 3 and 4 became one unit, closing a release
-  freeze the reorder had opened. The release gained the ability to create a missing record rather than only report it.
-  A third untrue dependency declaration was found. The bundle's version exemption was split, and the release count was
-  corrected from "roughly twenty" to eleven.
-- **Deferred under YAGNI.** 4.
+- **Key adjustments from the first review round.** The headline enforcement claim was found to have no bearer and was
+  restated per surface — only the release refuses, a pull request merely reports. The release gained the ability to
+  create a missing record rather than only report it. A third untrue dependency declaration was found. The bundle's
+  version exemption was split, and the release count was corrected from "roughly twenty" to eleven.
+- **Key adjustments from the second review round.** Almost all of them trace to one place: the release's new ability to
+  repair was granted late in the first round and never carried into the decisions it changed. The freeze that made steps
+  3 and 4 one unit does not happen, because a repairing release closes the disagreements rather than refusing over them —
+  so they are an ordering again, which is what the decision log always said. Creation was scoped to the two channel-two
+  targets where the evidence is, and stopped at content a person must author, because a storefront record turned out to
+  carry authored prose rather than just a version. The release now commits every target it writes, without which the tag
+  would have named a state the gate never saw. The bundle's exception gained the verb "create". The gate's promise to
+  refuse before anyone approves was dropped as unmeetable.
+- **Deferred under YAGNI.** 6.
 - **Open items.** 4, of which two are unverified external behaviors, one is a settled fact carrying an unmade decision,
   and one is a real question the team owes itself.
 
@@ -736,9 +743,9 @@ The people who experience this feature are maintainers and contributors at a ter
 
 - **Review mode:** team.
 - **Spec-aware mode:** engaged.
-- **Rounds completed:** 1 of a 3-round cap — see
-  [artifacts/review-iteration-history.md](artifacts/review-iteration-history.md). **Not stable; another round is
-  recommended.**
+- **Rounds completed:** 2 of a 3-round cap — see
+  [artifacts/review-iteration-history.md](artifacts/review-iteration-history.md). **Not stable; a third round is
+  recommended, scoped to the decisions round 2 added.**
 - **Team composition:**
   - `junior-developer` — required; reframes the spec in plain terms and surfaces hidden assumptions and standards
     conflicts.
@@ -749,27 +756,47 @@ The people who experience this feature are maintainers and contributors at a ter
   - `devops-engineer` — the release gate, the enforcement surface, and the rollout ordering are the spec's spine.
   - `edge-case-explorer` — the failure-mode table and the stop-before-create gate carry the spec's silent-failure
     commitments.
-- **Findings raised:** 16 — see [artifacts/review-findings.md](artifacts/review-findings.md). 14 major, 2 minor. By
-  resolution source: 4 by user input on surfaced trade-offs, 12 by evidence.
-- **YAGNI candidates:** 0 new items raised as `Category: YAGNI candidate`. The planning pass's YAGNI work held up under
-  challenge — nothing smuggled back into scope, and all four deferrals carry live triggers. One deferral's trigger was
-  found to have already fired and was restated rather than silently left standing ([F31](artifacts/review-findings.md#f31-han-linear-is-a-third-untrue-dependency-declaration-and-the-specs-own-deferral-trigger-has-already-fired)),
+- **Findings raised:** 37 across both rounds — see [artifacts/review-findings.md](artifacts/review-findings.md). Round 1:
+  14 major, 2 minor. Round 2: 17 major, 4 minor, plus 2 raised and rejected. By resolution source: 7 by user input on
+  surfaced trade-offs, 30 by evidence.
+- **YAGNI candidates:** 1 raised as `Category: YAGNI candidate`, in round 2, and resolved by the
+  replace-with-simpler-version path: creation was committed on all four targets on evidence that exists for two, and is
+  now scoped to the two where the incident lives
+  ([F47](artifacts/review-findings.md#f47-creation-is-committed-on-all-four-targets-on-evidence-that-exists-for-two)).
+  Round 1 raised none, and the planning pass's YAGNI work has held up across both rounds — nothing smuggled back into
+  scope. One deferral's trigger was found to have already fired and was restated rather than silently left standing
+  ([F31](artifacts/review-findings.md#f31-han-linear-is-a-third-untrue-dependency-declaration-and-the-specs-own-deferral-trigger-has-already-fired)),
   and one kept behavior had its justification replaced after the original evidence was withdrawn
-  ([F43](artifacts/review-findings.md#minor-edits)).
+  ([F43](artifacts/review-findings.md#minor-edits)). Round 2 added two deferrals with triggers and declined two tempting
+  additions on YAGNI grounds — a version-inference rule for a plugin shape with no members
+  ([F48](artifacts/review-findings.md#f48-d31s-no-plugin-for-which-the-phrase-is-undefined-is-false-for-the-shape-d19-deliberately-admits))
+  and an apparent-removal detector that would infer intent from absence
+  ([F58](artifacts/review-findings.md#f58-a-half-finished-removal-would-be-silently-undone-by-a-repairing-release)).
 - **Assumptions challenged across all passes:** that a red pull-request check blocks a merge (false — nothing here makes
   it blocking); that the rule only starts refusing at step 7 (false — it refuses from step 3, because the release runs
   it); that the repaired release could fix what it found (false — it could only report); that two plugins carried untrue
   dependency declarations (false — three do); that the bundle has nothing to disagree with (false — it publishes a
-  version in two records); and that the drift spanned roughly twenty releases (false — eleven).
-- **Consolidations made:** steps 3 and 4 became one unit, joining steps 5 and 6, so the binding constraints now name two
-  units rather than one unit and one ordering. The check and the release keep one bearer; what changed is that the spec
-  now states what that bearer can enforce on each surface.
-- **Ambiguities resolved, and how:** what version a created record carries (D31, by extension from what a release
-  already writes); which documents state the rule versus keep their enumeration (D26, scoped to the sentence shape it
-  was reasoned from); whether an already-false neighbor is corrected (D33, stated once as a rule that generalizes what
-  D9 and D27 were already doing); and what happens to a record that cannot be read at all (D35, previously undefined).
-- **Technical notes added/edited:** 1 added — see
-  [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md).
+  version in two records); that the drift spanned roughly twenty releases (false — eleven); that the gate would freeze
+  releases between steps 3 and 4 (false — a repairing release closes the disagreements it would have stopped on); that a
+  version record states a version (false — it carries the plugin's authored storefront presence, and a channel-two
+  listing entry carries the policy deciding installability); that the release publishes what it writes (false — its
+  commit reaches two of four targets); and that a plugin's publishing version is always defined (false for the
+  channel-two-only shape the spec deliberately admits).
+- **Consolidations made:** none survive. Round 1 merged steps 3 and 4 into one unit; round 2 found the freeze that
+  justified it does not occur and reverted them to the ordering the decision log had recorded all along. Steps 5 and 6
+  remain the one genuine unit, now stated as a single change rather than as two that follow closely. The check and the
+  release keep one bearer, and the spec now states both what that bearer can enforce on each surface and why the two
+  surfaces answer differently.
+- **Ambiguities resolved, and how:** what version a created record carries (D31, narrowed in round 2 to name the
+  authoritative source and to stop claiming totality); what a created record actually contains (D36, after the record
+  turned out to carry authored prose); which documents state the rule versus keep their enumeration (D26, scoped to the
+  sentence shape it was reasoned from); whether an already-false neighbor is corrected (D33, bounded to the paragraph
+  after its stated rule and its worked example were found to disagree); what happens to a record that cannot be read
+  (D35, extended to the shared listing shape); what the release does with what it wrote (D37); what a gate stop leaves
+  behind (D34, completed); and what a half-finished removal means (D40).
+- **Technical notes added/edited:** 1 added, in round 1 — see
+  [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md). Round 2 added none and required none;
+  T2 was re-verified against the live platform and is unchanged.
 - **Open items remaining:** 4. None blocks implementation. Items 1 and 2 are external client behaviors that shape how
   outcomes are worded rather than whether steps work ([F35](artifacts/review-findings.md#f35-step-1s-install-succeeds-promise-is-unhedged-against-open-item-2-while-the-parallel-claim-is-hedged)).
   Item 3 is now a settled fact carrying an unmade decision, not an unknown

@@ -519,6 +519,674 @@ cases.
 
 **Changed in tech-notes:** —
 
+### F44: The release repairs disagreements, so the freeze the 3+4 unit closes never happens
+
+**Agent:** `junior-developer` (JD-101), with `devops-engineer` (DOR-R2-03) reaching the same conclusion from the gate's
+side and (DOR-022) from the branch-cut flow's side.
+
+**Category:** two resolutions from the same round contradicting each other
+
+**Finding.** R1 produced F29 (steps 3 and 4 become one unit) and F30 (the release creates rather than only detects) in
+the same round, and never checked them against each other. F29's argument: the release runs the rule, so the gate is live
+from step 3; every plugin but one has disagreeing version records until step 4 corrects them; a release cut in the window
+therefore hard-stops, freezing releases until the versions are fixed.
+
+F30 falsifies the premise. A repaired release **corrects a stale version rather than refusing over it** — the spec's own
+Coordinations says "creating what is missing, updating what is stale". The gate runs after the writes (D24), so by the
+time it looks, the eight disagreements are gone: the release closed them. Shipping step 3 without step 4 repairs the
+drift rather than freezing anything. The window F29 structurally closed was never open.
+
+The spec had the contradiction on the page. Step 3 enumerated the gaps a release cannot close three times — a listing
+naming a plugin that does not exist, a record it cannot read, a version it cannot parse — omitting version disagreement
+from all three, while ten lines below claiming "a gate that is live against nine gaps stops every release until they are
+closed."
+
+Writing the publishing version onto a disagreeing record and writing it onto a missing one are the same act. If the
+release does the second, there is no principled reason it does not do the first.
+
+**Evidence considered.** codebase — `.claude/skills/han-release/SKILL.md:230` acts only "For every plugin whose `target`
+differs from its `current`" and `:237-238` skips the rest; that skip is exactly what step 3 removes when it commits the
+release to bringing every target up to date. codebase — eight plugins disagree today, `han-communication` agrees, and
+`han-linear` has no channel-two record. Verified independently by `evidence-based-investigator` (C1) and by direct read.
+
+**Resolution.** The user confirmed that a release overwrites a stale version record for a plugin it did not bump, and
+chose to restate the unit rather than narrow the repair. Steps 3 and 4 revert to an **ordering**, which is what D18 has
+said all along — "the release repair precedes the version correction". D18 needed no edit; the spec's R1 change was the
+error, and it cited D18 for a claim D18 never made (F53). Step 4 keeps its place on a smaller and true claim: it makes
+the numbers right on merge rather than at the next release. Recorded as D38, which also states the consequence that the
+two surfaces now answer differently — a pull request reports drift a release would have repaired, because a pull request
+has nothing that repairs.
+
+**Resolved by:** user input (option: yes, the release overwrites; restate the unit), on evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (binding constraints, Step 1, Step 3, Step 4, Step 7), Alternate flows and states,
+Edge cases and failure modes, Coordinations, User interactions, Summary
+
+**Changed in decision log:** D38 added; D18 annotated (vindicated, no edit); D24 corrected
+
+**Changed in tech-notes:** —
+
+### F45: The release commits two of the four targets, so the gate certifies a state that is never released
+
+**Agent:** `devops-engineer`, twice independently (DOR-018 and DOR-R2-01, from two separate passes).
+
+**Category:** behavioral commitment the step does not deliver
+
+**Finding.** The spec commits the release to writing four targets and to a gate that judges the written state. It never
+says what becomes of the writes. The release's commit stages an enumerated list of file classes, all on channel one, so
+the real sequence is: write four targets, gate passes on the four-target state, commit two of them, tag, push.
+
+Four consequences, each silent:
+
+- **The tag does not contain the fix.** Under Open item 2's adverse branch (clients resolve from the tag), the entire
+  repair reaches nobody while the gate reports green.
+- **The default branch goes red and stays red.** After one release, channel one is bumped and channel two is untouched —
+  which is D1's restated failure mode arriving via the repair rather than the ordering.
+- **The next release hard-stops.** The uncommitted channel-two writes leave the tree dirty, surfacing one release removed
+  from the cause.
+- **A creation-only release commits nothing at all.** The `han-linear` shape — the motivating case — stages nothing and
+  skips its own commit, tagging an unchanged tree.
+
+The gate cannot catch any of it by construction: it runs before the commit, so it inspects a tree the release then
+declines to publish. This is the original defect (the release cannot see the targets it does not touch) relocated from
+the write step to the commit step, shipping inside the fix.
+
+**Evidence considered.** codebase — `.claude/skills/han-release/SKILL.md:326-328` stages `CHANGELOG.md`,
+`.claude-plugin/marketplace.json`, and every `{source}/.claude-plugin/plugin.json` the version step changed; both
+channel-two targets absent. Verified directly during consolidation rather than taken from the agents. `:328` skips the
+commit "if nothing is staged (… **unlikely**)", a parenthetical creation retires. `:72-74` hard-stops on a dirty tree.
+`:333-335` tags the release commit.
+
+**Resolution.** One behavioral sentence: every target the release writes travels into the commit it tags, so the state
+the gate approved is the state that ships. The staging list is the implementation plan's business. Recorded as D37.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Outcome, Primary flow (Step 3), Coordinations
+
+**Changed in decision log:** D37 added
+
+**Changed in tech-notes:** —
+
+### F46: A created record carries content D31 says it does not, and "membership and nothing more" is false
+
+**Agent:** `adversarial-validator` (V1) and `junior-developer` (JD-103), convergent.
+
+**Category:** behavioral commitment resting on a false premise about the artifact
+
+**Finding.** D31 describes creation as writing a version, and describes creating a channel-two listing entry as "adding
+the plugin's membership **and nothing more**". Both undersell the artifacts, and the second is false.
+
+- A channel-two per-plugin record carries `keywords` and an `interface` block — `displayName`, `shortDescription`,
+  `longDescription`, `developerName`, `category`, `capabilities`, `websiteURL`, and a `defaultPrompt` array of example
+  prompts. None derives from anything the repository holds: channel one carries a single `description` string, never
+  decomposed into short and long forms or prompts.
+- A channel-two listing entry carries `"policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"}` — the
+  field deciding whether the plugin is installable at all, which is the Outcome's headline promise sitting in the field
+  D31 called empty of everything but membership.
+- A channel-one listing entry carries an authored `description`, which **D25 already classifies as a document**. So D31
+  had an unattended release authoring user-facing prose mid-run.
+
+This is F33's error class — a decision exempting or committing something on a false premise about what the record
+carries — reintroduced by R1 in a new location. It also breaks the spec's own parallel: step 1 creates the Linear
+plugin's channel-two record **by hand**, where a person writes that prose. D31 gave the same act to a release with no
+person.
+
+**Evidence considered.** codebase — verified directly during consolidation: `han-core/.codex-plugin/plugin.json` carries
+the full interface block; `han-core/.claude-plugin/plugin.json` carries only `name`, `description`, `version`,
+`dependencies`; every entry in `.agents/plugins/marketplace.json` carries the installation and authentication policy;
+every entry in `.claude-plugin/marketplace.json` carries a description.
+
+**Resolution.** The release creates what it can derive and refuses what must be authored. A plugin with no authored
+storefront presence is a gap creation cannot close — a gate stop, joining D29's dangling entry as "a person decides".
+Step 1 still authors the Linear plugin's record by hand, which the spec now names as the same boundary met by the one
+actor who can cross it. Recorded as D36. The Channels-and-targets glossary gains a bullet naming what a target carries
+besides a version, since the glossary's "a place that states a plugin's published version" is what made the error easy.
+
+**Resolved by:** user input (option: narrow D31 — unauthored presence is a gate stop), on evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Channels and targets, Outcome, Primary flow (Step 1, Step 3), Alternate flows and states, Edge cases
+and failure modes, Coordinations
+
+**Changed in decision log:** D36 added; D31 corrected
+
+**Changed in tech-notes:** —
+
+### F47: Creation is committed on all four targets on evidence that exists for two
+
+**Agent:** `junior-developer` (JD-110)
+
+**Category:** YAGNI candidate
+
+**Finding.** D31's evidence is the `han-linear` incident, which is a **channel-two** membership gap. D31 commits the
+release to creation on all four targets. Per target:
+
+| Target | Evidence for creation | Verdict |
+| --- | --- | --- |
+| Channel-two version record | `han-linear` — documented, live | Passes |
+| Channel-two listing membership | `han-linear` — same incident | Passes |
+| Channel-one version record | none — D19 defines a plugin *by having* this file, so it cannot be missing | Fails |
+| Channel-one listing entry | none — every entry present and resolving; D29 records the same | Fails |
+
+Channel-one-listing creation is the **most expensive** of the four — it is the one that must author a description
+(F46) — and the **least likely to be needed**: per D21, the contributor guide tells contributors about channel one's
+listing and no other target, so the target a forgetful contributor is most likely to have filled in is precisely the one
+this capability creates. D29's "the behavior is free, it's the same comparison read the other way" covers *detection*,
+not creation.
+
+**Evidence considered.** codebase — all eleven plugin directories carry a channel-one record; all twenty listing entries
+across both channels resolve to a real directory (verified by `evidence-based-investigator` and re-checked directly). The
+only live membership gap is `han-linear` on channel two.
+
+**Resolution.** Creation is scoped to the two channel-two targets, where the incident lives. A plugin missing from a
+channel-one target is a gap creation cannot close. This is the YAGNI rule's "strictly simpler version satisfying the same
+evidence": D31's headline promise still fires for the case it exists to serve, and the half with no evidence and the
+highest content cost is removed. Keeping all four would have been the symmetry-and-completeness anti-pattern this spec
+invokes to reject other items. Recorded as D36.
+
+**Resolved by:** user input (option: scope to the two channel-two targets), on evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Outcome, Primary flow (Step 3), Alternate flows and states, Edge cases and failure modes,
+Coordinations
+
+**Changed in decision log:** D36 added; D31 corrected
+
+**Changed in tech-notes:** —
+
+### F48: D31's "no plugin for which the phrase is undefined" is false for the shape D19 deliberately admits
+
+**Agent:** `devops-engineer` (DOR-023 and DOR-R2-05), `junior-developer` (JD-108), `adversarial-validator` (V7),
+`evidence-based-investigator` (F44 in its own numbering). Five independent arrivals from four specialists.
+
+**Category:** universal claim contradicted by a case the spec designed for
+
+**Finding.** D31 asserts: "'The version the release is publishing' is defined for every plugin… **There is no plugin for
+which the phrase is undefined, so creation never has to guess.**" That holds only because the release reads the current
+version from the plugin's channel-one record. **D19 explicitly rejected defining a plugin that way**, and kept the
+contrary case alive on purpose: "Define a plugin as a directory with a channel-one manifest. Rejected: makes a
+channel-two-only plugin invisible, which is the current bug mirrored."
+
+So the spec insists a channel-two-only plugin is a plugin the rule must see, and for that plugin the release has nothing
+to read, no target version, and creation would have to guess exactly where D31 says it never does. Two decisions cannot
+both be unqualified.
+
+**Evidence considered.** codebase — `.claude/skills/han-release/SKILL.md:157` reads `current` from
+`{source}/.claude-plugin/plugin.json`; `:159-164` derives `baseline` from the same path. codebase — no such plugin exists
+today; all eleven directories carry a channel-one record. So this is a false universal, not a live break.
+
+**Resolution.** D31's claim is narrowed to every plugin carrying a channel-one record, which is every plugin today, and a
+plugin whose publishing version cannot be determined joins the gaps creation cannot close. Every agent that raised this
+independently recommended against building a version-inference rule for a shape with zero members, and that
+recommendation is taken: the gate already has the right verb, so the fix costs a clause and no machinery. Recorded on
+D36 and as a correction to D31.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (Step 3), Alternate flows and states, Edge cases and failure modes
+
+**Changed in decision log:** D36 added; D31 corrected
+
+**Changed in tech-notes:** —
+
+### F49: Creation is the headline capability and nothing tells anyone it happened
+
+**Agent:** `devops-engineer` (DOR-R2-06), with `adversarial-validator` (V3) and `edge-case-explorer` (F-R2-2) arriving at
+the same silence from the confirmation-gate side.
+
+**Category:** silent write reproducing the defect the work exists to close
+
+**Finding.** The spec is scrupulous that refusals are loud: the gate names every gap rather than the first, check
+failures name the plugin and every target, and D30 exists so "malformed" is a category rather than a residue. Creation —
+the capability F30 added and the Outcome now advertises — has no such commitment. The spec calls it "the ordinary path,
+not the failure path", and the ordinary path is silent.
+
+It is silent in the release too: the version plan's vocabulary is bumped / unchanged / new, with no term for a created
+record, and a release whose plan needs no confirmation prints nothing at all. So a release can create a plugin's
+channel-two membership and version record, publish it, and never mention it.
+
+A process that writes to what Han publishes without saying so is a smaller instance of the defect being repaired. The
+whole diagnosis is that something quietly stopped happening and nothing asked; a repair that quietly starts happening is
+the same shape.
+
+The adjacent and larger worry, raised independently: creation makes a directory publicly installable with **no
+sign-off**, a bigger act than the version bump that does get a mandatory confirmation.
+
+**Evidence considered.** codebase — `.claude/skills/han-release/SKILL.md:306-315` and `:220-226` print one line per
+plugin in the bumped/unchanged/new vocabulary; `:219-221` prompts for nothing when no plugin needs confirmation.
+Behavioral — D12 already establishes that naming the full set at once is what the release owes a maintainer.
+
+**Resolution.** A release reports what it created and corrected — which plugin, which targets, at what version — in the
+report it already prints. Recorded as D39. The confirmation gate is deferred rather than rejected: reporting is the
+strictly simpler thing that satisfies the same concern, and the case a confirmation guards against (a half-built plugin
+merged and released before anyone noticed) has never happened. Recorded in Deferred (YAGNI) with a trigger.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (Step 3), Alternate flows and states, Edge cases and failure modes, User interactions,
+Deferred (YAGNI)
+
+**Changed in decision log:** D39 added
+
+**Changed in tech-notes:** —
+
+### F50: The bundle's exception is stated in verbs that predate the release's ability to create
+
+**Agent:** `devops-engineer` (DOR-017) and `junior-developer` (JD-107), convergent.
+
+**Category:** unstated coordination between two decisions that never met
+
+**Finding.** D6 states the exception in exactly two verbs, both about looking: the bundle's absence from channel two is
+never **flagged**, and it is never **asked to agree**. D31 gave the release a third verb — **create** — and carries no
+bundle qualifier at all. Step 3 then repeated both verbs and added "**The exception stops there**", a sentence that
+actively instructs a narrow reading, immediately before widening the rule back onto the bundle.
+
+The tell that the two decisions never met: D6's dependent-decisions list did not include D31, and D31's did not
+include D6.
+
+An implementer applying D31 literally creates a channel-two listing entry and version record for the bundle. The gate
+cannot catch it, because the exception told the rule not to look at the bundle on that channel — so the one plugin the
+rule was instructed to ignore is the one the release would wrongly publish, silently and on every subsequent release.
+
+**Evidence considered.** codebase — `.agents/plugins/marketplace.json` contains no `han` entry and there is no
+`han/.codex-plugin/`, so the bundle is permanently and correctly missing from two targets. codebase — `README.md:72-73`:
+"Codex does not yet support meta-plugins like `han@han` (see openai/codex#23531,) and it resolves no dependencies". A
+safe reading existed via D19's "belongs in" and one Edge-cases row, which is why this is a "say it" finding rather than a
+"this is broken" one — but the cost of the implementer reading Step 3's unqualified sentence instead of that row is a
+release publishing a meta-plugin to a channel that cannot install it.
+
+**Resolution.** The exception is restated against what the rule does on channel two rather than against an enumerated
+verb list, so the next verb inherits it: never flagged, never asked to agree, **never created**. The Edge-cases row
+carries the third verb too. D6 and D31 are added to each other's dependent-decision lists.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (Step 3), Edge cases and failure modes
+
+**Changed in decision log:** D6 extended; D31 corrected
+
+**Changed in tech-notes:** —
+
+### F51: The gate's approval anchor names a prompt that is off by default and misses the one that is not
+
+**Agent:** `devops-engineer` (DOR-020 and DOR-R2-02) and `junior-developer` (JD-105), convergent.
+
+**Category:** R1 resolution resting on a mis-read of the release
+
+**Finding.** F39's resolution anchored the gate to two boundaries: irreversibility, and "before it asks anyone to approve
+publishing", on the rationale that "a gate that refuses after approval teaches people to distrust it". Both halves fail.
+
+**The prompt it names is opt-in and off by default.** So on the ordinary path nobody is asked to approve publishing at
+all, and the boundary is vacuous — the late edge is unbounded again, which is the state F39 objected to.
+
+**The approval that always happens is earlier and on the wrong side of the writes.** The release's confirmation of its
+version plan is its single mandatory gate, and it runs *before* the target writes. D24 forbids the gate from running
+before those writes. So the gate is **structurally** after an operator authorization: F39 did not close the window, it
+named the wrong door. The rationale is not merely unmet, it is unmeetable given D24's own early boundary.
+
+**Evidence considered.** codebase — `.claude/skills/han-release/SKILL.md:317-320` fires the publish prompt only "If
+`pause_before_publish` is true"; `:65-67` defaults it to **false**. codebase — `:214-226` is titled "Confirm the plan
+(**single mandatory gate**)" and runs at Step 3, before Step 4's writes.
+
+**Resolution.** The unmeetable clause is dropped. The gate keeps the two boundaries it can honor — it runs on the state
+being released, after the writes, before anything irreversible — and the spec states the consequence honestly rather than
+denying it: a release can refuse after the operator has confirmed a version plan, and what the gate owes them is that
+nothing was published and every gap is named at once. The reviewer's alternative (split the gate so its membership half
+answers before the plan confirmation) was not taken: it is a real change to D24's one-gate decision, and D24 rejected two
+gates for reasons that still hold.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (Step 3), Alternate flows and states, User interactions
+
+**Changed in decision log:** D24 corrected
+
+**Changed in tech-notes:** —
+
+### F52: The branch-cut flow's backstop claim does not survive a release that repairs
+
+**Agent:** `devops-engineer` (DOR-022, with DOR-R2-07 scoping the same sentence from the step-3 side).
+
+**Category:** stated safety net that catches nothing
+
+**Finding.** The flow claimed: "A release is cut from a branch where a step has not landed. What stops it is the
+release's own gate… the release gate is the only surface a missing step is caught on." Enumerate the instantiations
+after D31 and nothing is left:
+
+- Step 3 not landed → the branch carries the old release, which has no gate at all.
+- Step 4 not landed → the release now **repairs** the drift rather than stopping.
+- Step 1 not landed → the release creates the missing records; the spec's own flow calls this "the ordinary path".
+- Steps 5, 6, 7 → the gate does not inspect dependency declarations, documents, or its own existence.
+
+The sentence was true before F30, when the gate stopped on any version disagreement — precisely what a branch missing
+step 4 has. D31 replaced the stop with a repair and the claim was not revisited. If a maintainer relies on it — cutting
+from a feature branch believing the gate will refuse if something is missing — the release proceeds and publishes a state
+nobody intended.
+
+**Evidence considered.** codebase — `.claude/skills/han-release/SKILL.md:76-78` explicitly permits cutting from a
+non-default branch ("do not stop… surface the fact, do not block"), and `.github/workflows/ci.yml` triggers on
+`pull_request`, so a branch with no pull request gets no pipeline run. There is no second surface.
+
+**Resolution.** The flow is restated to what is true: a release cut from a branch missing a step is mostly not caught,
+and the gate's job is the gaps a release cannot close rather than the steps of this plan. The restatement also names the
+gain the old claim obscured — after D31, cutting from a branch missing step 1 or step 4 is *safe* rather than merely
+caught, because the release repairs it. Same honest-downgrade shape D32 already applied to the check.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Alternate flows and states
+
+**Changed in decision log:** D24 corrected
+
+**Changed in tech-notes:** —
+
+### F54: The gate-stop recovery does not account for the release's own writes, and the naive move skips the mandatory confirmation
+
+**Agent:** `devops-engineer` (DOR-019 and DOR-R2-04) and `junior-developer` (JD-104), convergent.
+
+**Category:** recovery path that does not survive F30's resolution
+
+**Finding.** F38's resolution gave the gate stop its own recovery: "Recovery is **not** discarding local changes — the
+gap is in the repository and not in the release's uncommitted work. The gap must be corrected and committed."
+
+The first clause is right about the gap and wrong about the tree. At gate-stop time the tree always holds the release's
+own work, because D24 places the gate after all four target writes. The two stated recoveries therefore overlap rather
+than compose, and the spec never says what becomes of those writes — though they must go somewhere, since the release
+refuses to start dirty.
+
+Both available moves are bad and the spec picks neither:
+
+- **Commit everything.** The gap fix lands together with the release's half-applied version bumps. On the re-run the
+  release sees those versions as already ahead of their baseline, takes the ahead path, needs no confirmation, and its
+  **single mandatory gate is silently skipped**. Recovering from a gate stop converts a confirmed release into an
+  unprompted one — a step of the release deciding something a person was supposed to decide, which is the class of defect
+  this work exists to end.
+- **Discard, then fix.** Actually correct, but the spec's sentence reads as prohibiting it. And a careless discard is not
+  enough: creation writes **untracked** files, which survive a discard aimed at modified ones and keep the tree dirty —
+  a second loop, this one caused by creation.
+
+**Evidence considered.** codebase — `.claude/skills/han-release/SKILL.md:72-74` hard-stops on a dirty tree and counts
+untracked files (`git status --porcelain` at `:37`). `:203-213` takes the ahead path when `current` is strictly ahead of
+`baseline` ("**No confirmation for this plugin**"); `:219-221` "If no plugin needs confirmation… **Do not prompt**".
+
+**Resolution.** The recovery is stated as two acts in order: the release's own local work is discarded first, including
+what it created, then the gap is corrected and committed on its own, then the release re-runs and plans from scratch.
+The spec states the reason rather than only the sequence, because the reason is the load-bearing part. This does not
+reopen D28. A separate point from `edge-case-explorer` (F-R2-5) is folded in: the correction must reach the branch
+releases are cut from, since a gap fixed only on a throwaway release branch is still there for everyone else.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Alternate flows and states
+
+**Changed in decision log:** D34 completed
+
+**Changed in tech-notes:** —
+
+### F55: D33 states a sentence rule and applies a proximity rule
+
+**Agent:** `adversarial-validator` (V3)
+
+**Category:** scoping rule contradicting its own worked example
+
+**Finding.** D33 claims its test is "whether the sentence is being rewritten regardless", explicitly not proximity. Its
+one worked example applies proximity. The orientation document's three relevant paragraphs are separate: the paragraph
+naming the four plugins that depend on the core plugin (falsified by step 5), the paragraph describing the bundle's own
+dependencies (already false, **not** falsified), and a third paragraph about the opt-in plugins (falsified). The
+already-false claim sits in its own paragraph, about a different subject, between two that are genuinely being rewritten
+— and the spec justified pulling it in with "the surrounding sentences are being rewritten", which is adjacency, the
+"sits nearby" reasoning D7 and the Out-of-scope section name and reject.
+
+Left unbounded, a future implementer could extend "passage" to "anything in a document step 6 touches", which is the
+open-ended audit D33's own rejected alternatives say it refuses to become.
+
+**Evidence considered.** codebase — verified directly during consolidation: the three paragraphs are distinct, and the
+bundle paragraph's dependency list omits `han-communication` while the real manifest includes it.
+
+**Resolution.** The boundary is stated: **a passage is the paragraph** — narrower than the document-wide audit, wider
+than a sentence, and the unit a person actually rewrites. Under that rule the worked example does **not** qualify, and
+saying so is the point. It is corrected anyway by a route it does qualify under: that paragraph is one of the document's
+dependency enumerations, and step 6 is already rewriting those to drop their counts and name the manifests as the record
+(D26). Applying that remedy means checking the enumeration against the manifests, and one that disagrees is corrected by
+the act of applying it — not by being nearby.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (Step 6)
+
+**Changed in decision log:** D33 bounded
+
+**Changed in tech-notes:** —
+
+### F56: "The window does not exist" was stated as fact and nothing operationalized "one unit"
+
+**Agent:** `adversarial-validator` (V5)
+
+**Category:** unstated assumption inside a structural claim
+
+**Finding.** D18 rejected "add a precondition that no release is cut in the window" because "it relies on a maintainer
+honoring a promise with nothing enforcing it", and F29 claimed the structural fix instead: "The two steps land together,
+and the window does not exist." Nothing in the spec or the decision log said what "land together" means. If it is not
+atomic — one commit, one change — the fix is still a promise, which is the thing D18 says it rejected. Nothing in this
+repository enforces atomicity: T2 already established nothing blocks anything here.
+
+**Evidence considered.** provided/codebase — no statement of single-commit or single-pull-request delivery exists
+anywhere in the spec or decision log. T2's live configuration confirms nothing enforces it.
+
+**Resolution.** Largely absorbed: F44 removed the 3+4 unit entirely, so the claim it was attached to is gone. What
+survives applies to steps 5 and 6, which remain a genuine unit. The Coordinations bullet now says they ship in a single
+change rather than in two that follow each other closely, and states plainly that this is a commitment about how the work
+is shipped rather than a property of the work — because nothing here enforces it.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (binding constraints), Coordinations
+
+**Changed in decision log:** D38 added
+
+**Changed in tech-notes:** —
+
+### F58: A half-finished removal would be silently undone by a repairing release
+
+**Agent:** `edge-case-explorer` (F-R2-1)
+
+**Category:** silent write reproducing the defect the work exists to close
+
+**Finding.** The spec never addresses plugin **removal**, and D31 makes its absence consequential. D19 defines a plugin
+inclusively — a directory the suite ships as an installable unit — deliberately rejecting "has a channel-one manifest"
+so a channel-two-only plugin stays visible. So a directory that survives a half-finished removal is still a plugin, and
+per D31 its now-missing channel-two records are simply "missing from a target" and get **created back** — silently
+republishing what a maintainer was retiring. D29 covers only the mirror case (a listing entry pointing at nothing).
+
+Removal is not hypothetical: the release process already versions "a child was removed from the suite" as a major bump.
+
+**Evidence considered.** codebase — the release skill's removal rule confirms removal is an anticipated event.
+Behavioral — D19's inclusive definition plus D31's create-path compose into the resurrection without either decision
+saying so.
+
+**Resolution.** The rule refuses the ambiguity rather than guessing at intent. "Never published here" and "published
+here until yesterday" are the same state on disk, and inferring the difference would mean consulting history to guess a
+person's intention on a case with no live instance. So: a plugin the repository still carries is a plugin the rule
+expects in every target it belongs in — a directory that remains is a plugin, and removing a plugin means removing the
+directory. That gives the maintainer one thing to get right instead of four, which is the simplification the rest of the
+work is built on. Recorded as D40.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Alternate flows and states, Edge cases and failure modes
+
+**Changed in decision log:** D40 added
+
+**Changed in tech-notes:** —
+
+### F59: A corrupt storefront listing would route a whole channel into the create-path
+
+**Agent:** `edge-case-explorer` (F-R2-3)
+
+**Category:** boundary of a rule written for a different artifact shape
+
+**Finding.** D35's rule ("a record that cannot be read is surfaced and blocking, never a plugin quietly dropped") is
+written and evidenced entirely in terms of a **per-plugin record**. The spec's own glossary distinguishes the two shapes:
+a storefront listing is "one per channel", a single shared file covering every plugin. If that file fails to parse — a
+trigger D35 itself names, a hand-editing slip during steps 1 or 4 — every plugin in the channel would appear
+simultaneously missing from that target, which post-D31 means "missing → create". A corrupted listing could therefore
+trigger a mass-creation pass that regenerates the file rather than surfacing one blocking failure. D35's own rejected
+alternative ("treat an unreadable record as a missing one — rejected: it produces the right stop for the wrong reason")
+was never stated for the shared shape.
+
+**Evidence considered.** codebase — D35's own cited evidence (`.claude/skills/han-release/SKILL.md:37,39`) reads the
+whole listing in one call covering every plugin, so the mismatch between the rule's wording and its evidence is in the
+decision itself.
+
+**Resolution.** An unreadable storefront listing is surfaced and blocking for that whole channel, never read as mass
+absence. Added to Edge cases and recorded as an extension to D35. This is not a symmetry argument — the failure is silent
+and would regenerate a published file, which is the loudest possible version of the defect the work exists to end.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Edge cases and failure modes
+
+**Changed in decision log:** D35 extended
+
+**Changed in tech-notes:** —
+
+### F61: "Stays green" and "not blocked by the check" outlive F28's correction
+
+**Agent:** `devops-engineer` (DOR-021), `junior-developer` (JD-109), `adversarial-validator` (V6). Three independent
+greps for surviving blocking language found exactly these two.
+
+**Category:** overclaim outliving its correction
+
+**Finding.** Two sentences still carry the pre-F28 assumption that a pull-request check blocks:
+
+- Step 7: "the check is green on the day it arrives **and stays green**." Only true of a check that blocks. The spec
+  contradicts it directly two sections away ("If they merge past it — **which they can** — the next release creates the
+  missing records itself"), and it is cited to D1, whose corrected rationale is precisely that on an advisory surface the
+  failure mode is a red check people scroll past. It sits two paragraphs below the sentence F28 deleted for the same
+  reason.
+- Outcome: "so a contributor following the contributor guide is **not blocked by the check**" — implies a blocking
+  capability that merely fails to trigger here, when T2 established the check cannot block anyone in any case.
+
+**Evidence considered.** T2 (live platform configuration, re-verified in R2 by `evidence-based-investigator` C3: the
+default branch returns not-protected, zero rules apply, the sole ruleset is disabled with no required-status-check rule).
+
+**Resolution.** "Stays green" is replaced with what is actually true and makes D1's restated rationale visible where the
+check lands: green on arrival, red on the pull request that introduces a gap, mergeable past, and the default branch then
+carries a red check until the next release repairs it. "Not blocked by" becomes "not flagged by".
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Outcome, Primary flow (Step 7)
+
+**Changed in tech-notes:** —
+
+### F63: The examine-first guarantee is stated absolutely and evidenced only for foreign annotations
+
+**Agent:** `edge-case-explorer` (F-R2-4)
+
+**Category:** boundary between adjacent categories
+
+**Finding.** Step 2 states generally: "A work item whose annotation the publisher does not recognize is surfaced as a
+format error, and **the run stops before creating anything at all**". D3, its citation, is scoped and evidenced
+specifically for the **foreign-annotation** case — its rationale is about avoiding duplicate publication to another
+tracker. D30 separately broadens "accounted for" to every malformed heading and names the plain case as "the most likely
+malformation in practice". The spec never says whether the examine-first guarantee — justified only for foreign
+annotations — extends to the plain malformed case, though its own wording ("at all", "before the first item is
+published") reads as uniform.
+
+**Evidence considered.** codebase — the publisher's repair pass carries "Malformed heading" as a distinct category,
+separate from the foreign-annotation gate, so the two are already different things in the code. D30's own text names the
+hyphen-versus-dash case as the likely one.
+
+**Resolution.** Stated explicitly, with the reason rather than by symmetry: the publisher cannot tell the two apart until
+it has looked — a heading it fails to parse might be another tracker's annotation in a shape it does not know, or a
+hand-edited line with the wrong dash. They need the same answer because the cheaper answer (publish what you understood,
+then complain) is the one that creates issues in a file that may already have been published elsewhere.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (Step 2)
+
+**Changed in tech-notes:** —
+
+### F64: "Nine gaps" is stated as flat fact three times and is conditional
+
+**Agent:** `junior-developer` (JD-106)
+
+**Category:** unverified count driving spec prose (the class F32 established)
+
+**Finding.** Step 1 creates the Linear plugin's record at its channel-one version (D22), so **it arrives agreeing**. At
+the moment step 3 lands the count is **eight** disagreements, not nine, and two plugins agree rather than one. Yet Step 3
+said "every plugin but **one** has version records that disagree" and "a gate that is live against **nine** gaps", and
+Step 4 said "This step closes **nine** gaps, not eight". The ninth exists only if a release is cut between step 1 and
+step 3 — Step 1's own F34 caveat says so — so the spec asserted as certain, in three places, something its own Step 1
+paragraph makes conditional.
+
+**Evidence considered.** codebase — verified independently by `evidence-based-investigator` (C1) and by direct read of
+every manifest on both channels: eight plugins disagree, `han-communication` agrees, `han-linear` has no channel-two
+record, the bundle has none by design.
+
+**Resolution.** Stated as eight, with the ninth named as a contingency rather than a count. The point the number served —
+the gate is live against a red repository — is itself removed by F44, so what remains is Step 4's scope. Same reasoning
+F32 used: the qualitative point does not depend on the number, so the number should be right.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R2
+
+**Changed in plan:** Primary flow (Step 3, Step 4)
+
+**Changed in tech-notes:** —
+
+## Rejected findings
+
+- **F65 (rejected): D18's execution-order numeral list is not inconsistent with its gloss.** `edge-case-explorer` read
+  "The steps execute as 1, 2, 6, 3, 4, 5, 7" as spec numbering and concluded the following gloss described 1–7 in order.
+  The list is stated in **the source plan's** numbering, as the sentence says, and the steps' own `_Source position:_`
+  annotations confirm it: spec steps 1–7 carry source positions 1, 2, 6, 3, 4, 5, 7 respectively. The gloss matches the
+  list exactly. No change.
+- **F66 (rejected): `han-atlassian`'s `han-communication` declaration is not a fourth untrue dependency.** Raised by one
+  `adversarial-validator` pass as a possible fourth deletion by the same grep test that condemned the other three, and
+  refuted by a second `adversarial-validator` pass and by `evidence-based-investigator` (C4, C5) independently. All three
+  agree on the facts — `han-atlassian` never names `han-communication`, and its wrapped skills invoke it one layer down —
+  and the disagreement was on the verdict. Resolved by evidence rather than by preferring an agent: `README.md:84-85`
+  documents the declaration's purpose directly ("Because Codex resolves no dependencies, install `han-communication`
+  alongside `han-atlassian` (its wrapped prose-producing skills source the shared readability standard from it)"), and
+  `docs/concepts.md:225-227` documents the identical transitive-necessity pattern for the `han-planning` and `han-coding`
+  edges. The declaration is real and deliberate. The gap was that D8 and D25 never stated the test that distinguishes it
+  from `han-linear`'s — recorded as F62 rather than as a deletion. Step 5 remains three.
+
 ## Minor edits
 
 - F42: Open item 4 is parked with no dependent step, which is the same shape F22 used to remove the old open item 3 —
@@ -529,3 +1197,22 @@ cases.
   mirror of the comparison D19 already requires) and is kept; the evidence wording is corrected to say so rather than
   lean on a precedent that demonstrates the opposite. — `adversarial-validator` (V4) — Edge cases (D29 evidence
   wording; behavior unchanged)
+- F53: F29's resolution named four spec sections and no decision, so the steps-3+4 unit was written into the spec while
+  D18 continued to say "precedes" — the spec cited D18 for a claim D18 never made. F44 vindicated D18, so the fix is a
+  note recording that the decision was right and the citing document was wrong, rather than an edit. — `junior-developer`
+  (JD-102) — D18 (annotated; no outcome change)
+- F57: Creation writes untracked files, which survive a discard aimed at modified files and keep the tree dirty — a
+  second recovery loop caused by creation rather than by the gap. — `junior-developer` (JD-104) — Alternate flows
+  (folded into F54's resolution and D34)
+- F60: D35's non-circularity argument asserts that plugin identity survives an unreadable manifest because "D19 defines a
+  plugin by the manifest's presence, not its contents" — a filesystem-based identity, while the release's existing
+  convention matches records by the name **inside** them, and D19 explicitly defers detection to the implementation plan.
+  The behavioral commitment survives either way (the failure can be named by the directory it was found in), so the
+  argument is softened rather than the outcome changed. — `adversarial-validator` (V4) — D35 (rationale; behavior
+  unchanged)
+- F62: D8 verifies `han-atlassian`'s `han-core` edge "by use, not by self-description" and calls the manifest true on the
+  strength of it, while three other declared edges went uncited — and one of them (`han-communication`) would fail the
+  very test D8 states it is applying. All four were verified in R2 and all four are real, but the distinction that makes
+  the fourth real was never written down: a declaration whose *wrapped* skills exercise it is genuine; a declaration
+  whose plugin is not granted the means to call anything is not. — `evidence-based-investigator` (F46),
+  `adversarial-validator` (V1) — D8 (evidence extended; conclusion unchanged)
