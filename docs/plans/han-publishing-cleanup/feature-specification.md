@@ -64,8 +64,9 @@ Concretely, when this work is done:
   following the contributor guide is not flagged by the check for doing what the guide told them
   ([D21](artifacts/decision-log.md#d21-the-release-procedure-documents-are-owned-by-the-step-that-falsifies-them)).
 - The release process starts from what is really in the repository, brings every target up to date — correcting a
-  version that has fallen behind and creating a channel-two record a plugin is missing, not only reporting them — and
-  stops rather than shipping around a gap it cannot close
+  version that has fallen behind and creating a channel-two listing entry a plugin is missing, not only reporting them —
+  and stops rather than shipping around a gap it cannot close, including a plugin whose storefront presence nobody has
+  written
   ([D5](artifacts/decision-log.md#d5-the-check-derives-the-plugin-list-from-the-repository),
   [D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing),
   [D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
@@ -85,7 +86,7 @@ Concretely, when this work is done:
 | Actor                     | Trigger                                                          | What they need from this feature                                            |
 | ------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | Han maintainer            | Works through the seven steps once                               | Each step lands without breaking the next; the real ordering constraints are stated |
-| Han maintainer            | Cuts any future release                                          | The release brings every target up to date, creating what is missing, and refuses to ship around a gap it cannot close |
+| Han maintainer            | Cuts any future release                                          | The release brings every target up to date, creating the membership it can derive, and refuses to ship around a gap it cannot close |
 | Contributor               | Opens a pull request that adds or renames a plugin               | The check tells them what is missing, and the contributor guide already told them the four targets |
 | Channel-two installer     | Runs the documented install command for any advertised plugin    | The install succeeds                                                        |
 | Channel-two installer     | Has Han installed and expects updates                            | Updates are offered when releases happen                                    |
@@ -96,9 +97,17 @@ Concretely, when this work is done:
 Seven steps, executed in the order below. Only some adjacencies are forced; the forced ones are named and the rest are
 free ([D18](artifacts/decision-log.md#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)).
 
-The binding constraints are: **the check is last**; **the release repair precedes the version correction**; **the
-declaration deletion and the document correction are one unit, shipped in a single change**; and the work-items fix is
-independent of all of it.
+The binding constraints are: **the check is last**; **step 1 precedes the release repair**; **the release repair
+precedes the version correction**; **the declaration deletion and the document correction are one unit, shipped in a
+single change**; and the work-items fix is independent of all of it.
+
+**Step 1 before step 3 is a real constraint and it is easy to miss.** Once the release derives its plugins from the
+repository, it sees the Linear plugin — and the Linear plugin has no authored presence on channel two, which is a gap
+the release refuses rather than fills. So a repository with step 3 and without step 1 stops every release until someone
+writes that presence by hand, which is step 1 performed under release pressure instead of on purpose
+([D41](artifacts/decision-log.md#d41-step-1-precedes-the-release-repair-because-an-unauthored-presence-stops-a-release)).
+This is the freeze the next paragraph says does not exist, on a different gap. Both statements are true: a release
+repairs a stale version and refuses an unwritten presence.
 
 The repair-before-correction constraint is an **ordering, not a unit**, and the difference is worth stating because this
 specification briefly claimed otherwise. The claim was that the gate starts refusing releases at step 3, so shipping
@@ -196,30 +205,51 @@ stays absent forever. The first half is why the drift is repairable at all; the 
 is repairable
 ([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)).
 
-**Creation reaches the two channel-two targets and stops there.** That is where the evidence is: a plugin missing from
-channel two is the defect this work exists to fix, and it is live today. A plugin cannot be missing from channel one's
-per-plugin record, because carrying one is part of what makes a directory a plugin
-([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)); a plugin missing
-from channel one's listing has never happened, and is the one creation would have to author a description for. Both are
-gaps the release refuses rather than closes
+**The release creates what it can derive and refuses what must be authored.** That line decides which targets creation
+reaches, and it falls in exactly one place
 ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
 
-A created record carries the version the release is publishing for that plugin, which for a plugin the release did not
-bump is the version it already has, read from that plugin's own channel-one record and never from a listing — a listing
-is one of the things this rule exists to correct, so it cannot also be the authority
-([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)). **The
-release creates what it can derive and refuses what must be authored.** A plugin's storefront presence — its names, its
-descriptions, the examples of what to ask it — is written by a person, and a release that invented it would be publishing
-prose nobody wrote to a storefront people read. A plugin with no authored presence on channel two is therefore a gap the
-release names and stops on, exactly like a listing entry with nothing behind it
+**Creation reaches channel two's listing entry.** An entry there says a plugin exists, where it lives, and the terms on
+which it installs — all of which the release can derive from the plugin itself, and the terms are the same terms every
+other plugin already carries. Nothing about it is written prose.
+
+**Creation does not reach a plugin's per-plugin record on either channel, and a missing one is a gap the release stops
+on.** Channel two's record does not merely carry a version alongside the plugin's storefront presence; it **is** that
+presence — the display name, the short and long descriptions, the examples of what to ask it. There is no second file to
+author it in. So a plugin with no channel-two record has no authored presence by definition, and a release that created
+one would be inventing the prose, not deriving it. Channel one's record cannot be missing from a plugin at all, because
+carrying one is part of what makes a directory a plugin
+([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)) — and if one is
+deleted anyway, that is a person taking something apart, not a gap for a release to fill in.
+
+This is the boundary step 1 already describes from the other side. Step 1 has a person write the Linear plugin's
+channel-two record because nobody else can, and that is the same wall a release meets. **The motivating case is closed by
+a person, not by a release**, and the release's creation exists for the narrower thing that comes after: a contributor
+who authors the record and forgets the listing entry
 ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
 
-A release refuses to proceed when it finds a gap it cannot close: a listing naming a plugin that does not exist, a
-record it cannot read, a version it cannot make sense of, a plugin whose publishing version it cannot determine, or a
-plugin whose presence on a channel it would have to author. **The gate runs on the state being released — after the
-release has brought all four targets up to date, and before it commits, tags, pushes, or publishes anything.** Early
-enough that every action after it is still local and reversible; late enough to judge what is actually being released
-rather than what preceded it
+A created entry, and any record the release updates, carries the version the release is publishing for that plugin —
+which for a plugin the release did not bump is the version it already has, read from that plugin's own channel-one record
+and never from a listing, since a listing is one of the things this rule exists to correct and cannot also be the
+authority
+([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)).
+
+**A release refuses to proceed when it finds a gap it cannot close.** This is the list, stated once; everywhere else in
+this specification that names a gap is naming one of these:
+
+- a plugin with no record on a channel it belongs in — the presence is unwritten, and only a person writes it;
+- a listing naming a plugin that is not in the repository;
+- a record or a listing it cannot read;
+- a version value it cannot make sense of;
+- a plugin whose publishing version it cannot determine.
+
+Every one of them is a person's decision wearing a release's clothes, which is why the release hands them back rather
+than guessing
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+
+**The gate runs on the state being released — after the release has brought all four targets up to date, and before it
+commits, tags, pushes, or publishes anything.** Early enough that every action after it is still local and reversible;
+late enough to judge what is actually being released rather than what preceded it
 ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible)).
 When it stops, it names every gap it found rather than the first
 ([D12](artifacts/decision-log.md#d12-a-missing-plugin-stops-the-release-and-every-gap-is-named)).
@@ -276,11 +306,22 @@ Because the release process is repaired first, this correction is durable: the v
 than re-freezing it. Had this step come first, any release cut before the repair would have undone it
 ([D18](artifacts/decision-log.md#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)).
 
-This step is worth doing by hand even though step 3 makes a release do it. Once the repair lands, the first release
-corrects these numbers whether or not this step ever runs — so what this step buys is that the numbers are right on
-merge rather than whenever someone next cuts a release. That is a smaller claim than "the correction requires this
-step", and it is the true one
-([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
+This step is worth doing by hand even though step 3 makes a release do it, and it is worth being precise about why,
+because the obvious reason is the weaker one.
+
+The obvious reason is that the numbers are right on merge rather than whenever someone next cuts a release. That is a
+smaller claim than "the correction requires this step", and it is **contingent on the same unknown step 1 is hedged
+against**: if channel two's client resolves from the release tag rather than the default branch, then the only revision
+anyone resolves is one a release produced, and a release corrects these numbers itself. Under tag resolution this step's
+user-facing benefit is not smaller, it is nothing — what survives is that the repository stops publishing numbers it
+knows are wrong ([Open item 2](#open-items)).
+
+The reason that does not depend on that unknown: **step 4 is what makes step 7's check green on the day it arrives.**
+Without it, and absent a release cut somewhere between step 3 and step 7, the check lands red against eight
+disagreements — a signal that is red from birth is one people learn to scroll past, which is the failure D1 sequences the
+check last to avoid
+([D1](artifacts/decision-log.md#d1-the-check-lands-last-because-a-check-that-blocks-everything-gets-disabled),
+[D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
 This step closes eight gaps. Eight plugins carry a channel-two version that has fallen behind, and the Linear plugin's
 record arrives agreeing because step 1 created it at the version channel one already publishes. A ninth gap opens only
@@ -441,23 +482,25 @@ The failure mode there is quieter and is the one that is actually reachable: a c
 people learn to scroll past, and a signal nobody reads protects nothing
 ([D1](artifacts/decision-log.md#d1-the-check-lands-last-because-a-check-that-blocks-everything-gets-disabled)).
 
-**A release runs while a plugin is missing from a channel-two target.** The release creates the missing record at the
-version it is publishing for that plugin, reports that it did, and proceeds
+**A release runs while a plugin is missing from channel two's listing.** The release creates the entry at the version it
+is publishing for that plugin, reports that it did, and proceeds
 ([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing),
-[D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)). This is the ordinary path, not the failure
-path: the whole point of the repair is that a release closes this gap rather than reporting it. A plugin missing from a
-**channel-one** target is the other case, and it is a stop rather than a repair
-([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+[D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)). This is the ordinary path, and it is the only
+membership gap a release closes.
+
+**A release runs while a plugin has no channel-two record.** The release stops. The record is the plugin's authored
+presence, so there is nothing to derive and a release that wrote one would be inventing it. This is the Linear plugin's
+shape today, and it is why step 1 is a person's work and why step 1 comes before step 3
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored),
+[D41](artifacts/decision-log.md#d41-step-1-precedes-the-release-repair-because-an-unauthored-presence-stops-a-release)).
 
 **A release runs while a plugin's version has fallen behind on a target.** The release writes the version it is
 publishing for that plugin onto the record and proceeds, whether or not it bumped that plugin this release. This is also
 the ordinary path, and it is what makes step 4's correction durable rather than a thing that re-freezes
 ([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
-**A release meets a gap it cannot close.** A listing naming a plugin that is not in the repository, a record it cannot
-read, a version value it cannot make sense of, a plugin whose publishing version it cannot determine, or a plugin whose
-presence on a channel would have to be authored. The release stops after bringing the targets up to date and before
-committing
+**A release meets a gap it cannot close.** The list is in step 3 and is not repeated here. The release stops after
+bringing the targets up to date and before committing
 ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible)),
 naming every gap it found rather than the first
 ([D12](artifacts/decision-log.md#d12-a-missing-plugin-stops-the-release-and-every-gap-is-named)). Nothing is tagged,
@@ -482,10 +525,13 @@ when the correction reaches the branch releases are cut from, not when the relea
 ([D34](artifacts/decision-log.md#d34-a-gate-stop-costs-a-separate-commit-because-the-release-refuses-a-dirty-tree)).
 
 **A release fails partway through writing the four targets.** Every write happens before anything irreversible, so the
-repository is left with local modifications and nothing published. Recovery here *is* discarding local changes and
-re-running, because nothing in the repository is wrong — only the incomplete local work. No compensation or rollback
-machinery is specified because none is needed
-([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible)).
+repository is left with the release's local work and nothing published. Recovery here *is* discarding that work and
+re-running, because nothing in the repository is wrong — only the incomplete local work. Discarding it means discarding
+**everything the release wrote and everything it created**, for the same reason a gate stop does: a created file is
+untracked, survives a cleanup aimed at modified files, and leaves the tree dirty enough that the next release refuses to
+start. No compensation or rollback machinery is specified because none is needed
+([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible),
+[D34](artifacts/decision-log.md#d34-a-gate-stop-costs-a-separate-commit-because-the-release-refuses-a-dirty-tree)).
 
 **A work-items run meets a file annotated by a different tracker.** The run stops before creating anything and names the
 work items whose annotations it does not recognize, so a person decides whether the file was already published elsewhere
@@ -496,48 +542,72 @@ as already published, skipped, and reported in the skipped count. A partial run 
 
 **A new plugin is added after this work.** The check fails visibly on the pull request that adds it, telling the
 contributor which targets it is missing from. If they act on it, the plugin arrives complete. If they merge past it —
-which they can — the next release creates the missing records itself
-([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)), so the
-signal being advisory costs lateness rather than correctness. The signal is only fair because step 3 corrected the
-contributor guide to name all four targets rather than one
+which they can — what it costs depends on what they left out, and the spec no longer flattens the two
+([D32](artifacts/decision-log.md#d32-the-guarantee-is-stated-per-surface-because-only-the-release-can-refuse)).
+
+A missing **listing entry** costs lateness: the next release creates it
+([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)). A missing
+**channel-two record** costs a stopped release: nobody has written the plugin's presence, so the next release refuses
+until someone does. That is the more likely omission, because a brand-new plugin has no presence written by definition —
+so the honest reading is that merging past this signal can stop the next release rather than merely delay a fix
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+
+That is a real cost and arguably the right one: a plugin should not reach a storefront before a person has written what
+it says. But it means the advisory check is tolerable for a different reason than "the release will fix it anyway" — it
+is tolerable because the release refuses to publish something nobody wrote, which is a protection rather than a repair.
+The signal is only fair because step 3 corrected the contributor guide to name all four targets rather than one
 ([D21](artifacts/decision-log.md#d21-the-release-procedure-documents-are-owned-by-the-step-that-falsifies-them)).
 
 **A release is cut from a branch where a step has not landed.** Mostly nothing stops it, and the specification says so
 rather than claiming a backstop it does not have. A branch missing step 3 carries the old release, which has no gate at
-all and publishes channel one exactly as it does today. A branch missing steps 1 or 4 is repaired by the release rather
-than refused, which is the repair working. A branch missing steps 5, 6, or 7 releases cleanly, because the gate does not
+all and publishes channel one exactly as it does today. A branch missing step 4 is repaired by the release rather than
+refused, which is the repair working. A branch missing steps 5, 6, or 7 releases cleanly, because the gate does not
 inspect dependency declarations, documents, or its own existence. The release process permits cutting from a non-default
 branch, and a branch with no pull request gets no pipeline run, so there is no second surface either
 ([D32](artifacts/decision-log.md#d32-the-guarantee-is-stated-per-surface-because-only-the-release-can-refuse)). The
 gate's job is the gaps a release cannot close, not the steps of this plan
 ([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
-**A plugin is being removed from the suite.** A removal that lands whole — the directory and both channels' entries
-gone together — is not a state the rule ever sees. A removal that lands half-finished is, and it is the same four-file
-mistake this work exists to prevent, pointed the other way. The rule does not distinguish "never published here" from
-"published here until recently", so a release meeting a half-removed plugin would helpfully create back the records the
-removal deleted. **A plugin the repository still carries is a plugin the rule expects in every target it belongs in**,
-which means a removal is finished or it is not: a directory that remains is a plugin, and its absence from a target it
-belongs in is a gap the release closes. Removing a plugin means removing the directory
+**A branch missing step 1 is the exception, and it is the reason step 1 is a binding constraint.** The Linear plugin's
+presence is unwritten there, so the release refuses rather than repairs — the one case where a missing step of this plan
+does stop a release, and it stops it for the right reason rather than as a backstop
+([D41](artifacts/decision-log.md#d41-step-1-precedes-the-release-repair-because-an-unauthored-presence-stops-a-release)).
+
+**A plugin is being removed from the suite.** A removal that lands whole — the directory and both channels' entries gone
+together — is not a state the rule ever sees. A removal that lands half-finished is, and it is the same four-file mistake
+this work exists to prevent, pointed the other way. The rule does not distinguish "never published here" from "published
+here until recently", and it does not try: inferring intent from absence is exactly the inference that cannot be made,
+since the two are the same state on disk.
+
+**A plugin the repository still carries is a plugin the rule expects in every target it belongs in.** A removal is
+finished or it is not, and a directory that remains is a plugin. Removing a plugin means removing the directory
 ([D40](artifacts/decision-log.md#d40-a-half-finished-removal-is-not-a-state-the-release-guesses-at)).
+
+What the release then does about the leftovers is not one answer, and the same boundary decides it. A half-removal that
+deleted the plugin's channel-two listing entry is repaired — the release puts it back, which is the honest consequence of
+the directory still being there. A half-removal that deleted a **record** is a stop, on either channel, because what was
+deleted is the thing only a person writes. So a half-finished removal mostly does not get silently undone; it gets named,
+and the person finishes the job in one direction or the other
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored),
+[D40](artifacts/decision-log.md#d40-a-half-finished-removal-is-not-a-state-the-release-guesses-at)).
 
 ## Edge cases and failure modes
 
 | Case                                                                           | Behavior                                                                                                                                     |
 | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | The bundle is absent from channel two                                          | Not flagged, **not created**, and the cross-channel comparison does not apply to it. The creation verb matters as much as the other two: it is the one plugin a repairing release would publish to a channel that cannot install it ([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel)) |
-| The bundle's two channel-one records disagree with each other                  | Check fails, like any other plugin. The bundle's exemption is from the comparison between channels, not from agreement within one. It bumps every release and its version names the release tag, so this is the most-exercised pair in the suite ([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel), [D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version)) |
-| A plugin is missing from a **channel-two** target it belongs in                | A release creates the missing record, reports that it did, and proceeds ([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing), [D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)). On a pull request the check reports it, naming the plugin and every target it is missing from. This is the shape of the defect that motivated the work ([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)) |
-| A plugin is missing from a **channel-one** target it belongs in                | Check fails; the release stops rather than creating it. Creation is committed where the evidence is, and no plugin has ever been missing from a channel-one target — carrying a channel-one record is part of what makes a directory a plugin, and creating a channel-one listing entry would mean authoring the description that entry carries ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
-| A plugin has no authored presence on a channel it belongs in                   | Check fails; the release stops rather than inventing one. A storefront presence is prose a person wrote, and a release that composed it would be publishing writing nobody authored to a page people read ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
+| The bundle's two channel-one records disagree with each other                  | Reported on a pull request and repaired on a release, like any other plugin. The bundle's exemption is from channel two, not from agreement within channel one. It bumps every release and its version names the release tag, so this is the most-exercised pair in the suite — and the repair now keeps it in agreement rather than the gate merely watching it, which closes the drift this row was written to catch ([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel), [D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version), [D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)) |
+| A plugin is missing from **channel two's listing**                             | A release creates the entry, reports that it did, and proceeds ([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing), [D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)). On a pull request the check reports it. This is the only membership gap a release closes, because an entry is derivable and a record is not ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
+| A plugin has **no record** on a channel it belongs in                          | Check fails; the release stops rather than inventing one. The record is the plugin's authored presence, so there is nothing to derive. This is the Linear plugin's shape today, and it is why step 1 is a person's work and why step 1 precedes step 3 ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored), [D41](artifacts/decision-log.md#d41-step-1-precedes-the-release-repair-because-an-unauthored-presence-stops-a-release)) |
+| A plugin is missing from **channel one's listing**                             | Check fails; the release stops rather than creating it. The entry carries an authored description, and no plugin has been missing from it — so this is the expensive half of creation serving a case with no members ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
 | A plugin is in a storefront listing but not in the repository                  | Check fails. A listing entry resolving to nothing breaks the install-succeeds promise directly, and it is the one membership gap a release must not "fix" by itself, since the remedy is a person deciding whether the plugin or the entry is the mistake ([D29](artifacts/decision-log.md#d29-a-listing-entry-with-no-plugin-behind-it-fails-the-check)) |
-| A plugin's version records disagree                                            | On a pull request the check fails, naming the plugin and every disagreeing record. On a release it is repaired rather than reported: the release writes the publishing version to every record it can, so a disagreement it caused is the only one the gate can still see ([D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version), [D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)) |
+| A plugin's version records disagree                                            | On a pull request the check fails, naming the plugin and every disagreeing record. On a release it is repaired rather than reported: the release writes the publishing version to every record it can, so the gate never meets this class after a repairing release ([D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version), [D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)) |
 | A plugin's publishing version cannot be determined                             | Check fails; the release stops rather than guessing. A plugin the release cannot assign a version to is a gap creation cannot close, alongside a dangling listing entry and an unreadable record ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
 | A storefront listing cannot be read at all                                     | Surfaced and blocking for that whole channel, never read as "every plugin is missing from this target". A listing is one shared file covering every plugin, so a parse failure would otherwise route the entire channel into the create-path and overwrite the file with regenerated entries — the loudest possible version of the silent defect this work exists to end ([D35](artifacts/decision-log.md#d35-an-unreadable-record-or-version-is-surfaced-not-skipped)) |
 | A record cannot be read at all                                                 | Surfaced and blocking, never skipped. A record that fails to parse must not silently drop its plugin from the set being checked — a rule applied to a set that quietly excludes the broken member is the same invisible-by-construction defect this work exists to end ([D35](artifacts/decision-log.md#d35-an-unreadable-record-or-version-is-surfaced-not-skipped)) |
-| A record publishes a version, but the value is absent, empty, or not a version | Check fails, naming it, exactly as a disagreement does. Two unreadable values are never treated as agreeing with each other ([D35](artifacts/decision-log.md#d35-an-unreadable-record-or-version-is-surfaced-not-skipped)) |
+| A record publishes a version, but the value is absent, empty, or not a version | On a pull request the check fails, naming it — two unreadable values are never treated as agreeing with each other. On a release the record is overwritten with the publishing version like any other stale record, because it is the same act ([D35](artifacts/decision-log.md#d35-an-unreadable-record-or-version-is-surfaced-not-skipped), [D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)). The exception is a record the release cannot read at all, which is the row above: a broken value inside a readable record is repairable, and a record it cannot parse is not |
 | A plugin has a manifest and no skills                                          | Valid. The bundle is permanently in this state, so "has skills" is not part of what makes a directory a plugin ([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)) |
-| A plugin's directory remains but its records were deleted                     | Treated as a plugin missing from those targets, not as a removal in progress. The rule does not guess intent from absence, so a removal is finished or it is not ([D40](artifacts/decision-log.md#d40-a-half-finished-removal-is-not-a-state-the-release-guesses-at)) |
+| A plugin's directory remains but its records were deleted                     | Treated as a plugin missing from those targets, not as a removal in progress — the rule does not guess intent from absence, so a removal is finished or it is not. A deleted listing entry is put back; a deleted record is a stop, because what was deleted is the thing only a person writes. So a half-removal is named rather than silently undone ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored), [D40](artifacts/decision-log.md#d40-a-half-finished-removal-is-not-a-state-the-release-guesses-at)) |
 | A work item's heading is malformed in any way the publisher does not recognize | Surfaced, never silently passed over. "Accounted for" means every heading is either published, skipped-and-counted, or surfaced ([D30](artifacts/decision-log.md#d30-accounted-for-is-defined-so-the-promise-is-not-circular)) |
 | A work-items file mixes annotated and unannotated items for the same tracker   | Unchanged: annotated items skipped and counted, unannotated items published                                                                   |
 | Two trackers' annotations are indistinguishable from each other                | Out of scope here; the trap remains and is specified separately ([D2](artifacts/decision-log.md#d2-step-2-closes-the-silent-hole-only-annotation-namespacing-is-separate)) |
@@ -549,7 +619,7 @@ belongs in is a gap the release closes. Removing a plugin means removing the dir
   a target it also writes, so a stale listing can no longer hide a plugin from it
   ([D5](artifacts/decision-log.md#d5-the-check-derives-the-plugin-list-from-the-repository)).
 - **The release process and both storefronts.** The release brings all four targets up to date — updating a version that
-  has fallen behind, and creating a channel-two record that does not exist — before it does anything irreversible
+  has fallen behind, and creating a channel-two listing entry that does not exist — before it does anything irreversible
   ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible),
   [D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing),
   [D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
@@ -595,9 +665,11 @@ The people who experience this feature are maintainers and contributors at a ter
   the same; the consequence is not. On a pull request it informs, and the contributor may proceed anyway. On a release
   it refuses — over a smaller set, because a release repairs on its way to the gate and a pull request has nothing that
   repairs ([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
-- **Release repair.** Names what it created and what it corrected — which plugin, which targets, at what version —
-  alongside the version plan it already reports. A release that quietly starts writing to what Han publishes is the same
-  shape as a release that quietly stopped, which is the defect being repaired
+- **Release repair.** Names what it created and what it **changed** — which plugin, which targets, at what version —
+  alongside the version plan it already reports. Changed, not written: after the repair a release writes every record on
+  every run, so a report of everything written would name every plugin and every target forever, which is a report
+  nobody reads and the same failure by a different route. A release that quietly starts writing to what Han publishes is
+  the same shape as a release that quietly stopped, which is the defect being repaired
   ([D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)).
 - **Release stop.** Names every gap it found before stopping, not just the first one, so a maintainer learns the full set
   in one run ([D12](artifacts/decision-log.md#d12-a-missing-plugin-stops-the-release-and-every-gap-is-named)). The stop
@@ -670,11 +742,18 @@ The people who experience this feature are maintainers and contributors at a ter
   **Reopening trigger:** someone publishes from the wrong file, or a run of zeroes is mistaken for a run that worked.
 - **Confirming a plugin's first publication to a channel before a release makes it installable.** Creation makes a
   directory publicly installable with no sign-off, which is a larger act than the version bump that does get confirmed.
-  It is deferred because the release now reports what it created
-  ([D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)), which is the strictly simpler thing that
-  satisfies the same concern, and because the case it guards against — a half-built plugin merged to the default branch
-  and released before anyone noticed — has never happened. **Reopening trigger:** a release publishes a plugin that was
-  not ready, or a maintainer asks to hold a plugin's directory on the default branch while keeping it unpublished.
+  It is deferred because the case it guards against — a half-built plugin merged to the default branch and released
+  before anyone noticed — has never happened, and because a plugin cannot reach a storefront without a person having
+  written its presence first, which is a sign-off of a kind
+  ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+
+  It is **not** deferred on the grounds that reporting satisfies the same concern. Reporting is notice, not sign-off, and
+  on the ordinary path the notice is not separated from the publish by any prompt: the release prints what it did and
+  continues, because the prompt that would stop it is off by default and the confirmation that always runs happens before
+  the writes ([D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)). A maintainer learns what was
+  created in the same output as the push. That is worth having and it is not a gate. **Reopening trigger:** a release
+  publishes a plugin that was not ready, or a maintainer asks to hold a plugin's directory on the default branch while
+  keeping it unpublished.
 
 ## Open items
 
@@ -712,8 +791,9 @@ The people who experience this feature are maintainers and contributors at a ter
 
 - **Outcome.** Han publishes completely and honestly to both channels, and no release can quietly stop it being so.
 - **Actors.** Han maintainers, contributors, and channel-two installers.
-- **Scope.** Seven steps. The check is last; the release repair precedes the version correction; the declaration
-  deletion and document correction are one unit shipped in a single change; the work-items fix is independent.
+- **Scope.** Seven steps. The check is last; step 1 precedes the release repair; the release repair precedes the version
+  correction; the declaration deletion and document correction are one unit shipped in a single change; the work-items
+  fix is independent.
 - **Decisions.** See [decision-log.md](artifacts/decision-log.md).
 - **Technical notes.** See [feature-technical-notes.md](artifacts/feature-technical-notes.md).
 - **Sub-agents.** Planning: junior-developer, devops-engineer, edge-case-explorer, information-architect — see
@@ -735,6 +815,14 @@ The people who experience this feature are maintainers and contributors at a ter
   carry authored prose rather than just a version. The release now commits every target it writes, without which the tag
   would have named a state the gate never saw. The bundle's exception gained the verb "create". The gate's promise to
   refuse before anyone approves was dropped as unmeetable.
+- **Key adjustments from the third review round.** One decision was found to contradict itself, and everything else
+  followed from it. A release cannot create a plugin's storefront record, because that record **is** the storefront
+  presence and a release would be inventing prose rather than deriving a version. So creation reaches channel two's
+  listing entry and nothing else, and the Linear plugin — the case this work exists for — is closed by a person at step
+  1, exactly as step 1 always said and step 3 denied. Two consequences the spec had backwards are now stated: step 1 is a
+  binding constraint before step 3, because a release that meets an unwritten presence refuses rather than repairs; and a
+  new plugin merged past the check stops the next release rather than costing lateness, which is a better bargain than
+  the one the spec was claiming but a different one.
 - **Deferred under YAGNI.** 6.
 - **Open items.** 4, of which two are unverified external behaviors, one is a settled fact carrying an unmade decision,
   and one is a real question the team owes itself.
@@ -743,9 +831,13 @@ The people who experience this feature are maintainers and contributors at a ter
 
 - **Review mode:** team.
 - **Spec-aware mode:** engaged.
-- **Rounds completed:** 2 of a 3-round cap — see
-  [artifacts/review-iteration-history.md](artifacts/review-iteration-history.md). **Not stable; a third round is
-  recommended, scoped to the decisions round 2 added.**
+- **Rounds completed:** 3 of a 3-round cap — the cap is reached, so this review stops here. See
+  [artifacts/review-iteration-history.md](artifacts/review-iteration-history.md). **Not stable at the cap.** Every round
+  found real defects, and each round's defects were narrower than the last: round 1 falsified claims about the world,
+  rounds 2 and 3 falsified none and instead found one decision each that had not been read against its neighbours. The
+  factual foundation has never failed re-verification. The recommended next move is not another full review but a
+  targeted check of round 3's own output — D36-as-corrected and D41 against D31, D38, D39, and D40 — because that is the
+  check this document has now failed three times running, and it costs one pass rather than one round.
 - **Team composition:**
   - `junior-developer` — required; reframes the spec in plain terms and surfaces hidden assumptions and standards
     conflicts.
@@ -756,9 +848,9 @@ The people who experience this feature are maintainers and contributors at a ter
   - `devops-engineer` — the release gate, the enforcement surface, and the rollout ordering are the spec's spine.
   - `edge-case-explorer` — the failure-mode table and the stop-before-create gate carry the spec's silent-failure
     commitments.
-- **Findings raised:** 37 across both rounds — see [artifacts/review-findings.md](artifacts/review-findings.md). Round 1:
-  14 major, 2 minor. Round 2: 17 major, 4 minor, plus 2 raised and rejected. By resolution source: 7 by user input on
-  surfaced trade-offs, 30 by evidence.
+- **Findings raised:** 52 across three rounds — see [artifacts/review-findings.md](artifacts/review-findings.md). Round
+  1: 14 major, 2 minor. Round 2: 17 major, 4 minor, plus 2 rejected. Round 3: 10 major, 3 minor, plus 2 rejected. By
+  resolution source: 8 by user input on surfaced trade-offs, 44 by evidence.
 - **YAGNI candidates:** 1 raised as `Category: YAGNI candidate`, in round 2, and resolved by the
   replace-with-simpler-version path: creation was committed on all four targets on evidence that exists for two, and is
   now scoped to the two where the incident lives
@@ -772,6 +864,14 @@ The people who experience this feature are maintainers and contributors at a ter
   ([F48](artifacts/review-findings.md#f48-d31s-no-plugin-for-which-the-phrase-is-undefined-is-false-for-the-shape-d19-deliberately-admits))
   and an apparent-removal detector that would infer intent from absence
   ([F58](artifacts/review-findings.md#f58-a-half-finished-removal-would-be-silently-undone-by-a-repairing-release)).
+  Round 3 raised no new candidates and added no deferrals: an adversarial YAGNI sweep over all five of round 2's
+  decisions and both of its deferrals found no unevidenced scope creep, and the round's defects were correctness
+  failures in decisions that were properly evidenced for inclusion. Its closest call is recorded rather than resolved
+  silently — the surviving creation capability has no live instance, which by
+  [F47](artifacts/review-findings.md#f47-creation-is-committed-on-all-four-targets-on-evidence-that-exists-for-two)'s own
+  test would cut it; it is kept because a listing entry is derivable, and the spec now says that instead of citing an
+  incident it cannot close
+  ([F81](artifacts/review-findings.md#minor-edits)).
 - **Assumptions challenged across all passes:** that a red pull-request check blocks a merge (false — nothing here makes
   it blocking); that the rule only starts refusing at step 7 (false — it refuses from step 3, because the release runs
   it); that the repaired release could fix what it found (false — it could only report); that two plugins carried untrue
@@ -780,20 +880,33 @@ The people who experience this feature are maintainers and contributors at a ter
   releases between steps 3 and 4 (false — a repairing release closes the disagreements it would have stopped on); that a
   version record states a version (false — it carries the plugin's authored storefront presence, and a channel-two
   listing entry carries the policy deciding installability); that the release publishes what it writes (false — its
-  commit reaches two of four targets); and that a plugin's publishing version is always defined (false for the
-  channel-two-only shape the spec deliberately admits).
+  commit reaches two of four targets); that a plugin's publishing version is always defined (false for the
+  channel-two-only shape the spec deliberately admits); that a release can create the record whose absence motivated
+  this work (false — that record **is** the authored presence, so the Linear plugin is closed by a person at step 1, not
+  by a release); that a contributor merging past the check costs only lateness (false — a new plugin has no written
+  presence by definition, so it stops the next release); and that no step of this plan can freeze a release (false —
+  step 3 without step 1 stops every release, which is a real version of the freeze round 2 correctly refuted for version
+  drift).
 - **Consolidations made:** none survive. Round 1 merged steps 3 and 4 into one unit; round 2 found the freeze that
   justified it does not occur and reverted them to the ordering the decision log had recorded all along. Steps 5 and 6
   remain the one genuine unit, now stated as a single change rather than as two that follow closely. The check and the
   release keep one bearer, and the spec now states both what that bearer can enforce on each surface and why the two
   surfaces answer differently.
 - **Ambiguities resolved, and how:** what version a created record carries (D31, narrowed in round 2 to name the
-  authoritative source and to stop claiming totality); what a created record actually contains (D36, after the record
-  turned out to carry authored prose); which documents state the rule versus keep their enumeration (D26, scoped to the
-  sentence shape it was reasoned from); whether an already-false neighbor is corrected (D33, bounded to the paragraph
-  after its stated rule and its worked example were found to disagree); what happens to a record that cannot be read
-  (D35, extended to the shared listing shape); what the release does with what it wrote (D37); what a gate stop leaves
-  behind (D34, completed); and what a half-finished removal means (D40).
+  authoritative source and to stop claiming totality); **what a release can create at all** (D36, corrected in round 3
+  after the decision was found to contradict itself — the boundary is derivable-versus-authored, and it puts the listing
+  entry on one side and every record on the other); which documents state the rule versus keep their enumeration (D26,
+  scoped to the sentence shape it was reasoned from); whether an already-false neighbor is corrected (D33, bounded to the
+  paragraph after its stated rule and its worked example were found to disagree); what happens to a record that cannot be
+  read (D35, extended to the shared listing shape); what the release does with what it wrote (D37); what a gate stop
+  leaves behind (D34, completed); what a half-finished removal means (D40, its mechanism corrected in round 3 to follow
+  D36); and which step orderings actually bind (D41, after round 3 found step 1 had become binding without being named).
+- **Where the review kept finding the same defect:** three rounds running, in a different decision each time. A decision
+  gets made late in a round, and nobody reads it against the decisions it changed. Round 1 did it with the release-freeze
+  claim and the creation capability; round 2 did it inside D36, the decision it wrote to fix round 1's version; round 3's
+  own output is the next candidate. The check that caught it twice is mechanical and cheap — a decision's
+  dependent-decisions list not naming the decision that contradicts it — and it is the first thing a further pass should
+  run.
 - **Technical notes added/edited:** 1 added, in round 1 — see
   [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md). Round 2 added none and required none;
   T2 was re-verified against the live platform and is unchanged.

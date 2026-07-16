@@ -193,3 +193,94 @@ each other are where the next round's findings live. R3 should verify that D36 t
 other or with what they corrected — particularly D36's authored-presence gate stop against D31's "ordinary path" framing,
 and D37's commit commitment against D34's recovery order. The specification's factual foundation is now well-tested and
 should not need re-litigating.
+
+## R3
+
+**Mode:** team. **This is the final round — the large-size cap is 3.**
+
+**Spec-aware mode:** engaged. Every agent received the behavioral-level brief, the YAGNI brief, and the evidence brief,
+plus R1's and R2's findings.
+
+**Size:** large — unchanged. Round cap 3, team cap 5.
+
+**Specialists engaged:** `junior-developer`, `adversarial-validator`, `devops-engineer`. All three returned output.
+`evidence-based-investigator` and `edge-case-explorer` were **dropped for this round** and the reason is worth recording:
+R2 used the investigator to re-verify the spec's entire factual foundation — the drift table, the eleven-release count,
+the live platform configuration, the closed set of three untrue declarations — and every claim held. Re-running it would
+have spent the last round re-confirming settled facts rather than testing R2's own reasoning, which R2's next-step note
+correctly identified as the place the findings would be. That judgment paid: R3's findings are all reasoning defects, and
+not one of them touches a fact.
+
+**Findings raised:** F67, F68, F69, F70, F71, F72, F73, F74, F75, F76 (major); F79, F80, F81 (minor); F77, F78 (raised
+and rejected). Numbering continues from R2, which reached F66.
+
+**Convergence, and it is the whole story.** All three specialists independently found the same root: **D36 contradicts
+itself in its own Outcome.** R2 resolved F46 and F47 into one decision in a single pass and never read the halves against
+each other — committing creation to two channel-two targets while establishing, in the same decision's rationale, that
+one of those targets *is* the authored presence the other half refuses to invent. A record that is the presence cannot be
+created from nothing.
+
+That is verbatim the mistake R2 caught R1 making. R2's F44 diagnosed it precisely — "two resolutions from the same round
+contradicting each other" — and then R2 did it again, in the very decision it wrote to fix the first one. The
+`adversarial-validator` found it by applying R2's own diagnostic test: D40's dependent-decisions list omits D36, which is
+the identical tell F50 used on D6/D31.
+
+**Nine of the ten major findings are downstream of that one.** F68 (step 1 became binding and the constraint list did not
+say so), F69 ("costs lateness" is false), F72 (D40 says close where D36 says stop), F74 (the gap list is four lists), F81
+(the evidence citation names an incident the capability cannot serve) all fall out of F67. F70, F71, F73, F75, F76 are
+its siblings: sentences written before the release could create, or before creation was scoped, that nobody re-read.
+
+**Surfaced to the user.** One finding required judgment only the plan's author could make:
+
+- F67 — how does D36's self-contradiction resolve? **User chose "creation reaches the listing entry only"** (the
+  recommendation), accepting three consequences stated up front: step 1 becomes a binding constraint, a new plugin merged
+  past the check freezes the next release until someone authors its presence, and the surviving capability has no live
+  instance and stands on D31's forward-looking argument rather than the Linear incident. The user also chose to apply all
+  nine downstream findings in this round rather than defer them to `plan-implementation`.
+
+**Failed falsifications, recorded because they are results.** Two attacks the caller specifically commissioned came back
+clean and are logged as rejected findings rather than dropped: D37 does not collide with D34 (F78 — refuted independently
+by all three specialists; the two are keyed to mutually exclusive gate outcomes), and there is no case where a release
+should decline to overwrite a stale version record (F77 — no evidence at any tier supports one, so raising it would
+violate the evidence rule). D38's repair scope was separately verified sound: "the version the release is publishing" is
+well-defined on all three unbumped paths.
+
+**Changed in plan:** Outcome; Actors and triggers; Primary flow (binding constraints, Step 3, Step 4); Alternate flows
+and states; Edge cases and failure modes; Coordinations; User interactions; Deferred (YAGNI); Summary; Review History.
+
+**Changed in decision log:** D41 added. Corrections:
+
+- **D36** — corrected at the root. Its boundary was real and fell one target to the left of where it put it.
+- **D40** — its mechanism corrected to follow D36; its behavioral answer survives, and the corrected version is better
+  than what it replaced (a half-removal is named rather than silently undone).
+- **D24** — its partial-failure recovery still used pre-creation vocabulary that the spec was rendering verbatim.
+- **D39** — reports changes rather than every write, and its "Behavioral" evidence label corrected.
+- **D34** — dependent-decisions list completed with D36 and D37.
+
+**Changed in tech-notes:** none. No finding across all three rounds after R1 required a new load-bearing mechanic.
+
+**YAGNI.** No new candidates and no new deferrals. `adversarial-validator` ran the gate over all five of R2's decisions
+and both of its deferrals and found no unevidenced scope creep — the round's defects are correctness and consistency
+failures in decisions that were appropriately evidenced for inclusion. F81 is the closest call: the surviving creation
+capability has no live instance, which by F47's own test would cut it. It is kept because the entry is derivable (close
+to D29's "free"), and the spec now says so instead of citing an incident it cannot close.
+
+**Stability assessment:** not stable at the cap, and honest about it. The round produced ten major findings, one of which
+required user judgment and reversed part of an R2 decision. That is far past the stop rule (≤2 new findings, zero major).
+
+But the trajectory is clear and worth reading: R1 falsified claims about the world. R2 falsified nothing about the world
+and found one decision that had not been propagated. R3 falsified nothing about the world and found one decision that
+contradicted itself, plus its blast radius. Each round's defect is narrower than the last, and all of R3's are now
+closed. What has never once failed re-verification is the specification's factual foundation.
+
+**The pattern this review should be remembered for:** three rounds running, the defect was a decision made late in a
+round and not read against its neighbours. R1 did it with F29/F30. R2 did it with F46/F47 inside D36. The mechanism that
+caught it both times was the dependent-decisions list — F50, F72, and F79 are all the same check. If a fourth round were
+run, that check is where it should start.
+
+**Next step:** the round cap is reached, so no R4 runs under this skill. The specification is materially stronger than it
+was two rounds ago and its remaining risk is concentrated, not diffuse: R3's own resolutions added one decision (D41) and
+corrected five, and by this review's own repeated lesson, that is exactly the surface a fresh pass would probe. The
+recommendation is not another full review but a targeted check of D36-as-corrected and D41 against D31, D38, D39, and D40
+before implementation planning begins — the check this specification has now failed to perform three times in a row, and
+which costs one pass rather than one round.

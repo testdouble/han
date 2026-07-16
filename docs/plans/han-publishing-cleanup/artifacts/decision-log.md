@@ -859,8 +859,15 @@ to reverse. Between the writes and the commit is the only window where the gate 
 harmlessly.
 
 This also makes partial failure a non-event: every write precedes anything irreversible, so a failure mid-write leaves
-local modifications and nothing published. Recovery is discarding them. No compensation or rollback machinery is needed,
-and specifying any would be building for an incident that cannot happen.
+the release's local work and nothing published. Recovery is discarding it — **everything the release wrote and everything
+it created**, since a created file is untracked and survives a discard aimed at modified files, leaving the tree dirty
+enough that the next release refuses to start. No compensation or rollback machinery is needed, and specifying any would
+be building for an incident that cannot happen.
+
+> **Corrected in R3.** The sentence above originally read "leaves local modifications… Recovery is discarding them",
+> written before the release could create anything. R2 gave D34's gate-stop recovery the created-file correction and left
+> this one in its pre-creation vocabulary — so the spec rendered the stale version of the same hazard two paragraphs from
+> the corrected one ([F70](review-findings.md#f70-the-partial-write-recovery-does-not-discard-what-the-release-created)).
 
 And it settles what stops a release cut from a branch where a step has not landed: the gate, not a pull-request check
 that may never have run.
@@ -1134,8 +1141,10 @@ for a plugin the release did not bump, that is the version it already has, read 
 record and never from a listing.
 
 > **Corrected in R2.** Three claims below did not survive review and are corrected here rather than rewritten in place,
-> so the reasoning that produced them stays legible. **(1)** Creation is scoped to the two channel-two targets, not all
-> four — see [D36](#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored). **(2)** "Creating an
+> so the reasoning that produced them stays legible. **(1)** Creation is scoped — to the two channel-two targets in R2,
+> and narrowed again in R3 to channel two's listing entry alone, once that decision was found to contradict itself. A
+> release creates no record on either channel. See
+> [D36](#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored). **(2)** "Creating an
 > entry [in channel two's listing] means adding the plugin's membership and nothing more" is false: that entry also
 > carries the policy deciding whether the plugin is installable, and a per-plugin record carries the plugin's authored
 > storefront presence. Also D36. **(3)** "There is no plugin for which the phrase is undefined" is false for the
@@ -1339,7 +1348,7 @@ gate."
 
 **Driven by findings:** F38
 **Linked technical notes:** —
-**Dependent decisions:** D24, D28, D31
+**Dependent decisions:** D24, D28, D31, D36, D37
 **Referenced in spec:** Alternate flows and states
 
 ### D35: An unreadable record or version is surfaced, not skipped
@@ -1399,9 +1408,28 @@ hand-editing slip during steps 1 or 4, or an interrupted write from the release'
 
 ### D36: A release creates what it can derive and stops at what must be authored
 
-**Outcome.** Creation reaches the two channel-two targets and stops there. A plugin missing from a channel-one target,
-a plugin whose publishing version cannot be determined, and a plugin with no authored storefront presence are gaps the
-release names and refuses rather than gaps it closes.
+**Outcome.** Creation reaches **channel two's listing entry**, and stops there. A plugin with no record on a channel it
+belongs in, a plugin missing from channel one's listing, and a plugin whose publishing version cannot be determined are
+gaps the release names and refuses rather than gaps it closes.
+
+> **Corrected in R3, because this decision contradicted itself.** As written in R2 it committed creation to "the two
+> channel-two targets" and, three lines later, made "a plugin with no authored storefront presence" a refusal — while its
+> own rationale established that the channel-two **per-plugin record is** that presence. Those cannot both hold: a record
+> that is the presence cannot be created from nothing. The decision even said so in one sentence without noticing —
+> "a release creates the two channel-two records… **for a plugin whose presence a person already authored**", which
+> describes a record that already exists.
+>
+> The boundary this decision drew is real; it fell one target to the left of where the decision put it. A listing entry
+> is derivable — a name, a path, and terms identical across every entry. A record is authored. So creation reaches the
+> entry and nothing else.
+>
+> Three consequences the R2 text got backwards, now corrected in the spec: the Linear plugin is **not** a case a release
+> repairs (it is the unauthored-presence stop, closed by a person at step 1, as step 1 always said); a new plugin merged
+> past the check **stops** the next release rather than costing lateness; and step 1 is therefore a binding constraint
+> before step 3 ([D41](#d41-step-1-precedes-the-release-repair-because-an-unauthored-presence-stops-a-release)).
+>
+> Raised independently by all three R3 specialists
+> ([F67](review-findings.md#f67-d36-commits-creation-to-two-targets-and-its-own-boundary-permits-one)).
 
 **Rationale.** D31 committed the release to creation on all four targets and described a created record as carrying a
 version and, on channel two's listing, "membership and nothing more". Both are wrong on disk, and the second is the
@@ -1418,15 +1446,22 @@ A release that composed that prose would be publishing writing nobody authored t
 doing it unattended. This is not a capability the release lacks in a way worth fixing; it is a boundary worth keeping.
 The version is derivable and the presence is not, and the honest line runs exactly there.
 
-Scoping creation to channel two follows from where the evidence is. The Linear plugin is missing from channel two, live,
-today — that is the incident. Nothing has ever been missing from channel one's listing, and nothing can be missing from
-channel one's per-plugin record, because carrying one is part of what makes a directory a plugin (D19). Committing the
-release to create the channel-one listing entry would be building the most expensive half of the capability — the half
-that has to author a description — for the case with no members. That is the symmetry-and-completeness reasoning this
-specification rejects elsewhere, and applying it here would have been the specification failing its own test.
+Scoping creation away from channel one follows from where the evidence is. Nothing has ever been missing from channel
+one's listing, and creating that entry is the half that would have to author a description. Committing the release to it
+would be building the most expensive half of the capability for the case with no members — the symmetry-and-completeness
+reasoning this specification rejects elsewhere.
 
-What is left is small and true: a release creates the two channel-two records, at a version it can derive, for a plugin
-whose presence a person already authored. Everything else is a gap it names.
+What is left is small and true: **a release creates a channel-two listing entry for a plugin whose record already
+exists.** Everything else is a gap it names. That capability has no live instance either, and it is kept on the
+forward-looking argument D31 made rather than on the Linear incident: a contributor who authors the record and forgets
+the entry is the shape it serves, and the entry is derivable, so the behavior is close to free in the way D29's
+comparison is free. The Linear incident it was originally cited for is closed by a person at step 1, because the thing
+missing there is the record, not the entry.
+
+**The release does not create a record on either channel, and the reason is one rule, not two.** Channel two's record is
+the plugin's presence; channel one's record is what makes the directory a plugin at all (D19). Neither is something a
+release can derive: the first is prose a person writes, and the second, if absent, means a person is taking the plugin
+apart. In both cases the honest move is to name it and stop.
 
 **Evidence.** codebase — a channel-two per-plugin record carries `keywords` and an `interface` block (`displayName`,
 `shortDescription`, `longDescription`, `developerName`, `category`, `capabilities`, `websiteURL`, `defaultPrompt`),
@@ -1450,11 +1485,55 @@ gate stop, over keeping creation universal.
 - _Invent a version-inference rule for a plugin with no channel-one record._ Rejected: zero members, and it is machinery
   for a shape nothing schedules. The gate already has the right verb for it.
 
-**Driven by findings:** F46, F47, F48
+**Driven by findings:** F46, F47, F48, F67 (correction)
 **Linked technical notes:** —
-**Dependent decisions:** D19, D25, D29, D31, D35
-**Referenced in spec:** Channels and targets, Outcome, Primary flow (Step 1, Step 3), Alternate flows and states, Edge
-cases and failure modes, Coordinations
+**Dependent decisions:** D19, D25, D29, D31, D35, D38, D39, D40, D41
+**Referenced in spec:** Channels and targets, Outcome, Actors and triggers, Primary flow (binding constraints, Step 1,
+Step 3), Alternate flows and states, Edge cases and failure modes, Coordinations, Deferred (YAGNI)
+
+### D41: Step 1 precedes the release repair, because an unauthored presence stops a release
+
+**Outcome.** Step 1 is a binding constraint before step 3. The execution order is unchanged; what changes is that the
+adjacency is now named rather than left in the free set.
+
+**Rationale.** D18 says the constraints are named and the rest are free. This one was not named, because when D18 was
+written the release could not refuse over anything a step of this plan produced. D36 changed that and the constraint list
+was not revisited — which is the same omission F44 caught, in the other direction.
+
+Walk it. Step 3 lands without step 1. The release derives its plugins from the repository (D5), so it now sees the Linear
+plugin. The Linear plugin belongs in all four targets (D19). It has no channel-two record, which is no authored presence,
+which is a gap the release refuses (D36). There is no bypass (D28). So every release stops until someone writes that
+presence by hand — and writing it by hand **is step 1**, now performed mid-release under exactly the pressure D34's
+rationale identifies as what makes people ship around gaps.
+
+This is a real freeze, and it is worth being precise that it is not the freeze F44 refuted. F44's was over version drift,
+which a repairing release closes; that one never existed. This one is over a presence a release cannot write, and it is
+genuine. Both statements hold at once: a release repairs a stale version and refuses an unwritten presence.
+
+The ordering was already the plan's, for a different reason — step 1 goes first because it is the only live broken
+promise (D11). So this costs nothing to honor and only needed saying. D38's own rejected alternative applies in the
+affirmative direction: a binding constraint held in place by a false reason is how the next reviewer gets misled, and so
+is a real constraint held in place by nothing.
+
+**Evidence.** codebase — the Linear plugin's directory carries a channel-one manifest and skills and no `.codex-plugin/`
+at all, verified directly; every other non-bundle plugin has one. codebase — with step 1 landed, the gate is green on
+arrival at step 3: every plugin's channel-one records agree internally and every listing entry resolves, so the hazard is
+purely the ordering. codebase — the release hard-stops on a dirty tree, so the recovery is D34's discard-author-commit-
+rerun rather than a quick edit mid-run.
+
+**Rejected alternatives.**
+
+- _Leave it in the free set._ Rejected: it is not free, and D18's "the rest are free" actively licenses the mistake.
+- _Have the release create a placeholder presence so the constraint disappears._ Rejected: that is D36's stub
+  alternative, already rejected, and it would trade a named ordering for an unnamed storefront lie.
+- _Add a per-plugin exception so the release ignores the Linear plugin until step 1 lands._ Rejected: a configurable
+  exception mechanism for one transient case, which is the reasoning the bundle deferral already refuses.
+
+**Driven by findings:** F68
+**Linked technical notes:** —
+**Dependent decisions:** D5, D11, D18, D19, D28, D36
+**Referenced in spec:** Primary flow (binding constraints, Step 1, Step 3), Alternate flows and states, Edge cases and
+failure modes
 
 ### D37: The release commits every target it writes
 
@@ -1577,9 +1656,13 @@ worry exists (see Deferred (YAGNI)).
 
 **Evidence.** codebase — the release prints a version plan with one line per plugin, in the vocabulary bumped /
 unchanged at version / new at version (`.claude/skills/han-release/SKILL.md:306-315`, `:220-226`), with no term for a
-created record; `:219-221` prompts for nothing when no plugin needs confirmation. Behavioral — D12 already establishes
-that naming the full set at once is what the release owes a maintainer; this applies the same principle in the
-affirmative direction.
+created record; `:219-221` prompts for nothing when no plugin needs confirmation.
+
+**No evidence tier applies to the second half of this decision**, and that is stated rather than dressed up. That
+reporting is *owed* rests on consistency with D12's principle (naming the full set at once is what the release owes a
+maintainer), applied in the affirmative direction. An internal cross-reference is not evidence; it is an argument. It is
+a good argument, and the codebase evidence above independently establishes that the report has no vocabulary for a
+created record today — but nobody has asked for this and no incident names it.
 
 **Rejected alternatives.**
 
@@ -1597,8 +1680,23 @@ interactions
 ### D40: A half-finished removal is not a state the release guesses at
 
 **Outcome.** A plugin the repository still carries is a plugin the rule expects in every target it belongs in. A
-directory that remains is a plugin, and its absence from a target is a gap the release closes — so removing a plugin
-means removing the directory.
+directory that remains is a plugin — so removing a plugin means removing the directory. What the release does about the
+leftovers follows D36: a deleted listing entry is put back, and a deleted record is a gap the release names and stops on.
+
+> **Corrected in R3.** This decision said a remaining directory's "absence from a target it belongs in is a gap **the
+> release closes**", unqualified across all four targets. D36 — added in the same round, and absent from this decision's
+> dependent list, which is the same tell F50 used on D6/D31 — makes a missing record an unconditional stop. So the
+> unqualified claim was false for three of the four targets.
+>
+> Worse, this decision falsified one of D36's own claims and neither noticed. D36 asserted that no plugin has ever been
+> missing from a channel-one target; this decision's own worked scenario — a directory whose records were deleted — is
+> precisely that state. R3 caught the contradiction by reading the two together
+> ([F72](review-findings.md#f72-d40-says-the-release-closes-the-gap-where-d36-says-it-stops)).
+>
+> The behavioral answer survives intact: the rule does not infer intent from absence, and removal means removing the
+> directory. Only the mechanism was overstated. The corrected version is arguably better than what it replaced — a
+> half-finished removal is now mostly **named** rather than silently undone, which is what a person half-way through
+> taking something apart actually needs.
 
 **Rationale.** Removal is not hypothetical: the release process already has a rule for it, versioning a removed child as
 a major change. A removal that lands whole is invisible to this rule and needs nothing. A removal that lands
@@ -1617,9 +1715,14 @@ directory goes. That gives the maintainer one thing to get right instead of four
 rest of this work is built on.
 
 **Evidence.** codebase — the release process versions "a child was removed from the suite" as a major bump, so removal
-is an anticipated event rather than a hypothetical. Behavioral — D19 already defines a plugin by its directory and
-manifest rather than by its listing membership, so this is that definition applied to the removal direction rather than
-a new rule.
+is an anticipated event rather than a hypothetical.
+
+**No evidence tier applies to the resolution itself**, and R3 was right to flag that the original wording obscured it.
+That a remaining directory is still a plugin rests on consistency with D19's definition, applied in the removal
+direction — an argument, not evidence. The codebase evidence establishes only that removal is anticipated, not that this
+particular answer is correct. It is worth noting that the unqualified version of this argument is exactly what R3
+falsified against D36: reasoning from another decision's definition is how this decision got the mechanism wrong while
+getting the principle right.
 
 **Rejected alternatives.**
 
@@ -1629,9 +1732,9 @@ a new rule.
 - _Leave removal undefined._ Rejected: the release would silently recreate the records a half-finished removal deleted,
   which is a silent write to what Han publishes.
 
-**Driven by findings:** F58
+**Driven by findings:** F58, F72 (correction)
 **Linked technical notes:** —
-**Dependent decisions:** D19, D29, D31
+**Dependent decisions:** D19, D29, D31, D35, D36
 **Referenced in spec:** Alternate flows and states, Edge cases and failure modes
 
 ## Trivial decisions

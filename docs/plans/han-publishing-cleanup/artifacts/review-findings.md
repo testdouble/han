@@ -1169,6 +1169,392 @@ F32 used: the qualitative point does not depend on the number, so the number sho
 
 **Changed in tech-notes:** —
 
+### F67: D36 commits creation to two targets, and its own boundary permits one
+
+**Agent:** `junior-developer` (JD-R3-01), `devops-engineer` (F67), `adversarial-validator` (V1) — all three R3
+specialists independently, from three different starting points.
+
+**Category:** two resolutions from the same round contradicting each other — the class R2's own F44 diagnosed in R1
+
+**Finding.** R2 resolved F46 (a channel-two record carries authored prose) and F47 (creation is committed on four
+targets with evidence for two) into **one decision, D36**, in a single pass, and never read the halves against each
+other. They are incompatible:
+
+- D36's Outcome commits creation to **two** channel-two targets.
+- D36's Outcome, three lines later, makes a plugin with **no authored storefront presence** a gap the release refuses.
+- D36's own rationale establishes that the channel-two **per-plugin record is that presence** — "display name, a short
+  description, a long description, a category, and a set of example prompts — none of which derives from anything the
+  repository holds."
+
+A record that *is* the presence cannot be created from nothing. So creation reaches **one** target, the listing entry.
+D36 says the contradiction out loud in a single sentence and does not notice it: "a release creates the two channel-two
+records… **for a plugin whose presence a person already authored**." If the presence is authored, the record exists, and
+there is nothing to create.
+
+The consequences are not cosmetic. Five spec sentences were false:
+
+- "the second is why the Linear plugin's shape is repairable" — it is not. `han-linear` has no channel-two record, so it
+  is the unauthored-presence stop. **The motivating case is closed by a person at step 1, not by a release** — which is
+  what step 1 has said all along ("A person writes this record, and that is the point… This is the same boundary step 3's
+  release stops at"). Step 3 contradicted step 1.
+- "This is the ordinary path, not the failure path" — false for the target it named.
+- "the next release creates the missing records itself… so the signal being advisory costs lateness rather than
+  correctness" — false, and see F69.
+- "A branch missing steps 1 or 4 is repaired by the release rather than refused" — false for step 1, and see F68.
+- The Outcome and the Actors table both said "creating what is missing", unqualified.
+
+**Evidence considered.** codebase — verified directly during consolidation: the set of plugins carrying a
+`.codex-plugin/` directory and the set of entries in the channel-two listing are **identical** (nine each), and
+`han-linear` is in neither, so the "record present, entry absent" state has never existed and `han-linear` is missing
+both. codebase — a channel-two listing entry carries `name`, `source.path`, a `policy` block byte-identical across all
+nine entries, and a `category` identical across all nine: it is genuinely derivable. A per-plugin record is not. codebase
+— D36's rejected alternatives close the escape routes: the user rejected both "the release authors the presentational
+content" and "the release creates a stub".
+
+**Resolution.** Creation reaches channel two's listing entry and stops there. A plugin with no record on a channel it
+belongs in is a gap the release names and stops on, because the record is the authored presence and there is nothing to
+derive. The five false sentences are corrected, and the spec now says plainly that the Linear plugin is closed by a
+person rather than by the release.
+
+The surviving capability has no live instance, which is the test F47 used to cut the other half. It is kept — but on the
+honest justification rather than the incident: it serves a contributor who authors the record and forgets the entry, and
+the entry is derivable, so the behavior is close to free in the way D29's comparison is free. Recorded on D36.
+
+**Resolved by:** user input (option: creation reaches the listing entry only), on evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Outcome, Actors and triggers, Primary flow (binding constraints, Step 3), Alternate flows and
+states, Edge cases and failure modes, Coordinations, Deferred (YAGNI), Summary
+
+**Changed in decision log:** D36 corrected; D41 added
+
+**Changed in tech-notes:** —
+
+### F68: Step 1 became a binding constraint and the constraint list did not gain it
+
+**Agent:** `devops-engineer` (F68)
+
+**Category:** unstated ordering constraint created by a decision written after the constraint list
+
+**Finding.** D18 says the binding constraints are named and **the rest are free**. Step 1 → step 3 is not named. After
+D36 it is binding, and the walk is short: step 3 lands without step 1 → the release derives its plugins from the
+repository (D5) and sees `han-linear` → `han-linear` is a plugin and belongs in all four targets (D19) → it has no
+channel-two record, so it has no authored presence → the release refuses (D36) → there is no bypass (D28). **Every
+release freezes until someone writes that presence by hand**, which is step 1, performed mid-release under the pressure
+D34's rationale names as what makes people ship around gaps.
+
+This is a real freeze, and R2 removed a false one from the same list in the same round. F29 claimed a freeze over version
+drift; F44 correctly refuted it, because a repairing release closes drift. D36 then created a genuine freeze over a
+different gap, and the constraint list — rewritten in R2 precisely to remove the false one — never gained the true one.
+
+**Evidence considered.** codebase — verified directly: `han-linear/` contains `.claude-plugin/` and `skills/` only, no
+`.codex-plugin/`; every other non-bundle plugin has one. codebase — with step 1 landed the gate is green on arrival at
+step 3, so the hazard is purely the ordering, which is why it is invisible on the happy path and licensed by D18's "the
+rest are free". codebase — the release hard-stops on a dirty tree, so recovery is D34's discard-author-commit-rerun
+rather than a quick edit.
+
+**Resolution.** The fourth binding constraint is named, with its reason rather than just its order. Costs nothing to
+honor — step 1 was already first, for a different reason (D11) — and needed saying. Recorded as D41. The branch-cut flow
+is corrected to separate step 1 (refused) from step 4 (repaired).
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Primary flow (binding constraints, Step 1, Step 3), Alternate flows and states, Edge cases and
+failure modes
+
+**Changed in decision log:** D41 added
+
+**Changed in tech-notes:** —
+
+### F69: "Costs lateness rather than correctness" is false, and it is the sentence paying for D32's downgrade
+
+**Agent:** `devops-engineer` (F69), with `junior-developer` (JD-R3-01) reaching the same sentence.
+
+**Category:** behavioral commitment resting on a premise a later decision removed
+
+**Finding.** The spec justified tolerating an advisory check with one sentence: "If they merge past it — which they can —
+the next release creates the missing records itself, **so the signal being advisory costs lateness rather than
+correctness**."
+
+A brand-new plugin is by definition the case with **no authored channel-two presence** — nobody has written its display
+name or its example prompts, because the plugin is new. So per D36 the next release does not create its records; it
+**stops**. Merging past the advisory check does not cost lateness. It freezes the release pipeline until a person writes
+the presence.
+
+This matters beyond the sentence. F28 and D32 downgraded the enforcement claim honestly, and the price of that downgrade
+was exactly this sentence: the check may be advisory **because the release repairs what gets merged past it**. Post-D36
+the release does not repair the new-plugin case, which is the single case the advisory check exists to catch. The
+downgrade's justification was gone and the downgrade was still on the page.
+
+**Evidence considered.** codebase — the release treats a new child as a real, anticipated shape ("`baseline = current`,
+`target = current`, no bump"), so this is not hypothetical. codebase — the interface block is what a new plugin would
+need authored and would not have.
+
+**Resolution.** The two costs are separated rather than flattened: a missing listing entry costs lateness, and a missing
+record costs a stopped release. The spec states the more likely case honestly — a brand-new plugin has no presence by
+definition, so merging past this signal can stop the next release. And it replaces the downgrade's justification with one
+that survives: the advisory check is tolerable because the release refuses to publish something nobody wrote, which is a
+protection rather than a repair.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Alternate flows and states
+
+**Changed in tech-notes:** —
+
+### F70: The partial-write recovery does not discard what the release created
+
+**Agent:** `devops-engineer` (F70)
+
+**Category:** recovery path that does not survive creation — F50's error class, surviving R2
+
+**Finding.** The spec carries two recoveries. R2 fixed one and left the other in the vocabulary that predates creation:
+
+- Gate stop: "everything it wrote **and everything it created, because a created file the release leaves behind is
+  untracked, survives a careless cleanup, and keeps the tree dirty**."
+- Partial write: "Recovery here *is* **discarding local changes** and re-running."
+
+A release that fails partway through writing four targets can have created a record or a listing entry before failing.
+"Discarding local changes" is precisely the phrase F57 established does not reach untracked files. The next release then
+hard-stops on a dirty tree — the loop D34 was completed to close, reachable through the door D34 did not cover.
+
+The root is traceable: D24's partial-failure rationale reads "a failure mid-write leaves **local modifications** and
+nothing published. Recovery is discarding them." D24 was written before D31 and D36 existed, and the spec renders D24's
+sentence verbatim. R2's F54 named only the gate-stop flow, and F57 was folded into D34; neither reached D24.
+
+**Evidence considered.** codebase — the release derives its clean-tree check from `git status --porcelain`, which counts
+untracked files, and hard-stops when it is non-empty. D34's own R2 note already states the fact.
+
+**Resolution.** One clause: the partial-write recovery discards everything the release wrote and everything it created,
+for the same reason the gate-stop recovery does. D24's rationale is corrected too, since that is the sentence the spec
+was rendering — otherwise the next reader reintroduces it. Does not reopen D24's placement or D34's ordering.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Alternate flows and states
+
+**Changed in decision log:** D24 corrected
+
+**Changed in tech-notes:** —
+
+### F71: D35 and D38 give different answers for a broken version value
+
+**Agent:** `devops-engineer` (F71), with `adversarial-validator` (V3) finding the adjacent dead text.
+
+**Category:** rule stated before the release could repair, never revisited
+
+**Finding.** Two adjacent Edge-cases rows answered the same shape of question with different care. The disagreement row
+was **split per surface** by R2 ("On a release it is repaired rather than reported"). The broken-value row stayed
+**flat**: "Check fails, naming it, exactly as a disagreement does."
+
+But post-D38 a release writes the publishing version onto every version record it can read. A parseable record whose
+version is an empty string is perfectly writable — so the release overwrites it exactly as it overwrites a stale one, and
+the gate never sees it. D35 says it fails the check; D38 says the release corrects it. Neither is qualified by surface.
+
+This is F44's own argument one level down. D38 rejected narrowing the repair precisely because it "requires explaining
+why writing a version onto a missing record is safe and writing the same version onto a stale one is not — two identical
+acts, treated differently to protect an argument". The broken-value row was that argument's third instance. D35's
+rationale for the value case is explicitly a *comparison* concern ("a naive equality comparison treats two empty values
+as agreement"), which is a check-surface concern that the release-surface repair moots. D35 simply predates the repair.
+
+**Evidence considered.** codebase/provided — D35's rejected alternative is about a **parse failure**, not a broken value
+inside a parseable record, so it does not settle this case.
+
+**Resolution.** The row is split per surface like its neighbour: reported on a pull request, overwritten on a release,
+because it is the same act. The boundary against D35 is stated explicitly — a broken value inside a readable record is
+repairable; a record the release cannot parse is not. `adversarial-validator` separately found the sentence "so a
+disagreement it caused is the only one the gate can still see" describes a state unreachable under D24's write-then-gate
+ordering; it is cut as dead text left from before D38.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Edge cases and failure modes
+
+**Changed in tech-notes:** —
+
+### F72: D40 says the release closes the gap where D36 says it stops
+
+**Agent:** `adversarial-validator` (V2), with `junior-developer` (JD-R3-03) reaching the same collision.
+
+**Category:** two R2 decisions from the same round that never met
+
+**Finding.** D40's dependent-decisions list read "D19, D29, D31" — it did **not** list D36. That is the identical tell R2
+used to catch F50 ("The tell that the two decisions never met: D6's dependent-decisions list did not include D31").
+Applying R2's own diagnostic to R2's own output finds the same defect.
+
+D40 said a remaining directory's "absence from a target it belongs in is a gap **the release closes**", unqualified
+across all four targets. D36 — added in the same round — makes a missing record an unconditional stop. So D40 was false
+for three of the four.
+
+And D40 falsified one of D36's own claims without either noticing. D36 asserted that no plugin has ever been missing from
+a channel-one target; D40's own worked scenario ("a plugin's directory remains but its records were deleted") is exactly
+that state, reachable by deleting a manifest first — an ordinary order of operations for a removal that then stalls. R2
+introduced the counter-example to its own claim in the same round.
+
+**Evidence considered.** provided — D40's and D36's texts read against each other. codebase — the release already
+versions a removed child as a major bump, so removal is anticipated.
+
+**Resolution.** D40's behavioral answer survives — the rule does not infer intent from absence, and removal means
+removing the directory. Its mechanism is corrected to follow D36: a deleted listing entry is put back, a deleted record
+is a stop. The corrected version is arguably better than what it replaced: a half-finished removal is now mostly
+**named** rather than silently undone, which is what a person half-way through taking something apart actually needs.
+D36 and D35 are added to D40's dependent list, and D36's "has never happened" absolute is removed.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Alternate flows and states, Edge cases and failure modes
+
+**Changed in decision log:** D40 corrected; D36 corrected
+
+**Changed in tech-notes:** —
+
+### F73: Step 4 is unhedged against Open item 2, and the reason that survives it goes unstated
+
+**Agent:** `junior-developer` (JD-R3-05) and `adversarial-validator` (V4), convergent.
+
+**Category:** behavioral commitment resting on a recorded unknown — the class F35 established
+
+**Finding.** Two problems with D38's restated justification for step 4 ("the numbers are right on merge rather than at
+the next release").
+
+**It is contingent and the spec did not hedge it.** Open item 2 names step 4 explicitly: if the client resolves from the
+tag rather than the branch, "steps 1 and 4 reach users at the next release rather than on merge." Under tag resolution
+step 4's benefit is not "less" (D38's word) — it is **zero**, because the only revision a user resolves is one a release
+produced, and a repaired release corrects those numbers itself. Step 1 **is** hedged against Open item 2 — that was F35's
+fix in R1. Step 4's paragraph carried no hedge, from the same open item, which names it. F35's exact asymmetry,
+reintroduced by R2 at the step R2 rewrote.
+
+**The non-contingent reason was missing.** Step 7 claims flatly that the check is green on the day it arrives. What makes
+it green is steps 1 and 4. Drop step 4 and, absent a release cut between step 3 and step 7, the check lands **red against
+eight disagreements** — D1's restated failure mode arriving on the day the check lands. That reason holds regardless of
+Open item 2 and is stronger than the one D38 chose. D38 reduced step 4's justification and did not notice it had removed
+the support from a flat claim two steps later.
+
+**Evidence considered.** provided — Open item 2's own text names steps 1 and 4; D38's rationale concedes the contingency
+("matters more if… and less if") while the spec states it flat.
+
+**Resolution.** Both added. Step 4 is hedged the way step 1 is, and states honestly that under tag resolution its
+user-facing benefit is nothing and what survives is that the repository stops publishing numbers it knows are wrong. The
+reason that does not depend on the unknown — step 4 is what makes step 7's check green on arrival — is stated and is now
+the primary one.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Primary flow (Step 4)
+
+**Changed in tech-notes:** —
+
+### F74: The "gaps a release cannot close" list is four different lists
+
+**Agent:** `junior-developer` (JD-R3-07)
+
+**Category:** ambiguity in a rule stated more than once
+
+**Finding.** Four enumerations, no two alike: Step 3's prose (5 items), Alternate flows (the same 5), D36's Outcome (3, a
+different set), and the Edge-cases table (7). Two omissions matter. **"A plugin missing from a channel-one target"** is
+D36's own headline scoping decision — what F47 was entirely about — and was absent from both prose lists, including the
+one ten lines below the paragraph that states it. **"An unreadable storefront listing"** is F59's R2 addition; it landed
+only in the table, and the prose said "a record it cannot read", which the glossary distinguishes from a listing. An
+implementer working from the prose builds neither stop.
+
+**Evidence considered.** provided — the four enumerations read against each other.
+
+**Resolution.** The list is written once, in Step 3, and the other locations point at it rather than restating it. Post-
+F67 it is also shorter than any of the four, because "missing from a channel-one target" and "no authored presence"
+collapse into one rule: a plugin with no record on a channel it belongs in.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Primary flow (Step 3), Alternate flows and states
+
+**Changed in tech-notes:** —
+
+### F75: D39's report lands after the last thing a person can stop, and the deferral it justifies says otherwise
+
+**Agent:** `junior-developer` (JD-R3-04)
+
+**Category:** an R2 resolution resting on a fact another R2 finding falsified in the same round
+
+**Finding.** The Deferred entry deferred the first-publication confirmation because "the release now reports what it
+created (D39), which is **the strictly simpler thing that satisfies the same concern**". The concern, one line above:
+"Creation makes a directory publicly installable **with no sign-off**."
+
+Reporting is notice, not sign-off — and on the default path the notice is not separated from the publish by any prompt.
+The release prints the prepared release and, because the publish prompt is off by default, continues straight to
+committing, tagging, and pushing. **F51 established that default in this same round**, and then a deferral was written
+that depends on the opposite.
+
+The other candidate moment fails too. D39 says the report lands "alongside the version plan it already reports", but the
+version plan's mandatory confirmation runs **before** the writes, and a creation-only release — the `han-linear` shape,
+new plugin, no bump — needs no confirmation, so that prompt does not fire at all. The report cannot land at the only
+prompt that always fires, because on the motivating case it does not.
+
+**Evidence considered.** codebase — the release's mandatory plan confirmation runs pre-writes and does not prompt when
+nothing needs confirmation; the publish prompt is gated on a flag defaulting to false; Step 8 then commits, tags, pushes.
+
+**Resolution.** The claim is downgraded honestly rather than the mechanism grown — the same shape D32 and F52 already
+applied twice. The deferral now rests on what is true: the case has never occurred, and a plugin cannot reach a storefront
+without a person having written its presence first (D36), which is a sign-off of a kind. The spec states plainly that
+reporting is notice after the fact on the default path, not sign-off. D39's own evidence block is corrected too — see
+F76.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** Deferred (YAGNI), User interactions
+
+**Changed in decision log:** D39 corrected
+
+**Changed in tech-notes:** —
+
+### F76: Two R2 decisions cite an evidence trust class the evidence rule does not define
+
+**Agent:** `adversarial-validator` (V6)
+
+**Category:** evidence-quality violation
+
+**Finding.** The evidence rule defines exactly three trust classes: codebase, web, provided. Two R2-added decisions — D39
+and D40 — cite a fourth, "Behavioral", to support load-bearing claims. Neither citation is any of the three: it is one
+decision's rationale citing another decision's rationale as if that were independent evidence.
+
+The test is whether discounting it changes the conclusion. For D40, **yes**: its only non-"Behavioral" evidence
+establishes that removal is *anticipated*, not that D40's specific "the release closes the gap" behavior is *correct* —
+which is exactly what F72 shows is false. The mislabeled evidence was standing in for a conclusion that does not hold.
+
+**Evidence considered.** provided — `han-planning/references/evidence-rule.md` defines the three classes; the decision
+log's own header restates them.
+
+**Resolution.** Both are relabeled to say what they are: no evidence tier applies, and the claim rests on consistency
+with another decision — an argument, not evidence. D40's note additionally records that reasoning from another decision's
+definition is precisely how it got the mechanism wrong while getting the principle right, which is the lesson rather than
+a footnote.
+
+**Resolved by:** evidence.
+
+**Raised in round:** R3
+
+**Changed in plan:** —
+
+**Changed in decision log:** D39, D40 corrected
+
+**Changed in tech-notes:** —
+
 ## Rejected findings
 
 - **F65 (rejected): D18's execution-order numeral list is not inconsistent with its gloss.** `edge-case-explorer` read
@@ -1186,6 +1572,18 @@ F32 used: the qualitative point does not depend on the number, so the number sho
   `docs/concepts.md:225-227` documents the identical transitive-necessity pattern for the `han-planning` and `han-coding`
   edges. The declaration is real and deliberate. The gap was that D8 and D25 never stated the test that distinguishes it
   from `han-linear`'s — recorded as F62 rather than as a deletion. Step 5 remains three.
+- **F77 (rejected): there is no case where a release should decline to overwrite a stale version record.** Raised as an
+  attack on D38 by `adversarial-validator` (V3), which searched for a legitimate reason a plugin might carry a
+  deliberately-ahead or asymmetric channel-two version and found none: D10's one-version-per-plugin model treats the
+  direction of disagreement as irrelevant by design, and no evidence at any tier suggests an intentional case. Recorded
+  as a failed falsification rather than dropped, because D38 is the round's largest reversal and the attack was the right
+  one to make. The evidence rule forbids raising an unsupported hypothetical as a corrective claim, so no change.
+- **F78 (rejected): D37 does not collide with D34.** Attacked independently by all three R3 specialists at the caller's
+  request, and refuted by all three. The two decisions are keyed to mutually exclusive gate outcomes: D37 governs the
+  passing branch ("the commit it tags"), D34 the stopping branch, and a stop reaches no commit at all — so they compose
+  rather than conflict. The adjacent gap (a technical failure during commit/tag/push *after* a gate pass) is already
+  covered by D24's re-entrancy evidence. No change; recorded because a verified clean seam is worth as much as a defect
+  when the round's whole question is whether R2's decisions cohere.
 
 ## Minor edits
 
@@ -1210,6 +1608,16 @@ F32 used: the qualitative point does not depend on the number, so the number sho
   The behavioral commitment survives either way (the failure can be named by the directory it was found in), so the
   argument is softened rather than the outcome changed. — `adversarial-validator` (V4) — D35 (rationale; behavior
   unchanged)
+- F79: D34's dependent-decisions list omitted D37, the decision that governs the other side of the same gate outcome —
+  the cheap signal that would have caught F67 and F72 had it been maintained. The seam itself holds (F78), so this is
+  bookkeeping. — `devops-engineer` (M1), `junior-developer` — D34 (dependent decisions; behavior unchanged)
+- F80: D39 says a release reports what it "creates or corrects", which post-D38 means every plugin and every target on
+  every release forever — a report nobody reads, which is D1's restated failure mode arriving through D39's own remedy.
+  Corrected to records whose value it **changed**, plus creations. — `junior-developer` (M1) — User interactions; D39
+- F81: Step 3 justified creation's scope by citing the Linear incident ("That is where the evidence is… it is live
+  today"), which post-F67 is a case creation cannot serve. The behavior survives on D31's forward-looking argument — a
+  contributor who authors the record and forgets the entry — and the incident citation is replaced by it. Same shape as
+  F43 and D29: the behavior stands, the justification does not. — `devops-engineer` (M2) — Primary flow (Step 3); D36
 - F62: D8 verifies `han-atlassian`'s `han-core` edge "by use, not by self-description" and calls the manifest true on the
   strength of it, while three other declared edges went uncited — and one of them (`han-communication`) would fail the
   very test D8 states it is applying. All four were verified in R2 and all four are real, but the distinction that makes
