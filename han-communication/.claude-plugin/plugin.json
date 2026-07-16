@@ -1,0 +1,5 @@
+{
+  "name": "han-communication",
+  "description": "Foundational communication plugin for the Han suite. Owns the single canonical readability standard and writing-voice profile, the readability-guidance skill that surfaces them into a calling skill's own context for in-voice drafting, the readability-editor agent that runs the adversarial rewrite over a finished draft, and the edit-for-readability skill that applies that rewrite on demand. Depends on nothing and sits beneath every other plugin; the plugins that produce prose output depend on it.",
+  "version": "1.0.0"
+}

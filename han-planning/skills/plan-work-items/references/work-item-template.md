@@ -1,6 +1,10 @@
 # Work item template
 
-Each work item in `work-items.md` uses this template. Required fields appear in the order shown. The `**References.**` block is required whenever the work item consumes any artifact identified in Step 4 of the skill — omit it only when no external artifact applies. Additional `**Bold paragraph.**` context blocks are allowed between required fields when a work item needs them — common ones: `**Note on scope boundary with <other work>.**` for boundary clarifications, `**Note on <subsystem> capability.**` for SDK or platform caveats that affect acceptance.
+Each work item in `work-items.md` uses this template. Required fields appear in the order shown. The `**References.**`
+block is required whenever the work item consumes any artifact identified in Step 4 of the skill — omit it only when no
+external artifact applies. Additional `**Bold paragraph.**` context blocks are allowed between required fields when a
+work item needs them — common ones: `**Note on scope boundary with <other work>.**` for boundary clarifications,
+`**Note on <subsystem> capability.**` for SDK or platform caveats that affect acceptance.
 
 ```
 ## <W-N> — <short descriptive name>
@@ -38,7 +42,10 @@ Each work item in `work-items.md` uses this template. Required fields appear in 
 
 ## Format invariants
 
-- Heading line begins with `## ` followed by `<W-N>` (the prefix letters, a dash, then digits), then ` — ` (em-dash with surrounding spaces), then the title.
+- Heading line begins with `## ` followed by `<W-N>` (the prefix letters, a dash, then digits), then `—` (em-dash with
+  surrounding spaces), then the title.
 - A work item body ends at the next `## ` heading or end of file.
-- Design-reference paths are relative to the `work-items.md` file (e.g., `ui-designs/<file>.png` when the screenshots live in the plan folder). Never use an absolute path or a cross-repository URL.
-- The `**Depends on.**` line uses the literal bold marker, comma-separates dependencies, and ends with `.` (the trailing period is part of the format, not a sentence terminator).
+- Design-reference paths are relative to the `work-items.md` file (e.g., `ui-designs/<file>.png` when the screenshots
+  live in the plan folder). Never use an absolute path or a cross-repository URL.
+- The `**Depends on.**` line uses the literal bold marker, comma-separates dependencies, and ends with `.` (the trailing
+  period is part of the format, not a sentence terminator).

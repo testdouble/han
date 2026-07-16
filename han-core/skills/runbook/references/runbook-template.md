@@ -21,15 +21,21 @@ happens.
 
 <!-- Title rule: lead with the observable symptom or failure mode, not the system name. Match the alert subject line if you can. Good: "Postgres primary unreachable: connections time out". Bad: "Database runbook" or "Failover procedure". The reader is matching this against an alert subject line in two seconds. -->
 
-> {One-line description: what the engineer will see and what this runbook does about it. Mirror the alert text where possible.}
+> {One-line description: what the engineer will see and what this runbook does about it. Mirror the alert text where
+> possible.}
 
-- **Severity:** {SEV-1 | SEV-2 | SEV-3 | routine} <!-- Use your org's existing severity scheme. If the alert uses a different name (P1/P2), put it in parentheses so the reader does not have to translate. -->
+- **Severity:** {SEV-1 | SEV-2 | SEV-3 | routine}
+  <!-- Use your org's existing severity scheme. If the alert uses a different name (P1/P2), put it in parentheses so the reader does not have to translate. -->
 - **Triggers:** {alert name(s) and link, schedule, upstream runbook, customer report, or "manual"}
-- **Reversible:** {yes — see Rollback | partial — see Rollback | no — wait it out | no — data loss possible} <!-- Front-door signal so the engineer knows before they commit whether they can back out. -->
-- **Last validated:** {YYYY-MM-DD by {who}} <!-- "Validated" = ran the procedure end-to-end against production or a faithful staging environment. Edits without a validation run do not update this date. -->
+- **Reversible:** {yes — see Rollback | partial — see Rollback | no — wait it out | no — data loss possible}
+  <!-- Front-door signal so the engineer knows before they commit whether they can back out. -->
+- **Last validated:** {YYYY-MM-DD by {who}}
+  <!-- "Validated" = ran the procedure end-to-end against production or a faithful staging environment. Edits without a validation run do not update this date. -->
 - **Last edited:** {YYYY-MM-DD}
 - **Owner:** {team or person paged at 2am for this runbook's freshness}
-- **Origin:** {link to the incident, alert-firing record, ticket, recurring task, or "first observed YYYY-MM-DD in {context}"} <!-- Required. Per the project's YAGNI rule, runbooks for alerts that have never fired are an anti-pattern; this field is the evidence. -->
+- **Origin:** {link to the incident, alert-firing record, ticket, recurring task, or "first observed YYYY-MM-DD in
+  {context}"}
+  <!-- Required. Per the project's YAGNI rule, runbooks for alerts that have never fired are an anti-pattern; this field is the evidence. -->
 
 ## Symptoms
 
@@ -131,14 +137,16 @@ Expected output:
 
 <!-- When and to whom. Order by who to try first. Each line: condition → role/recipient → channel (PagerDuty service, Slack room, phone). The condition matters more than the recipient — the reader is looking for "when do I escalate," not "who is on the list." -->
 
-1. **If {condition, e.g., step 3 fails or 15 minutes elapsed without resolution}:** page {role / person} via {channel — PagerDuty service `service-name`, Slack `#channel`, phone}
+1. **If {condition, e.g., step 3 fails or 15 minutes elapsed without resolution}:** page {role / person} via {channel —
+   PagerDuty service `service-name`, Slack `#channel`, phone}
 2. **If {next condition}:** {next contact and channel}
 
 ## Rollback
 
 <!-- How to undo the fix if it makes things worse. If rollback is not possible, say so explicitly with the alternative ("Not possible — wait for X" or "No rollback — escalate immediately to Y"). Do not leave this blank. -->
 
-{Describe the rollback as steps; include exact commands when applicable. If not applicable, write "Not applicable — {reason and what to do instead}."}
+{Describe the rollback as steps; include exact commands when applicable. If not applicable, write "Not applicable —
+{reason and what to do instead}."}
 
 ## Live links
 

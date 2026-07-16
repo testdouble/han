@@ -15,7 +15,7 @@ Work through this checklist before marking the PR ready. Leave it in the PR body
 
 - [ ] Read [CONTRIBUTING.md](../CONTRIBUTING.md) and confirm the changes follow the rules for the entity being touched (skill, agent, long-form doc, index, template).
 - [ ] Walk the [self-review checklist in CONTRIBUTING.md](../CONTRIBUTING.md#reviewing-your-own-changes): frontmatter validity, `allowed-tools` accuracy, context-injection simplicity, template adherence, index placement, link resolution, voice compliance.
-- [ ] Confirm the writing follows [`han-core/references/writing-voice.md`](../han-core/references/writing-voice.md). No em-dashes. No banned words ("actually", "just", "leverage", "utilize", "showcase", "robust" as vague positive, "It's worth noting", "Importantly").
+- [ ] Confirm the writing follows [`han-communication/references/writing-voice.md`](../han-communication/references/writing-voice.md). No em-dashes. No banned words ("actually", "just", "leverage", "utilize", "showcase", "robust" as vague positive, "It's worth noting", "Importantly").
 - [ ] If a new skill or agent was added or renamed, confirm the [coverage rule](../docs/templates/coverage-rule.md) is satisfied: long-form doc exists at `docs/skills/{plugin}/{name}.md` or `docs/agents/han-core/{name}.md`, and the index in `docs/skills/README.md` or `docs/agents/README.md` has a one-sentence scent line.
 - [ ] If a skill or agent was added, removed, or renamed, confirm the indexes ([`docs/skills/README.md`](../docs/skills/README.md), [`docs/agents/README.md`](../docs/agents/README.md)), and [`docs/concepts.md`](../docs/concepts.md) each list every current entity.
 - [ ] If the change touches plugin behavior, run the affected skill or agent locally and confirm it still works end-to-end.

@@ -2,7 +2,7 @@
 
 <!-- Section rule: include a section only when this investigation produced meaningful content for it. Omit any section (its heading and body) that would otherwise be empty or "N/A", and keep the sections that remain in the order shown below. Sections marked CONDITIONAL are the ones most often omitted, but the rule applies to every section. -->
 
-<!-- Readability: write prose regions against the readability rule the skill loads (han-coding/references/readability-rule.md). Lead with the main point (the root cause / the answer) first, give each heading a descriptive name, keep one idea per paragraph with the first sentence carrying it, number sequential steps and bullet non-sequential items, and disclose detail progressively. This does not touch code fences, file:line citations, or diagram bodies. -->
+<!-- Readability: write prose regions against the shared readability standard the skill sources via han-communication:readability-guidance. Lead with the main point (the root cause / the answer) first, give each heading a descriptive name, keep one idea per paragraph with the first sentence carrying it, number sequential steps and bullet non-sequential items, and disclose detail progressively. This does not touch code fences, file:line citations, or diagram bodies. -->
 
 <!-- One-line orientation: what this report is and the decision it asks for. -->
 <!-- E.g. "Investigation report. Read the Summary, then approve the Planned Fix or push back." -->
@@ -136,6 +136,6 @@
 
 <!-- CONDITIONAL: Include this section only when standards, conventions, ADRs, or patterns inferred from surrounding code govern the fix. These are the standards the fix was written against. If nothing governs the fix, omit the section per the section rule at the top. -->
 
-| Standard | Source | Applies To |
-|----------|--------|------------|
+| Standard                              | Source                                                     | Applies To                          |
+| ------------------------------------- | ---------------------------------------------------------- | ----------------------------------- |
 | Description of standard or convention | File path, ADR number, or "inferred from surrounding code" | Which files or changes this governs |

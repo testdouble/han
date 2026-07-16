@@ -18,13 +18,15 @@ paths:
 
 ### Purpose
 
-{One **primary** rationale for this standard, stated first and clearly demoted from any secondary benefits. Use explicit labels when more than one rationale matters:}
+{One **primary** rationale for this standard, stated first and clearly demoted from any secondary benefits. Use explicit
+labels when more than one rationale matters:}
 
 - **Primary:** {the main reason this standard exists}
 - **Secondary:** {benefit that follows from applying the standard but isn't why it exists}
 - **Side effect:** {incidental consequence — not a reason to adopt}
 
-{Avoid coordinately listing rationales ("X, Y, Z, and W") without ranking. Downstream readers latch onto whichever reason sounds most concrete and apply the standard for that reason, even when it doesn't hold.}
+{Avoid coordinately listing rationales ("X, Y, Z, and W") without ranking. Downstream readers latch onto whichever
+reason sounds most concrete and apply the standard for that reason, even when it doesn't hold.}
 
 ### Scope
 
@@ -32,7 +34,8 @@ paths:
 
 ## When to Apply
 
-{Decision tree the reader walks before adopting this pattern. Each question has a concrete, verifiable answer — not a judgment call.}
+{Decision tree the reader walks before adopting this pattern. Each question has a concrete, verifiable answer — not a
+judgment call.}
 
 1. **{Precondition question 1}** — {how to check, e.g., a command to run, a property to inspect}
    - If yes → continue
@@ -41,20 +44,26 @@ paths:
    - If yes → apply this standard
    - If no → see "When NOT to Apply" or the named exception below
 
-**Exception — {name}:** {if this standard has an exception case where it should be applied for a different reason than the primary, surface it here as a branch in the decision tree, not buried in a later section}
+**Exception — {name}:** {if this standard has an exception case where it should be applied for a different reason than
+the primary, surface it here as a branch in the decision tree, not buried in a later section}
 
-**Verification step:** {a concrete command, query, or test the reader can run *now* to confirm the trigger condition holds — e.g., `go list -deps ./...` to verify a cycle exists, a benchmark threshold for a performance-motivated pattern, a coverage metric for a testability-motivated pattern}
+**Verification step:** {a concrete command, query, or test the reader can run _now_ to confirm the trigger condition
+holds — e.g., `go list -deps ./...` to verify a cycle exists, a benchmark threshold for a performance-motivated pattern,
+a coverage metric for a testability-motivated pattern}
 
 ## When NOT to Apply
 
-{Cases where this pattern is the wrong choice. At least one case must acknowledge the simpler-than-the-pattern alternative (direct import, inline code, no abstraction) as a legitimate choice. Symmetry with "When to Apply" reduces over-application.}
+{Cases where this pattern is the wrong choice. At least one case must acknowledge the simpler-than-the-pattern
+alternative (direct import, inline code, no abstraction) as a legitimate choice. Symmetry with "When to Apply" reduces
+over-application.}
 
 - **{Case 1}** — {brief description and the simpler alternative that is correct here}
 - **{Case 2}** — {brief description and the simpler alternative that is correct here}
 
 ## Background
 
-{Context for the guidelines: what problems they solve, why these conventions were chosen over alternatives, and any known trade-offs or caveats.}
+{Context for the guidelines: what problems they solve, why these conventions were chosen over alternatives, and any
+known trade-offs or caveats.}
 
 ## Coding Standard
 
@@ -99,10 +108,10 @@ paths:
 // example from project type B
 ```
 
-**What to avoid:**
-...
+**What to avoid:** ...
 
 **Project references:**
+
 - `path/to/file-a`, `{stable anchor}` — {brief note on what this example demonstrates}
 - `path/to/file-b`, `{stable anchor}` — {brief note on what this example demonstrates}
 

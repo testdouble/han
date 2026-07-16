@@ -1,8 +1,15 @@
 # Slice issue format
 
-> Each slice in a `work-items.md` file (and in the per-repo files the skill writes) must follow this format. The publish scripts (`scripts/create-issues.sh`, `scripts/link-blockers.sh`) parse it; the skill's Step 3 validation checks it. Changes here require matching script changes.
+> Each slice in a `work-items.md` file (and in the per-repo files the skill writes) must follow this format. The publish
+> scripts (`scripts/create-issues.sh`, `scripts/link-blockers.sh`) parse it; the skill's Step 3 validation checks it.
+> Changes here require matching script changes.
 
-The format below is what `/plan-work-items` emits and what the publish pipeline reads. Required fields appear in the order shown. The `**References.**` block is required whenever the slice consumes any external artifact (HTTP endpoint, event payload, design frame, ADR, coding standard) — omit it only when no external artifact applies. Additional `**Bold paragraph.**` context blocks are allowed between required fields when a slice needs them — common ones: `**Note on scope boundary with <other effort>.**` for ticket-boundary clarifications, `**Note on <subsystem> capability.**` for SDK or platform caveats that affect acceptance.
+The format below is what `/plan-work-items` emits and what the publish pipeline reads. Required fields appear in the
+order shown. The `**References.**` block is required whenever the slice consumes any external artifact (HTTP endpoint,
+event payload, design frame, ADR, coding standard) — omit it only when no external artifact applies. Additional
+`**Bold paragraph.**` context blocks are allowed between required fields when a slice needs them — common ones:
+`**Note on scope boundary with <other effort>.**` for ticket-boundary clarifications,
+`**Note on <subsystem> capability.**` for SDK or platform caveats that affect acceptance.
 
 ```
 ## <SYM-N> — <short descriptive name>
@@ -40,11 +47,21 @@ The format below is what `/plan-work-items` emits and what the publish pipeline 
 
 ## Format invariants the scripts depend on
 
-These are the patterns the publish scripts grep for; violating them breaks the pipeline. The skill's Step 3 validation checks each invariant before publishing and proposes evidence-based repairs.
+These are the patterns the publish scripts grep for; violating them breaks the pipeline. The skill's Step 3 validation
+checks each invariant before publishing and proposes evidence-based repairs.
 
-- **Heading line** begins with `## ` followed by `<SYM-N>` (uppercase letters or digits, dash, digits), then ` — ` (em-dash with surrounding spaces), then the title.
-- **Heading rewrite.** After issue creation, `scripts/create-issues.sh` rewrites each heading in place to `## <SYM-N> (#NNN) — <title>`. The `(#NNN)` annotation is how `link-blockers.sh` resolves symbolic IDs to GitHub issue numbers, and how `create-issues.sh` knows to skip already-created slices on re-run. Both shapes — with and without `(#NNN)` — are valid input.
+- **Heading line** begins with `## ` followed by `<SYM-N>` (uppercase letters or digits, dash, digits), then `—`
+  (em-dash with surrounding spaces), then the title.
+- **Heading rewrite.** After issue creation, `scripts/create-issues.sh` rewrites each heading in place to
+  `## <SYM-N> (#NNN) — <title>`. The `(#NNN)` annotation is how `link-blockers.sh` resolves symbolic IDs to GitHub issue
+  numbers, and how `create-issues.sh` knows to skip already-created slices on re-run. Both shapes — with and without
+  `(#NNN)` — are valid input.
 - **Slice body** ends at the next `## ` heading or end of file.
-- **Screenshot URLs** use the exact path scheme `.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png`, where `<feature-slug>` is the kebab-cased basename of the plan folder. The upload script extracts this path verbatim from the per-repo file and reads the slug back out of it, so the slug written into the URL is authoritative.
-- **`Depends on` line** uses the literal bold marker `**Depends on.**`, comma-separates blockers, and ends with `.` (the trailing period is part of the format, not a sentence terminator).
-- **Within-repo blockers only.** Every SYM named in a `Depends on` line must resolve to a slice in the same per-repo file. Cross-repo blockers belong in the cross-repo work-order prose at the top of the source `work-items.md`, not as a native `blocked_by` link.
+- **Screenshot URLs** use the exact path scheme `.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png`, where
+  `<feature-slug>` is the kebab-cased basename of the plan folder. The upload script extracts this path verbatim from
+  the per-repo file and reads the slug back out of it, so the slug written into the URL is authoritative.
+- **`Depends on` line** uses the literal bold marker `**Depends on.**`, comma-separates blockers, and ends with `.` (the
+  trailing period is part of the format, not a sentence terminator).
+- **Within-repo blockers only.** Every SYM named in a `Depends on` line must resolve to a slice in the same per-repo
+  file. Cross-repo blockers belong in the cross-repo work-order prose at the top of the source `work-items.md`, not as a
+  native `blocked_by` link.

@@ -20,6 +20,7 @@
 
 Key files:
 <!-- The 3-5 files a reader would open first. The full table lives in Key Files below. -->
+
 - `path/to/primary-file` - Brief purpose
 - `path/to/secondary-file` - Brief purpose
 
@@ -75,22 +76,28 @@ flowchart TD
 <!-- Organize by layer. Include the files relevant to understanding or modifying this feature. -->
 
 ### Backend
+
 <!-- CONDITIONAL: Include only if the feature has backend files -->
-| File | Purpose |
-|------|---------|
-| `path/to/file` | ... |
+
+| File           | Purpose |
+| -------------- | ------- |
+| `path/to/file` | ...     |
 
 ### Frontend
+
 <!-- CONDITIONAL: Include only if the feature has UI components -->
-| File | Purpose |
-|------|---------|
-| `path/to/file` | ... |
+
+| File           | Purpose |
+| -------------- | ------- |
+| `path/to/file` | ...     |
 
 ### Infrastructure
+
 <!-- CONDITIONAL: Include only if there are deployment, CI/CD, or config files -->
-| File | Purpose |
-|------|---------|
-| `path/to/file` | ... |
+
+| File           | Purpose |
+| -------------- | ------- |
+| `path/to/file` | ...     |
 
 ## Configuration
 
@@ -100,13 +107,15 @@ flowchart TD
 <!-- single-layer features, skip the sub-headings. -->
 
 ### Backend
-| Variable | Description | Default |
-|----------|-------------|---------|
+
+| Variable       | Description      | Default         |
+| -------------- | ---------------- | --------------- |
 | `ENV_VAR_NAME` | What it controls | `default_value` |
 
 ### Frontend
-| Variable | Description | Default |
-|----------|-------------|---------|
+
+| Variable       | Description      | Default         |
+| -------------- | ---------------- | --------------- |
 | `ENV_VAR_NAME` | What it controls | `default_value` |
 
 ## Error Handling
@@ -117,13 +126,15 @@ flowchart TD
 <!-- scenario. For cross-cutting features, split into Backend and Frontend sub-sections. -->
 
 ### Backend
-| Scenario | Error / HTTP Status | Behavior |
-|----------|---------------------|----------|
-| Description | `400 Bad Request` | What happens |
+
+| Scenario    | Error / HTTP Status | Behavior     |
+| ----------- | ------------------- | ------------ |
+| Description | `400 Bad Request`   | What happens |
 
 ### Frontend
-| Scenario | Error Handling | Behavior |
-|----------|----------------|----------|
+
+| Scenario    | Error Handling                    | Behavior     |
+| ----------- | --------------------------------- | ------------ |
 | Description | Error boundary / toast / fallback | What happens |
 
 ---
@@ -175,9 +186,9 @@ See `path/to/types-file` for the full definitions. Key fields:
 <!-- A table is the written record of these values; keep it. For cross-cutting features, -->
 <!-- split into Backend and Frontend; otherwise skip the sub-headings. -->
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `ConstantName` | `42` | What it means |
+| Constant       | Value | Description   |
+| -------------- | ----- | ------------- |
+| `ConstantName` | `42`  | What it means |
 
 ### Implementation Notes
 
@@ -201,15 +212,16 @@ See `path/to/types-file` for the full definitions. Key fields:
 <!-- The endpoint table is the reference. Include request/response bodies only when the -->
 <!-- shape is non-obvious; otherwise the table and a pointer to the schema suffice. -->
 
-| Method | Path | Handler | Description |
-|--------|------|---------|-------------|
-| `GET` | `/v1/resource` | `ListResource` | List with pagination |
-| `POST` | `/v1/resource` | `CreateResource` | Create new |
+| Method | Path           | Handler          | Description          |
+| ------ | -------------- | ---------------- | -------------------- |
+| `GET`  | `/v1/resource` | `ListResource`   | List with pagination |
+| `POST` | `/v1/resource` | `CreateResource` | Create new           |
 
 <!-- CONDITIONAL: Include a request/response example only for endpoints whose payload -->
 <!-- shape is non-obvious. -->
 
 **Request:**
+
 ```json
 {
   "field": "value"
@@ -217,6 +229,7 @@ See `path/to/types-file` for the full definitions. Key fields:
 ```
 
 **Response:**
+
 ```json
 {
   "data": { ... }
@@ -228,13 +241,15 @@ See `path/to/types-file` for the full definitions. Key fields:
 <!-- CONDITIONAL: Include when the feature emits or subscribes to events. -->
 
 #### Emitted Events
-| Event | Payload Type | When Emitted |
-|-------|-------------|--------------|
-| `domain.action` | `DomainActionPayload` | When ... |
+
+| Event           | Payload Type          | When Emitted |
+| --------------- | --------------------- | ------------ |
+| `domain.action` | `DomainActionPayload` | When ...     |
 
 #### Subscribed Events
-| Event | Handler | Behavior |
-|-------|---------|----------|
+
+| Event         | Handler            | Behavior |
+| ------------- | ------------------ | -------- |
 | `other.event` | `handleOtherEvent` | Does ... |
 
 ### Frontend Components
@@ -260,25 +275,25 @@ flowchart TD
 
 <!-- CONDITIONAL: Include when the feature defines its own routes or URL patterns. -->
 
-| Route | Page Component | Description |
-|-------|----------------|-------------|
-| `/feature` | `FeaturePage` | Main listing |
-| `/feature/:id` | `FeatureDetailsPage` | Detail view |
+| Route          | Page Component       | Description  |
+| -------------- | -------------------- | ------------ |
+| `/feature`     | `FeaturePage`        | Main listing |
+| `/feature/:id` | `FeatureDetailsPage` | Detail view  |
 
 #### Custom Hooks
 
 <!-- CONDITIONAL: Include when the feature has custom hooks beyond generated API hooks. -->
 
-| Hook | Purpose | Key Params |
-|------|---------|------------|
+| Hook                | Purpose                     | Key Params  |
+| ------------------- | --------------------------- | ----------- |
 | `useFeatureState()` | Manages local feature state | `featureId` |
 
 #### Context / Providers
 
 <!-- CONDITIONAL: Include when the feature defines or consumes contexts or providers. -->
 
-| Context | Provider | Purpose |
-|---------|----------|---------|
+| Context          | Provider          | Purpose                                    |
+| ---------------- | ----------------- | ------------------------------------------ |
 | `FeatureContext` | `FeatureProvider` | Shares feature state across component tree |
 
 #### State Management
@@ -294,18 +309,18 @@ flowchart TD
 <!-- CONDITIONAL: Include when the feature uses local storage, background sync, or -->
 <!-- offline-first patterns. -->
 
-| Component | Purpose |
-|-----------|---------|
+| Component                 | Purpose                                         |
+| ------------------------- | ----------------------------------------------- |
 | `path/to/offline-service` | Local storage CRUD operations for offline cache |
-| `path/to/sync-component` | Background sync when connectivity restored |
+| `path/to/sync-component`  | Background sync when connectivity restored      |
 
 #### Event Patterns
 
 <!-- CONDITIONAL: Include when the feature uses custom DOM events, editor events, or -->
 <!-- window events. -->
 
-| Event | Dispatched By | Handled By | Purpose |
-|-------|---------------|------------|---------|
+| Event             | Dispatched By   | Handled By    | Purpose                        |
+| ----------------- | --------------- | ------------- | ------------------------------ |
 | `feature:updated` | `FeatureEditor` | `FeatureList` | Refresh list after inline edit |
 
 ### Adding a New {Item}
@@ -323,12 +338,15 @@ flowchart TD
 <!-- isolation requirements. For cross-cutting features, split into Backend and Frontend. -->
 
 #### Backend
+
 - `path/to/test_file` - What it tests
 
 #### Frontend
+
 - `path/to/test_file` - What it tests
 
 #### Test Patterns
+
 <!-- Describe any special setup, fixtures, or isolation needed, including patterns shared -->
 <!-- across layers. -->
 

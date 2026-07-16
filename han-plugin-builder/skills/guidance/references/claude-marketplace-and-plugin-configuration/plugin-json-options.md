@@ -4,28 +4,29 @@ The `.claude-plugin/plugin.json` manifest file defines a Claude Code plugin's me
 
 ## Required Fields
 
-| Field  | Type   | Description                                |
-| ------ | ------ | ------------------------------------------ |
+| Field  | Type   | Description                                                                                           |
+| ------ | ------ | ----------------------------------------------------------------------------------------------------- |
 | `name` | string | Unique identifier in kebab-case, no spaces. Never use a `.`; see [Plugin Naming](./plugin-naming.md). |
 
 ## Metadata Fields (Optional)
 
-| Field         | Type   | Description                                                                 | Example                                                           |
-| ------------- | ------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `$schema`     | string | JSON Schema URL for editor validation (ignored by Claude Code at load time) | `"https://json.schemastore.org/claude-code-plugin-manifest.json"` |
-| `version`     | string | Semver version. If omitted, falls back to git commit SHA.                   | `"2.1.0"`                                                         |
-| `displayName` | string | Human-readable name shown in the UI. Not used for namespacing. Requires Claude Code v2.1.143+. | `"Deployment Tools"`                                  |
-| `description` | string | Brief explanation of plugin purpose                                         | `"Deployment automation tools"`                                   |
-| `defaultEnabled` | boolean | Whether the plugin is enabled by default when installed. Defaults to `true`. Requires Claude Code v2.1.154+. | `false`                                        |
-| `author`      | object | Author info with optional `name`, `email`, `url` sub-fields                 | `{"name": "Dev Team", "email": "dev@company.com"}`                |
-| `homepage`    | string | Documentation URL                                                           | `"https://docs.example.com"`                                      |
-| `repository`  | string | Source code URL                                                             | `"https://github.com/user/plugin"`                                |
-| `license`     | string | License identifier                                                          | `"MIT"`, `"Apache-2.0"`                                           |
-| `keywords`    | array  | Discovery tags (strings)                                                    | `["deployment", "ci-cd"]`                                         |
+| Field            | Type    | Description                                                                                                  | Example                                                           |
+| ---------------- | ------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| `$schema`        | string  | JSON Schema URL for editor validation (ignored by Claude Code at load time)                                  | `"https://json.schemastore.org/claude-code-plugin-manifest.json"` |
+| `version`        | string  | Semver version. If omitted, falls back to git commit SHA.                                                    | `"2.1.0"`                                                         |
+| `displayName`    | string  | Human-readable name shown in the UI. Not used for namespacing. Requires Claude Code v2.1.143+.               | `"Deployment Tools"`                                              |
+| `description`    | string  | Brief explanation of plugin purpose                                                                          | `"Deployment automation tools"`                                   |
+| `defaultEnabled` | boolean | Whether the plugin is enabled by default when installed. Defaults to `true`. Requires Claude Code v2.1.154+. | `false`                                                           |
+| `author`         | object  | Author info with optional `name`, `email`, `url` sub-fields                                                  | `{"name": "Dev Team", "email": "dev@company.com"}`                |
+| `homepage`       | string  | Documentation URL                                                                                            | `"https://docs.example.com"`                                      |
+| `repository`     | string  | Source code URL                                                                                              | `"https://github.com/user/plugin"`                                |
+| `license`        | string  | License identifier                                                                                           | `"MIT"`, `"Apache-2.0"`                                           |
+| `keywords`       | array   | Discovery tags (strings)                                                                                     | `["deployment", "ci-cd"]`                                         |
 
 ## Component Path Fields (Optional)
 
-All paths must be relative to the plugin root and start with `./`. Specifying a custom path **replaces** the default. To keep the default and add more, use an array (e.g. `["./skills/", "./extras/"]`).
+All paths must be relative to the plugin root and start with `./`. Specifying a custom path **replaces** the default. To
+keep the default and add more, use an array (e.g. `["./skills/", "./extras/"]`).
 
 | Field          | Type                      | Default scanned path     | Description                                               |
 | -------------- | ------------------------- | ------------------------ | --------------------------------------------------------- |
@@ -41,7 +42,8 @@ All paths must be relative to the plugin root and start with `./`. Specifying a 
 
 For `hooks`, `mcpServers`, and `lspServers`, multiple sources are **merged** rather than replaced.
 
-**`monitors` and `themes` are experimental.** The current preferred placement for both is under an `experimental` key, not at the top level:
+**`monitors` and `themes` are experimental.** The current preferred placement for both is under an `experimental` key,
+not at the top level:
 
 ```json
 "experimental": {
@@ -50,7 +52,9 @@ For `hooks`, `mcpServers`, and `lspServers`, multiple sources are **merged** rat
 }
 ```
 
-The bare top-level `monitors` and `themes` keys still load, but `claude plugin validate` warns against them, and `claude plugin validate --strict` (used in CI) treats that warning as an error. Prefer the `experimental.*` form for new plugins. See [monitors](./monitors-json-options.md) and [themes](./themes-json-options.md).
+The bare top-level `monitors` and `themes` keys still load, but `claude plugin validate` warns against them, and
+`claude plugin validate --strict` (used in CI) treats that warning as an error. Prefer the `experimental.*` form for new
+plugins. See [monitors](./monitors-json-options.md) and [themes](./themes-json-options.md).
 
 ## userConfig
 
@@ -67,7 +71,8 @@ User-configurable values prompted at enable time. Each key is a config option:
 | `multiple`    | No       | boolean | `string` type only — allow array of strings                          |
 | `min` / `max` | No       | number  | `number` type only — value bounds                                    |
 
-Values are available as `${user_config.KEY}` in MCP/LSP/hook/monitor configs and as `CLAUDE_PLUGIN_OPTION_<KEY>` environment variables in subprocesses. Non-sensitive values are also available in skill/agent content.
+Values are available as `${user_config.KEY}` in MCP/LSP/hook/monitor configs and as `CLAUDE_PLUGIN_OPTION_<KEY>`
+environment variables in subprocesses. Non-sensitive values are also available in skill/agent content.
 
 ## channels
 
@@ -90,15 +95,25 @@ Other plugins this plugin requires. Each entry is either a plain plugin name or 
 ]
 ```
 
-| Sub-field     | Required | Type   | Description                                                                                   |
-| ------------- | -------- | ------ | --------------------------------------------------------------------------------------------- |
-| `name`        | Yes      | string | The dependency's plugin name. Resolved in the same marketplace as this plugin by default.     |
+| Sub-field     | Required | Type   | Description                                                                                    |
+| ------------- | -------- | ------ | ---------------------------------------------------------------------------------------------- |
+| `name`        | Yes      | string | The dependency's plugin name. Resolved in the same marketplace as this plugin by default.      |
 | `version`     | No       | string | Semver range (e.g. `~2.1.0`). When omitted, floats to whatever version the marketplace serves. |
 | `marketplace` | No       | string | A different marketplace to resolve from. Blocked unless the installing marketplace allows it.  |
 
-Behavior, in brief: installing a plugin auto-installs its dependencies and reports what it added; enabling a plugin enables its dependencies at the same scope, and a plugin cannot be disabled while another enabled plugin still depends on it. A dependency in another marketplace is refused unless that marketplace appears in the installing marketplace's `allowCrossMarketplaceDependenciesOn` list (see [marketplace.json reference](./marketplace-json-options.md)), and a dependency from a marketplace the user has not added stays unresolved. The full resolution, versioning, and error-handling rules are in the [canonical Claude Code documentation](https://code.claude.com/docs/en/plugin-dependencies).
+Behavior, in brief: installing a plugin auto-installs its dependencies and reports what it added; enabling a plugin
+enables its dependencies at the same scope, and a plugin cannot be disabled while another enabled plugin still depends
+on it. A dependency in another marketplace is refused unless that marketplace appears in the installing marketplace's
+`allowCrossMarketplaceDependenciesOn` list (see [marketplace.json reference](./marketplace-json-options.md)), and a
+dependency from a marketplace the user has not added stays unresolved. The full resolution, versioning, and
+error-handling rules are in the
+[canonical Claude Code documentation](https://code.claude.com/docs/en/plugin-dependencies).
 
-See also: the [canonical Claude Code plugin-dependencies documentation](https://code.claude.com/docs/en/plugin-dependencies) for a full worked walkthrough of declaring and resolving dependencies, and the [marketplace.json reference](./marketplace-json-options.md) for the cross-marketplace allow-list that governs dependencies declared against another marketplace.
+See also: the
+[canonical Claude Code plugin-dependencies documentation](https://code.claude.com/docs/en/plugin-dependencies) for a
+full worked walkthrough of declaring and resolving dependencies, and the
+[marketplace.json reference](./marketplace-json-options.md) for the cross-marketplace allow-list that governs
+dependencies declared against another marketplace.
 
 ## Environment Variables
 
@@ -162,10 +177,7 @@ Both are also exported as environment variables to hook processes and MCP/LSP se
       "default": 30
     }
   },
-  "dependencies": [
-    "helper-lib",
-    { "name": "secrets-vault", "version": "~2.1.0" }
-  ]
+  "dependencies": ["helper-lib", { "name": "secrets-vault", "version": "~2.1.0" }]
 }
 ```
 

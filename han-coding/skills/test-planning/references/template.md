@@ -65,6 +65,7 @@ Covered by: TP-001, TP-004.
 {If no CRIT items: "No critical-priority test cases identified."}
 
 **TP-{NNN}** (from {T#/EC#}) **[{Coverage Gap / Edge Case}]**
+
 - **Type:** {Coverage gap | Edge case}
 - **Test level:** {Unit | Integration | End-to-end}
 - **Code path:** `{file_path:line_number}` — {brief description}
@@ -76,6 +77,7 @@ Covered by: TP-001, TP-004.
 {If no HIGH items: "No high-priority test cases identified."}
 
 **TP-{NNN}** (from {T#/EC#}) **[{Coverage Gap / Edge Case}]**
+
 - **Type:** {Coverage gap | Edge case}
 - **Test level:** {Unit | Integration | End-to-end}
 - **Code path:** `{file_path:line_number}` — {brief description}
@@ -87,6 +89,7 @@ Covered by: TP-001, TP-004.
 {If no MED items: "No medium-priority test cases identified."}
 
 **TP-{NNN}** (from {T#/EC#}) **[{Coverage Gap / Edge Case}]**
+
 - **Type:** {Coverage gap | Edge case}
 - **Test level:** {Unit | Integration | End-to-end}
 - **Code path:** `{file_path:line_number}` — {brief description}
@@ -98,6 +101,7 @@ Covered by: TP-001, TP-004.
 {If no LOW items: "No low-priority test cases identified."}
 
 **TP-{NNN}** (from {T#/EC#}) **[{Coverage Gap / Edge Case}]**
+
 - **Type:** {Coverage gap | Edge case}
 - **Test level:** {Unit | Integration | End-to-end}
 - **Code path:** `{file_path:line_number}` — {brief description}
@@ -122,23 +126,23 @@ Items the edge-case-explorer intentionally excluded:
 
 ### Coverage Summary
 
-| Priority | Count |
-|----------|-------|
-| CRIT | {n} |
-| HIGH | {n} |
-| MED | {n} |
-| LOW | {n} |
+| Priority  | Count   |
+| --------- | ------- |
+| CRIT      | {n}     |
+| HIGH      | {n}     |
+| MED       | {n}     |
+| LOW       | {n}     |
 | **Total** | **{n}** |
 
 ### Scope
 
-| Attribute | Value |
-|-----------|-------|
-| Scope type | Branch changes / Specific files / User-described |
-| Files analyzed | {count} |
-| Branch | {branch name} |
-| Language | {language} |
-| Test framework | {framework} |
+| Attribute      | Value                                            |
+| -------------- | ------------------------------------------------ |
+| Scope type     | Branch changes / Specific files / User-described |
+| Files analyzed | {count}                                          |
+| Branch         | {branch name}                                    |
+| Language       | {language}                                       |
+| Test framework | {framework}                                      |
 
 #### Files
 

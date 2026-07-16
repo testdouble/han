@@ -1,8 +1,11 @@
 # {agent-name}
 
-Operator documentation for the `{agent-name}` agent in the han plugin. This document helps you decide *when* and *how* to dispatch the agent. For what the agent does internally, read the agent definition at [`han-core/agents/{agent-name}.md`](../../../han-core/agents/{agent-name}.md).
+Operator documentation for the `{agent-name}` agent in the han plugin. This document helps you decide _when_ and _how_
+to dispatch the agent. For what the agent does internally, read the agent definition at
+[`han-core/agents/{agent-name}.md`](../../../han-core/agents/{agent-name}.md).
 
-> See also: [Plugin landing page](../../../README.md) · [All agents](../README.md) · [All skills](../../skills/README.md) · [YAGNI](../../yagni.md)
+> See also: [Plugin landing page](../../../README.md) · [All agents](../README.md) ·
+> [All skills](../../skills/README.md) · [YAGNI](../../yagni.md)
 
 ## TL;DR
 
@@ -40,12 +43,13 @@ Give it:
 
 Example prompts:
 
-- *"{Concrete situation 1}"*
-- *"{Concrete situation 2}"*
+- _"{Concrete situation 1}"_
+- _"{Concrete situation 2}"_
 
 ## What you get back
 
-{Describe the returned summary and, if applicable, the full report on disk: sections, finding-ID schemes, severity tables, open-question lists.}
+{Describe the returned summary and, if applicable, the full report on disk: sections, finding-ID schemes, severity
+tables, open-question lists.}
 
 ## How to get the most out of it
 
@@ -56,7 +60,11 @@ Example prompts:
 
 ## YAGNI (when applicable)
 
-{If this agent reviews artifacts, produces recommendations, or otherwise contributes items the team will commit, describe its YAGNI posture. Name which items it gates and which named anti-patterns it enforces (Speculative Test, Speculative Edge Case, Speculative Data Machinery, Premature Operational Machinery, Evidence Gate, Evidence Sweep, and so on). Explain how findings or deferrals surface in the agent's output. Cross-reference [YAGNI](../../yagni.md). Pure-discovery agents that do not produce committed items can omit this section.}
+{If this agent reviews artifacts, produces recommendations, or otherwise contributes items the team will commit,
+describe its YAGNI posture. Name which items it gates and which named anti-patterns it enforces (Speculative Test,
+Speculative Edge Case, Speculative Data Machinery, Premature Operational Machinery, Evidence Gate, Evidence Sweep, and
+so on). Explain how findings or deferrals surface in the agent's output. Cross-reference [YAGNI](../../yagni.md).
+Pure-discovery agents that do not produce committed items can omit this section.}
 
 ## Cost and latency
 
@@ -68,7 +76,8 @@ Example prompts:
 
 ## Sources
 
-{Provenance of the agent's principles, vocabulary, and anti-patterns. Each source is cited because the agent draws specific, named artifacts from it.}
+{Provenance of the agent's principles, vocabulary, and anti-patterns. Each source is cited because the agent draws
+specific, named artifacts from it.}
 
 ### {Source 1: Author, Title, Year}
 
@@ -79,7 +88,9 @@ URL: {url}
 ## Related documentation
 
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the
+  acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [`{companion-agent}`](./{companion-agent}.md). {How they pair}
 - [`/{skill-that-dispatches-this}`](../../skills/{plugin}/{skill}.md). {The skill that typically dispatches this agent}
-- [{build-guideline link}](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/{file}.md). {Relevance}
+- [{build-guideline link}](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/{file}.md).
+  {Relevance}

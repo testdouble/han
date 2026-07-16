@@ -1,8 +1,12 @@
 # Theme File Schema Reference
 
-Plugin theme files are JSON files placed in the `themes/` directory (or a custom path set via the `themes` field in `plugin.json`). The filename without `.json` becomes the theme's slug.
+Plugin theme files are JSON files placed in the `themes/` directory (or a custom path set via the `themes` field in
+`plugin.json`). The filename without `.json` becomes the theme's slug.
 
-> **Experimental.** Themes are an experimental plugin component. In `plugin.json` the preferred placement is under the `experimental` key (`"experimental": { "themes": "./themes/" }`). The bare top-level `themes` key still works but `claude plugin validate` warns against it, and `--strict` treats that warning as an error. The manifest schema may change.
+> **Experimental.** Themes are an experimental plugin component. In `plugin.json` the preferred placement is under the
+> `experimental` key (`"experimental": { "themes": "./themes/" }`). The bare top-level `themes` key still works but
+> `claude plugin validate` warns against it, and `--strict` treats that warning as an error. The manifest schema may
+> change.
 
 ## Fields
 
@@ -37,7 +41,8 @@ Any `overrides` token accepts these formats:
 | ANSI 256     | `"ansi256(141)"` (n = 0–255) |
 | ANSI 16 name | `"ansi:magentaBright"`       |
 
-ANSI 16 names: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`, and their `Bright` variants (`blackBright`, `redBright`, etc.).
+ANSI 16 names: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`, and their `Bright` variants
+(`blackBright`, `redBright`, etc.).
 
 ## Color Tokens
 
@@ -95,13 +100,15 @@ ANSI 16 names: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `wh
 
 Animated gradient counterparts for select tokens:
 
-`claudeShimmer`, `successShimmer`, `errorShimmer`, `warningShimmer`, `mergedShimmer`, `planModeShimmer`, `autoAcceptShimmer`, `bashBorderShimmer`, `ideShimmer`, `fastModeShimmer`
+`claudeShimmer`, `successShimmer`, `errorShimmer`, `warningShimmer`, `mergedShimmer`, `planModeShimmer`,
+`autoAcceptShimmer`, `bashBorderShimmer`, `ideShimmer`, `fastModeShimmer`
 
 ### Subagent Colors
 
 Eight colors for distinguishing subagents visually. Suffix `_FOR_SUBAGENTS_ONLY` is required:
 
-`red_FOR_SUBAGENTS_ONLY`, `blue_FOR_SUBAGENTS_ONLY`, `green_FOR_SUBAGENTS_ONLY`, `yellow_FOR_SUBAGENTS_ONLY`, `purple_FOR_SUBAGENTS_ONLY`, `orange_FOR_SUBAGENTS_ONLY`, `pink_FOR_SUBAGENTS_ONLY`, `cyan_FOR_SUBAGENTS_ONLY`
+`red_FOR_SUBAGENTS_ONLY`, `blue_FOR_SUBAGENTS_ONLY`, `green_FOR_SUBAGENTS_ONLY`, `yellow_FOR_SUBAGENTS_ONLY`,
+`purple_FOR_SUBAGENTS_ONLY`, `orange_FOR_SUBAGENTS_ONLY`, `pink_FOR_SUBAGENTS_ONLY`, `cyan_FOR_SUBAGENTS_ONLY`
 
 ## Behavior
 
@@ -113,8 +120,7 @@ Eight colors for distinguishing subagents visually. Suffix `_FOR_SUBAGENTS_ONLY`
 
 ## Official Reference
 
-https://code.claude.com/docs/en/terminal-config.md
-https://code.claude.com/docs/en/plugins-reference.md
+https://code.claude.com/docs/en/terminal-config.md https://code.claude.com/docs/en/plugins-reference.md
 
 ## JSON example
 

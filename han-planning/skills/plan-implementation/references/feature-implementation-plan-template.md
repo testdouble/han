@@ -21,11 +21,16 @@ Inline decision references:
 
 ## Source Specification
 
-- **Feature specification:** [{filename}]({relative-path-to-feature-specification.md}) <!-- Markdown link to the source spec so readers can jump to it. If no file was provided (e.g., conversational context only), state "No source specification file — inputs were: {one-line summary of what was provided}". -->
-- **Specification decision log:** [artifacts/decision-log.md](artifacts/decision-log.md) <!-- Omit if the source spec is not one produced by plan-a-feature or has no companion decision log. -->
-- **Specification team findings:** [artifacts/team-findings.md](artifacts/team-findings.md) <!-- Omit if the source spec has no companion findings file. -->
-- **Specification decisions this plan inherits:** D1, D2, D3… <!-- IDs from the spec's decision-log.md. Omit the line if no spec decision log existed. -->
-- **Specification open items this plan must respect or resolve:** OI-1, OI-2… <!-- IDs from the spec's Open Items. Omit the line if no spec file existed. -->
+- **Feature specification:** [{filename}]({relative-path-to-feature-specification.md})
+  <!-- Markdown link to the source spec so readers can jump to it. If no file was provided (e.g., conversational context only), state "No source specification file — inputs were: {one-line summary of what was provided}". -->
+- **Specification decision log:** [artifacts/decision-log.md](artifacts/decision-log.md)
+  <!-- Omit if the source spec is not one produced by plan-a-feature or has no companion decision log. -->
+- **Specification team findings:** [artifacts/team-findings.md](artifacts/team-findings.md)
+  <!-- Omit if the source spec has no companion findings file. -->
+- **Specification decisions this plan inherits:** D1, D2, D3…
+  <!-- IDs from the spec's decision-log.md. Omit the line if no spec decision log existed. -->
+- **Specification open items this plan must respect or resolve:** OI-1, OI-2…
+  <!-- IDs from the spec's Open Items. Omit the line if no spec file existed. -->
 
 ## Outcome
 
@@ -42,11 +47,11 @@ Inline decision references:
 
 <!-- Which specialists contributed to the plan, with one line each on the input they fed into decisions. If a specialist was invited and stood down with "no concerns," record that. Full round-by-round detail lives in artifacts/implementation-iteration-history.md. -->
 
-| Specialist | Status | Key Input |
-|------------|--------|-----------|
-| `project-manager` | Coordinator | <!-- Facilitated rounds and synthesized final plan --> |
-| `junior-developer` | Reframer | <!-- Reframed open questions; noted assumptions --> |
-| `{specialist}` | <!-- Active / Stood down --> | <!-- One-line summary with citation --> |
+| Specialist         | Status                       | Key Input                                              |
+| ------------------ | ---------------------------- | ------------------------------------------------------ |
+| `project-manager`  | Coordinator                  | <!-- Facilitated rounds and synthesized final plan --> |
+| `junior-developer` | Reframer                     | <!-- Reframed open questions; noted assumptions -->    |
+| `{specialist}`     | <!-- Active / Stood down --> | <!-- One-line summary with citation -->                |
 
 ## Implementation Approach
 
@@ -74,11 +79,11 @@ ALTITUDE: name and reference config and code artifacts; do not inline their full
 
 <!-- Break the implementation into work units sized to ship. For each unit, name what it delivers, what it depends on, and how it is verified. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where a unit's shape reflects a non-obvious decision. -->
 
-| # | Work Unit | Delivers | Depends On | Verification |
-|---|-----------|----------|------------|--------------|
-| 1 | <!-- e.g., Schema expand migration --> | <!-- new column, backfill job --> | <!-- — --> | <!-- migration test + staging run --> |
-| 2 | <!-- e.g., Write path behind flag --> | <!-- dual-write, flag off --> | 1 | <!-- integration test + flag audit --> |
-| 3 | … | … | … | … |
+| #   | Work Unit                              | Delivers                          | Depends On | Verification                           |
+| --- | -------------------------------------- | --------------------------------- | ---------- | -------------------------------------- |
+| 1   | <!-- e.g., Schema expand migration --> | <!-- new column, backfill job --> | <!-- — --> | <!-- migration test + staging run -->  |
+| 2   | <!-- e.g., Write path behind flag -->  | <!-- dual-write, flag off -->     | 1          | <!-- integration test + flag audit --> |
+| 3   | …                                      | …                                 | …          | …                                      |
 
 ## RAID Log
 
@@ -93,9 +98,9 @@ skipped step.
 
 ### Risks
 
-| ID | Risk | Likelihood | Severity | Blast Radius | Reversibility | Owner | Mitigation |
-|----|------|------------|----------|--------------|---------------|-------|------------|
-| R1 | … | … | … | … | … | … | … |
+| ID  | Risk | Likelihood | Severity | Blast Radius | Reversibility | Owner | Mitigation |
+| --- | ---- | ---------- | -------- | ------------ | ------------- | ----- | ---------- |
+| R1  | …    | …          | …        | …            | …             | …     | …          |
 
 ### Assumptions
 
@@ -108,28 +113,29 @@ unknown gets its own row. Mixing the two hides a settled fact and makes later
 steps gate on it for no reason.
 -->
 
-| ID | Assumption | What Changes If Wrong | Verifier | Status |
-|----|------------|-----------------------|----------|--------|
-| A1 | … | … | … | … |
+| ID  | Assumption | What Changes If Wrong | Verifier | Status |
+| --- | ---------- | --------------------- | -------- | ------ |
+| A1  | …          | …                     | …        | …      |
 
 ### Issues
 
-| ID | Issue | Owner | Next Step |
-|----|-------|-------|-----------|
-| I1 | … | … | … |
+| ID  | Issue | Owner | Next Step |
+| --- | ----- | ----- | --------- |
+| I1  | …     | …     | …         |
 
 ### Dependencies
 
-| ID | Dependency | Owner | Status |
-|----|------------|-------|--------|
-| Dep1 | … | … | … |
+| ID   | Dependency | Owner | Status |
+| ---- | ---------- | ----- | ------ |
+| Dep1 | …          | …     | …      |
 
 ## Testing Strategy
 
 <!-- Observable-behavior test plan sourced from test-engineer (and edge-case-explorer if engaged). Cover unit, integration, and end-to-end layers as applicable. Cite the specialist findings this section rests on. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the strategy reflects a non-obvious decision. -->
 
 - **Observable behaviors to test:** …
-- **Test doubles posture:** <!-- stubs for queries, mock expectations for commands — or inline what the specialist recommended -->
+- **Test doubles posture:**
+  <!-- stubs for queries, mock expectations for commands — or inline what the specialist recommended -->
 - **Edge cases requiring coverage:** …
 - **Test levels:** <!-- unit / integration / end-to-end mapping -->
 
@@ -160,15 +166,17 @@ If `on-call-engineer` contributed, capture the application-source resilience com
 
 - **Timeouts and deadlines:** <!-- which outbound calls get which timeouts; deadline propagation through the chain -->
 - **Retry strategy:** <!-- backoff, jitter, total cap; coordination with retries elsewhere in the chain -->
-- **Idempotency:** <!-- which retried side effects are guarded, and by what mechanism (caller-provided key, unique constraint, conditional update) -->
+- **Idempotency:**
+  <!-- which retried side effects are guarded, and by what mechanism (caller-provided key, unique constraint, conditional update) -->
 - **Bulkheads and concurrency caps:** <!-- which dependencies get isolated resource pools; what limits fan-out -->
 - **Queue and backpressure:** <!-- bounded vs. unbounded; producer slowdown signal; visibility timeout; DLQ -->
 - **Kill switches:** <!-- which risky new code paths are flag-gated; operator can flip without a redeploy -->
 - **Graceful degradation:** <!-- what happens when each dependency is unavailable -->
-- **Observability of failure paths:** <!-- log lines, metrics, spans, and SLI contributions that make new code paths observable per the ODD gate -->
-- **Data integrity:** <!-- column lengths, integer types on monetary or rate-counter values, encoding boundaries, partial-write recovery -->
+- **Observability of failure paths:**
+  <!-- log lines, metrics, spans, and SLI contributions that make new code paths observable per the ODD gate -->
+- **Data integrity:**
+  <!-- column lengths, integer types on monetary or rate-counter values, encoding boundaries, partial-write recovery -->
 - **Migration safety:** <!-- expand/contract sequencing for any schema change; never co-deployed with dependent code -->
-
 
 ## Definition of Done
 
@@ -212,6 +220,7 @@ For each deferred item:
 -->
 
 ### {item name}
+
 - **Why deferred:** {gate failure with specific reason; named anti-pattern when applicable}
 - **Reopen when:** {concrete trigger}
 - **Source:** {R#, specialist name}
@@ -227,12 +236,19 @@ For each deferred item:
 ## Summary
 
 - **Outcome delivered:** <!-- One sentence -->
-- **Team size:** <!-- N specialists --> — see [artifacts/implementation-iteration-history.md](artifacts/implementation-iteration-history.md)
-- **Rounds of facilitation:** N — see [artifacts/implementation-iteration-history.md](artifacts/implementation-iteration-history.md)
+- **Team size:** <!-- N specialists --> — see
+  [artifacts/implementation-iteration-history.md](artifacts/implementation-iteration-history.md)
+- **Rounds of facilitation:** N — see
+  [artifacts/implementation-iteration-history.md](artifacts/implementation-iteration-history.md)
 - **Decisions committed:** N — see [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
-- **Decisions settled by evidence:** N — see [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
-- **Decisions settled by junior-developer reframing:** N — see [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
-- **Decisions settled by user input:** N — see [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
-- **Rejected alternatives recorded:** N — see [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
+- **Decisions settled by evidence:** N — see
+  [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
+- **Decisions settled by junior-developer reframing:** N — see
+  [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
+- **Decisions settled by user input:** N — see
+  [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
+- **Rejected alternatives recorded:** N — see
+  [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
 - **Open items remaining:** N
-- **Recommendation:** <!-- Ship as planned | Hold for specialist handoff X | Return to facilitation — open item Y unresolved -->
+- **Recommendation:**
+  <!-- Ship as planned | Hold for specialist handoff X | Return to facilitation — open item Y unresolved -->
