@@ -27,6 +27,13 @@ document is readable without it.
 - **A target** — any of the four files a release must keep current: two storefront listings and two per-plugin version
   records. Channel one's listing is both a listing and a version record, which is why the four targets do not partition
   evenly into "two and two".
+- **What a target carries besides a version.** Every target carries more than the version this work is about. A listing
+  entry carries the plugin's presentation and, on channel two, the policy that decides whether it is installable at all.
+  A per-plugin record carries the plugin's storefront presence — the names, descriptions, and example prompts a person
+  wrote. None of it derives from a version number, and this work changes none of it. It is named here because it is the
+  difference between a version a release can compute and a presence only a person can author, which is where the
+  release's repair stops
+  ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
 - **A plugin** — a directory the suite ships as an installable unit
   ([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)).
 - **The bundle** — the meta-plugin that installs the suite in one command. It exists on channel one only. It is
@@ -54,12 +61,17 @@ Concretely, when this work is done:
   if I change this?"
 - Every document that describes Han's plugin topology describes the topology that exists.
 - **Every document that describes Han's release procedure describes the procedure that exists**, so a contributor
-  following the contributor guide is not blocked by the check for doing what the guide told them
+  following the contributor guide is not flagged by the check for doing what the guide told them
   ([D21](artifacts/decision-log.md#d21-the-release-procedure-documents-are-owned-by-the-step-that-falsifies-them)).
-- The release process starts from what is really in the repository, brings every target up to date — creating the
-  records a plugin is missing, not only reporting them — and stops rather than shipping around a gap it cannot close
+- The release process starts from what is really in the repository, brings every target up to date — correcting a
+  version that has fallen behind and creating a channel-two record a plugin is missing, not only reporting them — and
+  stops rather than shipping around a gap it cannot close
   ([D5](artifacts/decision-log.md#d5-the-check-derives-the-plugin-list-from-the-repository),
-  [D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)).
+  [D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing),
+  [D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+- **What the release approves is what the release publishes.** Every target the release writes travels into the commit
+  it tags, so the state a gate passed is the state that ships
+  ([D37](artifacts/decision-log.md#d37-the-release-commits-every-target-it-writes)).
 - The rule is enforced where it can be enforced, and the spec says where that is rather than implying it is everywhere.
   A release **refuses to proceed**; a pull request gets a **visible failure a person can still merge past**, because
   nothing in this repository makes a check blocking
@@ -84,19 +96,21 @@ Concretely, when this work is done:
 Seven steps, executed in the order below. Only some adjacencies are forced; the forced ones are named and the rest are
 free ([D18](artifacts/decision-log.md#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)).
 
-The binding constraints are: **the check is last**; **the release repair and the version correction are one unit**;
-**the declaration deletion and the document correction are one unit**; and the work-items fix is independent of all of
-it.
+The binding constraints are: **the check is last**; **the release repair precedes the version correction**; **the
+declaration deletion and the document correction are one unit, shipped in a single change**; and the work-items fix is
+independent of all of it.
 
-The first unit is not merely an ordering. The release gate begins refusing releases the moment the release runs the
-rule, which is step 3 — not step 7, where the rule merely becomes visible on pull requests
-([D14](artifacts/decision-log.md#d14-the-release-runs-the-check-rather-than-restating-it)). Every plugin whose version
-records disagree is a gap the gate names, and every plugin but one disagrees until step 4 corrects them. Shipping step 3
-without step 4 therefore stops every release in between, which is the same "a blocking rule arrives before the problems
-are fixed" failure the check is sequenced last to avoid
-([D1](artifacts/decision-log.md#d1-the-check-lands-last-because-a-check-that-blocks-everything-gets-disabled)). The two
-steps land together, and the window does not exist
+The repair-before-correction constraint is an **ordering, not a unit**, and the difference is worth stating because this
+specification briefly claimed otherwise. The claim was that the gate starts refusing releases at step 3, so shipping
+step 3 without step 4 would freeze every release until the versions were corrected. That is false, and it is false
+because of what step 3 actually does: a repaired release **corrects a stale version rather than refusing over it**. The
+eight disagreements are gaps the release closes, not gaps it stops on, so the release that runs between step 3 and step
+4 repairs them and proceeds. The freeze never happens
 ([D18](artifacts/decision-log.md#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)).
+
+What survives is the original ordering and its original reason: the repair goes first so the correction is durable. Step
+4 exists because a correction made by hand is a correction that does not wait for a release
+([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
 ### Step 1: Publish the Linear plugin to channel two
 
@@ -111,17 +125,23 @@ channel's client resolves from ([Open item 2](#open-items)). Its new version rec
 one already publishes for it, so it is correct on arrival
 ([D22](artifacts/decision-log.md#d22-the-new-version-record-is-created-at-the-plugins-channel-one-version)).
 
+A person writes this record, and that is the point rather than an inconvenience. The record carries the plugin's
+storefront presence — what it is called, how it is described, what it is for — and none of that is derivable from
+anything the repository already holds. This is the same boundary step 3's release stops at, met here by the one actor
+who can cross it
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+
 Correct on arrival is not the same as durable. This step adds a file inside the Linear plugin's own directory, which is
 exactly what obliges that plugin to bump at the next release — and until step 3 lands, a release moves the plugin's
 channel-one version without touching the channel-two record this step just created. Step 1 manufactures one instance of
-the very drift step 4 repairs. The coupling is not dissolved; it is small, and the step 3 and 4 unit heals it along
-with the other eight.
+the very drift step 4 repairs. The coupling is not dissolved; it is small, and step 3's repair heals it along with the
+other eight, whether by hand at step 4 or at the first release after step 3.
 
 This goes first because it is the only step where a person following the project's own instructions hits an error right
 now ([D11](artifacts/decision-log.md#d11-step-1-goes-first-because-it-is-a-live-broken-promise)). That reasoning holds
 on the assumption that channel two's client resolves from the default branch. If it resolves from the release tag, this
-step reaches nobody until the next successful release, which the step 3 and 4 unit gates anyway — and going first buys
-ordering clarity rather than a faster fix ([Open item 2](#open-items)).
+step reaches nobody until the next release, and going first buys ordering clarity rather than a faster fix
+([Open item 2](#open-items)).
 
 ### Step 2: Close the GitHub publisher's silent hole
 
@@ -138,6 +158,13 @@ at all** — the whole file is examined before the first item is published, so a
 be preceded by items already created
 ([D3](artifacts/decision-log.md#d3-a-foreign-annotation-stops-the-run-before-anything-is-created)).
 
+**Examine-first covers every heading the publisher cannot place, not only the ones that look foreign.** The reason is
+that the publisher cannot tell the two apart until it has looked: a heading it fails to parse might be another tracker's
+annotation in a shape it does not know, or it might be a hand-edited line with the wrong kind of dash. Those need the
+same answer, because the cheaper answer — publish the items you understood, then complain — is the one that creates
+issues in a file that may already have been published somewhere else
+([D30](artifacts/decision-log.md#d30-accounted-for-is-defined-so-the-promise-is-not-circular)).
+
 The protection lives at every layer that inspects a heading, not only the last one. The publisher's own repair pass
 recognizes a foreign annotation as a distinct category that it must not silently repair, so the annotation reaches the
 gate rather than being tidied away before it
@@ -150,7 +177,7 @@ dependency ([D23](artifacts/decision-log.md#d23-step-2-is-a-distinct-concern-ret
 
 ### Step 3: Teach the release process about every target
 
-_Source position: 6. Moved ahead of the version correction, and shipped together with it — see
+_Source position: 6. Moved ahead of the version correction — see
 [D18](artifacts/decision-log.md#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)._
 
 The release process updates two of the four targets, and takes its list of plugins from one of the targets it also
@@ -161,27 +188,58 @@ After this step, a release derives the set of plugins from what is actually in t
 ([D5](artifacts/decision-log.md#d5-the-check-derives-the-plugin-list-from-the-repository)) and brings all four targets
 up to date.
 
-Bringing a target up to date includes **creating a record that does not exist yet**, not only updating one that has
-fallen behind. This distinction is the difference between a release that repairs and a release that merely complains:
-today's process can only write a version onto a record already present, so a plugin absent from a target stays absent
-no matter how many releases run. A record created this way is written at the version the release is publishing for that
-plugin, which for a plugin the release did not bump is the version it already has — so the record arrives correct and
-agreeing rather than arriving and then needing a second pass
+Bringing a target up to date has two halves, and today's release has neither. It **corrects a version that has fallen
+behind**, including for a plugin it did not bump — today it writes a version only for the plugins it bumps, which is
+exactly why a record that drifted stays drifted no matter how many releases run. And it **creates a record that does not
+exist yet** — today's process can only write a version onto a record already present, so a plugin absent from a target
+stays absent forever. The first half is why the drift is repairable at all; the second is why the Linear plugin's shape
+is repairable
 ([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)).
 
+**Creation reaches the two channel-two targets and stops there.** That is where the evidence is: a plugin missing from
+channel two is the defect this work exists to fix, and it is live today. A plugin cannot be missing from channel one's
+per-plugin record, because carrying one is part of what makes a directory a plugin
+([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)); a plugin missing
+from channel one's listing has never happened, and is the one creation would have to author a description for. Both are
+gaps the release refuses rather than closes
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+
+A created record carries the version the release is publishing for that plugin, which for a plugin the release did not
+bump is the version it already has, read from that plugin's own channel-one record and never from a listing — a listing
+is one of the things this rule exists to correct, so it cannot also be the authority
+([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)). **The
+release creates what it can derive and refuses what must be authored.** A plugin's storefront presence — its names, its
+descriptions, the examples of what to ask it — is written by a person, and a release that invented it would be publishing
+prose nobody wrote to a storefront people read. A plugin with no authored presence on channel two is therefore a gap the
+release names and stops on, exactly like a listing entry with nothing behind it
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+
 A release refuses to proceed when it finds a gap it cannot close: a listing naming a plugin that does not exist, a
-record it cannot read, or a version it cannot make sense of. **The gate runs on the state being released — after the
-release has brought all four targets up to date, before it asks anyone to approve publishing, and before it commits,
-tags, pushes, or publishes anything.** Early enough that every action after it is still local and reversible; late
-enough to judge what is actually being released rather than what preceded it; and before the person is asked to
-authorize, because a gate that refuses after approval teaches people to distrust it
+record it cannot read, a version it cannot make sense of, a plugin whose publishing version it cannot determine, or a
+plugin whose presence on a channel it would have to author. **The gate runs on the state being released — after the
+release has brought all four targets up to date, and before it commits, tags, pushes, or publishes anything.** Early
+enough that every action after it is still local and reversible; late enough to judge what is actually being released
+rather than what preceded it
 ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible)).
 When it stops, it names every gap it found rather than the first
 ([D12](artifacts/decision-log.md#d12-a-missing-plugin-stops-the-release-and-every-gap-is-named)).
 
-This is where the rule starts refusing things. That is why this step and step 4 are one unit: every plugin but one has
-version records that disagree until step 4 corrects them, and a gate that is live against nine gaps stops every release
-until they are closed.
+The gate cannot promise to refuse before the operator has committed to anything, and the specification no longer implies
+it can. A release asks the operator to confirm its version plan before it writes the targets, and the gate cannot run
+until they are written — so a refusal always lands after someone has approved a plan. What the gate owes them is that
+the refusal is cheap and complete: nothing has been published, and every gap is named at once rather than one per
+attempt ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible)).
+
+**Everything the release wrote travels into the commit it tags.** The release repairs four targets and today commits the
+two it has always committed, which would leave the tag naming a state where channel two is still frozen, the repaired
+records stranded uncommitted, and the next release refusing to start against the dirty tree they left. The state the
+gate passed is the state that ships
+([D37](artifacts/decision-log.md#d37-the-release-commits-every-target-it-writes)).
+
+**A release reports what it created.** Which plugin, which targets, at what version, in the same breath as its version
+plan. The whole defect being repaired here is that something quietly stopped happening to what Han publishes; a repair
+that quietly starts happening is the same shape wearing better clothes
+([D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)).
 
 The release holds no copy of the rule. It runs the check and reports what the check says
 ([D14](artifacts/decision-log.md#d14-the-release-runs-the-check-rather-than-restating-it)).
@@ -190,16 +248,22 @@ This step also corrects the documents that describe the release procedure, becau
 ([D21](artifacts/decision-log.md#d21-the-release-procedure-documents-are-owned-by-the-step-that-falsifies-them)).
 
 One exception is permanent and named: the bundle cannot be published to channel two, because that channel does not
-support bundles. The rule knows this about that one plugin specifically and does not flag its absence, nor ask it to
-agree with a channel-two record it does not have. The exception stops there. The bundle publishes a version in both of
-channel one's records, so those two are held to agreement like any other plugin's — and more carefully than most, since
-the bundle bumps on every release and the release tag is named after its version
+support bundles. The rule knows this about that one plugin specifically and, on channel two, does not flag its absence,
+does not ask it to agree with a record it does not have, and **does not create one for it**. That third verb matters as
+much as the other two now that a release can write and not merely look: the bundle is the one plugin a helpful release
+would publish to a channel that cannot install it, and the same exception that tells the rule not to look would keep the
+mistake silent
+([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel)).
+
+The exception stops at channel two. The bundle publishes a version in both of channel one's records, so those two are
+held to agreement like any other plugin's — and more carefully than most, since the bundle bumps on every release and the
+release tag is named after its version
 ([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel),
 [D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version)).
 
 ### Step 4: Correct the frozen version numbers
 
-_Source position: 3. Moved after the release repair, and shipped together with it as one unit._
+_Source position: 3. Moved after the release repair._
 
 Channel two's published version numbers have not moved since the day they were created, so that channel never offers
 anyone an update
@@ -208,14 +272,21 @@ anyone an update
 After this step, each plugin's channel-two version matches the version channel one publishes for that same plugin
 ([D10](artifacts/decision-log.md#d10-the-two-channels-publish-one-version-per-plugin)).
 
-Because the release process is repaired first, this correction is durable: the very next release keeps it correct
-rather than re-freezing it. Had this step come first, any release cut before the repair would have undone it. And
-because the repair ships together with this step rather than merely ahead of it, the reverse window does not open
-either — the gate never spends a release refusing the disagreements this step is on its way to fix
+Because the release process is repaired first, this correction is durable: the very next release keeps it correct rather
+than re-freezing it. Had this step come first, any release cut before the repair would have undone it
 ([D18](artifacts/decision-log.md#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)).
 
-This step closes nine gaps, not eight. Eight plugins carry a channel-two version that has fallen behind; the ninth is
-the Linear plugin, whose record step 1 created and whose own arrival obliged it to bump.
+This step is worth doing by hand even though step 3 makes a release do it. Once the repair lands, the first release
+corrects these numbers whether or not this step ever runs — so what this step buys is that the numbers are right on
+merge rather than whenever someone next cuts a release. That is a smaller claim than "the correction requires this
+step", and it is the true one
+([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
+
+This step closes eight gaps. Eight plugins carry a channel-two version that has fallen behind, and the Linear plugin's
+record arrives agreeing because step 1 created it at the version channel one already publishes. A ninth gap opens only
+if a release is cut between step 1 and step 3, which moves the Linear plugin's channel-one version while the record step
+1 created stays put. That is a contingency rather than a count
+([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
 ### Step 5: Delete the three untrue dependency declarations
 
@@ -261,10 +332,25 @@ corrected set.
 are not.** This is the rule the spec was applying without stating: it is why the contributor guide's untrue universal
 claim is in scope and why the tutorial's untrue version promise is in scope, while the stale enumerations elsewhere in
 the repository stay out
-([D33](artifacts/decision-log.md#d33-an-already-false-statement-inside-a-rewritten-passage-is-corrected)). One live
-instance is known: the orientation document's description of the bundle's own dependencies omits one of them, is not
-falsified by this work, and sits between two lines this step must edit. It is corrected, because the editor is not
-merely open — the surrounding sentences are being rewritten.
+([D33](artifacts/decision-log.md#d33-an-already-false-statement-inside-a-rewritten-passage-is-corrected)).
+
+**A passage is the paragraph.** The boundary needs stating because the rule is otherwise argued into either uselessness
+or an audit. "Sentence" is narrower than what a person actually rewrites; "document" would pull in every stale line in a
+file this step happens to open, which is the open-ended audit this specification refuses. The paragraph is the unit that
+gets rewritten, so it is the unit the rule reaches
+([D33](artifacts/decision-log.md#d33-an-already-false-statement-inside-a-rewritten-passage-is-corrected)).
+
+The known live instance does **not** qualify under that rule, and saying so is the point. The orientation document's
+description of the bundle's own dependencies omits one of them. It is already false, is not falsified by this work, and
+sits in its own paragraph between two paragraphs this step rewrites. Adjacency is not the test, so the paragraph rule
+leaves it alone.
+
+It is corrected anyway, by a route it does qualify under. That paragraph is one of the document's dependency
+enumerations, and this step is already rewriting the document's dependency enumerations to drop their counts and name
+the manifests as the record. Applying that remedy to an enumeration means checking it against the manifests, and an
+enumeration that disagrees with the record is corrected by the act of applying the remedy — not by being nearby
+([D26](artifacts/decision-log.md#d26-corrected-documents-state-the-rule-and-point-at-the-record)). The distinction is
+worth the words: one route corrects it for a reason, and the other corrects it because the editor was open.
 
 Manifest descriptions are documents and are in scope. Manifest dependency declarations are the record itself, not a
 description of it, and are step 5's business
@@ -298,10 +384,16 @@ because that claim is already false and keeping it would create a maintenance ob
 _Source position: 7. Last, and this is the one hard ordering constraint the source plan argued for._
 
 Only now does the rule become **visible on a pull request**. The rule itself has existed since step 3, because the
-release runs it, and it has been refusing releases since then
+release runs it, and it has been refusing releases since then over the gaps a release cannot close
 ([D14](artifacts/decision-log.md#d14-the-release-runs-the-check-rather-than-restating-it)). This step puts the same
 answer in front of a contributor before a maintainer meets it at release time. It verifies that every plugin in the
 repository appears in every target it belongs in, and that a plugin's version records agree.
+
+The two surfaces ask one question and get different answers, and this is the point rather than an inconsistency. On a
+pull request the rule reports what is wrong **now**, including drift a release would have repaired on its own. On a
+release the rule reports what is wrong **after** the release has repaired everything it can, so what is left is only
+what a person must decide. The contributor sees the gap; the maintainer sees the residue
+([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
 It runs on every pull request, and additionally on the machines of contributors who have installed the optional local
 hooks ([D4](artifacts/decision-log.md#d4-the-check-blocks-on-every-pull-request-and-runs-locally-where-hooks-are-installed)).
@@ -319,39 +411,74 @@ introduced it, which is where it is cheapest to fix and where the person who cau
 Making it genuinely blocking is a change to repository settings that no step here owns, and the spec names that gap
 rather than assuming it away ([Open item 3](#open-items)).
 
-Because steps 1 through 6 have already landed, the check is green on the day it arrives and stays green
-([D1](artifacts/decision-log.md#d1-the-check-lands-last-because-a-check-that-blocks-everything-gets-disabled)).
+Because steps 1 through 6 have already landed, the check is green on the day it arrives. It does not stay green by
+construction, and claiming it would reinstate the assumption this specification spent its enforcement claim correcting:
+the check goes red on the pull request that introduces a gap, a person may merge past it, and the default branch then
+carries a red check until the next release repairs the gap. That is D1's restated failure mode arriving where it
+actually lives — not a check that blocks everything and gets switched off, but a signal that stays red and stops being
+read
+([D1](artifacts/decision-log.md#d1-the-check-lands-last-because-a-check-that-blocks-everything-gets-disabled),
+[D32](artifacts/decision-log.md#d32-the-guarantee-is-stated-per-surface-because-only-the-release-can-refuse)).
 
 There is no disable switch, deliberately
 ([D28](artifacts/decision-log.md#d28-the-check-ships-with-no-disable-switch)).
 
 ## Alternate flows and states
 
-**The rule lands before the problems are fixed.** This is the failure the ordering exists to prevent, and it has two
-faces. On the release surface it is real and immediate: the rule starts refusing releases at step 3, so shipping step 3
-without step 4 stops every release until the versions are corrected. That is why the two are one unit. On the
-pull-request surface the classic version — a correct check that blocks everything on day one until someone disables it
-— cannot occur here, because nothing on that surface blocks
+**The rule lands before the problems are fixed.** This is the failure the ordering exists to prevent, and neither of its
+two faces is the one this specification first described.
+
+On the release surface it does not occur, because the rule that arrives at step 3 arrives attached to a release that
+repairs. The eight disagreements are gaps the release closes rather than refuses, so a release cut between step 3 and
+step 4 fixes them and proceeds. This specification previously claimed the opposite — that the gate would freeze every
+release in the window — and made steps 3 and 4 one unit to close a window that was never open
+([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
+
+On the pull-request surface the classic version — a correct check that blocks everything on day one until someone
+disables it — cannot occur either, because nothing on that surface blocks
 ([T2](artifacts/feature-technical-notes.md#t2-a-pull-request-check-blocks-a-merge-only-where-a-required-status-check-demands-it)).
-The failure mode there is quieter and no less real: a check that is permanently red is a check people learn to scroll
-past, and a signal nobody reads protects nothing
+The failure mode there is quieter and is the one that is actually reachable: a check that is permanently red is a check
+people learn to scroll past, and a signal nobody reads protects nothing
 ([D1](artifacts/decision-log.md#d1-the-check-lands-last-because-a-check-that-blocks-everything-gets-disabled)).
 
-**A release runs while a plugin is missing from a target.** The release creates the missing record at the version it is
-publishing for that plugin and proceeds
-([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)). This is
-the ordinary path, not the failure path: the whole point of the repair is that a release closes this gap rather than
-reporting it.
+**A release runs while a plugin is missing from a channel-two target.** The release creates the missing record at the
+version it is publishing for that plugin, reports that it did, and proceeds
+([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing),
+[D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)). This is the ordinary path, not the failure
+path: the whole point of the repair is that a release closes this gap rather than reporting it. A plugin missing from a
+**channel-one** target is the other case, and it is a stop rather than a repair
+([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+
+**A release runs while a plugin's version has fallen behind on a target.** The release writes the version it is
+publishing for that plugin onto the record and proceeds, whether or not it bumped that plugin this release. This is also
+the ordinary path, and it is what makes step 4's correction durable rather than a thing that re-freezes
+([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
 **A release meets a gap it cannot close.** A listing naming a plugin that is not in the repository, a record it cannot
-read, or a version value it cannot make sense of. The release stops after bringing the targets up to date, before
-asking anyone to approve, and before committing
+read, a version value it cannot make sense of, a plugin whose publishing version it cannot determine, or a plugin whose
+presence on a channel would have to be authored. The release stops after bringing the targets up to date and before
+committing
 ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible)),
 naming every gap it found rather than the first
 ([D12](artifacts/decision-log.md#d12-a-missing-plugin-stops-the-release-and-every-gap-is-named)). Nothing is tagged,
-pushed, or published. **Recovery is not discarding local changes** — that reproduces the same stop, because the gap is
-in the repository and not in the release's uncommitted work. The gap must be corrected and committed, and only then can
-the release run again, because a release refuses to start from a dirty tree at all
+pushed, or published.
+
+**Recovery from that stop is two acts, in order, and the order is what makes it safe.** First the release's own local
+work is discarded — everything it wrote and everything it created, because a created file the release leaves behind is
+untracked, survives a careless cleanup, and keeps the tree dirty. Then the gap is corrected and committed on its own.
+Only then does the release run again, and it plans the release from scratch
+([D34](artifacts/decision-log.md#d34-a-gate-stop-costs-a-separate-commit-because-the-release-refuses-a-dirty-tree)).
+
+The order is not bookkeeping. Committing the release's half-finished version writes together with the gap correction
+makes those versions look like bumps a person made on purpose during development, and the release's own plan
+confirmation stops asking about a plugin whose version already moved. The recovery from a gate stop would then quietly
+publish versions nobody approved — a step of the release deciding something a person was supposed to decide, which is
+the exact class of defect this work exists to end
+([D34](artifacts/decision-log.md#d34-a-gate-stop-costs-a-separate-commit-because-the-release-refuses-a-dirty-tree)).
+
+**The gap must be corrected where the next release will see it.** A release may be cut from a branch that is not the
+default one, and a gap corrected only on that branch is a gap that is still there for everyone else. The stop is closed
+when the correction reaches the branch releases are cut from, not when the release in front of you gets past it
 ([D34](artifacts/decision-log.md#d34-a-gate-stop-costs-a-separate-commit-because-the-release-refuses-a-dirty-tree)).
 
 **A release fails partway through writing the four targets.** Every write happens before anything irreversible, so the
@@ -375,24 +502,42 @@ signal being advisory costs lateness rather than correctness. The signal is only
 contributor guide to name all four targets rather than one
 ([D21](artifacts/decision-log.md#d21-the-release-procedure-documents-are-owned-by-the-step-that-falsifies-them)).
 
-**A release is cut from a branch where a step has not landed.** What stops it is the release's own gate, not a
-pull-request check that may never have run — the release process permits cutting from a non-default branch, and a branch
-with no pull request gets no pipeline run. This is the general case rather than a corner: the release gate is the only
-surface that refuses anything, so it is the only surface a missing step is caught on
-([D32](artifacts/decision-log.md#d32-the-guarantee-is-stated-per-surface-because-only-the-release-can-refuse)).
+**A release is cut from a branch where a step has not landed.** Mostly nothing stops it, and the specification says so
+rather than claiming a backstop it does not have. A branch missing step 3 carries the old release, which has no gate at
+all and publishes channel one exactly as it does today. A branch missing steps 1 or 4 is repaired by the release rather
+than refused, which is the repair working. A branch missing steps 5, 6, or 7 releases cleanly, because the gate does not
+inspect dependency declarations, documents, or its own existence. The release process permits cutting from a non-default
+branch, and a branch with no pull request gets no pipeline run, so there is no second surface either
+([D32](artifacts/decision-log.md#d32-the-guarantee-is-stated-per-surface-because-only-the-release-can-refuse)). The
+gate's job is the gaps a release cannot close, not the steps of this plan
+([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
+
+**A plugin is being removed from the suite.** A removal that lands whole — the directory and both channels' entries
+gone together — is not a state the rule ever sees. A removal that lands half-finished is, and it is the same four-file
+mistake this work exists to prevent, pointed the other way. The rule does not distinguish "never published here" from
+"published here until recently", so a release meeting a half-removed plugin would helpfully create back the records the
+removal deleted. **A plugin the repository still carries is a plugin the rule expects in every target it belongs in**,
+which means a removal is finished or it is not: a directory that remains is a plugin, and its absence from a target it
+belongs in is a gap the release closes. Removing a plugin means removing the directory
+([D40](artifacts/decision-log.md#d40-a-half-finished-removal-is-not-a-state-the-release-guesses-at)).
 
 ## Edge cases and failure modes
 
 | Case                                                                           | Behavior                                                                                                                                     |
 | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| The bundle is absent from channel two                                          | Not flagged, and the cross-channel comparison does not apply to it ([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel)) |
+| The bundle is absent from channel two                                          | Not flagged, **not created**, and the cross-channel comparison does not apply to it. The creation verb matters as much as the other two: it is the one plugin a repairing release would publish to a channel that cannot install it ([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel)) |
 | The bundle's two channel-one records disagree with each other                  | Check fails, like any other plugin. The bundle's exemption is from the comparison between channels, not from agreement within one. It bumps every release and its version names the release tag, so this is the most-exercised pair in the suite ([D6](artifacts/decision-log.md#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel), [D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version)) |
-| A plugin is missing from any target it belongs in, including just one of two channels | A release creates the missing record and proceeds ([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)). On a pull request the check reports it, naming the plugin and every target it is missing from. This is the shape of the defect that motivated the work ([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)) |
+| A plugin is missing from a **channel-two** target it belongs in                | A release creates the missing record, reports that it did, and proceeds ([D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing), [D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)). On a pull request the check reports it, naming the plugin and every target it is missing from. This is the shape of the defect that motivated the work ([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)) |
+| A plugin is missing from a **channel-one** target it belongs in                | Check fails; the release stops rather than creating it. Creation is committed where the evidence is, and no plugin has ever been missing from a channel-one target — carrying a channel-one record is part of what makes a directory a plugin, and creating a channel-one listing entry would mean authoring the description that entry carries ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
+| A plugin has no authored presence on a channel it belongs in                   | Check fails; the release stops rather than inventing one. A storefront presence is prose a person wrote, and a release that composed it would be publishing writing nobody authored to a page people read ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
 | A plugin is in a storefront listing but not in the repository                  | Check fails. A listing entry resolving to nothing breaks the install-succeeds promise directly, and it is the one membership gap a release must not "fix" by itself, since the remedy is a person deciding whether the plugin or the entry is the mistake ([D29](artifacts/decision-log.md#d29-a-listing-entry-with-no-plugin-behind-it-fails-the-check)) |
-| A plugin's version records disagree                                            | Check fails, naming the plugin and every disagreeing record ([D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version)) |
+| A plugin's version records disagree                                            | On a pull request the check fails, naming the plugin and every disagreeing record. On a release it is repaired rather than reported: the release writes the publishing version to every record it can, so a disagreement it caused is the only one the gate can still see ([D20](artifacts/decision-log.md#d20-version-agreement-covers-every-record-that-publishes-a-version), [D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)) |
+| A plugin's publishing version cannot be determined                             | Check fails; the release stops rather than guessing. A plugin the release cannot assign a version to is a gap creation cannot close, alongside a dangling listing entry and an unreadable record ([D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)) |
+| A storefront listing cannot be read at all                                     | Surfaced and blocking for that whole channel, never read as "every plugin is missing from this target". A listing is one shared file covering every plugin, so a parse failure would otherwise route the entire channel into the create-path and overwrite the file with regenerated entries — the loudest possible version of the silent defect this work exists to end ([D35](artifacts/decision-log.md#d35-an-unreadable-record-or-version-is-surfaced-not-skipped)) |
 | A record cannot be read at all                                                 | Surfaced and blocking, never skipped. A record that fails to parse must not silently drop its plugin from the set being checked — a rule applied to a set that quietly excludes the broken member is the same invisible-by-construction defect this work exists to end ([D35](artifacts/decision-log.md#d35-an-unreadable-record-or-version-is-surfaced-not-skipped)) |
 | A record publishes a version, but the value is absent, empty, or not a version | Check fails, naming it, exactly as a disagreement does. Two unreadable values are never treated as agreeing with each other ([D35](artifacts/decision-log.md#d35-an-unreadable-record-or-version-is-surfaced-not-skipped)) |
 | A plugin has a manifest and no skills                                          | Valid. The bundle is permanently in this state, so "has skills" is not part of what makes a directory a plugin ([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)) |
+| A plugin's directory remains but its records were deleted                     | Treated as a plugin missing from those targets, not as a removal in progress. The rule does not guess intent from absence, so a removal is finished or it is not ([D40](artifacts/decision-log.md#d40-a-half-finished-removal-is-not-a-state-the-release-guesses-at)) |
 | A work item's heading is malformed in any way the publisher does not recognize | Surfaced, never silently passed over. "Accounted for" means every heading is either published, skipped-and-counted, or surfaced ([D30](artifacts/decision-log.md#d30-accounted-for-is-defined-so-the-promise-is-not-circular)) |
 | A work-items file mixes annotated and unannotated items for the same tracker   | Unchanged: annotated items skipped and counted, unannotated items published                                                                   |
 | Two trackers' annotations are indistinguishable from each other                | Out of scope here; the trap remains and is specified separately ([D2](artifacts/decision-log.md#d2-step-2-closes-the-silent-hole-only-annotation-namespacing-is-separate)) |
@@ -403,15 +548,22 @@ surface that refuses anything, so it is the only surface a missing step is caugh
 - **The release process and the repository.** The release reads the set of plugins from the repository rather than from
   a target it also writes, so a stale listing can no longer hide a plugin from it
   ([D5](artifacts/decision-log.md#d5-the-check-derives-the-plugin-list-from-the-repository)).
-- **The release process and both storefronts.** The release brings all four targets up to date — creating what is
-  missing, updating what is stale — before it does anything irreversible, and before it asks anyone to approve
+- **The release process and both storefronts.** The release brings all four targets up to date — updating a version that
+  has fallen behind, and creating a channel-two record that does not exist — before it does anything irreversible
   ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible),
-  [D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing)).
+  [D31](artifacts/decision-log.md#d31-the-release-creates-a-missing-target-at-the-version-it-is-publishing),
+  [D36](artifacts/decision-log.md#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored)).
+- **The release process and the commit it tags.** Every target the release writes is in the commit it tags, so the state
+  the gate approved is the state that ships. Without this the tag names a repository where channel two is still frozen,
+  the repaired records sit uncommitted, and the next release refuses to start against the tree they dirtied
+  ([D37](artifacts/decision-log.md#d37-the-release-commits-every-target-it-writes)).
 - **The check and the release process.** One rule, one bearer. The release runs the check and reports its answer rather
   than restating the rule in its own words, so the two cannot drift
   ([D14](artifacts/decision-log.md#d14-the-release-runs-the-check-rather-than-restating-it)). One consequence is easy
   to miss: because the release runs the rule, the rule is refusing releases from step 3 onward, four steps before it
-  appears on a pull request.
+  appears on a pull request. It refuses over a narrower set than the check reports, because by the time the release runs
+  the rule it has already repaired everything the rule would otherwise have caught it doing
+  ([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 - **The check and the pull-request pipeline.** The check runs on every pull request and reports a failure a person can
   merge past, because nothing here makes a check required
   ([T2](artifacts/feature-technical-notes.md#t2-a-pull-request-check-blocks-a-merge-only-where-a-required-status-check-demands-it)).
@@ -422,10 +574,12 @@ surface that refuses anything, so it is the only surface a missing step is caugh
 - **The three work-items publishers and the shared work-items file.** All three read and annotate the same file. Step 2
   changes only how one of them responds to annotations it does not recognize; it does not change what any of them
   writes.
-- **Step 5 and step 6.** They ship together
+- **Step 5 and step 6.** They ship together, in a single change rather than in two that follow each other closely
   ([D18](artifacts/decision-log.md#d18-the-execution-order-is-a-partial-order-and-the-repair-precedes-the-correction)).
   The intermediate state — declarations deleted, documents still narrating them — is exactly what step 6 exists to
-  prevent.
+  prevent, and "one unit" only prevents it if nothing can land between them. Nothing in this repository enforces that,
+  so it is a commitment about how the work is shipped rather than a property of the work
+  ([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
 
 ## User interactions
 
@@ -439,9 +593,17 @@ The people who experience this feature are maintainers and contributors at a ter
   possible because "belongs in" is defined rather than left to the exception
   ([D19](artifacts/decision-log.md#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)). The message is
   the same; the consequence is not. On a pull request it informs, and the contributor may proceed anyway. On a release
-  it refuses.
+  it refuses — over a smaller set, because a release repairs on its way to the gate and a pull request has nothing that
+  repairs ([D38](artifacts/decision-log.md#d38-the-repair-and-the-correction-are-ordered-not-united)).
+- **Release repair.** Names what it created and what it corrected — which plugin, which targets, at what version —
+  alongside the version plan it already reports. A release that quietly starts writing to what Han publishes is the same
+  shape as a release that quietly stopped, which is the defect being repaired
+  ([D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)).
 - **Release stop.** Names every gap it found before stopping, not just the first one, so a maintainer learns the full set
-  in one run ([D12](artifacts/decision-log.md#d12-a-missing-plugin-stops-the-release-and-every-gap-is-named)).
+  in one run ([D12](artifacts/decision-log.md#d12-a-missing-plugin-stops-the-release-and-every-gap-is-named)). The stop
+  always lands after the operator has approved a version plan, because the gate cannot run until the targets are written
+  and the plan is confirmed before that. What the stop owes them is that nothing was published and the whole set is named
+  at once ([D24](artifacts/decision-log.md#d24-the-gate-runs-after-all-targets-are-written-and-before-anything-irreversible)).
 - **Work-items format error.** Names the specific work items whose annotations were not recognized and what they appear
   to be annotated by, so the person can tell "already published to another tracker" from "file is malformed". This
   requires "malformed" to be a detectable category rather than a residue
@@ -501,6 +663,18 @@ The people who experience this feature are maintainers and contributors at a ter
   release deviation. The release gate is the signal, and the drift persisted for eleven releases precisely because
   nothing asked the question at all — not because nobody was watching a graph.
   **Reopening trigger:** drift recurs despite the gate, meaning the gate is asking the wrong question.
+- **Distinguishing "this work-items file has nothing in it" from "you passed the wrong file".** A file with no
+  recognizable headings satisfies the accounted-for promise trivially and reports nothing published and nothing skipped.
+  That is a real silence, and it is the only one this specification is choosing to keep — because nobody has pointed the
+  publisher at the wrong file, no incident names it, and the run already reports the two zeroes a person would notice.
+  **Reopening trigger:** someone publishes from the wrong file, or a run of zeroes is mistaken for a run that worked.
+- **Confirming a plugin's first publication to a channel before a release makes it installable.** Creation makes a
+  directory publicly installable with no sign-off, which is a larger act than the version bump that does get confirmed.
+  It is deferred because the release now reports what it created
+  ([D39](artifacts/decision-log.md#d39-a-release-reports-what-it-created)), which is the strictly simpler thing that
+  satisfies the same concern, and because the case it guards against — a half-built plugin merged to the default branch
+  and released before anyone noticed — has never happened. **Reopening trigger:** a release publishes a plugin that was
+  not ready, or a maintainer asks to hold a plugin's directory on the default branch while keeping it unpublished.
 
 ## Open items
 

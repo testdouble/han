@@ -194,9 +194,17 @@ source artifact's "Before" diagram: "DISK -.-> |never consulted directly| REL".
 
 ### D6: The bundle is a permanently named exception on the second channel
 
-**Outcome.** The bundle is a named, permanent exception **to the comparison between channels**. Its absence from channel
-two is never flagged, and it is never asked to agree with a channel-two record it does not have. It is **not** exempt
-from the agreement between channel one's own two records, which it does have.
+**Outcome.** The bundle is a named, permanent exception **to everything the rule does on channel two**. Its absence
+there is never flagged, it is never asked to agree with a record it does not have, and **a release never creates one for
+it**. It is **not** exempt from the agreement between channel one's own two records, which it does have.
+
+> **Extended in R2.** This exception was stated in two verbs — flag, agree — both of which are about looking. D31 gave
+> the release a third verb it can do on channel two: create. The exception never acquired it, and the specification's
+> "the exception stops there" actively instructed a narrow reading. Left alone, a repairing release would publish the
+> bundle to the one channel that cannot install it, and the same exception that tells the rule not to look there would
+> have kept the mistake silent. The exception is now stated against what the rule does on that channel rather than
+> against an enumerated verb list, so the next verb added inherits it
+> ([F50](review-findings.md#f50-the-bundles-exception-is-stated-in-verbs-that-predate-the-releases-ability-to-create)).
 
 **Rationale.** The limitation is real, external, and documented with a specific upstream tracking issue. An exception the
 rule does not know about would fire on every run forever, and a check that always reports one known failure trains people
@@ -323,7 +331,23 @@ meta-plugin does not bundle it"). codebase — the dependency is verified **by u
 `Skill` tool, and `:15` of the sibling wrapper skills grants `Skill` and `Agent` in `allowed-tools`, so the plugin both
 can and does call the core plugin. This test is deliberate: the manifest description also asserts the dependency, but a
 description asserting a dependency is exactly the evidence that was false for `han-linear`, so it cannot be what
-qualifies the replacement. codebase — `han-coding/.claude-plugin/plugin.json` declares
+qualifies the replacement.
+
+codebase — the other three declared edges were verified in R2 by the same test, because this decision applied it to one
+edge and called the manifest true on the strength of it. `han-atlassian/skills/plan-a-feature-to-confluence/SKILL.md:63`
+invokes `han-planning:plan-a-feature`; `investigate-to-confluence/SKILL.md:57` invokes `han-coding:investigate`;
+`code-overview-to-confluence/SKILL.md:58` invokes `han-coding:code-overview`. The `han-communication` edge is the one
+that needed a stated test rather than a grep: `han-atlassian` never names it, and by the literal-invocation test it
+would look exactly like `han-linear`'s untrue declaration. It survives on a different and documented basis —
+`README.md:84-85` records that the channel-two client resolves no dependencies, so `han-atlassian` declares what its
+**wrapped** skills need in order for an install to bring it in, and those wrapped skills do invoke it
+(`han-core/skills/project-documentation/SKILL.md:65,162`; `han-coding/skills/investigate/SKILL.md:37,131`).
+`docs/concepts.md:225-227` documents the same transitive-necessity pattern for the `han-planning` and `han-coding`
+edges. The distinction that matters, and that this decision left unstated: a declaration whose *wrapped* skills exercise
+it is real; a declaration whose plugin is not granted the means to call anything is not
+([F62](review-findings.md#minor-edits)).
+
+codebase — `han-coding/.claude-plugin/plugin.json` declares
 `["han-communication", "han-core"]`, matching the ":108" "second layer on top of core" role. codebase — the tutorial
 never mentions Codex; it teaches `.claude-plugin/plugin.json` and `/plugin install …@han` throughout. provided — the
 user selected the repoint-rather-than-rewrite option.
@@ -578,6 +602,15 @@ GitHub-annotated), so a Jira- or Linear-annotated heading matches neither. codeb
 plugin, close the work-items hole, repair the release, correct the versions, delete the declarations, correct the
 documents, turn on the check. The binding constraints are named; the rest are free.
 
+> **Vindicated in R2, without an edit.** R1 changed the specification to make the release repair and the version
+> correction "one unit", citing this decision for it. This decision never said that — it said "precedes", and it was
+> right. The unit claim rested on a release freeze that a repairing release does not produce, and the specification has
+> been returned to what this entry always said. Recorded here because the R1 finding's resolution named four
+> specification sections and no decision, which is how a decision and the document citing it came to disagree for a
+> round ([D38](#d38-the-repair-and-the-correction-are-ordered-not-united),
+> [F44](review-findings.md#f44-the-release-repairs-disagreements-so-the-freeze-the-3-4-unit-closes-never-happens),
+> [F53](review-findings.md#minor-edits)).
+
 **Rationale.** Two problems with the original total order.
 
 First, it was not a total order. The source plan's ordering argument is entirely about the check (D1), which forces one
@@ -631,7 +664,7 @@ only to channel two would be invisible — today's bug mirrored onto the other c
 
 **Evidence.** codebase — `han/.claude-plugin/plugin.json` exists with no `skills/` directory, and `CLAUDE.md` describes
 the bundle as having "no components of its own", so zero-skill is a permanent legitimate state. codebase — no stray
-`plugin.json` exists outside the ten real plugin directories today (`han-plugin-builder`'s templates are named
+`plugin.json` exists outside a real plugin directory today (`han-plugin-builder`'s templates are named
 `plugin-example.json`, avoiding collision), so no false positive exists to design around. codebase — every current
 listing entry resolves to a real directory.
 
@@ -797,6 +830,24 @@ other step touches.
 **Outcome.** One gate. It runs after the release has written all four targets and before it commits, tags, pushes, or
 publishes.
 
+> **Corrected in R2, on two points.**
+>
+> **The gate cannot precede operator authorization, and the specification no longer claims it does.** R1 added a third
+> anchor — the gate runs "before it asks anyone to approve publishing" — reasoning that a gate refusing after approval
+> teaches distrust. The prompt that anchor names is opt-in and off by default, so on the ordinary path nobody is asked to
+> approve publishing at all. Worse, the approval that *does* always happen is the release's confirmation of its version
+> plan, and it runs **before** the target writes this decision requires the gate to follow. So a refusal after an
+> approval is not a risk to be placed around; it is structural. The specification now says so and states what the gate
+> owes instead: nothing published, and every gap named at once
+> ([F51](review-findings.md#f51-the-gates-approval-anchor-names-a-prompt-that-is-off-by-default-and-misses-the-one-that-is-not)).
+>
+> **"It settles what stops a release cut from a branch where a step has not landed" no longer holds.** It was true of a
+> gate that refused over version disagreement. A repairing release closes those, so a branch missing step 4 is repaired
+> rather than stopped, a branch missing step 3 has no gate at all, and steps 5 through 7 are not things the gate inspects.
+> The gate's job is the gaps a release cannot close, not the steps of this plan
+> ([D38](#d38-the-repair-and-the-correction-are-ordered-not-united),
+> [F52](review-findings.md#f52-the-branch-cut-flows-backstop-claim-does-not-survive-a-release-that-repairs)).
+
 **Rationale.** The original spec said the release "stops before publishing anything". In the release skill's own
 vocabulary "publish" names its final step, so that sentence permitted stopping *after* the tag was pushed — the
 irreversible act D12's rationale says it exists to prevent.
@@ -832,9 +883,9 @@ stop… surface the fact, do not block"), and `.github/workflows/ci.yml` trigger
 - _Two gates, one for membership and one for versions._ Rejected: two placements, two things to keep aligned, no benefit
   over one gate placed where both questions are answerable.
 
-**Driven by findings:** F2, F11, F23
+**Driven by findings:** F2, F11, F23, F51, F52 (corrections)
 **Linked technical notes:** —
-**Dependent decisions:** —
+**Dependent decisions:** D31, D36, D37, D38
 **Referenced in spec:** Primary flow (Step 3), Alternate flows and states, Coordinations
 
 ### D25: Manifest descriptions are documents; the declarations are the record
@@ -1079,7 +1130,21 @@ on the surrounding text" as a Step 3 validation finding, so malformed headings a
 
 **Outcome.** A release brings a target up to date by creating a record that does not exist, not only by updating one
 that has fallen behind. A record created this way is written at the version the release is publishing for that plugin —
-for a plugin the release did not bump, that is the version it already has.
+for a plugin the release did not bump, that is the version it already has, read from that plugin's own channel-one
+record and never from a listing.
+
+> **Corrected in R2.** Three claims below did not survive review and are corrected here rather than rewritten in place,
+> so the reasoning that produced them stays legible. **(1)** Creation is scoped to the two channel-two targets, not all
+> four — see [D36](#d36-a-release-creates-what-it-can-derive-and-stops-at-what-must-be-authored). **(2)** "Creating an
+> entry [in channel two's listing] means adding the plugin's membership and nothing more" is false: that entry also
+> carries the policy deciding whether the plugin is installable, and a per-plugin record carries the plugin's authored
+> storefront presence. Also D36. **(3)** "There is no plugin for which the phrase is undefined" is false for the
+> channel-two-only plugin [D19](#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively) deliberately
+> admits; the phrase is defined for every plugin carrying a channel-one record, which is every plugin today. A plugin
+> whose publishing version cannot be determined is a gap creation cannot close. **(4)** The scope of creation is bounded
+> by "belongs in" ([D19](#d19-a-plugin-and-the-targets-it-belongs-in-are-defined-positively)) and by the bundle's
+> exception ([D6](#d6-the-bundle-is-a-permanently-named-exception-on-the-second-channel)), which this decision never
+> said.
 
 **Rationale.** D5 changed what the release can see. It did not change what the release can write, and the difference is
 the whole value of the repair. The release's version-writing step acts only on plugins whose target version differs from
@@ -1125,9 +1190,9 @@ during review.
   across two efforts and leaves the seven steps shipping a release that still cannot repair the defect they exist to
   repair.
 
-**Driven by findings:** F30
+**Driven by findings:** F30, F46, F47, F48 (corrections)
 **Linked technical notes:** —
-**Dependent decisions:** D5, D22, D24, D29, D35
+**Dependent decisions:** D5, D6, D19, D22, D24, D29, D35, D36, D37, D38, D39
 **Referenced in spec:** Outcome, Primary flow (Step 3), Alternate flows and states, Edge cases, Coordinations
 
 ### D32: The guarantee is stated per surface, because only the release can refuse
@@ -1174,7 +1239,19 @@ enforcement when the trade was surfaced during review.
 ### D33: An already-false statement inside a rewritten passage is corrected
 
 **Outcome.** A false statement inside a passage this work is already rewriting is corrected. A false statement
-elsewhere is not.
+elsewhere is not. **A passage is the paragraph.**
+
+> **Bounded in R2.** This decision stated a sentence-level rule and then applied a proximity-level one. Its worked
+> example — the orientation document's description of the bundle's own dependencies — sits in its own paragraph between
+> two paragraphs this work rewrites, so "the sentence is being rewritten regardless" was not true of it. The rule as
+> applied was "sits nearby", which is the reasoning D7 and the Out-of-scope section explicitly reject.
+>
+> The boundary is now stated: a passage is the paragraph. That is the unit a person actually rewrites, it is narrower
+> than the document-wide audit this specification refuses, and it is wide enough to be usable. Under it, the worked
+> example does **not** qualify — and it is corrected anyway by a route it does qualify under, as one of the dependency
+> enumerations D26's remedy is already rewriting. The distinction is the point: one route corrects it for a reason, the
+> other corrects it because the editor was open
+> ([F55](review-findings.md#f55-d33-states-a-sentence-rule-and-applies-a-proximity-rule)).
 
 **Rationale.** The spec was resolving this case three incompatible ways. D7 and the Out-of-scope section keep
 already-stale documents out, because "the editor is already open" is convenience rather than evidence. D9 pulls an
@@ -1211,7 +1288,29 @@ is omitted. The surrounding lines are in step 6's scope.
 ### D34: A gate stop costs a separate commit, because the release refuses a dirty tree
 
 **Outcome.** The specification states two recoveries rather than one. A partial write is recovered by discarding local
-changes and re-running. A gate stop is recovered by correcting the gap and committing it, and only then re-running.
+changes and re-running. A gate stop is recovered in two acts, in order: **the release's own local work is discarded
+first — everything it wrote and everything it created — and then the gap is corrected and committed on its own.** Only
+then does the release re-run, planning from scratch. The correction must reach the branch releases are cut from, not
+only the branch in front of you.
+
+> **Completed in R2, on three points.**
+>
+> **The release's own writes were never accounted for.** This decision reasoned that the gap "lives in the repository
+> rather than in the release's uncommitted work" — true of the gap, false of the tree. The gate runs after the release
+> has written all four targets, so a gate stop always leaves the release's work in the tree, and the two stated
+> recoveries overlapped rather than composing.
+>
+> **The obvious recovery disarms the release's only mandatory confirmation.** Committing the gap fix together with the
+> release's half-applied version writes makes those versions look like bumps made deliberately during development. The
+> release's next run then takes the ahead path for those plugins, needs no confirmation, and publishes versions nobody
+> approved — a step of the release quietly deciding something a person was supposed to decide. Discarding first is what
+> prevents it, and the order is therefore load-bearing rather than tidy.
+>
+> **Created files survive a careless discard.** Creation writes files that are untracked, so a discard aimed at modified
+> files leaves them behind and the tree stays dirty. The recovery names creation explicitly for that reason.
+>
+> None of this reopens D28 ([F54](review-findings.md#f54-the-gate-stop-recovery-does-not-account-for-the-releases-own-writes-and-the-naive-move-skips-the-mandatory-confirmation),
+> [F57](review-findings.md#minor-edits)).
 
 **Rationale.** The spec gave both cases the same recovery, and for a gate stop it is a no-op that loops. The release
 hard-stops when the working tree is dirty, so the sequence is: gate stops, discard local changes, the gap is still there
@@ -1281,10 +1380,259 @@ hand-editing slip during steps 1 or 4, or an interrupted write from the release'
 - _Leave it to implementation._ Rejected: the silent-skip behavior is the default of the code being extended, so
   leaving it unstated is choosing it.
 
-**Driven by findings:** F40, F41
+**Driven by findings:** F40, F41, F59 (extension to the shared listing)
 **Linked technical notes:** —
-**Dependent decisions:** D5, D19, D20, D24, D31
+**Dependent decisions:** D5, D19, D20, D24, D31, D36
 **Referenced in spec:** Edge cases and failure modes
+
+> **Extended in R2.** This decision was written and evidenced in terms of a per-plugin record. A storefront listing is
+> one shared file covering every plugin, so the same parse failure there would present as "every plugin is missing from
+> this target" and route the whole channel into D31's create-path — regenerating the file rather than surfacing it. An
+> unreadable listing is surfaced and blocking for that channel, never read as mass absence
+> ([F59](review-findings.md#f59-a-corrupt-storefront-listing-would-route-a-whole-channel-into-the-create-path)).
+>
+> Its non-circularity argument is also softened. It claimed a plugin's identity survives an unreadable manifest because
+> "D19 defines a plugin by the manifest's presence, not its contents" — which asserts a filesystem-based identity, while
+> the release's existing convention matches records by the name **inside** them. The behavioral commitment does not
+> depend on the choice: the failure can be named by the directory it was found in. The argument, not the outcome, was
+> overstated ([F60](review-findings.md#minor-edits)).
+
+### D36: A release creates what it can derive and stops at what must be authored
+
+**Outcome.** Creation reaches the two channel-two targets and stops there. A plugin missing from a channel-one target,
+a plugin whose publishing version cannot be determined, and a plugin with no authored storefront presence are gaps the
+release names and refuses rather than gaps it closes.
+
+**Rationale.** D31 committed the release to creation on all four targets and described a created record as carrying a
+version and, on channel two's listing, "membership and nothing more". Both are wrong on disk, and the second is the
+interesting one.
+
+A target carries more than a version. Channel two's per-plugin record carries the plugin's storefront presence — its
+display name, a short description, a long description, a category, and a set of example prompts — none of which derives
+from anything the repository holds. Channel two's listing entry carries the policy that decides whether the plugin is
+installable at all, which is the Outcome's headline promise sitting in a field D31 said was empty of everything but
+membership. Channel one's listing entry carries a description, which D25 already classifies as a document. So "create
+the record" is, for three of the four targets, partly an instruction to write prose.
+
+A release that composed that prose would be publishing writing nobody authored to a page people read, and it would be
+doing it unattended. This is not a capability the release lacks in a way worth fixing; it is a boundary worth keeping.
+The version is derivable and the presence is not, and the honest line runs exactly there.
+
+Scoping creation to channel two follows from where the evidence is. The Linear plugin is missing from channel two, live,
+today — that is the incident. Nothing has ever been missing from channel one's listing, and nothing can be missing from
+channel one's per-plugin record, because carrying one is part of what makes a directory a plugin (D19). Committing the
+release to create the channel-one listing entry would be building the most expensive half of the capability — the half
+that has to author a description — for the case with no members. That is the symmetry-and-completeness reasoning this
+specification rejects elsewhere, and applying it here would have been the specification failing its own test.
+
+What is left is small and true: a release creates the two channel-two records, at a version it can derive, for a plugin
+whose presence a person already authored. Everything else is a gap it names.
+
+**Evidence.** codebase — a channel-two per-plugin record carries `keywords` and an `interface` block (`displayName`,
+`shortDescription`, `longDescription`, `developerName`, `category`, `capabilities`, `websiteURL`, `defaultPrompt`),
+none of which has a channel-one source; channel one's per-plugin record carries only `name`, `description`, `version`,
+`dependencies`. codebase — every channel-two listing entry carries
+`"policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"}` plus a category. codebase — every channel-one
+listing entry carries an authored `description`. codebase — all eleven plugin directories carry a channel-one record,
+and all twenty listing entries across both channels resolve to a real directory, so neither channel-one creation case
+has a live instance. provided — the user chose to scope creation to channel two and to make an unauthored presence a
+gate stop, over keeping creation universal.
+
+**Rejected alternatives.**
+
+- _The release authors the presentational content._ Rejected by the user. Defensible — the release already does judgment
+  work, including authoring a changelog through a sub-agent — but it puts unattended storefront copy in front of users,
+  and D25 already calls that class of content a document.
+- _The release creates a stub and the plugin ships with placeholder presentation._ Rejected by the user: it publishes a
+  visibly incomplete listing to the channel this work exists to repair.
+- _Keep creation on all four targets._ Rejected: three of the four have no evidence of ever having been missing, and the
+  one requiring authored prose is the least likely to be needed and the most expensive to serve.
+- _Invent a version-inference rule for a plugin with no channel-one record._ Rejected: zero members, and it is machinery
+  for a shape nothing schedules. The gate already has the right verb for it.
+
+**Driven by findings:** F46, F47, F48
+**Linked technical notes:** —
+**Dependent decisions:** D19, D25, D29, D31, D35
+**Referenced in spec:** Channels and targets, Outcome, Primary flow (Step 1, Step 3), Alternate flows and states, Edge
+cases and failure modes, Coordinations
+
+### D37: The release commits every target it writes
+
+**Outcome.** Every target the release writes or creates travels into the commit it tags. The state the gate approved is
+the state that ships.
+
+**Rationale.** The specification committed the release to writing four targets and to a gate that judges the written
+state, and never said what the release does with the writes afterward. The release's commit stages an enumerated list of
+file classes, all of them on channel one. Left alone, the first release after the repair would write four targets, pass
+the gate on the four-target state, and commit two of them.
+
+The consequences are all silent and all bad. The tag names a tree in which channel two is still frozen, so if that
+channel's client resolves from the tag, the entire repair reaches nobody while the gate reports green. The repaired
+records stay uncommitted, so the next release hard-stops on a dirty tree, one release removed from its cause. And a
+release whose only work was creating a missing plugin's records — the Linear-plugin shape, the motivating case — stages
+nothing at all and skips its own commit.
+
+The gate cannot catch any of it, by construction: it runs before the commit, so it inspects a tree the release then
+declines to publish. This is the original defect — the release cannot see the targets it does not touch — relocated from
+the write step to the commit step, and it would have shipped inside the fix.
+
+**Evidence.** codebase — `.claude/skills/han-release/SKILL.md:326-328` stages `CHANGELOG.md`,
+`.claude-plugin/marketplace.json`, and every `{source}/.claude-plugin/plugin.json` that the version step changed; both
+channel-two targets are absent, and the same file contains no reference to either. codebase — `:328` skips the commit
+entirely "if nothing is staged", a case the same line calls "unlikely" and which creation makes the motivating one.
+codebase — `:72-74` hard-stops on a dirty tree. codebase — `:333-335` tags the release commit and pushes it.
+
+**Rejected alternatives.**
+
+- _Leave it to the implementation plan._ Rejected: the specification already makes a behavioral promise about what a
+  release publishes, and this is the step where that promise is kept or lost. Which files get staged is implementation;
+  that the released state is the gated state is not.
+- _Have the gate re-run against the committed state._ Rejected for now: it is a second mechanism for a problem one
+  sentence closes. Worth revisiting only if the committed and gated states are ever observed to differ.
+
+**Driven by findings:** F45
+**Linked technical notes:** —
+**Dependent decisions:** D24, D31, D34
+**Referenced in spec:** Outcome, Primary flow (Step 3), Coordinations
+
+### D38: The repair and the correction are ordered, not united
+
+**Outcome.** Steps 3 and 4 are an ordering, not a unit. The repair precedes the correction so the correction is durable.
+Step 4 is worth doing by hand because it makes the numbers right on merge rather than at the next release — not because
+anything breaks without it.
+
+**Rationale.** This reverses a claim R1 added and restores what D18 has said all along, which is worth being explicit
+about because the decision log was right and the specification's edit was the error.
+
+R1 merged steps 3 and 4 on this argument: the release runs the rule, so the gate is live from step 3; every plugin but
+one has disagreeing version records until step 4 corrects them; therefore a release cut between step 3 and step 4
+hard-stops, freezing releases until the versions are fixed. The premise held for the gate as it existed when that
+argument was made — a gate that only detected. It stopped holding in the same round, when the release gained the ability
+to repair.
+
+A repaired release corrects a stale version rather than refusing over it. The gate runs after the writes, so by the time
+it looks, the eight disagreements are gone — the release closed them. There is no window and there never was one. The
+two resolutions were decided in the same round and never checked against each other.
+
+What survives is the original ordering and the original reason. Repair first, so that the first release after the
+correction keeps it correct rather than re-freezing it; had the correction come first, any release cut before the repair
+would have undone it. That is D18's "precedes", unchanged.
+
+Step 4 keeps its place on a smaller claim. Once step 3 lands, the first release corrects these numbers whether or not
+step 4 ever runs. What step 4 buys is that they are correct on merge instead of whenever someone next cuts a release —
+which matters more if channel two's client resolves from the default branch and less if it resolves from the tag
+(Open item 2). That is a real reason and a modest one, and it is the true one.
+
+One consequence is worth stating rather than discovering: the two surfaces now answer differently. A pull request
+reports drift a release would have repaired, because a pull request has nothing that repairs. A release reports only
+what is left after it has repaired everything it can. Same rule, same bearer, different moment — which is D14 working,
+not D14 breaking.
+
+**Evidence.** codebase — the release's version step acts only "For every plugin whose `target` differs from its
+`current`" and skips the rest (`.claude/skills/han-release/SKILL.md:230,237-238`), which is precisely the skip step 3
+removes when it commits the release to bringing every target up to date. codebase — eight plugins carry a disagreeing
+channel-two version today and one agrees; the Linear plugin has no channel-two record and, per D22, arrives agreeing.
+provided — the user confirmed that a release overwrites a stale version record for a plugin it did not bump, and chose
+to restate the unit rather than narrow the repair.
+
+**Rejected alternatives.**
+
+- _Keep the unit; make the release create but never overwrite a disagreeing record._ Rejected by the user. It would
+  preserve F29's reasoning, but it requires explaining why writing a version onto a missing record is safe and writing
+  the same version onto a stale one is not — two identical acts, treated differently to protect an argument.
+- _Keep the unit with no restated reason._ Rejected: the stated reason is false, and a binding constraint held in place
+  by a false reason is how the next reviewer gets misled.
+- _Drop step 4 entirely and let the first release do it._ Rejected: it makes the correction wait on a release, and
+  ties the user-visible fix to a cadence nobody controls.
+- _Surface it as an open item for the implementation plan._ Rejected: it decides whether one of the seven steps exists
+  and whether a binding constraint is real.
+
+**Driven by findings:** F44
+**Linked technical notes:** —
+**Dependent decisions:** D1, D14, D18, D24, D31
+**Referenced in spec:** Primary flow (binding constraints, Step 1, Step 3, Step 4, Step 7), Alternate flows and states,
+Edge cases and failure modes, Coordinations, User interactions
+
+### D39: A release reports what it created
+
+**Outcome.** A release that creates or corrects a record says so — which plugin, which targets, at what version —
+alongside the version plan it already reports.
+
+**Rationale.** This specification is careful that refusals are loud. The gate names every gap rather than the first; a
+check failure names the plugin and every target; malformed is a category rather than a residue. Creation is the
+capability the Outcome now advertises, and nothing told anyone it happened.
+
+The release's own reporting has no vocabulary for it either: its version plan says bumped, unchanged, or new, and a
+release whose plan needs no confirmation prints nothing at all. So a release could create a plugin's channel-two
+membership and version record, publish it, and never mention it.
+
+A process that writes to what Han publishes without saying so is a smaller instance of the defect this work exists to
+end. The whole diagnosis is that something quietly stopped happening and nothing asked; a repair that quietly starts
+happening is the same shape wearing better clothes. The remedy is one line in a report that already exists.
+
+This is also the strictly simpler answer to a larger worry. Creation makes a directory publicly installable with no
+sign-off, which is a bigger act than the version bump that does get confirmed. A confirmation gate would close that;
+reporting what happened is cheaper, uses reporting the release already does, and is enough while no instance of the
+worry exists (see Deferred (YAGNI)).
+
+**Evidence.** codebase — the release prints a version plan with one line per plugin, in the vocabulary bumped /
+unchanged at version / new at version (`.claude/skills/han-release/SKILL.md:306-315`, `:220-226`), with no term for a
+created record; `:219-221` prompts for nothing when no plugin needs confirmation. Behavioral — D12 already establishes
+that naming the full set at once is what the release owes a maintainer; this applies the same principle in the
+affirmative direction.
+
+**Rejected alternatives.**
+
+- _Confirm before creating public membership._ Deferred rather than rejected — see Deferred (YAGNI). Reporting satisfies
+  the same concern at a fraction of the cost, and the case it guards against has never occurred.
+- _Say nothing; the commit shows it._ Rejected: a diff is not a report, and the person who needs to know is the one
+  deciding whether to publish.
+
+**Driven by findings:** F49
+**Linked technical notes:** —
+**Dependent decisions:** D12, D31, D36
+**Referenced in spec:** Primary flow (Step 3), Alternate flows and states, Edge cases and failure modes, User
+interactions
+
+### D40: A half-finished removal is not a state the release guesses at
+
+**Outcome.** A plugin the repository still carries is a plugin the rule expects in every target it belongs in. A
+directory that remains is a plugin, and its absence from a target is a gap the release closes — so removing a plugin
+means removing the directory.
+
+**Rationale.** Removal is not hypothetical: the release process already has a rule for it, versioning a removed child as
+a major change. A removal that lands whole is invisible to this rule and needs nothing. A removal that lands
+half-finished is the same four-file mistake this work exists to prevent, pointed the other way.
+
+The tempting answer is to have the release notice that a plugin used to be published here and is not now, and treat that
+as an apparent removal a person should confirm. It is the wrong answer. It asks the rule to infer intent from absence,
+which is exactly the inference that cannot be made — "never published here" and "published here until yesterday" are the
+same state on disk, and the whole reason this work exists is that the first one went unnoticed for eleven releases.
+Building a mechanism to distinguish them would mean consulting history to guess at a person's intention, on a case with
+no live instance.
+
+The cheaper and truer answer is to refuse the ambiguity. The directory is the fact. If it is there, the plugin is
+published everywhere it belongs, and a release will restore what was deleted. If it should not be published, the
+directory goes. That gives the maintainer one thing to get right instead of four, which is the same simplification the
+rest of this work is built on.
+
+**Evidence.** codebase — the release process versions "a child was removed from the suite" as a major bump, so removal
+is an anticipated event rather than a hypothetical. Behavioral — D19 already defines a plugin by its directory and
+manifest rather than by its listing membership, so this is that definition applied to the removal direction rather than
+a new rule.
+
+**Rejected alternatives.**
+
+- _Treat a plugin's disappearance from a target as an apparent removal and stop for a person._ Rejected: it requires
+  inferring intent from absence, has no live instance, and would add a stop to the ordinary path that D31 exists to keep
+  moving.
+- _Leave removal undefined._ Rejected: the release would silently recreate the records a half-finished removal deleted,
+  which is a silent write to what Han publishes.
+
+**Driven by findings:** F58
+**Linked technical notes:** —
+**Dependent decisions:** D19, D29, D31
+**Referenced in spec:** Alternate flows and states, Edge cases and failure modes
 
 ## Trivial decisions
 
