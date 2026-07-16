@@ -183,7 +183,8 @@ claude_plugin_list() {
 #       could carry that segment and hijack the guidance the whole review grades
 #       against. The `@` in the id anchor also excludes han-plugin-builder-extras.
 #   (c) a repo-local vendored copy (init-guidance.sh), found by walking up from
-#       the target — mutable in the working tree, so it ranks last.
+#       this script's own directory (never the untrusted target, which a hostile
+#       artifact could poison) — mutable in the working tree, so it ranks last.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGIN_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"   # skills/<name>/scripts -> plugin root
 PLUGINS_PARENT="$(dirname "$PLUGIN_ROOT")"
@@ -212,10 +213,13 @@ if [ "$GUIDANCE_ROOT" = none ] && command -v claude >/dev/null 2>&1; then
   fi
 fi
 
-# (c) repo-local vendored copy, found by walking up from the target (not the CWD)
+# (c) repo-local vendored copy, found by walking up from THIS SCRIPT's own
+# directory — never the untrusted target. Anchoring the walk on $TARGET would let
+# an attacker-authored repo submitted for review plant a .claude/skills/
+# plugin-guidance tree on its own path and have it adopted as trusted guidance
+# the whole review then grades against. $SCRIPT_DIR is already absolute.
 if [ "$GUIDANCE_ROOT" = none ]; then
-  d="$TARGET"; [ -f "$TARGET" ] && d="$(dirname "$TARGET")"
-  d="$(cd "$d" 2>/dev/null && pwd || true)"
+  d="$SCRIPT_DIR"
   while [ -n "$d" ] && [ "$d" != / ]; do
     if [ -d "$d/.claude/skills/plugin-guidance/references" ]; then
       GUIDANCE_ROOT="$d/.claude/skills/plugin-guidance/references"
@@ -248,7 +252,7 @@ if [ "$TYPE" = skill ]; then
   SUBTREE="$GUIDANCE_ROOT/skill-building-guidance"
   # Every file the review-checklist and finding-classification bands ground against, so a
   # partial guidance install cannot report complete and leave a check ungrounded.
-  REQUIRED=(skill-description-frontmatter.md skill-description-length.md naming-conventions.md progressive-disclosure.md skill-reference-files.md writing-effective-instructions.md workflow-patterns.md allowed-tools-bash-permissions.md allowed-tools-AskUserQuestion.md security-restrictions.md agent-dispatch-namespacing.md graceful-degradation.md dynamic-project-discovery.md optional-git-repositories.md script-execution-instructions.md success-criteria-and-testing.md)
+  REQUIRED=(skill-description-frontmatter.md skill-description-length.md naming-conventions.md progressive-disclosure.md skill-reference-files.md writing-effective-instructions.md workflow-patterns.md allowed-tools-bash-permissions.md allowed-tools-AskUserQuestion.md security-restrictions.md agent-dispatch-namespacing.md graceful-degradation.md dynamic-project-discovery.md optional-git-repositories.md script-execution-instructions.md success-criteria-and-testing.md context-hygiene.md context-injection-commands.md hardening-fuzzy-vs-deterministic.md skill-decomposition.md skill-composition.md skill-frontmatter-fields.md)
 else
   SUBTREE="$GUIDANCE_ROOT/agent-building-guidelines"
   REQUIRED=(agent-domain-focus.md agent-description-length.md agent-model-selection.md agent-external-files.md multi-agent-economics.md graceful-degradation.md)

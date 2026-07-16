@@ -2,7 +2,7 @@
 name: review-skill-or-agent
 description: "Review a finished Claude Code skill or agent against the plugin-authoring guidance and quality dimensions — bloat and restatement first — and produce a severity-ranked report. Use when you want to review, audit, critique, or check a skill or agent definition for guidance conformance, bloat, unclear or ambiguous instructions, incorrect tool usage, handoff problems, or portability. Does not build or edit a skill or agent — use skill-builder or agent-builder for that. Does not review documentation — use project-documentation. Does not review application code — use code-review."
 argument-hint: "[skill-dir | agent-file | PR ref/URL — omit to discover from the current branch]"
-allowed-tools: Bash(git *), Bash(gh *), Read, Agent
+allowed-tools: Bash(git *), Bash(gh *), Read, Write, Agent
 ---
 
 When reviewing a skill or agent, follow the process here. The review grounds every conformance judgment against the plugin-authoring guidance.

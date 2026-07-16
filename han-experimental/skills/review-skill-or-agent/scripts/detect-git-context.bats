@@ -8,7 +8,7 @@
 # exercised here.
 
 setup() {
-  SRC="$BATS_TEST_DIRNAME/../han-experimental/skills/review-skill-or-agent/scripts/detect-git-context.sh"
+  SRC="$BATS_TEST_DIRNAME/detect-git-context.sh"
   TMP="$(mktemp -d)"
 }
 

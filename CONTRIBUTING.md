@@ -35,7 +35,7 @@ One-time setup, from the repo root:
 Everyday use:
 
 - `npm run lint` runs every hook over the whole repo (`prek run --all-files`).
-- `npm test` runs the shell tests (`bats --recursive test/`).
+- `npm test` runs the shell tests (every `*.bats` file in the repo outside `node_modules`).
 - If installed, every commit runs the lint hooks (Prettier, ShellCheck, and file hygiene) on your staged files.
 
 CI runs the same lint hooks and the tests on every pull request.
@@ -46,7 +46,7 @@ How Prettier treats your files:
 - PR and issue templates under `.github/` are unwrapped rather than wrapped, because GitHub renders every newline in a PR or issue body as a line break.
 - The static archives under `docs/plans/` and `docs/research/`, and the vendored assets under `han-reporting/skills/html-summary/assets/`, are left untouched (`.prettierignore`).
 
-Shell scripts are linted with ShellCheck. Tests live in `test/` as `*.bats` files and run in CI rather than on commit; run them locally with `npm test`.
+Shell scripts are linted with ShellCheck. A script's tests sit next to it as a `*.bats` file in the same directory (for example `scripts/detect-git-context.sh` is covered by `scripts/detect-git-context.bats`); harness-level checks that aren't tied to one script live in `test/`. `npm test` discovers every `*.bats` file in the repo outside `node_modules`. Tests run in CI rather than on commit; run them locally with `npm test`.
 
 ## Which plugin does the change belong in?
 

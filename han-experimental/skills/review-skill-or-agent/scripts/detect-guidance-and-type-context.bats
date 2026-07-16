@@ -12,11 +12,11 @@
 # uses awk, and a `claude` stub sandboxes it).
 
 # The exact REQUIRED lists the detector grounds completeness against.
-SKILL_REQUIRED="skill-description-frontmatter.md skill-description-length.md naming-conventions.md progressive-disclosure.md skill-reference-files.md writing-effective-instructions.md workflow-patterns.md allowed-tools-bash-permissions.md allowed-tools-AskUserQuestion.md security-restrictions.md agent-dispatch-namespacing.md graceful-degradation.md dynamic-project-discovery.md optional-git-repositories.md script-execution-instructions.md success-criteria-and-testing.md"
+SKILL_REQUIRED="skill-description-frontmatter.md skill-description-length.md naming-conventions.md progressive-disclosure.md skill-reference-files.md writing-effective-instructions.md workflow-patterns.md allowed-tools-bash-permissions.md allowed-tools-AskUserQuestion.md security-restrictions.md agent-dispatch-namespacing.md graceful-degradation.md dynamic-project-discovery.md optional-git-repositories.md script-execution-instructions.md success-criteria-and-testing.md context-hygiene.md context-injection-commands.md hardening-fuzzy-vs-deterministic.md skill-decomposition.md skill-composition.md skill-frontmatter-fields.md"
 AGENT_REQUIRED="agent-domain-focus.md agent-description-length.md agent-model-selection.md agent-external-files.md multi-agent-economics.md graceful-degradation.md"
 
 setup() {
-  SRC="$BATS_TEST_DIRNAME/../han-experimental/skills/review-skill-or-agent/scripts/detect-guidance-and-type-context.sh"
+  SRC="$BATS_TEST_DIRNAME/detect-guidance-and-type-context.sh"
   TMPROOT="$(mktemp -d)"
 }
 
@@ -205,16 +205,30 @@ write_plugin_json() {
   [ "$(get "$out" guidance-root)" = none ] && [ "$(get "$out" guidance-complete)" = false ]
 }
 
-@test "vendored guidance found via walk-up from the target" {
+@test "vendored guidance on the skill's own directory is resolved (walk-up from script dir)" {
   P=$TMPROOT/g4
   SCRIPT=$(install_script "$P")
   printf '[]\n' >"$P/plugins.json"
   stub_claude "$P/bin" "$P/plugins.json"
+  # The vendored copy sits on the SCRIPT's own ancestry, not the target's.
+  mk_skill_guidance "$P/han-experimental/.claude/skills/plugin-guidance/references"
+  mkskill "$P/target/my-skill" 'name: my-skill\ndescription: valid.\nallowed-tools: Read\n'
+  out=$(cd "$TMPROOT" && PATH="$P/bin:$PATH" "$SCRIPT" "$P/target/my-skill")
+  [ "$(get "$out" guidance-root)" = "$P/han-experimental/.claude/skills/plugin-guidance/references" ] &&
+    [ "$(get "$out" guidance-complete)" = true ]
+}
+
+@test "guidance planted under the untrusted target is not adopted (resolves against skill dir, not target)" {
+  P=$TMPROOT/g4b
+  SCRIPT=$(install_script "$P")
+  printf '[]\n' >"$P/plugins.json"
+  stub_claude "$P/bin" "$P/plugins.json"
+  # An attacker-authored target repo plants a complete-looking guidance tree on
+  # its OWN path; the detector must never walk up from the untrusted target to it.
   mk_skill_guidance "$P/proj/.claude/skills/plugin-guidance/references"
   mkskill "$P/proj/pkg/skills/my-skill" 'name: my-skill\ndescription: valid.\nallowed-tools: Read\n'
   out=$(cd "$TMPROOT" && PATH="$P/bin:$PATH" "$SCRIPT" "$P/proj/pkg/skills/my-skill")
-  [ "$(get "$out" guidance-root)" = "$P/proj/.claude/skills/plugin-guidance/references" ] &&
-    [ "$(get "$out" guidance-complete)" = true ]
+  [ "$(get "$out" guidance-root)" = none ]
 }
 
 @test "agent target resolves the agent subtree and reports complete" {
@@ -557,4 +571,26 @@ STUB
     [ "$(keycount "$out" body-line-count)" = 0 ] &&
     [ "$(keycount "$out" guidance-subtree)" = 0 ] &&
     [ "$(get "$out" guidance-root)" = none ]
+}
+
+# Every file the review-checklist grounds a skill-section band against must be in
+# the completeness contract, so a partial guidance install cannot report complete
+# and leave a check ungrounded (WARN-011). Each of these was cited by the checklist
+# but originally absent from the detector's REQUIRED list.
+@test "each checklist-grounded required file is enforced for completeness" {
+  P=$TMPROOT/g18
+  SCRIPT=$(install_script "$P")
+  refs="$P/han-plugin-builder/skills/guidance/references"
+  mkskill "$P/target/my-skill" 'name: my-skill\ndescription: valid.\nallowed-tools: Read\n'
+  # Loop var is `nf`, not `f`: mk_skill_guidance's own `for f in $SKILL_REQUIRED`
+  # is un-`local`'d and would clobber a shared `f`, silently retargeting the test.
+  for nf in context-hygiene.md context-injection-commands.md hardening-fuzzy-vs-deterministic.md \
+            skill-decomposition.md skill-composition.md skill-frontmatter-fields.md; do
+    rm -rf "$refs"
+    mk_skill_guidance "$refs"
+    rm -f "$refs/skill-building-guidance/$nf"
+    out=$("$SCRIPT" "$P/target/my-skill")
+    [ "$(get "$out" guidance-complete)" = false ] || { echo "expected incomplete when $nf is missing, got: $out"; return 1; }
+    printf '%s\n' "$out" | grep -qE "^guidance-missing: .*$nf" || { echo "expected $nf named in guidance-missing, got: $out"; return 1; }
+  done
 }
