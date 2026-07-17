@@ -407,3 +407,87 @@ steps 1 through 3 and 5 still hold and the update claim comes out. See [OQ-2](#o
   channel-one version moved while its new record stayed put, and this phase closes nine gaps rather than eight.
 
 ---
+
+### Phase 5: Delete the untrue dependencies and correct what described them {#phase-5}
+
+**Kind.** Feature slice.
+
+**Builds on.** Nothing in this outline. Its position among the other phases is free; what is not free is that its two
+halves ship as one change.
+
+**What we build.** Three plugins declare that they need the core plugin and never touch it. The reporting plugin's use
+moved elsewhere and the declaration was left behind. The feedback plugin and the Linear plugin are not permitted to
+invoke other plugins at all, so their declarations cannot be true — neither is granted the means to call one. This phase
+deletes all three, and in the same change corrects every document that described them.
+
+After it, the reporting plugin declares only what it uses, the feedback and Linear plugins declare nothing, installing
+any of them no longer drags in a large plugin the installer will never use, and every remaining declaration in the suite
+is one the declaring plugin actually uses.
+
+**The two halves are one change, and that is the whole reason this is one phase.** A merged state where the declarations
+are gone and the documents still narrate them is precisely the state the document correction exists to prevent. Nothing
+in the repository enforces that they land together, so it is a commitment about how the work ships rather than a property
+of the work.
+
+The documents in scope are decided by a rule, not a list: **a document is in scope when this work falsifies it.** Not
+"mentions a plugin", not "narrates topology", not "sits nearby". That reaches the contributor guide, the orientation
+document new readers are told to read first, the canonical long-form docs for the affected plugins, the plugin-selection
+guide, the agent-facing project map, and the tutorial that teaches plugin dependencies. Two refinements matter:
+
+- **A document making a universal claim about the dependency graph states the rule and points at the manifests as the
+  record.** That remedy stops at universal claims, because no rule generates this suite's graph — it is irregular on
+  purpose. A document whose job is to orient a reader legitimately enumerates it, so those documents keep the
+  enumeration, drop any hardcoded count, and name the manifests as the record.
+- **An already-false statement inside a passage this work rewrites is corrected; one elsewhere is not.** A passage is
+  the paragraph. That boundary is what keeps the rule from collapsing into either uselessness or an open-ended audit.
+
+The tutorial that teaches dependencies by walking through the deleted edges has its worked example repointed at edges
+that remain real. The replacement must be an edge this work leaves standing **and** one that is actually true — the
+plugin the rewrite originally planned to point at turned out to carry the third untrue declaration, so repointing there
+would have taught the lesson using a counter-example to itself.
+
+**Why this is Phase 5.** Its position is free and it lands here because nothing argues for it landing earlier. It does
+not block the publishing repair, and the publishing repair does not block it. What matters is that it precedes
+[Phase 6](#phase-6) only incidentally — the check does not inspect dependency declarations or documents at all, so this
+phase is not what makes the check green. One dependency of a different kind is real: the survey behind the document half
+originally ran against a two-plugin premise and must be re-run against the third declaration, which is the same rule
+applied to a corrected set rather than a change to the rule.
+
+**Outcome to demonstrate.**
+
+1. Install the reporting plugin on its own, and watch the core plugin arrive with it, unasked for and unused.
+2. Ship the phase.
+3. Install the reporting plugin again. The core plugin does not come with it, and the reporting plugin still works.
+4. Do the same with the feedback plugin and the Linear plugin. Neither drags anything in, and both still work.
+5. Open the contributor guide, the orientation document, the plugin-selection guide, and the agent-facing project map,
+   and find no description of a dependency the suite does not have — and no hardcoded count where an enumeration used to
+   claim one.
+6. Read the dependency tutorial end to end. Its worked example walks an edge that still exists and is actually true, and
+   it no longer promises to print real version numbers.
+
+**Source citations.**
+
+- [Step 5: Delete the three untrue dependency declarations](feature-specification.md#step-5-delete-the-three-untrue-dependency-declarations) — source position 4.
+- [Step 6: Correct every document the declaration deletion falsifies](feature-specification.md#step-6-correct-every-document-the-declaration-deletion-falsifies) — source position 5, shipped with step 5.
+- [Coordinations](feature-specification.md#coordinations) — step 5 and step 6 as a single change.
+- [Deferred (YAGNI)](feature-specification.md#deferred-yagni) — a standing check for decorative dependencies is
+  deliberately not built here.
+
+**Connects to.**
+
+- Independent of [Phase 3](#phase-3) and [Phase 4](#phase-4): a release repairs targets and does not inspect
+  declarations.
+- Not a precondition for [Phase 6](#phase-6). The check does not look at dependency declarations, so this phase neither
+  reddens nor greens it.
+- Documents the release procedure falsifies are [Phase 3](#phase-3)'s, not this phase's. Each step owns the documents it
+  breaks.
+
+**Preconditions to verify before starting.**
+
+- Re-run the document survey against all three declarations rather than the two the original survey assumed. The rule
+  already reaches the extra locations; the list from the earlier pass does not.
+- Confirm the replacement edge for the tutorial's worked example is both surviving and true, since the obvious candidate
+  was one of the three being deleted.
+- Agree that the two halves ship in a single change, because nothing in the repository enforces it.
+
+---
