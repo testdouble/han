@@ -351,3 +351,59 @@ re-freezes. Everything downstream either depends on it or is made honest by it.
   scratch.
 
 ---
+
+### Phase 4: Unfreeze channel two's version numbers {#phase-4}
+
+**Kind.** Feature slice.
+
+**Builds on.** [Phase 3](#phase-3), which is what makes this correction durable rather than something the next release
+re-freezes. Also [Phase 1](#phase-1), whose record arrives already agreeing and so is not one of the gaps this phase
+closes.
+
+**What we build.** Channel two's published version numbers have not moved since the day they were created. This phase
+corrects each of them by hand, so every plugin's channel-two version matches what channel one publishes for that same
+plugin. Eight plugins carry a version that has fallen behind, and eight is the whole set.
+
+**Why this is Phase 4.** It comes after the repair rather than before it, and the reason is durability: had it come
+first, any release cut before phase 3 would have undone it. It is worth doing by hand at all even though phase 3 makes a
+release do it, and the honest reason is not the obvious one. The obvious reason — the numbers are right on merge rather
+than whenever someone next cuts a release — is contingent on an unknown. If channel two's client resolves from the
+release tag, the only revision anyone resolves is one a release produced, and a release corrects these numbers itself; the
+user-facing benefit is then not smaller but nothing, and what survives is that the repository stops publishing numbers it
+knows are wrong ([OQ-1](#oq-1)). The reason that does not depend on that unknown is that **this phase is what makes phase
+6's check green on the day it arrives.** Without it, and absent a release cut in between, the check lands red against
+eight disagreements, and a signal that is red from birth is one people learn to scroll past.
+
+**Outcome to demonstrate.**
+
+1. Line up what channel one publishes for each plugin against what channel two publishes for the same plugin. Eight
+   pairs disagree, and channel two's side of each has not moved since the day it was written.
+2. Ship the phase.
+3. Line them up again. Every pair agrees.
+4. Take a client that has Han installed from channel two and check for updates. An update is offered, which is what this
+   whole channel has stopped doing — confirming [OQ-2](#oq-2) along the way, since this is the demo that answers it.
+5. Cut a release. Watch the numbers stay corrected rather than re-freeze, which is what phase 3 bought.
+
+Step 4 rests on an unverified assumption about how channel two decides an update exists. If it turns out to be wrong,
+steps 1 through 3 and 5 still hold and the update claim comes out. See [OQ-2](#oq-2).
+
+**Source citations.**
+
+- [Step 4: Correct the frozen version numbers](feature-specification.md#step-4-correct-the-frozen-version-numbers) — source position 3, moved after the release repair.
+- [Outcome](feature-specification.md#outcome) — the update-availability promise, and its hedge.
+- [Open items](feature-specification.md#open-items) — items 1 and 2, both of which shape how this phase's benefit is
+  worded.
+
+**Connects to.**
+
+- Depends on [Phase 3](#phase-3) for durability, and on [Phase 1](#phase-1) for the ninth pair not existing.
+- Makes [Phase 6](#phase-6) green on arrival, which is the reason that does not depend on any unknown.
+
+**Preconditions to verify before starting.**
+
+- Confirm whether channel two decides update availability from the published version number. The correction is worth
+  making either way, but the user-facing claim depends on it. See [OQ-2](#oq-2).
+- Confirm no release was cut between [Phase 1](#phase-1) and [Phase 3](#phase-3). If one was, the Linear plugin's
+  channel-one version moved while its new record stayed put, and this phase closes nine gaps rather than eight.
+
+---
