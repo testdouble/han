@@ -249,3 +249,105 @@ same footing as phase 1.
   artifact, and is deliberately not this phase's.
 
 ---
+
+### Phase 3: Make a release bring every publishing target up to date {#phase-3}
+
+**Kind.** Feature slice.
+
+**Builds on.** [Phase 1](#phase-1). A release repaired by this phase refuses to run against a plugin whose channel-two
+presence nobody has written, and that is the Linear plugin's shape until phase 1 lands.
+
+**What we build.** A release today updates two of the four targets, and takes its list of plugins from one of the targets
+it also writes. It therefore cannot see that the other two have fallen behind, which is exactly why the drift went
+unnoticed across eleven releases. After this phase a release derives the set of plugins from what is really in the
+repository, and brings all four targets up to date.
+
+Bringing a target up to date has two halves, and today's release has neither:
+
+- **It corrects a version that has fallen behind**, including for a plugin it did not bump. Today a release writes a
+  version only for the plugins it bumps, which is why a record that drifted stays drifted no matter how many releases
+  run.
+- **It creates a channel-two listing entry that does not exist yet.** Today's release can only write a version onto an
+  entry already present, so a plugin absent from a target stays absent forever.
+
+**The release creates what it can derive and stops at what must be authored,** and that line falls in exactly one place.
+A channel-two listing entry says a plugin exists, where it lives, and the terms on which it installs — all derivable
+from the plugin itself, none of it written prose. A per-plugin record on either channel is a different animal: it **is**
+the plugin's storefront presence, so a release that created one would be inventing the prose rather than deriving a
+version. This is the boundary phase 1 describes from the other side.
+
+**A release refuses to proceed when it meets a gap it cannot close:** a plugin with no record on a channel it belongs
+in; a listing naming a plugin that is not in the repository; a record or listing it cannot read; a version value it
+cannot make sense of; a plugin whose publishing version it cannot determine. Every one of them is a person's decision
+wearing a release's clothes.
+
+Three more properties come with the phase:
+
+- **The gate runs on the state being released** — after all four targets are brought up to date, and before anything is
+  committed, tagged, pushed, or published. When it stops, it names every gap it found rather than the first.
+- **Everything the release wrote travels into the commit it tags**, so the state the gate passed is the state that
+  ships.
+- **A release reports what it created and what it changed** — which plugin, which targets, at what version — alongside
+  the version plan it already reports. The whole defect being repaired is that something quietly stopped happening to
+  what Han publishes; a repair that quietly starts happening is the same shape wearing better clothes.
+
+The release holds no copy of the rule. It runs the check and reports what the check says. One exception is permanent and
+named: the bundle cannot be published to channel two, so on that channel the rule does not flag its absence, does not
+ask it to agree with a record it does not have, and **does not create one for it** — it is the one plugin a helpful
+release would publish to a channel that cannot install it. That exception stops at channel two; the bundle's two
+channel-one records are held to agreement like any other plugin's. This phase also corrects the documents describing the
+release procedure, because this phase is what makes them wrong.
+
+**Why this is Phase 3.** It is the hinge, and it lands here rather than earlier or later for two separate reasons. It
+cannot come before phase 1, because a repaired release meeting the Linear plugin's unwritten presence refuses rather
+than repairs, which stops every release until a person writes it. It must come before phase 4, because the repair is
+what makes the correction durable — a version fixed by hand before the release is repaired is a version the next release
+re-freezes. Everything downstream either depends on it or is made honest by it.
+
+**Outcome to demonstrate.**
+
+1. Point at a plugin whose channel-two version has fallen behind, and note the number channel two currently publishes for
+   it.
+2. Delete that plugin's channel-two listing entry, so the repository is in the exact shape a contributor leaves behind
+   when they add a plugin and forget a target.
+3. Cut a release. Watch it read the plugin list from the repository rather than from a listing, name its version plan,
+   and ask for confirmation.
+4. Watch it report what it changed and what it created: the stale version corrected, the missing listing entry recreated
+   at the version being published, both named explicitly rather than happening quietly.
+5. Look at all four targets and see them agree. Look at the commit the release tagged and see all four inside it — the
+   state the gate passed is the state that shipped.
+6. Now delete a plugin's channel-two record instead, and cut a release again. It stops before committing anything, names
+   that gap and every other gap it found in the same run, and publishes nothing. Nothing is tagged and nothing is pushed.
+7. Add a fake entry to a listing for a plugin that does not exist in the repository, and cut a release. It stops for that
+   too, rather than deciding on its own whether the plugin or the entry is the mistake.
+
+**Source citations.**
+
+- [Step 3: Teach the release process about every target](feature-specification.md#step-3-teach-the-release-process-about-every-target) — source position 6, moved ahead of the version correction.
+- [Coordinations](feature-specification.md#coordinations) — the release and the repository, the release and both
+  storefronts, the release and the commit it tags, the check and the release.
+- [Alternate flows and states](feature-specification.md#alternate-flows-and-states) — what a release does when it meets
+  each gap, and what recovery from a stop costs.
+- [Edge cases and failure modes](feature-specification.md#edge-cases-and-failure-modes) — the bundle rows, the unreadable
+  listing and record rows, the half-finished removal row.
+
+**Connects to.**
+
+- Depends on [Phase 1](#phase-1) having written the Linear plugin's presence.
+- Makes [Phase 4](#phase-4)'s hand correction durable rather than something the next release undoes.
+- Corrects the contributor guide that makes [Phase 6](#phase-6)'s signal fair — a contributor cannot be told they missed
+  a target the guide never named.
+- Puts the rule into service four phases before [Phase 6](#phase-6) makes it visible on a pull request, because the
+  release runs it from here onward.
+
+**Preconditions to verify before starting.**
+
+- Confirm [Phase 1](#phase-1) has landed on the branch this work builds from. Without it, the first release after this
+  phase stops rather than repairs.
+- Confirm what a release should do when the operator's approved version plan and a target's repair disagree, since the
+  plan is confirmed before the targets are written and the gate cannot run until after.
+- Decide who owns re-running a release after a gate stop, given that recovery costs a separate commit: the release's own
+  local work is discarded first, then the gap is corrected and committed on its own, then the release is planned from
+  scratch.
+
+---
