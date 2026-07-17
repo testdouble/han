@@ -186,3 +186,66 @@ release rather than on merge; the demo is the same, the clock is different. See 
   it rather than duplicating it.
 
 ---
+
+### Phase 2: Stop the work-items publisher dropping work silently {#phase-2}
+
+**Kind.** Feature slice.
+
+**Builds on.** Nothing. This phase is independent of every other phase in this outline — it shares no actor, no
+artifact, and no failure mode with the publishing work, and it is here because the source artifact retained it, not
+because anything depends on it.
+
+**What we build.** Today, when the GitHub work-items publisher meets a work item already marked as published by a
+different tracker, that item is neither published nor reported as skipped. It vanishes from the run with no error and no
+count. After this phase, every work item in a file is accounted for in every run: published, skipped-and-counted, or
+surfaced.
+
+Two properties make that promise real rather than circular:
+
+- **The whole file is examined before the first item is published.** A marking the publisher does not recognize, sitting
+  near the end of a file, cannot be preceded by items it already created. The run stops before creating anything at all.
+- **Every heading the publisher cannot place is covered, not only the ones that look foreign.** The publisher cannot
+  tell "another tracker's marking in a shape I don't know" from "a hand-edited line with the wrong kind of dash" until it
+  has looked, and both need the same answer. The cheaper answer — publish what you understood, then complain — is the one
+  that creates tickets in a file that may already have been published somewhere else.
+
+The protection lives at every layer that inspects a heading, so a foreign marking reaches the stop rather than being
+tidied away before it. The marking format itself does not change, and no migration is needed.
+
+**Why this is Phase 2.** Its position is free, and it is here because that is where the source artifact put it. It
+blocks nothing and nothing blocks it, so moving it would trade traceability against the source for a tidier narrative
+arc. What earns it an early slot rather than a late one is that it is a live defect losing people's work today, on the
+same footing as phase 1.
+
+**Outcome to demonstrate.**
+
+1. Take a work-items file and publish it to one tracker, so its items are marked as published there.
+2. Point the GitHub publisher at that same file. Today it reports some number published and some number skipped, and the
+   marked items are in neither count — they are simply gone, with no error.
+3. Ship the phase.
+4. Point the GitHub publisher at the same file again. It stops before creating anything, names the specific work items
+   whose markings it does not recognize and what they appear to be marked by, and creates nothing.
+5. Add the two numbers it reports on an ordinary run to the number it surfaces, and get the number of work items in the
+   file. Nothing is unaccounted for.
+
+**Source citations.**
+
+- [Step 2: Close the GitHub publisher's silent hole](feature-specification.md#step-2-close-the-github-publishers-silent-hole) — source position 2.
+- [Edge cases and failure modes](feature-specification.md#edge-cases-and-failure-modes) — the work-items rows.
+- [User interactions](feature-specification.md#user-interactions) — what a format error names.
+- [Out of scope](feature-specification.md#out-of-scope) — marking-namespacing is a separate specification, not this
+  phase.
+
+**Connects to.**
+
+- Nothing. This is the outline's one genuinely independent phase, and saying so is more useful than manufacturing a
+  connection.
+
+**Preconditions to verify before starting.**
+
+- Confirm the three work-items publishers all read and mark the same file in the way the source artifact assumes, since
+  this phase changes only how one of them responds to markings it does not recognize.
+- Decide nothing about telling one tracker's markings from another's — that trap is real, is named in the source
+  artifact, and is deliberately not this phase's.
+
+---
