@@ -77,5 +77,12 @@ input. No specialist named an unengaged handoff (the test-engineer's optional `t
 team). The two independent reviews converged on the same structural call (C1/C20 — script-borne writes, one bearer) from
 opposite directions, which is the strongest signal available that the call is right.
 
-**Decisions produced:** — _(backfilled at synthesis)_
-**Changed in plan:** — _(backfilled at synthesis)_
+**Decisions produced:** D-1 (C1, C20, OQ-B), D-2 (C2), D-3 (C3, C4), D-4 (C5), D-5 (C12), D-6 (C11, C16), D-7 (C9, C10),
+D-8 (C6, C7), D-9 (C8), D-10 (C21), D-11 (C25, OQ-D), D-12 (C13, C14), D-13 (C15), D-14 (C17), D-15 (C18), D-16 (C19),
+D-17 (C22, C23), D-18 (C24), D-19 (OQ-A), D-20 (C26, OQ-5), D-21 (spec D39), D-22 (edit-site D33/D7 boundary). All 22
+produced in this single round.
+
+**Changed in plan:** Outcome; Context; Team Composition and Participation; Implementation Approach (Architecture and
+Integration Points, Data Model and Persistence, Runtime Behavior); Decomposition and Sequencing; RAID Log (Risks,
+Assumptions, Dependencies); Testing Strategy; Operational Readiness; Definition of Done; Specialist Handoffs; Deferred
+(YAGNI); Open Items; Summary. (Whole plan authored this round — phase 3's plan did not exist before R1.)
