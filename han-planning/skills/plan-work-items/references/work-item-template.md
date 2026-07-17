@@ -5,6 +5,8 @@ Each work item in `work-items.md` uses this template. Required fields appear in 
 ```
 ## <W-N> — <short descriptive name>
 
+**Type.** `deliverable` (default; builds and commits an artifact), `audit` (a checks-only pass), or `spike` (an investigation that records a finding). Required.
+
 **Summary.** One paragraph describing what this work item delivers. Include a plan reference inline (e.g., `See plan: [D-6](feature-implementation-plan.md#d-6-...)` or `See plan: D-3, D-7, and Work Unit 2`). The plan reference replaces a standalone "Work items addressed" field — do not add one.
 
 **Description.**
@@ -26,12 +28,21 @@ Each work item in `work-items.md` uses this template. Required fields appear in 
 - **ADR / standard / repo doc** — link any architectural decision, coding standard, or feature doc the implementer must honor.
 - Omit any bullet that does not apply. Do not link iteration histories, decision logs, review findings, team findings, facilitation summaries, or any other process artifact.
 
-**Tests.**
-- Bullet list of tests required for the behavior above. Be concrete: name the test type (unit, integration, migration, visual, etc.) and the assertion.
+**Checks.**
+- How this item is checked: code test levels for code (name the test type and the assertion); read-the-file conformance and dry-run checks for docs and skills; for an `audit`, the checks it runs; for a `spike`, the finding's soundness. A no-output `audit` must be side-effect-free and safe to re-run.
 
 **Acceptance criteria.**
 - [ ] Criterion 1
 - [ ] Criterion 2
+
+**Requires pre-work decisions.** `yes` if a human judgment statable in a single sentence is required before work starts, otherwise `no`. A record-worthy decision instead becomes an ADR this item depends on; one needing investigation becomes a spike it depends on. Required. `yes` can be accompanied by one clarifying sentence.
+
+**Suggested implementation.** The skill or agent that should build this item, and whether it can run unattended. Required. Choose it with [deliverable-skill-catalog.md](./deliverable-skill-catalog.md). Example: `han-coding:tdd`, AFK.
+
+**Suggested review.** The skill or agent that should review this item, comes from deliverable-skill-catalog as well. Required. Example: `han-coding:code-review`, AFK.
+
+**Expected paths.**
+- `<repo-root-relative path this work item creates or modifies>`. One path per bullet, never absolute or a cross-repository URL. A rename lists both the old and the new path. Required. An `audit` that produces no files declares `**Expected paths.** None.`
 
 **Depends on.** `<W-N>` (within this file), comma-separated for multiple, or `None.`
 ```
@@ -41,4 +52,5 @@ Each work item in `work-items.md` uses this template. Required fields appear in 
 - Heading line begins with `## ` followed by `<W-N>` (the prefix letters, a dash, then digits), then ` — ` (em-dash with surrounding spaces), then the title.
 - A work item body ends at the next `## ` heading or end of file.
 - Design-reference paths are relative to the `work-items.md` file (e.g., `ui-designs/<file>.png` when the screenshots live in the plan folder). Never use an absolute path or a cross-repository URL.
-- The `**Depends on.**` line uses the literal bold marker, comma-separates dependencies, and ends with `.` (the trailing period is part of the format, not a sentence terminator).
+- The `**Type.**`, `**Requires pre-work decisions.**`, `**Suggested implementation.**`, and `**Suggested review.**` lines use the literal bold marker and end with `.` (the trailing period is part of the format, not a sentence terminator).
+- The `**Depends on.**` line uses the literal bold marker, comma-separates dependencies, and ends with `.`.
