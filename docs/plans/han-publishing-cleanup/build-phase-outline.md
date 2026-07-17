@@ -491,3 +491,159 @@ applied to a corrected set rather than a change to the rule.
 - Agree that the two halves ship in a single change, because nothing in the repository enforces it.
 
 ---
+
+### Phase 6: Show the gap on the pull request that introduces it {#phase-6}
+
+**Kind.** Polish.
+
+**Builds on.** [Phase 3](#phase-3), which is where the rule actually comes into existence, and [Phase 4](#phase-4),
+which is what makes this phase land green rather than red against eight disagreements. Phases 1 through 5 have all
+landed by the time this one does.
+
+**What we build.** The rule becomes visible on a pull request. It verifies that every plugin in the repository appears in
+every target it belongs in, and that a plugin's version records agree. It runs on every pull request, and additionally on
+the machines of contributors who installed the optional local hooks.
+
+The rule itself is not new here. It has existed since [Phase 3](#phase-3), because the release runs it, and it has been
+refusing releases since then over the gaps a release cannot close. What this phase adds is putting the same answer in
+front of a contributor before a maintainer meets it at release time.
+
+**The two surfaces ask one question and get different answers, and that is the point rather than an inconsistency.** On a
+pull request the rule reports what is wrong **now**, including drift a release would have repaired on its own. On a
+release it reports what is wrong **after** the release has repaired everything it can, so what is left is only what a
+person must decide. The contributor sees the gap; the maintainer sees the residue.
+
+**What this phase does not do is make the rule blocking.** A pull-request check prevents a merge only where the hosting
+platform is configured to require it, and this repository has no such configuration. A red check here is a signal a
+person can merge past. The surface that actually refuses is the release. That is still worth having on its own terms: it
+moves the discovery of a gap from release day to the pull request that introduced it, which is where it is cheapest to
+fix and where the person who caused it is still holding the context. Making it genuinely blocking is a repository-settings
+change no phase here owns ([OQ-3](#oq-3)).
+
+There is no disable switch, deliberately. The check lands in one change, so reverting that change is the escape hatch.
+
+**Why this is Phase 6.** This is the one hard ordering constraint the source plan argued for, and the reason survives
+restating. Landing the check before the gaps are fixed produces a signal that is red from the day it arrives, and a
+signal that is permanently red is one people learn to scroll past. Because phases 1 through 5 have landed, it is green on
+arrival. It does not stay green by construction — it goes red on the pull request that introduces a gap, a person may
+merge past it, and the branch then carries a red check until the next release repairs the gap. That is the same failure
+mode arriving where it actually lives.
+
+**Outcome to demonstrate.**
+
+1. Ship the phase and open any ordinary pull request. The check runs and it is green. This is the day-one state, and it
+   is green because phases 1 through 5 landed first.
+2. Open a pull request that adds a new plugin directory with a version record on channel one and nothing else — the exact
+   thing a contributor does when they add a plugin and forget the rest.
+3. Watch the check fail and name which targets the plugin is missing from. Not the first one: all of them.
+4. Watch a person merge it anyway, because nothing here blocks a merge, and see the branch carry a red check.
+5. Cut a release from that branch. It stops, because the new plugin has no written presence on channel two — so merging
+   past the signal costs a stopped release rather than merely a late fix.
+6. Write the plugin's presence, and cut the release again. It proceeds, creates the listing entry itself, and reports
+   that it did.
+
+**Source citations.**
+
+- [Step 7: Turn on the automated check](feature-specification.md#step-7-turn-on-the-automated-check) — source position 7.
+- [Alternate flows and states](feature-specification.md#alternate-flows-and-states) — what a new plugin merged past the
+  check costs.
+- [Coordinations](feature-specification.md#coordinations) — the check and the pull-request pipeline; the check and the
+  release process.
+- [Open items](feature-specification.md#open-items) — item 3, the unmade decision about making the check required.
+
+**Connects to.**
+
+- Depends on [Phase 3](#phase-3) for the rule, and on [Phase 4](#phase-4) for landing green.
+- Depends on [Phase 3](#phase-3)'s contributor-guide correction for the signal to be fair: a contributor cannot fairly
+  be told they missed a target the guide never named.
+- Independent of [Phase 5](#phase-5), which the check does not inspect.
+
+**Preconditions to verify before starting.**
+
+- Confirm phases 1 through 5 have landed, or that a release was cut after phase 3. Otherwise the check lands red and the
+  reason for sequencing it last is thrown away.
+- Decide whether to make the check required, which is a repository-settings change no phase owns. It does not block this
+  phase. See [OQ-3](#oq-3).
+
+---
+
+## Open Questions {#open-questions}
+
+> Decisions or verifications the team must resolve, ordered by the lowest-numbered phase they shape. None of them blocks
+> phase 1 from starting. Cite them as `OQ-N` in follow-up.
+>
+> All four come from the source artifact's [Open items](feature-specification.md#open-items) and are restated here with
+> the phases they touch. The source artifact remains canonical for their full history.
+
+### OQ-1. Which revision does each channel's client resolve from — the default branch, or the latest release tag? {#oq-1}
+
+**Blocks phase(s).** None. Shapes [Phase 1](#phase-1) and [Phase 4](#phase-4).
+
+This is not visible from inside the repository. If clients resolve from the release tag, then phases 1 and 4 reach users
+at the next release rather than on merge. Both phases are worded to hold either way, so this changes when the fix arrives
+rather than whether it works. It also weakens phase 1's rationale for going first without changing the answer, since
+phase 1 is a binding constraint before phase 3 regardless.
+
+- **Option A — Verify before quoting either phase's timing to anyone.** Costs one installed client and one release. Both
+  phases proceed either way; only the claims about when users see the fix depend on the answer.
+- **Option B — Leave it unverified and keep both phases hedged.** Free, and the current wording already survives both
+  answers. The cost is that nobody can honestly say when a fix reaches a user.
+- **Recommendation: Option A, but not as a gate.** Start phase 1 now. The verification costs a release you are going to
+  cut anyway, and phase 1's ordering does not depend on the answer. What depends on it is the sentence you put in front
+  of someone, so answer it before you make the promise, not before you start the work.
+
+### OQ-2. Does channel two decide update availability from the published version number? {#oq-2}
+
+**Blocks phase(s).** None. Shapes [Phase 4](#phase-4) and the Outcome's update claim.
+
+The source artifact's promise that channel-two users are offered updates again rests entirely on this. It is unconfirmed.
+This is the one open question with a named cost and a named consequence: verifying costs one installed client and one
+release, and if it is wrong then phase 4 is still worth doing but its user-facing claim comes out.
+
+- **Option A — Verify during phase 4's own demo.** Step 4 of that phase's demo is exactly this test. It costs nothing
+  extra, and it answers the question at the moment the answer becomes useful.
+- **Option B — Verify before starting phase 4.** Costs a release ahead of the work. Buys the ability to describe the
+  benefit correctly before committing to the work, which matters only if the benefit is what justifies the work.
+- **Recommendation: Option A.** Phase 4 has a reason that does not depend on this answer at all — it is what makes
+  phase 6's check green on arrival. So the work is justified either way, and the verification belongs in the demo rather
+  than ahead of it. Owner: the maintainer, before the update claim is quoted to anyone.
+
+### OQ-3. Should the pull-request check be made required? {#oq-3}
+
+**Blocks phase(s).** None. Shapes what [Phase 6](#phase-6) is worth.
+
+This is a decision, not an unknown. The fact is settled: the default branch is unprotected, no rules apply to it, and the
+sole ruleset is disabled and contains no required-check rule, so enabling it as written would not help. No phase in this
+outline owns the repository-settings change.
+
+- **Option A — Leave the check advisory.** Phase 6 still moves discovery of a gap to the pull request that introduced it,
+  and the release still refuses what matters. The cost is that a contributor can merge past a signal, and for a brand-new
+  plugin that stops the next release rather than merely delaying a fix.
+- **Option B — Require the check alone.** Makes the pull-request surface actually block. Worth knowing: the existing
+  disabled ruleset also demands an approving review, which on a solo-maintained repository would block the maintainer
+  from merging their own work, and is the likeliest reason it is switched off. Requiring the check alone is the smaller
+  move.
+- **Recommendation: Option B, after phase 6 has been green for a while.** The advisory version is tolerable, but its
+  tolerability rests on the release refusing to publish something nobody wrote — a protection rather than a repair. Once
+  the check has run green across a few real pull requests and produced no false positives, requiring it alone costs
+  nothing and closes the gap. Enabling the ruleset as it currently stands is the move to avoid. Owner: the maintainer.
+
+### Carry-over notes
+
+### OQ-4. What happens when plugins of different vintages are installed against each other? {#oq-4}
+
+**Blocks phase(s).** None — carry-over note.
+
+Plugins are installed and updated one at a time, so someone can run a months-old coding plugin against a core plugin
+updated today, and nothing would notice. An earlier argument that this cannot happen — everything ships from a single
+snapshot — holds only for a fresh install of everything at once, which is not how the suite is used over time.
+
+The right fix is not obvious, and this is flagged as a decision the team still owes itself rather than work this outline
+schedules. It is kept here rather than dropped because it has nowhere else to live: no phase depends on it and no
+follow-up specification carries it. An open question with no home stays with the document that found it.
+
+---
+
+_End of outline. If you need to cite a specific phase elsewhere, use its `Phase N` number — those numbers are stable for
+the life of this document, and they do not match the source artifact's step numbers. If you need to cite a specific open
+question, use its `OQ-N` ID._
