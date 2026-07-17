@@ -130,3 +130,59 @@ Every phase is tagged with one of four kinds. The taxonomy is used in the Build 
 ---
 
 ## Build Phases {#build-phases}
+
+### Phase 1: Make the Linear plugin installable on channel two {#phase-1}
+
+**Kind.** Feature slice.
+
+**Builds on.** Nothing — this is the starting phase.
+
+**What we build.** The Linear plugin gets its entry in channel two's storefront listing and its own version record on
+that channel, created at the version channel one already publishes for it, so it is correct the moment it exists.
+
+A person writes that record, and that is the point rather than an inconvenience. The record is not a version with some
+description attached to it — it **is** the plugin's storefront presence: what it is called, how it is described, what
+someone would ask it to do. None of that can be derived from anything the repository already holds. This is the same
+boundary phase 3's release stops at, met here by the one actor who can cross it.
+
+**Why this is Phase 1.** Two reasons, and the second is the binding one. First, this is the only place where a person
+following Han's own published instructions hits an error right now: channel two's setup instructions advertise the Linear
+plugin, and it was never published there. Second, and this is easy to miss, phase 3 cannot safely land before it. Once a
+release derives its plugins from the repository it sees the Linear plugin, finds no authored presence for it on channel
+two, and refuses — so a repository with phase 3 and without phase 1 stops every release until someone writes that
+presence by hand, which is this phase performed under release pressure instead of on purpose.
+
+**Outcome to demonstrate.**
+
+1. Run channel two's documented install command for the Linear plugin, as written in Han's own setup instructions, and
+   watch it error. This is today.
+2. Ship the phase.
+3. Run the same command again, unchanged. It succeeds and the plugin installs.
+4. Look at what channel two now publishes for the plugin, and see the same version channel one publishes for it — not a
+   placeholder, and not a version behind.
+
+If channel two's client resolves from the latest release tag rather than the default branch, step 3 succeeds at the next
+release rather than on merge; the demo is the same, the clock is different. See [OQ-1](#oq-1).
+
+**Source citations.**
+
+- [Step 1: Publish the Linear plugin to channel two](feature-specification.md#step-1-publish-the-linear-plugin-to-channel-two) — source position 1.
+- [Channels and targets](feature-specification.md#channels-and-targets) — what a listing entry and a record each carry.
+- [Outcome](feature-specification.md#outcome) — the install-succeeds promise this phase delivers first.
+
+**Connects to.**
+
+- Unblocks [Phase 3](#phase-3), which refuses to run against a plugin whose presence nobody has written.
+- Feeds [Phase 4](#phase-4): the record this phase creates already agrees, so it is not one of the eight gaps phase 4
+  closes.
+- Creates one instance of the drift [Phase 4](#phase-4) repairs, if a release is cut before [Phase 3](#phase-3) lands.
+  Small, named, and healed by the same repair as the rest.
+
+**Preconditions to verify before starting.**
+
+- Confirm which revision channel two's client resolves from — the default branch or the latest release tag. It does not
+  change what this phase builds, only when it reaches anyone. See [OQ-1](#oq-1).
+- Confirm nobody has written the Linear plugin's channel-two presence somewhere unpublished, so this phase is authoring
+  it rather than duplicating it.
+
+---
