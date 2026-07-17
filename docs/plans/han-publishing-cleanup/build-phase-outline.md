@@ -10,9 +10,7 @@ generated_by: "han-planning:plan-a-phased-build"
 
 This document describes the order in which the Han publishing cleanup will be built. The work is broken into a sequence
 of **phases**, where each phase is a thin end-to-end deliverable that can be demonstrated to a real person, and each
-phase builds on the one before it. The cleanup repairs how Han is published to the two places it ships to, so that
-everything advertised as installable actually installs, everyone who installed it is offered updates again, and no
-future release can quietly stop either being true.
+phase builds on the one before it.
 
 This document is the companion to [feature-specification.md](feature-specification.md). The source artifact describes
 _what is broken today, what each of its seven steps changes, and why they are ordered the way they are_. This document
@@ -33,12 +31,17 @@ phase_. Every phase below cites the source-artifact sections it covers, so anyon
   - [Phase 5: Delete the untrue dependencies and correct what described them](#phase-5)
   - [Phase 6: Show the gap on the pull request that introduces it](#phase-6)
 - [Open Questions](#open-questions)
+  - [OQ-1: Does channel two decide update availability from the published version number?](#oq-1)
+  - [OQ-2: Which revision does each channel's client resolve from?](#oq-2)
+  - [OQ-3: Should the pull-request check be made required?](#oq-3)
+  - [OQ-4 (carry-over): What happens when plugins of different vintages are installed against each other?](#oq-4)
+  - [OQ-5: What should a release do when the approved version plan and a target's repair disagree?](#oq-5)
 
 ---
 
 ## Vocabulary {#vocabulary}
 
-The source artifact stays deliberately neutral about which storefront is which, and this document inherits that. Four
+The source artifact stays deliberately neutral about which storefront is which, and this document inherits that. These
 words carry the whole outline.
 
 - **Channel one** and **channel two** — the two places Han is published. Channel one is healthy; nothing here changes
@@ -47,8 +50,12 @@ words carry the whole outline.
 - **A version record** — a place that states a plugin's published version. There are three: each channel carries one per
   plugin, and channel one's listing also carries a version per plugin.
 - **A target** — any of the four places a release must keep current: the two storefront listings and the two per-plugin
-  records.
+  records. Channel one's listing is both a listing and a version record, which is why the four targets do not partition
+  evenly into "two and two", and why there are three version records rather than two.
 - **The bundle** — the meta-plugin that installs the suite in one command. It exists on channel one only.
+- **Publishing a plugin, and publishing a work item, are unrelated.** A plugin is published to a **channel**, which is
+  what phases 1, 3, 4, and 6 are about. A work item is published to a **tracker**, which is what [Phase 2](#phase-2) is
+  about and nothing else here is. The word does double duty; the two senses share nothing.
 
 The full grounding, including what each target carries besides a version, is in the source artifact's
 [Channels and targets](feature-specification.md#channels-and-targets).
@@ -101,31 +108,41 @@ follow under [Build Phases](#build-phases). Decisions the team still owes itself
 > The scan view. One row per phase, in build order. Each "Outcome" cell is one short sentence. Detailed write-ups follow
 > under [Build Phases](#build-phases); use the link in the Phase column.
 
-| #   | Phase                                                                    | Kind          | Outcome (one sentence)                                                           |
-| --- | ------------------------------------------------------------------------ | ------------- | -------------------------------------------------------------------------------- |
-| 1   | [Make the Linear plugin installable on channel two](#phase-1)            | Feature slice | The documented install command for the Linear plugin succeeds instead of erroring. |
-| 2   | [Stop the work-items publisher dropping work silently](#phase-2)         | Feature slice | Every work item in a file is published, skipped-and-counted, or surfaced.          |
-| 3   | [Make a release bring every publishing target up to date](#phase-3)      | Feature slice | A release repairs all four targets, reports what it changed, and refuses real gaps. |
-| 4   | [Unfreeze channel two's version numbers](#phase-4)                       | Feature slice | Channel two publishes each plugin's real version, so updates are offered again.    |
-| 5   | [Delete the untrue dependencies and correct what described them](#phase-5) | Feature slice | Three plugins stop dragging in a plugin they never use, and the docs agree.       |
-| 6   | [Show the gap on the pull request that introduces it](#phase-6)          | Polish        | A contributor sees a missing target on their pull request, and it lands green.     |
+| #   | Phase                                                                     | Kind          | Builds on   | Source step | Outcome (one sentence)                                                             |
+| --- | ------------------------------------------------------------------------- | ------------- | ----------- | ----------- | ---------------------------------------------------------------------------------- |
+| 1   | [Make the Linear plugin installable on channel two](#phase-1)             | Feature slice | —           | Step 1      | The documented install command for the Linear plugin succeeds instead of erroring.  |
+| 2   | [Stop the work-items publisher dropping work silently](#phase-2)          | Feature slice | —           | Step 2      | Every work item in a file is published, skipped-and-counted, or surfaced.           |
+| 3   | [Make a release bring every publishing target up to date](#phase-3)       | Feature slice | Phase 1     | Step 3      | A release repairs all four targets, reports what it changed, and refuses real gaps. |
+| 4   | [Unfreeze channel two's version numbers](#phase-4)                        | Feature slice | Phases 1, 3 | Step 4      | Channel two publishes each plugin's real version, so updates are offered again.     |
+| 5   | [Delete the untrue dependencies and correct what described them](#phase-5) | Feature slice | —           | Steps 5+6   | Three plugins stop dragging in a plugin they never use, and the docs agree.         |
+| 6   | [Show the gap on the pull request that introduces it](#phase-6)           | Polish        | Phases 3, 4 | Step 7      | A contributor sees a missing target on their pull request, and it lands green.      |
 
-> Numbers are assigned in build order and are stable for the life of this outline. Cite them as `Phase N` in tickets,
-> comments, and follow-up reports. They do not match the source artifact's step numbers — each phase names its source
-> step in its write-up.
+> Phase numbers are assigned in build order and are stable for the life of this outline. Cite them as `Phase N` in
+> tickets, comments, and follow-up reports.
+>
+> **Phase numbers and the source artifact's step numbers agree up to 4 and then diverge**, because this outline merges
+> the source's steps 5 and 6 into one phase. So "6" means the check here and the document correction there — the one
+> collision worth knowing about, and the reason the Source step column exists. Say "Phase 6" or "Step 6", never a bare
+> "6". A third numbering, the source's own "source position", records where each step sat in the original cleanup plan
+> before it was resequenced; it appears only in the source artifact and nothing here depends on it.
+>
+> Six items were considered and deliberately deferred; the source artifact's
+> [Deferred (YAGNI)](feature-specification.md#deferred-yagni) is canonical for all six and this outline does not restate
+> them.
 
 ---
 
 ## Phase Kinds {#phase-kinds}
 
-Every phase is tagged with one of four kinds. The taxonomy is used in the Build Phase Index and on each phase entry's
-`**Kind.**` line.
+The standard taxonomy is four kinds. **This outline uses two of them**, and the other two classify nothing here — there
+is no foundation phase, because every phase turned out to be demoable end to end on its own, and there are no deferred
+phases, because the source artifact already carries every deferral.
 
-- **Foundation** — A capability that does not deliver new user-facing features on its own, but is required for later
-  phases. Must still be demoable in its own right.
-- **Feature slice** — A thin end-to-end strip of new behavior that a real user can experience.
-- **Polish** — Branding, refinement, observability, or quality-of-life work that enriches a working core.
-- **Deferred** — Listed for traceability; not built in the current plan. Slotted at the end of the index.
+- **Feature slice** — A thin end-to-end strip of new behavior that a real user can experience. Five of the six phases.
+- **Polish** — Refinement, observability, or quality-of-life work that enriches a working core. [Phase 6](#phase-6)
+  only.
+- **Foundation** and **Deferred** — the two unused kinds, named here only so a reader who knows the taxonomy is not left
+  hunting for rows that do not exist.
 
 ---
 
@@ -162,11 +179,11 @@ presence by hand, which is this phase performed under release pressure instead o
    placeholder, and not a version behind.
 
 If channel two's client resolves from the latest release tag rather than the default branch, step 3 succeeds at the next
-release rather than on merge; the demo is the same, the clock is different. See [OQ-1](#oq-1).
+release rather than on merge; the demo is the same, the clock is different. See [OQ-2](#oq-2).
 
 **Source citations.**
 
-- [Step 1: Publish the Linear plugin to channel two](feature-specification.md#step-1-publish-the-linear-plugin-to-channel-two) — source position 1.
+- [Step 1: Publish the Linear plugin to channel two](feature-specification.md#step-1-publish-the-linear-plugin-to-channel-two).
 - [Channels and targets](feature-specification.md#channels-and-targets) — what a listing entry and a record each carry.
 - [Outcome](feature-specification.md#outcome) — the install-succeeds promise this phase delivers first.
 
@@ -181,9 +198,7 @@ release rather than on merge; the demo is the same, the clock is different. See 
 **Preconditions to verify before starting.**
 
 - Confirm which revision channel two's client resolves from — the default branch or the latest release tag. It does not
-  change what this phase builds, only when it reaches anyone. See [OQ-1](#oq-1).
-- Confirm nobody has written the Linear plugin's channel-two presence somewhere unpublished, so this phase is authoring
-  it rather than duplicating it.
+  change what this phase builds, only when it reaches anyone. See [OQ-2](#oq-2).
 
 ---
 
@@ -195,22 +210,22 @@ release rather than on merge; the demo is the same, the clock is different. See 
 artifact, and no failure mode with the publishing work, and it is here because the source artifact retained it, not
 because anything depends on it.
 
-**What we build.** Today, when the GitHub work-items publisher meets a work item already marked as published by a
+**What we build.** Today, when the GitHub work-items publisher meets a work item already annotated as published by a
 different tracker, that item is neither published nor reported as skipped. It vanishes from the run with no error and no
 count. After this phase, every work item in a file is accounted for in every run: published, skipped-and-counted, or
 surfaced.
 
 Two properties make that promise real rather than circular:
 
-- **The whole file is examined before the first item is published.** A marking the publisher does not recognize, sitting
-  near the end of a file, cannot be preceded by items it already created. The run stops before creating anything at all.
+- **The whole file is examined before the first item is published.** An annotation the publisher does not recognize,
+  sitting near the end of a file, cannot be preceded by items it already created. The run stops before creating anything at all.
 - **Every heading the publisher cannot place is covered, not only the ones that look foreign.** The publisher cannot
-  tell "another tracker's marking in a shape I don't know" from "a hand-edited line with the wrong kind of dash" until it
-  has looked, and both need the same answer. The cheaper answer — publish what you understood, then complain — is the one
+  tell "another tracker's annotation in a shape I don't know" from "a hand-edited line with the wrong kind of dash" until
+  it has looked, and both need the same answer. The cheaper answer — publish what you understood, then complain — is the one
   that creates tickets in a file that may already have been published somewhere else.
 
-The protection lives at every layer that inspects a heading, so a foreign marking reaches the stop rather than being
-tidied away before it. The marking format itself does not change, and no migration is needed.
+The protection lives at every layer that inspects a heading, so a foreign annotation reaches the stop rather than being
+tidied away before it. The annotation format itself does not change, and no migration is needed.
 
 **Why this is Phase 2.** Its position is free, and it is here because that is where the source artifact put it. It
 blocks nothing and nothing blocks it, so moving it would trade traceability against the source for a tidier narrative
@@ -219,21 +234,21 @@ same footing as phase 1.
 
 **Outcome to demonstrate.**
 
-1. Take a work-items file and publish it to one tracker, so its items are marked as published there.
+1. Take a work-items file and publish it to one tracker, so its items are annotated as published there.
 2. Point the GitHub publisher at that same file. Today it reports some number published and some number skipped, and the
-   marked items are in neither count — they are simply gone, with no error.
+   annotated items are in neither count — they are simply gone, with no error.
 3. Ship the phase.
 4. Point the GitHub publisher at the same file again. It stops before creating anything, names the specific work items
-   whose markings it does not recognize and what they appear to be marked by, and creates nothing.
+   whose annotations it does not recognize and what they appear to be annotated by, and creates nothing.
 5. Add the two numbers it reports on an ordinary run to the number it surfaces, and get the number of work items in the
    file. Nothing is unaccounted for.
 
 **Source citations.**
 
-- [Step 2: Close the GitHub publisher's silent hole](feature-specification.md#step-2-close-the-github-publishers-silent-hole) — source position 2.
+- [Step 2: Close the GitHub publisher's silent hole](feature-specification.md#step-2-close-the-github-publishers-silent-hole).
 - [Edge cases and failure modes](feature-specification.md#edge-cases-and-failure-modes) — the work-items rows.
 - [User interactions](feature-specification.md#user-interactions) — what a format error names.
-- [Out of scope](feature-specification.md#out-of-scope) — marking-namespacing is a separate specification, not this
+- [Out of scope](feature-specification.md#out-of-scope) — annotation-namespacing is a separate specification, not this
   phase.
 
 **Connects to.**
@@ -243,9 +258,9 @@ same footing as phase 1.
 
 **Preconditions to verify before starting.**
 
-- Confirm the three work-items publishers all read and mark the same file in the way the source artifact assumes, since
-  this phase changes only how one of them responds to markings it does not recognize.
-- Decide nothing about telling one tracker's markings from another's — that trap is real, is named in the source
+- Confirm the three work-items publishers all read and annotate the same file in the way the source artifact assumes,
+  since this phase changes only how one of them responds to annotations it does not recognize.
+- Decide nothing about telling one tracker's annotations from another's — that trap is real, is named in the source
   artifact, and is deliberately not this phase's.
 
 ---
@@ -323,7 +338,7 @@ re-freezes. Everything downstream either depends on it or is made honest by it.
 
 **Source citations.**
 
-- [Step 3: Teach the release process about every target](feature-specification.md#step-3-teach-the-release-process-about-every-target) — source position 6, moved ahead of the version correction.
+- [Step 3: Teach the release process about every target](feature-specification.md#step-3-teach-the-release-process-about-every-target).
 - [Coordinations](feature-specification.md#coordinations) — the release and the repository, the release and both
   storefronts, the release and the commit it tags, the check and the release.
 - [Alternate flows and states](feature-specification.md#alternate-flows-and-states) — what a release does when it meets
@@ -344,11 +359,13 @@ re-freezes. Everything downstream either depends on it or is made honest by it.
 
 - Confirm [Phase 1](#phase-1) has landed on the branch this work builds from. Without it, the first release after this
   phase stops rather than repairs.
-- Confirm what a release should do when the operator's approved version plan and a target's repair disagree, since the
-  plan is confirmed before the targets are written and the gate cannot run until after.
-- Decide who owns re-running a release after a gate stop, given that recovery costs a separate commit: the release's own
-  local work is discarded first, then the gap is corrected and committed on its own, then the release is planned from
-  scratch.
+- Settle what a release should do when the operator's approved version plan and a target's repair disagree. The source
+  artifact does not answer this, and it is the one part of this phase's behavior that is not already decided. See
+  [OQ-5](#oq-5).
+- Confirm the recovery sequence from a gate stop is understood before the gate exists, because the order is what makes it
+  safe: the release's own local work is discarded first — everything it wrote and everything it created — then the gap is
+  corrected and committed on its own, then the release is planned from scratch. The source artifact settles this; the
+  check is that whoever builds the phase has read it.
 
 ---
 
@@ -370,7 +387,7 @@ release do it, and the honest reason is not the obvious one. The obvious reason 
 than whenever someone next cuts a release — is contingent on an unknown. If channel two's client resolves from the
 release tag, the only revision anyone resolves is one a release produced, and a release corrects these numbers itself; the
 user-facing benefit is then not smaller but nothing, and what survives is that the repository stops publishing numbers it
-knows are wrong ([OQ-1](#oq-1)). The reason that does not depend on that unknown is that **this phase is what makes phase
+knows are wrong ([OQ-2](#oq-2)). The reason that does not depend on that unknown is that **this phase is what makes phase
 6's check green on the day it arrives.** Without it, and absent a release cut in between, the check lands red against
 eight disagreements, and a signal that is red from birth is one people learn to scroll past.
 
@@ -381,15 +398,15 @@ eight disagreements, and a signal that is red from birth is one people learn to 
 2. Ship the phase.
 3. Line them up again. Every pair agrees.
 4. Take a client that has Han installed from channel two and check for updates. An update is offered, which is what this
-   whole channel has stopped doing — confirming [OQ-2](#oq-2) along the way, since this is the demo that answers it.
+   whole channel has stopped doing — confirming [OQ-1](#oq-1) along the way, since this is the demo that answers it.
 5. Cut a release. Watch the numbers stay corrected rather than re-freeze, which is what phase 3 bought.
 
 Step 4 rests on an unverified assumption about how channel two decides an update exists. If it turns out to be wrong,
-steps 1 through 3 and 5 still hold and the update claim comes out. See [OQ-2](#oq-2).
+steps 1 through 3 and 5 still hold and the update claim comes out. See [OQ-1](#oq-1).
 
 **Source citations.**
 
-- [Step 4: Correct the frozen version numbers](feature-specification.md#step-4-correct-the-frozen-version-numbers) — source position 3, moved after the release repair.
+- [Step 4: Correct the frozen version numbers](feature-specification.md#step-4-correct-the-frozen-version-numbers).
 - [Outcome](feature-specification.md#outcome) — the update-availability promise, and its hedge.
 - [Open items](feature-specification.md#open-items) — items 1 and 2, both of which shape how this phase's benefit is
   worded.
@@ -402,7 +419,7 @@ steps 1 through 3 and 5 still hold and the update claim comes out. See [OQ-2](#o
 **Preconditions to verify before starting.**
 
 - Confirm whether channel two decides update availability from the published version number. The correction is worth
-  making either way, but the user-facing claim depends on it. See [OQ-2](#oq-2).
+  making either way, but the user-facing claim depends on it. See [OQ-1](#oq-1).
 - Confirm no release was cut between [Phase 1](#phase-1) and [Phase 3](#phase-3). If one was, the Linear plugin's
   channel-one version moved while its new record stayed put, and this phase closes nine gaps rather than eight.
 
@@ -467,8 +484,8 @@ applied to a corrected set rather than a change to the rule.
 
 **Source citations.**
 
-- [Step 5: Delete the three untrue dependency declarations](feature-specification.md#step-5-delete-the-three-untrue-dependency-declarations) — source position 4.
-- [Step 6: Correct every document the declaration deletion falsifies](feature-specification.md#step-6-correct-every-document-the-declaration-deletion-falsifies) — source position 5, shipped with step 5.
+- [Step 5: Delete the three untrue dependency declarations](feature-specification.md#step-5-delete-the-three-untrue-dependency-declarations).
+- [Step 6: Correct every document the declaration deletion falsifies](feature-specification.md#step-6-correct-every-document-the-declaration-deletion-falsifies) — shipped with step 5 as one change.
 - [Coordinations](feature-specification.md#coordinations) — step 5 and step 6 as a single change.
 - [Deferred (YAGNI)](feature-specification.md#deferred-yagni) — a standing check for decorative dependencies is
   deliberately not built here.
@@ -544,7 +561,7 @@ mode arriving where it actually lives.
 
 **Source citations.**
 
-- [Step 7: Turn on the automated check](feature-specification.md#step-7-turn-on-the-automated-check) — source position 7.
+- [Step 7: Turn on the automated check](feature-specification.md#step-7-turn-on-the-automated-check).
 - [Alternate flows and states](feature-specification.md#alternate-flows-and-states) — what a new plugin merged past the
   check costs.
 - [Coordinations](feature-specification.md#coordinations) — the check and the pull-request pipeline; the check and the
@@ -569,15 +586,33 @@ mode arriving where it actually lives.
 
 ## Open Questions {#open-questions}
 
-> Decisions or verifications the team must resolve, ordered by the lowest-numbered phase they shape. None of them blocks
-> phase 1 from starting. Cite them as `OQ-N` in follow-up.
+> Decisions or verifications the team must resolve. **None of them blocks any phase**, including phase 1. Cite them as
+> `OQ-N` in follow-up.
 >
-> All four come from the source artifact's [Open items](feature-specification.md#open-items) and are restated here with
-> the phases they touch. The source artifact remains canonical for their full history.
+> **OQ-1 through OQ-4 are numbered to match the source artifact's [Open items](feature-specification.md#open-items) 1
+> through 4**, so a number means the same thing in both documents. That distinction is worth keeping: **OQ-5 was raised
+> by this outline** and has no source item behind it. The source artifact remains canonical for the history of the first
+> four.
 
-### OQ-1. Which revision does each channel's client resolve from — the default branch, or the latest release tag? {#oq-1}
+### OQ-1. Does channel two decide update availability from the published version number? {#oq-1}
 
-**Blocks phase(s).** None. Shapes [Phase 1](#phase-1) and [Phase 4](#phase-4).
+**Blocks phase(s).** None. Shapes [Phase 4](#phase-4) and the Outcome's update claim. Source: Open item 1.
+
+The promise that channel-two users are offered updates again rests entirely on this, and it is unconfirmed. This is the
+one open question with a named cost and a named consequence: verifying costs one installed client and one release, and if
+it is wrong then phase 4 is still worth doing but its user-facing claim comes out.
+
+- **Option A — Verify during phase 4's own demo.** Step 4 of that phase's demo is exactly this test. It costs nothing
+  extra, and it answers the question at the moment the answer becomes useful.
+- **Option B — Verify before starting phase 4.** Costs a release ahead of the work. Buys the ability to describe the
+  benefit correctly before committing to the work, which matters only if the benefit is what justifies the work.
+- **Recommendation: Option A.** Phase 4 has a reason that does not depend on this answer at all — it is what makes
+  phase 6's check green on arrival. So the work is justified either way, and the verification belongs in the demo rather
+  than ahead of it. Owner: the maintainer, before the update claim is quoted to anyone.
+
+### OQ-2. Which revision does each channel's client resolve from — the default branch, or the latest release tag? {#oq-2}
+
+**Blocks phase(s).** None. Shapes [Phase 1](#phase-1) and [Phase 4](#phase-4). Source: Open item 2.
 
 This is not visible from inside the repository. If clients resolve from the release tag, then phases 1 and 4 reach users
 at the next release rather than on merge. Both phases are worded to hold either way, so this changes when the fix arrives
@@ -592,47 +627,34 @@ phase 1 is a binding constraint before phase 3 regardless.
   cut anyway, and phase 1's ordering does not depend on the answer. What depends on it is the sentence you put in front
   of someone, so answer it before you make the promise, not before you start the work.
 
-### OQ-2. Does channel two decide update availability from the published version number? {#oq-2}
-
-**Blocks phase(s).** None. Shapes [Phase 4](#phase-4) and the Outcome's update claim.
-
-The source artifact's promise that channel-two users are offered updates again rests entirely on this. It is unconfirmed.
-This is the one open question with a named cost and a named consequence: verifying costs one installed client and one
-release, and if it is wrong then phase 4 is still worth doing but its user-facing claim comes out.
-
-- **Option A — Verify during phase 4's own demo.** Step 4 of that phase's demo is exactly this test. It costs nothing
-  extra, and it answers the question at the moment the answer becomes useful.
-- **Option B — Verify before starting phase 4.** Costs a release ahead of the work. Buys the ability to describe the
-  benefit correctly before committing to the work, which matters only if the benefit is what justifies the work.
-- **Recommendation: Option A.** Phase 4 has a reason that does not depend on this answer at all — it is what makes
-  phase 6's check green on arrival. So the work is justified either way, and the verification belongs in the demo rather
-  than ahead of it. Owner: the maintainer, before the update claim is quoted to anyone.
-
 ### OQ-3. Should the pull-request check be made required? {#oq-3}
 
-**Blocks phase(s).** None. Shapes what [Phase 6](#phase-6) is worth.
+**Blocks phase(s).** None. Shapes what [Phase 6](#phase-6) is worth. Source: Open item 3.
 
-This is a decision, not an unknown. The fact is settled: the default branch is unprotected, no rules apply to it, and the
-sole ruleset is disabled and contains no required-check rule, so enabling it as written would not help. No phase in this
-outline owns the repository-settings change.
+This is a decision, not an unknown. The fact is settled and was verified against the hosting platform during the source
+artifact's review: nothing currently protects the branch releases are cut from, and the one protection configuration that
+exists is switched off and would not require the check even if it were switched on. No phase in this outline owns the
+settings change.
 
 - **Option A — Leave the check advisory.** Phase 6 still moves discovery of a gap to the pull request that introduced it,
   and the release still refuses what matters. The cost is that a contributor can merge past a signal, and for a brand-new
   plugin that stops the next release rather than merely delaying a fix.
-- **Option B — Require the check alone.** Makes the pull-request surface actually block. Worth knowing: the existing
-  disabled ruleset also demands an approving review, which on a solo-maintained repository would block the maintainer
-  from merging their own work, and is the likeliest reason it is switched off. Requiring the check alone is the smaller
-  move.
+- **Option B — Require the check, and only the check.** Makes the pull-request surface actually block. Worth knowing: the
+  protection configuration that already exists would additionally demand an approving review, which on a solo-maintained
+  repository would stop the maintainer merging their own work, and is the likeliest reason it is switched off. Turning it
+  on as it stands is the move to avoid; requiring the check alone is the smaller one.
 - **Recommendation: Option B, after phase 6 has been green for a while.** The advisory version is tolerable, but its
   tolerability rests on the release refusing to publish something nobody wrote — a protection rather than a repair. Once
   the check has run green across a few real pull requests and produced no false positives, requiring it alone costs
-  nothing and closes the gap. Enabling the ruleset as it currently stands is the move to avoid. Owner: the maintainer.
+  nothing and closes the gap. Owner: the maintainer.
 
-### Carry-over notes
+The platform specifics behind this question are in the source artifact's
+[technical note T2](artifacts/feature-technical-notes.md), which is where the plain-language rule of this document hands
+off — the decision cannot be made without them.
 
 ### OQ-4. What happens when plugins of different vintages are installed against each other? {#oq-4}
 
-**Blocks phase(s).** None — carry-over note.
+**Blocks phase(s).** None — carry-over note, and the only one. Source: Open item 4.
 
 Plugins are installed and updated one at a time, so someone can run a months-old coding plugin against a core plugin
 updated today, and nothing would notice. An earlier argument that this cannot happen — everything ships from a single
@@ -641,6 +663,28 @@ snapshot — holds only for a fresh install of everything at once, which is not 
 The right fix is not obvious, and this is flagged as a decision the team still owes itself rather than work this outline
 schedules. It is kept here rather than dropped because it has nowhere else to live: no phase depends on it and no
 follow-up specification carries it. An open question with no home stays with the document that found it.
+
+### OQ-5. What should a release do when the approved version plan and a target's repair disagree? {#oq-5}
+
+**Blocks phase(s).** None. Shapes [Phase 3](#phase-3). **Raised by this outline — no source item behind it.**
+
+This one is new, and it comes out of phase 3's own shape rather than from the source artifact. A release asks the
+operator to confirm its version plan **before** it writes the targets, and the gate cannot run until **after** they are
+written. So there is a window the source artifact does not describe: the operator approves a plan, and then the repair
+writes a version onto a record that the plan did not mention, because the plan only covers the plugins the release is
+bumping and the repair also touches the ones that merely drifted.
+
+- **Option A — The repair is silent within the approved plan.** A version the release did not bump is corrected without
+  re-asking, on the grounds that correcting a drifted record is not a new decision — it is writing the version the plugin
+  already has. Reported afterward, as phase 3 already commits to.
+- **Option B — The plan names every target the release will touch, before it is approved.** The operator approves the
+  repair as well as the bumps. Costs a longer prompt on every release, most of it saying "and these nine records stay
+  where they are".
+- **Recommendation: Option A.** The correction and the bump are different acts: a bump decides a new version and a repair
+  publishes one that was already decided. The source artifact draws exactly this line for creation — the release does
+  what it can derive and stops at what a person must author — and a drifted version is derivable. Option B would ask a
+  person to approve arithmetic. Worth confirming with the maintainer before phase 3 is built, because it is the one place
+  phase 3's behavior is not already settled.
 
 ---
 
