@@ -70,6 +70,9 @@ Check the work-items file against the format invariants in
 
 - **Heading shape.** Every slice heading matches `## <SYM-N> — <title>` with an em-dash separator (already-published
   headings annotated as `## <SYM-N> (#NNN) — <title>` are valid too).
+- **Annotated by another tracker.** A slice heading carrying an annotation that is not `(#NNN)` — `## <SYM-N> (ACME-142)
+  — <title>`, `## <SYM-N> (ENG-99) — <title>` — means this file was already published somewhere else. This is a distinct
+  category from a malformed heading and is **never repaired**. See the repair rules below.
 - **`Depends on` line.** Literal bold marker `**Depends on.**`, trailing period, `None.` or comma-separated SYMs.
 - **Within-repo blockers.** Every SYM named in a `Depends on` line maps to the same target repo as the dependent slice
   (under the map from Step 2).
@@ -86,7 +89,15 @@ When a check fails, attempt evidence-based repair. Pull evidence from the source
 referenced in its intro, the feature spec in the same folder, sibling files in the plan folder, and the target repo's
 ADRs / coding standards / docs:
 
-- **Malformed heading** — propose the corrected shape based on the surrounding text. Cite the line number.
+- **Annotated by another tracker** — **never repair this.** Do not propose stripping the annotation, and do not treat it
+  as a malformed heading to be corrected into shape. The annotation is evidence that these work items already exist
+  somewhere else, and tidying it away here would publish duplicates of work that is already tracked. Stop and report
+  every such heading with the annotation it carries, so the user decides whether this file was already published
+  elsewhere. Only the user resolves this category.
+- **Malformed heading** — propose the corrected shape based on the surrounding text. Cite the line number. This covers a
+  heading nobody else annotated: a hand edit with the wrong dash, a missing separator, a mistyped symbolic ID. If the
+  heading carries an annotation that is not `(#NNN)`, it belongs to the category above instead — a heading you cannot
+  parse may be another tracker's annotation in a shape you do not know, and the two need different answers.
 - **Missing `Depends on` line** — propose `None.` if no blockers are evident in the slice's prose. Cite the absence.
 - **Cross-repo `Depends on`** — propose moving the relationship to the cross-repo work-order prose at the top of the
   file and replacing the line with `None.` or remaining within-repo SYMs. Cite the SYM→repo map entries that prove the
@@ -111,6 +122,12 @@ Then give the user three actions:
   inherit them) and proceed to Step 4.
 - **Correct the fills** — user provides the right values; apply those and proceed.
 - **Stop** — exit without publishing. User edits the file by hand and re-runs.
+
+**A heading annotated by another tracker is the exception: it has no fills, so only Stop is offered.** Report every such
+heading and what it appears to be annotated by, tell the user their file looks like it was already published to that
+tracker, and exit without publishing. Do not offer to strip the annotation and continue — that is the one "repair" that
+silently duplicates work the user already has. If they genuinely want these items in GitHub as well, they say so and
+edit the file themselves; that is a decision to make on purpose, not a default.
 
 If validation passes with no findings, proceed silently to Step 4.
 
@@ -140,6 +157,13 @@ source `work-items.md`. The per-repo file is a filtered view of the source — i
 The source `work-items.md` is not modified by the publish step. The per-repo files are what carry the `(#NNN)`
 issue-number annotations after publishing.
 
+Once every per-repo file is written, account for every slice heading across all of them at once by running
+`${CLAUDE_SKILL_DIR}/scripts/check-annotations.sh <per-repo-file-1> <per-repo-file-2> ...` with every per-repo file in
+one invocation. If it exits non-zero, report what it names and stop — publish nothing, to any repo. A file that another
+tracker already published is usually annotated across every repo it touches, so checking one repo at a time would create
+issues in the clean repos before reaching the annotated one. Nothing publishes anywhere until every file is accounted
+for.
+
 ### 6. Publish each per-repo file to GitHub
 
 For each per-repo file, publish it by running
@@ -162,7 +186,9 @@ The wrapper runs three idempotent scripts in order:
    PR merges — the issues are still created immediately. Overwrites existing files cleanly and, on re-run, reuses the
    assets branch and open PR — but only a branch it created for this feature (one already carrying the feature's
    `issue-assets/<feature-slug>/` tree); a same-named branch it does not own is refused rather than committed onto.
-2. **`scripts/create-issues.sh`** — creates one GitHub issue per `## <SYM-N>` slice in file order (blocker-first),
+2. **`scripts/create-issues.sh`** — accounts for every slice heading in the file before creating anything (via
+   `scripts/check-annotations.sh`, the same check Step 5 runs across every per-repo file), so a heading it cannot place
+   stops the run rather than being passed over. Then creates one GitHub issue per `## <SYM-N>` slice in file order (blocker-first),
    unassigned and unlabeled by default. When `--label <name>` is passed, it applies that label to every issue, creating
    it on the repo only if it does not already exist (an existing label's color and description are left intact); when
    `--assignee <user>` is passed, it assigns each issue to that user. Captures each returned issue number and rewrites

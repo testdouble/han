@@ -87,3 +87,30 @@ source file does not.
 The slice-body invariants are documented in [issue-template.md](./issue-template.md). The per-repo file's preamble
 (title, intro, cross-repo prose, shared references) is for the human reviewer — the scripts ignore everything before the
 first `## <SYM-N>` heading.
+
+## Every slice heading is accounted for
+
+`scripts/check-annotations.sh` classifies every heading that carries a symbolic ID, and every one lands in exactly one
+of three buckets:
+
+| Heading                          | Meaning                     | What happens              |
+| -------------------------------- | --------------------------- | ------------------------- |
+| `## W-1 — <title>`               | Publishable here            | An issue is created       |
+| `## W-1 (#12) — <title>`         | Already published here      | Skipped and counted       |
+| `## W-1 (ACME-142) — <title>`    | Published to another tracker | Surfaced; the run stops   |
+| `## W-1 - <title>` (wrong dash)  | Cannot be placed            | Surfaced; the run stops   |
+
+A heading is in scope when it carries a symbolic ID, **whatever follows it**. That is what lets the check see another
+tracker's annotation and a hand-edited heading alike, and it is why preamble prose (`## Shared reference artifacts`)
+never triggers a stop: it carries no symbolic ID.
+
+Two properties make the promise real rather than circular:
+
+- **The whole file is examined before the first issue is created**, so an annotation late in the file is never preceded
+  by issues already created. The check runs ahead of label creation too, since creating a label also changes the target
+  repo.
+- **Every per-repo file is examined before any repo is published to.** A file another tracker published is usually
+  annotated across all of its repos, so a per-file check would create issues in the clean repos first.
+
+A heading annotated by another tracker is never repaired into shape. Stripping the annotation would publish duplicates
+of work that already exists somewhere else.
