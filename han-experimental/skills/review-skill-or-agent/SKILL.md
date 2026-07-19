@@ -126,8 +126,8 @@ reviewers ran without branch context, and proceed.
 Run `${CLAUDE_SKILL_DIR}/scripts/detect-guidance-and-type-context.sh "$target"` and capture its `key: value` output.
 Every run emits `target-path` (the resolved target, which differs from `$target` when a `SKILL.md` path was redirected
 to its skill directory), `target-type`, and `structural-signal`; a `skill` or `agent` target also emits
-`reference-count`, `has-scripts`, `body-line-count`, `guidance-root`, `guidance-complete`, and, once guidance is
-located, `guidance-subtree`. A guidance-halt run also emits `guidance-missing` (the absent required files) and/or
+`reference-count`, `has-scripts`, `body-line-count`, `guidance-root`, and `guidance-complete`. A guidance-halt run also
+emits `guidance-missing` (the absent required files) and/or
 `guidance-note` (a present-but-unresolvable hint); these carry the halt Detail below. If the script cannot be run, its
 output does not parse as `key: value` lines, or a key the routing below reads is absent (a truncated run), **halt** with
 the detector failure as the reason.
@@ -141,7 +141,7 @@ the detector failure as the reason.
   target is neither.
 - any other value → **halt** (unrecognized detector output).
 
-**Guidance halt:** if `guidance-root: none`, the type subtree is absent, or `guidance-complete` is not `true`, **halt**
+**Guidance halt:** if `guidance-root: none` or `guidance-complete` is not `true`, **halt**
 with required guidance, the paths searched, and any missing files as the reason.
 
 ## Step 3: Classify the Artifact and Select the Roster
@@ -162,19 +162,18 @@ under-dispatching is recoverable by re-running, while over-dispatching burns tok
 always-on conformance & quality reviewer's structural backstop (plus the orchestrator's Step 3.5 pass) covers any lens
 left un-dispatched.
 
-- **Always:** a conformance & quality reviewer, a bloat & restatement reviewer, and a fresh-eyes generalist
-  (`han-core:junior-developer`). The conformance & quality reviewer owns guidance conformance, the execution-breaking
-  classes, internal correctness, and fitness for purpose; its brief carries the ordered procedure it walks.
+- **Always:**
+  - `general-purpose` — conformance & quality reviewer.
+  - `general-purpose` — bloat & restatement reviewer.
+  - `han-core:junior-developer` — fresh-eyes generalist.
 - **Conditional — include a reviewer when either its detector fact or your classification calls for it (the gate is
   additive):**
   - `han-core:user-experience-designer` — `operator-interaction: yes`.
   - `han-core:edge-case-explorer` — `control-flow: yes`.
-  - a **skill/tool seam reviewer** (`general-purpose`) — `has-scripts: true` (detector) or
-    `reaches-external-tools: yes`.
-  - `han-core:adversarial-security-analyst` — `has-scripts: true` (detector) or `handles-untrusted-input: yes`.
+  - a **skill/tool seam reviewer** (`general-purpose`) — `has-scripts: true` or `reaches-external-tools: yes`.
+  - `han-core:adversarial-security-analyst` — `has-scripts: true` or `handles-untrusted-input: yes`.
   - `han-core:content-auditor` — `$scope = change` (it needs the prior version to catch a dropped rule).
-  - a **dispatch & prompt reviewer** (`general-purpose`) — `dispatches-sub-agents: yes` (a roster or fan-out, not a
-    single one-shot dispatch).
+  - a **dispatch & prompt reviewer** (`general-purpose`) — `dispatches-sub-agents: yes`.
 
 State the selected roster, one line per selected reviewer, with the gate that included it. A small prose-only skill or
 agent — no scripts, no external-tool reach, no sub-agent dispatch, and no interaction or control-flow signal — draws
@@ -218,11 +217,8 @@ Launch every selected reviewer in parallel, in a single message, via the `Agent`
 and reuse it verbatim across reviewers, per the Sub-agent prompt's **compose once, reuse verbatim** rule; vary only the
 **dispatch header** naming:
 
-- **Role brief** — the reviewer's file under `references/briefs/`: `conformance-and-quality.md`, `bloat.md`,
-  `generalist.md`, `ux.md`, `edge-case.md`, `seam.md`, `security.md`,
-  `content-auditor.md`, `dispatch.md`.
-- **Guidance path** — `{guidance-subtree}` for every reviewer except the conformance & quality, bloat, and dispatch &
-  prompt reviewers, which get `{guidance-root}`.
+- **Role brief** — the reviewer's file under `references/briefs/`.
+- **Guidance path** — `{guidance-root}` for every reviewer.
 - **Scope** — `$scope`; under change scope, also the `$diff` path. The content-auditor and bloat briefs state their own
   diff handling and override that default.
 - **Absent backstop lenses** (conformance & quality reviewer only) — resolve `{absent-backstop-lenses}` to the
@@ -270,8 +266,7 @@ findings stay the input you de-duplicate, classify, and tier.
 ## Step 6: Validate the Finding List
 
 Dispatch one `han-core:adversarial-validator` via the `Agent` tool. Give it the shared discipline and the validator
-prompt (not the reviewer prompt), its brief by
-path — `references/briefs/validator.md`, which you do not read — the consolidated finding list (task ID, severity,
+prompt, its brief by path — `references/briefs/validator.md`, the consolidated finding list (task ID, severity,
 consequence class, containment modifiers, location, quote, claim, rationale each), and `$scope` (with the `$diff` path
 when `$scope = change`). **Skip only when there are zero defect findings and zero bloat findings**; a skip never clears
 a `$gaps` entry. Retry rule: the validator is retry-eligible; on a second no-return, add a validator gap to `$gaps` and

@@ -21,7 +21,7 @@ run: read this file once, resolve its per-run values once, and reuse the result 
 The only thing you fill per reviewer is the **dispatch header** appended after the reviewer prompt:
 
 > - **Role brief:** `<absolute path to references/briefs/<name>.md>`
-> - **Guidance path:** `<guidance-subtree | guidance-root>` (absolute)
+> - **Guidance path:** `{guidance-root}` (absolute)
 > - **Scope:** `<whole-artifact | change>` (under change scope, also **Diff:** `<diff-path>`)
 > - **Absent backstop lenses:** `<lens | none>` (conformance & quality reviewer only)
 

@@ -258,8 +258,6 @@ else
   REQUIRED=(agent-domain-focus.md agent-description-length.md agent-model-selection.md agent-external-files.md multi-agent-economics.md graceful-degradation.md)
 fi
 
-emit guidance-subtree "$SUBTREE"
-
 if [ ! -d "$SUBTREE" ] || [ ! -f "$GUIDANCE_ROOT/plugin-entity-taxonomy.md" ]; then
   emit guidance-complete false
   emit guidance-missing "type subtree $SUBTREE or plugin-entity-taxonomy.md absent"

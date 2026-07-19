@@ -1,20 +1,18 @@
 # Bloat and Restatement Classification
 
-Run the artifact twice, biggest fish first.
+Duplication sorts into two sizes.
 
-**Pass A — global (big fish).** Read the whole artifact and find duplication whose unit is a _pattern or a section_, not
-a sentence: the same rule, control structure, or block expressed in several places — whether those places are sibling
-items within one section (a roster of role briefs, a set of cases) or patterns spread across steps and files. This pass
-reads the whole artifact **even in a change review** — accumulated structural drift is invisible in a single diff, so
-the global pass is never scoped to the changed regions, and its change-scope findings are advisory. A big-fish finding
-names the consolidation: the one place the rule should live, and the references that replace the copies.
+**Big fish** — duplication whose unit is a _pattern or a section_, not a sentence: the same rule, control structure, or
+block in several places, whether sibling items within one section (a roster of role briefs, a set of cases) or patterns
+split across steps and files. A big-fish finding names the consolidation: the one place the rule should live, and the
+references that replace the copies.
 
-**Pass B — local (small fish).** Only in regions no big fish subsumes, find local restatement: a rule re-explained a
-sentence or step later, filler, negative-space narration. A local instance that falls inside a big fish's span is rolled
-up into that big fish, not listed again (region-scoped subsumption); local findings outside any big fish still stand.
+**Small fish** — local restatement in a single place: a rule re-explained a sentence or step later, filler,
+negative-space narration. A small fish inside a big fish's span is rolled up into it, not listed again (region-scoped
+subsumption); small fish outside any big fish stand.
 
-Severity within either pass is driven by what the bloat _does_ — mislead, tax attention, or merely add a line — not by
-which pass found it.
+Severity is driven by what the bloat _does_ — mislead, tax attention, or merely add a line — not by which pass surfaced
+it.
 
 ## Warranted duplication is not a finding
 
@@ -74,7 +72,7 @@ argument does not extend to references or skill-local scripts, which have no suc
 For each candidate, first ask its **scope**: does the same thing live in several places or across steps (a big fish,
 Pass A), or is it a single local line (a small fish, Pass B)? Then ask what it **does**: mislead (Critical), tax
 attention or repeat a documented rule (Warning), or add one self-evident, filler, misplaced, or negative-space line
-(Suggestion). Report big fish first.
+(Suggestion).
 
 The reader-reaction test still applies: if a sentence makes a capable reader think "you just said that," "well, duh,"
 "I've never seen that and don't need it," or "nothing raised that," it is bloat and cutting it loses no instruction.

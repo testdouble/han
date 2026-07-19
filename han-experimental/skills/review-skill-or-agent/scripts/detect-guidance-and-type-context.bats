@@ -231,7 +231,7 @@ write_plugin_json() {
   [ "$(get "$out" guidance-root)" = none ]
 }
 
-@test "agent target resolves the agent subtree and reports complete" {
+@test "agent target resolves guidance root and reports complete" {
   P=$TMPROOT/g5
   SCRIPT=$(install_script "$P")
   refs="$P/han-plugin-builder/skills/guidance/references"
@@ -240,7 +240,7 @@ write_plugin_json() {
   for f in $AGENT_REQUIRED; do : >"$refs/agent-building-guidelines/$f"; done
   mkagent "$P/target/agents/a.md" 'name: a\ndescription: valid.\ntools: Read\n'
   out=$("$SCRIPT" "$P/target/agents/a.md")
-  [ "$(get "$out" guidance-subtree)" = "$refs/agent-building-guidelines" ] &&
+  [ "$(get "$out" guidance-root)" = "$refs" ] &&
     [ "$(get "$out" guidance-complete)" = true ]
 }
 
@@ -562,14 +562,13 @@ STUB
     ! printf '%s\n' "$out" | grep -qE '^guidance-note:'
 }
 
-@test "mismatch target emits no roster/guidance-subtree keys" {
+@test "mismatch target emits no roster keys" {
   mkdir -p "$TMPROOT/c48/nodir"
   out=$("$SRC" "$TMPROOT/c48/nodir")
   [ "$(get "$out" target-type)" = mismatch ] &&
     [ "$(keycount "$out" reference-count)" = 0 ] &&
     [ "$(keycount "$out" has-scripts)" = 0 ] &&
     [ "$(keycount "$out" body-line-count)" = 0 ] &&
-    [ "$(keycount "$out" guidance-subtree)" = 0 ] &&
     [ "$(get "$out" guidance-root)" = none ]
 }
 

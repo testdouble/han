@@ -7,7 +7,7 @@ capstone, forcing the two dimensions a loose review skims (internal correctness 
 rather than items you might not reach.
 
 **How you tier.** The steps carry the action and the order; read each full rule from the checklist item it names and the
-guidance under `{guidance-root}` (your dispatch header hands you the root, not a type subtree), and cite the rule each
+guidance under `{guidance-root}`, and cite the rule each
 finding breaks. Tier through the
 [finding-classification.md](../finding-classification.md) spine — see **After the track** below.
 
@@ -33,10 +33,10 @@ Walk these five steps as loops over concrete things in the artifact — enumerat
 
 1. **Referenced files.** List every file a step or dispatched agent is told to read (`references/`, `scripts/`,
    `assets/`, a template); confirm each exists. A step that reads a missing file is BLOCKS → Critical
-   (`skill-reference-files.md`).
+   (`skill-building-guidance/skill-reference-files.md`).
 2. **Agent dispatches.** For each sub-agent dispatch, check three things in order — do not stop at the first two:
    - **Name** — the qualified `defining-plugin:agent-name`, never bare or a meta-plugin prefix? A bare or unresolvable
-     name is BLOCKS → Critical (`agent-dispatch-namespacing.md`).
+     name is BLOCKS → Critical (`skill-building-guidance/agent-dispatch-namespacing.md`).
    - **Existence** — does that agent exist in a declared dependency?
    - **Capability** — open the dispatched agent's definition, read its `tools` (or `allowed-tools`), and check it grants
      what the dispatch instructions tell the agent to do. An agent told to **write an output file must have `Write`**;
@@ -47,10 +47,10 @@ Walk these five steps as loops over concrete things in the artifact — enumerat
 3. **Script invocations.** For every script the skill tells an agent or operator to run: does it carry the full
    invocation contract (`${CLAUDE_SKILL_DIR}` path, arguments in order, outputs to capture), and does the skill branch
    only on keys or exit codes the script emits? A script named without its syntax, or a branch on a key it never emits,
-   is BLOCKS → Critical (`script-execution-instructions.md`).
+   is BLOCKS → Critical (`skill-building-guidance/script-execution-instructions.md`).
 4. **Tool grants against usage.** For each tool in `allowed-tools`, find the step that uses it: a granted tool no step
    uses is MISLEADS → Warning; a step needing an ungranted tool is BLOCKS → Critical; Bash entries split at the right
-   granularity (`allowed-tools-bash-permissions.md`, `skill-frontmatter-fields.md`). (The mechanical
+   granularity (`skill-building-guidance/allowed-tools-bash-permissions.md`, `skill-building-guidance/skill-frontmatter-fields.md`). (The mechanical
    `AskUserQuestion`/angle-bracket/reserved-name scans are the orchestrator's.)
 5. **Instruction routing.** Trace the value handoffs: does every step that produces a binding set it before a later step
    consumes it? A consumed unbound placeholder, or a routing gap down the wrong branch, is CORRUPTS (or BLOCKS if the
@@ -80,13 +80,13 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 9. **Entity fit** — a flowchartable process, not a judgment layer that should be an agent (`plugin-entity-taxonomy.md`).
 10. **Description** — content only: four components, trigger words in prose, both-directions sibling boundaries; length
-    is the orchestrator's (`skill-description-frontmatter.md`).
+    is the orchestrator's (`skill-building-guidance/skill-description-frontmatter.md`).
 11. **Naming** — the process/gerund and dependency-prefix judgment; the mechanical name checks are the orchestrator's
-    (`naming-conventions.md`).
+    (`skill-building-guidance/naming-conventions.md`).
 12. **Discovery and degradation** — dynamic discovery, graceful degradation, error handling on tool-dependent steps; a
-    missing fallback that produces a wrong result is CORRUPTS (`dynamic-project-discovery.md`,
-    `graceful-degradation.md`).
-13. **Tests** — each use case maps to a triggering and a functional test (`success-criteria-and-testing.md`).
+    missing fallback that produces a wrong result is CORRUPTS (`skill-building-guidance/dynamic-project-discovery.md`,
+    `skill-building-guidance/graceful-degradation.md`).
+13. **Tests** — each use case maps to a triggering and a functional test (`skill-building-guidance/success-criteria-and-testing.md`).
 
 ### Part 4 — Fitness for purpose (the capstone; give it a genuine, forced read)
 
@@ -112,10 +112,10 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 1. **Tool set against usage.** For each tool in `tools`, find where the body uses it: an unused grant is MISLEADS →
    Warning; a step needing an ungranted tool is BLOCKS → Critical. No `Agent` tool unless the agent's protocol
-   dispatches sub-agents (`agent-external-files.md`, `agent-dispatch-namespacing.md`).
+   dispatches sub-agents (`agent-building-guidelines/agent-external-files.md`, `skill-building-guidance/agent-dispatch-namespacing.md`).
 2. **Self-containment.** No `references/` or `scripts/` folder and no context injection; all content inlined;
    frontmatter uses `tools` (not `allowed-tools`); no field plugins ignore. A dependency on an external file or ignored
-   field breaks the agent as shipped — BLOCKS → Critical (`agent-external-files.md`).
+   field breaks the agent as shipped — BLOCKS → Critical (`agent-building-guidelines/agent-external-files.md`).
 3. **External tool wiring.** Where the body issues an external CLI or MCP call, confirm it is wired coherently (deep
    interface-correctness is the seam reviewer's when dispatched — raise only a wiring break visible without the tool's
    live interface).
@@ -133,23 +133,23 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 Walk each; read the rule from the named checklist item and cite it. A miss is MISLEADS → Warning unless noted.
 
 6. **Entity fit and single role** — a judgment layer, one narrow domain, only-generates-or-only-evaluates
-   (`plugin-entity-taxonomy.md`, `agent-domain-focus.md`).
+   (`plugin-entity-taxonomy.md`, `agent-building-guidelines/agent-domain-focus.md`).
 7. **Role identity** — opening paragraph under 50 tokens: domain, task, perspective, no filler
-   (`agent-domain-focus.md`).
+   (`agent-building-guidelines/agent-domain-focus.md`).
 8. **Domain vocabulary and anti-patterns** — 15–30 precise terms and 5–10 named anti-patterns with detection signals,
-   inlined (`agent-domain-focus.md`).
+   inlined (`agent-building-guidelines/agent-domain-focus.md`).
 9. **Description** — content only: four components, near-sibling boundaries both directions, vocabulary stays in the
-   body; length is the orchestrator's (`agent-description-length.md`).
-10. **Model selection** — `model` explicit, matched to load, chosen on capability not cost (`agent-model-selection.md`).
-11. **Graceful degradation** — every tool-dependent step checks availability inline (`graceful-degradation.md`).
+   body; length is the orchestrator's (`agent-building-guidelines/agent-description-length.md`).
+10. **Model selection** — `model` explicit, matched to load, chosen on capability not cost (`agent-building-guidelines/agent-model-selection.md`).
+11. **Graceful degradation** — every tool-dependent step checks availability inline (`agent-building-guidelines/graceful-degradation.md`).
 12. **Economic justification** — clears the bar over a single well-prompted agent or a tweak to an existing one
-    (`multi-agent-economics.md`).
+    (`agent-building-guidelines/multi-agent-economics.md`).
 
 ### Part 4 — Fitness for purpose (the capstone)
 
 13. Same capstone as the skill track: hold the `description` against the body — every claimed behavior has a mechanism
     that produces it reliably, and the stated method matches the actual one. No mechanism → conformance miss; shallow
-    wiring or a method/mechanism mismatch → chronic-CORRUPTS fitness finding (`agent-domain-focus.md`).
+    wiring or a method/mechanism mismatch → chronic-CORRUPTS fitness finding (`agent-building-guidelines/agent-domain-focus.md`).
 
 ### Part 5 — Seam backstop (conditional)
 
