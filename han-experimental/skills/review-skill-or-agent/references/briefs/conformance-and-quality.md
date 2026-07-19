@@ -16,7 +16,7 @@ frontmatter/naming/description-length/oversize-body and progressive-disclosure c
 economy and cohesion/decomposition (bloat reviewer); fresh-eyes clarity and flow (generalist); and the specialist
 domains when their reviewer is on the roster — operator interaction (UX), deep control-flow probing (edge-case),
 artifact-design safety (security), dispatch economics (dispatch & prompt), dropped content (content-auditor), and the
-seam's deep judgment (seam reviewer, unless your dispatch header names it as the absent backstop lens).
+seam's deep judgment (seam reviewer, unless the `absent-backstop-lens` signal is `seam`).
 
 ## Before you start
 
@@ -102,9 +102,9 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 ### Part 5 — Seam backstop (conditional)
 
-15. **Only if** your dispatch header named the `skill/tool seam` reviewer in `{absent-backstop-lenses}` as left off this
-    run: run the seam item's always-applicable structural check — context-injection load-safety and script-contract form
-    — from the checklist's Skill/tool seam item. Otherwise skip; that lens covers it.
+15. **Only if** the `absent-backstop-lens` signal is `seam` (the seam reviewer was left off this run): run the seam
+    item's always-applicable structural check — context-injection load-safety and script-contract form — from the
+    checklist's Skill/tool seam item. Otherwise skip; that lens covers it.
 
 ## Agent track
 
@@ -153,10 +153,10 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 ### Part 5 — Seam backstop (conditional)
 
-14. **Only if** your dispatch header named the `skill/tool seam` reviewer in `{absent-backstop-lenses}` as left off this
-    run: item 3's structural check is then the whole external-tool coverage — flag in your report that deep
-    interface-correctness (right subcommand, flags) went unchecked, since that is the seam reviewer's and cannot be done
-    without the tool's live interface. Otherwise skip; that lens covers it.
+14. **Only if** the `absent-backstop-lens` signal is `seam` (the seam reviewer was left off this run): item 3's
+    structural check is then the whole external-tool coverage — flag in your report that deep interface-correctness
+    (right subcommand, flags) went unchecked, since that is the seam reviewer's and cannot be done without the tool's
+    live interface. Otherwise skip; that lens covers it.
 
 ## After the track — tier, form, hand off
 

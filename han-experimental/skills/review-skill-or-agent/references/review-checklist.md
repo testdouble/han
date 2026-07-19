@@ -8,7 +8,7 @@ items, and the orchestrator emits the mechanical checks and the progressive-disc
 conformance & quality reviewer defers the seam item's deep judgment to its lens and runs the seam's always-applicable
 structural check only when that lens is named in its brief as left off the roster, skipping it when the seam reviewer is
 dispatched — so no rule goes unchecked and no dispatched lens is re-checked. Each specialist grounds its owned item
-against the guidance the item names (read it from the guidance path your dispatch header names) and cites the rule when
+against the guidance the item names (read it from the guidance path your reviewer prompt names) and cites the rule when
 raising a finding. Apply
 the section matching the resolved `target-type`, plus the cross-cutting lenses when their signal holds. Severity per
 [finding-classification.md](finding-classification.md).

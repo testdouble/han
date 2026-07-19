@@ -214,18 +214,11 @@ nothing, so the report can note the mechanical and progressive-disclosure checks
 ## Step 4: Dispatch the Review Roster
 
 Launch every selected reviewer in parallel, in a single message, via the `Agent` tool. Compose the reviewer prompt once
-and reuse it verbatim across reviewers, per the Sub-agent prompt's **compose once, reuse verbatim** rule; vary only the
-**dispatch header** naming:
-
-- **Role brief** — the reviewer's file under `references/briefs/`.
-- **Guidance path** — `{guidance-root}` for every reviewer.
-- **Scope** — `$scope`; under change scope, also the `$diff` path. The content-auditor and bloat briefs state their own
-  diff handling and override that default.
-- **Absent backstop lenses** (conformance & quality reviewer only) — resolve `{absent-backstop-lenses}` to the
-  `skill/tool seam` reviewer when you did not select it, else `none`.
-
-Resolve every per-run value before composing — including whether the branch-context paragraph applies, per the
-compose-once rule — and every dispatch-header placeholder before sending.
+and reuse it verbatim across reviewers, per the Sub-agent prompt's **compose once, reuse verbatim** rule. Resolve every
+per-run value once before composing: `{guidance-root}`; `$scope`, plus `$diff` under change scope; the
+`absent-backstop-lens` signal — `seam` when you did not select the seam reviewer, else `none`; and whether the
+branch-context paragraph applies. The only thing that varies per reviewer is the **dispatch header** appended after the
+prompt: the reviewer's **role brief**, its file under `references/briefs/`, and nothing else.
 
 Retry rule: only the **conformance & quality reviewer** is retry-eligible, since it is the sole reviewer-owner of the
 execution-breaking finding classes; its second no-return records a `$gaps` entry that forces the blocked recommendation
@@ -244,7 +237,7 @@ findings stay the input you de-duplicate, classify, and tier.
   the persona-only lenses (security, edge-case, content-auditor) own no checklist item, and the mechanical and
   progressive-disclosure findings are the orchestrator's (Step 3.5). A second reviewer on an owned item references the
   owner's finding instead of repeating it. The conformance & quality reviewer backstops the seam item only when that
-  lens is off the roster (Step 4 names the absent lens), so a backstop finding and the specialist's own never collide on
+  lens is off the roster (the `absent-backstop-lens` signal is `seam`), so a backstop finding and the specialist's own never collide on
   the same item; when one defect surfaces through two different items — a missing guard raised as both
   graceful-degradation by the conformance & quality reviewer and a seam miss by the seam reviewer — keep the
   specialist's and reference it from the other.

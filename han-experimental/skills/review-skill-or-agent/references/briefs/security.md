@@ -6,4 +6,6 @@ without the isolation discipline a safe design needs. No guidance file covers ar
 judgment: cite the specific unsafe path in the artifact, not a rule. Your findings are CORRUPTS (acute); tier them
 through their security row. For each unsafe path, write out a concrete exploit payload before you tier it and state its
 reach: a demonstrated exploit on externally-reachable input is Critical (uncontained); an undemonstrated discipline gap,
-or a demonstrated payload only you can feed on your own machine, is Warning (contained).
+or a demonstrated payload only you can feed on your own machine, is Warning (contained). Frontmatter and tool-grant
+conformance belong to the conformance & quality reviewer; don't raise them — touch a grant only through your own lens, as
+a demonstrated security exposure.
