@@ -164,8 +164,7 @@ left un-dispatched.
 
 - **Always:** a conformance & quality reviewer, a bloat & restatement reviewer, and a fresh-eyes generalist
   (`han-core:junior-developer`). The conformance & quality reviewer owns guidance conformance, the execution-breaking
-  classes, internal correctness, and fitness for purpose, and walks the procedure in
-  `references/conformance-and-quality-procedure.md`.
+  classes, internal correctness, and fitness for purpose; its brief carries the ordered procedure it walks.
 - **Conditional — include a reviewer when either its detector fact or your classification calls for it (the gate is
   additive):**
   - `han-core:user-experience-designer` — `operator-interaction: yes`.
