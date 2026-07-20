@@ -1,7 +1,11 @@
 # Plugin README
 
-Every plugin needs a README.md at its root directory for human readers on GitHub. The README is not loaded by the plugin
-system. It exists purely for discoverability and onboarding when someone browses the repository.
+Every plugin needs a `README.md` at its root directory for human readers on GitHub. The README is not loaded by the
+plugin system. It exists purely for discoverability and onboarding when someone browses the repository.
+
+The README is a light front door, not a second copy of the docs. It orients the reader and points into the canonical
+long-form docs that live beside it under the plugin's own `docs/` folder. The long-form doc stays the single source of
+truth for a skill or agent; the README stays the single source of truth for what its plugin does.
 
 ## The Rules
 
@@ -15,141 +19,104 @@ See [Naming Conventions](../han-plugin-builder/skills/guidance/references/skill-
 for details.
 
 ```
-han/
+han-coding/
   README.md              # Plugin README. For humans on GitHub.
   .claude-plugin/
     plugin.json
+  docs/
+    skills/
+      code-review.md     # Long-form skill doc. For humans on GitHub.
+    agents/              # Only for plugins that own agents.
   skills/
-    investigate/
-      SKILL.md            # Skill documentation. Loaded by plugin system.
+    code-review/
+      SKILL.md           # Skill definition. Loaded by plugin system.
       references/
         template.md
 ```
 
-### Rule: Include only entity sections the plugin has
+### Rule: Open with a one-paragraph what/how/why
 
-The README may include sections for Skills, Custom Agents, Hooks, MCP, and LSP, but only include sections for entity
-types the plugin provides. Every plugin has at least one skill, so the Skills section is always present. Don't include
-empty sections.
+Start with the plugin's H1, then one paragraph that says what the plugin does, how it does it, and why a reader would
+reach for it. Keep it to a paragraph. The per-skill detail belongs in each skill's long-form doc, not here.
 
-**Before (empty sections):**
+### Rule: State bundled-vs-opt-in and dependencies
+
+State whether the `han` meta-plugin bundles this plugin or it is installed on its own, and name its dependencies. An
+opt-in plugin that needs an MCP server says so. A reader who lands directly on one plugin README needs to know whether
+installing the meta-plugin already brought this plugin in.
+
+```markdown
+**Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication` and `han-core`.
+```
+
+```markdown
+**Opt-in.** Installed on its own, not bundled by the `han` meta-plugin. Depends on `han-core` and requires a configured
+Linear MCP server.
+```
+
+### Rule: List skills as scent lines that link to the long-form doc
+
+List every skill as a one-line scent that links to that skill's long-form doc under this plugin's `docs/skills/`. Reuse
+the long-form doc's own canonical summary line rather than writing a fresh one, so the README, the
+[skills index](skills/README.md), and the long-form doc do not drift. The long-form summary line is the canonical scent.
+
+Do not carry a per-skill paragraph, a files line, or example prompts. That detail lives in the long-form doc, and
+repeating it here re-creates the duplication a reader has to keep in sync.
 
 ```markdown
 ## Skills
 
-- `/brand-messaging` - Brand voice and messaging framework
-
-## Custom Agents
-
-(none)
-
-## Hooks
-
-(none)
+- [`/code-review`](docs/skills/code-review.md) — Run a comprehensive code review on local source files.
+- [`/investigate`](docs/skills/investigate.md) — Evidence-based investigation of bugs, integrations, and unexpected
+  behavior.
 ```
 
-**After (only relevant sections):**
+A plugin whose skills build on each other's output (one skill writes a reference file a later skill consumes) may add a
+short ordered "Getting started" line before the skills list. Skip it when the skills are independent.
+
+### Rule: List owned agents, or note shared-agent dispatch
+
+Only `han-core` and `han-communication` own agents. Their READMEs add an agents section listing each owned agent as a
+scent line linking to its long-form doc under `docs/agents/`.
+
+Every other plugin owns no agents. Its README omits an agents section and instead notes that its skills dispatch shared
+agents, which live in `han-core` and, for the readability-editor, in `han-communication`. Do not list the dispatched
+agents as if the plugin owned them.
 
 ```markdown
-## Skills
-
-- `/brand-messaging` - Brand voice and messaging framework
+Its skills dispatch shared agents that live in `han-core` (and, for the readability-editor, in `han-communication`).
 ```
 
-### Rule: List all skills with slash-command syntax
+### Rule: Carry minimal lateral navigation
 
-In the Skills section, list every skill using `/skill-name` format with a one-line description. Condense the description
-from the skill's frontmatter. Keep it shorter than the full frontmatter description but still clear about what the skill
-does.
+Close with a short navigation line up to the plugin index and the repository root, and across to the workflows page.
+Keep it to those hops. The reader gets the cross-plugin catalog and the composition view without the README restating
+either.
 
 ```markdown
-## Skills
-
-- `/code-review` - Run a full code review on the current branch's changes
-- `/investigate` - Evidence-based investigation of issues and bugs
-- `/project-discovery` - Discover project attributes and write a static reference
+[Plugin index](../docs/choosing-a-han-plugin.md) · [Repo root](../README.md) · [Workflows](../docs/workflows.md)
 ```
 
-### Rule: Add Getting Started for plugins with guided workflows
+### Rule: The meta-plugin README omits skills and agents sections
 
-Include a Getting Started section between the description and the Skills list when skills build on each other's output.
-For example, one skill might write a reference file that other skills then consume. Number the steps in the recommended
-order and explain what each step produces and why it matters for subsequent steps.
-
-Single-skill plugins and plugins where all skills are independent skip this section entirely.
-
-**When to include:**
-
-```markdown
-# Han Plugin
-
-{description}
-
-## Getting Started <!-- Skills have dependency chains -->
-
-### 1. Discover Your Project
-
-...
-
-## Skills
-```
-
-**When to skip:**
-
-```markdown
-# Brand Messaging Plugin
-
-{description}
-
-## Skills <!-- Single skill, no dependencies -->
-```
-
-### Rule: Skills Reference provides detailed per-skill documentation
-
-After the Installation section, include a Skills Reference section with detailed documentation for each skill. Each
-entry includes:
-
-1. A heading with the slash-command name and display name.
-2. A paragraph description (more detailed than the one-liner in the Skills section).
-3. A **Files** line listing `SKILL.md` and any reference files.
-4. 2-3 **Example prompts** showing common use cases.
-
-Separate entries with horizontal rules (`---`).
-
-```markdown
-## Skills Reference
-
-### `/investigate` - Evidence-based Investigation
-
-Evidence-based investigation of issues, bugs, API calls, integrations, and other aspects of software development that
-need a deep dive to find the root cause and solutions. Use when you need in-depth understanding of problems, a full
-analysis of the reasons, and an evidence-based solution with adversarial validation.
-
-**Files:** `SKILL.md`, `references/template.md`
-
-**Example prompts:**
-
-- `/investigate`. _"Why are webhook deliveries failing intermittently?"_
-- `/investigate`. _"Users are seeing stale data after updating their profile"_
-- `/investigate`. _"The background job queue is backing up during peak hours"_
-
----
-
-### `/project-discovery` - Project Discovery
-
-...
-```
+The `han` meta-plugin ships no skills and no agents of its own. Its README describes what installing the meta-plugin
+brings in, names the plugins it bundles, and points to the plugin index and the workflows page. It carries neither a
+skills section nor an agents section, because it owns neither.
 
 ### Rule: Use the template
 
-Follow the structural template at `templates/plugin-readme-template.md`. The template includes HTML comments marking
-which sections are optional and should be removed when not applicable.
+Follow the structural template at
+[`plugin-readme-template.md`](../han-plugin-builder/skills/guidance/references/templates/plugin-readme-template.md). It
+lays out the light front-door shape with HTML comments marking the sections a given plugin includes or omits.
 
 ## Summary Checklist
 
 1. Every plugin has a root-level `README.md`. No READMEs inside skill directories.
-2. Only include entity sections (Skills, Agents, Hooks, MCP, LSP) that the plugin provides.
-3. List all skills with `/skill-name` format and condensed one-line descriptions.
-4. Include Getting Started only when skills have dependency chains.
-5. Skills Reference has paragraph descriptions, Files lines, and example prompts for each skill.
-6. Follow the template at `templates/plugin-readme-template.md`.
+2. Open with the H1 and a one-paragraph what/how/why.
+3. State bundled-vs-opt-in and dependencies, including any required MCP server.
+4. List skills as scent lines that reuse the long-form doc's summary line and link into `docs/skills/`.
+5. List owned agents (`han-core`, `han-communication` only), or note shared-agent dispatch for every other plugin.
+6. Close with lateral navigation to the plugin index, the repository root, and the workflows page.
+7. The `han` meta-plugin omits the skills and agents sections.
+8. Follow the light template at
+   [`plugin-readme-template.md`](../han-plugin-builder/skills/guidance/references/templates/plugin-readme-template.md).
