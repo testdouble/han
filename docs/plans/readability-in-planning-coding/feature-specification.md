@@ -99,7 +99,7 @@ skill's existing workflow at the points named in the Coordinations section.
 | ------------------- | --------- | ----------- | ---------------------------------- |
 | `han-communication:readability-guidance` skill | outbound | Each target skill invokes it to source the standard into context. | Must run before the target skill drafts its deliverable. |
 | `han-communication:readability-editor` agent | outbound | The five prose-document skills dispatch it for one adversarial rewrite pass, passing the named reader and no rule path. | Must run after the final content exists and after any final synthesis or review step, and before the self-check. |
-| The readability standard's scope text (`readability-rule.md`) | inbound and updated | The seven skills reference the single canonical standard rather than vendoring it. This work also clarifies the standard's "who reads reader-facing output" scope text so Han's plans-of-record are recognized as reader-facing ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)). | A change to the standard reaches all seven skills with no edit to them, because they reference the one canonical copy ([D7](artifacts/decision-log.md#d7-reference-the-single-canonical-standard-never-vendor-it)). |
+| The readability standard's scope text (`readability-rule.md`) and the `readability-guidance` skill's in-context summary | inbound and updated | The seven skills reference the single canonical standard rather than vendoring it. This work also clarifies the standard's "who reads reader-facing output" scope text so Han's plans-of-record are recognized as reader-facing, and echoes that clarification in the `readability-guidance` skill's in-context summary so both surfaces agree ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)). | A change to the standard reaches all seven skills with no edit to them, because they reference the one canonical copy ([D7](artifacts/decision-log.md#d7-reference-the-single-canonical-standard-never-vendor-it)). |
 
 ## Out of Scope
 
@@ -117,11 +117,9 @@ skill's existing workflow at the points named in the Coordinations section.
 
 ## Open Items
 
-- **OI-1:** Whether the D9 scope-text clarification should also be reflected in the `readability-guidance` skill's own
-  in-context summary of who is reader-facing, or only in the canonical `readability-rule.md`.
-  - **Resolves when:** implementation confirms whether the guidance skill restates the scope test verbatim or points to
-    the rule.
-  - **Blocks implementation:** No.
+None. The one prior open item — whether the scope-text clarification is also reflected in the `readability-guidance`
+skill's in-context summary — is now decided: the clarification is echoed there as well as in the canonical
+`readability-rule.md`, so both surfaces agree ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)).
 
 ## Summary
 
@@ -136,4 +134,4 @@ skill's existing workflow at the points named in the Coordinations section.
 - **Key adjustments from review:** Added a direct `han-communication` dependency for `han-planning`, reframed the
   full/lightweight split around deliverable type rather than "synthesis pass", and reconciled the feature against the
   standard's own reader-facing scope text — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 1
+- **Remaining open items:** 0

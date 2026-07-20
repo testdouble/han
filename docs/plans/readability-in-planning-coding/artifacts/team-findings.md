@@ -14,10 +14,12 @@ Records every finding raised by the review team and how each was resolved. Behav
   artifact types, so the standard's own text reads as excluding them.
 - **Resolution:** Escalated to the user. User chose to keep all seven in scope and add a narrow clarification to the
   scope text so a human-read plan-of-record is distinguished from a pure pipeline artifact. Captured as D9; the rule
-  clarification is now an in-scope deliverable and the Out of Scope section was narrowed accordingly.
+  clarification is now an in-scope deliverable and the Out of Scope section was narrowed accordingly. On a later user
+  direction, D9 was extended to echo the same clarification in the `readability-guidance` skill's in-context summary, and
+  the prior open item asking whether to do so was resolved and removed.
 - **Resolved by:** user input
 - **Affected decisions:** D9 (new)
-- **Changed in spec:** Outcome, Coordinations, Out of Scope, Summary
+- **Changed in spec:** Outcome, Coordinations, Out of Scope, Open Items, Summary
 
 ### F2: "No dependency change" holds only for direct han-communication dependents
 
