@@ -1,14 +1,14 @@
 # How To: Create a New Skill
 
 A walkthrough for building a new Claude Code skill from scratch with
-[`/skill-builder`](../skills/han-plugin-builder/skill-builder.md). You describe what the skill should do, answer the
+[`/skill-builder`](../../han-plugin-builder/docs/skills/skill-builder.md). You describe what the skill should do, answer the
 interview that walks the skill's design tree decision-by-decision, and end with a real skill on disk that has already
 passed a guidance-conformance review. This is the recipe for _using_ the builder; the
 [skill-building guidance](../../han-plugin-builder/skills/guidance/references/skill-building-guidance/) is canonical for
 the rules the builder enforces.
 
-> See also: [How-to index](./README.md) · [`/skill-builder`](../skills/han-plugin-builder/skill-builder.md) ·
-> [`/guidance`](../skills/han-plugin-builder/guidance.md) · [Create a new agent](./create-a-new-agent.md)
+> See also: [How-to index](./README.md) · [`/skill-builder`](../../han-plugin-builder/docs/skills/skill-builder.md) ·
+> [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) · [Create a new agent](./create-a-new-agent.md)
 
 The happy path below builds a skill into a plugin that already exists. That is the common case: you have a plugin and
 you want to add a slash command to it. When the skill belongs in a brand-new plugin, the [Variations](#variations)
@@ -25,9 +25,9 @@ section covers the one extra thing the builder does for you.
   skill," makes it ask for this first.
 - You have a sense of whether this is a skill at all. A skill is a deterministic, flowchartable process. If the work is
   a judgment layer that reasons over messy input rather than following steps, it is an agent. The builder will stop and
-  redirect you to [`/agent-builder`](../skills/han-plugin-builder/agent-builder.md).
+  redirect you to [`/agent-builder`](../../han-plugin-builder/docs/skills/agent-builder.md).
   [Create a new agent](./create-a-new-agent.md) is the matching guide. When you are not sure which you want,
-  [`/guidance`](../skills/han-plugin-builder/guidance.md) answers "is this better as a skill or an agent?" before you
+  [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) answers "is this better as a skill or an agent?" before you
   start.
 
 ## What you'll end up with
@@ -49,7 +49,7 @@ look at what you have.
 
 ### Stage 1: Frame the skill and name the plugin
 
-1. **Run [`/skill-builder`](../skills/han-plugin-builder/skill-builder.md) with one or two sentences on what the skill
+1. **Run [`/skill-builder`](../../han-plugin-builder/docs/skills/skill-builder.md) with one or two sentences on what the skill
    does and what triggers it.** Lead with the trigger and the outcome, not the mechanism. Two examples that give the
    builder enough to start:
 
@@ -112,12 +112,12 @@ look at what you have.
 
 - **The work turns out to be an agent, not a skill.** If the design tree reveals the work is a judgment layer rather
   than a flowchartable process, the builder stops and redirects you to
-  [`/agent-builder`](../skills/han-plugin-builder/agent-builder.md). Follow the redirect;
+  [`/agent-builder`](../../han-plugin-builder/docs/skills/agent-builder.md). Follow the redirect;
   [Create a new agent](./create-a-new-agent.md) is the matching recipe. Forcing a judgment task into a skill's numbered
   steps produces a brittle skill that does its real work badly.
 
 - **You only want the rules, not a finished skill.** When you are reviewing or hardening an existing skill rather than
-  building a new one, reach for [`/guidance`](../skills/han-plugin-builder/guidance.md) instead. It serves the governing
+  building a new one, reach for [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) instead. It serves the governing
   document for the question you have and cites it, without running an interview. `/guidance init` vendors the builders
   and the guidance into a repo so they run with no dependency on the plugin.
 
@@ -141,9 +141,9 @@ look at what you have.
 
 - [Create a new agent](./create-a-new-agent.md) is the matching recipe when the work is a judgment layer rather than a
   flowchartable process.
-- [`/skill-builder`](../skills/han-plugin-builder/skill-builder.md) is the skill long-form doc, canonical for what the
+- [`/skill-builder`](../../han-plugin-builder/docs/skills/skill-builder.md) is the skill long-form doc, canonical for what the
   builder does on its own.
-- [`/guidance`](../skills/han-plugin-builder/guidance.md) serves the same rules the builder applies; reach for it when
+- [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) serves the same rules the builder applies; reach for it when
   you want a citation, not a finished skill.
 - [Skill-building guidance](../../han-plugin-builder/skills/guidance/references/skill-building-guidance/) is the body of
   rules the interview and review enforce, readable directly.
@@ -154,10 +154,10 @@ look at what you have.
 
 - [Plugin landing page](../../README.md). Where the Han suite starts, and where the install commands live.
 - [How-to index](./README.md). The rest of the end-to-end guides.
-- [`/skill-builder`](../skills/han-plugin-builder/skill-builder.md). The skill long-form doc for the builder this guide
+- [`/skill-builder`](../../han-plugin-builder/docs/skills/skill-builder.md). The skill long-form doc for the builder this guide
   drives.
 - [Create a new agent](./create-a-new-agent.md). The sibling recipe for building an agent with `/agent-builder`.
-- [`/guidance`](../skills/han-plugin-builder/guidance.md). Serves the authoring rules the builder applies, and vendors
+- [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md). Serves the authoring rules the builder applies, and vendors
   the builders into a repo.
 - [Skill-building guidance](../../han-plugin-builder/skills/guidance/references/skill-building-guidance/). The rules the
   builder's interview and review enforce.

@@ -9,7 +9,9 @@ A single changed file can pull multiple entities into scope. Always add every en
 `{plugin}` below means any discovered skill root — every `han-*/skills` directory except `han-plugin-builder/skills`
 (its `guidance` skill is authoring guidance, not a documented product skill). The detect script reports the current list
 between `skill-roots-start` and `skill-roots-end`; read it from there rather than assuming a fixed set, so a newly added
-plugin is covered automatically. Agents live only under the agent root (`han-core/agents`).
+plugin is covered automatically. Agents live under `han-core/agents` and `han-communication/agents` (the
+readability-editor). Long-form docs now live inside the plugin they describe, at `{plugin}/docs/skills/{name}.md` and
+`{plugin}/docs/agents/{name}.md`, beside that plugin's `README.md`.
 
 ## Mapping table
 
@@ -19,10 +21,13 @@ plugin is covered automatically. Agents live only under the agent root (`han-cor
 | `{plugin}/skills/{name}/references/**`                  | skill `{name}`                                         |
 | `{plugin}/skills/{name}/scripts/**`                     | skill `{name}`                                         |
 | `{plugin}/agents/{name}.md`                             | agent `{name}`                                         |
-| `docs/skills/{name}.md`                                 | skill `{name}`                                         |
+| `{plugin}/docs/skills/{name}.md`                        | skill `{name}`                                         |
+| `{plugin}/docs/agents/{name}.md`                        | agent `{name}`                                         |
+| `{plugin}/README.md`                                    | plugin `{plugin}` front door                           |
 | `docs/skills/README.md`                                 | skills-index                                           |
-| `docs/agents/{name}.md`                                 | agent `{name}`                                         |
 | `docs/agents/README.md`                                 | agents-index                                           |
+| `docs/choosing-a-han-plugin.md`                         | plugin-index                                           |
+| `docs/workflows.md`                                     | workflows                                              |
 | `docs/concepts.md`                                      | concepts                                               |
 | `docs/quickstart.md`                                    | quickstart                                             |
 | `docs/sizing.md`                                        | sizing                                                 |
@@ -43,18 +48,20 @@ plugin is covered automatically. Agents live only under the agent root (`han-cor
 
 Some path changes drag additional entities into scope even when those entities' own files were not edited.
 
-- **A new skill added** under `{plugin}/skills/{name}/`: also audit `docs/skills/README.md` (must list it), `CLAUDE.md`
-  (catalog entry), `README.md`, `docs/concepts.md` (all must reference it without a hardcoded count).
+- **A new skill added** under `{plugin}/skills/{name}/`: also audit the plugin's `{plugin}/README.md` (scent line),
+  `docs/skills/README.md` (must list it), `CLAUDE.md` (catalog entry), `README.md`, `docs/concepts.md` (all must
+  reference it without a hardcoded count).
 - **A skill removed or renamed** under `{plugin}/skills/`: same as added, plus every other skill or agent doc whose
   Related Documentation section linked to the old name.
-- **A new agent added** under `han-core/agents/`: also audit `docs/agents/README.md`, `CLAUDE.md` (catalog entry),
-  `README.md` (must reference it without a hardcoded count).
+- **A new agent added** under `han-core/agents/` or `han-communication/agents/`: also audit the plugin's
+  `{plugin}/README.md` (scent line), `docs/agents/README.md`, `CLAUDE.md` (catalog entry), `README.md` (must reference
+  it without a hardcoded count).
 - **An agent removed or renamed**: same as added, plus every skill doc that mentions dispatching the agent.
-- **A skill description (frontmatter) changed**: also audit `docs/skills/README.md` scent line, the skill's long-form
-  `docs/skills/{name}.md` TL;DR, and the `CLAUDE.md` catalog entry. Sibling skills named in the boundary may need their
-  reverse-boundary statement checked.
-- **An agent description (frontmatter) changed**: also audit `docs/agents/README.md` scent line, the agent's long-form
-  `docs/agents/{name}.md` TL;DR.
+- **A skill description (frontmatter) changed**: also audit the plugin's `{plugin}/README.md` scent line,
+  `docs/skills/README.md` scent line, the skill's long-form `{plugin}/docs/skills/{name}.md` TL;DR, and the `CLAUDE.md`
+  catalog entry. Sibling skills named in the boundary may need their reverse-boundary statement checked.
+- **An agent description (frontmatter) changed**: also audit the plugin's `{plugin}/README.md` scent line,
+  `docs/agents/README.md` scent line, the agent's long-form `{plugin}/docs/agents/{name}.md` TL;DR.
 - **A guidance doc renamed or moved**: every other doc that linked to the old path is in scope.
 
 ## Out of scope for this skill
