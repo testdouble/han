@@ -99,7 +99,7 @@ skill's existing workflow at the points named in the Coordinations section.
 | ------------------- | --------- | ----------- | ---------------------------------- |
 | `han-communication:readability-guidance` skill | outbound | Each target skill invokes it to source the standard into context. | Must run before the target skill drafts its deliverable. |
 | `han-communication:readability-editor` agent | outbound | The five prose-document skills dispatch it for one adversarial rewrite pass, passing the named reader and no rule path. | Must run after the final content exists and after any final synthesis or review step, and before the self-check. |
-| The readability standard's scope text (`readability-rule.md`) and the `readability-guidance` skill's in-context summary | inbound and updated | The seven skills reference the single canonical standard rather than vendoring it. This work also clarifies the standard's "who reads reader-facing output" scope text so Han's plans-of-record are recognized as reader-facing, and echoes that clarification in the `readability-guidance` skill's in-context summary so both surfaces agree ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)). | A change to the standard reaches all seven skills with no edit to them, because they reference the one canonical copy ([D7](artifacts/decision-log.md#d7-reference-the-single-canonical-standard-never-vendor-it)). |
+| The readability standard's scope text (`readability-rule.md`) and the `readability-guidance` skill's in-context summary | inbound and updated | The seven skills reference the single canonical standard rather than vendoring it. This work also clarifies the standard's "who reads reader-facing output" scope text so Han's plans-of-record are recognized as reader-facing, and adds the same clarified scope test to the `readability-guidance` skill's own instructions, which today surface the scope only by having the caller read the canonical rule, so a caller sees the clarified test in context ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)). | A change to the standard reaches all seven skills with no edit to them, because they reference the one canonical copy ([D7](artifacts/decision-log.md#d7-reference-the-single-canonical-standard-never-vendor-it)). |
 
 ## Out of Scope
 
@@ -118,8 +118,9 @@ skill's existing workflow at the points named in the Coordinations section.
 ## Open Items
 
 None. The one prior open item — whether the scope-text clarification is also reflected in the `readability-guidance`
-skill's in-context summary — is now decided: the clarification is echoed there as well as in the canonical
-`readability-rule.md`, so both surfaces agree ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)).
+skill — is now decided: this work adds a brief restatement of the clarified scope test to that skill's own instructions
+(it carries none today), so a caller sees the clarified test in context and not only in the canonical
+`readability-rule.md` ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)).
 
 ## Summary
 
@@ -135,3 +136,16 @@ skill's in-context summary — is now decided: the clarification is echoed there
   full/lightweight split around deliverable type rather than "synthesis pass", and reconciled the feature against the
   standard's own reader-facing scope text — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 0
+
+## Review History
+
+- **Review mode:** lightweight
+- **Spec-aware mode:** engaged
+- **Iterations completed:** 1 — see [artifacts/review-iteration-history.md](artifacts/review-iteration-history.md)
+- **Findings raised:** 2 — see [artifacts/review-findings.md](artifacts/review-findings.md). By resolution: 1 by
+  evidence (F13, wording accuracy), 1 confirmation requiring no change (F14).
+- **Assumptions challenged across all passes:** Verified against the codebase that `readability-guidance` carries no
+  reader-facing scope summary today (F13) and that `han-planning` declares only `han-core` (F14).
+- **Ambiguities resolved, and how:** The D9 "echo in readability-guidance" wording was made precise — the work adds a
+  scope-test restatement to that skill's instructions rather than editing a summary that does not exist.
+- **Open items remaining:** 0 — none block implementation.

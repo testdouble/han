@@ -178,10 +178,11 @@ rationale, evidence, and the alternatives a reasonable engineer would have weigh
 
 - **Decision:** Keep all seven skills in scope, and add a narrow clarification to `readability-rule.md`'s "who reads
   reader-facing output" section so it distinguishes a plan-of-record or standard a human reads end to end (reader-facing,
-  applies the rule) from a pure pipeline artifact consumed only by downstream skills (not reader-facing). Echo the same
-  clarification in the `readability-guidance` skill's in-context summary of who is reader-facing, so the canonical rule
-  and the in-context surface a caller sees agree. The rules the standard enforces do not change; only the scope text is
-  clarified, in both places.
+  applies the rule) from a pure pipeline artifact consumed only by downstream skills (not reader-facing). Add the same
+  clarified scope test to the `readability-guidance` skill's own instructions: today that skill surfaces the reader-facing
+  scope only by having the caller read the canonical rule and carries no restatement of its own, so this work adds a brief
+  restatement, giving a caller the clarified test in context. The rules the standard enforces do not change; only the
+  scope text is clarified, in both places.
 - **Rationale:** As written, the scope text excludes "a structured specification / plan / work-item / standard consumed
   mainly by downstream skills," and all seven targets produce those artifact types. Left unreconciled, the standard's own
   text would read as excluding the very skills this feature integrates, inviting a future contributor to remove the
@@ -190,15 +191,18 @@ rationale, evidence, and the alternatives a reasonable engineer would have weigh
   a spec is read for approval), and already-integrated skills such as `issue-triage`, `gap-analysis`, and
   `project-documentation` set the precedent that Han treats structured documents as reader-facing. Clarifying the text
   keeps the standard internally consistent with that intent.
-- **Evidence:** (codebase) `readability-rule.md` lines 20-23 define the carve-out. (user) The user chose to keep all
-  seven and clarify the rule rather than narrow scope or leave the text unchanged, and directed that the clarification be
-  echoed in `readability-guidance` as well as the canonical rule.
+- **Evidence:** (codebase) `readability-rule.md` lines 20-23 define the carve-out. (codebase)
+  `readability-guidance/SKILL.md` carries an audience frame but no restatement of the reader-facing scope test — it
+  surfaces that test only by having the caller read the canonical rule (confirmed in review, F13). (user) The user chose
+  to keep all seven and clarify the rule rather than narrow scope or leave the text unchanged, and directed that the
+  clarification also appear in `readability-guidance`, not only the canonical rule.
 - **Rejected alternatives:** Keep seven but leave the rule text unchanged — rejected because the text still reads as
   excluding these skills and would drift. Narrow scope to only the clearly human-read outputs — rejected because the
   user judges all seven reader-facing in Han's use. Clarify only the canonical rule and leave `readability-guidance`'s
   in-context summary unchanged — rejected by user direction, because a caller sees the guidance summary in context and
   the two surfaces must not disagree.
-- **Driven by findings:** F1; user direction (echo in `readability-guidance`)
+- **Driven by findings:** F1; F13 (wording accuracy for the guidance-skill edit); user direction (also clarify in
+  `readability-guidance`)
 - **Linked technical notes:** —
 - **Referenced in spec:** Outcome, Coordinations, Open Items
 - **Dependent decisions:** —
