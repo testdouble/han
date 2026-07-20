@@ -423,6 +423,11 @@ The YAGNI ledger is a synthesis input — pass it to PM in Step 8 alongside the 
 
 ## Step 8: Project Manager Synthesis
 
+Before synthesis, invoke `han-communication:readability-guidance` to source the shared readability standard into your
+context, then apply it to the plan's prose — both while directing the han-core:project-manager's synthesis and when you
+run the Step 8.5 self-check. Hold the named audience: the engineer who will build the feature. The frame governs how a
+fact is said, never whether a required fact appears — keep the technical precision the plan depends on.
+
 Launch `han-core:project-manager` in **synthesis mode** — this is the one call in this skill that runs on the
 han-core:project-manager's default model; pass no `model` override. Provide it with:
 
@@ -512,6 +517,30 @@ provided and the plan was built from conversational context only, the section mu
 what context was used.
 
 The han-core:project-manager's synthesis is authoritative.
+
+## Step 8.5: Readability Pass
+
+Once the han-core:project-manager synthesis in Step 8 is complete and the plan is final, dispatch
+`han-communication:readability-editor` (one Agent call) to audit and rewrite the plan's prose against the readability
+standard. Pass the editor the file path `{same-folder-as-source}/feature-implementation-plan.md` and the named audience:
+the engineer who will build the feature; the editor reads han-communication's own canonical rule, so pass no rule path.
+It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D-N citation
+identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the plan file.
+
+Then run the standardized readability self-check (the shared standard is in your context from
+`han-communication:readability-guidance`) over the plan's prose regions only — never inside code fences, tables, or the
+D-N citation identifiers. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
+   lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
+   precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
 
 ## Step 9: Present the Final Implementation Plan
 

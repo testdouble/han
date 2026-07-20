@@ -186,6 +186,11 @@ it can be reflected in that phase's "why this is phase N" rationale.
 
 ## Step 6: Draft the Build-Phase Outline (Write Incrementally)
 
+Before drafting, invoke `han-communication:readability-guidance` to source the shared readability standard into your
+context, then apply it as you write the outline, holding the named audience captured in Step 3 (default: a mixed
+engineering, product, and leadership reader). The frame governs how a fact is said, never whether a required fact appears
+— keep the sequencing, dependencies, and demo steps each phase commits to.
+
 Write [`build-phase-outline.md`](./references/build-phase-outline-template.md) using the template. Write incrementally —
 save the file after every block below, never buffer the whole document in conversation memory and write at the end.
 
@@ -275,6 +280,32 @@ Read the IA agent's findings. For each finding:
 Save the file after each material change. If the IA agent surfaced findings the user must judge (e.g., "the audience
 seems mixed — should this be split into two documents?"), present those to the user with a recommendation in one short
 message before finalizing.
+
+## Step 8.5: Readability Pass
+
+Once the Step 8 IA findings are applied and the outline is final, dispatch `han-communication:readability-editor` (one
+Agent call) to audit and rewrite the outline's prose against the readability standard. Pass the editor the file path
+`{folder}/build-phase-outline.md` and the named audience captured in Step 3 (default: a mixed engineering, product, and
+leadership reader); the editor reads han-communication's own canonical rule, so pass no rule path. It must preserve every
+fact and operate on prose regions only — never inside code fences, tables, the `{#phase-N}` and `{#oq-N}` heading
+anchors, or the source-citation links, which must survive unchanged so deep links still resolve. Apply its rewrite to the
+outline file.
+
+Then run the standardized readability self-check (the shared standard is in your context from
+`han-communication:readability-guidance`) over the outline's prose regions only — never inside code fences, tables, the
+`{#phase-N}` and `{#oq-N}` anchors, or the source-citation links. Confirm each criterion and fix any failure before
+presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
+   lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
+   precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
 
 ## Step 9: Present the Final Outline
 

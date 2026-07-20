@@ -18,9 +18,11 @@ stacked instruction block reproduces the failure it exists to dodge, so a skill 
 ## Who reads reader-facing output
 
 A skill is **reader-facing** when its primary deliverable is human-facing prose that a non-author reads end to end to
-understand something: a finding, a summary, a plan of record, a document. Skills whose primary output is code, or a
-structured specification / plan / work-item / standard consumed mainly by downstream skills, are not reader-facing and
-do not apply this rule.
+understand something: a finding, a summary, a plan of record, a document. A structured specification, plan, phased build,
+work-item list, coding standard, or test plan counts as reader-facing when a human reads it end to end — to approve it,
+follow it, or build from it — even when downstream skills also consume it. Only an artifact consumed purely as a pipeline
+input, with no human reading it end to end, is not reader-facing; code output is likewise not reader-facing. Neither
+applies this rule.
 
 ## The audience frame
 

@@ -158,6 +158,11 @@ Combine findings from every dispatched agent into a unified, prioritized test pl
 
 ## Step 4: Generate Output
 
+Before generating, invoke `han-communication:readability-guidance` to source the shared readability standard into your
+context, then apply it as you write the plan's plain-language spine (Summary, What Needs Testing and Why, What Each Test
+Covers), holding the named audience: the engineer who will implement the tests. The frame governs how a fact is said,
+never whether a required fact appears — keep the file:line references, test levels, and TP-IDs the plan depends on.
+
 Use the template at [template.md](./references/template.md) for the output structure. The test plan leads with plain
 language and defers the implementation detail.
 
@@ -225,3 +230,25 @@ written to a file, pass that path instead and let the agent read it.
 
 Apply every actionable edit the agents return. For findings that require author judgment (scope or audience ambiguity),
 surface them to the user with a recommended resolution; do not silently resolve.
+
+Once every actionable edit is applied and the plan is final, dispatch `han-communication:readability-editor` (one Agent
+call) to audit and rewrite the plan's prose against the readability standard. If the plan was written to a file, pass the
+editor that file path; if it is in-channel, pass the plan text and apply the returned rewrite. Also pass the named
+audience: the engineer who will implement the tests; the editor reads han-communication's own canonical rule, so pass no
+rule path. It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the
+TP-NNN test identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the plan.
+
+Then run the standardized readability self-check (the shared standard is in your context from
+`han-communication:readability-guidance`) over the plan's prose regions only — never inside code fences, tables, or the
+TP-NNN identifiers. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
+   lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
+   precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.

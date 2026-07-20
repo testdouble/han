@@ -174,6 +174,11 @@ When converting an existing document into a coding standard:
 
 ## Step 6: Write the Coding Standard
 
+Before writing, invoke `han-communication:readability-guidance` to source the shared readability standard into your
+context, then apply it as you write the standard's prose (Purpose, Rationale, when-to-apply, when-not-to-apply, and
+example commentary), holding the named audience: the engineer who must follow the standard. The frame governs how a fact
+is said, never whether a required fact appears — keep the exact rules, thresholds, and anchors the standard commits to.
+
 Read the **durable-reference rule** in [durable-references.md](./references/durable-references.md) and apply it
 throughout this step — this is the rule's **authoring mode** — all rules apply. For any candidate Step 4 flagged for
 engineer review — or any example you cannot cleanly anchor yourself — surface it to the engineer with a recommended
@@ -425,3 +430,28 @@ Read back the coding standard file and confirm:
     that the failing check produced an applied revision
 12. Confirm actionable edits from Step 9 were applied, or that any skipped edits were surfaced to the user
 13. If any issues are found, fix them
+
+## Step 11: Readability Pass
+
+Once verification in Step 10 passes and the standard is final, dispatch `han-communication:readability-editor` (one Agent
+call) to audit and rewrite the standard's prose against the readability standard. Scope the pass by mode: in create or
+convert mode (Step 1), the newly authored prose is in scope; in update mode, only the region this run edited is in scope
+— do not rewrite prose the run did not touch. Pass the editor the file path, the in-scope region, and the named audience:
+the engineer who must follow the standard; the editor reads han-communication's own canonical rule, so pass no rule path.
+It must preserve every fact and operate on prose regions only — never inside the YAML frontmatter, code fences, or the
+durable-reference anchors, which must survive unchanged so they still resolve. Apply its rewrite to the file.
+
+Then run the standardized readability self-check (the shared standard is in your context from
+`han-communication:readability-guidance`) over the same in-scope prose regions only — never inside the YAML frontmatter,
+code fences, or durable-reference anchors. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
+   lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
+   precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
