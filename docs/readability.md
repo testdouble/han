@@ -68,8 +68,8 @@ purpose. That keeps the set small enough to apply without the compliance decay t
 
 ## How the standard is applied
 
-Each skill sources the standard by invoking `han-communication:readability-guidance` at its drafting point — the
-guidance skill surfaces the rule and writing-voice profile into the skill's own context — then applies it in stages, one
+Each skill sources the standard by invoking `han-communication:readability-guidance` at its drafting point (the
+guidance skill surfaces the rule and writing-voice profile into the skill's own context), then applies it in stages, one
 at a time:
 
 1. **Template.** The skill's output template carries the structural rules, so the draft is structured from the start.
@@ -87,9 +87,11 @@ inline citation identifiers are neither evaluated nor altered, so they still com
 
 ## Scope: which skills are reader-facing
 
-A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end. The table
-below lists the skills that meet that test today. Skills whose primary output is code, or a governed structured artifact
-(a specification, plan, work-item, or coding standard), are out of scope.
+A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end. A structured
+specification, plan, phased build, work-item list, coding standard, or test plan also counts when a human reads it end
+to end, whether to approve it, follow it, or grab work from it. A structured artifact consumed only by downstream skills
+as machine input, with no human reading it end to end, is out of scope, and so is code output. The table below lists the
+skills that meet that test today.
 
 | Skill                                                                                  | Reader                                                                                    | Rewrite pass                                                              |
 | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -106,6 +108,13 @@ below lists the skills that meet that test today. Skills whose primary output is
 | [`/stakeholder-summary`](./skills/han-reporting/stakeholder-summary.md)                | The non-technical stakeholder                                                             | Synthesis: dispatches `readability-editor`                                |
 | [`/html-summary`](./skills/han-reporting/html-summary.md)                              | The non-technical stakeholder                                                             | Self-check only (prose content; visual layout keeps its own conventions)  |
 | [`/update-pr-description`](./skills/han-github/update-pr-description.md)               | The reviewer evaluating the pull request, who will read the code                          | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md)                           | The stakeholder or reviewer who reads the spec                                             | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-implementation`](./skills/han-planning/plan-implementation.md)                 | The engineer who will build the feature                                                   | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-a-phased-build`](./skills/han-planning/plan-a-phased-build.md)                 | The reader of the phased build (mixed engineering / product by default)                   | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-work-items`](./skills/han-planning/plan-work-items.md)                         | The engineer who grabs a work item and implements it                                      | Self-check only                                                           |
+| [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md)             | The reader of the plan the review refines                                                 | Self-check only                                                           |
+| [`/coding-standard`](./skills/han-coding/coding-standard.md)                           | The engineer who must follow the standard                                                 | Synthesis: dispatches `readability-editor`                                |
+| [`/test-planning`](./skills/han-coding/test-planning.md)                               | The engineer who will implement the tests                                                 | Synthesis: dispatches `readability-editor`                                |
 
 This list is authoritative. A contributor adding a new skill applies the inclusion test above and, if it passes, wires
 the standard in (see [Contributing](../CONTRIBUTING.md#wiring-the-readability-standard-into-a-skill)).
@@ -130,9 +139,10 @@ optional.
   surface to lint. The standard applies at generation time, not as a pipeline gate.
 - **Not a rewrite of the operator-documentation voice.** The existing writing-voice profile continues to govern operator
   docs. This standard reuses its blocklist but does not rewrite it.
-- **Not a guarantee a committed file stays conformant.** The one in-scope skill that writes a committed file
-  ([`/project-documentation`](./skills/han-core/project-documentation.md)) is covered at generation time. A later manual
-  edit is not re-checked automatically. Run
+- **Not a guarantee a committed file stays conformant.** The in-scope skills that write a committed file (for example
+  [`/project-documentation`](./skills/han-core/project-documentation.md) and
+  [`/coding-standard`](./skills/han-coding/coding-standard.md)) are covered at generation time. A later manual edit is
+  not re-checked automatically. Run
   [`/edit-for-readability`](./skills/han-communication/edit-for-readability.md) to re-apply the standard to an edited
   file on demand.
 

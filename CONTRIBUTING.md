@@ -172,9 +172,10 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
 
 A skill is **reader-facing** when its primary deliverable is human-facing prose that a non-author reads end to end to
 understand something: a finding, a summary, a plan of record, a document. If the skill you are adding fits that
-description, it applies the shared [Readability](./docs/readability.md) standard. Skills whose primary output is code,
-or a governed structured artifact (a specification, plan, work-item, or coding standard), are out of scope and skip this
-section.
+description, it applies the shared [Readability](./docs/readability.md) standard. A structured specification, plan,
+phased build, work-item list, coding standard, or test plan counts too when a human reads it end to end. Skills whose
+output is code, or a structured artifact consumed only by downstream skills as machine input with no human reading it
+end to end, are out of scope and skip this section.
 
 The inclusion test is the guide; the enumerated list in
 [Readability](./docs/readability.md#scope-which-skills-are-reader-facing) is authoritative. When a new skill passes the
@@ -183,8 +184,7 @@ test, add it to that list and wire the standard in:
 1. **Declare the dependency on `han-communication`.** The canonical rule and writing-voice profile live in
    [`han-communication/references/`](./han-communication/references/); no plugin vendors a copy. If the skill's plugin
    does not already depend on `han-communication`, add the direct dependency edge to its `plugin.json` so the capability
-   resolves by qualified name. (`han-planning`, `han-linear`, and `han-feedback` host no prose-producing skill, so they
-   carry no edge.)
+   resolves by qualified name. (`han-linear` and `han-feedback` host no prose-producing skill, so they carry no edge.)
 2. **Embed the structural rules in the output template.** The skill's output template carries main-point-first,
    descriptive front-loaded headings, one-idea-per-paragraph, numbered lists for steps and bullets for the rest, and
    progressive disclosure, so the draft is born structured.

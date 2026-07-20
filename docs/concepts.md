@@ -188,8 +188,11 @@ simply.
 
 Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`,
 `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`,
-`/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`). Skills whose output is
-code or a governed structured artifact are out of scope.
+`/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`, `/plan-a-feature`,
+`/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, `/iterative-plan-review`, `/coding-standard`, and
+`/test-planning`). A structured specification, plan, phased build, work-item list, coding standard, or test plan counts
+when a human reads it end to end. Skills whose output is code, or a structured artifact consumed only by downstream
+skills as machine input, are out of scope.
 
 Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope
 table, and the fidelity guard.
