@@ -1,306 +1,104 @@
-# Skills
+# Skills index
 
-All skills in the Han suite, grouped by the plugin that ships them. `han-core` carries enough skills to group by
-purpose, so it has sub-categories; the other plugins are flat lists. Each entry is a one-sentence scent line plus a link
-to the canonical long-form doc.
+Every skill in the Han suite, alphabetized. Each entry is a short scent line and a link to the skill's canonical
+long-form doc, which now lives inside the plugin that ships it. For how these skills chain together, see
+[Workflows](../workflows.md). To decide which plugin to install, see the [plugin index](../choosing-a-han-plugin.md).
 
-> See also: [Plugin landing page](../../README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md) ·
-> [All agents](../agents/README.md) · [Sizing](../sizing.md) · [YAGNI](../yagni.md)
+> See also: [Repo root](../../README.md) · [Plugin index](../choosing-a-han-plugin.md) · [Workflows](../workflows.md) ·
+> [All agents](../agents/README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md)
 
 ## New here?
 
-Start on the [Quickstart](../quickstart.md). It picks the right skill for what you are trying to do right now. If the
-skill / agent split is fuzzy, read [Concepts](../concepts.md) first.
+Start on the [Quickstart](../quickstart.md); it picks the right skill for what you are trying to do right now. If the
+skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
 
-## han-communication
+## Skills
 
-The foundational communication plugin. It owns the single canonical readability standard and writing-voice profile, and
-the skills and agent that apply them. It depends on nothing and sits beneath every other plugin; the plugins that
-produce prose output depend on it.
-
-- **[`/readability-guidance`](./han-communication/readability-guidance.md).** Surface the shared readability standard
-  into a calling skill's own context so it drafts in voice and runs its self-check against one canonical copy. Invoked
-  by the prose-producing skills at their drafting point; it hands control straight back and produces no deliverable of
-  its own.
-- **[`/edit-for-readability`](./han-communication/edit-for-readability.md).** Rewrite the prose of a target you already
-  have (a file, pasted text, or a draft from the conversation) against the shared readability standard, preserving every
-  fact. Dispatches `readability-editor`; the standalone, on-demand counterpart to the readability pass the synthesis
-  skills run inside their own output.
-
-## han-core
-
-The base plugin. It carries the research, analysis, documentation, and operations skills, plus the specialist agents
-those skills dispatch. (The readability-editor agent lives in the foundational `han-communication` plugin.) Grouped by
-purpose below.
-
-### Triage & research
-
-Skills for triaging an incoming report and researching your options, with evidence to back it.
-
-- **[`/issue-triage`](./han-core/issue-triage.md).** Classify a vague issue or bug report, identify missing information,
-  assess severity and reproducibility, and recommend the right next skill to run.
-- **[`/research`](./han-core/research.md).** Research an open-ended question: options, possible solutions, prior art, or
-  how something works. Search the codebase and the open web, and end at an adversarially-validated recommendation
-  without committing the team to any artifact. The question-shaped sibling of `/investigate`; scales with
-  [size](../sizing.md).
-
-### Comparing artifacts
-
-Skills for comparing two artifacts against each other.
-
-- **[`/gap-analysis`](./han-core/gap-analysis.md).** Compare two artifacts (current state vs. desired state, for example
-  spec vs. implementation, or PRD vs. shipped feature) and produce a plain-language, stakeholder-readable report indexed
-  by stable gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a validator-and-augmenter swarm by
-  default. That swarm always includes `adversarial-validator` and `junior-developer` (actor-perspective sweep), adds
-  `evidence-based-investigator` when the current state is concrete, and adds domain specialists plus `project-manager`
-  at medium and large sizes. Opt out with `no swarm` for the lightweight pass.
-
-### Discovery & context
-
-Skills that produce context every other skill benefits from.
-
-- **[`/project-discovery`](./han-core/project-discovery.md).** Scan the repository for languages, frameworks, tooling,
-  and structure. Writes a concise reference section into AGENTS.md or CLAUDE.md for other skills.
-- **[`/project-documentation`](./han-core/project-documentation.md).** Create and maintain documentation for features,
-  systems, and components.
-
-### Conventions & decisions
-
-Skills for recording how the team works.
-
-- **[`/architectural-decision-record`](./han-core/architectural-decision-record.md).** Create, extract, or convert
-  architectural decision records.
-
-### Operations
-
-Skills for capturing operational knowledge in artifacts the next on-call engineer can use.
-
-- **[`/runbook`](./han-core/runbook.md).** Create or update a runbook for a single operational scenario (alert that has
-  fired, incident, recurring task, known failure mode). Symptom-first template with imperative-voice procedure, expected
-  output per step, escalation conditions, and rollback. Applies a YAGNI preflight that requires real evidence before
-  writing.
-
-## han-planning
-
-The planning layer: the skills for specifying _what_ a feature does, planning _how_ to build it, sequencing the build,
-breaking it into work, and stress-testing plans before you commit. Depends on `han-core`; bundled by the `han`
-meta-plugin.
-
-- **[`/plan-a-feature`](./han-planning/plan-a-feature.md).** Build a feature specification from scratch through an
-  evidence-based interview that walks the design tree and dispatches specialist reviewers.
-- **[`/plan-implementation`](./han-planning/plan-implementation.md).** Turn a feature specification into an
+- [`/agent-builder`](../../han-plugin-builder/docs/skills/agent-builder.md) — Build a new agent from scratch through an
+  evidence-based interview that walks the design tree decision-by-decision, then review the finished agent file against
+  the plugin-building guidance and apply every fix.
+- [`/architectural-analysis`](../../han-coding/docs/skills/architectural-analysis.md) — Assess a module's coupling, data
+  flow, concurrency, risk, and SOLID alignment through a spine of structural, behavioral, risk, and architecture agents.
+- [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md) — Create, extract, or
+  convert architectural decision records.
+- [`/code-overview`](../../han-coding/docs/skills/code-overview.md) — Produce a human-readable, progressive-disclosure
+  overview of unfamiliar code or a PR's changes, leading with why the code exists; raises no findings.
+- [`/code-overview-to-confluence`](../../han-atlassian/docs/skills/code-overview-to-confluence.md) — Run `/code-overview`
+  (changing no code), show it for review, then publish it as one Confluence page after confirmation.
+- [`/code-review`](../../han-coding/docs/skills/code-review.md) — Run a comprehensive code review on the current branch
+  or specified files, with a size-scaled roster of specialist agents.
+- [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md) — Create and update coding standards from
+  existing patterns or evidence-based research.
+- [`/edit-for-readability`](../../han-communication/docs/skills/edit-for-readability.md) — Rewrite the prose of a target
+  you already have against the shared readability standard, preserving every fact.
+- [`/gap-analysis`](../../han-core/docs/skills/gap-analysis.md) — Compare two artifacts (current state versus desired
+  state) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs.
+- [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) — Serve the authoritative guidance for building skills,
+  agents, and plugins, or vendor the plugin-building skills into the current repository (`/guidance init`).
+- [`/han-feedback`](../../han-feedback/docs/skills/han-feedback.md) — Capture structured post-session feedback on the Han
+  skills and agents you used, and optionally post it as a GitHub issue to testdouble/han.
+- [`/html-summary`](../../han-reporting/docs/skills/html-summary.md) — Convert a `stakeholder-summary.md` into a single
+  self-contained HTML executive report; produces the file only, does not publish it.
+- [`/investigate`](../../han-coding/docs/skills/investigate.md) — Run an evidence-based investigation of a bug, failure,
+  or unexpected behavior, with adversarial validation of the proposed fix.
+- [`/investigate-to-confluence`](../../han-atlassian/docs/skills/investigate-to-confluence.md) — Run `/investigate`
+  (changing no code), show the report for review, then publish it as one Confluence page after confirmation.
+- [`/issue-triage`](../../han-core/docs/skills/issue-triage.md) — Classify a vague issue or bug report, identify missing
+  information, assess severity and reproducibility, and recommend the right next skill to run.
+- [`/iterative-plan-review`](../../han-planning/docs/skills/iterative-plan-review.md) — Stress-test an already-written
+  plan through multiple codebase-grounded review passes.
+- [`/markdown-to-confluence`](../../han-atlassian/docs/skills/markdown-to-confluence.md) — Publish one local Markdown
+  file to a user-specified Confluence location; defaults to an unpublished draft.
+- [`/plan-a-feature`](../../han-planning/docs/skills/plan-a-feature.md) — Build a feature specification from scratch
+  through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
+- [`/plan-a-feature-to-confluence`](../../han-atlassian/docs/skills/plan-a-feature-to-confluence.md) — Run
+  `/plan-a-feature`, show it for review, then publish the spec and its companion artifacts as a Confluence page tree.
+- [`/plan-a-phased-build`](../../han-planning/docs/skills/plan-a-phased-build.md) — Split a body of context into a
+  numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on
+  the prior.
+- [`/plan-implementation`](../../han-planning/docs/skills/plan-implementation.md) — Turn a feature specification into an
   implementation plan through a project-manager-led team conversation.
-- **[`/plan-a-phased-build`](./han-planning/plan-a-phased-build.md).** Split a body of context (gap analysis, PRD,
-  design doc, feature spec, requirements list) into a numbered sequence of vertical-slice build phases, each
-  independently demoable to a real person and each building on the prior. Dispatches `information-architect` against the
-  rendered outline to verify findability, EPPO standalone-ness of phase entries, and progressive comprehension.
-- **[`/iterative-plan-review`](./han-planning/iterative-plan-review.md).** Stress-test an already-written plan through
-  multiple codebase-grounded review passes.
-- **[`/plan-work-items`](./han-planning/plan-work-items.md).** Divide a trusted implementation plan into
-  independently-grabbable work items in a single work-items file.
-
-## han-coding
-
-The coding layer: the skills you reach for while working in code. Writing it, reviewing it, analyzing it, testing it,
-investigating it, and standardizing it. Depends on `han-core` and `han-communication`; bundled by the `han` meta-plugin.
-
-- **[`/tdd`](./han-coding/tdd.md).** Drive a feature or behavior through a BDD-framed red-green-refactor loop. Builds a
-  behavior test list, enforces an observed-failure gate (no production code until a test has been run and seen to fail),
-  works outside-in for user-facing behavior, and applies the project's coding standards and ADRs in green (correctness)
-  and refactor (full conformance plus YAGNI). It writes code, not a document.
-- **[`/refactor`](./han-coding/refactor.md).** Restructure existing code without changing its behavior. Takes a named
-  target (files, a module, a named smell, or the findings of a prior `/code-review` or `/architectural-analysis`),
-  refuses to start without a green suite covering that target, plans a sequence of small named refactorings, re-runs the
-  full suite after every step, and stops hard when changes spread beyond the declared scope. It writes code, not a
-  document; cleanup inside an active TDD cycle belongs to `/tdd`'s refactor step instead.
-- **[`/code-review`](./han-coding/code-review.md).** Run a comprehensive code review on the current branch or specified
-  files. Always dispatches `junior-developer` and `adversarial-security-analyst`, and conditionally adds
-  `test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`,
-  `data-engineer`, `devops-engineer`, or `on-call-engineer` when the changed files trigger their domain. Roster scales
-  with [size](../sizing.md).
-- **[`/code-overview`](./han-coding/code-overview.md).** Produce a human-readable, progressive-disclosure overview of
-  unfamiliar code (code mode) or a PR's changes (PR mode). It leads with _why_ the code exists, meaning the problem it
-  solves or the goal it serves, then flows into what it does, how it works, and where to start. The result goes to a
-  scratch file at minimal technical detail: understand-now orientation, not durable docs and not a quality review.
-  Dispatches `codebase-explorer` scaled with [size](../sizing.md); raises no findings.
-- **[`/architectural-analysis`](./han-coding/architectural-analysis.md).** Deep architectural analysis of a module:
-  coupling, data flow, concurrency, risk, and SOLID alignment. Always dispatches the `structural-analyst` /
-  `behavioral-analyst` / `risk-analyst` / `software-architect` spine, and adds `concurrency-analyst`,
-  `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`, `codebase-explorer`, or
-  `system-architect` by signal. Roster scales with [size](../sizing.md).
-- **[`/test-planning`](./han-coding/test-planning.md).** Produce a prioritized test plan for a branch or directory.
-  Dispatches `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when
-  the files call for it.
-- **[`/investigate`](./han-coding/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected
-  behavior, with adversarial validation of the proposed fix.
-- **[`/coding-standard`](./han-coding/coding-standard.md).** Create and update coding standards from existing patterns
-  or evidence-based research.
-
-## han-github
-
-GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han-core` and `han-communication`.
-
-- **[`/post-code-review-to-pr`](./han-github/post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and
-  post the review as comments, after a `junior-developer` clarity check on the drafted review body.
-- **[`/update-pr-description`](./han-github/update-pr-description.md).** Generate a PR description from the current
-  branch's changes, conforming to the repository's PR template when one exists.
-- **[`/work-items-to-issues`](./han-github/work-items-to-issues.md).** Publish each item in a `/plan-work-items`
-  work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the
-  repo, and no label or assignee by default.
-
-## han-reporting
-
-Skills for turning the work back into something sharable with non-technical stakeholders. Depends on `han-core` and
-`han-communication`.
-
-- **[`/stakeholder-summary`](./han-reporting/stakeholder-summary.md).** Turn a feature specification into a
-  plain-language stakeholder summary with Mermaid diagrams for user experience and data flow, to get non-technical
-  feedback before implementation kicks off.
-- **[`/html-summary`](./han-reporting/html-summary.md).** Convert a `stakeholder-summary.md` (from
-  [`/stakeholder-summary`](./han-reporting/stakeholder-summary.md)) into a single self-contained HTML executive report:
-  bottom line and asks up front, mermaid diagrams inlined, styled with a Test Double-derived palette. Produces the HTML
-  file only; does not publish it.
-
-## han-feedback
-
-The opt-in feedback plugin. It captures observations about the Han suite itself. The `han` meta-plugin does not bundle
-it; install it on its own with `/plugin install han-feedback@han`. Depends on `han-core`.
-
-- **[`/han-feedback`](./han-feedback/han-feedback.md).** Capture structured post-session feedback on the Han skills and
-  agents you used across the whole `han-*` plugin family, and optionally post it as a GitHub issue to testdouble/han.
-
-## han-atlassian
-
-The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira through the Atlassian MCP server. The
-`han` meta-plugin does not bundle it; install it on its own with `/plugin install han-atlassian@han`. Requires a
-configured Atlassian MCP server. Depends on `han-core`, `han-planning`, `han-coding`, and `han-communication`, because
-its wrapper skills run skills from each and source the shared readability standard.
-
-- **[`/markdown-to-confluence`](./han-atlassian/markdown-to-confluence.md).** Publish one local Markdown file to a
-  user-specified Confluence location, creating a new page or updating an existing one. Defaults to an unpublished draft.
-  Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for
-  the right place. Posts an existing file; it does not generate documentation.
-- **[`/project-documentation-to-confluence`](./han-atlassian/project-documentation-to-confluence.md).** Run
-  `/project-documentation` to write feature documentation to a temporary file, show it for review, then publish it to a
-  user-specified Confluence location with `/markdown-to-confluence` after confirmation. Requires the user to name the
-  destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
-- **[`/investigate-to-confluence`](./han-atlassian/investigate-to-confluence.md).** Run `/investigate` to root-cause a
-  bug or unexpected behavior, writing the investigation report to a temporary file (and changing no code), then show it
-  for review. Publish that single report as one page to a user-specified Confluence location with
-  `/markdown-to-confluence` after confirmation. Requires the user to name the destination (a page URL, or a space plus
-  parent page); it does not search Confluence for the right place.
-- **[`/code-overview-to-confluence`](./han-atlassian/code-overview-to-confluence.md).** Run `/code-overview` to produce
-  a progressive-disclosure overview of unfamiliar code or a PR's changes, writing it to a scratch file (and changing no
-  code), then show it for review. Publish that single overview as one page to a user-specified Confluence location with
-  `/markdown-to-confluence` after confirmation. Requires the user to name the destination (a page URL, or a space plus
-  parent page); it does not search Confluence for the right place.
-- **[`/plan-a-feature-to-confluence`](./han-atlassian/plan-a-feature-to-confluence.md).** Run `/plan-a-feature` to build
-  a feature specification in a temporary folder, show it for review, then publish it to a user-specified Confluence
-  location with `/markdown-to-confluence` after confirmation. The spec becomes a parent page; each companion artifact
-  (decision log, team findings, technical notes) becomes a child page beneath it. Requires the user to name the
-  destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
-- **[`/work-items-to-jira`](./han-atlassian/work-items-to-jira.md).** Create one Jira ticket per slice from a
-  `/plan-work-items` work-items file, in a single target project. Defaults to a Story, unassigned, in the backlog, with
-  the reporter taken from the Atlassian MCP identity; epic parenting, issue type, assignee, and target column are
-  optional overrides. The Jira sibling of `/work-items-to-issues`.
-
-## han-linear
-
-The opt-in Linear plugin. It publishes Han work items to Linear through the Linear MCP server. The `han` meta-plugin
-does not bundle it; install it on its own with `/plugin install han-linear@han`. Requires a configured Linear MCP
-server. Depends on `han-core`.
-
-- **[`/work-items-to-linear`](./han-linear/work-items-to-linear.md).** Create one Linear issue per slice from a
-  `/plan-work-items` work-items file, in a single target team. Reads the team's real workflow states, labels, Projects,
-  and members, and resolves every option against them before creating anything. It defaults each issue to the team's
-  initial state, unassigned, and uncategorized, with optional state, labels, assignee, parent (sub-issue), and Project.
-  Links within-file `Depends on` lines as native Linear "blocked by" relations. The Linear sibling of
-  `/work-items-to-jira` and `/work-items-to-issues`.
-
-## han-plugin-builder
-
-The opt-in plugin-building plugin. It carries the authoring guidance for skills, agents, and plugins, plus two
-interview-driven builders that author a new component from scratch and review it against that guidance. It depends on
-nothing, and the `han` meta-plugin does not bundle it; install it on its own with
-`/plugin install han-plugin-builder@han`.
-
-- **[`/guidance`](./han-plugin-builder/guidance.md).** Serve the authoritative guidance for building skills, agents, and
-  plugins, or vendor all three plugin-building skills into the current repository's `.claude/skills/` under a `plugin-`
-  prefix (`plugin-guidance`, `plugin-skill-builder`, `plugin-agent-builder`) plus a path-scoped rule index
-  (`/guidance init`) so the skills run and the guidance surfaces with no dependency on the plugin (`/guidance update`
-  refreshes a vendored copy).
-- **[`/skill-builder`](./han-plugin-builder/skill-builder.md).** Build a new skill from scratch through an
-  evidence-based interview that walks the skill's design tree decision-by-decision, then review the finished files
-  against the plugin-building guidance and apply every fix.
-- **[`/agent-builder`](./han-plugin-builder/agent-builder.md).** Build a new agent from scratch through an
-  evidence-based interview that walks the agent's design tree decision-by-decision, then review the finished
-  self-contained agent file against the plugin-building guidance and apply every fix.
-
----
-
-## How dispatch scales: sizing
-
-The sizing-aware skills ([`/architectural-analysis`](./han-coding/architectural-analysis.md),
-[`/code-overview`](./han-coding/code-overview.md), [`/code-review`](./han-coding/code-review.md),
-[`/gap-analysis`](./han-core/gap-analysis.md), [`/iterative-plan-review`](./han-planning/iterative-plan-review.md),
-[`/plan-a-feature`](./han-planning/plan-a-feature.md), [`/plan-implementation`](./han-planning/plan-implementation.md),
-[`/research`](./han-core/research.md)) classify the work as **small**, **medium**, or **large** before dispatching
-agents, and scale the team or swarm size to the chosen band. The default is always small. Pass `small`, `medium`, or
-`large` as the first positional argument to override.
-
-See [Sizing](../sizing.md) for the cross-skill model and per-skill bands. Each sizing-aware skill's long-form doc has
-its own **Sizing** section with the skill-specific signals and caps.
-
-## What survives a review: YAGNI
-
-Every planning, review, and standards skill in the plugin applies an evidence-based YAGNI rule before committing items
-to its artifact. Items without acceptable evidence move to a `## Deferred (YAGNI)` section with a named _reopen-when_
-trigger. Never silently dropped. The rule applies to:
-
-- **Planning.** [`/plan-a-feature`](./han-planning/plan-a-feature.md),
-  [`/plan-implementation`](./han-planning/plan-implementation.md),
-  [`/plan-a-phased-build`](./han-planning/plan-a-phased-build.md),
-  [`/iterative-plan-review`](./han-planning/iterative-plan-review.md).
-- **Review and standards.** [`/code-review`](./han-coding/code-review.md) (advisory-only),
-  [`/coding-standard`](./han-coding/coding-standard.md), [`/test-planning`](./han-coding/test-planning.md),
-  [`/architectural-decision-record`](./han-core/architectural-decision-record.md) (forcing-function requirement).
-- **Building.** [`/tdd`](./han-coding/tdd.md) (enforcing in the refactor step and the test list),
-  [`/refactor`](./han-coding/refactor.md) (enforcing on the refactoring plan: every item needs evidence the code has a
-  reason to change).
-
-See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral
-format.
-
-## How skills compose
-
-Most han skills dispatch agents to do their judgment-heavy work. The [Concepts](../concepts.md) page explains the split.
-The long-form doc for each skill names the specific agents it dispatches.
-
-A few common compositions:
-
-- **Triage → investigate.** `/issue-triage` → `/investigate`.
-- **Triage → research → spec.** `/issue-triage` → `/research` → `/plan-a-feature` (when triage finds a problem-space
-  unknown, research the options first, then specify the chosen one).
-- **Create specs → plan implementation → iterate → break into work items.** `/plan-a-feature` → `/plan-implementation` →
-  `/iterative-plan-review` → `/plan-work-items`.
-- **Plan implementation → break into work items.** `/plan-implementation` → `/plan-work-items`.
-- **Break into work items → publish to GitHub issues.** `/plan-work-items` → `/work-items-to-issues`.
-- **Break into work items → publish to Jira.** `/plan-work-items` → `/work-items-to-jira` (opt-in `han-atlassian`
-  plugin; requires the Atlassian MCP server).
-- **Discover → document → standardize.** `/project-discovery` → `/project-documentation` → `/coding-standard`.
-- **Review locally → post to PR.** `/code-review` → `/post-code-review-to-pr`.
-- **Review → execute the refactorings.** `/code-review` or `/architectural-analysis` → `/refactor` (the review's
-  structural findings become the refactoring plan's work orders).
-- **Prepare the ground → build.** `/refactor` → `/tdd` (preparatory refactoring makes the change easy, then `/tdd` makes
-  the easy change).
-- **Investigate → iterate on the fix.** `/investigate` → `/iterative-plan-review`.
-- **Compare → plan the remediation.** `/gap-analysis` → `/plan-implementation` (the gap report's `G-NNN` IDs become work
-  items in the implementation plan).
-- **Compare → phase the build → plan implementation per phase.** `/gap-analysis` → `/plan-a-phased-build` →
-  `/plan-implementation` (the gap report orders `G-NNN` IDs into vertical slices, then each phase gets its own
-  implementation plan once greenlit).
+- [`/plan-work-items`](../../han-planning/docs/skills/plan-work-items.md) — Divide a trusted implementation plan into
+  independently-grabbable, atomic work items in a single work-items file.
+- [`/post-code-review-to-pr`](../../han-github/docs/skills/post-code-review-to-pr.md) — Run `/code-review` against a
+  GitHub PR and post the review as comments, after a clarity check on the drafted review body.
+- [`/project-discovery`](../../han-core/docs/skills/project-discovery.md) — Scan the repository for languages,
+  frameworks, tooling, and structure, and write a concise reference section into AGENTS.md or CLAUDE.md.
+- [`/project-documentation`](../../han-core/docs/skills/project-documentation.md) — Create and maintain documentation for
+  features, systems, and components.
+- [`/project-documentation-to-confluence`](../../han-atlassian/docs/skills/project-documentation-to-confluence.md) — Run
+  `/project-documentation`, show it for review, then publish it to a user-specified Confluence location.
+- [`/readability-guidance`](../../han-communication/docs/skills/readability-guidance.md) — Surface the shared
+  readability standard into a calling skill's own context so it drafts in voice and self-checks against one canonical
+  copy.
+- [`/refactor`](../../han-coding/docs/skills/refactor.md) — Restructure existing code without changing its behavior
+  through a test-gated loop that re-runs the full suite after every small step.
+- [`/research`](../../han-core/docs/skills/research.md) — Research an open-ended question across the codebase and the
+  open web and end at an adversarially-validated recommendation, without committing the team to any artifact.
+- [`/runbook`](../../han-core/docs/skills/runbook.md) — Create or update a runbook for a single operational scenario,
+  with a symptom-first template and a YAGNI preflight that requires real evidence before writing.
+- [`/skill-builder`](../../han-plugin-builder/docs/skills/skill-builder.md) — Build a new skill from scratch through an
+  evidence-based interview that walks the design tree decision-by-decision, then review the finished files against the
+  plugin-building guidance and apply every fix.
+- [`/stakeholder-summary`](../../han-reporting/docs/skills/stakeholder-summary.md) — Turn a feature specification into a
+  plain-language stakeholder summary with Mermaid diagrams, for feedback before implementation.
+- [`/tdd`](../../han-coding/docs/skills/tdd.md) — Drive a feature or behavior through a BDD-framed red-green-refactor
+  loop with an enforced observed-failure gate; it writes code, not a document.
+- [`/test-planning`](../../han-coding/docs/skills/test-planning.md) — Produce a prioritized test plan for a branch or
+  directory.
+- [`/update-pr-description`](../../han-github/docs/skills/update-pr-description.md) — Generate a PR description from the
+  current branch's changes, conforming to the repository's PR template when one exists.
+- [`/work-items-to-issues`](../../han-github/docs/skills/work-items-to-issues.md) — Publish each item in a
+  `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked.
+- [`/work-items-to-jira`](../../han-atlassian/docs/skills/work-items-to-jira.md) — Create one Jira ticket per slice from
+  a `/plan-work-items` work-items file in a single target project.
+- [`/work-items-to-linear`](../../han-linear/docs/skills/work-items-to-linear.md) — Create one Linear issue per slice
+  from a `/plan-work-items` work-items file in a single target team, resolving the team's real states, labels, Projects,
+  and members before creating anything.
 
 ## Adding a skill?
 
 See [Contributing](../../CONTRIBUTING.md) for the full process and
-[the skill template](../templates/skill-long-form-template.md) for the long-form layout.
+[the skill template](../templates/skill-long-form-template.md) for the long-form layout. Add the skill's long-form doc
+under its plugin's `docs/skills/`, a scent line to that plugin's README, and one alphabetized entry here, reusing the
+long-form doc's summary line as the canonical scent so the three do not drift.
