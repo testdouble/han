@@ -42,16 +42,17 @@ during synthesis.
     `.claude/skills/han-update-documentation/references/scope-mapping.md`; (c) rewriting a historical release entry's
     paths to files that did not exist at that release would falsify the record. Consequence: CHANGELOG is excluded from
     both the rewrite set AND the literal-string link gate (its old-path strings are expected and not failures). The user
-    can override this scope call; it is recorded as a decision, not a silent omission.
+    can override this scope call; it is recorded as a decision, not a silent omission. Committed as
+    [D-5](implementation-decision-log.md#d-5-changelogmd-stays-frozen-and-out-of-the-link-gate).
 - **Spec-maturity tags:** plan-level — C1–C12 (12). spec-level — C13/OQ-1 (1, resolved by evidence). T#-contradiction —
   none. **Spec-maturity gate did NOT trip** (needs ≥5 spec-level from ≥3 specialists, or ≥2 T#-contradictions from ≥2
   specialists; observed 1 spec-level from 1 specialist, 0 T#-contradictions).
 - **Resolution source:** OQ-1 → evidence (settled in the loop by re-reading D10, the spec Out-of-Scope/edge-case rows,
   and `scope-mapping.md`). All other claims are plan-level operationalizations carried directly into synthesis; none
   required junior-developer reframing or user input.
-- **Decisions produced:** ID1, ID2, ID3, ID4, ID5, ID6, ID7, ID8
-- **Changed in plan:** Implementation Approach, Decomposition and Sequencing, Testing Strategy, Operational Readiness,
-  Deferred (YAGNI), Open Items
+- **Decisions produced:** D-1, D-2, D-3, D-4, D-5, D-6, D-7, D-8
+- **Changed in plan:** Implementation Approach, Decomposition and Sequencing, RAID Log, Testing Strategy, Definition of
+  Done, Specialist Handoffs for Implementation, Deferred (YAGNI), Open Items
 - **Project-manager next-step recommendation:** Go to synthesis. (Small-team round cap = 1; gate not tripped; no
   unresolved plan-level Open Questions; the one conditional handoff JD named — `devops-engineer`, only if a permanent CI
   link-checker is chosen — is not triggered, because the YAGNI resolution keeps verification one-time.)
