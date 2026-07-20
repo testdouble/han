@@ -166,8 +166,10 @@ job.
 ## Cost and latency
 
 The skill dispatches two `codebase-explorer` agents in parallel during Step 4 (evidence gathering) and two review agents
-in parallel during Step 9 (`junior-developer` + `information-architect`). All four run on their default models. Cost
-scales with codebase size and how many documents the explorers have to read. Typical runs are a few minutes.
+in parallel during Step 9 (`junior-developer` + `information-architect`). All four run on their default models. Once the
+standard is final, the skill runs one `han-communication:readability-editor` rewrite of its prose, so expect one
+additional readability pass. Cost scales with codebase size and how many documents the explorers have to read. Typical
+runs are a few minutes.
 
 ## In more detail
 
@@ -208,6 +210,9 @@ The skill walks a ten-step process:
     standard body and its index entry (ensure that standard references don't get outdated upon next code change), real
     file paths in examples, distinct Correct-vs-Avoid examples, that no enumerated entry was added to the memory file,
     and that Step 8 and Step 9 edits were applied.
+
+Once the standard is final, the skill dispatches `readability-editor` to rewrite the standard's prose for the engineer
+who must follow it, preserving every fact, rule, and example, then runs a readability self-check before presenting.
 
 ## YAGNI
 
@@ -281,5 +286,7 @@ URL: https://code.claude.com/docs/en/memory
   [`junior-developer`](../../agents/han-core/junior-developer.md),
   [`information-architect`](../../agents/han-core/information-architect.md). The agents this skill dispatches during
   evidence gathering and adversarial review.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched once the standard is final to
+  rewrite its prose for the engineer who must follow it, preserving every fact, rule, and example.
 - [`SKILL.md` for /coding-standard](../../../han-coding/skills/coding-standard/SKILL.md). The internal process
   definition.

@@ -269,8 +269,10 @@ agents on `opus`, structured-protocol specialists on `sonnet`). The final synthe
 default model (`opus`). This is the most expensive single step, but also the step that produces the authoritative plan.
 For a medium-complexity feature, expect two iterations before the project-manager declares the plan ready, which means
 roughly ten to twenty sub-agent dispatches plus the `opus` synthesis. The size-based round cap (1 for small, 2 for
-medium, 3 for large) prevents runaway cycles. The skill is designed for new-feature planning cadence (once per feature,
-occasionally re-run after spec changes), not for tight-loop iteration. Use `/iterative-plan-review` for that.
+medium, 3 for large) prevents runaway cycles. After the final plan exists, the skill runs one
+`han-communication:readability-editor` rewrite of the plan's prose, so expect one additional readability pass among the
+sub-agent dispatches. The skill is designed for new-feature planning cadence (once per feature, occasionally re-run
+after spec changes), not for tight-loop iteration. Use `/iterative-plan-review` for that.
 
 ## In more detail
 
@@ -292,7 +294,9 @@ security posture, operational readiness, definition of done, specialist handoffs
 the upstream _what_ document in a Source Specification section. Decision history and round-by-round iteration history
 live alongside it, in `artifacts/implementation-decision-log.md` and `artifacts/implementation-iteration-history.md`,
 cross-referenced by `D-N` / `R#` ID. This keeps the primary plan focused on the implementation narrative, while
-rationale, rejected alternatives, and discussion history stay one hop away.
+rationale, rejected alternatives, and discussion history stay one hop away. Once the final plan content exists, the
+skill dispatches `readability-editor` to rewrite the plan's prose for the engineer who will build the feature,
+preserving every fact and every cross-reference identifier, then runs a readability self-check before presenting.
 
 ## YAGNI
 
@@ -425,6 +429,9 @@ URL: https://ieeexplore.ieee.org/document/1204375
 - [`junior-developer`](../../agents/han-core/junior-developer.md). The generalist stress-tester the skill always
   includes. When a decision lacks strong evidence, the skill asks this agent to reframe the issue in plain language
   before escalating to you.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched after the synthesis pass to
+  rewrite the plan's prose for the engineer who will build the feature, preserving every fact and every cross-reference
+  identifier.
 - [`devops-engineer`](../../agents/han-core/devops-engineer.md). Typically engaged when the feature touches deployment,
   observability, rollout, feature flags, scale, SLO impact, or cost.
 - [`on-call-engineer`](../../agents/han-core/on-call-engineer.md). Typically engaged when the plan introduces

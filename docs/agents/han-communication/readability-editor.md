@@ -112,13 +112,17 @@ command to act on. Its adversarial posture is aimed at the draft, never at the a
   facts; this agent rewrites for readability while keeping them.
 - [`information-architect`](../han-core/information-architect.md). Audits documentation structure and findability and
   returns recommendations; this agent rewrites prose in place.
-- The reader-facing synthesis skills that dispatch this agent as their readability rewrite pass:
+- The reader-facing skills that dispatch this agent as their readability rewrite pass:
   [`/architectural-analysis`](../../skills/han-coding/architectural-analysis.md),
   [`/code-overview`](../../skills/han-coding/code-overview.md),
   [`/code-review`](../../skills/han-coding/code-review.md), [`/investigate`](../../skills/han-coding/investigate.md),
+  [`/coding-standard`](../../skills/han-coding/coding-standard.md),
+  [`/test-planning`](../../skills/han-coding/test-planning.md),
   [`/gap-analysis`](../../skills/han-core/gap-analysis.md),
   [`/project-documentation`](../../skills/han-core/project-documentation.md),
-  [`/research`](../../skills/han-core/research.md),
+  [`/research`](../../skills/han-core/research.md), [`/plan-a-feature`](../../skills/han-planning/plan-a-feature.md),
+  [`/plan-implementation`](../../skills/han-planning/plan-implementation.md),
+  [`/plan-a-phased-build`](../../skills/han-planning/plan-a-phased-build.md),
   [`/update-pr-description`](../../skills/han-github/update-pr-description.md), and
   [`/stakeholder-summary`](../../skills/han-reporting/stakeholder-summary.md). The [Readability](../../readability.md)
   per-skill table is authoritative.

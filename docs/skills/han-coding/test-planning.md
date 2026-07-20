@@ -124,9 +124,10 @@ items land.
 
 The skill dispatches two always-on agents (`test-engineer`, `edge-case-explorer`) plus up to two conditional agents
 (`concurrency-analyst`, `adversarial-security-analyst`) in parallel, all on their default models. After the plan is
-generated, two reviewers (`information-architect`, `junior-developer`) run in parallel against it. Typical runs are a
-few minutes. The 40-item cap keeps non-security output bounded; security items are uncapped, and dropped items are
-surfaced explicitly so nothing is quietly omitted.
+generated, two reviewers (`information-architect`, `junior-developer`) run in parallel against it. Once the plan is
+final, the skill runs one `han-communication:readability-editor` rewrite of its prose, so expect one additional
+readability pass. Typical runs are a few minutes. The 40-item cap keeps non-security output bounded; security items are
+uncapped, and dropped items are surfaced explicitly so nothing is quietly omitted.
 
 ## In more detail
 
@@ -147,7 +148,9 @@ The skill walks a five-step process:
    [`junior-developer`](../../agents/han-core/junior-developer.md) in parallel against the generated plan. The
    information-architect confirms it leads with plain language and defers the implementation detail; the
    junior-developer confirms the plain-language layer stands on its own for a reader who never opens the Technical
-   Reference. Apply every actionable edit; surface author-judgment findings with a recommended resolution.
+   Reference. Apply every actionable edit; surface author-judgment findings with a recommended resolution. Once the plan
+   is final, the skill dispatches `readability-editor` to rewrite the test plan's prose for the engineer who will
+   implement the tests, preserving every fact and every test ID, then runs a readability self-check before presenting.
 
 ## YAGNI
 
@@ -206,4 +209,6 @@ URL: https://www.wiley.com/en-us/Testing+Computer+Software%2C+2nd+Edition-p-9780
 - [`information-architect`](../../agents/han-core/information-architect.md),
   [`junior-developer`](../../agents/han-core/junior-developer.md). Review the generated plan for findability and
   plain-language clarity before it is finalized.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched once the plan is final to
+  rewrite its prose for the engineer who will implement the tests, preserving every fact and every test ID.
 - [`SKILL.md` for /test-planning](../../../han-coding/skills/test-planning/SKILL.md). The internal process definition.

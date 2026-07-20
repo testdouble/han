@@ -225,6 +225,9 @@ the cost lives in the user interview and the IA review of the rendered outline.
 - **Apply-findings pass.** The skill applies IA findings in-process. No additional sub-agent dispatch. Plain-language
   leak findings are required edits. Structural findings are evaluated and applied if they preserve the document's
   contract.
+- **The readability rewrite.** Once the outline is final, the skill dispatches one `han-communication:readability-editor`
+  agent to rewrite the outline's prose against the shared readability standard. Expect one additional readability pass on
+  top of the IA dispatch, proportional to the outline length.
 
 For a typical mid-size build (six to ten phases, two to four open questions, a handful of named departures), expect a
 few minutes of interview-driven question-and-answer with you. Then expect a single IA-agent dispatch and a final
@@ -282,7 +285,9 @@ rendered document. The agent applies its full protocol set (Rosenfeld/Morville, 
 rendering. The skill then applies findings. Plain-language leak findings are required edits: technical detail that snuck
 into the body gets rewritten behaviorally. Structural findings are evaluated and applied if they preserve the document's
 contract. Polish findings are applied if they tighten the document. Findings you must judge (for example, _"the audience
-seems mixed; should this be split into two documents?"_) are escalated with a recommendation before finalizing.
+seems mixed; should this be split into two documents?"_) are escalated with a recommendation before finalizing. Once the
+outline is final, the skill dispatches `readability-editor` to rewrite the outline's prose for the reader of the phased
+build, preserving every fact and every `Phase N` identifier, then runs a readability self-check before presenting.
 
 **Anchor stability is part of the contract.** Every phase heading carries an explicit `{#phase-N}` anchor. Every
 open-question heading carries an explicit `{#oq-N}` anchor. Renaming a phase or question never breaks inbound deep links
@@ -388,6 +393,8 @@ URL: see [`information-architect` agent definition](../../../han-core/agents/inf
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`information-architect`](../../agents/han-core/information-architect.md). The agent the skill dispatches at runtime
   to review the rendered outline. Also the agent that reviewed the output template before the skill shipped.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched once the outline is final to
+  rewrite its prose for the reader of the phased build, preserving every fact and every `Phase N` identifier.
 - [`/gap-analysis`](../han-core/gap-analysis.md). Pair upstream when the source artifact is a comparison between current
   and desired state. Run `/gap-analysis` first to produce the gap report, then point this skill at the report. `G-NNN`
   gap IDs become source citations on the phase entries that close them.

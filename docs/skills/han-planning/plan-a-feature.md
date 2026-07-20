@@ -225,7 +225,9 @@ specialists run on `sonnet`). The interview itself is inexpensive (a model loop 
 review round fans out to three to five agents in parallel, each doing its own protocol-driven pass over the draft spec.
 The synthesis pass on `project-manager` is the most expensive single step. For a medium-complexity feature, expect one
 interview loop, one parallel review round, and one synthesis pass: roughly equivalent to dispatching five to six
-sub-agents plus the interview loop itself. The skill is designed for new-feature planning cadence (daily to weekly), not
+sub-agents plus the interview loop itself. After the synthesis pass, the skill dispatches one
+`han-communication:readability-editor` rewrite of the spec's prose, so expect one additional readability pass among the
+sub-agent dispatches. The skill is designed for new-feature planning cadence (daily to weekly), not
 for tight-loop iteration over the same spec. Use `/iterative-plan-review` for that.
 
 ## In more detail
@@ -248,7 +250,9 @@ reconcile their input and apply corrections. The output is three cross-reference
 the folder root (the canonical behavioral artifact that `/plan-implementation` turns into an implementation plan), plus
 `artifacts/decision-log.md` and `artifacts/team-findings.md` in a sibling `artifacts/` subfolder. This keeps the primary
 spec focused on behavior, while decision history and review findings sit alongside it, cross-referenced by `D#` / `F#`
-ID.
+ID. After the final specification content exists, the skill dispatches `readability-editor` to rewrite the spec's prose
+for the stakeholder or reviewer who reads it, preserving every fact and every `D#` / `T#` cross-reference identifier,
+then runs a readability self-check over the prose before presenting.
 
 ## YAGNI
 
@@ -368,6 +372,9 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
 - [`/research`](../han-core/research.md). The upstream step when you had options to weigh before specifying. `/research`
   recommends an option among trade-offs; bring that recommendation here to turn it into a behavioral spec. The pairing
   is bidirectional: `/research` closes by pointing here.
+- [`readability-editor`](../../agents/han-communication/readability-editor.md). Dispatched after the synthesis pass to
+  rewrite the specification's prose for the stakeholder or reviewer who reads it, preserving every fact and every `D#` /
+  `T#` cross-reference identifier.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the
   `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative,
   project-manager-led team conversation.
