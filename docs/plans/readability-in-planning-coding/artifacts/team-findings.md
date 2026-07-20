@@ -16,7 +16,7 @@ Records every finding raised by the review team and how each was resolved. Behav
   scope text so a human-read plan-of-record is distinguished from a pure pipeline artifact. Captured as D9; the rule
   clarification is now an in-scope deliverable and the Out of Scope section was narrowed accordingly.
 - **Resolved by:** user input
-- **Affected decisions:** D9 (new), D8
+- **Affected decisions:** D9 (new)
 - **Changed in spec:** Outcome, Coordinations, Out of Scope, Summary
 
 ### F2: "No dependency change" holds only for direct han-communication dependents

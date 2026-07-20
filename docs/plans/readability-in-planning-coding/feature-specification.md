@@ -20,9 +20,9 @@ Concretely, when an engineer runs one of these skills:
   presenting ([D5](artifacts/decision-log.md#d5-per-skill-scope-and-named-audience)).
 - The five prose-document skills additionally dispatch the `han-communication:readability-editor` agent for one
   adversarial rewrite pass before the self-check
-  ([D2](artifacts/decision-log.md#d2-prose-document-vs-structured-artifact-split)).
+  ([D2](artifacts/decision-log.md#d2-prose-document-vs-structured-artifact-split-for-the-editor-pass)).
 - Every fact, every cross-reference identifier, and every citation survives the readability work unchanged
-  ([D3](artifacts/decision-log.md#d3-prose-regions-and-fidelity)).
+  ([D3](artifacts/decision-log.md#d3-prose-regions-only-scope-and-fact-fidelity)).
 
 The seven skills are `plan-a-feature`, `plan-implementation`, `plan-a-phased-build`, `plan-work-items`, and
 `iterative-plan-review` (in `han-planning`), plus `coding-standard` and `test-planning` (in `han-coding`).
@@ -38,7 +38,7 @@ The seven skills are `plan-a-feature`, `plan-implementation`, `plan-a-phased-bui
   `han-coding` plugin already declares `han-communication` directly; the `han-planning` plugin gains a direct
   `han-communication` dependency as part of this work, because it currently reaches the plugin only transitively through
   `han-core` and Han's convention requires every prose-producing plugin to depend on `han-communication` directly
-  ([D4](artifacts/decision-log.md#d4-han-planning-gains-a-direct-dependency)). Every target skill already grants the
+  ([D4](artifacts/decision-log.md#d4-han-planning-gains-a-direct-han-communication-dependency)). Every target skill already grants the
   `Agent` tool the editor pass needs, so no tool grants change.
 
 ## Primary Flow
@@ -52,11 +52,11 @@ skill's existing workflow at the points named in the Coordinations section.
 2. The skill produces its deliverable's final content through its existing workflow, including any review or synthesis
    step it already runs. When a dispatched agent authors the final content, the readability pass in the next steps is
    what carries voice into that content, since the standard lives in the skill's context rather than the agent's
-   ([D6](artifacts/decision-log.md#d6-readability-pass-runs-after-final-content)).
+   ([D6](artifacts/decision-log.md#d6-readability-pass-runs-after-the-final-content-exists)).
 3. For the five prose-document skills only: once the final content exists, the skill dispatches one
    `han-communication:readability-editor` agent to audit and rewrite the deliverable's prose regions against the
    standard, passing the skill's named reader and no rule path (the editor reads its own canonical rule), then applies
-   the returned rewrite ([D2](artifacts/decision-log.md#d2-prose-document-vs-structured-artifact-split)).
+   the returned rewrite ([D2](artifacts/decision-log.md#d2-prose-document-vs-structured-artifact-split-for-the-editor-pass)).
 4. The skill runs the standardized six-point readability self-check over the prose regions it authored or changed this
    run, holding the skill's named reader, confirms each criterion, and fixes any failure before presenting
    ([D5](artifacts/decision-log.md#d5-per-skill-scope-and-named-audience)).
@@ -71,7 +71,7 @@ skill's existing workflow at the points named in the Coordinations section.
   (step 4) directly. It does not dispatch the readability-editor agent.
 - **Exit:** the deliverable is presented, having passed the self-check but no separate rewrite pass. The self-check's
   fidelity criterion is the only fact-preservation guard these skills carry, so it is mandatory
-  ([D2](artifacts/decision-log.md#d2-prose-document-vs-structured-artifact-split)).
+  ([D2](artifacts/decision-log.md#d2-prose-document-vs-structured-artifact-split-for-the-editor-pass)).
 
 ### An in-place skill edits an existing document
 
@@ -89,8 +89,8 @@ skill's existing workflow at the points named in the Coordinations section.
 | --------- | ----------------- |
 | The deliverable contains code fences, tables, diagram bodies, frontmatter, or citation identifiers (file:line, D#/T#/F# links, work-item IDs). | The readability work operates on prose regions only and leaves those regions unchanged. |
 | The readability-editor agent's rewrite would drop or alter a fact, a quantity, a named entity, or a stated qualifier. | The rewrite is rejected on that point; the fact is preserved with its precision intact. Fidelity wins over voice. |
-| A dispatched agent (for example a project-manager synthesis) authors the deliverable's final content. | The standard reaches that content through the after-the-fact pass, not through the authoring agent: the editor pass for the five prose-document skills, the self-check for the two structured-artifact skills ([D6](artifacts/decision-log.md#d6-readability-pass-runs-after-final-content)). |
-| A skill already runs a synthesis, review, or IA step near the end of its workflow (`plan-a-feature`'s project-manager synthesis; the review steps in `plan-a-phased-build`, `coding-standard`, and `test-planning`). | The readability pass runs after that step produces the final content, so it never fights an authoritative later step ([D6](artifacts/decision-log.md#d6-readability-pass-runs-after-final-content)). |
+| A dispatched agent (for example a project-manager synthesis) authors the deliverable's final content. | The standard reaches that content through the after-the-fact pass, not through the authoring agent: the editor pass for the five prose-document skills, the self-check for the two structured-artifact skills ([D6](artifacts/decision-log.md#d6-readability-pass-runs-after-the-final-content-exists)). |
+| A skill already runs a synthesis, review, or IA step near the end of its workflow (`plan-a-feature`'s project-manager synthesis; the review steps in `plan-a-phased-build`, `coding-standard`, and `test-planning`). | The readability pass runs after that step produces the final content, so it never fights an authoritative later step ([D6](artifacts/decision-log.md#d6-readability-pass-runs-after-the-final-content-exists)). |
 | `plan-a-phased-build` has already asked the user which audience the outline targets (engineering, mixed, or customer-facing). | The readability pass holds that per-run audience, rather than a fixed frame ([D5](artifacts/decision-log.md#d5-per-skill-scope-and-named-audience)). |
 
 ## Coordinations
@@ -99,7 +99,7 @@ skill's existing workflow at the points named in the Coordinations section.
 | ------------------- | --------- | ----------- | ---------------------------------- |
 | `han-communication:readability-guidance` skill | outbound | Each target skill invokes it to source the standard into context. | Must run before the target skill drafts its deliverable. |
 | `han-communication:readability-editor` agent | outbound | The five prose-document skills dispatch it for one adversarial rewrite pass, passing the named reader and no rule path. | Must run after the final content exists and after any final synthesis or review step, and before the self-check. |
-| The readability standard's scope text (`readability-rule.md`) | inbound and updated | The seven skills reference the single canonical standard rather than vendoring it. This work also clarifies the standard's "who reads reader-facing output" scope text so Han's plans-of-record are recognized as reader-facing ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)). | A change to the standard reaches all seven skills with no edit to them, because they reference the one canonical copy ([D7](artifacts/decision-log.md#d7-single-canonical-source)). |
+| The readability standard's scope text (`readability-rule.md`) | inbound and updated | The seven skills reference the single canonical standard rather than vendoring it. This work also clarifies the standard's "who reads reader-facing output" scope text so Han's plans-of-record are recognized as reader-facing ([D9](artifacts/decision-log.md#d9-reader-facing-scope-reconciliation)). | A change to the standard reaches all seven skills with no edit to them, because they reference the one canonical copy ([D7](artifacts/decision-log.md#d7-reference-the-single-canonical-standard-never-vendor-it)). |
 
 ## Out of Scope
 
