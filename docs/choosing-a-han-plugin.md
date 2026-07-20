@@ -46,8 +46,8 @@ and `han-reporting`.
   of independently demoable vertical-slice phases; [`plan-work-items`](./skills/han-planning/plan-work-items.md), which
   breaks a trusted plan into independently-grabbable, atomic work items; and
   [`iterative-plan-review`](./skills/han-planning/iterative-plan-review.md), which stress-tests an existing plan through
-  codebase-grounded review passes. This plugin depends on `han-core` and is bundled by the `han` meta-plugin, so the
-  bundled suite includes it; a core-only install does not.
+  codebase-grounded review passes. This plugin depends on `han-core` and `han-communication` and is bundled by the `han`
+  meta-plugin, so the bundled suite includes it; a core-only install does not.
 - **`han-coding`.** The coding layer: the skills you reach for while working in code. It adds
   [`tdd`](./skills/han-coding/tdd.md), which drives a feature or behavior through a BDD-framed red-green-refactor loop
   and writes the tests and production code into your tree; [`refactor`](./skills/han-coding/refactor.md), which

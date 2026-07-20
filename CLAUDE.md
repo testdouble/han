@@ -10,10 +10,12 @@ documentation, and operations skills plus all the agents the rest of the suite d
 `readability-editor`; depends on `han-communication`), `han-planning` (the planning skills you reach for before
 implementation: specifying with `plan-a-feature`, planning the build with `plan-implementation`, sequencing it with
 `plan-a-phased-build`, breaking it into work with `plan-work-items`, and stress-testing plans with
-`iterative-plan-review`; depends on `han-core` and is bundled by the `han` meta-plugin), `han-coding` (the coding skills
+`iterative-plan-review`; depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin),
+`han-coding` (the coding skills
 you reach for while working in code: writing it with `tdd` and `refactor`, plus reviewing, overviewing, analyzing,
 testing, investigating, and standardizing it with `code-review`, `code-overview`, `architectural-analysis`,
-`test-planning`, `investigate`, and `coding-standard`; depends on `han-core` and is bundled by the `han` meta-plugin),
+`test-planning`, `investigate`, and `coding-standard`; depends on `han-communication` and `han-core` and is bundled by
+the `han` meta-plugin),
 `han-github` (GitHub-facing skills), `han-reporting` (reporting and summary skills), `han` (a meta-plugin that installs
 `han-communication`, `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` via dependencies),
 `han-feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han-core` but is
@@ -64,12 +66,12 @@ han-plugin-builder skill:
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md, evidence-rule.md — canonical copies)
-├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation; depends on han-core; bundled by the han meta-plugin)
+├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files vendored for han-planning skills (yagni-rule.md, evidence-rule.md)
-├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, test-planning, investigate, coding-standard (the skills for working in code; depends on han-core; bundled by the han meta-plugin)
+├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
@@ -113,10 +115,10 @@ The plugins are shipped from `han-communication/`, `han-core/`, `han-planning/`,
 `han-reporting/`, `han-feedback/`, `han-atlassian/`, `han-linear/`, and `han-plugin-builder/`; the `han/` meta-plugin
 pulls in `han-communication`, `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` through its
 `dependencies`. `han-communication` is the foundational layer beneath every other plugin: it depends on nothing and owns
-the single canonical readability standard, and every plugin that produces prose output (`han-core`, `han-coding`,
-`han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a direct dependency on it — including
-`han-core`, whose first-ever dependency this is. `han-planning` and `han-coding` depend on `han-core` like the GitHub
-and reporting layers and are bundled by the meta-plugin. `han-feedback`, `han-atlassian`, and `han-linear` depend on
+the single canonical readability standard, and every plugin that produces prose output (`han-core`, `han-planning`,
+`han-coding`, `han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a direct dependency on it —
+including `han-core`, whose first-ever dependency this is. `han-planning` and `han-coding` depend on `han-communication`
+and `han-core` like the GitHub and reporting layers and are bundled by the meta-plugin. `han-feedback`, `han-atlassian`, and `han-linear` depend on
 `han-core` like the other layers but are deliberately left out of the meta-plugin, so each is opt-in and installed on
 its own (`han-atlassian` additionally requires a configured Atlassian MCP server, and `han-linear` a configured Linear
 MCP server). `han-plugin-builder` depends on nothing and is likewise opt-in and installed on its own. The
