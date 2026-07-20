@@ -201,6 +201,11 @@ code) do not reach disk — Step 5 re-validates every candidate against the rout
 
 ## Step 5: Draft the Initial Feature Specification
 
+Before drafting, invoke `han-communication:readability-guidance` to source the shared readability standard into your
+context, then apply it as you write the prose sections, holding the named audience: the stakeholder or reviewer who reads
+the spec for approval. The frame governs how a fact is said, never whether a required fact appears — keep the behavioral
+precision the spec depends on.
+
 Write the files. The primary spec goes at the root of `{folder}/`; the companion artifacts go in `{folder}/artifacts/`
 (create that subfolder if it does not already exist):
 
@@ -466,6 +471,30 @@ directly. It must:
     Any leak the han-core:project-manager finds is rewritten in place during synthesis.
 
 The han-core:project-manager owns the final synthesis — its output is authoritative.
+
+## Step 8.5: Readability Pass
+
+Once the han-core:project-manager synthesis in Step 8 is complete and the spec is final, dispatch
+`han-communication:readability-editor` (one Agent call) to audit and rewrite the spec's prose against the readability
+standard. Pass the editor the file path `{folder}/feature-specification.md` and the named audience: the stakeholder or
+reviewer who reads the spec for approval; the editor reads han-communication's own canonical rule, so pass no rule path.
+It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D#/T#/F#
+citation identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the spec file.
+
+Then run the standardized readability self-check (the shared standard is in your context from
+`han-communication:readability-guidance`) over the spec's prose regions only — never inside code fences, tables, or the
+D#/T#/F# citation identifiers. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
+   lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
+   precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
 
 ## Step 9: Present the Final Specification
 
