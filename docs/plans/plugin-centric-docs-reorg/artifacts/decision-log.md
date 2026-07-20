@@ -145,7 +145,7 @@ evidence, and rejected alternatives for each decision.
 - **Linked technical notes:** T1
 - **Driven by findings:** F8, F9
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow, Coordinations
+- **Referenced in spec:** Outcome, Primary Flow, Coordinations
 
 ### D8: Plugins without agents note shared-agent dispatch
 
@@ -192,7 +192,7 @@ evidence, and rejected alternatives for each decision.
   - Update only the indexes and the files in the initial partial list — rejected because the scan proved the referencing
     set is roughly four times larger, and the stale descriptions would contradict the new structure the moment it lands.
 - **Linked technical notes:** —
-- **Driven by findings:** F2
+- **Driven by findings:** F2, F5
 - **Dependent decisions:** D16
 - **Referenced in spec:** Edge Cases and Failure Modes, Coordinations
 
