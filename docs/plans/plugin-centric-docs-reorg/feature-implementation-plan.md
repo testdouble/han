@@ -2,7 +2,9 @@
 
 This plan moves 62 long-form docs into their plugins, authors 11 plugin READMEs, slims two indexes, converts the
 choosing doc into a plugin index, and adds a workflows page. It is documentation-only: no skill or agent behavior
-changes. The implementation posture is one atomic change, sequenced in dependency tiers, verified once against a
+changes.
+
+The implementation lands as one atomic change, sequenced in dependency tiers and verified once against a
 zero-broken-links gate.
 
 ## Source Specification
@@ -17,13 +19,15 @@ zero-broken-links gate.
 
 ## Outcome
 
-When this plan is executed, every Han plugin folder carries a light front-door `README.md`, and every skill and agent
-long-form doc sits inside the plugin it describes at `{plugin}/docs/skills/{name}.md` or `{plugin}/docs/agents/{name}.md`
-([D1](artifacts/decision-log.md#d1-long-form-docs-move-into-each-plugin-directory)). The skills index and agents index
-remain at `docs/skills/README.md` and `docs/agents/README.md` but shrink to alphabetized link lists
-([D5](artifacts/decision-log.md#d5-indexes-shrink-to-alphabetized-link-lists)). `docs/choosing-a-han-plugin.md` becomes
-the plugin index ([D4](artifacts/decision-log.md#d4-the-choosing-doc-becomes-the-plugin-index)), and a new
-`docs/workflows.md` renders its composition diagrams on GitHub with no build step
+When this plan is executed, every Han plugin folder carries a light front-door `README.md`. Every skill and agent
+long-form doc then sits inside the plugin it describes, at `{plugin}/docs/skills/{name}.md` or
+`{plugin}/docs/agents/{name}.md` ([D1](artifacts/decision-log.md#d1-long-form-docs-move-into-each-plugin-directory)).
+The skills index and agents index remain at `docs/skills/README.md` and `docs/agents/README.md` but shrink to
+alphabetized link lists ([D5](artifacts/decision-log.md#d5-indexes-shrink-to-alphabetized-link-lists)).
+
+`docs/choosing-a-han-plugin.md` becomes the plugin index
+([D4](artifacts/decision-log.md#d4-the-choosing-doc-becomes-the-plugin-index)), and a new `docs/workflows.md` renders
+its composition diagrams on GitHub with no build step
 ([D6](artifacts/decision-log.md#d6-composition-scenarios-and-diagrams-move-to-a-workflows-doc),
 [T1](artifacts/feature-technical-notes.md#t1-github-renders-mermaid-fenced-blocks-natively)). Every internal link
 resolves ([D16](artifacts/decision-log.md#d16-link-integrity-is-the-acceptance-gate)).
@@ -55,9 +59,12 @@ resolves ([D16](artifacts/decision-log.md#d16-link-integrity-is-the-acceptance-g
 ## Implementation Approach
 
 The implementation is a file move plus link recomputation plus README and index authoring. It touches no application
-code. The crux is link integrity: moving 62 docs breaks both the links pointing at them and the relative links inside
-them, and there is no link checker in the repository to catch a half-done state. The work therefore runs in dependency
-tiers and lands as one atomic change ([D-1](artifacts/implementation-decision-log.md#d-1-dependency-tiered-sequencing),
+code.
+
+The crux is link integrity: moving 62 docs breaks both the links pointing at them and the relative links inside them,
+and there is no link checker in the repository to catch a half-done state. The work therefore runs in dependency tiers
+and lands as one atomic change
+([D-1](artifacts/implementation-decision-log.md#d-1-dependency-tiered-sequencing),
 [D-2](artifacts/implementation-decision-log.md#d-2-land-the-reorganization-as-one-atomic-change)).
 
 The template's Data Model, Runtime Behavior, and External Interfaces subsections are omitted below: a docs move has no
@@ -69,9 +76,10 @@ The from-state gathers 62 long-form docs under the repo-root `docs/` tree: 38 sk
 `docs/skills/{plugin}/{name}.md` across 10 plugins and 24 agent docs at `docs/agents/{plugin}/{name}.md` across
 `han-core` (23) and `han-communication` (1). The to-state moves each doc to `{plugin}/docs/skills/{name}.md` or
 `{plugin}/docs/agents/{name}.md`, beside that plugin's README
-([D1](artifacts/decision-log.md#d1-long-form-docs-move-into-each-plugin-directory)). Only `han-core` and
-`han-communication` gain a `docs/agents/` subfolder. The moved docs ship inside the installed plugin the same way the
-README does and are not loaded by the plugin system.
+([D1](artifacts/decision-log.md#d1-long-form-docs-move-into-each-plugin-directory)).
+
+Only `han-core` and `han-communication` gain a `docs/agents/` subfolder. The moved docs ship inside the installed
+plugin the same way the README does, and the plugin system does not load them.
 
 Two index READMEs stay in place and transform to alphabetized link lists
 ([D5](artifacts/decision-log.md#d5-indexes-shrink-to-alphabetized-link-lists)). The choosing doc converts to the plugin
@@ -88,35 +96,44 @@ against the regenerated scan.
 ### Link Topology and Recomputation
 
 Each moved doc carries a dense web of relative links whose new form depends on both the doc's new depth and whether the
-target also moved. The per-category mapping (old form to new form) is recorded in the discovery notes' link-topology
-table ([.discovery-notes.md](artifacts/.discovery-notes.md)); it is the recomputation source and is not restated here.
+target also moved.
 
-Recomputation runs through a one-time throwaway migration script using the mechanic
-resolve-each-link-to-an-absolute-repo-path-then-re-express-it-relative-to-the-doc's-new-location
-([D-3](artifacts/implementation-decision-log.md#d-3-one-time-throwaway-migration-script)). Naive `git mv` plus a
-find-and-replace on each doc's own path is unsafe: it misses every outbound relative link and cannot handle a target
-that also moved ([D16](artifacts/decision-log.md#d16-link-integrity-is-the-acceptance-gate)). The script's file
-selection excludes the frozen `docs/plans/**` and `docs/research/**` archives
+The per-category mapping (old form to new form) is recorded in the discovery notes' link-topology table
+([.discovery-notes.md](artifacts/.discovery-notes.md)); it is the recomputation source and is not restated here.
+
+Recomputation runs through a one-time throwaway migration script that resolves each link to an absolute repo path, then
+re-expresses it relative to the doc's new location
+([D-3](artifacts/implementation-decision-log.md#d-3-one-time-throwaway-migration-script)).
+
+A naive `git mv` plus a find-and-replace on each doc's own path is unsafe: it misses every outbound relative link and
+cannot handle a target that also moved
+([D16](artifacts/decision-log.md#d16-link-integrity-is-the-acceptance-gate)).
+
+The script's file selection excludes the frozen `docs/plans/**` and `docs/research/**` archives
 ([D10](artifacts/decision-log.md#trivial-decisions)) and `CHANGELOG.md`, which stays a frozen point-in-time record
 ([D-5](artifacts/implementation-decision-log.md#d-5-changelogmd-stays-frozen-and-out-of-the-link-gate)).
 
 ### README and Index Authoring Model
 
 All 11 READMEs follow one light front-door skeleton
-([D-7](artifacts/implementation-decision-log.md#trivial-decisions)): an H1 and one-paragraph what/how/why, a
-bundled-vs-opt-in line naming dependencies and any required MCP server
-([D13](artifacts/decision-log.md#d13-plugin-readme-states-bundled-vs-opt-in-and-dependencies)), a scent-line skills list
-reusing each long-form doc's canonical summary line
-([D15](artifacts/decision-log.md#d15-the-long-form-summary-line-is-the-canonical-scent)), an owned-agents scent list for
-`han-core` and `han-communication` only with the shared-agent-dispatch note for the other eight
-([D8](artifacts/decision-log.md#d8-plugins-without-agents-note-shared-agent-dispatch)), and lateral navigation. `han-core`
-groups its skills by purpose ([D12](artifacts/decision-log.md#trivial-decisions)); the others are flat. The `han`
-meta-plugin README omits the skills and agents sections and is a rewrite of the stale `han/README.md`, not a slim
+([D-7](artifacts/implementation-decision-log.md#trivial-decisions)):
+
+- An H1 and a one-paragraph what/how/why.
+- A bundled-vs-opt-in line naming dependencies and any required MCP server
+  ([D13](artifacts/decision-log.md#d13-plugin-readme-states-bundled-vs-opt-in-and-dependencies)).
+- A scent-line skills list that reuses each long-form doc's canonical summary line
+  ([D15](artifacts/decision-log.md#d15-the-long-form-summary-line-is-the-canonical-scent)).
+- An owned-agents scent list for `han-core` and `han-communication` only, with the shared-agent-dispatch note for the
+  other eight ([D8](artifacts/decision-log.md#d8-plugins-without-agents-note-shared-agent-dispatch)).
+- Lateral navigation.
+
+`han-core` groups its skills by purpose ([D12](artifacts/decision-log.md#trivial-decisions)); the others are flat. The
+`han` meta-plugin README omits the skills and agents sections and is a rewrite of the stale `han/README.md`, not a slim
 ([D17](artifacts/decision-log.md#d17-the-meta-plugin-readme-omits-skills-and-agents-sections)).
 
 Authoring the READMEs depends on the plugin-README standard and template already being rewritten to the light model
-([D18](artifacts/decision-log.md#d18-the-plugin-readme-standard-and-template-move-to-the-light-model)); authoring against
-the on-disk heavy standard reproduces the duplication the reorg removes
+([D18](artifacts/decision-log.md#d18-the-plugin-readme-standard-and-template-move-to-the-light-model)). Authoring
+against the on-disk heavy standard would reproduce the duplication the reorg removes
 ([D-1](artifacts/implementation-decision-log.md#d-1-dependency-tiered-sequencing)).
 
 The two indexes shrink to alphabetized lists whose entries reuse the canonical scent and link to each moved doc. Each
@@ -128,9 +145,10 @@ resolves ([D4](artifacts/decision-log.md#d4-the-choosing-doc-becomes-the-plugin-
 
 After the move, a long-form doc's first up-link points to its adjacent plugin README, then the repository root
 ([D14](artifacts/decision-log.md#d14-in-plugin-docs-link-up-to-their-plugin-readme)). Plugin READMEs carry minimal
-lateral navigation up to the plugin index and root and across to workflows. The skill and agent long-form templates and
-the coverage rule encode the old first-bullet-to-root convention and old paths; they are updated in the standards tier so
-future docs do not regress the convention this reorg establishes
+lateral navigation up to the plugin index and root and across to workflows.
+
+The skill and agent long-form templates and the coverage rule still encode the old first-bullet-to-root convention and
+old paths. The standards tier updates them, so future docs do not regress the convention this reorg establishes
 ([D9](artifacts/decision-log.md#d9-layout-descriptions-standards-and-tooling-updated)).
 
 `docs/workflows.md` receives exactly four inbound links, from the root README and the three indexes, and no per-doc
@@ -230,9 +248,10 @@ the "tests" are link and reachability checks, not behavior tests.
 
 ## Specialist Handoffs for Implementation
 
-- **`information-architect`** dispatch after the `han-core` README is drafted; needs the drafted README to confirm the
-  by-purpose grouping (OI-1) reads better than a flat list at `han-core`'s skill count, and to sanity-check that a reader
-  landing mid-tree on a moved doc gets enough orientation from the light README and the up-link.
+- **`information-architect`** dispatch after the `han-core` README is drafted. It needs the drafted README to confirm
+  the by-purpose grouping (OI-1) reads better than a flat list at `han-core`'s skill count. It also needs the draft to
+  sanity-check that a reader landing mid-tree on a moved doc gets enough orientation from the light README and the
+  up-link.
 - **`devops-engineer`** conditional; dispatch only if the team chooses to build a permanent CI link-checker instead of
   the one-time gate ([D-4](artifacts/implementation-decision-log.md#d-4-three-pass-one-time-link-verification-gate)). Not
   triggered by this plan.
