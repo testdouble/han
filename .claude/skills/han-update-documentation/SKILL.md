@@ -78,14 +78,16 @@ Deduplicate. Produce a single ordered inventory `INV`:
 
 ### Plugin roots
 
-Han ships as several plugins. Skills are spread across several of them; agents live in only one. Long-form docs stay
-flat under `docs/skills/` and `docs/agents/` no matter which plugin owns the entity.
+Han ships as several plugins. Skills are spread across several of them; agents live in `han-core` and, for the
+readability-editor, `han-communication`. Long-form docs now live inside the plugin they describe, at
+`{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md`, beside that plugin's `README.md`.
 
 - **Skill roots:** the list the detect script reported between `skill-roots-start` and `skill-roots-end`. Every
   `han-*/skills` directory except `han-plugin-builder/skills` (its `guidance` skill is authoring guidance, audited under
   guidance docs below). Do not hardcode the plugins here; read them from the script so a newly added plugin is covered
   automatically.
-- **Agent root:** the script's `agent-root:` line (`han-core/agents`, the only plugin with agents).
+- **Agent root:** the script's `agent-root:` line (`han-core/agents`). The readability-editor agent also lives in
+  `han-communication/agents`; include it when auditing agents.
 - **Plugin manifests:** `{plugin}/.claude-plugin/plugin.json` for every plugin. Owned by `/han-release`; out of scope
   here.
 
@@ -97,9 +99,10 @@ Enumerate the full set:
 
 1. **Every skill.** Run `find <skill roots> -mindepth 1 -maxdepth 1 -type d`, passing the skill roots the detect script
    reported, for the inventory; each entry pulls in `{plugin}/skills/{name}/SKILL.md` (the root the directory came from)
-   and `docs/skills/{name}.md`.
+   and `{plugin}/docs/skills/{name}.md`.
 2. **Every agent.** Run `find <agent root> -mindepth 1 -maxdepth 1 -name "*.md" -type f`, passing the script's
-   `agent-root`, for the inventory; each entry pulls in `{agent-root}/{name}.md` and `docs/agents/{name}.md`.
+   `agent-root` (plus `han-communication/agents` for the readability-editor), for the inventory; each entry pulls in
+   `{agent-root}/{name}.md` and `{plugin}/docs/agents/{name}.md`.
 3. **Both indexes** (`docs/skills/README.md`, `docs/agents/README.md`).
 4. **All top-level concept docs** in `docs/`.
 5. **All guidance docs** under `han-plugin-builder/skills/guidance/references/`.
@@ -127,8 +130,9 @@ in a working list with this shape:
 ```
 
 **Read the source of truth before checking the doc.** For a skill, read `{plugin}/skills/{name}/SKILL.md` first (the
-plugin root the skill came from), then read `docs/skills/{name}.md` and check it against the source. For an agent, read
-`han-core/agents/{name}.md` first, then `docs/agents/{name}.md`. Doc-vs-source contradictions are functional bugs —
+plugin root the skill came from), then read `{plugin}/docs/skills/{name}.md` and check it against the source. For an
+agent, read `{plugin}/agents/{name}.md` first, then `{plugin}/docs/agents/{name}.md`. Doc-vs-source contradictions are
+functional bugs —
 treat them with the same severity as broken scripts (see
 `han-plugin-builder/skills/guidance/references/skill-building-guidance/documentation-maintenance.md`).
 
@@ -159,8 +163,8 @@ After Step 3, look across entities, not just within them.
    `docs/concepts.md` describe the skills and agents without a hardcoded total. A reintroduced count (for example "21
    skills" or "23 agents") is a finding. Sweep mode always runs this check; branch mode runs it only if the branch added
    or removed skills or agents.
-6. **The `## How skills compose` block in `docs/skills/README.md`** references current skill names only. References to
-   renamed or removed skills are findings.
+6. **The composition chains in `docs/workflows.md`** reference current skill names only, and the mermaid diagrams stay
+   consistent with the prose. References to renamed or removed skills are findings.
 
 Add each finding to the working list with the same shape as Step 3.
 

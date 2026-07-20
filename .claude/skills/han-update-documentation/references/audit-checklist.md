@@ -5,10 +5,11 @@ in scope. This checklist determines _what_ is checked for each one. Apply every 
 each finding with the file path and a concrete fix; do not paper over discrepancies.
 
 `{plugin}` below means the skill root the skill came from: any discovered `han-*/skills` directory except
-`han-plugin-builder/skills` (the detect script reports the current list). Agents live only under the agent root
-(`han-core/agents`).
+`han-plugin-builder/skills` (the detect script reports the current list). Agents live under `han-core/agents` and
+`han-communication/agents` (the readability-editor). Long-form docs now live inside the plugin they describe, at
+`{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md`, beside that plugin's `README.md`.
 
-## Skills (`{plugin}/skills/{name}/SKILL.md` + `docs/skills/{name}.md`)
+## Skills (`{plugin}/skills/{name}/SKILL.md` + `{plugin}/docs/skills/{name}.md`)
 
 ### Skill definition (`{plugin}/skills/{name}/SKILL.md`)
 
@@ -23,12 +24,14 @@ each finding with the file path and a concrete fix; do not paper over discrepanc
 6. **No stale directives.** If the SKILL.md tells the agent to use a renamed flag, a removed script, an abandoned
    convention, or a deleted sibling skill, fix it.
 
-### Long-form doc (`docs/skills/{name}.md`)
+### Long-form doc (`{plugin}/docs/skills/{name}.md`)
 
-1. **Long-form doc exists.** Every skill across the discovered skill roots has a matching long-form doc. Missing doc is
-   a hard finding — create it from `docs/templates/skill-long-form-template.md` rather than leaving the gap.
+1. **Long-form doc exists.** Every skill across the discovered skill roots has a matching long-form doc at
+   `{plugin}/docs/skills/{name}.md`. Missing doc is a hard finding — create it from
+   `docs/templates/skill-long-form-template.md` rather than leaving the gap.
 2. **Orientation frame intact.** First line is `# /{name}`; the second paragraph names the audience and links to
-   `{plugin}/skills/{name}/SKILL.md`. The `> See also:` orientation line is present.
+   `{plugin}/skills/{name}/SKILL.md` (from the doc's location, `../../skills/{name}/SKILL.md`). The `> See also:`
+   orientation line is present.
 3. **TL;DR present.** Three lines: what / when / what-you-get-back. Each one sentence.
 4. **Sections follow the template.** Key concepts, When to use it, How to invoke it, What you get back, How to get the
    most out of it, YAGNI (when applicable), Cost and latency, In more detail (optional), Sources, Related documentation.
@@ -42,10 +45,10 @@ each finding with the file path and a concrete fix; do not paper over discrepanc
    match the steps in SKILL.md.
 9. **Sources are still cited correctly.** URLs resolve and named artifacts in the skill trace back to them. Removed
    citations correspond to removed protocols.
-10. **Related documentation first bullet links to the plugin landing page** (`../../README.md`), per the convention in
-    CLAUDE.md.
-11. **Agent links resolve.** Every `[agent-name](../agents/{name}.md)` in Related documentation resolves to a real
-    long-form agent doc.
+10. **Related documentation first bullet links to the plugin README** (`../../README.md`), then the repo root
+    (`../../../README.md`), per D14 and the convention in CLAUDE.md.
+11. **Agent links resolve.** Every agent link in Related documentation (`../../../han-core/docs/agents/{name}.md`, or
+    `../../../han-communication/docs/agents/readability-editor.md`) resolves to a real long-form agent doc.
 
 ### Cross-references
 
@@ -62,7 +65,7 @@ each finding with the file path and a concrete fix; do not paper over discrepanc
 7. **README.md skill references stay count-free.** The Skills Index links resolve and the surrounding text names no
    hardcoded skill count.
 
-## Agents (`han-core/agents/{name}.md` + `docs/agents/{name}.md`)
+## Agents (`{plugin}/agents/{name}.md` + `{plugin}/docs/agents/{name}.md`)
 
 ### Agent definition (`han-core/agents/{name}.md`)
 
@@ -74,15 +77,16 @@ each finding with the file path and a concrete fix; do not paper over discrepanc
    `han-plugin-builder/skills/guidance/references/specialization-and-model-selection.md` for this agent's role.
 5. **No stale references.** Sibling agents named in the boundary all exist. Skills named as callers exist.
 
-### Long-form doc (`docs/agents/{name}.md`)
+### Long-form doc (`{plugin}/docs/agents/{name}.md`)
 
-1. **Long-form doc exists** for every agent in `han-core/agents/`. Missing doc is a hard finding — create it from
-   `docs/templates/agent-long-form-template.md`.
+1. **Long-form doc exists** for every agent in `han-core/agents/` and `han-communication/agents/`. Missing doc is a hard
+   finding — create it from `docs/templates/agent-long-form-template.md`.
 2. **Orientation frame, TL;DR, and template sections present** per `docs/templates/agent-long-form-template.md`.
 3. **"Dispatched by" or equivalent section names every skill that uses this agent.** When a skill's dispatch list
    changed, this section updates.
 4. **TL;DR matches the agent's frontmatter description.**
-5. **Related documentation first bullet links to the plugin landing page** (`../../README.md`).
+5. **Related documentation first bullet links to the plugin README** (`../../README.md`), then the repo root
+   (`../../../README.md`), per D14.
 6. **Skill links resolve.**
 
 ### Cross-references
@@ -114,8 +118,8 @@ each finding with the file path and a concrete fix; do not paper over discrepanc
 3. **Group headings still describe their groups accurately.** When a category was renamed or merged, the heading
    updates.
 4. **Each entry's scent line is current.**
-5. **Compositions list reflects current pairings.** The `## How skills compose` block in the skills index lists
-   compositions that still hold; removes those that no longer do.
+5. **Compositions list reflects current pairings.** The composition chains in `docs/workflows.md` list compositions that
+   still hold; remove those that no longer do, and keep the mermaid diagrams consistent with the prose.
 
 ## Guidance docs (`han-plugin-builder/skills/guidance/references/**`)
 

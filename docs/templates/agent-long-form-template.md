@@ -2,10 +2,10 @@
 
 Operator documentation for the `{agent-name}` agent in the han plugin. This document helps you decide _when_ and _how_
 to dispatch the agent. For what the agent does internally, read the agent definition at
-[`han-core/agents/{agent-name}.md`](../../../han-core/agents/{agent-name}.md).
+[`{plugin}/agents/{agent-name}.md`](../../agents/{agent-name}.md).
 
-> See also: [Plugin landing page](../../../README.md) · [All agents](../README.md) ·
-> [All skills](../../skills/README.md) · [YAGNI](../../yagni.md)
+> See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All agents](../../../docs/agents/README.md) ·
+> [All skills](../../../docs/skills/README.md) · [YAGNI](../../../docs/yagni.md)
 
 ## TL;DR
 
@@ -33,7 +33,7 @@ to dispatch the agent. For what the agent does internally, read the agent defini
 
 ## How to invoke it
 
-Dispatch via the `Agent` tool with `subagent_type: han-core:{agent-name}`.
+Dispatch via the `Agent` tool with `subagent_type: {plugin}:{agent-name}`.
 
 Give it:
 
@@ -63,7 +63,7 @@ tables, open-question lists.}
 {If this agent reviews artifacts, produces recommendations, or otherwise contributes items the team will commit,
 describe its YAGNI posture. Name which items it gates and which named anti-patterns it enforces (Speculative Test,
 Speculative Edge Case, Speculative Data Machinery, Premature Operational Machinery, Evidence Gate, Evidence Sweep, and
-so on). Explain how findings or deferrals surface in the agent's output. Cross-reference [YAGNI](../../yagni.md).
+so on). Explain how findings or deferrals surface in the agent's output. Cross-reference [YAGNI](../../../docs/yagni.md).
 Pure-discovery agents that do not produce committed items can omit this section.}
 
 ## Cost and latency
@@ -87,10 +87,13 @@ URL: {url}
 
 ## Related documentation
 
-- [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the
-  acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
+- [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
+  tree.
+- [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates,
+  the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [`{companion-agent}`](./{companion-agent}.md). {How they pair}
-- [`/{skill-that-dispatches-this}`](../../skills/{plugin}/{skill}.md). {The skill that typically dispatches this agent}
+- [`/{skill-that-dispatches-this}`](../../../{plugin}/docs/skills/{skill}.md). {The skill that typically dispatches this
+  agent}
 - [{build-guideline link}](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/{file}.md).
   {Relevance}

@@ -59,12 +59,12 @@ grabbable pieces). Match the change to the level it actually lives at, working t
 item.
 
 1. **If the behavior of the feature itself needs to change, go back to
-   [`/plan-a-feature`](../skills/han-planning/plan-a-feature.md).** This is the right choice when the change is about
+   [`/plan-a-feature`](../../han-planning/docs/skills/plan-a-feature.md).** This is the right choice when the change is about
    _what_ the feature does, not how it is built. A new state, a different trigger, a flow you got wrong, a constraint
    that moved. The specification is the source of truth for behavior, so that is where a behavioral change starts.
 
 2. **If the specified behavior is still correct but the implementation outline needs adjusting, go back to
-   [`/plan-implementation`](../skills/han-planning/plan-implementation.md).** The feature still does what the spec says;
+   [`/plan-implementation`](../../han-planning/docs/skills/plan-implementation.md).** The feature still does what the spec says;
    the way you planned to build it has changed. A different boundary, a step that needs resequencing, a technical
    approach that did not survive contact with the code.
 
@@ -105,7 +105,7 @@ item.
 
 1. **Review the updated document for internal consistency.** A change in one place tends to leave a contradiction
    somewhere else: a step that now references a flow you removed, an assumption that no longer holds. Run
-   [`/iterative-plan-review`](../skills/han-planning/iterative-plan-review.md) over the document you touched. It is
+   [`/iterative-plan-review`](../../han-planning/docs/skills/iterative-plan-review.md) over the document you touched. It is
    built to find inconsistencies, hidden assumptions, and gaps, which is exactly what a mid-build edit tends to
    introduce.
 
@@ -137,7 +137,7 @@ item.
   through Phase 3.
 
 - **The feature was built in phases.** If you used
-  [`/plan-a-phased-build`](../skills/han-planning/plan-a-phased-build.md) and have per-phase specs and plans, the same
+  [`/plan-a-phased-build`](../../han-planning/docs/skills/plan-a-phased-build.md) and have per-phase specs and plans, the same
   decision tree applies, scoped to the phase you are changing. Update the document inside that phase's folder, then
   propagate downstream within the phase.
 
@@ -163,9 +163,9 @@ item.
 
 - [Plan a feature, end to end](./plan-a-feature.md) is the guide for the full loop these documents came from, if you
   want to see how they fit together the first time through.
-- [`/iterative-plan-review`](../skills/han-planning/iterative-plan-review.md) is worth reading on its own, since it is
+- [`/iterative-plan-review`](../../han-planning/docs/skills/iterative-plan-review.md) is worth reading on its own, since it is
   the skill that keeps a revised plan honest.
-- The planning skill long-form docs ([plan-a-feature](../skills/han-planning/plan-a-feature.md),
-  [plan-implementation](../skills/han-planning/plan-implementation.md),
-  [plan-work-items](../skills/han-planning/plan-work-items.md)) cover what each step does when you run it to update an
+- The planning skill long-form docs ([plan-a-feature](../../han-planning/docs/skills/plan-a-feature.md),
+  [plan-implementation](../../han-planning/docs/skills/plan-implementation.md),
+  [plan-work-items](../../han-planning/docs/skills/plan-work-items.md)) cover what each step does when you run it to update an
   existing document, not only when you run it from scratch.

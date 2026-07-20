@@ -91,11 +91,12 @@ prose-producing skills source the shared readability standard from it).
 ## Documentation
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
-- [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The full suite vs. core only, the `han-planning`,
-  `han-coding`, `han-github`, and `han-reporting` dependencies on `han-core`, and a quick guide to which one to install.
+- [Plugin index](./docs/choosing-a-han-plugin.md). Every plugin with a one-line scent and a link to its README, the
+  full suite vs. core only, the layer dependencies on `han-core`, and a quick guide to which one to install.
 - [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
-- [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.
-- [Agents Index](./docs/agents/README.md). All agents, grouped by role.
+- [Skills index](./docs/skills/README.md). Every skill, alphabetized, with a scent line and a link to its long-form doc.
+- [Agents index](./docs/agents/README.md). Every agent, alphabetized, with a scent line and a link to its long-form doc.
+- [Workflows](./docs/workflows.md). The map of which skills chain together, with flow diagrams for the branching chains.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills
   dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture

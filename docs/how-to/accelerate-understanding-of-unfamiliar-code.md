@@ -36,14 +36,14 @@ orient you, then check it against the code," not "read the summary and move on."
 
 ## What you'll end up with
 
-- A fast, throwaway orientation to the code, produced by [`/code-overview`](../skills/han-coding/code-overview.md): a
+- A fast, throwaway orientation to the code, produced by [`/code-overview`](../../han-coding/docs/skills/code-overview.md): a
   purpose statement, a Mermaid flow chart, the directly related context, and a where-to-start section, written to a
   scratch file outside the repo. This is the "understand it now" artifact.
 - Optionally, a deeper read of the part that matters: a structural and risk assessment from
-  [`/architectural-analysis`](../skills/han-coding/architectural-analysis.md) when you are about to change the code, or
-  a root-caused investigation from [`/investigate`](../skills/han-coding/investigate.md) when something is broken.
+  [`/architectural-analysis`](../../han-coding/docs/skills/architectural-analysis.md) when you are about to change the code, or
+  a root-caused investigation from [`/investigate`](../../han-coding/docs/skills/investigate.md) when something is broken.
 - A durable, grounded feature doc in the repo, produced by
-  [`/project-documentation`](../skills/han-core/project-documentation.md): real code examples, absolute file paths, and
+  [`/project-documentation`](../../han-core/docs/skills/project-documentation.md): real code examples, absolute file paths, and
   a reference added to `CLAUDE.md` so future Claude sessions read it automatically. This is the "remember it later"
   artifact, and it is the one that makes the cost of understanding pay off more than once.
 - Optionally, that same understanding published to a shared space your whole team and Claude can reach, through the
@@ -60,7 +60,7 @@ change the code or chase a bug.
 
 ### Phase 1: Get oriented fast
 
-1. **Run [`/code-overview`](../skills/han-coding/code-overview.md) on your target.** This is the first thing you reach
+1. **Run [`/code-overview`](../../han-coding/docs/skills/code-overview.md) on your target.** This is the first thing you reach
    for in unfamiliar code. Point it at a file, a directory, a symbol, or a PR.
 
    > `/code-overview {path or symbol or PR}`
@@ -102,7 +102,7 @@ a one-time orientation.
 Reach for this phase when the orientation showed you that you need more than a map, either because you are about to
 change the structure or because something is broken.
 
-1. **Run [`/architectural-analysis`](../skills/han-coding/architectural-analysis.md) when you are about to change the
+1. **Run [`/architectural-analysis`](../../han-coding/docs/skills/architectural-analysis.md) when you are about to change the
    code.** An overview tells you how the code flows; it does not tell you where the coupling is, which seams are
    load-bearing, or what will break if you pull on a given thread. When you are going to modify an unfamiliar module,
    that structural read is what keeps you from a surprise.
@@ -113,7 +113,7 @@ change the structure or because something is broken.
    The skill examines structural coupling, data flow, concurrency, and risk, and tells you where the design will resist
    the change you have in mind.
 
-2. **Run [`/investigate`](../skills/han-coding/investigate.md) when the reason you are in this code is that it is
+2. **Run [`/investigate`](../../han-coding/docs/skills/investigate.md) when the reason you are in this code is that it is
    broken.** Understanding unfamiliar code and diagnosing a failure in it are different jobs. If you came here because
    of a bug, the overview gets you oriented and then `/investigate` finds the root cause with evidence, file paths, line
    numbers, and git history, rather than a guess.
@@ -131,11 +131,11 @@ ends. If the understanding only ever lives in those places, the next person, or 
 fresh session, pays the full cost of building it again. Worse, an LLM asked to re-explain a module from memory each time
 can invent a different explanation each time. The defense is a grounded artifact written down once and corrected once.
 
-1. **Run [`/project-discovery`](../skills/han-core/project-discovery.md) first if the project has not been scanned.** It
+1. **Run [`/project-discovery`](../../han-core/docs/skills/project-discovery.md) first if the project has not been scanned.** It
    finds the docs directory and aligns the doc's code fences with the project's actual stack, so the durable doc lands
    in the right place in the right language.
 
-2. **Run [`/project-documentation`](../skills/han-core/project-documentation.md) to write the understanding into the
+2. **Run [`/project-documentation`](../../han-core/docs/skills/project-documentation.md) to write the understanding into the
    repo.** Where `/code-overview` is the ephemeral, understand-now counterpart, this is the durable one: it writes a
    maintained `docs/{feature}.md` with real code examples and absolute paths.
 
@@ -158,9 +158,9 @@ can invent a different explanation each time. The defense is a grounded artifact
    is enough for you and for Claude working in that repo. When the understanding needs to live somewhere the whole team
    reads, and somewhere Claude can reach through the Atlassian MCP server, use the wrapper skills:
 
-   - [`/project-documentation-to-confluence`](../skills/han-atlassian/project-documentation-to-confluence.md) writes the
+   - [`/project-documentation-to-confluence`](../../han-atlassian/docs/skills/project-documentation-to-confluence.md) writes the
      durable feature doc and publishes it to a Confluence space or page in one move.
-   - [`/code-overview-to-confluence`](../skills/han-atlassian/code-overview-to-confluence.md) does the same for the
+   - [`/code-overview-to-confluence`](../../han-atlassian/docs/skills/code-overview-to-confluence.md) does the same for the
      orientation overview when you want to share the fast map (for example, on a PR a few people are about to review)
      rather than a maintained doc.
 
@@ -190,8 +190,8 @@ can invent a different explanation each time. The defense is a grounded artifact
 
 - **The overview surfaced a decision or a convention, not only behavior.** If understanding the code turned up an
   architectural choice nobody recorded, capture it with
-  [`/architectural-decision-record`](../skills/han-core/architectural-decision-record.md). If it turned up a pattern the
-  team should follow, capture it with [`/coding-standard`](../skills/han-coding/coding-standard.md). Documentation
+  [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md). If it turned up a pattern the
+  team should follow, capture it with [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md). Documentation
   describes how the code works; those two capture why it was decided and what the rule is.
 
 ## What you should expect at each step
@@ -214,16 +214,16 @@ can invent a different explanation each time. The defense is a grounded artifact
 
 ## Where to go next
 
-- [`/code-review`](../skills/han-coding/code-review.md) is the judgment counterpart to `/code-overview`: orient with the
+- [`/code-review`](../../han-coding/docs/skills/code-review.md) is the judgment counterpart to `/code-overview`: orient with the
   overview, then evaluate the change with the review.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the matching how-to when the reason you are in
   unfamiliar code is that something is broken.
 - [Plan a feature, end to end](./plan-a-feature.md) is the right next step when understanding the code was the prelude
   to building on it.
-- The skill long-form docs cover each step in depth: [code-overview](../skills/han-coding/code-overview.md),
-[architectural-analysis](../skills/han-coding/architectural-analysis.md),
-[investigate](../skills/han-coding/investigate.md), [project-discovery](../skills/han-core/project-discovery.md),
-[project-documentation](../skills/han-core/project-documentation.md), and the Atlassian wrappers
-[project-documentation-to-confluence](../skills/han-atlassian/project-documentation-to-confluence.md) and
-[code-overview-to-confluence](../skills/han-atlassian/code-overview-to-confluence.md).
+- The skill long-form docs cover each step in depth: [code-overview](../../han-coding/docs/skills/code-overview.md),
+[architectural-analysis](../../han-coding/docs/skills/architectural-analysis.md),
+[investigate](../../han-coding/docs/skills/investigate.md), [project-discovery](../../han-core/docs/skills/project-discovery.md),
+[project-documentation](../../han-core/docs/skills/project-documentation.md), and the Atlassian wrappers
+[project-documentation-to-confluence](../../han-atlassian/docs/skills/project-documentation-to-confluence.md) and
+[code-overview-to-confluence](../../han-atlassian/docs/skills/code-overview-to-confluence.md).
 </content>
