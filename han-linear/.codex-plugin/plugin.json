@@ -1,0 +1,28 @@
+{
+  "name": "han-linear",
+  "version": "1.0.2",
+  "description": "Linear-facing Han skill for publishing work items to a Linear team as issues.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "linear", "issues", "work-items", "planning"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Linear",
+    "shortDescription": "Turn a work-items file into Linear issues, one per slice.",
+    "longDescription": "Linear-facing Han skill for publishing work items to Linear. Creates one issue per slice in a single target team, resolving states, labels, Projects, and members against the team's real configuration before creating anything. Links dependencies between issues as native blocked-by relations. Requires a configured Linear MCP server.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Create Linear issues from these work items.",
+      "Publish this work-items file to my Linear team.",
+      "Turn my plan into Linear tickets."
+    ]
+  }
+}

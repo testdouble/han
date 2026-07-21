@@ -14,6 +14,10 @@
 # are optional.
 #
 # Idempotent: slices whose heading already includes `(#NNN)` are skipped.
+#
+# Accounts for every slice heading before creating anything: each one is
+# publishable, already published here, or surfaced by check-annotations.sh,
+# which stops the run. Nothing is silently passed over.
 
 set -euo pipefail
 
@@ -32,6 +36,15 @@ while [ $# -gt 0 ]; do
 done
 
 [ -f "$WORK_ITEMS" ] || { echo "work-items file not found: $WORK_ITEMS" >&2; exit 1; }
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Account for every slice heading before creating anything — including the
+# label, which is itself a change to the target repo. A heading annotated by
+# another tracker, or left malformed by a hand edit, stops the run here rather
+# than being passed over silently. Examining the whole file first is what keeps
+# an annotation late in the file from being preceded by issues already created.
+"$DIR/check-annotations.sh" "$WORK_ITEMS"
 
 if [ -n "$LABEL" ]; then
   # Create the label without `--force`, which would reset an existing label's

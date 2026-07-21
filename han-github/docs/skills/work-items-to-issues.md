@@ -41,6 +41,11 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   without evidence are surfaced as gaps, not applied silently.
 - **Idempotent publish.** The publish pipeline resumes cleanly after a partial failure. Items already annotated with
   their issue number are skipped, and screenshot uploads overwrite in place.
+- **Every item is accounted for.** In every run, each item in the file is published, skipped-and-counted, or surfaced.
+  An item another tracker already published is surfaced rather than passed over, and the run stops before creating
+  anything — including in the other repos, since a file published elsewhere is usually annotated across all of them.
+  The annotation is never stripped to make the item publishable: doing so would duplicate work you already track
+  somewhere else.
 - **No label, no assignee by default.** Issues are created unlabeled and unassigned. You can pass an optional `--label`
   and `--assignee` when you want them.
 
@@ -159,14 +164,16 @@ The skill walks a six-step process:
 3. **Validate the format with evidence-based repair.** Check the file against the format invariants the publish scripts
    depend on (heading shape, `Depends on` syntax, within-repo blockers, screenshot URL scheme, references present, no
    process artifacts). When a check fails, propose a fix backed by a concrete source and give you three actions:
-   continue with the fills, correct them, or stop.
+   continue with the fills, correct them, or stop. An item another tracker already published is the exception — it has
+   no fill, so the skill reports what it found and stops.
 4. **Show the item-to-repo map for confirmation.** Present the table and wait. Nothing is written or created until you
    confirm.
 5. **Write the per-repo work-items files.** For each target repo, write a filtered `<repo-name>.work-items.md` next to
-   the source. This is the file the publish scripts read.
+   the source. This is the file the publish scripts read. Then account for every item across all of those files at once;
+   if any item cannot be placed, nothing publishes to any repo.
 6. **Publish each per-repo file.** Run the publish pipeline, which runs three idempotent scripts in order. First, upload
-   the screenshots into the target repo. Then create one issue per item, annotating each heading with its `(#NNN)`.
-   Finally, post the within-repo `blocked_by` links.
+   the screenshots into the target repo. Then examine the whole file and create one issue per item, annotating each
+   heading with its `(#NNN)`. Finally, post the within-repo `blocked_by` links.
 
 The publish pipeline is three scripts behind one wrapper.
 
@@ -176,9 +183,11 @@ request when the default branch is protected. The fallback runs entirely through
 is never touched (no local git is involved). On re-run, it reuses the assets branch only when that branch already
 carries this feature's `issue-assets/<feature-slug>/` tree; it refuses a same-named branch it did not create.
 
-`create-issues.sh` creates one issue per item in file order, captures the returned number, and rewrites the heading in
-place so the next script can resolve symbolic IDs to issue numbers. It applies a label and an assignee only when you
-pass them.
+`create-issues.sh` accounts for every item in the file before it creates anything, then creates one issue per item in
+file order, captures the returned number, and rewrites the heading in place so the next script can resolve symbolic IDs
+to issue numbers. It applies a label and an assignee only when you pass them. Examining the whole file first is what
+keeps an item another tracker published, sitting late in the file, from being preceded by issues already created — and
+the check runs ahead of label creation too, since a label is also a change to your repo.
 
 `link-blockers.sh` reads the recorded numbers and posts a native `blocked_by` relationship per blocker. It errors out if
 a `Depends on` line names an item that is not in the same repo, because a cross-repo dependency belongs in the
