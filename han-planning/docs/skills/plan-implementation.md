@@ -36,9 +36,17 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   pass audits and corrects the artifacts, not just writes and populates them: the PM reconciles the artifacts against
   each other and rewrites inconsistencies in place, such as a decision-log title copied from another entry, or a path
   one section assumes that another section's layout never places there.
-- **Planning altitude.** The plan names and references config and code artifacts; it does not inline their full
-  contents. Only decision-bearing values (a flag default, a key name, a threshold) appear inline. A full file block
-  belongs in the file it configures, not in the plan.
+- **Planning altitude — intention over prescription.** The plan carries the intention and goals of the work, its touch
+  points (a module, a contract, a boundary), and the decision-bearing values (a flag default, a key name, a threshold).
+  It never prescribes line-level edits or inlines full file contents: a non-author must be able to read it, plans are
+  executed after the codebase has moved on (a prescribed edit list goes stale and misleads), and the implementer —
+  human or coding agent — reads the current code at build time.
+- **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose.
+  Technical detail is minimal references only, placed below or after the plain language it illustrates — never mixed
+  into it. When choosing between more plain language and more technical detail, the plan chooses more plain language.
+- **User stories carry the intent.** When the feature has a describable actor benefit, the plan opens the work with
+  user stories derived from the specification's committed behavior, and each work unit names the story it advances.
+  Stories give the implementer the high-level intent before any mechanics.
 - **Cross-referenced artifacts.** Every non-obvious claim carries `([D-N](...))` linking to the decision that drove it.
   Every `R#` round links to the decisions it produced and the sections it changed.
 
@@ -121,44 +129,34 @@ proceeding. But pointing at the spec path directly is faster.
 Three cross-referenced files in the same folder as the source specification, plus an in-channel summary:
 
 - A **`feature-implementation-plan.md`** file at `{same-folder-as-source}/feature-implementation-plan.md`. The primary
-  plan. Non-obvious claims carry inline markers (for example,
+  plan, structured for progressive disclosure: a plain-language opening a reader can stop after, then intention-level
+  sections, then the deeper records. Non-obvious claims carry inline markers (for example,
   `([D-3](artifacts/implementation-decision-log.md#d-3-rollout-strategy))`) linking back to the decision that drove
   them. Sections include:
-  - A **Source Specification** section. A markdown link back to the `feature-specification.md`, plus links to the spec's
-    `artifacts/decision-log.md`, `artifacts/team-findings.md`, and `artifacts/feature-technical-notes.md` if those
-    exist. Legacy spec folders may have these files at the folder root instead; the project-manager records whichever
-    path is correct. The `feature-technical-notes.md` entry appears only when the file exists; its absence is not a gap.
-    If the plan was built from conversational context only, the section states that explicitly and summarizes what
-    context was used.
-  - A **team composition and participation record.** Every specialist the skill engaged, whether they contributed
-    actively or stood down with "no concerns," and a one-line summary of each specialist's input with citation.
-  - An **implementation approach** section covering architecture and integration points, data model and persistence,
-    runtime behavior, and external interfaces. Technical details are welcome here (this is the _how_ document), all
-    grounded in evidence from the codebase, ADRs, and coding standards.
-  - A **decomposition and sequencing** table. The plan broken into work units sized to ship, each with what it delivers,
-    what it depends on, and how it is verified.
-  - A **RAID log**, when there is anything to track. Risks (with likelihood, severity, blast radius, reversibility,
-    owner, mitigation), Assumptions (with what-changes-if-wrong), Issues (with owner and next step), and Dependencies
-    (with owner and status). Only the sub-tables with entries appear, and a small plan with no risks, assumptions,
-    issues, or dependencies omits the section rather than rendering empty tables.
-  - A **testing strategy** grounded in the `test-engineer`'s observable-behavior recommendations (and
-    `edge-case-explorer`'s findings if engaged). Covers test levels, test-doubles posture, and the edge cases requiring
-    coverage.
-  - A **security posture** section (when `adversarial-security-analyst` contributed) with the concrete threat vectors
-    addressed and the mitigations the plan commits to. Omitted entirely when the feature has no threat surface, rather
-    than rendering a "no security concerns" stub.
-  - An **operational readiness** section (when `devops-engineer` contributed) covering observability signals, SLO
-    touchpoints, feature-flag strategy, rollout and rollback steps, cost posture, and compliance controls. Omitted
-    entirely when the change introduces no operational surface.
-  - An **on-call resilience posture** section (when `on-call-engineer` contributed) covering application-source
-    resilience commitments: timeouts and deadlines, retry strategy, idempotency, bulkheads, backpressure, kill switches,
-    graceful degradation, failure-path observability, data integrity, and migration safety. Omitted entirely when the
-    change adds no resilience surface.
-  - A **definition of done.** Testable, unambiguous, agreed across specialists.
-  - A **specialist handoffs for implementation** list. Which sibling agents should be re-engaged during implementation,
-    when, and with what input.
+  - An **opening paragraph and Outcome.** What is being built, the implementation posture the plan commits to, and what
+    exists when the work is done — in plain language.
+  - **User stories.** The intent of the work at a high level, derived from behavior the specification commits to:
+    "As a {actor}, I want {capability}, so that {benefit}", each with a `US-N` ID. Present whenever an actor benefits
+    in a describable way; omitted otherwise.
+  - An **implementation approach.** The shape of the implementation as prose: what it plugs into, what it reuses, what
+    it introduces, where the boundaries are. Technical identifiers appear only after the plain-language sentence they
+    illustrate. Focused subsections appear only for surfaces the plan commits a real decision on (a schema change, a
+    new external interface); each is a few sentences of intention plus decision links, not an inventory of changes.
+  - A **work units and sequencing** table. The plan broken into work units sized to ship, each with the user story it
+    advances, what it delivers (in outcome terms), what it depends on, and how it is verified.
+  - A **definition of done** (testable, unambiguous, agreed across specialists) and a **testing strategy** grounded in
+    the `test-engineer`'s observable-behavior recommendations.
+  - **Lazily created specialist sections**, each present only when there is real content: security posture, operational
+    readiness, on-call resilience posture, risks and assumptions, deferred (YAGNI) items, and specialist handoffs for
+    implementation. An absent section records the judgment that the surface is genuinely absent, never an empty stub.
   - A **remaining open items** list. Questions the project-manager could not resolve through evidence, junior-developer
     reframing, or user input. Each one names what would resolve it and whether it blocks implementation.
+  - A **sources and plan records** section closing the file: links to the source `feature-specification.md` and its
+    companions (whichever exist, in `artifacts/` or at the folder root for legacy layouts), the decisions the plan
+    inherits, and the two companion artifacts where decision rationale, team composition, and round-by-round history
+    live. A one-or-two-sentence **recommendation** (ship as planned, hold, or blocked) ends the plan. There is no
+    team-composition table and no statistics summary in the plan itself — that detail lives one hop away in the
+    artifacts.
 - An **`artifacts/implementation-decision-log.md`** file at
   `{same-folder-as-source}/artifacts/implementation-decision-log.md`. One `D-N` entry per decision committed during the
   loop. Each entry records the choice, rationale, evidence, rejected alternatives with reasons, the specialist owner,
@@ -289,9 +287,10 @@ question the specialists can answer among themselves. Only when evidence and ref
 the question to you, with the evidence considered, the reframing, a recommended answer, and the alternatives.
 
 The `project-manager` owns the final synthesis pass and writes the authoritative plan. The primary artifact
-(`feature-implementation-plan.md` at the folder root) covers decomposition, sequencing, RAID log, testing strategy,
-security posture, operational readiness, definition of done, specialist handoffs, and open items. It also links back to
-the upstream _what_ document in a Source Specification section. Decision history and round-by-round iteration history
+(`feature-implementation-plan.md` at the folder root) covers work units and sequencing, testing strategy, definition of
+done, open items, and the lazily created specialist sections (security, operational readiness, resilience, risks and
+assumptions, handoffs). It links back to the upstream _what_ document in a closing Sources and Plan Records section.
+Decision history and round-by-round iteration history
 live alongside it, in `artifacts/implementation-decision-log.md` and `artifacts/implementation-iteration-history.md`,
 cross-referenced by `D-N` / `R#` ID. This keeps the primary plan focused on the implementation narrative, while
 rationale, rejected alternatives, and discussion history stay one hop away. Once the final plan content exists, the
@@ -340,10 +339,10 @@ URLs: https://www.mindtools.com/a81qk8y/round-robin-brainstorming/ and https://g
 ### RAID Log
 
 The RAID log (Risks, Assumptions, Issues, Decisions) is the standard project-management artifact for tracking,
-continuously, the four items a plan cannot survive without. The skill's output plan encodes a full RAID log carried
-forward from facilitation: risks with likelihood/severity/blast-radius/reversibility/owner/mitigation, assumptions with
-what-changes-if-wrong, issues with owner/next-step, and decisions (separately recorded) with
-rationale/rejected-alternatives/evidence.
+continuously, the four items a plan cannot survive without. The skill's output distributes those four across its
+layers: risks (with impact, mitigation, owner) and assumptions (with what-changes-if-wrong and a verification status)
+in the plan's Risks and Assumptions section, unresolved issues as Open Items, and decisions with
+rationale/rejected-alternatives/evidence in the companion decision log.
 
 URLs: https://asana.com/resources/raid-log and https://www.smartsheet.com/content/raid-logs
 
@@ -384,7 +383,7 @@ https://www.projectmanager.com/blog/acceptance-criteria-project-management
 The expand-and-contract pattern (expand the schema / interface / contract, migrate consumers, backfill, flip, contract)
 is the default recommendation the skill's `devops-engineer` and `data-engineer` sub-agents produce. They recommend it
 whenever the feature touches data migration or interface change. The skill's output plan encodes this into the
-Decomposition and Sequencing table when applicable, because big-bang changes co-deployed with dependent code violate
+Work Units and Sequencing table when applicable, because big-bang changes co-deployed with dependent code violate
 every rollback constraint.
 
 URL: https://martinfowler.com/bliki/ParallelChange.html

@@ -28,11 +28,12 @@ how validation reasons about both.
 - Anything under an `artifacts/` subfolder of the plan **unless** it is a contract or design reference.
 
 These record how the plan was reached, not what the implementer needs to build. Plan-level decisions that survive into a
-slice are restated inline in the slice description, with `See plan: D-N` as the breadcrumb, never a link to the decision
-log itself.
+slice are restated in plain language in the slice description, and cited in the slice's `**References.**` block as the
+decision ID plus a one-sentence description of what it is — never an inline ID-only breadcrumb, and never a link to the
+decision log itself.
 
 If validation finds a process-artifact link in a slice, the proposed repair is to remove the link and, when the context
-it held is load-bearing, restate the decision inline with `See plan: D-N`.
+it held is load-bearing, restate the decision in plain language with a **Plan decisions** References bullet.
 
 ## Where each artifact should be cited
 
@@ -59,8 +60,8 @@ When validation finds a missing or excluded artifact:
 - **Missing event contract link** — propose the parent plan's events section, evidenced by its existence.
 - **Missing Design link** — inspect the feature spec's Visual Reference table and inline design references; propose the
   design frame IDs and document path, cited by spec section.
-- **Process-artifact link found** — propose removal, evidenced by the exclude list above. If load-bearing, propose the
-  `See plan: D-N` breadcrumb restatement.
+- **Process-artifact link found** — propose removal, evidenced by the exclude list above. If load-bearing, propose a
+  plain-language restatement with a **Plan decisions** References bullet (ID plus a one-sentence description).
 
 Every proposed fill cites a concrete source: a file path with line number, a document section, or a named source. Fills
 without evidence are surfaced as gaps for the user to resolve, not silently applied.

@@ -31,11 +31,12 @@ how the skill's validation step reasons about both.
   `design-frame-verification.md` may be cited; a `team-findings.md` may not).
 
 These exist to record how the plan was reached, not what the implementer needs to build. Plan-level decisions that
-survive into a slice are restated inline in the slice description, with `See plan: D-N` as the breadcrumb — never a link
-to the decision log itself.
+survive into a slice are restated in plain language in the slice description, and cited in the slice's `**References.**`
+block as the decision ID plus a one-sentence description of what it is — never an inline ID-only breadcrumb, and never a
+link to the decision log itself.
 
 If validation finds a process-artifact link in a slice, the proposed repair is to remove the link and (if the context
-the artifact held is load-bearing) restate the decision inline with `See plan: D-N`.
+the artifact held is load-bearing) restate the decision in plain language with a **Plan decisions** References bullet.
 
 ## Where each artifact should be cited
 
@@ -47,7 +48,7 @@ the artifact held is load-bearing) restate the decision inline with `See plan: D
 
 For each slice:
 
-- If the slice produces or consumes an HTTP endpoint (detected from `**Description.**` prose mentioning a route, method,
+- If the slice produces or consumes an HTTP endpoint (detected from slice prose mentioning a route, method,
   status code, or DTO shape), an **API contract** bullet must be present in `**References.**`.
 - If the slice produces or consumes an event payload, an **Event contract** bullet must be present.
 - If the slice has a UI surface, a **Design** bullet should be present in `**References.**` (a link/path plus frame
@@ -65,7 +66,8 @@ When validation finds a missing or excluded artifact:
 - **Missing Design link** — inspect the feature spec's Visual Reference table and inline design references; propose the
   design frame ID(s) and document path, cited by spec section.
 - **Process-artifact link found** — propose removal, evidenced by the exclude list above. If the link was load-bearing
-  for context, propose the `See plan: D-N` breadcrumb restatement.
+  for context, propose a plain-language restatement with a **Plan decisions** References bullet (ID plus a one-sentence
+  description).
 
 Every proposed fill must cite a concrete source — a file path with line number, a document section, or an ADR ID. Fills
 without evidence are surfaced as gaps for the user to resolve, not silently applied.

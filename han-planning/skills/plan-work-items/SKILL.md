@@ -44,6 +44,27 @@ up the plan.
 - Do NOT modify, annotate, or comment on the source implementation plan or context. It is read-only input.
 - Each work item is a **vertical slice**: a narrow but complete path through the relevant layers (schema, API, UI,
   tests) that is demoable or verifiable on its own. Not a layer, not a stub.
+- **Summary and acceptance criteria drive the item; criteria render at the bottom.** Draft each work item's
+  plain-language summary first and its acceptance criteria immediately after — before any detail — so every remaining
+  block is written in support of a criterion, and detail that supports no criterion is cut. In the rendered work item,
+  the summary opens and the acceptance criteria sit at the bottom, immediately before Depends on. Test expectations
+  live inside the acceptance criteria; there is no separate Tests block.
+- **The summary is plain context, three to five very short sentences.** It states why the work is needed and what work
+  is being done, in plain language a reader can follow without the plan open. No technical detail and no ID references —
+  plan references live in the References block, each ID paired with a one-sentence description of what it is. Never
+  write an inline `See plan: D-1, D-5` breadcrumb; an ID list without descriptions is clutter, not information.
+- **The detail block is a plain-language work list.** After the summary, the body is a `Work to be done` bullet list:
+  each bullet one to two short sentences of plain language stating a piece of the actual work. Technical detail, when
+  needed, goes in a nested bullet under the plain-language bullet it belongs to — never mixed into the parent bullet
+  and never as free-floating technical prose.
+- **Acceptance criteria are outcomes of this work item only.** Never include standard operating procedure (commit
+  pushed, CI green, PR opened, review done) — baseline practice is not a criterion. Never include a prohibition
+  ("no new test files") unless there is an explicit, validated reason, and then state the reason with the criterion.
+- **Minimal technical detail — intention over prescription.** A work item gives the implementer a starting point: the
+  intention and goals of the work plus the touch points (a file path, a contract, a boundary). NEVER prescribe
+  line-level changes or enumerate every edit, BECAUSE work items are often implemented long after they are written — a
+  prescribed edit list goes stale against the moving codebase and misleads the human or coding agent who finally picks
+  it up, while intention and criteria stay valid. The implementer reads the current code at build time.
 - Every work item body MUST link the reference artifacts an implementer needs: API/event contracts, design frames,
   schema docs, runbooks, ADRs, coding standards. A work item that consumes an HTTP endpoint or event payload MUST link
   the contract section that defines it.
@@ -53,8 +74,9 @@ up the plan.
 - `Depends on` lists other work items **in this same file** that must complete first, or `None`.
 - NEVER include process artifacts in work item bodies or the preamble. Excluded categories: iteration histories,
   decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an
-  `artifacts/` subfolder of the plan that is not a contract or design reference. Restate plan-level decisions inline in
-  the work item with `See plan: D-N` as the breadcrumb. Full include/exclude list in
+  `artifacts/` subfolder of the plan that is not a contract or design reference. Restate plan-level decisions in plain
+  language in the work item body, and cite the decision in the References block as the ID plus a one-sentence
+  description of what it is. Full include/exclude list in
   [references/reference-artifact-inventory.md](./references/reference-artifact-inventory.md).
 
 ## Process
@@ -125,6 +147,13 @@ Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) 
   (schema, API, UI, tests), demoable or verifiable on its own. Classify each work item as **HITL** (requires human
   interaction: an architectural decision, a design review) or **AFK** (can be implemented and merged without a sync).
   Prefer AFK over HITL. Prefer many thin work items over few thick ones.
+- A directive on drafting order and altitude: draft each work item summary-first, then its acceptance criteria, then
+  only the work-to-be-done bullets those criteria need. Write the criteria before the detail so the detail is forced to
+  serve them; the criteria still render at the bottom of the finished work item per the template. The summary is three
+  to five very short plain sentences with no technical detail and no ID references; the work list is plain-language
+  bullets with technical detail nested beneath — intention, goals, and touch points, never a prescribed edit list — per
+  the Rules above. Criteria are outcomes of the work item only: no standard operating procedure, no unexplained
+  prohibitions.
 - A directive on unverified assumptions: do not mark a work item HITL only because the plan calls an assumption
   unverified. First check two things. (a) Can you settle it by reading the code? Do that, and move on if it holds. (b)
   If the assumption turns out wrong, does something break, or does it fall back to a safe default? Mark it HITL only
@@ -170,8 +199,8 @@ shared-artifacts preamble) is specified in
 
 Before writing, run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the work-item prose regions only — never inside code fences, tables, the
-W-N identifiers, or the structured fields (Type, Depends on, Plan reference, Reference artifacts, Design references),
-which must survive unchanged so they still resolve. Confirm each criterion and fix any failure before writing:
+W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (Depends on, inline plan references,
+References, Design references), which must survive unchanged so they still resolve. Confirm each criterion and fix any failure before writing:
 
 1. The opening line states the main point.
 2. Each heading names its content and is not a generic label.

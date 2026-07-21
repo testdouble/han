@@ -23,6 +23,17 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **HITL and AFK.** Every work item is classified as HITL (requires a human sync: an architectural decision, a design
   review) or AFK (can be implemented and merged without one). The skill prefers AFK and prefers many thin work items
   over few thick ones.
+- **Acceptance criteria carry the item.** Each work item is drafted summary-first, criteria-second, so every block of
+  detail is written in support of a criterion; in the rendered output the summary opens the item and the acceptance
+  criteria sit at the bottom, with test expectations inside them. Criteria are outcomes of the work item only: never
+  standard operating procedure (commit pushed, CI green), and never an unexplained prohibition.
+- **Plain language first, technical detail nested.** The summary is three to five very short plain sentences saying why
+  the work is needed and what is being done, with no technical detail and no ID references. The body is a
+  `Work to be done` bullet list in the same plain language, with technical detail nested beneath the bullet it supports
+  — intention, goals, and touch points, never a prescribed edit list — because work items are often implemented long
+  after they are written, and a prescribed edit list goes stale against the moving codebase while intention and
+  criteria stay valid. Plan references live in the References block, each ID paired with a one-sentence description of
+  what it is.
 - **Symbolic ID.** Each work item gets a stable identifier (`W-N`). IDs are for cross-referencing work items within the
   file and citing them in tickets, threads, and follow-up work. They are stable for the life of the file.
 - **One file, no repository awareness.** The output is exactly one `work-items.md`. The skill never splits work by
@@ -85,8 +96,10 @@ One file on disk plus an in-channel summary:
 - **`work-items.md`** in the resolved folder. The stakeholder-readable artifact. It opens with a title line and an intro
   paragraph that links the parent plan (or names the source context) and explains the `W-N` ID scheme. When a single
   reference artifact applies to more than one work item, a **Shared reference artifacts** preamble cites it once. Then
-  one section per work item, in dependency order. Each work item carries: `Summary` (with an inline plan reference),
-  `Description`, optional `Design references`, `References`, `Tests`, `Acceptance criteria`, and `Depends on`.
+  one section per work item, in dependency order. Each work item carries: `Summary` (three to five very short plain
+  sentences), `Work to be done` (plain-language bullets with technical detail nested beneath), optional
+  `Design references`, `References` (including plan decisions, each ID with a one-sentence description),
+  `Acceptance criteria` (at the bottom, test expectations included), and `Depends on`.
 - An **in-channel summary** with the file path, a count of work items by type (HITL / AFK), and the next concrete
   action.
 
@@ -102,7 +115,7 @@ One file on disk plus an in-channel summary:
   phase it first, plan the implementation of a single phase, then run this skill against that phase's plan. Each
   work-items file then covers one phase.
 - **Pair with `/tdd` downstream.** Once the breakdown is written, `/tdd` implements a work item test-first. The work
-  item's `Description`, `Tests`, and `Acceptance criteria` become the behavior test list.
+  item's `Summary`, `Acceptance criteria`, and `Work to be done` list become the behavior test list.
 - **Pair with `/work-items-to-issues` downstream when you track work on GitHub.** Once the breakdown is written,
   `/work-items-to-issues` publishes each item as a GitHub issue in its target repo. It needs the `han-github` plugin and
   the `gh` CLI.
@@ -187,8 +200,8 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 
 Cohn's INVEST criteria (Independent, Negotiable, Valuable, Estimable, Small, Testable) inform the per-work-item shape.
 Each work item is independent enough to grab on its own, small enough to ship as a unit, and testable through its
-`Tests` and `Acceptance criteria` fields. The HITL/AFK split is the skill's read of the Independent criterion: an AFK
-work item can be merged without a human sync.
+`Acceptance criteria`, which carry the test expectations. The HITL/AFK split is the skill's read of the Independent
+criterion: an AFK work item can be merged without a human sync.
 
 URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 

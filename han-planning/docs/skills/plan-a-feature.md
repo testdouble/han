@@ -177,7 +177,7 @@ remains. The skill surfaces it rather than inventing an answer.
   genuinely need user judgment, organized by the decision they affect. Trust that loop rather than asking for the raw
   agent output.
 - **Pair with `/plan-implementation` next.** This skill produces _what_. The `/plan-implementation` skill turns that
-  into _how_: decomposition, sequencing, RAID log, testing strategy, operational readiness, rollback. Running the two in
+  into _how_: work units, sequencing, testing strategy, operational readiness, rollback. Running the two in
   sequence is the intended flow. For the full end-to-end planning workflow from rough idea to individual work items, see
   [How to plan a feature, end to end](../../../docs/how-to/plan-a-feature.md).
 - **Re-run when the spec must change.** If the outcome materially shifts (new constraint, new stakeholder, new evidence

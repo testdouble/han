@@ -12,16 +12,16 @@ allowed between required fields when a slice needs them.
 ```
 ## <SYM-N> — <short descriptive name>
 
-**Summary.** One paragraph describing what this slice delivers. Includes a plan reference inline (e.g., `See plan: [D-6](feature-implementation-plan.md#d-6-...)`).
+**Summary.** Three to five very short, plain-language sentences stating why the work is needed and what is being done. No technical detail and no ID references — plan references live in the References block, each with a one-sentence description.
 
-**Description.**
-1. Numbered steps describing the full behavior to build.
-2. References implementation details by file path where helpful (`db/ent/schema/jot.go`), but does not prescribe implementation code.
-3. Duplicates content from the parent plan when clarity requires it.
+**Work to be done.**
+- Plain-language bullets stating the actual work, one to two short sentences each, every bullet supporting an acceptance criterion below.
+  - Technical detail, when needed, nests under the plain-language bullet it belongs to: starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code.
 
 *(Optional `**Bold paragraph.**` blocks here — e.g., `**Note on scope boundary.**`.)*
 
 **References.**
+- **Plan decisions** — every plan decision or work unit this slice satisfies, one bullet each: the ID as a link (e.g., `[D-6](feature-implementation-plan.md#d-6-...)`) followed by one short plain sentence saying what it is. Never a bare ID list. Replaces any inline `See plan: ...` reference.
 - **API contract** — `[<file>#<anchor>](<relative-path>)`. Required when the slice produces or consumes an HTTP endpoint.
 - **Event contract** — `[<file>#<event-section>](<relative-path>)`. Required when the slice produces or consumes an event payload.
 - **Design** — design document file path plus frame IDs (purpose). Required for UI slices. Carried as a link/reference in the description; this skill does not upload or embed images into Jira (see "Design and screenshots" below).
@@ -29,12 +29,8 @@ allowed between required fields when a slice needs them.
 - **ADR / standard / repo doc** — links to architectural decisions, coding standards, or feature docs the implementer must honor.
 - Omits any bullet that does not apply. Does not link iteration histories, decision logs, review findings, team findings, facilitation summaries, or any other process artifact.
 
-**Tests.**
-- Bullet list of tests required for the behavior above. Names the test type (unit, integration, migration, visual, etc.) and the assertion concretely.
-
 **Acceptance criteria.**
-- [ ] Criterion 1
-- [ ] Criterion 2
+- [ ] Each criterion is an observable, verifiable outcome of this slice's own behavior. Test expectations live here (e.g., "Automated tests cover the rejection path"). Never standard operating procedure (commit pushed, CI green, PR opened), and never a prohibition without its validated reason stated alongside it.
 
 **Depends on.** `<SYM-N>` (within this file), comma-separated for multiple, or `None.`
 ```
@@ -46,8 +42,8 @@ When the skill creates a ticket for a slice, it maps the slice fields like this:
 - **Summary (Jira) ← slice title.** The text after `— ` in the `## <SYM-N> — <title>` heading becomes the Jira ticket
   summary. The `<SYM-N>` symbolic ID is not part of the summary; it is preserved only in the source work-items file's
   heading annotation.
-- **Description (Jira) ← the entire slice body.** Everything below the heading — Summary, Description, optional notes,
-  References, Tests, Acceptance criteria — is rendered into the ticket description. Pass it as Markdown; if the
+- **Description (Jira) ← the entire slice body.** Everything below the heading — Summary, Work to be done, optional
+  notes, References, Acceptance criteria — is rendered into the ticket description. Pass it as Markdown; if the
   configured Jira create tool requires Atlassian Document Format (ADF), convert it. Confirm the expected format against
   the tool's input schema at call time.
 - **Issue type ← the resolved type.** Defaults to `Story` at the project top level or under an epic. When the work items

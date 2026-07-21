@@ -41,11 +41,21 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *)
   precedent — operational machinery shipped before the system that drives it actually produces the data, traffic, or
   failures it covers is YAGNI by default. Every committed implementation item is ongoing maintenance and a pattern
   future agents will copy.
-- **Keep the plan at planning altitude.** Name and reference config and code artifacts; do not inline their full
-  contents. Inline only the specific values that are themselves decisions (a flag default, a key name, a threshold). A
-  full file block — a complete plist, a whole config file, a multi-line XML or JSON document — belongs in the file it
-  configures, not in the plan. YAGNI gates whether an item is _included_; this principle gates how _verbose_ an included
-  item is.
+- **Keep the plan at planning altitude — intention over prescription.** The plan is the reader's layer: it carries the
+  intention and goals of the work, the touch points (a module, a contract, a boundary), and the decision-bearing values
+  (a flag default, a key name, a threshold). NEVER inline full file contents or prescribe line-level edits, BECAUSE a
+  non-author must be able to read the plan, plans are executed after the codebase has moved on (a prescribed edit list
+  goes stale and misleads), and the implementer — human or coding agent — reads the current code at build time. Deeper
+  detail lives one hop away in the companion artifacts. YAGNI gates whether an item is _included_; this principle gates
+  how _verbose_ an included item is.
+- **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose a
+  non-author can follow. Technical detail is minimal references only — a path, a contract name, a decision-bearing
+  value — placed below or after the plain language it illustrates, never mixed into it and never free-standing. When
+  choosing between more plain language and more technical detail, choose more plain language.
+- **Frame the work around user stories when possible.** User stories give the implementer the intent at a high level
+  before any mechanics. Derive them from behavior the specification already commits to — never invent behavior — and
+  anchor work units to the story each one advances. When the feature has no user-facing behavior, frame stories around
+  the operator or consuming system; skip stories only when no actor benefits in a describable way.
 - **The plan lives in three cross-referenced files.** `feature-implementation-plan.md` is the primary plan and lives at
   the root of `{folder}/`; `implementation-decision-log.md` records every decision and
   `implementation-iteration-history.md` records each round of discussion — both companion artifacts live in
@@ -462,23 +472,24 @@ Ask the han-core:project-manager to produce the final synthesis across all three
    `Dependent decisions:`, `Referenced in plan:`). Trivial decisions go under `## Trivial decisions` as a one-line
    bullet (`D-N: {title} — {outcome}. — Referenced in plan: {sections}.`). The D-N counter is shared across both
    sections, and every plan inline link still resolves to a D-N whether full or trivial.
-2. **Write `feature-implementation-plan.md`** — the primary plan covering Source Specification, Outcome, Context, Team
-   Composition, Implementation Approach, Decomposition and Sequencing, RAID Log, Testing Strategy, Security Posture,
-   Operational Readiness, On-Call Resilience Posture, Definition of Done, Specialist Handoffs, Deferred (YAGNI), Open
-   Items, and Summary. Several sections are **lazily created** — write each only when it has real content and omit it
-   entirely otherwise, never rendering an empty stub: `RAID Log` (include only the sub-tables that have entries; omit
-   the section when all four are empty), `Security Posture` (only when there is a threat surface or
-   `han-core:adversarial-security-analyst` contributed), `Operational Readiness` (only when there is an operational
-   surface or `han-core:devops-engineer` contributed), `On-Call Resilience Posture` (only when there is a resilience
-   surface or `han-core:on-call-engineer` contributed), and `Deferred (YAGNI)` (only if at least one item was deferred
-   under the YAGNI rule, per Step 7.5's ledger and PM's own application of the rule during synthesis). Omitting a lazy
-   section records the judgment that the surface is genuinely absent, not a skipped concern — confirm before omitting.
-   This keeps a small plan proportionate: sizing already caps the team and rounds, and lazy sections stop a small plan
-   from carrying empty operational scaffolding. For each deferred item, record: the item, why deferred (which gate
-   failed), the reopening trigger, and the source (specialist or round that proposed it). For every claim that embodies
-   a non-obvious decision, append an inline parenthetical link to the decision, e.g.
-   `([D-3](artifacts/implementation-decision-log.md#d-3-rollout-strategy))`. Link only non-obvious claims. Do not inline
-   rationale or rejected alternatives. Do not repeat round-by-round history.
+2. **Write `feature-implementation-plan.md`** — the primary plan, following the template's progressive-disclosure
+   order: a plain-language opening paragraph, Outcome, User Stories (when the feature has a describable actor benefit),
+   Constraints and Boundaries, Implementation Approach, Work Units and Sequencing, Definition of Done, Testing
+   Strategy, the lazy specialist sections, Open Items, Sources and Plan Records, and Recommendation. The upper layers
+   stay in plain language at intention altitude per the Operating Principles: plain language leads every section,
+   technical detail appears only as minimal references below the plain language it illustrates, and work units name the
+   user story each one advances. The template's guidance comments carry the per-section rules. The lazy sections are written only when
+   they have real content and omitted entirely otherwise, never as an empty stub: `Security Posture` (threat surface or
+   `han-core:adversarial-security-analyst` contributed), `Operational Readiness` (operational surface or
+   `han-core:devops-engineer` contributed), `On-Call Resilience Posture` (resilience surface or
+   `han-core:on-call-engineer` contributed), `Risks and Assumptions` (at least one real entry), `Deferred (YAGNI)` (at
+   least one item deferred per Step 7.5's ledger), and `Specialist Handoffs for Implementation` (at least one planned
+   handoff). Omitting a lazy section records the judgment that the surface is genuinely absent, not a skipped concern —
+   confirm before omitting. The plan carries no team-composition table and no statistics summary — both live in the
+   companion artifacts, linked from Sources and Plan Records. For every claim that embodies a non-obvious decision,
+   append an inline parenthetical link, e.g. `([D-3](artifacts/implementation-decision-log.md#d-3-rollout-strategy))`.
+   Link only non-obvious claims. Do not inline rationale or rejected alternatives. Do not repeat round-by-round
+   history.
 3. **Backfill `artifacts/implementation-iteration-history.md`** — for each `R#` entry already present from Step 6,
    populate `Decisions produced:` with the `D#` IDs added or changed that round and `Changed in plan:` with the plan
    sections updated that round.
@@ -507,12 +518,12 @@ Ask the han-core:project-manager to produce the final synthesis across all three
      structural-invariant preservation, not a replacement for it; LLM generation is probabilistic, so the audit lowers
      the odds of a copy-paste title or path mismatch rather than guaranteeing zero.
 
-**The `Source Specification` section of `feature-implementation-plan.md` must be populated.** If a feature specification
-file was provided, the han-core:project-manager must include a relative markdown link to it (typically
+**The `Sources and Plan Records` section of `feature-implementation-plan.md` must be populated.** If a feature
+specification file was provided, the han-core:project-manager must include a relative markdown link to it (typically
 `[feature-specification.md](feature-specification.md)` since both files live in the same folder). If the spec's
 `decision-log.md`, `team-findings.md`, and/or `feature-technical-notes.md` also exist (in `artifacts/` for the current
-layout, or at the folder root for legacy layouts), list them under Source Specification with the correct relative path.
-The `feature-technical-notes.md` entry is present only when the file exists — its absence is not a gap. If no file was
+layout, or at the folder root for legacy layouts), list them there with the correct relative path. The
+`feature-technical-notes.md` entry is present only when the file exists — its absence is not a gap. If no file was
 provided and the plan was built from conversational context only, the section must state that explicitly and summarize
 what context was used.
 
