@@ -1,28 +1,30 @@
 # Feature Specification: Publish the Linear Plugin to the Second Channel
 
-The Linear work-item plugin becomes installable from the second install channel, where it is advertised today but
-missing, so a new user following the documented setup instructions succeeds instead of hitting an error.
+The Linear work-item plugin becomes installable from the second install channel. Today the channel advertises the
+plugin but does not carry it, so a new user following the documented setup instructions hits an error instead of
+succeeding; this fix closes that gap.
 
 ## Outcome
 
 A new user who follows the second channel's setup instructions for the Linear plugin completes the installation and can
 run its work-item publishing skill. The listing entry, the plugin's channel manifest, and the second channel's setup
-instructions agree, and the installed version equals the version released on the first channel
-([D4](artifacts/decision-log.md#trivial-decisions)). The fix ships to users when the current working branch merges to
-the default branch, because the second channel serves the repository's default branch
-([T1](artifacts/feature-technical-notes.md#t1-second-channel-serves-the-default-branch))
+instructions all agree with each other. The installed version equals the version released on the first channel
+([D4](artifacts/decision-log.md#trivial-decisions)).
+
+The fix ships to users as soon as the current working branch merges to the default branch, because the second channel
+serves the repository's default branch ([T1](artifacts/feature-technical-notes.md#t1-second-channel-serves-the-default-branch))
 ([D2](artifacts/decision-log.md#d2-definition-of-done)). The cleanup's later automated completeness check can only land
 green once this listing entry is in place.
 
 ## Actors and Triggers
 
-- **Actors** — A new user installing Han's Linear plugin from the second channel; a maintainer verifying the listing
+- **Actors**: A new user installing Han's Linear plugin from the second channel; a maintainer verifying the listing
   before ship.
-- **Triggers** — The user follows the setup instructions in the project's front-door documentation: register the Han
+- **Triggers**: The user follows the setup instructions in the project's front-door documentation: register the Han
   marketplace, then install the Linear plugin by name.
-- **Preconditions** — The user has the second channel's tooling installed and can reach the repository. The second
+- **Preconditions**: The user has the second channel's tooling installed and can reach the repository. The second
   channel must accept a first-time publication of a plugin that was never listed there, not only updates to existing
-  listings; the maintainer's verification install proves this rather than assuming it
+  listings. The maintainer's verification install proves this rather than assuming it
   ([D2](artifacts/decision-log.md#d2-definition-of-done)).
 
 ## Primary Flow
@@ -37,19 +39,20 @@ green once this listing entry is in place.
 5. The plugin works standalone: its skill content references no other plugin, so no companion installation is required
    on a channel that resolves no dependencies
    ([D3](artifacts/decision-log.md#d3-no-companion-install-instruction)). The plugin's own introduction page currently
-   overstates its reliance on other plugins; reconciling that page is routed to [OI-2](#open-items).
+   overstates its reliance on other plugins. Reconciling that page is routed to [OI-2](#open-items).
 
 ## Alternate Flows and States
 
 ### Maintainer verification before ship
 
 - **Entry condition:** The listing entry and channel manifest exist on the working branch and are about to ship.
-- **Sequence:** The maintainer confirms the listing entry conforms to the channel's required entry shape, using sibling
-  entries only as a sanity check rather than the correctness standard; confirms the channel manifest's version matches
-  the first channel's released version ([D4](artifacts/decision-log.md#trivial-decisions)); performs one real
-  end-to-end install following the documented instructions exactly, from a branch state equivalent to what will merge.
-  The install starts from an already-registered marketplace in which this plugin was previously absent, so the single
-  run proves both that the channel resolves a first-time listing and that existing registrations pick it up, answering
+- **Sequence:** The maintainer takes three steps. First, the maintainer confirms the listing entry conforms to the
+  channel's required entry shape, using sibling entries only as a sanity check rather than the correctness standard.
+  Second, the maintainer confirms the channel manifest's version matches the first channel's released version
+  ([D4](artifacts/decision-log.md#trivial-decisions)). Third, the maintainer performs one real end-to-end install
+  following the documented instructions exactly, from a branch state equivalent to what will merge. That install
+  starts from an already-registered marketplace in which this plugin was previously absent. The single run proves
+  both that the channel resolves a first-time listing and that existing registrations pick it up, answering
   [OI-1](#open-items).
 - **Exit:** All three confirmations pass, and the branch is cleared to carry the fix to the default branch.
 
@@ -81,7 +84,7 @@ green once this listing entry is in place.
 
 | Coordinating System                  | Direction | Interaction                                                        | Ordering / Consistency Requirement                                    |
 | ------------------------------------ | --------- | ------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| Second channel's storefront listing  | outbound  | Lists the Linear plugin so the channel's tooling can resolve it    | Entry must be present and shaped like its sibling entries.            |
+| Second channel's storefront listing  | outbound  | Lists the Linear plugin so the channel's tooling can resolve it    | Entry must be present and conform to the channel's required entry shape; sibling entries are a sanity check only. |
 | Repository default branch            | outbound  | Serves the listing and manifest to every user of the second channel | The fix is user-visible only after merge ([T1](artifacts/feature-technical-notes.md#t1-second-channel-serves-the-default-branch)). |
 | First install channel                | inbound   | Supplies the released version the second channel must match         | Versions agree at ship time; both state the same released version.     |
 
@@ -101,27 +104,28 @@ green once this listing entry is in place.
 ## Open Items
 
 - **OI-1:** Confirm what an already-registered marketplace user must do, if anything, for the newly listed plugin to
-  appear — an explicit refresh command, or automatic pickup on next read.
+  appear: an explicit refresh command, or automatic pickup on next read.
   - **Resolves when:** The maintainer's end-to-end verification runs from an already-registered marketplace, per the
     maintainer-verification flow, or the channel's documentation answers it first.
-  - **Blocks implementation:** No — it shapes the verification script, not the listing change, which already exists.
-- **OI-2:** The Linear plugin's introduction page says its skills rely on other plugins; its skill content references
-  none. Reconcile the page with the truth so the standalone claim and the documentation agree.
+  - **Blocks implementation:** No. It shapes the verification script, not the listing change, which already exists.
+- **OI-2:** The Linear plugin's introduction page says its skills rely on other plugins. Its skill content references
+  none. Reconcile the page with the truth so the standalone claim
+  ([D3](artifacts/decision-log.md#d3-no-companion-install-instruction)) and the documentation agree.
   - **Resolves when:** The page is corrected, or evidence surfaces that the reliance is real. Feeds the cleanup's
     dependency-truth work ([Phase 4 of the outline](../build-phase-outline.md#phase-4)).
-  - **Blocks implementation:** No — the listing fix and install verification stand regardless.
+  - **Blocks implementation:** No. The listing fix and install verification stand regardless.
 
 ## Summary
 
 - **Outcome delivered:** The Linear plugin installs successfully from the second channel, at the current released
   version, once the working branch merges.
 - **Primary actors:** A new user on the second channel; a maintainer verifying before ship.
-- **Decisions settled by evidence:** 2 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 2 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Sub-agents consulted:** junior-developer, gap-analyzer — see
+- **Decisions settled by evidence:** 2. See [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 2. See [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Sub-agents consulted:** junior-developer, gap-analyzer. See
   [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** the first-time-publication precondition was made explicit and folded into the
-  verification install; the version check was restated as the observable manifest comparison; a contradiction in the
-  plugin's own introduction page became OI-2. — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** The first-time-publication precondition was made explicit and folded into the
+  verification install. The version check was restated as the observable manifest comparison. A contradiction in the
+  plugin's own introduction page became OI-2. See [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 2
-- **Technical notes:** 1 — see [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)
+- **Technical notes:** 1. See [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)

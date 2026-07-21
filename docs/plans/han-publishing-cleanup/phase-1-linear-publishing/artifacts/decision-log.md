@@ -8,7 +8,8 @@
   none (organizational).
 - D4: Version parity across channels at ship time — the channel manifest's stated version equals the first channel's
   released version, and the installed manifest is the observable check for "current version" (considered a runtime
-  version signal from the skill itself; rejected because the skill surfaces no version at runtime). — Referenced in
+  version signal from the skill itself; rejected because the skill surfaces no version at runtime). — Driven by
+  findings: F5, F9. — Referenced in
   spec: Outcome; Primary Flow; Maintainer verification before ship; Edge Cases and Failure Modes.
 
 ## Full decisions
