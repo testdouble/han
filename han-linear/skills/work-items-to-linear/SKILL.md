@@ -135,7 +135,8 @@ ADRs / coding standards / docs:
 - **Missing References bullet for an HTTP-consuming or UI slice** — propose the contract section or design frame from
   the parent plan or feature spec. Cite the anchor.
 - **Process-artifact link found** — propose removing the link and, if the slice still needs the context, restating the
-  decision inline with `See plan: D-N`. Cite the include/exclude list.
+  decision in plain language with a **Plan decisions** References bullet naming the ID plus a one-sentence description.
+  Cite the include/exclude list.
 
 After validation, report findings in plain language. For each: (1) what is wrong — slice SYM, line reference, failing
 invariant; (2) the proposed fill — corrected line, new bullet, removed link; (3) the evidence — file path with line

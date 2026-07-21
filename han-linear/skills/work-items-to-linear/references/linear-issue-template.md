@@ -11,11 +11,14 @@ standard). Additional `**Bold paragraph.**` context blocks are allowed between r
 ```
 ## <SYM-N> — <short descriptive name>
 
-**Summary.** One short plain-language paragraph stating what this slice delivers and why it matters. Includes a plan reference inline (e.g., `See plan: D-6`).
+**Summary.** Three to five very short, plain-language sentences stating why the work is needed and what is being done. No technical detail and no ID references — plan references live in the References block, each with a one-sentence description.
 
-**Supporting detail.** Short paragraphs or bullets, each supporting an acceptance criterion below. Describes intention and goals with starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code.
+**Work to be done.**
+- Plain-language bullets stating the actual work, one to two short sentences each, every bullet supporting an acceptance criterion below.
+  - Technical detail, when needed, nests under the plain-language bullet it belongs to: starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code.
 
 **References.**
+- **Plan decisions** — every plan decision or work unit this slice satisfies, one bullet each: the ID as a link (e.g., `[D-6](feature-implementation-plan.md#d-6-...)`) followed by one short plain sentence saying what it is. Never a bare ID list. Replaces any inline `See plan: ...` reference.
 - **API contract** — `[<file>#<anchor>](<relative-path>)`. Required when the slice produces or consumes an HTTP endpoint.
 - **Event contract** — `[<file>#<event-section>](<relative-path>)`. Required when the slice produces or consumes an event payload.
 - **Design** — design document path plus frame IDs. Carried as a link in the issue description; this skill does not upload or embed images into Linear (see "Design and images" below).
@@ -23,7 +26,7 @@ standard). Additional `**Bold paragraph.**` context blocks are allowed between r
 - **ADR / standard / repo doc** — links the implementer must honor.
 
 **Acceptance criteria.**
-- [ ] Each criterion is an observable, verifiable outcome. Test expectations live here.
+- [ ] Each criterion is an observable, verifiable outcome of this slice's own behavior. Test expectations live here. Never standard operating procedure (commit pushed, CI green, PR opened), and never a prohibition without its validated reason stated alongside it.
 
 **Depends on.** `<SYM-N>` (within this file), comma-separated for multiple, or `None.`
 ```
@@ -35,7 +38,7 @@ When the skill creates an issue for a slice, it maps the slice fields like this:
 - **Title (Linear) <- slice title.** The text after `— ` in the `## <SYM-N> — <title>` heading becomes the issue title.
   The `<SYM-N>` symbolic ID is not part of the title; it is preserved only in the source work-items file's heading
   annotation.
-- **Description (Linear) <- the entire slice body.** Everything below the heading (Summary, Supporting detail, optional
+- **Description (Linear) <- the entire slice body.** Everything below the heading (Summary, Work to be done, optional
   notes, References, Acceptance criteria) is rendered into the issue description and passed as **Markdown with no
   format conversion** (Linear accepts Markdown directly).
 - **Team <- the required target team.** Every slice posts into the one team you name. The skill resolves the team
