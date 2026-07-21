@@ -11,18 +11,27 @@ claim embodies a non-obvious decision, append an inline link, e.g.
 "([D-3](artifacts/implementation-decision-log.md#d-3-rollout-strategy))". Link only claims a
 reader would ask "why this?" about. Never inline rationale, alternatives, or round history here.
 
-MINIMAL TECHNICAL DETAIL. Give the implementer a starting point — the intention of each piece of
-work, its touch points (a module, a contract, a boundary), and the decision-bearing values (a
-flag default, a key name, a threshold). Never prescribe line-level changes, inline full file
-contents, or enumerate every edit: a non-author must be able to read the plan, plans are executed
-after the codebase has moved (so edit lists go stale and mislead), and the implementer — human or
-coding agent — reads the current code at build time. Technical identifiers appear after the prose
-that explains them, only when the reader needs them.
+MINIMAL TECHNICAL DETAIL, BELOW THE PLAIN LANGUAGE IT BELONGS TO. Every section leads with
+plain-language prose a non-author can follow. Technical detail is minimal references only — a
+path, a contract name, a decision-bearing value (a flag default, a key name, a threshold) —
+placed below or after the plain language it illustrates, never mixed into it: in prose, the
+identifier follows the sentence that explains it; in lists, it nests as a sub-bullet under the
+plain-language bullet it supports. Never prescribe line-level changes, inline full file contents,
+or enumerate every edit: a non-author must be able to read the plan, plans are executed after
+the codebase has moved (so edit lists go stale and mislead), and the implementer — human or
+coding agent — reads the current code at build time. When choosing between more plain language
+and more technical detail, choose more plain language.
 -->
 
 ## Outcome
 
 <!-- Plain language: what exists in the codebase, the runtime, and the user's hands when this plan is executed, and who it serves. Two short paragraphs at most. -->
+
+## User Stories
+
+<!-- The intent of the work at a high level, before any mechanics. Derive each story from behavior the specification already commits to — never invent behavior. One story per bullet: "As a {actor}, I want {capability}, so that {benefit}." Give each a US-N ID so work units can name the story they advance. When the feature has no end-user surface, frame stories around the operator or consuming system. Omit the section only when no actor benefits in a describable way. -->
+
+- **US-1:** As a {actor}, I want {capability}, so that {benefit}.
 
 ## Constraints and Boundaries
 
@@ -34,17 +43,17 @@ that explains them, only when the reader needs them.
 
 ## Implementation Approach
 
-<!-- The shape of the implementation in plain prose: how the feature fits into the system, what it reuses, what it introduces, where the boundaries are. Lead with intention; name touch points, not edits. Add a focused subsection ONLY for a surface the plan commits a real decision on (e.g., "Data model changes", "External interfaces") — a few sentences of intention plus its D-N links, not an inventory of changes. Omit every surface with nothing decided. -->
+<!-- The shape of the implementation in plain prose: how the feature fits into the system, what it reuses, what it introduces, where the boundaries are. Lead with intention; name touch points, not edits. Technical identifiers appear only after the plain-language sentence they illustrate, or as a nested sub-bullet under it. Add a focused subsection ONLY for a surface the plan commits a real decision on (e.g., "Data model changes", "External interfaces") — a few sentences of intention plus its D-N links, not an inventory of changes. Omit every surface with nothing decided. -->
 
 ### {decision-bearing surface}
 
 ## Work Units and Sequencing
 
-<!-- Work units sized to ship. Keep Delivers at intention altitude ("invite emails send through the existing mailer"), not a file list. Link non-obvious shapes to D-N. -->
+<!-- Work units sized to ship. Keep Delivers at intention altitude ("invite emails send through the existing mailer"), not a file list. Story names the US-N each unit advances (or `—` when none applies; drop the column when the User Stories section was omitted). Link non-obvious shapes to D-N. -->
 
-| #   | Work Unit | Delivers | Depends On | Verification |
-| --- | --------- | -------- | ---------- | ------------ |
-| 1   | …         | …        | —          | …            |
+| #   | Work Unit | Story | Delivers | Depends On | Verification |
+| --- | --------- | ----- | -------- | ---------- | ------------ |
+| 1   | …         | US-1  | …        | —          | …            |
 
 ## Definition of Done
 

@@ -48,6 +48,14 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *)
   goes stale and misleads), and the implementer — human or coding agent — reads the current code at build time. Deeper
   detail lives one hop away in the companion artifacts. YAGNI gates whether an item is _included_; this principle gates
   how _verbose_ an included item is.
+- **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose a
+  non-author can follow. Technical detail is minimal references only — a path, a contract name, a decision-bearing
+  value — placed below or after the plain language it illustrates, never mixed into it and never free-standing. When
+  choosing between more plain language and more technical detail, choose more plain language.
+- **Frame the work around user stories when possible.** User stories give the implementer the intent at a high level
+  before any mechanics. Derive them from behavior the specification already commits to — never invent behavior — and
+  anchor work units to the story each one advances. When the feature has no user-facing behavior, frame stories around
+  the operator or consuming system; skip stories only when no actor benefits in a describable way.
 - **The plan lives in three cross-referenced files.** `feature-implementation-plan.md` is the primary plan and lives at
   the root of `{folder}/`; `implementation-decision-log.md` records every decision and
   `implementation-iteration-history.md` records each round of discussion — both companion artifacts live in
@@ -465,10 +473,12 @@ Ask the han-core:project-manager to produce the final synthesis across all three
    bullet (`D-N: {title} — {outcome}. — Referenced in plan: {sections}.`). The D-N counter is shared across both
    sections, and every plan inline link still resolves to a D-N whether full or trivial.
 2. **Write `feature-implementation-plan.md`** — the primary plan, following the template's progressive-disclosure
-   order: a plain-language opening paragraph, Outcome, Constraints and Boundaries, Implementation Approach, Work Units
-   and Sequencing, Definition of Done, Testing Strategy, the lazy specialist sections, Open Items, Sources and Plan
-   Records, and Recommendation. The upper layers stay in plain language at intention altitude per the Operating
-   Principles; the template's guidance comments carry the per-section rules. The lazy sections are written only when
+   order: a plain-language opening paragraph, Outcome, User Stories (when the feature has a describable actor benefit),
+   Constraints and Boundaries, Implementation Approach, Work Units and Sequencing, Definition of Done, Testing
+   Strategy, the lazy specialist sections, Open Items, Sources and Plan Records, and Recommendation. The upper layers
+   stay in plain language at intention altitude per the Operating Principles: plain language leads every section,
+   technical detail appears only as minimal references below the plain language it illustrates, and work units name the
+   user story each one advances. The template's guidance comments carry the per-section rules. The lazy sections are written only when
    they have real content and omitted entirely otherwise, never as an empty stub: `Security Posture` (threat surface or
    `han-core:adversarial-security-analyst` contributed), `Operational Readiness` (operational surface or
    `han-core:devops-engineer` contributed), `On-Call Resilience Posture` (resilience surface or

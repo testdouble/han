@@ -41,6 +41,12 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   It never prescribes line-level edits or inlines full file contents: a non-author must be able to read it, plans are
   executed after the codebase has moved on (a prescribed edit list goes stale and misleads), and the implementer —
   human or coding agent — reads the current code at build time.
+- **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose.
+  Technical detail is minimal references only, placed below or after the plain language it illustrates — never mixed
+  into it. When choosing between more plain language and more technical detail, the plan chooses more plain language.
+- **User stories carry the intent.** When the feature has a describable actor benefit, the plan opens the work with
+  user stories derived from the specification's committed behavior, and each work unit names the story it advances.
+  Stories give the implementer the high-level intent before any mechanics.
 - **Cross-referenced artifacts.** Every non-obvious claim carries `([D-N](...))` linking to the decision that drove it.
   Every `R#` round links to the decisions it produced and the sections it changed.
 
@@ -129,12 +135,15 @@ Three cross-referenced files in the same folder as the source specification, plu
   them. Sections include:
   - An **opening paragraph and Outcome.** What is being built, the implementation posture the plan commits to, and what
     exists when the work is done — in plain language.
+  - **User stories.** The intent of the work at a high level, derived from behavior the specification commits to:
+    "As a {actor}, I want {capability}, so that {benefit}", each with a `US-N` ID. Present whenever an actor benefits
+    in a describable way; omitted otherwise.
   - An **implementation approach.** The shape of the implementation as prose: what it plugs into, what it reuses, what
-    it introduces, where the boundaries are. Focused subsections appear only for surfaces the plan commits a real
-    decision on (a schema change, a new external interface); each is a few sentences of intention plus decision links,
-    not an inventory of changes.
-  - A **work units and sequencing** table. The plan broken into work units sized to ship, each with what it delivers
-    (in outcome terms), what it depends on, and how it is verified.
+    it introduces, where the boundaries are. Technical identifiers appear only after the plain-language sentence they
+    illustrate. Focused subsections appear only for surfaces the plan commits a real decision on (a schema change, a
+    new external interface); each is a few sentences of intention plus decision links, not an inventory of changes.
+  - A **work units and sequencing** table. The plan broken into work units sized to ship, each with the user story it
+    advances, what it delivers (in outcome terms), what it depends on, and how it is verified.
   - A **definition of done** (testable, unambiguous, agreed across specialists) and a **testing strategy** grounded in
     the `test-engineer`'s observable-behavior recommendations.
   - **Lazily created specialist sections**, each present only when there is real content: security posture, operational
