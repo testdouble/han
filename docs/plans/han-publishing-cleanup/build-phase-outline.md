@@ -66,8 +66,9 @@ is where most of this cleanup lands.
 
 - Phases 1 through 3 repair what users hit today: a plugin that is advertised but missing, work items that vanish from
   a publishing run or get mistakenly skipped, and version numbers so stale that nobody is ever offered an update.
-- Phases 4 and 5 make the declarations honest and complete: two dependency claims that are not true are removed, and
-  every plugin then states which versions of its companions it works with.
+- Phases 4 and 5 make the declarations honest and complete: the dependency claims that are not true are removed (two
+  named by the source, a third found in Phase 4's review), and every plugin then states which versions of its
+  companions it works with.
 - Phase 6 teaches the release process to start from what is really in the repository and to update all four publishing
   surfaces instead of two.
 - Phase 7 turns on the automated check that keeps every earlier fix fixed. It comes last on purpose.
@@ -318,7 +319,7 @@ truthful.
 1. On a clean machine, install the Reporting plugin.
 2. Confirm the Core plugin is not pulled in alongside it.
 3. Run a Reporting skill end to end and confirm it still works, including its writing pass.
-4. Repeat steps 1 through 3 for the Feedback plugin.
+4. Repeat steps 1 through 3 for the Feedback plugin and the Linear plugin.
 
 **Source citations.**
 
@@ -331,8 +332,8 @@ truthful.
 
 **Preconditions to verify before starting.**
 
-- Re-confirm neither plugin reaches the Core plugin through any path the analysis did not cover, so removing the
-  declarations cannot break a working flow.
+- Re-confirm none of the three plugins reaches the Core plugin through any path the analysis did not cover, so
+  removing the declarations cannot break a working flow.
 
 ---
 

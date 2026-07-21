@@ -1,7 +1,8 @@
-# Team Findings: Remove the Two Untrue Dependency Declarations
+# Team Findings: Remove the Untrue Dependency Declarations
 
 <!-- Findings from the review team, recorded as F# entries. Major findings carry the full field set; minor edits are
-one-line bullets. The F# counter is shared across both sections. -->
+one-line bullets. The F# counter is shared across both sections, so the content-auditor's later major finding is F8
+even though it sits above the earlier minor edits F6 and F7 by severity. -->
 
 ## Major findings
 
@@ -16,7 +17,7 @@ one-line bullets. The F# counter is shared across both sections. -->
 - **Resolved by:** evidence
 - **Affected decisions:** D3
 - **Affected tech-notes:** —
-- **Changed in spec:** Primary Flow; Coordinations
+- **Changed in spec:** Outcome; Coordinations
 
 ### F2: Both front-door pages carry a second untrue claim beyond the dependency line
 
@@ -84,3 +85,5 @@ one-line bullets. The F# counter is shared across both sections. -->
 - F6: "Installs alone" now rests on the two shipped zero-dependency precedents — junior-developer — Primary Flow
 - F7: The channels stay unnamed in behavioral prose by the plain-language rule; the reviewer's request to name them is
   met in the decision log's evidence instead — junior-developer — —
+</content>
+</invoke>
