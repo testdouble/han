@@ -10,5 +10,5 @@
   offered, and corrections on a working branch are invisible until merged to `main`. External channel behavior, not
   discoverable from this repo's own code.
 - **Supports decisions:** D2
-- **Driven by findings:** —
-- **Referenced in spec:** Outcome; Actors and Triggers; Edge Cases and Failure Modes; Coordinations
+- **Driven by findings:** F1
+- **Referenced in spec:** Outcome; Actors and Triggers; Primary Flow; Edge Cases and Failure Modes; Coordinations
