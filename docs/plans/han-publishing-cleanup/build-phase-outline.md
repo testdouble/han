@@ -44,6 +44,9 @@ source-artifact sections it covers, so anyone can trace a phase back to source.
   - [Phase 7: Turn on the automated completeness check](#phase-7)
   - [Phase 8 (Deferred): Consolidate the duplicated rule documents](#phase-8)
 - [Open Questions](#open-questions)
+  - [OQ-1: How far does the ticket-file fix go in Phase 2?](#oq-1)
+  - [OQ-2: Should plugins declare which versions of each other they work with?](#oq-2)
+  - [OQ-3: Does the format-checking step really catch a mismatched ticket file?](#oq-3)
 
 ---
 
@@ -51,6 +54,10 @@ source-artifact sections it covers, so anyone can trace a phase back to source.
 
 **The goal:** Every Han plugin is published, current, and honestly described on both of the channels people install it
 from, and an automated check makes it impossible to quietly break that again.
+
+Han ships through two install channels. Following the source artifact, this document calls them the first channel and
+the second channel. The first channel is healthy; the second channel is the one that has been quietly rotting, and it
+is where most of this cleanup lands.
 
 **The shape of the build (plain language):**
 
@@ -110,7 +117,8 @@ Every phase is tagged with one of four kinds. The taxonomy is used in the Build 
 `**Kind.**` line.
 
 - **Foundation** — A capability that does not deliver new user-facing features on its own, but is required for later
-  phases. Must still be demoable in its own right (e.g., "an admin can edit and persist a new setting").
+  phases. Must still be demoable in its own right (e.g., "an admin can edit and persist a new setting"). No phase in
+  this plan uses the Foundation kind.
 - **Feature slice** — A thin end-to-end strip of new behavior that a real user can experience.
 - **Polish** — Branding, refinement, observability, or quality-of-life work that enriches a working core.
 - **Deferred** — Listed for traceability; not built in the current plan. Slotted at the end of the index.
@@ -453,7 +461,10 @@ need a migration path, one that stops and asks rather than guesses.
   toward stopping and asking, which contains the format change's risk. If the team wants the thinnest possible Phase
   2, Option B is defensible, but the trap then needs its own reopening trigger so it is not forgotten.
 
-### Carry-over notes
+### Carry-over notes {#carry-over-notes}
+
+The two questions below block no phase in this plan. They are carried over from the source artifact so they stay
+visible, and each names the trigger that would put it back on the table.
 
 ### OQ-2. Should plugins declare which versions of each other they work with? {#oq-2}
 
@@ -465,6 +476,9 @@ complains. The source deliberately proposes no fix because the right one is not 
 so it is not lost: it deserves a real decision of its own, outside this cleanup. Note that the source's own confidence
 caveat applies: its conclusion rests on the project's description of how installation works being accurate.
 
+**Reopen when.** The first time a user reports breakage from mismatched plugin versions, or the next time a change to
+one plugin knowingly alters behavior another plugin relies on.
+
 ### OQ-3. Does the format-checking step really catch a mismatched ticket file? {#oq-3}
 
 **Blocks phase(s).** None — carry-over note, though it informs Phase 2's demo.
@@ -473,6 +487,9 @@ The source's reviewer could not test whether the step that is supposed to catch 
 in practice, because that depends on judgment at the time rather than anything written down. Phase 2's demonstration
 script exercises exactly this path, so running that demo honestly, with a file marked by another tracker, doubles as
 the missing test.
+
+**Reopen when.** Phase 2's demonstration runs. If the mismatched file is caught, this note closes; if not, the gap
+becomes part of Phase 2's fix.
 
 ---
 
