@@ -454,8 +454,9 @@ today lands invisible by default" failure that caused the Linear gap.
 
 **Connects to.**
 
-- This is the final phase. It guards the outcomes of [Phase 1](#phase-1), [Phase 3](#phase-3), [Phase 4](#phase-4), and
-  [Phase 6](#phase-6) from regressing.
+- This is the final phase. It guards the outcomes of [Phase 1](#phase-1), [Phase 3](#phase-3), and
+  [Phase 6](#phase-6) from regressing. Phase 7's spec review corrected an earlier claim here: the check does not
+  examine dependency declarations, so [Phase 4](#phase-4)'s outcome is not among its guards.
 
 **Preconditions to verify before starting.**
 
