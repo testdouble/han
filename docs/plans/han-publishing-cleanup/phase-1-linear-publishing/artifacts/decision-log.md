@@ -6,6 +6,10 @@
   the build phase outline that spawned it (considered a standalone top-level plan folder; rejected because the repo's
   convention is one folder per plan and this work belongs to the han-publishing-cleanup plan). — Referenced in spec:
   none (organizational).
+- D4: Version parity across channels at ship time — the channel manifest's stated version equals the first channel's
+  released version, and the installed manifest is the observable check for "current version" (considered a runtime
+  version signal from the skill itself; rejected because the skill surfaces no version at runtime). — Referenced in
+  spec: Outcome; Primary Flow; Maintainer verification before ship; Edge Cases and Failure Modes.
 
 ## Full decisions
 
@@ -28,9 +32,10 @@
   - Listing presence only, no install validation — rejected because the build outline's Phase 1 demo requires a
     working install, not a present listing entry.
 - **Linked technical notes:** T1
-- **Driven by findings:** —
-- **Dependent decisions:** D3
-- **Referenced in spec:** Outcome; Primary Flow; Out of Scope
+- **Driven by findings:** F2 (the first-time-publication precondition was made explicit inside this decision's
+  verification scope)
+- **Dependent decisions:** D3, D4
+- **Referenced in spec:** Outcome; Actors and Triggers; Primary Flow; Out of Scope
 
 ### D3: No companion-install instruction
 
@@ -47,6 +52,8 @@
   - Add "install han-core alongside" to the instructions — rejected because no skill content sources it; the
     declaration exists only on the first channel, where the channel itself resolves it.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F1 (the plugin's own README contradicts the standalone claim — `han-linear/README.md` lines
+  8 and 16 say its skills dispatch `han-core` and `han-communication` agents, while
+  `han-linear/skills/work-items-to-linear/SKILL.md` dispatches none; the discrepancy became OI-2)
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow
+- **Referenced in spec:** Primary Flow; Open Items
