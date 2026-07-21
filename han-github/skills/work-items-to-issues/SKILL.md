@@ -55,7 +55,7 @@ Determine which repo each slice belongs to. Use both signals and reconcile them:
 - **Primary — cross-repo work order prose.** Most `work-items.md` files include an intro paragraph naming which SYMs
   ship to which repo (e.g., "W-1 through W-4 ship to `acme-api`. W-5 through W-9 ship to `acme-web`."). Parse this for
   the mapping.
-- **Corroborating — file paths inside each slice.** Each slice's `**Supporting detail.**` and `**References.**` blocks
+- **Corroborating — file paths inside each slice.** Each slice's `**Work to be done.**` and `**References.**` blocks
   reference files in the target repo. Path roots map cleanly: `acme-api/...` → `acme/acme-api`, `acme-web/...` →
   `acme/acme-web`, `acme-events/...` → `acme/acme-events`. Use this to verify the prose and to assign any slice the
   prose doesn't cover.
@@ -97,7 +97,8 @@ ADRs / coding standards / docs:
   files by inspecting the feature spec's Visual Reference table and the spec's inline screenshot embeds. Cite the spec
   section.
 - **Process-artifact link found** — propose removing the link and (if the slice still needs the context the artifact
-  held) restating the decision inline with `See plan: D-N` as the breadcrumb. Cite the include/exclude list.
+  held) restating the decision in plain language, with a **Plan decisions** References bullet naming the ID plus a
+  one-sentence description. Cite the include/exclude list.
 
 After validation, report findings in plain language. For each finding, name:
 
