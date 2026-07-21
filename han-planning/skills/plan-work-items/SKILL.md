@@ -44,10 +44,11 @@ up the plan.
 - Do NOT modify, annotate, or comment on the source implementation plan or context. It is read-only input.
 - Each work item is a **vertical slice**: a narrow but complete path through the relevant layers (schema, API, UI,
   tests) that is demoable or verifiable on its own. Not a layer, not a stub.
-- **Summary first, acceptance criteria second, everything else in support.** Every work item opens with a plain-language
-  summary of what it delivers and why, followed by the acceptance criteria that say when it is done. All remaining
-  detail is written in support of a named criterion — detail that supports no criterion is cut. Test expectations live
-  inside the acceptance criteria; there is no separate Tests block.
+- **Summary and acceptance criteria drive the item; criteria render at the bottom.** Draft each work item's
+  plain-language summary first and its acceptance criteria immediately after — before any detail — so every remaining
+  block is written in support of a criterion, and detail that supports no criterion is cut. In the rendered work item,
+  the summary opens and the acceptance criteria sit at the bottom, immediately before Depends on. Test expectations
+  live inside the acceptance criteria; there is no separate Tests block.
 - **Minimal technical detail — intention over prescription.** A work item gives the implementer a starting point: the
   intention and goals of the work plus the touch points (a file path, a contract, a boundary). NEVER prescribe
   line-level changes or enumerate every edit, BECAUSE work items are often implemented long after they are written — a
@@ -136,8 +137,8 @@ Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) 
   Prefer AFK over HITL. Prefer many thin work items over few thick ones.
 - A directive on drafting order and altitude: draft each work item summary-first, then its acceptance criteria, then
   only the supporting detail those criteria need. Write the criteria before the detail so the detail is forced to serve
-  them. Keep technical detail minimal — intention, goals, and touch points, never a prescribed edit list — per the
-  Rules above.
+  them; the criteria still render at the bottom of the finished work item per the template. Keep technical detail
+  minimal — intention, goals, and touch points, never a prescribed edit list — per the Rules above.
 - A directive on unverified assumptions: do not mark a work item HITL only because the plan calls an assumption
   unverified. First check two things. (a) Can you settle it by reading the code? Do that, and move on if it holds. (b)
   If the assumption turns out wrong, does something break, or does it fall back to a safe default? Mark it HITL only

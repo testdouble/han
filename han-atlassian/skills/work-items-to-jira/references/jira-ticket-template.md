@@ -14,10 +14,7 @@ allowed between required fields when a slice needs them.
 
 **Summary.** One short plain-language paragraph stating what this slice delivers and why it matters. Includes a plan reference inline (e.g., `See plan: [D-6](feature-implementation-plan.md#d-6-...)`).
 
-**Acceptance criteria.**
-- [ ] Each criterion is an observable, verifiable outcome. Test expectations live here (e.g., "Automated tests cover the rejection path").
-
-**Supporting detail.** Short paragraphs or bullets, each supporting a named acceptance criterion. Describes intention and goals with starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code. Duplicates content from the parent plan when clarity requires it.
+**Supporting detail.** Short paragraphs or bullets, each supporting an acceptance criterion below. Describes intention and goals with starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code. Duplicates content from the parent plan when clarity requires it.
 
 *(Optional `**Bold paragraph.**` blocks here — e.g., `**Note on scope boundary.**`.)*
 
@@ -29,6 +26,9 @@ allowed between required fields when a slice needs them.
 - **ADR / standard / repo doc** — links to architectural decisions, coding standards, or feature docs the implementer must honor.
 - Omits any bullet that does not apply. Does not link iteration histories, decision logs, review findings, team findings, facilitation summaries, or any other process artifact.
 
+**Acceptance criteria.**
+- [ ] Each criterion is an observable, verifiable outcome. Test expectations live here (e.g., "Automated tests cover the rejection path").
+
 **Depends on.** `<SYM-N>` (within this file), comma-separated for multiple, or `None.`
 ```
 
@@ -39,8 +39,8 @@ When the skill creates a ticket for a slice, it maps the slice fields like this:
 - **Summary (Jira) ← slice title.** The text after `— ` in the `## <SYM-N> — <title>` heading becomes the Jira ticket
   summary. The `<SYM-N>` symbolic ID is not part of the summary; it is preserved only in the source work-items file's
   heading annotation.
-- **Description (Jira) ← the entire slice body.** Everything below the heading — Summary, Acceptance criteria,
-  Supporting detail, optional notes, References — is rendered into the ticket description. Pass it as Markdown; if the
+- **Description (Jira) ← the entire slice body.** Everything below the heading — Summary, Supporting detail, optional
+  notes, References, Acceptance criteria — is rendered into the ticket description. Pass it as Markdown; if the
   configured Jira create tool requires Atlassian Document Format (ADF), convert it. Confirm the expected format against
   the tool's input schema at call time.
 - **Issue type ← the resolved type.** Defaults to `Story` at the project top level or under an epic. When the work items

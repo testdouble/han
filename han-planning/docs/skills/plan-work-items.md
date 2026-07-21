@@ -23,11 +23,11 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **HITL and AFK.** Every work item is classified as HITL (requires a human sync: an architectural decision, a design
   review) or AFK (can be implemented and merged without one). The skill prefers AFK and prefers many thin work items
   over few thick ones.
-- **Acceptance criteria carry the item.** Every work item opens with a plain-language summary, then the acceptance
-  criteria that say when it is done. All remaining detail is written in support of a named criterion, and test
-  expectations live inside the criteria. Technical detail stays minimal — intention, goals, and touch points, never a
-  prescribed edit list — because work items are often implemented long after they are written, and a prescribed edit
-  list goes stale against the moving codebase while intention and criteria stay valid.
+- **Acceptance criteria carry the item.** Each work item is drafted summary-first, criteria-second, so every block of
+  detail is written in support of a criterion; in the rendered output the summary opens the item and the acceptance
+  criteria sit at the bottom, with test expectations inside them. Technical detail stays minimal — intention, goals,
+  and touch points, never a prescribed edit list — because work items are often implemented long after they are
+  written, and a prescribed edit list goes stale against the moving codebase while intention and criteria stay valid.
 - **Symbolic ID.** Each work item gets a stable identifier (`W-N`). IDs are for cross-referencing work items within the
   file and citing them in tickets, threads, and follow-up work. They are stable for the life of the file.
 - **One file, no repository awareness.** The output is exactly one `work-items.md`. The skill never splits work by
@@ -91,8 +91,8 @@ One file on disk plus an in-channel summary:
   paragraph that links the parent plan (or names the source context) and explains the `W-N` ID scheme. When a single
   reference artifact applies to more than one work item, a **Shared reference artifacts** preamble cites it once. Then
   one section per work item, in dependency order. Each work item carries: `Summary` (plain language, with an inline plan
-  reference), `Acceptance criteria` (test expectations included), `Supporting detail` (written in support of the
-  criteria), optional `Design references`, `References`, and `Depends on`.
+  reference), `Supporting detail` (written in support of the criteria), optional `Design references`, `References`,
+  `Acceptance criteria` (at the bottom, test expectations included), and `Depends on`.
 - An **in-channel summary** with the file path, a count of work items by type (HITL / AFK), and the next concrete
   action.
 

@@ -16,10 +16,7 @@ event payload, design frame, ADR, coding standard) — omit it only when no exte
 
 **Summary.** One short plain-language paragraph stating what this slice delivers and why it matters. Includes a plan reference inline (e.g., `See plan: [D-6](feature-implementation-plan.md#d-6-...)` or `See plan: D-3, D-7, and Work Unit 2`). The plan reference replaces a standalone "Work items addressed" field.
 
-**Acceptance criteria.**
-- [ ] Each criterion is an observable, verifiable outcome. Test expectations live here (e.g., "Automated tests cover the rejection path").
-
-**Supporting detail.** Short paragraphs or bullets, each supporting a named acceptance criterion. Describes intention and goals with starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code. Duplicates content from the parent plan when clarity requires it.
+**Supporting detail.** Short paragraphs or bullets, each supporting an acceptance criterion below. Describes intention and goals with starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code. Duplicates content from the parent plan when clarity requires it.
 
 *(Optional `**Bold paragraph.**` blocks here — e.g., `**Note on scope boundary.**`, `**Note on cross-repo gate.**`.)*
 
@@ -34,6 +31,9 @@ event payload, design frame, ADR, coding standard) — omit it only when no exte
 - **Spec section** — `[feature-specification.md#<anchor>](feature-specification.md#<anchor>)` for the behavior this slice realizes.
 - **ADR / standard / repo doc** — links to architectural decisions, coding standards, or feature docs the implementer must honor.
 - Omits any bullet that does not apply. Does not link iteration histories, decision logs, review findings, team findings, facilitation summaries, or any other process artifact.
+
+**Acceptance criteria.**
+- [ ] Each criterion is an observable, verifiable outcome. Test expectations live here (e.g., "Automated tests cover the rejection path").
 
 **Depends on.** `<SYM-N>` (within this repo), comma-separated for multiple, or `None.`
 ```
