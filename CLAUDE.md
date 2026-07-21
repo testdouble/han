@@ -14,7 +14,7 @@ implementation: specifying with `plan-a-feature`, planning the build with `plan-
 `han-coding` (the coding skills
 you reach for while working in code: writing it with `tdd` and `refactor`, plus reviewing, overviewing, analyzing,
 testing, investigating, and standardizing it with `code-review`, `code-overview`, `architectural-analysis`,
-`test-planning`, `investigate`, and `coding-standard`; depends on `han-communication` and `han-core` and is bundled by
+`test-planning`, `manual-test-planning`, `investigate`, and `coding-standard`; depends on `han-communication` and `han-core` and is bundled by
 the `han` meta-plugin),
 `han-github` (GitHub-facing skills), `han-reporting` (reporting and summary skills), `han` (a meta-plugin that installs
 `han-communication`, `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` via dependencies),
@@ -78,7 +78,7 @@ han-plugin-builder skill:
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
 │   └── references/     # Cross-skill reference files vendored for han-planning skills (yagni-rule.md, evidence-rule.md)
-├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
+├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json

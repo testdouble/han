@@ -19,6 +19,8 @@ specialist agents to cover each dimension in parallel. Reach for it once there i
 - [`/architectural-analysis`](docs/skills/architectural-analysis.md) — Assess a module's coupling, data flow,
   concurrency, risk, and SOLID alignment through a spine of structural, behavioral, risk, and architecture agents.
 - [`/test-planning`](docs/skills/test-planning.md) — Produce a prioritized test plan for a branch or directory.
+- [`/manual-test-planning`](docs/skills/manual-test-planning.md) — Produce a plain-language manual test plan from
+  supplied context: named tests with by-hand steps and expected outcomes for a person to run.
 - [`/investigate`](docs/skills/investigate.md) — Run an evidence-based investigation of a bug, failure, or unexpected
   behavior, with adversarial validation of the proposed fix.
 - [`/coding-standard`](docs/skills/coding-standard.md) — Create and update coding standards from existing patterns or

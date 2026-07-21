@@ -47,6 +47,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   information, assess severity and reproducibility, and recommend the right next skill to run.
 - [`/iterative-plan-review`](../../han-planning/docs/skills/iterative-plan-review.md) — Stress-test an already-written
   plan through multiple codebase-grounded review passes.
+- [`/manual-test-planning`](../../han-coding/docs/skills/manual-test-planning.md) — Produce a plain-language manual
+  test plan from supplied context: named tests with by-hand steps and expected outcomes for a person to run.
 - [`/markdown-to-confluence`](../../han-atlassian/docs/skills/markdown-to-confluence.md) — Publish one local Markdown
   file to a user-specified Confluence location; defaults to an unpublished draft.
 - [`/plan-a-feature`](../../han-planning/docs/skills/plan-a-feature.md) — Build a feature specification from scratch
