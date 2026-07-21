@@ -11,11 +11,12 @@ standard). Additional `**Bold paragraph.**` context blocks are allowed between r
 ```
 ## <SYM-N> — <short descriptive name>
 
-**Summary.** One paragraph describing what this slice delivers. Includes a plan reference inline (e.g., `See plan: D-6`).
+**Summary.** One short plain-language paragraph stating what this slice delivers and why it matters. Includes a plan reference inline (e.g., `See plan: D-6`).
 
-**Description.**
-1. Numbered steps describing the full behavior to build.
-2. References implementation details by file path where helpful, but does not prescribe implementation code.
+**Acceptance criteria.**
+- [ ] Each criterion is an observable, verifiable outcome. Test expectations live here.
+
+**Supporting detail.** Short paragraphs or bullets, each supporting a named acceptance criterion. Describes intention and goals with starting points (a file path, a contract, a boundary), never a prescribed edit list or implementation code.
 
 **References.**
 - **API contract** — `[<file>#<anchor>](<relative-path>)`. Required when the slice produces or consumes an HTTP endpoint.
@@ -23,13 +24,6 @@ standard). Additional `**Bold paragraph.**` context blocks are allowed between r
 - **Design** — design document path plus frame IDs. Carried as a link in the issue description; this skill does not upload or embed images into Linear (see "Design and images" below).
 - **Spec section** — `[feature-specification.md#<anchor>](feature-specification.md#<anchor>)` for the behavior this slice realizes.
 - **ADR / standard / repo doc** — links the implementer must honor.
-
-**Tests.**
-- Bullet list of tests required for the behavior. Names the test type and the assertion concretely.
-
-**Acceptance criteria.**
-- [ ] Criterion 1
-- [ ] Criterion 2
 
 **Depends on.** `<SYM-N>` (within this file), comma-separated for multiple, or `None.`
 ```
@@ -41,9 +35,9 @@ When the skill creates an issue for a slice, it maps the slice fields like this:
 - **Title (Linear) <- slice title.** The text after `— ` in the `## <SYM-N> — <title>` heading becomes the issue title.
   The `<SYM-N>` symbolic ID is not part of the title; it is preserved only in the source work-items file's heading
   annotation.
-- **Description (Linear) <- the entire slice body.** Everything below the heading (Summary, Description, optional notes,
-  References, Tests, Acceptance criteria) is rendered into the issue description and passed as **Markdown with no format
-  conversion** (Linear accepts Markdown directly).
+- **Description (Linear) <- the entire slice body.** Everything below the heading (Summary, Acceptance criteria,
+  Supporting detail, optional notes, References) is rendered into the issue description and passed as **Markdown with no
+  format conversion** (Linear accepts Markdown directly).
 - **Team <- the required target team.** Every slice posts into the one team you name. The skill resolves the team
   against the workspace before any create.
 - **Workflow state <- the team's initial state by default.** The skill defaults to the team's own default/initial state

@@ -55,7 +55,7 @@ Determine which repo each slice belongs to. Use both signals and reconcile them:
 - **Primary — cross-repo work order prose.** Most `work-items.md` files include an intro paragraph naming which SYMs
   ship to which repo (e.g., "W-1 through W-4 ship to `acme-api`. W-5 through W-9 ship to `acme-web`."). Parse this for
   the mapping.
-- **Corroborating — file paths inside each slice.** Each slice's `**Description.**` and `**References.**` blocks
+- **Corroborating — file paths inside each slice.** Each slice's `**Supporting detail.**` and `**References.**` blocks
   reference files in the target repo. Path roots map cleanly: `acme-api/...` → `acme/acme-api`, `acme-web/...` →
   `acme/acme-web`, `acme-events/...` → `acme/acme-events`. Use this to verify the prose and to assign any slice the
   prose doesn't cover.

@@ -47,7 +47,7 @@ the artifact held is load-bearing) restate the decision inline with `See plan: D
 
 For each slice:
 
-- If the slice produces or consumes an HTTP endpoint (detected from `**Description.**` prose mentioning a route, method,
+- If the slice produces or consumes an HTTP endpoint (detected from slice prose mentioning a route, method,
   status code, or DTO shape), an **API contract** bullet must be present in `**References.**`.
 - If the slice produces or consumes an event payload, an **Event contract** bullet must be present.
 - If the slice has a UI surface, a **Design** bullet should be present in `**References.**` (a link/path plus frame
