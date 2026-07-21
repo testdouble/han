@@ -47,7 +47,8 @@
   "one rule"), F3 (the guard claim narrowed and the outline corrected), F5 (all four surfaces are repository files,
   stated), F6 (on-demand invocation granted), F8 (the orphan rail's parity evidence and carried caveat)
 - **Dependent decisions:** D3, D4
-- **Referenced in spec:** Outcome; Actors and Triggers; Primary Flow; Coordinations; Out of Scope
+- **Referenced in spec:** Outcome; Actors and Triggers; Primary Flow; Edge Cases and Failure Modes; Coordinations;
+  Out of Scope
 
 ### D3: Shared exception record
 
@@ -97,3 +98,4 @@
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome; Actors and Triggers; Alternate Flows and States; Edge Cases and Failure Modes;
   Coordinations
+</content>
