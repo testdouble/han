@@ -23,8 +23,8 @@ of **phases**. Each phase is a thin end-to-end deliverable that can be demonstra
 builds on the one before it.
 
 The cleanup repairs how Han is published to the people who install it: a missing plugin, work items that vanish without
-a trace, frozen version numbers, untrue dependency declarations, and a release process that only sees half the places it
-ships to.
+a trace, frozen version numbers, untrue dependency declarations, plugins that never say which versions of each other
+they work with, and a release process that only sees half the places it ships to.
 
 This document is the companion to [source-han-cleanup-plan.md](./source-han-cleanup-plan.md). The source artifact
 describes _what is broken in Han's publishing pipeline today and the seven fixes it recommends, in order_. This
@@ -35,20 +35,21 @@ source-artifact sections it covers, so anyone can trace a phase back to source.
 
 - [Executive Summary](#executive-summary)
 - [Build Phase Index](#build-phase-index)
+- [How This Build Differs from the Cleanup Analysis](#departures)
 - [Phase Kinds](#phase-kinds)
 - [Build Phases](#build-phases)
   - [Phase 1: Publish the Linear plugin to the second channel](#phase-1)
-  - [Phase 2: Close the GitHub publisher's silent gap](#phase-2)
+  - [Phase 2: Label every tracker's marks and close the silent gap](#phase-2)
   - [Phase 3: Unfreeze the second channel's version numbers](#phase-3)
   - [Phase 4: Remove the two untrue dependency declarations](#phase-4)
-  - [Phase 5: Correct the two documents that describe behavior the system does not have](#phase-5)
+  - [Phase 5: Declare the plugin versions that work together](#phase-5)
   - [Phase 6: Teach the release process about all four publishing surfaces](#phase-6)
   - [Phase 7: Turn on the automated completeness check](#phase-7)
   - [Phase 8 (Deferred): Consolidate the duplicated rule documents](#phase-8)
 - [Open Questions](#open-questions)
-  - [OQ-1: How far does the ticket-file fix go in Phase 2?](#oq-1)
-  - [OQ-2: Should plugins declare which versions of each other they work with?](#oq-2)
-  - [OQ-3: Does the format-checking step really catch a mismatched ticket file?](#oq-3)
+  - [OQ-1 (resolved): How far does the ticket-file fix go in Phase 2?](#oq-1)
+  - [OQ-2 (resolved): Should plugins declare which versions of each other they work with?](#oq-2)
+  - [OQ-3 (resolved): Does the format-checking step really catch a mismatched ticket file?](#oq-3)
 
 ---
 
@@ -64,9 +65,9 @@ is where most of this cleanup lands.
 **The shape of the build (plain language):**
 
 - Phases 1 through 3 repair what users hit today: a plugin that is advertised but missing, work items that vanish from
-  a publishing run with no trace, and version numbers so stale that nobody is ever offered an update.
-- Phases 4 and 5 clean up the record: two dependency declarations that are not true, and two documents that describe a
-  behavior the system does not have.
+  a publishing run or get mistakenly skipped, and version numbers so stale that nobody is ever offered an update.
+- Phases 4 and 5 make the declarations honest and complete: two dependency claims that are not true are removed, and
+  every plugin then states which versions of its companions it works with.
 - Phase 6 teaches the release process to start from what is really in the repository and to update all four publishing
   surfaces instead of two.
 - Phase 7 turns on the automated check that keeps every earlier fix fixed. It comes last on purpose.
@@ -80,6 +81,17 @@ come first because someone following the documented instructions hits an error t
 The record cleanup and the release-process fix come next because the automated check depends on them. If the check were
 turned on first, it would fail on almost every plugin from day one, someone would disable it, and it would protect
 nothing. Fixed first, then guarded: that is the whole sequencing argument.
+
+**Departures from the source artifact:**
+
+- The source's fifth fix, correcting two documents that describe a behavior the system does not have, is dropped: the
+  source never names the documents, so the work cannot be picked up.
+- Version compatibility between plugins, which the source left as an open question with no proposed fix, is now
+  committed work: Phase 5 has every plugin state which versions of its companions it works with.
+- The ticket-file fix is built at full width: all three tracker publishers label their marks, not only the GitHub
+  repair the source's ordered list named.
+
+The [departures section](#departures) explains each one.
 
 **Phases deliberately deferred:**
 
@@ -101,16 +113,44 @@ follow under [Build Phases](#build-phases). Decisions the team must resolve befo
 | #   | Phase                                                                                  | Kind          | Outcome (one sentence)                                                       |
 | --- | -------------------------------------------------------------------------------------- | ------------- | ---------------------------------------------------------------------------- |
 | 1   | [Publish the Linear plugin to the second channel](#phase-1)                            | Feature slice | Following the second channel's setup instructions for Linear now works.      |
-| 2   | [Close the GitHub publisher's silent gap](#phase-2)                                    | Feature slice | No work item can vanish from a GitHub publishing run without a trace.        |
+| 2   | [Label every tracker's marks and close the silent gap](#phase-2)                       | Feature slice | No publisher can lose or mistakenly skip another tracker's work items.       |
 | 3   | [Unfreeze the second channel's version numbers](#phase-3)                              | Feature slice | People on the second channel are offered updates again.                      |
 | 4   | [Remove the two untrue dependency declarations](#phase-4)                              | Feature slice | Installing Reporting or Feedback no longer drags in a plugin they never use. |
-| 5   | [Correct the two documents that describe behavior the system does not have](#phase-5)  | Polish        | Both documents now match what the system really does.                        |
+| 5   | [Declare the plugin versions that work together](#phase-5)                             | Feature slice | Every plugin states which versions of its companions it works with.          |
 | 6   | [Teach the release process about all four publishing surfaces](#phase-6)               | Feature slice | A release starts from the repository and updates all four surfaces.          |
 | 7   | [Turn on the automated completeness check](#phase-7)                                   | Feature slice | Every release and change is blocked if any plugin is missing anywhere.       |
 | 8   | [Consolidate the duplicated rule documents (deferred)](#phase-8)                       | Deferred      | Three plugins share one copy of each rule instead of hand-synced copies.     |
 
 > Numbers are assigned in build order and are stable for the life of this outline. Cite them as `Phase N` in tickets,
 > comments, and follow-up reports.
+
+---
+
+## How This Build Differs from the Cleanup Analysis {#departures}
+
+The build deliberately departs from [source-han-cleanup-plan.md](./source-han-cleanup-plan.md) in three ways, decided
+on 2026-07-21. Each departure is summarized once here so the rest of the document can refer to it by name.
+
+### 1. The document-correction fix is dropped
+
+The source's fifth ordered fix corrects two documents that describe a behavior the system does not have. The source
+names the count and the harm but never the documents themselves, so there is no detail to work from. Rather than carry
+an unworkable phase, this build drops it. If the underlying analysis ever surfaces which two documents were meant, the
+fix comes back as its own small piece of work.
+
+### 2. Version declarations are promoted from open question to committed work
+
+The source deliberately proposed no fix for version compatibility between plugins, holding that the right answer needs
+a real decision. That decision has now been made: every plugin will state explicitly which versions of its companions
+it works with. The work lands as [Phase 5](#phase-5), immediately after the dependency declarations are made truthful
+in [Phase 4](#phase-4).
+
+### 3. The ticket-file fix is built at full width
+
+The source's ordered list committed only to repairing the GitHub publisher's silent gap, while its prose named the
+fuller fix: make every publisher's marks say which tracker they came from. This build adopts the fuller fix in
+[Phase 2](#phase-2), so all three publishers change together and old-format files get an upgrade path that stops and
+asks rather than guesses.
 
 ---
 
@@ -168,7 +208,7 @@ reason: the plugin exists and works, and only the publishing step was missed.
 
 ---
 
-### Phase 2: Close the GitHub publisher's silent gap {#phase-2}
+### Phase 2: Label every tracker's marks and close the silent gap {#phase-2}
 
 **Kind.** Feature slice.
 
@@ -176,21 +216,25 @@ reason: the plugin exists and works, and only the publishing step was missed.
 this is the only one where work silently disappears.
 
 **What we build.** Three plugins publish work items to three different trackers, and all three record what they
-published by marking up the same shared file. When the GitHub publisher meets a file marked up by a different tracker,
-those items match none of the patterns it looks for. They are neither published nor counted as skipped, and they vanish
-from the run with no error and no signal. After this phase, every work item in a GitHub publishing run is accounted
-for: published, skipped with a count, or reported as belonging to another tracker.
+published by marking up the same shared file. Today the GitHub publisher can silently lose items marked by another
+tracker, and the other two publishers can mistake each other's marks and skip work that was never published to their
+tracker. After this phase, every publisher's marks say which tracker they came from, so no publisher can misread
+another's, and every work item in any publishing run is accounted for: published, skipped with a count, or reported as
+belonging to another tracker. Files marked up in the old format get an upgrade path that stops and asks rather than
+guesses. This is the full fix chosen in [OQ-1](#oq-1) and named as [departure 3](#departures).
 
 **Why this is Phase 2.** Silent data loss outranks every remaining problem: the other two tracker publishers at least
-report a skipped count that an attentive person would notice, while this one leaves no trace at all. The source calls
-it "the one worth fixing first" among the ticket-file problems. It depends on nothing else in this plan.
+report a skipped count that an attentive person would notice, while the GitHub one leaves no trace at all. The source
+calls it "the one worth fixing first" among the ticket-file problems. It depends on nothing else in this plan.
 
 **Outcome to demonstrate.**
 
 1. Take a work-items file that another tracker's publisher has already marked up.
 2. Run the GitHub publisher against it.
-3. Every item in the file appears in the run's output: published, skipped, or flagged as marked by another tracker.
-4. Confirm the flagged items were not silently dropped and the run says what to do about them.
+3. Every item in the file appears in the run's output: published, skipped, or reported as belonging to another
+   tracker, and the run says what to do about the reported ones.
+4. Repeat with the other two publishers and confirm neither skips items that were never published to its tracker.
+5. Feed in a file marked up in the old format and confirm the run stops and asks instead of guessing.
 
 **Source citations.**
 
@@ -203,8 +247,10 @@ it "the one worth fixing first" among the ticket-file problems. It depends on no
 
 **Preconditions to verify before starting.**
 
-- Resolve [OQ-1](#oq-1): whether this phase also adopts tracker-labeled marks across all three publishers, or only
-  closes the GitHub publisher's gap.
+- Run the safety-net trial from [OQ-3](#oq-3): feed a mismatched file through the GitHub publisher in a throwaway
+  project and confirm the run stops at its checking step, so this phase starts from tested facts about today's
+  behavior.
+- Confirm no known user files in the old mark format would be stranded by the upgrade path's stop-and-ask behavior.
 
 ---
 
@@ -262,7 +308,8 @@ lines removed, nothing added.
 **Why this is Phase 4.** The direct cost is small: people installing either plugin quietly get a large plugin they
 never use. The real damage is to trust in the declarations as a whole, since nobody can rely on them to answer "what
 breaks if I change this?" while two of them are decorative. It lands after the user-facing repairs because nobody hits
-an error from it, and before Phase 5 so the corrected documents describe the cleaned-up state.
+an error from it, and immediately before Phase 5, which adds version statements to the declarations this phase makes
+truthful.
 
 **Outcome to demonstrate.**
 
@@ -278,7 +325,7 @@ an error from it, and before Phase 5 so the corrected documents describe the cle
 
 **Connects to.**
 
-- [Phase 5](#phase-5): the corrected documents should describe the dependency picture as it stands after this phase.
+- [Phase 5](#phase-5): version statements are added on top of the declarations this phase makes truthful.
 
 **Preconditions to verify before starting.**
 
@@ -287,38 +334,44 @@ an error from it, and before Phase 5 so the corrected documents describe the cle
 
 ---
 
-### Phase 5: Correct the two documents that describe behavior the system does not have {#phase-5}
+### Phase 5: Declare the plugin versions that work together {#phase-5}
 
-**Kind.** Polish.
+**Kind.** Feature slice.
 
-**Builds on.** Phase 4, so the corrected documents describe the dependency picture after the cleanup rather than
-before it.
+**Builds on.** Phase 4: version statements are only worth adding to declarations that are true.
 
-**What we build.** Two documents describe a behavior the system does not have. Anyone making a change based on either
-one would get it wrong. This phase corrects both so they match what the system really does.
+**What we build.** Every plugin states explicitly which versions of the other plugins it works with. Today plugins are
+installed and updated one at a time, so someone can update one plugin while running a months-old copy of another, and
+nothing anywhere notices or complains. After this phase, each plugin's requirements are written down where the person
+installing it can see them. This work is [departure 2](#departures): the source left the question open, and the team
+decided it on 2026-07-21.
 
-**Why this is Phase 5.** Wrong documentation causes harm only when someone acts on it, so it sequences after every fix
-a user can hit directly. It comes immediately after Phase 4 because documentation should be corrected once, against the
-cleaned-up state, rather than corrected twice.
+**Why this is Phase 5.** It follows directly from Phase 4: first the dependency declarations are made truthful, then
+each one gains a version statement, so the record is corrected once rather than twice. It lands before the release
+process work because Phase 6 is where the statements start being kept current as new versions ship.
 
 **Outcome to demonstrate.**
 
-1. Open each of the two corrected documents.
-2. For each behavior the document describes, exercise that behavior in the system.
-3. Confirm the document and the system agree, where before this phase they did not.
+1. Open any plugin's listing and see which versions of its companion plugins it states it works with.
+2. On a clean machine, install that plugin and confirm compatible companions arrive with it.
+3. Set up a machine with an out-of-date companion and confirm the mismatch is surfaced instead of silently accepted.
 
 **Source citations.**
 
-- ["What I would do, in order"](./source-han-cleanup-plan.md#what-i-would-do-in-order), item 5.
+- ["Two places the reviewer changed my mind entirely"](./source-han-cleanup-plan.md#two-places-the-reviewer-changed-my-mind-entirely),
+  the "On version compatibility between plugins" finding.
+- ["How much of this to trust"](./source-han-cleanup-plan.md#how-much-of-this-to-trust), the caveat that this finding
+  rests on the project's description of how installation works.
 
 **Connects to.**
 
-- No later phase depends on it. It closes out the record cleanup that Phase 4 started.
+- [Phase 6](#phase-6): the release process keeps these version statements current as new versions ship.
 
 **Preconditions to verify before starting.**
 
-- Confirm from the underlying analysis exactly which two documents item 5 refers to, and which described behavior each
-  one gets wrong. The source artifact names the count and the harm, not the titles.
+- Confirm whether the install channels read and enforce version statements. If they do not, decide whether the
+  statements start as visible information for people until the channels can act on them.
+- Decide how strict the statements are: an exact version, a minimum version, or a range.
 
 ---
 
@@ -327,13 +380,14 @@ cleaned-up state, rather than corrected twice.
 **Kind.** Feature slice.
 
 **Builds on.** Phases 1 and 3 in practice: teaching the release process to see the second channel is far simpler when
-that channel's contents are already correct.
+that channel's contents are already correct. It also picks up upkeep of the version statements Phase 5 introduces.
 
 **What we build.** Today the release process updates two publishing surfaces and does not know the other two exist,
 which is why roughly twenty releases went by without anyone noticing the rot. After this phase the release process
 starts from the plugins as they exist in the repository, rather than trusting a list that can go stale, and
-updates all four surfaces. It also knows the one deliberate exception permanently: the all-in-one bundle cannot be
-published to the second channel because that channel does not support bundles yet.
+updates all four surfaces. It keeps the companion version statements from Phase 5 current as new versions ship. It
+also knows the one deliberate exception permanently: the all-in-one bundle cannot be published to the second channel
+because that channel does not support bundles yet.
 
 **Why this is Phase 6.** This is the root-cause fix: every earlier publishing problem grew from a release process that
 could not see half the world. It lands after Phases 1 and 3 so it maintains a correct state instead of inheriting a
@@ -440,59 +494,47 @@ instead of hand-copying the change into three places again.
 
 ## Open Questions {#open-questions}
 
-> Decisions the team must resolve before the corresponding phase starts. Cite open questions as `OQ-N` in follow-up.
-> Verification steps that need no decision stay on each phase's "Preconditions to verify" list.
+> All three questions raised while shaping this plan were resolved on 2026-07-21. The decisions are recorded here, with
+> their original anchors, so citations of `OQ-N` in tickets and threads still resolve.
 
-### OQ-1. How far does the ticket-file fix go in Phase 2? {#oq-1}
+### OQ-1 (resolved). How far does the ticket-file fix go in Phase 2? {#oq-1}
 
-**Blocks phase(s).** Phase 2.
+**Blocked phase(s).** Phase 2. **Decision: the full fix.**
 
-The source describes two related problems with the shared ticket file. The GitHub publisher silently drops items
-marked by another tracker; that is Phase 2's committed scope. Separately, the other two publishers can mistake each
-other's marks and skip work that was never published to their tracker, and the source names the fix: make every
-publisher's marks say which tracker they came from. That fix changes the file format, so files marked up the old way
-need a migration path, one that stops and asks rather than guesses.
+The source described two related problems with the shared ticket file: the GitHub publisher silently drops items
+marked by another tracker, and the other two publishers can mistake each other's marks and skip work that was never
+published to their tracker. The choice was between the fix the source itself named, making every publisher's marks say
+which tracker they came from, and a smaller change that only stopped the GitHub publisher's silent loss.
 
-- **Option A: Adopt tracker-labeled marks across all three publishers now.** Closes the silent gap and the
-  cross-tracker trap in one pass, since it is the fix the source itself names. Costs more: a format change, a
-  migration path, and coordinated changes to three plugins instead of one.
-- **Option B: Only close the GitHub publisher's gap now.** The GitHub publisher learns to recognize marks that are
-  not its own and reports them instead of dropping them. Smallest change that ends the silent data loss. The
-  cross-tracker trap remains, though it is visible in the skipped counts rather than silent.
-- **Recommendation: Option A.** The source presents the tracker-labeled format as the fix, not an option, and Option B
-  would leave the two other publishers able to skip each other's unpublished work. The migration path already errs
-  toward stopping and asking, which contains the format change's risk. If the team wants the thinnest possible Phase
-  2, Option B is defensible, but the trap then needs its own reopening trigger so it is not forgotten.
+The team chose the full fix. All three publishers label their marks, and files marked up the old way get an upgrade
+path that stops and asks rather than guesses. The decision is folded into [Phase 2](#phase-2) and recorded as
+[departure 3](#departures).
 
-### Carry-over notes {#carry-over-notes}
+### OQ-2 (resolved). Should plugins declare which versions of each other they work with? {#oq-2}
 
-The two questions below block no phase in this plan. They are carried over from the source artifact so they stay
-visible, and each names the trigger that would put it back on the table.
+**Blocked phase(s).** None when raised. **Decision: yes, explicitly.**
 
-### OQ-2. Should plugins declare which versions of each other they work with? {#oq-2}
-
-**Blocks phase(s).** None: carry-over note.
-
-The source reverses the earlier analysis that closed this question. Plugins are installed and updated one at a time,
+The source reversed the earlier analysis that closed this question: plugins are installed and updated one at a time,
 so someone can update the Core plugin today while running a months-old Coding plugin, and nothing anywhere notices or
-complains. The source deliberately proposes no fix because the right one is not obvious. The question stays open here
-so it is not lost: it deserves a real decision of its own, outside this cleanup. Note that the source's own confidence
-caveat applies: its conclusion rests on the project's description of how installation works being accurate.
+complains. The source deliberately proposed no fix because the right one is not obvious.
 
-**Reopen when.** The first time a user reports breakage from mismatched plugin versions, or the next time a change to
-one plugin knowingly alters behavior another plugin relies on.
+The team decided that all plugins should state which versions of each other they depend on, explicitly. The work lands
+as [Phase 5](#phase-5) and is recorded as [departure 2](#departures). The open sub-questions, whether the install
+channels enforce the statements and how strict each statement is, live on Phase 5's preconditions list.
 
-### OQ-3. Does the format-checking step really catch a mismatched ticket file? {#oq-3}
+### OQ-3 (resolved). Does the format-checking step really catch a mismatched ticket file? {#oq-3}
 
-**Blocks phase(s).** None: carry-over note, though it informs Phase 2's demo.
+**Blocked phase(s).** None when raised. **Decision: test it right away, before the phases start.**
 
-The source's reviewer could not test whether the step that is supposed to catch a mismatched ticket file catches one
-in practice, because that depends on judgment at the time rather than anything written down. Phase 2's demonstration
-script exercises exactly this path, so running that demo honestly, with a file marked by another tracker, doubles as
-the missing test.
+The source's reviewer could not confirm that the step meant to catch a mismatched ticket file works in practice,
+believing it rested on in-the-moment judgment rather than anything written down. A first inspection after the decision
+found the rule is written down after all: the GitHub publisher's instructions explicitly say a file carrying another
+tracker's marks must stop the run and be reported to the user, never repaired, because repairing it would publish
+duplicates.
 
-**Reopen when.** Phase 2's demonstration runs. If the mismatched file is caught, this note closes; if not, the gap
-becomes part of Phase 2's fix.
+What remains untested is whether a live run follows that instruction. The remaining trial, feeding a mismatched file
+through the GitHub publisher in a throwaway project, is now the first precondition on [Phase 2](#phase-2). If the run
+stops as written, the note closes; if not, the gap becomes part of Phase 2's fix.
 
 ---
 
