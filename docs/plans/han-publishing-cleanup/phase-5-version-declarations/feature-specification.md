@@ -1,70 +1,74 @@
 # Feature Specification: Declare the Plugin Versions That Work Together
 
-Every plugin that depends on another states which versions of that companion it works with, the first install channel
-enforces the statements at install and update time, and the rollout is staged and verified so the statements can never
-disable installs on their way in.
+Every plugin that depends on another now states which versions of that companion it works with. The first install
+channel enforces those statements at install and update time. The rollout is staged and verified, so the statements
+can never disable installs on their way in.
 
 ## Outcome
 
-Each dependency a plugin declares carries a version statement: the companion works when its version is in the same
-major line at or above the stated release ([D2](artifacts/decision-log.md#d2-same-major-version-statements)). The
-first install channel enforces the statements. Installs and updates resolve companions within the stated range, and a
-combination that cannot be satisfied is refused with a named error instead of assembled silently
+Each dependency a plugin declares now carries a version statement: the companion works when its version is in the
+same major line at or above the stated release
+([D2](artifacts/decision-log.md#d2-same-major-version-statements)).
+
+The first install channel enforces these statements. Installs and updates resolve companions within the stated
+range. A combination that cannot be satisfied is refused with a named error, instead of being assembled silently
 ([T1](artifacts/feature-technical-notes.md#t1-how-the-first-channel-resolves-version-statements)).
 
 Enforcement reaches an existing installation only after the depending plugin itself upgrades to a statement-carrying
 version. Someone who updates only a companion, while keeping a pre-statement copy of the plugin that depends on it,
-gets no protection yet; the release that ships this phase says so and recommends a full-suite update
+gets no protection yet. The release that ships this phase says so and recommends a full-suite update
 ([D2](artifacts/decision-log.md#d2-same-major-version-statements)).
 
 The second channel resolves no dependencies at all, so it neither reads nor enforces the statements. That is a named
 limitation, and it deliberately narrows the outline's channel-unqualified wording
 ([D3](artifacts/decision-log.md#d3-first-channel-only)).
 
-Enforcement only works if the channel can find each companion version by its release marker. Releases are marked at
-the suite level only today, so this phase backfills per-plugin release markers for the companion plugins, each
-pointing at the exact content that shipped as that released version
-([D4](artifacts/decision-log.md#d4-per-plugin-release-markers)). The rollout is staged, gated by a live verification
-trial, and reversible ([D5](artifacts/decision-log.md#d5-staged-verified-reversible-rollout)).
+Enforcement only works if the channel can find each companion version by its release marker. Today, releases are
+marked at the suite level only. This phase backfills per-plugin release markers for the companion plugins, each
+one pointing at the exact content that shipped as that released version
+([D4](artifacts/decision-log.md#d4-per-plugin-release-markers)).
+
+The rollout itself is staged, gated by a live verification trial, and reversible
+([D5](artifacts/decision-log.md#d5-staged-verified-reversible-rollout)).
 
 ## Actors and Triggers
 
-- **Actors** — People installing or updating Han plugins from the first channel; maintainers declaring the statements
+- **Actors**: People installing or updating Han plugins from the first channel; maintainers declaring the statements
   and running the rollout.
-- **Triggers** — The maintainer backfills markers, verifies resolution live, then lands statements in stages; the
+- **Triggers**: The maintainer backfills markers, verifies resolution live, then lands statements in stages. The
   channel enforces on every subsequent install and update.
-- **Preconditions** — Phase 4 is complete, so every remaining declaration is true. The baseline for every marker and
+- **Preconditions**: Phase 4 is complete, so every remaining declaration is true. The baseline for every marker and
   statement is the set of per-plugin versions in the latest published suite release, not the working branch's
   in-flight numbers ([D4](artifacts/decision-log.md#d4-per-plugin-release-markers)). When a companion's baseline is a
-  pre-release form, its statements deliberately opt into that form, because a plain same-major range excludes
-  pre-releases and would strand the marker it points at
+  pre-release form, its statements deliberately opt into that form. A plain same-major range would exclude
+  pre-releases and strand the marker it points at
   ([D2](artifacts/decision-log.md#d2-same-major-version-statements)). Marker production for future releases must be
-  covered before statements reach installers: either the release-process phase's mechanism is in place, or a manual
+  covered before statements reach installers. Either the release-process phase's mechanism is in place, or a manual
   marker step is a named part of every release in the gap
   ([D5](artifacts/decision-log.md#d5-staged-verified-reversible-rollout)).
 
 ## Primary Flow
 
 1. The maintainer backfills one release marker per companion plugin, at its latest published release, pointing at the
-   content that shipped under that release; the markers are confirmed present on the shared repository before
-   anything else proceeds, because markers travel separately from merged changes and a statement served without its
+   content that shipped under that release. The markers are confirmed present on the shared repository before
+   anything else proceeds. Markers travel separately from merged changes, and a statement served without its
    marker disables the depending plugin
    ([D4](artifacts/decision-log.md#d4-per-plugin-release-markers))
    ([T1](artifacts/feature-technical-notes.md#t1-how-the-first-channel-resolves-version-statements)).
-2. A live verification trial runs before any statement reaches general installers: on a clean machine, one
-   statement-bearing edge is installed from the channel against the pushed markers, confirming a compatible companion
-   resolves, an unsatisfiable statement produces the channel's named missing-marker error, and an out-of-range
-   companion is refused. The trial is what corroborates the channel's externally-documented behavior
+2. A live verification trial runs before any statement reaches general installers. On a clean machine, one
+   statement-bearing edge is installed from the channel against the pushed markers. This confirms three things: a
+   compatible companion resolves, an unsatisfiable statement produces the channel's named missing-marker error, and
+   an out-of-range companion is refused. The trial is what corroborates the channel's externally-documented behavior
    ([D5](artifacts/decision-log.md#d5-staged-verified-reversible-rollout)).
 3. Statements then land in stages: one low-traffic edge first, verified end to end, then the remaining single edges,
-   and the all-in-one bundle's six statements last, because a single bad marker among six would break the suite's
+   and the all-in-one bundle's six statements last. A single bad marker among six would break the suite's
    most-installed path ([D5](artifacts/decision-log.md#d5-staged-verified-reversible-rollout)).
 4. Before each stage ships, the authored ranges are checked to admit a common solution for every supported install
-   combination, so a refused combination can only come from a user mixing outside versions, never from the suite's
+   combination. So a refused combination can only come from a user mixing outside versions, never from the suite's
    own statements ([D5](artifacts/decision-log.md#d5-staged-verified-reversible-rollout)).
-5. From then on, installing a plugin resolves each companion to the newest marked version satisfying the statement,
-   updates are offered within the allowed range, and an unsatisfiable combination is refused with a named error the
-   person resolves deliberately
+5. From then on, installing a plugin resolves each companion to the newest marked version satisfying the statement.
+   Updates are offered within the allowed range, and an unsatisfiable combination is refused with a named error that
+   the person resolves deliberately
    ([T1](artifacts/feature-technical-notes.md#t1-how-the-first-channel-resolves-version-statements)).
 
 ## Alternate Flows and States
@@ -73,7 +77,7 @@ trial, and reversible ([D5](artifacts/decision-log.md#d5-staged-verified-reversi
 
 - **Entry condition:** A statement-carrying plugin is installed while its companion sits below the stated range.
 - **Sequence:** The channel resolves the companion up into the stated range as part of the install, or refuses with a
-  named error if it cannot; the mismatch is surfaced instead of silently accepted. Until more release markers
+  named error if it cannot. The mismatch is surfaced instead of silently accepted. Until more release markers
   accumulate, each range resolves to a single marked version in practice, since the backfill marks only the latest
   published release ([D4](artifacts/decision-log.md#d4-per-plugin-release-markers)).
 - **Exit:** The person ends with a compatible pair or an explicit error naming what to update.
@@ -81,10 +85,10 @@ trial, and reversible ([D5](artifacts/decision-log.md#d5-staged-verified-reversi
 ### A statement turns out wrong after people have resolved it
 
 - **Entry condition:** A shipped statement is too strict, names the wrong line, or otherwise misfires.
-- **Sequence:** The statements are file content, so the rollback is reverting them; the backfilled markers are
+- **Sequence:** The statements are file content, so the rollback is reverting them. The backfilled markers are
   additive and safe to leave. For people who already resolved the bad statement, the correction arrives as a new
-  release of the depending plugin, which itself needs a fresh marker; recovery latency is a release cycle, which is
-  why statements start deliberately wide and tighten only after the verification trial proves the mechanics
+  release of the depending plugin, which itself needs a fresh marker. So recovery latency is a release cycle. That
+  is why statements start deliberately wide and tighten only after the verification trial proves the mechanics
   ([D5](artifacts/decision-log.md#d5-staged-verified-reversible-rollout)).
 - **Exit:** New installs stop seeing the bad statement immediately; already-resolved installations pick up the
   correction at their next update.
@@ -128,12 +132,12 @@ trial, and reversible ([D5](artifacts/decision-log.md#d5-staged-verified-reversi
 
 - **OI-1:** Confirm the exact set of dependency edges receiving statements by reading the post-Phase-4 tree. The
   expected list: Core to Communication; Planning to Communication and Core; Coding to Communication and Core; GitHub
-  to Communication and Core; Reporting to Communication; Atlassian's four; and the all-in-one bundle's six.
+  to Communication and Core; Reporting to Communication and Core; Atlassian's four; and the all-in-one bundle's six.
   - **Resolves when:** Phase 4 merges and the edge list is read from the tree, not from this spec.
-  - **Blocks implementation:** No — it fixes the work list, not the behavior.
+  - **Blocks implementation:** No. It fixes the work list, not the behavior.
 - **OI-2:** The verification trial doubles as the unresolved outline precondition: whether the channel enforces
   statements as its documentation describes. If the trial disproves the documented enforcement, the phase pauses and
-  the question returns to the team; unenforced statements do not ship as decoration.
+  the question returns to the team. Unenforced statements do not ship as decoration.
   - **Resolves when:** The trial in the primary flow runs.
   - **Blocks implementation:** Yes for landing statements; no for the marker backfill, which is additive and safe.
 
@@ -143,14 +147,14 @@ trial, and reversible ([D5](artifacts/decision-log.md#d5-staged-verified-reversi
   errors or resolved upgrades, markers exist for the channel to resolve, and the rollout is staged, verified live,
   and reversible.
 - **Primary actors:** People installing or updating from the first channel; the maintainer running the rollout.
-- **Decisions settled by evidence:** 4 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by evidence:** 4. See [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Decisions settled by user input:** 0 (the phase itself was commissioned by the user's OQ-2 decision in the
-  outline) — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Sub-agents consulted:** junior-developer, devops-engineer, gap-analyzer — see
+  outline). See [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Sub-agents consulted:** junior-developer, devops-engineer, gap-analyzer. See
   [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** the rollout became staged, live-verified, and reversible after review showed a
-  suite-wide install break was one forgotten step away; the pre-release baseline hazard on the current alpha line was
-  named and handled; the enforcement-reach limit for existing installations was made explicit; markers narrowed to
-  companion plugins only. — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** The rollout became staged, live-verified, and reversible after review showed a
+  suite-wide install break was one forgotten step away. The pre-release baseline hazard on the current alpha line was
+  named and handled. The enforcement-reach limit for existing installations was made explicit. Markers narrowed to
+  companion plugins only. See [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 2
-- **Technical notes:** 1 — see [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)
+- **Technical notes:** 1. See [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)
