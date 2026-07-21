@@ -424,3 +424,57 @@ instead of hand-copying the change into three places again.
 
 - ["Two places the reviewer changed my mind entirely"](./source-han-cleanup-plan.md#two-places-the-reviewer-changed-my-mind-entirely),
   the "On duplicated rule files" finding.
+
+---
+
+## Open Questions {#open-questions}
+
+> Decisions the team must resolve before the corresponding phase starts. Cite open questions as `OQ-N` in follow-up.
+> Verification steps that need no decision stay on each phase's "Preconditions to verify" list.
+
+### OQ-1. How far does the ticket-file fix go in Phase 2? {#oq-1}
+
+**Blocks phase(s).** Phase 2.
+
+The source describes two related problems with the shared ticket file. The GitHub publisher silently drops items
+marked by another tracker; that is Phase 2's committed scope. Separately, the other two publishers can mistake each
+other's marks and skip work that was never published to their tracker, and the source names the fix: make every
+publisher's marks say which tracker they came from. That fix changes the file format, so files marked up the old way
+need a migration path, one that stops and asks rather than guesses.
+
+- **Option A — Adopt tracker-labeled marks across all three publishers now.** Closes the silent gap and the
+  cross-tracker trap in one pass, since it is the fix the source itself names. Costs more: a format change, a
+  migration path, and coordinated changes to three plugins instead of one.
+- **Option B — Only close the GitHub publisher's gap now.** The GitHub publisher learns to recognize marks that are
+  not its own and reports them instead of dropping them. Smallest change that ends the silent data loss. The
+  cross-tracker trap remains, though it is visible in the skipped counts rather than silent.
+- **Recommendation: Option A.** The source presents the tracker-labeled format as the fix, not an option, and Option B
+  would leave the two other publishers able to skip each other's unpublished work. The migration path already errs
+  toward stopping and asking, which contains the format change's risk. If the team wants the thinnest possible Phase
+  2, Option B is defensible, but the trap then needs its own reopening trigger so it is not forgotten.
+
+### Carry-over notes
+
+### OQ-2. Should plugins declare which versions of each other they work with? {#oq-2}
+
+**Blocks phase(s).** None — carry-over note.
+
+The source reverses the earlier analysis that closed this question. Plugins are installed and updated one at a time,
+so someone can update the Core plugin today while running a months-old Coding plugin, and nothing anywhere notices or
+complains. The source deliberately proposes no fix because the right one is not obvious. The question stays open here
+so it is not lost: it deserves a real decision of its own, outside this cleanup. Note that the source's own confidence
+caveat applies: its conclusion rests on the project's description of how installation works being accurate.
+
+### OQ-3. Does the format-checking step really catch a mismatched ticket file? {#oq-3}
+
+**Blocks phase(s).** None — carry-over note, though it informs Phase 2's demo.
+
+The source's reviewer could not test whether the step that is supposed to catch a mismatched ticket file catches one
+in practice, because that depends on judgment at the time rather than anything written down. Phase 2's demonstration
+script exercises exactly this path, so running that demo honestly, with a file marked by another tracker, doubles as
+the missing test.
+
+---
+
+_End of outline. If you need to cite a specific phase elsewhere, use its `Phase N` number — those numbers are stable
+for the life of this document. If you need to cite a specific open question, use its `OQ-N` ID._
