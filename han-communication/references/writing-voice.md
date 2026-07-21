@@ -108,6 +108,15 @@ Based on what's conspicuously absent across the samples:
 - No "showcase" as a verb. Prefers "show", "demonstrate", "illustrate".
 - No "robust" as a vague positive.
 - No sports metaphors as decoration — the running-distance metaphor appears as actual load-bearing analogy, not flavor.
+- No stale figures of speech. A metaphor or simile worn familiar from overuse ("low-hanging fruit", "the tip of the
+  iceberg", "a double-edged sword") gets cut or replaced with a fresh image. The dividing line is the same
+  load-bearing-versus-decorative test as the sports-metaphor rule above: a fresh physical-world analogy that carries
+  the explanation — the signature move described under core voice attributes — stays legal; a worn figure doing
+  decoration goes.
+- No foreign or Latinate stock phrases. Not "in lieu of" but "instead of"; not "per se" but a plain restatement of the
+  point.
+- No archaic formal words. Not "aforementioned" but "that" or the thing's own name; not "herein" but "here" or "in this
+  document".
 - No "actually" - this is rude, and indicates that the reader was wrong
 - No "just" - this assumes the information is easy to understand or follow, and can make readers feel insulted for not
   understanding
