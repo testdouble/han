@@ -8,11 +8,11 @@
   tracker's, or upgraded from the old format (considered keeping each publisher's existing count-only report; rejected
   because the outline's Phase 2 outcome requires every item accounted for, not only a skip count). — Referenced in
   spec: Primary Flow.
-- D9: The stop-on-marking-failure protection becomes a required behavior of all three publishers — an item created on
+- D8: The stop-on-marking-failure protection becomes a required behavior of all three publishers — an item created on
   a tracker whose mark cannot be written stops the run with the orphan reported (generalizes the Linear publisher's
   existing written rule; the GitHub and Jira publishers have no such rule today, so for them this is a new commitment,
   not a preserved one). — Driven by findings: F4. — Referenced in spec: Alternate Flows and States; Coordinations.
-- D10: A dependency pointing at a slice published to a different tracker is skipped as a single relation and reported;
+- D9: A dependency pointing at a slice published to a different tracker is skipped as a single relation and reported;
   the linking pass never fails the whole run over it and never drops it silently (considered failing the run;
   rejected because one cross-tracker relation would then block every within-tracker link). — Driven by findings: F10.
   — Referenced in spec: Edge Cases and Failure Modes.

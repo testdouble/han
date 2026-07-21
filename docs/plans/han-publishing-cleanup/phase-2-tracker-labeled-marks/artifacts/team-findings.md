@@ -50,9 +50,9 @@ one-line bullets. The F# counter is shared across both sections. -->
 - **Finding:** Stop-on-marking-failure is written down only in the Linear publisher; for the GitHub and Jira
   publishers it is a new commitment, not a preserved one, and it had no decision entry.
 - **Resolution:** Reworded as a required behavior generalizing the Linear publisher's rule; recorded as trivial
-  decision D9.
+  decision D8.
 - **Resolved by:** evidence
-- **Affected decisions:** D9 (added)
+- **Affected decisions:** D8 (added)
 - **Affected tech-notes:** —
 - **Changed in spec:** Alternate Flows and States
 
@@ -124,9 +124,9 @@ one-line bullets. The F# counter is shared across both sections. -->
 - **Finding:** When a slice's blocker was published to a different tracker, the linking pass had no stated behavior:
   a crash or a silently dropped relation, depending on publisher.
 - **Resolution:** The linking pass skips that one relation and reports it; it never fails the run and never drops the
-  relation silently. Recorded as trivial decision D10.
+  relation silently. Recorded as trivial decision D9.
 - **Resolved by:** evidence
-- **Affected decisions:** D10 (added)
+- **Affected decisions:** D9 (added)
 - **Affected tech-notes:** —
 - **Changed in spec:** Edge Cases and Failure Modes
 
