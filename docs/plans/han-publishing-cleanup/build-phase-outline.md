@@ -41,7 +41,7 @@ source-artifact sections it covers, so anyone can trace a phase back to source.
   - [Phase 1: Publish the Linear plugin to the second channel](#phase-1)
   - [Phase 2: Label every tracker's marks and close the silent gap](#phase-2)
   - [Phase 3: Unfreeze the second channel's version numbers](#phase-3)
-  - [Phase 4: Remove the two untrue dependency declarations](#phase-4)
+  - [Phase 4: Remove the untrue dependency declarations](#phase-4)
   - [Phase 5: Declare the plugin versions that work together](#phase-5)
   - [Phase 6: Teach the release process about all four publishing surfaces](#phase-6)
   - [Phase 7: Turn on the automated completeness check](#phase-7)
@@ -115,7 +115,7 @@ follow under [Build Phases](#build-phases). Decisions the team must resolve befo
 | 1   | [Publish the Linear plugin to the second channel](#phase-1)                            | Feature slice | Following the second channel's setup instructions for Linear now works.      |
 | 2   | [Label every tracker's marks and close the silent gap](#phase-2)                       | Feature slice | No publisher can lose or mistakenly skip another tracker's work items.       |
 | 3   | [Unfreeze the second channel's version numbers](#phase-3)                              | Feature slice | People on the second channel are offered updates again.                      |
-| 4   | [Remove the two untrue dependency declarations](#phase-4)                              | Feature slice | Installing Reporting or Feedback no longer drags in a plugin they never use. |
+| 4   | [Remove the untrue dependency declarations](#phase-4)                                  | Feature slice | Installing Reporting, Feedback, or Linear no longer drags in a plugin they never use. |
 | 5   | [Declare the plugin versions that work together](#phase-5)                             | Feature slice | Every plugin states which versions of its companions it works with.          |
 | 6   | [Teach the release process about all four publishing surfaces](#phase-6)               | Feature slice | A release starts from the repository and updates all four surfaces.          |
 | 7   | [Turn on the automated completeness check](#phase-7)                                   | Feature slice | Every release and change is blocked if any plugin is missing anywhere.       |
@@ -294,7 +294,7 @@ would fail on almost every plugin.
 
 ---
 
-### Phase 4: Remove the two untrue dependency declarations {#phase-4}
+### Phase 4: Remove the untrue dependency declarations {#phase-4}
 
 **Kind.** Feature slice.
 
@@ -302,8 +302,10 @@ would fail on almost every plugin.
 
 **What we build.** Two plugins, Reporting and Feedback, declare that they need the Core plugin and never touch it.
 Reporting's declaration is a leftover from a capability that moved to the Communication plugin; Feedback's cannot be
-true because that plugin is not permitted to call other plugins at all. This phase deletes both declarations. Two
-lines removed, nothing added.
+true because that plugin is not permitted to call other plugins at all. This phase deletes both declarations, plus a
+third found during this phase's own review: the Linear plugin's declaration on the Core plugin fails the same
+evidence test, and the team chose on 2026-07-21 to remove it in the same pass. Three lines removed, nothing added,
+and every documentation surface repeating the claims is corrected in the same change.
 
 **Why this is Phase 4.** The direct cost is small: people installing either plugin quietly get a large plugin they
 never use. The real damage is to trust in the declarations as a whole, since nobody can rely on them to answer "what
