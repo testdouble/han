@@ -33,8 +33,8 @@ same folder as the plan and from the plan's links.
   `design-frame-verification.md` may be cited; a `team-findings.md` may not).
 
 These exist to record how the plan was reached, not what the implementer needs to build. Plan-level decisions that
-survive into the work item are restated inline in the work item description, with `See plan: D-N` as the breadcrumb —
-never a link to the decision log itself.
+survive into the work item are restated inline in the work item's summary or supporting detail, with `See plan: D-N` as
+the breadcrumb — never a link to the decision log itself.
 
 ## Where to cite each artifact
 

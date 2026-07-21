@@ -44,6 +44,15 @@ up the plan.
 - Do NOT modify, annotate, or comment on the source implementation plan or context. It is read-only input.
 - Each work item is a **vertical slice**: a narrow but complete path through the relevant layers (schema, API, UI,
   tests) that is demoable or verifiable on its own. Not a layer, not a stub.
+- **Summary first, acceptance criteria second, everything else in support.** Every work item opens with a plain-language
+  summary of what it delivers and why, followed by the acceptance criteria that say when it is done. All remaining
+  detail is written in support of a named criterion — detail that supports no criterion is cut. Test expectations live
+  inside the acceptance criteria; there is no separate Tests block.
+- **Minimal technical detail — intention over prescription.** A work item gives the implementer a starting point: the
+  intention and goals of the work plus the touch points (a file path, a contract, a boundary). NEVER prescribe
+  line-level changes or enumerate every edit, BECAUSE work items are often implemented long after they are written — a
+  prescribed edit list goes stale against the moving codebase and misleads the human or coding agent who finally picks
+  it up, while intention and criteria stay valid. The implementer reads the current code at build time.
 - Every work item body MUST link the reference artifacts an implementer needs: API/event contracts, design frames,
   schema docs, runbooks, ADRs, coding standards. A work item that consumes an HTTP endpoint or event payload MUST link
   the contract section that defines it.
@@ -125,6 +134,10 @@ Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) 
   (schema, API, UI, tests), demoable or verifiable on its own. Classify each work item as **HITL** (requires human
   interaction: an architectural decision, a design review) or **AFK** (can be implemented and merged without a sync).
   Prefer AFK over HITL. Prefer many thin work items over few thick ones.
+- A directive on drafting order and altitude: draft each work item summary-first, then its acceptance criteria, then
+  only the supporting detail those criteria need. Write the criteria before the detail so the detail is forced to serve
+  them. Keep technical detail minimal — intention, goals, and touch points, never a prescribed edit list — per the
+  Rules above.
 - A directive on unverified assumptions: do not mark a work item HITL only because the plan calls an assumption
   unverified. First check two things. (a) Can you settle it by reading the code? Do that, and move on if it holds. (b)
   If the assumption turns out wrong, does something break, or does it fall back to a safe default? Mark it HITL only
@@ -170,8 +183,8 @@ shared-artifacts preamble) is specified in
 
 Before writing, run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the work-item prose regions only — never inside code fences, tables, the
-W-N identifiers, or the structured fields (Type, Depends on, Plan reference, Reference artifacts, Design references),
-which must survive unchanged so they still resolve. Confirm each criterion and fix any failure before writing:
+W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (Depends on, inline plan references,
+References, Design references), which must survive unchanged so they still resolve. Confirm each criterion and fix any failure before writing:
 
 1. The opening line states the main point.
 2. Each heading names its content and is not a generic label.
