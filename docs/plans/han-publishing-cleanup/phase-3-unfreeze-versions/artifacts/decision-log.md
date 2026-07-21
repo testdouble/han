@@ -10,9 +10,10 @@
 ### D2: Align to the first channel's versions
 
 - **Question:** What version should each plugin on the second channel be corrected to?
-- **Decision:** Each plugin's second-channel version is set to the version released on the first channel: one version
-  per plugin across both channels. Plugins already matching are untouched. A second-channel version found ahead of the
-  first channel's is never moved backward without a person deciding.
+- **Decision:** Each plugin's second-channel version is set to the version of its last published release, as the first
+  channel records it. Plugins already matching are untouched. A second-channel version found ahead of the first
+  channel's is never moved backward without a person deciding; that guard is kept as a cheap safety rail for a
+  one-time human action even though no plugin is ahead today.
 - **Rationale:** The source analysis's target picture labels the second channel's version numbers as "copied from
   channel one", and the outline's Phase 3 precondition requires the fix not to guess. The first channel's versions are
   the released record, maintained by the release process, so copying them is the no-guess answer.
@@ -28,6 +29,7 @@
     history and could move ahead of or behind the true release state; it is exactly the guessing the precondition
     forbids.
 - **Linked technical notes:** T1
-- **Driven by findings:** —
+- **Driven by findings:** F3 (the source of truth is pinned to the last published release), F5 (the ahead-guard is a
+  deliberate safety rail, mirrored as a pre-start check)
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome; Actors and Triggers; Primary Flow; Coordinations
