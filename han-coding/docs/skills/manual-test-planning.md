@@ -60,7 +60,8 @@ Give it:
 1. **Context to plan from.** Files, a branch, a plan document, a PR, or a description of the feature or change. The
    richer the context, the sharper the tests. Without any context, the skill asks what you want a plan for.
 2. **A target path, optional.** The plan defaults to `manual-test-plan.md` in the current directory; name a path to
-   put it somewhere else.
+   put it somewhere else. When the default file already exists, the skill picks a short unique name instead of
+   overwriting, keeping `manual-test-plan` in it (for example, `sign-in-manual-test-plan.md`).
 
 Example prompts:
 
@@ -115,8 +116,9 @@ The skill walks a seven-step process:
    person can follow them without touching code, and that grouped outcomes share identical steps. Confirmed findings
    fix steps, correct or remove outcomes, split grouped tests, or remove tests; if every test falls, the skill returns
    to the nothing-to-test path. Findings that turn on ambiguity in the context go to the user with a recommendation.
-6. **Write the file.** Default `manual-test-plan.md`; a user-supplied path wins; an existing file is never overwritten
-   without confirmation.
+6. **Write the file.** Default `manual-test-plan.md`; a user-supplied path wins. When the default file already
+   exists, the skill derives a short unique name from the context that keeps `manual-test-plan` in it, rather than
+   overwriting. A user-supplied path that already exists is never overwritten without confirmation.
 7. **Readability edit and self-check.** Dispatch `readability-editor` against the file for the named audience, then
    run the standardized readability self-check and fix any failure before presenting a short in-channel summary.
 

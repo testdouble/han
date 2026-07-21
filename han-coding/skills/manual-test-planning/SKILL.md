@@ -111,8 +111,16 @@ draft, surface it to the user with a recommended resolution instead of silently 
 ## Step 6: Write the File
 
 Write the document to `manual-test-plan.md` in the current working directory, unless the user supplied a different
-path — the user's path wins. If the target file already exists, show the user the path and ask before overwriting,
-BECAUSE overwriting discards a document you did not produce in this run.
+path — the user's path wins.
+
+If `manual-test-plan.md` already exists, do not overwrite it. Pick a new unique filename derived from the current
+context: prefix the default name with one or two short plain-language words naming what the plan covers (for example,
+`sign-in-manual-test-plan.md` or `checkout-manual-test-plan.md`). Keep the name short, and always include
+`manual-test-plan` in it, BECAUSE the tester finds these documents by that name. Check the new name with Glob before
+writing; if it also exists, adjust the prefix (or append a number) until the name is unique.
+
+If the user supplied a path and that file already exists, show the user the path and ask before overwriting, BECAUSE
+overwriting discards a document you did not produce in this run.
 
 ## Step 7: Readability Edit and Self-Check
 
