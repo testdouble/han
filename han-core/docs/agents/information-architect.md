@@ -12,7 +12,7 @@ and _how_ to dispatch the agent. For what the agent does internally, read the ag
 - **What it does.** Audits a documentation set for findability, orientation, and comprehension problems.
 - **When to dispatch it.** A README, plugin docs tree, API reference, or ADR collection needs a principled structural
   audit before or during a rewrite. Also dispatched by `/plan-a-phased-build`, by `/coding-standard` (to audit the draft
-  standard for findability and scannability), by `/test-planning` (to confirm the plan leads with plain language), by
+  standard for findability and scannability), by `/automated-test-planning` (to confirm the plan leads with plain language), by
   `/project-documentation` (to audit the information architecture of the docs), and by `/gap-analysis` (to design the
   report template).
 - **What you get back.** An IA findings report with numbered findings tied to IA principles and named reader audiences,
@@ -59,7 +59,7 @@ audit rest on an invented reader.
 - Multiple audiences (first-time users, experts, contributors, debuggers) are all reading the same pages and the
   structure appears to serve none of them well.
 - `/coding-standard` is auditing the draft standard for findability and scannability before presenting it.
-- `/test-planning` is confirming the test plan leads with plain language a reader can act on.
+- `/automated-test-planning` is confirming the test plan leads with plain language a reader can act on.
 - `/project-documentation` is auditing the information architecture of the docs it produces.
 - `/gap-analysis` is designing the report template the gap findings will be written into.
 
@@ -247,7 +247,7 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
   comprehension before presenting the document to you.
 - [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md). Dispatches this agent to audit the draft standard
   for findability and scannability.
-- [`/test-planning`](../../../han-coding/docs/skills/test-planning.md). Dispatches this agent to confirm the plan leads with
+- [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md). Dispatches this agent to confirm the plan leads with
   plain language.
 - [`/project-documentation`](../skills/project-documentation.md). Dispatches this agent to audit the
   information architecture of the docs.

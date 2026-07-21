@@ -13,7 +13,7 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   integration boundaries. Catalogs boundary values, type coercion traps, external input messiness, state-dependent
   failures, and error-propagation gaps.
 - **When to dispatch it.** You want a structured edge-case catalog for code, either before writing tests or as part of a
-  broader test-planning pass. Always dispatched by `/test-planning`. Conditionally dispatched by `/code-review` for
+  broader test-planning pass. Always dispatched by `/automated-test-planning`. Conditionally dispatched by `/code-review` for
   changes that introduce new entry points or external-data handling, by `/plan-a-feature` as part of the spec-stage team
   covering Outcome / Primary Flow / Alternate Flows / Edge Cases, by `/plan-implementation` as part of the
   implementation team, and by `/iterative-plan-review` in team mode.
@@ -45,7 +45,7 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 
 **Dispatch when:**
 
-- `/test-planning` is running. The skill always dispatches this agent.
+- `/automated-test-planning` is running. The skill always dispatches this agent.
 - `/code-review` flags changes that introduce new entry points, accept external input, or handle integration responses.
   The skill conditionally dispatches this agent.
 - `/plan-a-feature` is assembling its spec-stage team, covering Outcome / Primary Flow / Alternate Flows / Edge Cases.
@@ -103,7 +103,7 @@ Example prompts:
   trusted upstream service, say so. The Input Source Map sharpens.
 - **Read the Dropped Edge Cases section.** It tells you what the agent considered and rejected. That signal often
   reveals where the agent was uncertain about the input space.
-- **Pair with `test-engineer`.** Edge cases become test recommendations. `/test-planning` runs both in parallel.
+- **Pair with `test-engineer`.** Edge cases become test recommendations. `/automated-test-planning` runs both in parallel.
 
 ## Cost and latency
 
@@ -156,8 +156,8 @@ https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-de
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [YAGNI](../../../docs/yagni.md). The Speculative Edge Case rule.
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
-- [`test-engineer`](./test-engineer.md). Sibling agent. `/test-planning` runs both in parallel.
-- [`/test-planning`](../../../han-coding/docs/skills/test-planning.md). Always dispatches this agent.
+- [`test-engineer`](./test-engineer.md). Sibling agent. `/automated-test-planning` runs both in parallel.
+- [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md). Always dispatches this agent.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Conditionally dispatches this agent.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent as part of the spec-stage
   team, covering Outcome / Primary Flow / Alternate Flows / Edge Cases.

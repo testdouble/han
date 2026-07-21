@@ -49,7 +49,7 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Code review.** Use [`/code-review`](./code-review.md) for a correctness, testing, and compliance audit of a branch.
 - **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling,
   data flow, concurrency, and SOLID assessment of a module.
-- **Test planning.** Use [`/test-planning`](./test-planning.md) when the gap is coverage, not a bug.
+- **Test planning.** Use [`/automated-test-planning`](./automated-test-planning.md) when the gap is coverage, not a bug.
 - **Plan review.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) for multi-pass review of an
   existing plan.
 - **Open-ended research.** Use [`/research`](../../../han-core/docs/skills/research.md) when nothing is broken and you want options, prior

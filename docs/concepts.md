@@ -148,7 +148,7 @@ a strictly simpler version that satisfies the same evidence?_). Items without ev
 
 YAGNI applies to the planning skills (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`,
 `/iterative-plan-review`). It applies to review and standards (`/code-review` advisory-only, `/coding-standard`,
-`/test-planning`, `/architectural-decision-record`). It also applies to several agents (`project-manager`,
+`/automated-test-planning`, `/architectural-decision-record`). It also applies to several agents (`project-manager`,
 `junior-developer`, `software-architect`, `system-architect`, `test-engineer`, `edge-case-explorer`, `data-engineer`,
 `devops-engineer`, `on-call-engineer`).
 
@@ -190,7 +190,7 @@ Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `
 `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`,
 `/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`, `/plan-a-feature`,
 `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, `/iterative-plan-review`, `/coding-standard`, and
-`/test-planning`). A structured specification, plan, phased build, work-item list, coding standard, or test plan counts
+`/automated-test-planning`). A structured specification, plan, phased build, work-item list, coding standard, or test plan counts
 when a human reads it end to end. Skills whose output is code, or a structured artifact consumed only by downstream
 skills as machine input, are out of scope.
 
@@ -219,8 +219,8 @@ operations skills and every agent.
 
 `han-planning` adds the planning skills you reach for before implementation (`/plan-a-feature`, `/plan-implementation`,
 `/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`). `han-coding` adds the coding skills you reach
-for while working in code (`/tdd`, `/refactor`, `/code-review`, `/architectural-analysis`, `/test-planning`,
-`/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
+for while working in code (`/tdd`, `/refactor`, `/code-review`, `/code-overview`, `/architectural-analysis`,
+`/automated-test-planning`, `/manual-test-planning`, `/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
 skills. Each of these four depends on `han-core`, so installing any of them brings the core along.
 
 `han` is a meta-plugin with no components of its own. It depends on `han-core`, `han-planning`, `han-coding`,

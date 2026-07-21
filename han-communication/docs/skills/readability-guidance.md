@@ -33,7 +33,7 @@ and _how_ the skill is used. For what the skill does internally, read the skill 
 **Invoked when:**
 
 - A prose-producing skill reaches the point where it begins drafting its deliverable and needs the shared readability
-  standard in context. All thirteen consuming skills invoke it at that point.
+  standard in context. Every consuming skill invokes it at that point.
 
 **Not used for:**
 

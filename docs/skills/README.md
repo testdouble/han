@@ -21,6 +21,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   flow, concurrency, risk, and SOLID alignment through a spine of structural, behavioral, risk, and architecture agents.
 - [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md) — Create, extract, or
   convert architectural decision records.
+- [`/automated-test-planning`](../../han-coding/docs/skills/automated-test-planning.md) — Produce a prioritized test
+  plan for a branch or directory.
 - [`/code-overview`](../../han-coding/docs/skills/code-overview.md) — Produce a human-readable, progressive-disclosure
   overview of unfamiliar code or a PR's changes, leading with why the code exists; raises no findings.
 - [`/code-overview-to-confluence`](../../han-atlassian/docs/skills/code-overview-to-confluence.md) — Run `/code-overview`
@@ -47,6 +49,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   information, assess severity and reproducibility, and recommend the right next skill to run.
 - [`/iterative-plan-review`](../../han-planning/docs/skills/iterative-plan-review.md) — Stress-test an already-written
   plan through multiple codebase-grounded review passes.
+- [`/manual-test-planning`](../../han-coding/docs/skills/manual-test-planning.md) — Produce a plain-language manual
+  test plan from supplied context: named tests with by-hand steps and expected outcomes for a person to run.
 - [`/markdown-to-confluence`](../../han-atlassian/docs/skills/markdown-to-confluence.md) — Publish one local Markdown
   file to a user-specified Confluence location; defaults to an unpublished draft.
 - [`/plan-a-feature`](../../han-planning/docs/skills/plan-a-feature.md) — Build a feature specification from scratch
@@ -84,8 +88,6 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   plain-language stakeholder summary with Mermaid diagrams, for feedback before implementation.
 - [`/tdd`](../../han-coding/docs/skills/tdd.md) — Drive a feature or behavior through a BDD-framed red-green-refactor
   loop with an enforced observed-failure gate; it writes code, not a document.
-- [`/test-planning`](../../han-coding/docs/skills/test-planning.md) — Produce a prioritized test plan for a branch or
-  directory.
 - [`/update-pr-description`](../../han-github/docs/skills/update-pr-description.md) — Generate a PR description from the
   current branch's changes, conforming to the repository's PR template when one exists.
 - [`/work-items-to-issues`](../../han-github/docs/skills/work-items-to-issues.md) — Publish each item in a

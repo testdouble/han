@@ -88,9 +88,13 @@ Start with the scope that matches:
   `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` when
   the focus area's signals call for them. The roster scales with the [size](./sizing.md), defaulting to small. For
   cross-service topology when `system-architect` is not auto-included, dispatch it separately.
-- **Tests you want to _plan_, not review** → **[`/test-planning`](../han-coding/docs/skills/test-planning.md).** Dispatches
+- **Tests you want to _plan_, not review** → **[`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md).** Dispatches
   `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files
   call for it. Produces a prioritized test plan.
+- **A test plan a person runs by hand** →
+  **[`/manual-test-planning`](../han-coding/docs/skills/manual-test-planning.md).** Produces a plain-language plan of
+  named tests with by-hand steps and expected outcomes, adversarially validated against the supplied context by
+  `adversarial-validator` before the file is written.
 - **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](../han-core/docs/skills/gap-analysis.md).**
   Compares two artifacts (current state vs. desired state) and produces a plain-language, stakeholder-readable report
   indexed by stable `G-NNN` gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a
@@ -163,7 +167,7 @@ next. A few that work:
 - _"Plan the retry feature, then plan the implementation, then create a test plan for it."_ →
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
-  [`/test-planning`](../han-coding/docs/skills/test-planning.md).
+  [`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md).
 - _"Spec the new onboarding flow, then write a stakeholder summary I can share with leadership before we build it."_ →
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
   [`/stakeholder-summary`](../han-reporting/docs/skills/stakeholder-summary.md) →

@@ -14,7 +14,7 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   findings with file paths and verbatim code.
 - **When to dispatch it.** A focus area uses threads, async, parallel execution, or shared mutable state. Dispatched by
   `/architectural-analysis` when the focus area shows a concurrency signal (it joins the signal-selected discovery
-  roster, not the always-on synthesis spine). Conditionally dispatched by `/code-review`, `/test-planning`, and
+  roster, not the always-on synthesis spine). Conditionally dispatched by `/code-review`, `/automated-test-planning`, and
   `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation`,
   `/iterative-plan-review`, and `/plan-a-feature` by signal when plan sections or the feature specification touch
   concurrent access, race conditions, or async coordination.
@@ -44,7 +44,7 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - `/architectural-analysis` is running and the focus area shows a concurrency signal. The agent joins the
   signal-selected discovery roster (the always-on spine is `structural-analyst` and `behavioral-analyst`).
 - `/code-review` flags files that touch threads, async, or shared state.
-- `/test-planning` needs negative tests for race conditions or lock-ordering inversions.
+- `/automated-test-planning` needs negative tests for race conditions or lock-ordering inversions.
 - `/investigate` matches the symptom to intermittent / race / timeout bugs. The skill dispatches this agent alongside
   the investigators.
 - You suspect a deadlock or race in a module but cannot point at the specific interleaving.
@@ -135,7 +135,7 @@ URL: https://go.dev/talks/2012/waza.slide
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Dispatches this agent when the focus
   area shows a concurrency signal.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md),
-  [`/test-planning`](../../../han-coding/docs/skills/test-planning.md),
+  [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md),
   [`/investigate`](../../../han-coding/docs/skills/investigate.md). Conditionally dispatch this agent based on file signals.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md),
   [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md), and

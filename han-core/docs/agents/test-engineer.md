@@ -13,7 +13,7 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   interactions). Recommends test doubles (stubs for queries, mock expectations for commands) for isolation. Produces a
   prioritized test plan tied to specific entry points.
 - **When to dispatch it.** You want a prioritized test plan for new or existing code. Always dispatched by
-  `/test-planning`. Conditionally dispatched by `/plan-a-feature` as part of the spec-stage team when the feature
+  `/automated-test-planning`. Conditionally dispatched by `/plan-a-feature` as part of the spec-stage team when the feature
   commits to observable behaviors worth making testable. Conditionally dispatched by `/code-review` when the file list
   suggests coverage gaps. Conditionally dispatched by `/plan-implementation` for the implementation plan's testing
   strategy. Available as a specialist in `/iterative-plan-review` spec mode.
@@ -39,7 +39,7 @@ to dispatch the agent. For what the agent does internally, read the agent defini
 
 **Dispatch when:**
 
-- `/test-planning` is running. The skill always dispatches this agent.
+- `/automated-test-planning` is running. The skill always dispatches this agent.
 - `/code-review` flags coverage gaps in the changed files. The skill dispatches this agent.
 - `/plan-implementation` is producing the implementation plan's testing strategy. The skill dispatches this agent.
 - `/plan-a-feature` is assembling its spec-stage team and the feature commits to observable behaviors worth making
@@ -91,7 +91,7 @@ Example prompts:
   prefers to match the existing pattern.
 - **Read the Deferred section.** The skipped tests are first-class output. They tell you what brittleness risk the agent
   saw and avoided.
-- **Pair with `edge-case-explorer`** when boundary values and failure modes matter. `/test-planning` runs both in
+- **Pair with `edge-case-explorer`** when boundary values and failure modes matter. `/automated-test-planning` runs both in
   parallel.
 - **Re-run after the first wave of tests lands.** The agent is cheap to re-dispatch. Once the high-priority items are
   tested, the next pass surfaces what remained partially covered.
@@ -141,9 +141,9 @@ URL: http://www.growing-object-oriented-software.com/
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [YAGNI](../../../docs/yagni.md). The Speculative Test rule.
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
-- [`edge-case-explorer`](./edge-case-explorer.md). Sibling agent for boundary values and failure modes. `/test-planning`
+- [`edge-case-explorer`](./edge-case-explorer.md). Sibling agent for boundary values and failure modes. `/automated-test-planning`
   runs both in parallel.
-- [`/test-planning`](../../../han-coding/docs/skills/test-planning.md). Always dispatches this agent.
+- [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md). Always dispatches this agent.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Conditionally dispatches this agent.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Dispatches this agent for the
   implementation plan's testing strategy.

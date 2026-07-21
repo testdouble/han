@@ -15,7 +15,7 @@ _when_ and _how_ to dispatch the agent. For what the agent does internally, read
   exploit-path findings rather than CWE checklists. Always dispatched by `/code-review`. Dispatched on a security signal
   by `/architectural-analysis` (security-signal roster on medium/large), `/gap-analysis` (swarm specialist),
   `/plan-a-feature` (spec-stage team), `/plan-implementation` (implementation team), and `/iterative-plan-review` (team
-  mode). Also dispatched by `/test-planning` for negative security tests.
+  mode). Also dispatched by `/automated-test-planning` for negative security tests.
 - **What you get back.** A `security-analysis.md` file with `SEC-###` findings, each tagged with OWASP category,
   file:line location, exact code snippet, and a step-by-step exploit description. Plus an in-channel summary with
   severity counts.
@@ -165,7 +165,7 @@ URL: https://cwe.mitre.org/
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). The skill that always dispatches this agent for security
   coverage.
-- [`/test-planning`](../../../han-coding/docs/skills/test-planning.md). Dispatches this agent for negative security test
+- [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md). Dispatches this agent for negative security test
   planning when the files touch auth, input handling, isolation, crypto, uploads, or SQL/ORM.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Adds this agent to its security-signal
   roster on a medium or large run.
