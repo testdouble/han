@@ -7,15 +7,17 @@ Evidence mode: strict.
 ## Summary
 
 The current readability standard already follows most of Orwell's six rules, and in a form that modern evidence
-supports better than Orwell's own absolute phrasing. Three of his rules are fully or mostly covered today: prefer
-short common words, cut needless words, and write in the active voice. Three are gaps: there is no general rule
-against stale, worn-out figures of speech; there is no guidance on when to replace jargon outright versus define it;
-and the standard never names Orwell's most important rule, the escape clause that says to break any rule rather than
-write something clumsy. The recommendation is to close those three gaps with small, targeted additions to the
-existing guidance files, while keeping the six-point self-check unchanged, because growing the checklist would
-trigger the compliance decay the standard is explicitly designed to avoid. The rule text and the case against
-absolute rules are well corroborated; some details of how mature style guides phrase exceptions rest on single
-sources.
+supports better than Orwell's own absolute phrasing. Four of his rules are fully or mostly covered today: prefer
+short common words, cut needless words, write in the active voice, and replace jargon before defining it. Two are
+confirmed gaps: there is no general rule against stale, worn-out figures of speech, and the standard never names
+Orwell's most important rule, the escape clause that says to break any rule rather than write something clumsy. A
+third, narrower gap also exists: the word guidance never names foreign, Latinate, or archaic stock phrases. The
+recommendation is to close those gaps with small, targeted additions to the existing guidance files and the editor
+agent's instructions, while keeping the six-point self-check unchanged, because growing the checklist would trigger
+the compliance decay the standard is explicitly designed to avoid. Adversarial validation confirmed the two main
+gaps against the files directly, corrected one citation, and narrowed the scope of the third gap. The rule text and
+the case against absolute rules are well corroborated; some details of how mature style guides phrase exceptions
+rest on single sources.
 
 - **Confidence:** Medium
 
@@ -62,9 +64,12 @@ or a threshold, rather than an unqualified "never" (A9, A10, A11).
 
 ### Prior art on applying these rules to AI-generated text
 
-The clearest direct link between Orwell's tradition and AI output is a published "Stop Slop" skill that names
-Orwell's essay as its ancestry and translates it into banned filler phrases, structural tells, and rhythm rules for
-machine prose (A15) [single-source]. Its component claims are independently corroborated: three unrelated sources
+The clearest direct link between Orwell's tradition and AI output comes from a pair of published AI-prose skills:
+"Stop Slop," which bans filler phrases, structural tells, and rhythm patterns in machine prose, and its companion
+"red-pen" (by Rich Tabor), which the Stop Slop author describes as enforcing principles drawn from Orwell's
+"Politics and the English Language" and Butterick's "Practical Typography" (A15) [single-source; validation
+confirmed the Orwell lineage belongs to red-pen, not Stop Slop itself]. The component claims about AI prose are
+independently corroborated: three unrelated sources
 converge on the same lexical markers of AI prose, including overused words such as "delve" and heavy em-dash use,
 and recommend blocklist-style bans as the operational form (A18). One dissenting source rejects rule-based
 approaches entirely in favor of cultivating specificity, and reports that automated AI-writing detectors are
@@ -86,25 +91,36 @@ prior art favors (A19, A20, A21):
 - **Rule 4 (active voice):** covered, and covered better than Orwell phrased it. The standard says "active by
   default" rather than "never passive" (A19, A21), which matches the documented failure modes of the absolute rule
   (A13, A14).
+- **Rule 5, replace-versus-define:** mostly covered, contrary to the initial finding. Validation showed the rule
+  already states a replace-first, define-as-fallback framework in one sentence: "Prefer the common word over the
+  technical synonym. Define a term on first use when it cannot be replaced" (A19), duplicated nearly verbatim in
+  the editor agent (A21). What remains missing is narrower: see the rule 5 gap below.
 
 The standard also already has structural strengths Orwell's list does not address at all: main point first,
 one idea per paragraph, descriptive headings, progressive disclosure, and an absolute fidelity guard (A19).
 
 ### Where the standard has gaps against the rules
 
-Three of Orwell's rules have no explicit counterpart in the current guidance (A19, A20, A21):
+Validation confirmed two real gaps and one narrower one against direct reads of the files (A19, A20, A21):
 
-- **Rule 1 (stale figures of speech):** partial gap. The AI-slop list bans specific worn phrases, which is exactly
-  rule 1 applied to a modern corpus, but there is no general principle against reaching for a stale metaphor or
-  cliche not on the list. The voice profile encourages physical-world analogies as a signature move without
-  distinguishing a fresh, load-bearing analogy from a worn one (A20).
-- **Rule 5 (jargon and foreign phrases):** partial gap. "Define a term on first use when it cannot be replaced"
-  (A19) handles the define case but gives no guidance on when to replace jargon outright, and nothing covers
-  Latinate or foreign stock phrases ("in lieu of," "per se") or archaic formal words ("aforementioned," "herein").
-- **Rule 6 (the escape clause):** the most important gap. The standard has two specific escape hatches, the
-  fidelity-wins override and the soft thirty-word sentence threshold (A19, A21), but never states the general
-  principle: when following a rule would make the sentence read worse, break the rule. Orwell made this the rule
-  that governs the other five, and the mature guides all carry some form of it (A1, A9, A10).
+- **Rule 1 (stale figures of speech):** confirmed gap. The AI-slop list bans specific worn phrases, which is
+  exactly rule 1 applied to a modern corpus, but a search of all three canonical files found no general principle
+  against reaching for a stale metaphor or cliche not on the list. The voice profile encourages physical-world
+  analogies as a signature move without distinguishing a fresh, load-bearing analogy from a worn one (A20). Any
+  fix needs a dividing line, and the voice profile already has one to reuse: its sports-metaphor rule allows a
+  load-bearing analogy and bans a decorative one (A20).
+- **Rule 5 (foreign, Latinate, and archaic diction):** narrower gap than first found. The replace-versus-define
+  framework already exists (see above); what the guidance never names is the specific category of foreign or
+  Latinate stock phrases ("in lieu of," "per se") and archaic formal words ("aforementioned," "herein").
+- **Rule 6 (the escape clause):** the most important gap, confirmed by search. The standard has two specific
+  escape hatches, the fidelity-wins override and the soft thirty-word sentence threshold (A19, A21), but never
+  states the general principle: when following a rule would make the sentence read worse, break the rule. Orwell
+  made this the rule that governs the other five, and the mature guides all carry some form of it (A1, A9, A10).
+
+Validation also surfaced a delivery constraint the gaps analysis alone missed: the readability-editor agent
+carries its own hardcoded six-criterion rubric and states "they are the whole rubric" (A21). Edits to the
+reference files alone would therefore never reach the rewrite pass, which is the standard's highest-leverage
+enforcement path. Any fix has to touch the agent's instructions as well.
 
 One conflict to surface rather than resolve silently: Orwell's rules are phrased as absolutes, and the corroborated
 evidence (A13, A14) says absolutes misfire. Applying Orwell to this standard therefore means adopting what his
@@ -122,18 +138,22 @@ rules protect, in the tempered exception-bearing form the standard already uses,
 - **Rests on:** (A19, A1)
 - **Evidence status:** corroborated (the rule text and the standard's design constraint are both well evidenced)
 
-### O2: Close the gaps with targeted additions to the existing surfaces, self-check unchanged
+### O2: Close the gaps with targeted additions to the existing surfaces, self-check unchanged (as adjusted by validation)
 
-- **What it is:** Three small edits. First, name the escape clause as a general principle in the readability rule,
-  alongside the fidelity guard: when following a rule would make the prose read worse, break the rule. Second,
-  extend the blocklist's guidance with a short general statement against stale figures of speech and pretentious or
-  archaic diction, so the specific banned phrases are examples of a principle rather than an exhaustive list. Third,
-  add a replace-versus-define line to the "Common words" property: replace jargon when an everyday equivalent
-  carries the same meaning; define and keep it when the reader needs the precise term.
+- **What it is:** Three small edits, plus one delivery fix. First, name the escape clause as a general principle in
+  the readability rule, alongside the fidelity guard: when following a rule would make the prose read worse, break
+  the rule. Second, extend the blocklist's guidance with a short general statement against stale figures of speech
+  and pretentious or archaic diction, using the voice profile's existing load-bearing-versus-decorative test as the
+  dividing line so the signature analogies stay legal. Third, add foreign and Latinate stock phrases and archaic
+  formal words to the categories the word guidance names, as examples of the existing replace-first rule rather
+  than a new framework. Finally, update the readability-editor agent's instructions so the rewrite pass weighs the
+  new principles instead of stopping at its hardcoded six-criterion rubric.
 - **Trade-offs:** Nothing new is machine-checkable; these land as drafting guidance and editor judgment rather than
-  self-check gates. That is the same enforcement level the mature guides use for the same rules (A9, A10). Modest
-  risk of the reference files growing over time if additions are not kept tight.
-- **Rests on:** (A1, A9, A10, A13, A14, A19, A20, A21)
+  self-check gates. That is the same enforcement level the mature guides use for the same rules (A9, A10). Edits to
+  the readability rule reach every reader-facing skill in the suite (A23), so the blast radius is wide and the
+  additions must stay tight. A narrower variant, scoping the new principles to the voice profile or the agent only,
+  would shrink the blast radius but would not reach skills that self-check without a rewrite pass.
+- **Rests on:** (A1, A9, A10, A13, A14, A19, A20, A21, A23)
 - **Evidence status:** corroborated (rule text, absolute-rule failure modes, and current codebase state are all
   corroborated; the specific phrasing patterns of exceptions in individual guides carry single-source caveats)
 
@@ -149,20 +169,109 @@ rules protect, in the tempered exception-bearing form the standard already uses,
 
 ## Recommendation
 
-- **Recommendation:** O2. Close the three gaps with targeted additions to `readability-rule.md` and
-  `writing-voice.md`, and keep the six-point self-check exactly as it is.
+- **Recommendation:** O2 as adjusted by validation. Close the gaps with targeted additions to
+  `readability-rule.md` and `writing-voice.md`, extend the readability-editor agent's instructions so the rewrite
+  pass sees the new principles, scope the jargon edit down to naming foreign, Latinate, and archaic diction, and
+  keep the six-point self-check exactly as it is.
 - **Evidence basis:** The verbatim rule text and its intent are corroborated across independent mirrors and
   restatements (A1, A2, A7). The current state of the standard, including which rules it already covers and which
-  it lacks, is codebase evidence (A19, A20, A21). The case for tempered, exception-bearing phrasing over Orwell's
-  absolutes is corroborated from two independent directions (A13, A14) and matches the operational pattern of the
-  government plain-language guides (A9, A10). Single-source elements: the Economist's framing of the rules (A8),
-  the specific numeric thresholds (A11), and the specific exception clause at plainlanguage.gov (A9); none of these
-  is load-bearing for the recommendation, which stands on the corroborated rule text, the corroborated critique of
-  absolutes, and the codebase gaps.
+  it lacks, is codebase evidence verified twice, once by exploration and once adversarially (A19, A20, A21). The
+  case for tempered, exception-bearing phrasing over Orwell's absolutes is corroborated from two independent
+  directions (A13, A14) and matches the operational pattern of the government plain-language guides (A9, A10).
+  Single-source elements: the Economist's framing of the rules (A8), the specific numeric thresholds (A11), and
+  the specific exception clause at plainlanguage.gov (A9); none of these is load-bearing for the recommendation,
+  which stands on the corroborated rule text, the corroborated critique of absolutes, and the codebase gaps.
 
 ## Validation
 
-_Pending adversarial validation._
+### V1: The replace-versus-define jargon gap was overstated
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Direct read of the readability rule and the editor agent's rubric.
+- **Result:** Partially Refuted. The rule already states a replace-first, define-as-fallback framework ("Prefer the
+  common word over the technical synonym. Define a term on first use when it cannot be replaced"), duplicated in
+  the agent. The real gap is narrower: foreign, Latinate, and archaic diction is never named.
+- **Impact:** The rule 5 finding and O2's third edit were rescoped from "add a framework" to "name the missing
+  categories as examples of the existing rule."
+
+### V2: The escape-clause and stale-figures gaps are real
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Searched all three canonical files for any general break-the-rule principle or any stale-figure
+  or cliche guidance. Both searches returned nothing beyond the two narrow escape hatches already cited.
+- **Result:** Confirmed.
+- **Impact:** The two load-bearing gaps in the recommendation stand.
+
+### V3: The Stop Slop citation misattributed the Orwell lineage
+
+- **Strategy:** Challenge the Evidence-Gathering Integrity
+- **Investigation:** Fetched the Stop Slop page directly. The Orwell and Butterick lineage is stated for a sibling
+  skill, "red-pen" by Rich Tabor, which the Stop Slop author lists as a companion, not for Stop Slop itself.
+- **Result:** Refuted as originally cited.
+- **Impact:** The prior-art paragraph was corrected. The claim was not load-bearing for the recommendation.
+
+### V4: The Language Log critiques are fairly represented
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Fetched both posts and compared their content against the report's claims.
+- **Result:** Confirmed, including the report's own shared-venue caveat.
+- **Impact:** The "absolutes misfire" evidence chain holds.
+
+### V5: The fix as first scoped would never reach the rewrite pass
+
+- **Strategy:** Challenge the Recommendation
+- **Investigation:** Read the readability-editor agent. Its rubric is a separately authored copy of the six
+  criteria and closes with "they are the whole rubric," so principles added only to the reference files would be
+  invisible to the synthesis-skill rewrite pass.
+- **Result:** Confirmed.
+- **Impact:** O2 now includes updating the agent's instructions as a required part of the fix.
+
+### V6: A lower-blast-radius option was missing from the framing
+
+- **Strategy:** Challenge the Options Framing
+- **Investigation:** Traced the sourcing path: the readability rule is read in full by every reader-facing skill in
+  the suite, so editing it has suite-wide reach. Scoping the new principles to the voice profile or the agent alone
+  was never framed as its own option.
+- **Result:** Partially Refuted (framing gap).
+- **Impact:** O2's trade-offs now name the blast radius and the narrower variant, so the implementer can choose the
+  surface deliberately.
+
+### V7: The stale-figures principle needs a dividing line
+
+- **Strategy:** Challenge the Recommendation
+- **Investigation:** The voice profile names specific analogies as a signature move and reuses them as closing
+  devices. A bare "avoid stale figures" principle gives an editor no way to tell a signature analogy from a cliche.
+- **Result:** Confirmed as an open ambiguity.
+- **Impact:** O2 now specifies reusing the voice profile's existing load-bearing-versus-decorative test as the
+  dividing line.
+
+### V8: The primary Orwell text could not be re-fetched during validation
+
+- **Strategy:** Challenge the Evidence-Gathering Integrity
+- **Investigation:** The mirror hosting the essay returned an access error during validation, so the verbatim rule
+  text rests on the research pass's fetch plus cross-mirror agreement, not an independent re-fetch.
+- **Result:** Partially Refuted (low-severity provenance gap). The essay is public-domain, widely reproduced, and
+  its wording is not in dispute.
+- **Impact:** No change to the recommendation; noted as a residual risk.
+
+### Adjustments Made
+
+Validation changed the report in four ways: the rule 5 gap was narrowed and the matching O2 edit rescoped (V1);
+the Stop Slop citation was corrected to attribute the Orwell lineage to red-pen (V3); updating the
+readability-editor agent's instructions became a required part of O2 (V5); and O2's trade-offs now name the blast
+radius of editing the shared rule file and the narrower alternative surface (V6), plus the dividing line for the
+stale-figures principle (V7). The recommendation survived in adjusted form.
+
+### Confidence Assessment
+
+- **Confidence:** Medium
+- **Remaining Risks:** Several single-source artifacts were spot-checked for reachability only, not full-text
+  accuracy (A8, A9's exception clause, A11, A16). The critique side of the Orwell literature is better evidenced
+  than the defence side, because two candidate defence sources were paywalled or blocked during research; this
+  asymmetry did not drive the recommendation, which keeps rather than abandons Orwell's substance, but it is
+  unresolved. Whether the agent-instruction edit should extend the rubric itself or sit beside it is a design call
+  for implementation, not settled here. No dry run of the self-check or rewrite behavior against a document with a
+  stale metaphor or unresolved jargon was performed.
 
 ## Sources
 
@@ -182,7 +291,7 @@ _Pending adversarial validation._
 | A12 | Strunk & White, "omit needless words" | https://faculty.washington.edu/heagerty/Courses/b572/public/StrunkWhite.pdf | 2026-07-21 | web | The canonical absolute cut-words imperative, parallel to Orwell's rule 3 | corroborated by A1 |
 | A13 | Pullum, "50 Years of Stupid Grammar Advice" | https://www.chronicle.com/article/whos-afraid-of-strunk-and-white/ | 2026-07-21 | web | Strunk & White misidentify the passive in three of four of their own examples | corroborated by A14 |
 | A14 | Pinker on the passive voice | https://www.unz.com/isteve/pinker-on-the-passive-voice/ | 2026-07-21 | web | The passive has legitimate uses (agent unimportant or distracting) an absolute ban forecloses | corroborated by A13 |
-| A15 | "Stop Slop" AI-slop skill | https://gauravtiwari.org/stop-slop-ai-slop/ | 2026-07-21 | web | Rule set for AI prose naming Orwell's essay as its ancestry; banned phrases plus structural tells | single source (caveated) |
+| A15 | "Stop Slop" AI-slop skill (and companion "red-pen") | https://gauravtiwari.org/stop-slop-ai-slop/ | 2026-07-21 | web | Rule sets for AI prose; the companion red-pen skill carries the stated Orwell lineage (corrected per V3) | single source (caveated) |
 | A16 | "The Field Guide to AI Slop" | https://www.ignorance.ai/p/the-field-guide-to-ai-slop | 2026-07-21 | web | Rejects rule-based fixes in favor of cultivated specificity; AI detectors unreliable | single source (caveated); contradicts A15's approach |
 | A17 | markup.ai enterprise AI writing rules | https://markup.ai/blog/rules-for-ai-to-write-successful-content/ | 2026-07-21 | web | Enterprise AI-writing governance is compliance-focused, with no Orwell/plain-language lineage | single source (caveated) |
 | A18 | Converging AI-slop lexical tells (three sources) | https://aipulsr.com/blog/why-ai-writing-drowns-in-em-dashes-and-how-to-stop-it | 2026-07-21 | web | Three independent pieces converge on the same overused words and em-dash overuse in AI prose | corroborated (three independent sources) |
