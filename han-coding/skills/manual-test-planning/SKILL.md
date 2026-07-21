@@ -84,13 +84,37 @@ draft the document using the template at [references/template.md](./references/t
 Apply the Operating Principles as you write: short sentences, plain words, no technical detail, expected outcomes in
 every detail section.
 
-## Step 5: Write the File
+## Step 5: Adversarially Validate the Plan
+
+Dispatch the `han-core:adversarial-validator` agent (one Agent call) against the draft before writing any file,
+BECAUSE a plan that reaches the tester with wrong steps or unpromised outcomes wastes their run and hides real
+failures. Embed the full draft in the agent's prompt, along with the scope of the context it was derived from (the
+file paths, branch, plan, or description from Step 1), and instruct it to try to disprove, for every test:
+
+1. The expected outcomes are actually promised by the supplied context, not invented or assumed.
+2. The steps, followed exactly as written, reach and produce every stated expected outcome.
+3. A person can perform every step through the product's own surfaces without reading or changing code.
+4. Grouped outcomes are truly produced by the exact same steps, with no outcome needing a different or additional
+   step.
+
+Apply every confirmed finding to the draft:
+
+- Fix steps that would not produce their stated outcome.
+- Correct or remove expected outcomes the context does not promise.
+- Split a grouped test when any of its outcomes needs different steps.
+- Remove a test entirely when its outcome cannot be validated against the context.
+
+If every test is removed, return to the empty-list handling in Step 2: state that nothing in the context can be
+manually tested and ask for more context. If a finding turns on ambiguity in the context rather than an error in the
+draft, surface it to the user with a recommended resolution instead of silently choosing.
+
+## Step 6: Write the File
 
 Write the document to `manual-test-plan.md` in the current working directory, unless the user supplied a different
 path — the user's path wins. If the target file already exists, show the user the path and ask before overwriting,
 BECAUSE overwriting discards a document you did not produce in this run.
 
-## Step 6: Readability Edit and Self-Check
+## Step 7: Readability Edit and Self-Check
 
 Dispatch `han-communication:readability-editor` (one Agent call) to audit and rewrite the plan's prose against the
 readability standard. Pass it the file path and the named audience: the person who will run these tests by hand, who

@@ -29,6 +29,10 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   says so and asks whether there is more context to consider. If there is none, its only output is that statement.
 - **Plain language throughout.** The plan is written for the person running the tests, who may not be technical. No
   file paths, function names, code, or framework jargon appear anywhere in the document.
+- **Adversarial validation before the file exists.** The `adversarial-validator` agent attacks the draft: it tries to
+  disprove that each expected outcome is promised by the context, that the steps as written produce it, and that
+  grouped outcomes truly share identical steps. Confirmed findings adjust, split, or remove tests before anything is
+  written.
 
 ## When to use it
 
@@ -88,13 +92,14 @@ tells you that in the channel and stops.
 
 ## Cost and latency
 
-The skill runs in the main conversation and dispatches one agent: `han-communication:readability-editor`, which
-rewrites the finished document's prose for the person running the tests. Typical runs take a minute or two. It is
-built for tight-loop iteration; re-run it when the underlying change grows.
+The skill runs in the main conversation and dispatches two agents in sequence: `han-core:adversarial-validator`,
+which attacks the draft before the file is written, and `han-communication:readability-editor`, which rewrites the
+finished document's prose for the person running the tests. Typical runs take a few minutes. It is built for
+tight-loop iteration; re-run it when the underlying change grows.
 
 ## In more detail
 
-The skill walks a six-step process:
+The skill walks a seven-step process:
 
 1. **Gather the context.** Everything supplied to the call: arguments, conversation, referenced files, and (when git
    is available) the diff behind a referenced branch or PR. The git detail informs understanding only and never
@@ -105,9 +110,14 @@ The skill walks a six-step process:
    outcome in the group, each with a short plain-language name.
 4. **Draft the plan.** Source the shared readability standard via `han-communication:readability-guidance`, then fill
    the template at [`references/template.md`](../../skills/manual-test-planning/references/template.md).
-5. **Write the file.** Default `manual-test-plan.md`; a user-supplied path wins; an existing file is never overwritten
+5. **Adversarially validate the plan.** Dispatch `adversarial-validator` against the draft with the context it was
+   derived from. It tries to disprove that outcomes are promised by the context, that the steps produce them, that a
+   person can follow them without touching code, and that grouped outcomes share identical steps. Confirmed findings
+   fix steps, correct or remove outcomes, split grouped tests, or remove tests; if every test falls, the skill returns
+   to the nothing-to-test path. Findings that turn on ambiguity in the context go to the user with a recommendation.
+6. **Write the file.** Default `manual-test-plan.md`; a user-supplied path wins; an existing file is never overwritten
    without confirmation.
-6. **Readability edit and self-check.** Dispatch `readability-editor` against the file for the named audience, then
+7. **Readability edit and self-check.** Dispatch `readability-editor` against the file for the named audience, then
    run the standardized readability self-check and fix any failure before presenting a short in-channel summary.
 
 ## Related documentation
@@ -117,6 +127,8 @@ The skill walks a six-step process:
   tree.
 - [`/test-planning`](./test-planning.md). The automated-coverage sibling: prioritized test plans with file references
   and test levels.
+- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). Dispatched against the draft to
+  disprove invalid tests, steps, and expected outcomes before the file is written.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched once the plan is
   written, to rewrite its prose for the person who will run the tests.
 - [`SKILL.md` for /manual-test-planning](../../skills/manual-test-planning/SKILL.md). The internal process definition.
