@@ -3,7 +3,8 @@ name: test-planning
 description: >
   Produce a standalone test plan by analyzing code for test coverage gaps and edge cases. Use when you need to create,
   generate, or draft a test plan for a branch, need to analyze test coverage, or need to identify what tests to write
-  for specific files or directories. Does not write test code — use tdd to implement behavior test-first. Does not
+  for specific files or directories. Does not produce a plain-language plan for a person to run tests by hand — use
+  manual-test-planning for that. Does not write test code — use tdd to implement behavior test-first. Does not
   refine existing plans — use iterative-plan-review. Does not review code quality, security, or style — use code-review
   for full code review. Does not evaluate architectural testability or structural coupling — use architectural-analysis
   for architectural assessment.
