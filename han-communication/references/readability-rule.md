@@ -94,6 +94,17 @@ quantity, named entity, and stated condition or qualifier survives with its prec
 in three of ten windows" to "was sometimes slow," or "only when X and Y both hold" to "generally," is a fidelity
 failure, not a simplification. The standard governs how the content is said, never whether a required fact appears.
 
+## Break a rule before writing something clumsy
+
+When following one of the drafting properties above, or making a rewrite move to satisfy one, would make the prose read
+worse, break the rule. The properties exist to make the deliverable easier to read. A rule applied mechanically can do
+the opposite: splitting a sentence that read well, or reordering a paragraph into a muddle. In that case the better
+prose wins.
+
+The escape is scoped. It covers the drafting properties and rewrite moves only, and it yields to both hard gates: it
+never licenses a word from the vocabulary blocklist, and it never licenses a fidelity loss. Self-check criterion 5 and
+"Fidelity wins" stay absolute.
+
 ## The standardized self-check
 
 After the draft exists, run this self-check as a discrete pass over the prose regions. It evaluates concrete,

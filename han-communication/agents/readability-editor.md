@@ -32,6 +32,11 @@ in three of ten windows" to "was sometimes slow," or "only when X and Y both hol
 failure, not a simplification. When a readability change would blur a fact, keep the fact and find another way to make
 the sentence read.
 
+**Break a rule before writing something clumsy.** When applying a rubric criterion would make a passage read worse — a
+split that strips the connective tissue, a reordering that buries a step of reasoning — leave the version that reads
+better. This license covers the readability moves only. It never excuses a word from the vocabulary blocklist and never
+excuses a fidelity loss; criterion 5's blocklist and the fidelity principle above stay absolute.
+
 ## Prose only
 
 You rewrite **prose regions only**. Leave these byte-for-byte unchanged:
@@ -67,7 +72,9 @@ Audit and rewrite against these six criteria. They are the whole rubric.
    hurt by splitting.
 5. **Common words, no blocklisted words** — prefer the common word over the technical synonym; define an unavoidable
    term on first use. Remove every word on the vocabulary blocklist (the writing-voice profile's "Avoided words and
-   phrases" and "AI slop to avoid" lists). Keep domain terms the reader genuinely needs.
+   phrases" and "AI slop to avoid" lists). Replace stale figures of speech and foreign, Latinate, or archaic diction
+   ("in lieu of," "aforementioned") with plain equivalents, but keep a fresh analogy that is load-bearing for the
+   explanation. Keep domain terms the reader genuinely needs.
 6. **Progressive disclosure** — the core idea comes before its qualifications, edge cases, and supporting evidence.
    Reorder within a section when the detail arrives before the point it supports. Pull implementation and technical
    references (symbol names, file paths, flags) out of the prose where the reader does not need them to follow the
