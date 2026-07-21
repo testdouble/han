@@ -219,8 +219,8 @@ operations skills and every agent.
 
 `han-planning` adds the planning skills you reach for before implementation (`/plan-a-feature`, `/plan-implementation`,
 `/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`). `han-coding` adds the coding skills you reach
-for while working in code (`/tdd`, `/refactor`, `/code-review`, `/architectural-analysis`, `/automated-test-planning`,
-`/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
+for while working in code (`/tdd`, `/refactor`, `/code-review`, `/code-overview`, `/architectural-analysis`,
+`/automated-test-planning`, `/manual-test-planning`, `/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
 skills. Each of these four depends on `han-core`, so installing any of them brings the core along.
 
 `han` is a meta-plugin with no components of its own. It depends on `han-core`, `han-planning`, `han-coding`,

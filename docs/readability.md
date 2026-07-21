@@ -115,6 +115,7 @@ skills that meet that test today.
 | [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md)             | The reader of the plan the review refines                                                 | Self-check only                                                           |
 | [`/coding-standard`](../han-coding/docs/skills/coding-standard.md)                           | The engineer who must follow the standard                                                 | Synthesis: dispatches `readability-editor`                                |
 | [`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md)                               | The engineer who will implement the tests                                                 | Synthesis: dispatches `readability-editor`                                |
+| [`/manual-test-planning`](../han-coding/docs/skills/manual-test-planning.md)                 | The person who runs the tests by hand, who may not be technical                           | Synthesis: dispatches `readability-editor`                                |
 
 This list is authoritative. A contributor adding a new skill applies the inclusion test above and, if it passes, wires
 the standard in (see [Contributing](../CONTRIBUTING.md#wiring-the-readability-standard-into-a-skill)).

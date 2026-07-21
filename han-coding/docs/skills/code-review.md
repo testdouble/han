@@ -119,7 +119,8 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial
   validation.
 - **Test planning in isolation.** Use [`/automated-test-planning`](./automated-test-planning.md) when you want a prioritized test plan
-  without a full correctness review.
+  without a full correctness review, or [`/manual-test-planning`](./manual-test-planning.md) for a plain-language plan
+  a person runs by hand.
 - **Plan review.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) for reviewing a work plan,
   not code.
 - **Feedback on Han's own skills.** Use [`/han-feedback`](../../../han-feedback/docs/skills/han-feedback.md) to capture post-session

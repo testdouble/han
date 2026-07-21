@@ -17,7 +17,8 @@ and _how_ to dispatch the agent. For what the agent does internally, read the ag
   (which run by default) and by `/iterative-plan-review` team mode. Also dispatched by `/code-overview`, where it
   re-reads the code to verify a drafted overview's claims for accuracy rather than to validate a fix. `/code-review`
   also dispatches it, at Step 7.4, to re-read the change and confirm, demote, or drop each finding on the consolidated
-  finding list.
+  finding list. `/manual-test-planning` dispatches it against the drafted plan to disprove steps and expected outcomes
+  the supplied context does not promise, before the file is written.
 - **What you get back.** Numbered `V#` validation items, each with a strategy, hypothesis, investigation steps, result
   (Confirmed / Refuted / Partially Refuted), and an impact statement. Plus a confidence assessment and remaining risks.
 
@@ -170,6 +171,9 @@ URL: https://en.wikipedia.org/wiki/Red_team
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Dispatches this agent at Step 7.4 to re-attack the
   consolidated finding list against the code, confirming, demoting, or dropping each finding before a human reads the
   review.
+- [`/manual-test-planning`](../../../han-coding/docs/skills/manual-test-planning.md). Dispatches this agent against the
+  drafted manual test plan to disprove steps and expected outcomes the supplied context does not promise, before the
+  file is written.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise falsification vocabulary and named anti-patterns.
 - [multi-agent-economics.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md).

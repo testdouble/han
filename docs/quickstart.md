@@ -91,6 +91,10 @@ Start with the scope that matches:
 - **Tests you want to _plan_, not review** → **[`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md).** Dispatches
   `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files
   call for it. Produces a prioritized test plan.
+- **A test plan a person runs by hand** →
+  **[`/manual-test-planning`](../han-coding/docs/skills/manual-test-planning.md).** Produces a plain-language plan of
+  named tests with by-hand steps and expected outcomes, adversarially validated against the supplied context by
+  `adversarial-validator` before the file is written.
 - **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](../han-core/docs/skills/gap-analysis.md).**
   Compares two artifacts (current state vs. desired state) and produces a plain-language, stakeholder-readable report
   indexed by stable `G-NNN` gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a

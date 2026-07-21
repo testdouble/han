@@ -62,6 +62,8 @@ to use the skill. For what the skill does internally, read the skill definition 
 **Do not invoke for:**
 
 - **Full code review.** Use [`/code-review`](./code-review.md) for correctness, testing, and compliance.
+- **A plan a person runs by hand.** Use [`/manual-test-planning`](./manual-test-planning.md) for a plain-language plan
+  with by-hand steps and expected outcomes.
 - **Iterating on an existing test plan.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) for
   multi-pass refinement of a written plan.
 - **Writing test code.** This skill produces a plan only. Write the tests separately.
@@ -200,6 +202,8 @@ URL: https://www.wiley.com/en-us/Testing+Computer+Software%2C+2nd+Edition-p-9780
 - [`/code-review`](./code-review.md). Dispatches the same agents plus `adversarial-security-analyst`. Use when you want
   correctness findings too.
 - [`/architectural-analysis`](./architectural-analysis.md). For structural testability concerns.
+- [`/manual-test-planning`](./manual-test-planning.md). The by-hand sibling: plain-language tests with steps and
+  expected outcomes a person follows without reading code.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Use to stress-test an already-written test plan.
 - [`test-engineer`](../../../han-core/docs/agents/test-engineer.md),
   [`edge-case-explorer`](../../../han-core/docs/agents/edge-case-explorer.md). Always dispatched.

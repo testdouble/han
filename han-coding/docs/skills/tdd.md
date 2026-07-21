@@ -55,7 +55,8 @@ the skill. For what the skill does internally, read the skill definition at
 **Do not invoke for:**
 
 - **Producing a test plan without writing code.** Use [`/automated-test-planning`](./automated-test-planning.md) instead. It
-  analyzes coverage gaps and prioritizes what to test; it does not implement.
+  analyzes coverage gaps and prioritizes what to test; it does not implement. For a plain-language plan a person runs
+  by hand, use [`/manual-test-planning`](./manual-test-planning.md).
 - **Reviewing or auditing code that already exists.** Use [`/code-review`](./code-review.md) instead.
 - **Deciding what a feature should do.** Use [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) to specify behavior
   first, then bring the spec here.
