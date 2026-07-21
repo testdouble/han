@@ -62,7 +62,12 @@ report's Recommendation is the "what"). No feature-technical-notes.md exists, so
     guidance." A full agent-builder interview is for authoring from scratch; a review pass fits an edit.
   - OQ-5: evidence. writing-voice.md "Avoided words and phrases" (IA F4/F6): the blocklist is authoritative for the
     words it covers, and readability-rule.md must not carry a competing list.
-- **Decisions produced:** D-1, D-2, D-3, D-4, D-5, D-6, D-7 (backfilled at synthesis)
-- **Changed in plan:** all sections (initial write at synthesis)
+- **Decisions produced:** D-1 (escape-clause placement and scoping), D-2 (stale-figures principle placement, dividing
+  line, and carve-out), D-3 (foreign and archaic diction lands only in the writing-voice blocklist), D-4 (agent-edit
+  shape keeps the rubric at six), D-5 (manual dry-run acceptance check), D-6 (guidance-review prerequisite for the
+  agent edit), D-7 (scoped doc-consistency check and no consuming-skill edits).
+- **Changed in plan:** Outcome; User Stories; Constraints and Boundaries; Implementation Approach (with the
+  Editor-agent rubric integrity subsection); Work Units and Sequencing; Definition of Done; Testing Strategy; Risks
+  and Assumptions; Deferred (YAGNI); Sources and Plan Records; Recommendation.
 - **Project-manager next-step recommendation:** Go to synthesis (deterministic: all OQs resolved by evidence, no
   handoffs outstanding, round cap for small size reached).
