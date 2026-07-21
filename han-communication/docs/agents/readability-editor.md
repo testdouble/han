@@ -118,7 +118,7 @@ command to act on. Its adversarial posture is aimed at the draft, never at the a
   [`/code-overview`](../../../han-coding/docs/skills/code-overview.md),
   [`/code-review`](../../../han-coding/docs/skills/code-review.md), [`/investigate`](../../../han-coding/docs/skills/investigate.md),
   [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md),
-  [`/test-planning`](../../../han-coding/docs/skills/test-planning.md),
+  [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md),
   [`/gap-analysis`](../../../han-core/docs/skills/gap-analysis.md),
   [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md),
   [`/research`](../../../han-core/docs/skills/research.md), [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md),

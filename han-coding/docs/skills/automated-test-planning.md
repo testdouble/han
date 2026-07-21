@@ -1,8 +1,8 @@
-# /test-planning
+# /automated-test-planning
 
-Operator documentation for the `/test-planning` skill in the han plugin. This document helps you decide _when_ and _how_
+Operator documentation for the `/automated-test-planning` skill in the han plugin. This document helps you decide _when_ and _how_
 to use the skill. For what the skill does internally, read the skill definition at
-[`han-coding/skills/test-planning/SKILL.md`](../../skills/test-planning/SKILL.md).
+[`han-coding/skills/automated-test-planning/SKILL.md`](../../skills/automated-test-planning/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
 > [All agents](../../../docs/agents/README.md) · [YAGNI](../../../docs/yagni.md)
@@ -70,7 +70,7 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 ## How to invoke it
 
-Run `/test-planning` in Claude Code. Optionally pass a scope or a focus description.
+Run `/automated-test-planning` in Claude Code. Optionally pass a scope or a focus description.
 
 Give it:
 
@@ -81,10 +81,10 @@ Give it:
 
 Example prompts:
 
-- `/test-planning`. Create a test plan for the current branch's changes.
-- `/test-planning src/auth/`. Create a test plan scoped to the auth directory.
-- `/test-planning`. _"Plan tests for the payment processing refactor I just finished."_
-- `/test-planning src/billing/invoice.ts src/billing/tax.ts`. Focus on two specific files.
+- `/automated-test-planning`. Create a test plan for the current branch's changes.
+- `/automated-test-planning src/auth/`. Create a test plan scoped to the auth directory.
+- `/automated-test-planning`. _"Plan tests for the payment processing refactor I just finished."_
+- `/automated-test-planning src/billing/invoice.ts src/billing/tax.ts`. Focus on two specific files.
 
 ## What you get back
 
@@ -141,7 +141,7 @@ The skill walks a five-step process:
 3. **Merge and prioritize.** Classify findings into the four-tier priority scheme (security items auto-CRIT). Assign
    unified IDs. Interleave by priority. Cap non-security items at 40.
 4. **Generate output.** Fill the template at
-   [`references/template.md`](../../skills/test-planning/references/template.md), leading with plain
+   [`references/template.md`](../../skills/automated-test-planning/references/template.md), leading with plain
    language (Summary, What Needs Testing and Why, What Each Test Covers) before the Technical Reference region that
    holds the per-item test plan, deferred, dropped, coverage summary, and scope.
 5. **Review the output.** Dispatch [`information-architect`](../../../han-core/docs/agents/information-architect.md) and
@@ -212,4 +212,4 @@ URL: https://www.wiley.com/en-us/Testing+Computer+Software%2C+2nd+Edition-p-9780
   plain-language clarity before it is finalized.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched once the plan is final to
   rewrite its prose for the engineer who will implement the tests, preserving every fact and every test ID.
-- [`SKILL.md` for /test-planning](../../skills/test-planning/SKILL.md). The internal process definition.
+- [`SKILL.md` for /automated-test-planning](../../skills/automated-test-planning/SKILL.md). The internal process definition.

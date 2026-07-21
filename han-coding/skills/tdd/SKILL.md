@@ -5,7 +5,7 @@ description: >
   behavior through red-green-refactor with an enforced observed-failure gate. Use when the user wants to implement,
   build, or write code test-first, "do TDD", follow "red-green-refactor", drive code from tests, choose the next test by
   the Transformation Priority Premise (TPP) or ZOMBIES ordering, or grow a feature behavior-by-behavior with tests
-  leading. This skill writes and changes code; it does not produce a test plan document (use test-planning), review or
+  leading. This skill writes and changes code; it does not produce a test plan document (use automated-test-planning), review or
   audit existing code (use code-review), restructure existing code outside a TDD loop (use refactor), specify what a
   feature should do (use plan-a-feature), or find the root cause of a bug (use investigate).
 argument-hint: "[what to build, a behavior to drive, or a path to a spec/plan]"

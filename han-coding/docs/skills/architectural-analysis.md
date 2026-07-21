@@ -68,7 +68,7 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **Investigating a specific bug.** Use [`/investigate`](./investigate.md) for evidence-based root-cause work.
 - **File-level correctness review.** Use [`/code-review`](./code-review.md) for per-file correctness, testing, and
   compliance.
-- **Test planning.** Use [`/test-planning`](./test-planning.md) for a coverage-and-edge-case plan.
+- **Test planning.** Use [`/automated-test-planning`](./automated-test-planning.md) for a coverage-and-edge-case plan.
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from
   scratch.
 - **Documenting an existing module.** Use [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md).

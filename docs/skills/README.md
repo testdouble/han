@@ -21,6 +21,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   flow, concurrency, risk, and SOLID alignment through a spine of structural, behavioral, risk, and architecture agents.
 - [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md) — Create, extract, or
   convert architectural decision records.
+- [`/automated-test-planning`](../../han-coding/docs/skills/automated-test-planning.md) — Produce a prioritized test
+  plan for a branch or directory.
 - [`/code-overview`](../../han-coding/docs/skills/code-overview.md) — Produce a human-readable, progressive-disclosure
   overview of unfamiliar code or a PR's changes, leading with why the code exists; raises no findings.
 - [`/code-overview-to-confluence`](../../han-atlassian/docs/skills/code-overview-to-confluence.md) — Run `/code-overview`
@@ -86,8 +88,6 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   plain-language stakeholder summary with Mermaid diagrams, for feedback before implementation.
 - [`/tdd`](../../han-coding/docs/skills/tdd.md) — Drive a feature or behavior through a BDD-framed red-green-refactor
   loop with an enforced observed-failure gate; it writes code, not a document.
-- [`/test-planning`](../../han-coding/docs/skills/test-planning.md) — Produce a prioritized test plan for a branch or
-  directory.
 - [`/update-pr-description`](../../han-github/docs/skills/update-pr-description.md) — Generate a PR description from the
   current branch's changes, conforming to the repository's PR template when one exists.
 - [`/work-items-to-issues`](../../han-github/docs/skills/work-items-to-issues.md) — Publish each item in a

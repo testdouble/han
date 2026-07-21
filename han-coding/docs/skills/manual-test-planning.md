@@ -44,7 +44,7 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 
 **Do not invoke for:**
 
-- **Automated test coverage plans.** Use [`/test-planning`](./test-planning.md) for coverage-gap and edge-case test
+- **Automated test coverage plans.** Use [`/automated-test-planning`](./automated-test-planning.md) for coverage-gap and edge-case test
   plans with file references and test levels.
 - **Writing test code.** Use [`/tdd`](./tdd.md) to implement behavior test-first.
 - **Reviewing code quality.** Use [`/code-review`](./code-review.md).
@@ -88,7 +88,7 @@ tells you that in the channel and stops.
   description, or a plain description of the feature gives it more to work with than a bare file list.
 - **Say who will run the tests.** If the tester is non-technical, say so; the wording of steps and outcomes tightens
   around what they can see and do.
-- **Pair with `/test-planning`** when you also want automated coverage: this skill covers the by-hand walkthrough,
+- **Pair with `/automated-test-planning`** when you also want automated coverage: this skill covers the by-hand walkthrough,
   that one covers the tests engineers write.
 
 ## Cost and latency
@@ -127,7 +127,7 @@ The skill walks a seven-step process:
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
   tree.
-- [`/test-planning`](./test-planning.md). The automated-coverage sibling: prioritized test plans with file references
+- [`/automated-test-planning`](./automated-test-planning.md). The automated-coverage sibling: prioritized test plans with file references
   and test levels.
 - [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). Dispatched against the draft to
   disprove invalid tests, steps, and expected outcomes before the file is written.

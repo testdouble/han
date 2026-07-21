@@ -67,7 +67,7 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   ready, hand it to the implementation phase.
 - **Generating new plans from scratch.** Use `/plan-a-feature` for a new behavioral specification or
   `/plan-implementation` for a new implementation plan. This skill improves a plan that already exists.
-- **Writing test plans.** Use `/test-planning` to produce a standalone test plan. This skill does not generate one,
+- **Writing test plans.** Use `/automated-test-planning` to produce a standalone test plan. This skill does not generate one,
   though it may surface test gaps when iterating on a plan that fails to address testing.
 - **Code review.** Use `/code-review` for correctness, style, and maintainability review of committed or pending code,
   or `/post-code-review-to-pr` to post the review to a GitHub PR. This skill reviews plans, not code diffs.

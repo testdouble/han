@@ -1,5 +1,5 @@
 ---
-name: test-planning
+name: automated-test-planning
 description: >
   Produce a standalone test plan by analyzing code for test coverage gaps and edge cases. Use when you need to create,
   generate, or draft a test plan for a branch, need to analyze test coverage, or need to identify what tests to write

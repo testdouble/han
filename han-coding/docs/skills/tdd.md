@@ -54,7 +54,7 @@ the skill. For what the skill does internally, read the skill definition at
 
 **Do not invoke for:**
 
-- **Producing a test plan without writing code.** Use [`/test-planning`](./test-planning.md) instead. It
+- **Producing a test plan without writing code.** Use [`/automated-test-planning`](./automated-test-planning.md) instead. It
   analyzes coverage gaps and prioritizes what to test; it does not implement.
 - **Reviewing or auditing code that already exists.** Use [`/code-review`](./code-review.md) instead.
 - **Deciding what a feature should do.** Use [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) to specify behavior
@@ -167,7 +167,7 @@ items) is the main lever on total cost.
 The skill is structurally modeled on two existing skills. The loop and its stop condition follow
 [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md): front-loaded constraints, a deterministic
 per-cycle process, a bounded list. The project and command discovery follows
-[`/test-planning`](./test-planning.md): resolve from CLAUDE.md's `## Project Discovery`, fall back to
+[`/automated-test-planning`](./automated-test-planning.md): resolve from CLAUDE.md's `## Project Discovery`, fall back to
 `project-discovery.md`, fall back to a one-time script.
 
 One design decision is worth knowing. Classic TDD says green should "commit whatever sins are necessary" and clean up in
@@ -248,7 +248,7 @@ URL: https://growing-object-oriented-software.com/
 - [`/refactor`](./refactor.md). The sibling execution skill. Run it for preparatory refactoring before a `/tdd` run
   ("make the change easy, then make the easy change"), or to execute review findings against existing code. Never run
   the two on the same code at the same time.
-- [`/test-planning`](./test-planning.md). Plan what to test without writing code. Use it before `/tdd` to
+- [`/automated-test-planning`](./automated-test-planning.md). Plan what to test without writing code. Use it before `/tdd` to
   enumerate behaviors, or instead of it when you want analysis rather than implementation.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Specify behavior first; the spec becomes the test list `/tdd`
   builds from.

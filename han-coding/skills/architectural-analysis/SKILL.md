@@ -5,7 +5,7 @@ description:
   coupling, data flow, concurrency patterns, risk, and SOLID alignment. Use when the user wants to assess, evaluate, or
   review the architecture, design quality, dependency structure, coupling, cohesion, or technical debt of an existing
   part of the codebase. Not for investigating specific bugs, runtime errors, or failures — use investigate. Not for test
-  planning — use test-planning. Not for file-level code review — use code-review. Not for researching open-ended
+  planning — use automated-test-planning. Not for file-level code review — use code-review. Not for researching open-ended
   options, prior art, or how something works — use research. Not for writing documentation or architectural decision
   records."
 arguments: size

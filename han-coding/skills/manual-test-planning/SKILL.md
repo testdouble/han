@@ -6,7 +6,7 @@ description: >
   expect. Use when you want to create, draft, generate, or outline a manual test plan, manual QA steps, hands-on
   verification steps, or an acceptance walkthrough for a feature, change, branch, plan, or PR. When nothing in the
   supplied context can be manually tested, it says so and asks for more context instead of producing a document. Does
-  not analyze code for automated test coverage gaps — use test-planning. Does not write test code — use tdd. Does not
+  not analyze code for automated test coverage gaps — use automated-test-planning. Does not write test code — use tdd. Does not
   review code quality — use code-review. Does not stress-test an existing plan — use iterative-plan-review.
 argument-hint: "[optional: files, a branch, a plan, a PR, or a description of what to manually test]"
 allowed-tools: Bash(git *), Read, Grep, Glob, Write, Agent
