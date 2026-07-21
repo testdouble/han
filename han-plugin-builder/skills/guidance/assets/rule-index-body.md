@@ -162,6 +162,11 @@ Process guidance for building and evolving a plugin over its lifetime.
   — The research-backed rationale for why tighter specialization lets a smaller model at lower effort match a larger one
   on narrow tasks, without raising the capability ceiling. Read when reasoning about the
   specialization-versus-model-tier trade-off across skills and agents.
+- [Per-Model Authoring Guidance](.claude/skills/plugin-guidance/references/per-model-authoring.md) — How Sonnet 5,
+  Opus 4.8, and Fable 5 differ in how they follow instructions, and how those differences change what you write: the
+  model-agnostic default for an unknown target, the opposite-direction instruction-style split, and the Fable 5
+  reasoning-echo refusal to avoid. Read when writing or hardening a skill or agent and tuning the instructions to a
+  target model, not when choosing which model tier to run (see Specialization and Model Selection).
 
 ## Templates and examples
 

@@ -1,8 +1,8 @@
 # How To: Run an Effective Code Review
 
 A walkthrough for getting from "this branch is ready to merge" to a review whose findings are actually worth acting on.
-The primary tool is [`/code-review`](../skills/han-coding/code-review.md);
-[`/post-code-review-to-pr`](../skills/han-github/post-code-review-to-pr.md) runs the same review and posts it to a
+The primary tool is [`/code-review`](../../han-coding/docs/skills/code-review.md);
+[`/post-code-review-to-pr`](../../han-github/docs/skills/post-code-review-to-pr.md) runs the same review and posts it to a
 GitHub PR when you want the team to see it.
 
 > See also: [How-to index](./README.md) · [Quickstart](../quickstart.md) · [Skills](../skills/README.md)
@@ -20,7 +20,7 @@ still have to do it yourself.
 - You have a branch with changes you want reviewed, against a default branch. The skill diffs the branch and reviews
   what changed. If git is not available, you can still review files you name (Mode C). But the YAGNI pass and the
   introduced-vs-pre-existing calibration both need a diff, so a real branch gives you the sharper review.
-- You have run [`/project-discovery`](../skills/han-core/project-discovery.md) at least once. The review reads the
+- You have run [`/project-discovery`](../../han-core/docs/skills/project-discovery.md) at least once. The review reads the
   discovery reference to find your ADR directory, your coding-standards directory, your documentation root, and the
   project's lint / build / test commands. Without it, the compliance and freshness checks fall back to best-effort
   guessing, and that is where a lot of the review's value lives.
@@ -31,8 +31,8 @@ still have to do it yourself.
   configured in Claude Code, so you can pull the ticket the change was written against into the review. Without one, you
   paste the relevant part of the ticket yourself.
 - **Optional setup for posting to a PR:** the `gh` CLI and `jq` installed and `gh` authenticated. Both are required by
-  [`/post-code-review-to-pr`](../skills/han-github/post-code-review-to-pr.md); the local
-  [`/code-review`](../skills/han-coding/code-review.md) needs neither.
+  [`/post-code-review-to-pr`](../../han-github/docs/skills/post-code-review-to-pr.md); the local
+  [`/code-review`](../../han-coding/docs/skills/code-review.md) needs neither.
 
 ## What you'll end up with
 
@@ -74,16 +74,16 @@ The reviewer that only sees the diff is guessing at intent; the reviewer that se
    what the change is for. A branch with a real PR description or a one-paragraph `PR_BODY.md` reviews better than a
    branch with five commits all titled "wip", because the reviewer has something to check the code against.
 
-2. **Run [`/project-discovery`](../skills/han-core/project-discovery.md) if you have not already.** This is what lets
+2. **Run [`/project-discovery`](../../han-core/docs/skills/project-discovery.md) if you have not already.** This is what lets
    the review find your ADRs, your coding standards, and your docs, and check the diff against them. Bounded, explicit
    rules are exactly where grounding pays off. With the standard in front of it, the model stops inventing its own
    preferences, and checks against the one that is written down. Without the discovery reference, the skill still tries,
    but it is guessing at where your rules live.
 
 3. **Keep the rules current, and keep them relevant.** If the change lands a decision worth recording, capture it with
-   [`/architectural-decision-record`](../skills/han-core/architectural-decision-record.md). If it establishes a
+   [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md). If it establishes a
    convention the team will apply again, write it down with
-   [`/coding-standard`](../skills/han-coding/coding-standard.md). Both then feed every later review automatically. One
+   [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md). Both then feed every later review automatically. One
    caution that the evidence is clear on: more context is not strictly better. The lever is the _right_ context, not all
    of it. The single ticket that governs this change and the standards that govern the changed module help. Bulk-dumping
    every loosely related doc into the prompt measurably hurts, because the model loses the relevant material in the
@@ -96,7 +96,7 @@ reads to the model as "produce comments", and absent a specific job, the comment
 specificity: tell the reviewer what to look for, against what rubric, and what to ignore. Han's review is built around
 this, so the happy path is short.
 
-1. **Run [`/code-review`](../skills/han-coding/code-review.md).** With no arguments, the skill classifies the change as
+1. **Run [`/code-review`](../../han-coding/docs/skills/code-review.md).** With no arguments, the skill classifies the change as
    small, medium, or large (defaulting to small) and dispatches a roster of specialist agents proportional to that size.
    Two always run: `junior-developer` for clarity and standards, `adversarial-security-analyst` for exploit-path
    security. The rest (`test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`,
@@ -159,7 +159,7 @@ lower before you ever read it. Then it hands you a result to judge, not a verdic
 ## Variations
 
 - **You want the review on the PR, not only in your terminal.** Run
-  [`/post-code-review-to-pr`](../skills/han-github/post-code-review-to-pr.md) instead of `/code-review`. It runs the
+  [`/post-code-review-to-pr`](../../han-github/docs/skills/post-code-review-to-pr.md) instead of `/code-review`. It runs the
   identical review; branch context flows automatically, since it is the same Step 1.5 on the same branch. It adds a
   clarity pass over the drafted review text, and offers to post the result to GitHub. It posts as a formal review when
   you are not the PR author, and as a PR comment when you are (GitHub rejects formal reviews from authors). It picks
@@ -188,12 +188,12 @@ lower before you ever read it. Then it hands you a result to judge, not a verdic
   well-understood change is a perfectly good outcome.
 
 - **A finding hides a bug whose root cause you do not yet understand.** When a Critical finding points at something
-  deeper than the diff shows, hand it to [`/investigate`](../skills/han-coding/investigate.md). It produces a root cause
+  deeper than the diff shows, hand it to [`/investigate`](../../han-coding/docs/skills/investigate.md). It produces a root cause
   backed by evidence and a fix plan that an adversarial pass has already tried to break.
 
 - **The change touches module boundaries and you want the structural view.** `/code-review` runs per file. When the
   branch reshapes how modules depend on each other, pair it with
-  [`/architectural-analysis`](../skills/han-coding/architectural-analysis.md), which runs per module and assesses
+  [`/architectural-analysis`](../../han-coding/docs/skills/architectural-analysis.md), which runs per module and assesses
   coupling, data flow, and SOLID alignment across the area.
 
 ## What you should expect at each step
@@ -216,14 +216,14 @@ lower before you ever read it. Then it hands you a result to judge, not a verdic
 
 ## Where to go next
 
-- [`/post-code-review-to-pr`](../skills/han-github/post-code-review-to-pr.md) is the right step when you want the same
+- [`/post-code-review-to-pr`](../../han-github/docs/skills/post-code-review-to-pr.md) is the right step when you want the same
   review posted to the team's PR rather than kept local.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the matching how-to when a Critical finding turns
   out to hide a defect whose root cause needs its own pass.
 - [Accelerate your understanding of unfamiliar code](./accelerate-understanding-of-unfamiliar-code.md) is the right
   guide when you are reviewing a change in code you do not know yet; run
-  [`/code-overview`](../skills/han-coding/code-overview.md) to understand it before you judge it.
-- The skill long-form docs ([code-review](../skills/han-coding/code-review.md),
-  [post-code-review-to-pr](../skills/han-github/post-code-review-to-pr.md),
-  [coding-standard](../skills/han-coding/coding-standard.md),
-  [architectural-decision-record](../skills/han-core/architectural-decision-record.md)) cover each step in depth.
+  [`/code-overview`](../../han-coding/docs/skills/code-overview.md) to understand it before you judge it.
+- The skill long-form docs ([code-review](../../han-coding/docs/skills/code-review.md),
+  [post-code-review-to-pr](../../han-github/docs/skills/post-code-review-to-pr.md),
+  [coding-standard](../../han-coding/docs/skills/coding-standard.md),
+  [architectural-decision-record](../../han-core/docs/skills/architectural-decision-record.md)) cover each step in depth.

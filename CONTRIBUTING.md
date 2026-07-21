@@ -22,8 +22,9 @@ plugin. If you only want to use the plugin, start with the [Plugin landing page]
   [`han-core/agents/{name}.md`](./han-core/agents/), with one exception: the `readability-editor` agent lives in
   `han-communication` alongside the readability skills it belongs with. See
   [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) before you start.
-- Long-form docs (for humans deciding _when_ and _how_ to use a skill or agent) live in `docs/skills/{plugin}/{name}.md`
-  and `docs/agents/han-core/{name}.md`.
+- Long-form docs (for humans deciding _when_ and _how_ to use a skill or agent) live inside the plugin they describe, at
+  `{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md` (agents today are `han-core` or
+  `han-communication`).
 - **Every skill and every agent gets a long-form doc.** No exceptions. See the
   [coverage rule](./docs/templates/coverage-rule.md).
 - Use the [long-form skill template](./docs/templates/skill-long-form-template.md) or the
@@ -148,9 +149,10 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
    - Frontmatter with `name`, `description`, `allowed-tools`. See
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
-3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `docs/skills/{plugin}/{name}.md` and
+3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `{plugin}/docs/skills/{name}.md` and
    fill it in. Every skill gets a long-form doc.
-4. Add the skill to the [Skills Index](./docs/skills/README.md) with a one-sentence scent line and a link.
+4. Add a scent line to the plugin's `README.md` and one alphabetized entry to the [skills index](./docs/skills/README.md),
+   both reusing the long-form doc's own summary line as the canonical scent so the three do not drift.
 5. Add the skill to the catalog in [Root CLAUDE.md](./CLAUDE.md). The indexes and concept docs list skills without a
    running total, so there is no count to bump. If the skill belongs to a new category, add it to the category lists
    too.
@@ -164,17 +166,19 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
    the readability skills it serves. See
    [agent-domain-focus.md](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md)
    for how narrow and named the domain vocabulary should be.
-2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `docs/agents/{plugin}/{name}.md`
+2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `{plugin}/docs/agents/{name}.md`
    (usually `han-core`) and fill it in. Every agent gets a long-form doc.
-3. Add the agent to the [Agents Index](./docs/agents/README.md) under the right role group.
+3. Add a scent line to the plugin's `README.md` and one alphabetized entry to the [agents index](./docs/agents/README.md),
+   both reusing the long-form doc's own summary line as the canonical scent.
 
 ## Wiring the readability standard into a skill
 
 A skill is **reader-facing** when its primary deliverable is human-facing prose that a non-author reads end to end to
 understand something: a finding, a summary, a plan of record, a document. If the skill you are adding fits that
-description, it applies the shared [Readability](./docs/readability.md) standard. Skills whose primary output is code,
-or a governed structured artifact (a specification, plan, work-item, or coding standard), are out of scope and skip this
-section.
+description, it applies the shared [Readability](./docs/readability.md) standard. A structured specification, plan,
+phased build, work-item list, coding standard, or test plan counts too when a human reads it end to end. Skills whose
+output is code, or a structured artifact consumed only by downstream skills as machine input with no human reading it
+end to end, are out of scope and skip this section.
 
 The inclusion test is the guide; the enumerated list in
 [Readability](./docs/readability.md#scope-which-skills-are-reader-facing) is authoritative. When a new skill passes the
@@ -183,8 +187,7 @@ test, add it to that list and wire the standard in:
 1. **Declare the dependency on `han-communication`.** The canonical rule and writing-voice profile live in
    [`han-communication/references/`](./han-communication/references/); no plugin vendors a copy. If the skill's plugin
    does not already depend on `han-communication`, add the direct dependency edge to its `plugin.json` so the capability
-   resolves by qualified name. (`han-planning`, `han-linear`, and `han-feedback` host no prose-producing skill, so they
-   carry no edge.)
+   resolves by qualified name. (`han-linear` and `han-feedback` host no prose-producing skill, so they carry no edge.)
 2. **Embed the structural rules in the output template.** The skill's output template carries main-point-first,
    descriptive front-loaded headings, one-idea-per-paragraph, numbered lists for steps and bullets for the rest, and
    progressive disclosure, so the draft is born structured.
@@ -200,7 +203,7 @@ test, add it to that list and wire the standard in:
    and citation identifiers unevaluated and unchanged.
 5. **Wire the rewrite pass only if the skill synthesizes.** If the skill has a synthesis or editor step (a distinct
    pass, after the full draft exists, that reviews or consolidates the whole draft before presenting it), dispatch the
-   [`readability-editor`](./docs/agents/han-communication/readability-editor.md) agent after the draft is written and
+   [`readability-editor`](./han-communication/docs/agents/readability-editor.md) agent after the draft is written and
    before the self-check. It reads `han-communication`'s own canonical rule, so pass no rule path; it rewrites the
    draft, preserving every fact. Where the skill already ran a readability pass of its own, the dedicated reviewer
    replaces it rather than stacking a second pass on top. A synthesis skill that cannot dispatch an agent today gains
@@ -270,8 +273,9 @@ Before opening the PR, run through this checklist:
 - [Plugin landing page](./README.md). Where end-users start.
 - [Root CLAUDE.md](./CLAUDE.md). Project map and doc index for assistants and contributors.
 - [Writing voice](./han-communication/references/writing-voice.md). The voice profile every doc follows.
-- [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.
-- [Agents Index](./docs/agents/README.md). All agents, grouped by role.
+- [Skills index](./docs/skills/README.md). Every skill, alphabetized, with a scent line and a link.
+- [Agents index](./docs/agents/README.md). Every agent, alphabetized, with a scent line and a link.
+- [Workflows](./docs/workflows.md). The map of which skills chain together.
 - [Concepts](./docs/concepts.md). Skill vs. agent mental model.
 - [Sizing](./docs/sizing.md). How the swarming skills classify work and scale dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based rule for what survives a review.

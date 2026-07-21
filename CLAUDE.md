@@ -10,10 +10,12 @@ documentation, and operations skills plus all the agents the rest of the suite d
 `readability-editor`; depends on `han-communication`), `han-planning` (the planning skills you reach for before
 implementation: specifying with `plan-a-feature`, planning the build with `plan-implementation`, sequencing it with
 `plan-a-phased-build`, breaking it into work with `plan-work-items`, and stress-testing plans with
-`iterative-plan-review`; depends on `han-core` and is bundled by the `han` meta-plugin), `han-coding` (the coding skills
+`iterative-plan-review`; depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin),
+`han-coding` (the coding skills
 you reach for while working in code: writing it with `tdd` and `refactor`, plus reviewing, overviewing, analyzing,
 testing, investigating, and standardizing it with `code-review`, `code-overview`, `architectural-analysis`,
-`test-planning`, `investigate`, and `coding-standard`; depends on `han-core` and is bundled by the `han` meta-plugin),
+`test-planning`, `investigate`, and `coding-standard`; depends on `han-communication` and `han-core` and is bundled by
+the `han` meta-plugin),
 `han-github` (GitHub-facing skills), `han-reporting` (reporting and summary skills), `han` (a meta-plugin that installs
 `han-communication`, `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` via dependencies),
 `han-feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han-core` but is
@@ -48,60 +50,81 @@ han-plugin-builder skill:
 ├── .claude-plugin/
 │   └── marketplace.json   # Test Double marketplace manifest (lists han, han-core, han-planning, han-coding, han-github, han-reporting, han-feedback, han-atlassian, han-linear, han-plugin-builder)
 ├── han/                # Meta-plugin: no components of its own; depends on han-communication + han-core + han-planning + han-coding + han-github + han-reporting
+│   ├── README.md       # Light meta-plugin front door (no skills/agents sections)
 │   └── .claude-plugin/
 │       └── plugin.json
 ├── han-communication/  # Foundational plugin: readability-guidance + edit-for-readability skills, readability-editor agent, and the canonical readability-rule.md + writing-voice.md (depends on nothing; every prose-producing plugin depends on it)
+│   ├── README.md       # Light front door + scent-line skill and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── .codex-plugin/
 │   │   └── plugin.json
 │   ├── agents/         # readability-editor agent definition
 │   ├── skills/         # readability-guidance (inline, surfaces the standard) + edit-for-readability
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md
 │   └── references/     # Canonical readability-rule.md + writing-voice.md (owned here; no vendored copies elsewhere)
 ├── han-core/           # Core plugin: research, analysis, documentation, operations + all agents except readability-editor (depends on han-communication)
+│   ├── README.md       # Light front door; skills and agents grouped by purpose
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/{name}.md
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md, evidence-rule.md — canonical copies)
-├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation; depends on han-core; bundled by the han meta-plugin)
+├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation; depends on han-communication and han-core; bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
 │   └── references/     # Cross-skill reference files vendored for han-planning skills (yagni-rule.md, evidence-rule.md)
-├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, test-planning, investigate, coding-standard (the skills for working in code; depends on han-core; bundled by the han meta-plugin)
+├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
 │   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md)
 ├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues (depends on han-communication for the readability standard)
+│   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
+│   ├── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
+│   └── docs/           # In-plugin long-form docs: docs/skills/{name}.md
 ├── han-reporting/      # Reporting plugin: stakeholder-summary, html-summary (depends on han-communication for the readability standard)
+│   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Reporting skill directories, each with SKILL.md + references/ (html-summary adds scripts/ + assets/)
+│   ├── skills/         # Reporting skill directories, each with SKILL.md + references/ (html-summary adds scripts/ + assets/)
+│   └── docs/           # In-plugin long-form docs: docs/skills/{name}.md
 ├── han-feedback/       # Opt-in feedback plugin: han-feedback (depends on han-core; NOT bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Feedback skill directory (han-feedback) with SKILL.md
-├── han-atlassian/      # Opt-in Atlassian plugin: markdown-to-confluence, project-documentation-to-confluence, investigate-to-confluence, code-overview-to-confluence, plan-a-feature-to-confluence, work-items-to-jira (depends on han-core, han-planning, han-coding; requires the Atlassian MCP server; NOT bundled by the han meta-plugin)
+│   ├── skills/         # Feedback skill directory (han-feedback) with SKILL.md
+│   └── docs/           # In-plugin long-form docs: docs/skills/han-feedback.md
+├── han-atlassian/      # Opt-in Atlassian plugin: markdown-to-confluence, project-documentation-to-confluence, investigate-to-confluence, code-overview-to-confluence, plan-a-feature-to-confluence, work-items-to-jira (depends on han-core, han-planning, han-coding; requires the Atlassian MCP server; NOT bundled by the han meta-plugin). Carries README.md + docs/skills/ like the other layers.
 ├── han-linear/         # Opt-in Linear plugin: work-items-to-linear (depends on han-core; requires the Linear MCP server; NOT bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Linear skill directory, with SKILL.md + references/
+│   ├── skills/         # Linear skill directory, with SKILL.md + references/
+│   └── docs/           # In-plugin long-form docs: docs/skills/work-items-to-linear.md
 ├── han-plugin-builder/ # Opt-in plugin-building plugin: guidance, skill-builder, agent-builder (depends on nothing; NOT bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # guidance skill (SKILL.md + assets/ + scripts/ + references/, the authoring guidance by topic); skill-builder and agent-builder (SKILL.md each, the interview-driven builders)
-├── docs/               # Operator-facing documentation
+│   ├── skills/         # guidance skill (SKILL.md + assets/ + scripts/ + references/, the authoring guidance by topic); skill-builder and agent-builder (SKILL.md each, the interview-driven builders)
+│   └── docs/           # In-plugin long-form docs: docs/skills/{name}.md
+├── docs/               # Operator-facing documentation (cross-plugin surfaces; long-form docs now live in each plugin)
 │   ├── concepts.md
 │   ├── quickstart.md
 │   ├── sizing.md
 │   ├── yagni.md
-│   ├── agents/         # Long-form docs for all agents, plus README
-│   ├── skills/         # Long-form docs for all skills, plus README
+│   ├── workflows.md    # The map of which skills chain together, with mermaid flow diagrams
+│   ├── choosing-a-han-plugin.md   # The plugin index (scent + link to each plugin README) and install guide
+│   ├── agents/         # Agents index README only (long-form agent docs moved into their plugins)
+│   ├── skills/         # Skills index README only (long-form skill docs moved into their plugins)
 │   ├── how-to/         # End-to-end workflow guides (planning, bugs, research)
 │   ├── templates/      # Templates and coverage rule for long-form docs
 │   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
@@ -113,10 +136,10 @@ The plugins are shipped from `han-communication/`, `han-core/`, `han-planning/`,
 `han-reporting/`, `han-feedback/`, `han-atlassian/`, `han-linear/`, and `han-plugin-builder/`; the `han/` meta-plugin
 pulls in `han-communication`, `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` through its
 `dependencies`. `han-communication` is the foundational layer beneath every other plugin: it depends on nothing and owns
-the single canonical readability standard, and every plugin that produces prose output (`han-core`, `han-coding`,
-`han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a direct dependency on it — including
-`han-core`, whose first-ever dependency this is. `han-planning` and `han-coding` depend on `han-core` like the GitHub
-and reporting layers and are bundled by the meta-plugin. `han-feedback`, `han-atlassian`, and `han-linear` depend on
+the single canonical readability standard, and every plugin that produces prose output (`han-core`, `han-planning`,
+`han-coding`, `han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a direct dependency on it —
+including `han-core`, whose first-ever dependency this is. `han-planning` and `han-coding` depend on `han-communication`
+and `han-core` like the GitHub and reporting layers and are bundled by the meta-plugin. `han-feedback`, `han-atlassian`, and `han-linear` depend on
 `han-core` like the other layers but are deliberately left out of the meta-plugin, so each is opt-in and installed on
 its own (`han-atlassian` additionally requires a configured Atlassian MCP server, and `han-linear` a configured Linear
 MCP server). `han-plugin-builder` depends on nothing and is likewise opt-in and installed on its own. The
@@ -127,9 +150,13 @@ all three plugin-building skills into any repo's `.claude/skills/` under a `plug
 path-scoped rule index, so the skills run and the guidance surfaces with no dependency on the plugin being installed.
 The same plugin also ships those two interview-driven builder skills, `skill-builder` and `agent-builder`, that walk the
 design tree for a new skill or agent decision-by-decision and then review the finished artifact against that guidance.
-Documentation lives in `docs/` and covers the whole suite. Long-form docs in `docs/skills/{plugin}/{name}.md` and
-`docs/agents/{plugin}/{name}.md` are the canonical operator-facing source for every skill and every agent. The
-underlying definition (`han-communication/skills/{name}/SKILL.md`, `han-core/skills/{name}/SKILL.md`,
+Documentation is plugin-first: each plugin carries a light front-door `README.md` and its own long-form docs. Long-form
+docs in `{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md` (agents only in `han-core` and
+`han-communication`) are the canonical operator-facing source for every skill and every agent, sitting beside that
+plugin's README. The cross-plugin surfaces stay under repo-root `docs/`: the alphabetized skills and agents indexes
+(`docs/skills/README.md`, `docs/agents/README.md`), the plugin index (`docs/choosing-a-han-plugin.md`), and the
+workflows composition map (`docs/workflows.md`). The underlying definition
+(`han-communication/skills/{name}/SKILL.md`, `han-core/skills/{name}/SKILL.md`,
 `han-planning/skills/{name}/SKILL.md`, `han-coding/skills/{name}/SKILL.md`, `han-github/skills/{name}/SKILL.md`,
 `han-reporting/skills/{name}/SKILL.md`, `han-feedback/skills/{name}/SKILL.md`, `han-atlassian/skills/{name}/SKILL.md`,
 `han-linear/skills/{name}/SKILL.md`, `han-core/agents/{name}.md`, or `han-communication/agents/{name}.md`) is the
@@ -167,10 +194,12 @@ such as Claude, shnould be referenced here.
 
 ## Conventions
 
-- **One canonical source per concept.** The long-form doc in `docs/skills/` or `docs/agents/` is canonical for that
-  skill or agent. Index entries carry one-sentence scent plus a link. The README never duplicates long-form content.
-- **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the
-  README at the repo root.
+- **One canonical source per concept.** The long-form doc in `{plugin}/docs/skills/` or `{plugin}/docs/agents/` is
+  canonical for that skill or agent, and the plugin's `README.md` is canonical for what the plugin does. The other
+  surfaces (plugin README scent line, skills or agents index, plugin index) carry a one-sentence scent plus a link that
+  reuses the long-form doc's own summary line, never a second copy of the content.
+- **Every long-form doc links up.** The first bullet of the "Related documentation" section points to the doc's adjacent
+  plugin README, then the repository root.
 - **Voice is uniform.** Every doc follows
   [han-communication/references/writing-voice.md](./han-communication/references/writing-voice.md). No em-dashes, direct
   second person, no flattery or hype.
@@ -178,6 +207,8 @@ such as Claude, shnould be referenced here.
   behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
 - **Indexes stay complete, not counted.** Every skill in `han-communication/skills/`, `han-core/skills/`,
   `han-planning/skills/`, `han-coding/skills/`, `han-github/skills/`, `han-reporting/skills/`, `han-feedback/skills/`,
-  `han-atlassian/skills/`, `han-linear/skills/`, and `han-plugin-builder/skills/` has a long-form doc in `docs/skills/`
-  and an entry in the skills index; same for agents in `han-core/agents/` and `han-communication/agents/` and
-  `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.
+  `han-atlassian/skills/`, `han-linear/skills/`, and `han-plugin-builder/skills/` has a long-form doc in its plugin's
+  `docs/skills/`, a scent line in its plugin's `README.md`, and an entry in the skills index (`docs/skills/README.md`);
+  same for agents in `han-core/agents/` and `han-communication/agents/` (long-form docs in `{plugin}/docs/agents/`,
+  indexed in `docs/agents/README.md`). Verify the indexes list every entity when editing them, rather than tracking a
+  running total.

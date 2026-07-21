@@ -4,11 +4,11 @@ Every skill and agent in the han plugin gets a long-form doc. No exceptions.
 
 ## The Rule
 
-When you add a new skill, you create a long-form doc in `docs/skills/{plugin}/{name}.md` using
+When you add a new skill, you create a long-form doc in `{plugin}/docs/skills/{name}.md` using
 [the skill template](./skill-long-form-template.md).
 
-When you add a new agent, you create a long-form doc in `docs/agents/han-core/{name}.md` using
-[the agent template](./agent-long-form-template.md).
+When you add a new agent, you create a long-form doc in `{plugin}/docs/agents/{name}.md` (today that plugin is `han-core`
+or `han-communication`, the only agent-owning plugins) using [the agent template](./agent-long-form-template.md).
 
 The long-form doc lands in the same pull request as the skill or agent definition. Not as a follow-up. Not "when there's
 time."

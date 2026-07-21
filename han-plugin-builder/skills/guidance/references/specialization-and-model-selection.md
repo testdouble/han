@@ -84,6 +84,9 @@ The pattern that falls out, by agent archetype:
 
 ## Cross-References
 
+- [Per-Model Authoring Guidance](./per-model-authoring.md). This document is about which model _tier_ to run (opus,
+  sonnet, haiku) and at what effort. Its counterpart is about how to _write the instructions_ for a given model. Read
+  that one when the question is how to phrase instructions for Sonnet 5, Opus 4.8, or Fable 5, not which tier to run.
 - [Agent Model Selection](./agent-building-guidelines/agent-model-selection.md). Decision criteria for the `model`
   frontmatter field on agents.
 - [Agent Domain Focus](./agent-building-guidelines/agent-domain-focus.md). How vocabulary routing, persona length, and

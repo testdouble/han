@@ -130,12 +130,12 @@ escalate.
 - **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra
   surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first
   positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
-- **Sizing-aware skills.** [`/architectural-analysis`](./skills/han-coding/architectural-analysis.md),
-  [`/code-overview`](./skills/han-coding/code-overview.md), [`/code-review`](./skills/han-coding/code-review.md),
-  [`/gap-analysis`](./skills/han-core/gap-analysis.md),
-  [`/iterative-plan-review`](./skills/han-planning/iterative-plan-review.md),
-  [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md),
-  [`/plan-implementation`](./skills/han-planning/plan-implementation.md), [`/research`](./skills/han-core/research.md).
+- **Sizing-aware skills.** [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
+  [`/code-overview`](../han-coding/docs/skills/code-overview.md), [`/code-review`](../han-coding/docs/skills/code-review.md),
+  [`/gap-analysis`](../han-core/docs/skills/gap-analysis.md),
+  [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
+  [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
+  [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md), [`/research`](../han-core/docs/skills/research.md).
 
 Read the full [Sizing](./sizing.md) reference for the bands, the auto-classification process, and the per-skill rules.
 
@@ -162,7 +162,7 @@ on. Three principles ground the rule. Evidence closer to the originating event o
 at greater remove (proximity, applied as a heuristic, not a ranked ladder). Two independent sources beat one source
 (corroboration, scoped to web sources). The absence of evidence is its own state with a name and a response (no-evidence
 labeling). The vocabulary of trust classes (codebase, web, provided) and the corroboration gate originated in
-[`/research`](./skills/han-core/research.md) and are now extracted into a canonical rule that every evidence-aware skill
+[`/research`](../han-core/docs/skills/research.md) and are now extracted into a canonical rule that every evidence-aware skill
 and agent reads at runtime.
 
 Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`) and the
@@ -182,14 +182,17 @@ headings, keep sentences short and active, prefer common words, and reveal detai
 
 The rule is applied in stages, never as one instruction block. Its structural rules shape each skill's output template,
 and its six behaviorally-anchored criteria run as a discrete self-check after the draft exists. Skills with a synthesis
-or editor step also dispatch the [`readability-editor`](./agents/han-communication/readability-editor.md) agent to
+or editor step also dispatch the [`readability-editor`](../han-communication/docs/agents/readability-editor.md) agent to
 rewrite the draft, preserving every fact. Fidelity outranks readability: no required fact is dropped to read more
 simply.
 
 Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`,
 `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`,
-`/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`). Skills whose output is
-code or a governed structured artifact are out of scope.
+`/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`, `/plan-a-feature`,
+`/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, `/iterative-plan-review`, `/coding-standard`, and
+`/test-planning`). A structured specification, plan, phased build, work-item list, coding standard, or test plan counts
+when a human reads it end to end. Skills whose output is code, or a structured artifact consumed only by downstream
+skills as machine input, are out of scope.
 
 Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope
 table, and the fidelity guard.

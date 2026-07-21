@@ -48,7 +48,7 @@ going or stop for the day.
 
 ### Phase 1: Spec the feature
 
-1. **Run [`/plan-a-feature`](../skills/han-planning/plan-a-feature.md) with the rough idea and an output folder.** A
+1. **Run [`/plan-a-feature`](../../han-planning/docs/skills/plan-a-feature.md) with the rough idea and an output folder.** A
    template that works well:
 
    > `/plan-a-feature on building out {feature idea}, using {reference} as a starting point. It needs to {behaviors and constraints}. Write the plan to {plan folder} as we go.`
@@ -74,7 +74,7 @@ going or stop for the day.
 ### Phase 2: Finalize the spec for this slice
 
 1. **Pick the slice spec you are about to plan.** This step has two paths:
-   - **If the feature is phased**, run [`/plan-a-phased-build`](../skills/han-planning/plan-a-phased-build.md) against
+   - **If the feature is phased**, run [`/plan-a-phased-build`](../../han-planning/docs/skills/plan-a-phased-build.md) against
      the Phase 1 spec, then run `/plan-a-feature` again for the specific phase you are working on:
 
      > `/plan-a-phased-build {plan folder}/feature-specification.md`
@@ -87,7 +87,7 @@ going or stop for the day.
 
 2. **Manually review the spec, then iterate.** Read what han produced. Look for anything that drifted from the original
    idea, anything you do not understand, and anything that contradicts a decision you remember making. Push back where
-   needed. Then run [`/iterative-plan-review`](../skills/han-planning/iterative-plan-review.md) to refute assumptions,
+   needed. Then run [`/iterative-plan-review`](../../han-planning/docs/skills/iterative-plan-review.md) to refute assumptions,
    correct inconsistencies, and surface gaps:
 
    > `/iterative-plan-review {slice spec file}`
@@ -96,7 +96,7 @@ going or stop for the day.
 
 ### Phase 3: Plan the implementation
 
-1. **Run [`/plan-implementation`](../skills/han-planning/plan-implementation.md).** A template that works well:
+1. **Run [`/plan-implementation`](../../han-planning/docs/skills/plan-implementation.md).** A template that works well:
 
    > `/plan-implementation {slice spec file}`
 
@@ -113,7 +113,7 @@ going or stop for the day.
 
 ### Phase 4: Break the plan into work
 
-1. **Run [`/plan-work-items`](../skills/han-planning/plan-work-items.md).** A template that works well:
+1. **Run [`/plan-work-items`](../../han-planning/docs/skills/plan-work-items.md).** A template that works well:
 
    > `/plan-work-items {implementation plan file}`
 
@@ -124,13 +124,13 @@ going or stop for the day.
    merged into a single item by mistake. The skill is happy to re-run if you want to resplit.
 
 3. **Hand off.** Turn the items into issue tickets or work them directly. When you sit down to build, run
-   [`/tdd`](../skills/han-coding/tdd.md) on the first item to drive it test-first through a red-green-refactor loop with
+   [`/tdd`](../../han-coding/docs/skills/tdd.md) on the first item to drive it test-first through a red-green-refactor loop with
    an enforced observed-failure gate.
 
 ## Variations
 
 - **Sharing the spec for non-technical sign-off.** After Phase 1 produces the initial spec, and before you commit to
-  phasing or implementation, run [`/stakeholder-summary`](../skills/han-reporting/stakeholder-summary.md). It produces a
+  phasing or implementation, run [`/stakeholder-summary`](../../han-reporting/docs/skills/stakeholder-summary.md). It produces a
   plain-language summary with Mermaid diagrams that you can share with leadership, product, or customer-facing
   reviewers. Run it on the pre-phasing spec so stakeholders see the whole feature, not one slice of it.
 
@@ -159,9 +159,9 @@ going or stop for the day.
 
 ## Where to go next
 
-- [`/tdd`](../skills/han-coding/tdd.md) is the next step when work items are ready to build. It writes the tests and
+- [`/tdd`](../../han-coding/docs/skills/tdd.md) is the next step when work items are ready to build. It writes the tests and
   production code into your tree.
-- [`/code-review`](../skills/han-coding/code-review.md) is the right step after `/tdd` finishes a behavior and before
+- [`/code-review`](../../han-coding/docs/skills/code-review.md) is the right step after `/tdd` finishes a behavior and before
   you open a PR.
 - [Revise a plan after the build has started](./revise-a-plan.md) is the right guide when a plan from this loop needs to
   change once you are already building.
@@ -169,9 +169,9 @@ going or stop for the day.
   feature but a fix.
 - [Research a decision](./research-a-decision.md) is the right guide when you are not ready to spec because the
   underlying decision (which library, which pattern, which approach) has not been made yet.
-- The skill long-form docs ([plan-a-feature](../skills/han-planning/plan-a-feature.md),
-  [plan-a-phased-build](../skills/han-planning/plan-a-phased-build.md),
-  [plan-implementation](../skills/han-planning/plan-implementation.md),
-  [iterative-plan-review](../skills/han-planning/iterative-plan-review.md),
-  [plan-work-items](../skills/han-planning/plan-work-items.md), [tdd](../skills/han-coding/tdd.md)) cover each step in
+- The skill long-form docs ([plan-a-feature](../../han-planning/docs/skills/plan-a-feature.md),
+  [plan-a-phased-build](../../han-planning/docs/skills/plan-a-phased-build.md),
+  [plan-implementation](../../han-planning/docs/skills/plan-implementation.md),
+  [iterative-plan-review](../../han-planning/docs/skills/iterative-plan-review.md),
+  [plan-work-items](../../han-planning/docs/skills/plan-work-items.md), [tdd](../../han-coding/docs/skills/tdd.md)) cover each step in
   depth. The how-to tells you how they fit together; the long-form docs tell you what each one does on its own.

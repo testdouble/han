@@ -18,6 +18,10 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 
 ## Review Approach
 
+- **Source the shared readability standard early.** Invoke `han-communication:readability-guidance` before you edit, and
+  apply it to any plan prose this review rewrites. Hold the named audience: the reader of the plan this review refines.
+  The frame governs how a fact is said, never whether a required fact appears — keep the evidence citations, file:line
+  references, and IDs the plan depends on.
 - Read the full plan before challenging — an assumption that looks wrong in isolation may make sense in context.
 - Ground challenges in codebase evidence: "The API handler at `src/api/handler.go:47` returns XML, not JSON" is
   actionable; "This assumes the API returns JSON" is not.
@@ -444,6 +448,27 @@ plan folder's root rather than in `artifacts/`.
 
 If a prior review already populated this section, append new iteration/round counts and findings rather than
 overwriting.
+
+## Step 6.5: Readability Self-Check
+
+After both the lightweight loop (Step 4) and the team rounds (Step 5) have converged and the plan is final, run the
+standardized readability self-check **once** (the shared standard is in your context from
+`han-communication:readability-guidance`) over the plan prose regions this review authored or changed — not the whole
+pre-existing plan, and never inside code fences, tables, the `F#`/`D#`/`T#`/`R#` citation identifiers, or the Review
+History companion links, which must survive unchanged so they still resolve. Run it here on the converged plan, not
+inside either loop. Confirm each criterion and fix any failure before presenting:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
+   lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
+   precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears. This skill runs no
+separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
 
 **Preserve the cross-reference invariants across all files:**
 

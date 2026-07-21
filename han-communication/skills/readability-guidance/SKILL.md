@@ -20,6 +20,13 @@ and finish it.
 This skill is **inline** — it runs in your context, not an isolated one, so the standard it surfaces stays available to
 you after it returns. Do not treat anything here as a stopping point or a final answer.
 
+## Which outputs this standard covers
+
+A structured specification, plan, phased build, work-item list, coding standard, or test plan is reader-facing whenever a
+human reads it end to end — to approve it, follow it, or build from it — even when downstream skills also consume it. Only
+an artifact consumed purely as a pipeline input, with no human reading it end to end, falls outside the standard. If a
+human reads your deliverable end to end, apply the standard to it.
+
 ## Step 1: Read the canonical standard
 
 Read both canonical reference files, in this order, so their full content enters your context:

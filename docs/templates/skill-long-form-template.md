@@ -2,10 +2,10 @@
 
 Operator documentation for the `/{skill-name}` skill in the han plugin. This document helps you decide _when_ and _how_
 to use the skill. For what the skill does internally, read the skill definition at
-[`{plugin}/skills/{skill-name}/SKILL.md`](../../../{plugin}/skills/{skill-name}/SKILL.md).
+[`{plugin}/skills/{skill-name}/SKILL.md`](../../skills/{skill-name}/SKILL.md).
 
-> See also: [Plugin landing page](../../../README.md) · [All skills](../README.md) ·
-> [All agents](../../agents/README.md) · [YAGNI](../../yagni.md)
+> See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
+> [All agents](../../../docs/agents/README.md) · [YAGNI](../../../docs/yagni.md)
 
 ## TL;DR
 
@@ -29,8 +29,8 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 **Do not invoke for:**
 
-- **{Adjacent task 1}.** Use [`/{sibling-skill}`](../{plugin}/{sibling-skill}.md) instead.
-- **{Adjacent task 2}.** Use [`/{sibling-skill}`](../{plugin}/{sibling-skill}.md) instead.
+- **{Adjacent task 1}.** Use [`/{sibling-skill}`](./{sibling-skill}.md) instead.
+- **{Adjacent task 2}.** Use [`/{other-plugin-skill}`](../../../{plugin}/docs/skills/{other-plugin-skill}.md) instead.
 
 ## How to invoke it
 
@@ -65,7 +65,8 @@ multiple files are cross-referenced, explain how the cross-references work.}
 infrastructure additions, observability hooks, configuration knobs, ADRs, coding standards, tests, or build phases),
 describe the YAGNI posture this skill takes. Name which items it gates, which named anti-patterns force a finding, and
 whether the rule is enforcing (defer-by-default) or advisory-only. Explain how the deferral surfaces in the artifact.
-Cross-reference [YAGNI](../../yagni.md). Skills that do not produce or review such artifacts can omit this section.}
+Cross-reference [YAGNI](../../../docs/yagni.md). Skills that do not produce or review such artifacts can omit this
+section.}
 
 ## Cost and latency
 
@@ -91,10 +92,12 @@ URL: {url}
 
 ## Related documentation
 
-- [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates, the
-  acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [`{sibling-skill}`](../{plugin}/{sibling-skill}.md). {Why and when they pair}
-- [`{agent-this-skill-dispatches}`](../../agents/han-core/{agent}.md). {Role in this skill}
+- [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
+- [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
+  tree.
+- [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule (when applicable). The two gates,
+  the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [`{sibling-skill}`](./{sibling-skill}.md). {Why and when they pair}
+- [`{agent-this-skill-dispatches}`](../../../han-core/docs/agents/{agent}.md). {Role in this skill}
 - [{build-guideline link}](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/{file}.md).
   {Relevance}

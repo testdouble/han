@@ -29,24 +29,24 @@ team it lands on whoever has the cycles.
 
 Han's specialist sub-agents are built to fill those role gaps.
 
-When you run [`/code-review`](./skills/han-coding/code-review.md), the skill dispatches
-[`adversarial-security-analyst`](./agents/han-core/adversarial-security-analyst.md),
-[`devops-engineer`](./agents/han-core/devops-engineer.md), [`on-call-engineer`](./agents/han-core/on-call-engineer.md),
-[`data-engineer`](./agents/han-core/data-engineer.md), [`test-engineer`](./agents/han-core/test-engineer.md), and
-[`edge-case-explorer`](./agents/han-core/edge-case-explorer.md) at the size of your branch. It also dispatches the
-[`structural-analyst`](./agents/han-core/structural-analyst.md),
-[`behavioral-analyst`](./agents/han-core/behavioral-analyst.md), and
-[`concurrency-analyst`](./agents/han-core/concurrency-analyst.md). Each one reads the changes from its own perspective
+When you run [`/code-review`](../han-coding/docs/skills/code-review.md), the skill dispatches
+[`adversarial-security-analyst`](../han-core/docs/agents/adversarial-security-analyst.md),
+[`devops-engineer`](../han-core/docs/agents/devops-engineer.md), [`on-call-engineer`](../han-core/docs/agents/on-call-engineer.md),
+[`data-engineer`](../han-core/docs/agents/data-engineer.md), [`test-engineer`](../han-core/docs/agents/test-engineer.md), and
+[`edge-case-explorer`](../han-core/docs/agents/edge-case-explorer.md) at the size of your branch. It also dispatches the
+[`structural-analyst`](../han-core/docs/agents/structural-analyst.md),
+[`behavioral-analyst`](../han-core/docs/agents/behavioral-analyst.md), and
+[`concurrency-analyst`](../han-core/docs/agents/concurrency-analyst.md). Each one reads the changes from its own perspective
 and surfaces findings.
 
-When you run [`/plan-a-feature`](./skills/han-planning/plan-a-feature.md),
-[`project-manager`](./agents/han-core/project-manager.md) runs the discussion,
-[`junior-developer`](./agents/han-core/junior-developer.md) stress-tests the assumptions, and three to five specialists
+When you run [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
+[`project-manager`](../han-core/docs/agents/project-manager.md) runs the discussion,
+[`junior-developer`](../han-core/docs/agents/junior-developer.md) stress-tests the assumptions, and three to five specialists
 chosen by what the feature touches push back on the design.
 
-When you run [`/investigate`](./skills/han-coding/investigate.md),
-[`evidence-based-investigator`](./agents/han-core/evidence-based-investigator.md) gathers the facts and
-[`adversarial-validator`](./agents/han-core/adversarial-validator.md) argues that the proposed fix will not fix the bug.
+When you run [`/investigate`](../han-coding/docs/skills/investigate.md),
+[`evidence-based-investigator`](../han-core/docs/agents/evidence-based-investigator.md) gathers the facts and
+[`adversarial-validator`](../han-core/docs/agents/adversarial-validator.md) argues that the proposed fix will not fix the bug.
 
 The value lands hardest where there is no one else in the room to push back. A senior engineer at a small startup
 writing the auth path does not have a security review pipeline waiting. A solo founder shipping a feature does not have

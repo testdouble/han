@@ -19,7 +19,7 @@ and reveals detail in layers, instead of each skill restating the rule on its ow
   testable criteria run as a discrete self-check after the draft exists. Stacking it all as one instruction would
   reproduce the failure it exists to dodge.
 - **Synthesis skills rewrite; the rest self-check.** A skill with a synthesis or editor step dispatches the
-  [`readability-editor`](./agents/han-communication/readability-editor.md) to rewrite the draft, preserving every fact.
+  [`readability-editor`](../han-communication/docs/agents/readability-editor.md) to rewrite the draft, preserving every fact.
   Every in-scope skill runs the standardized self-check.
 - **Fidelity wins.** No required fact is dropped to read more simply. Every claim, quantity, named entity, and stated
   condition survives with its precision intact.
@@ -68,15 +68,15 @@ purpose. That keeps the set small enough to apply without the compliance decay t
 
 ## How the standard is applied
 
-Each skill sources the standard by invoking `han-communication:readability-guidance` at its drafting point — the
-guidance skill surfaces the rule and writing-voice profile into the skill's own context — then applies it in stages, one
+Each skill sources the standard by invoking `han-communication:readability-guidance` at its drafting point (the
+guidance skill surfaces the rule and writing-voice profile into the skill's own context), then applies it in stages, one
 at a time:
 
 1. **Template.** The skill's output template carries the structural rules, so the draft is structured from the start.
 2. **Audience frame.** While drafting, the skill writes for a capable reader who did not do the work and lacks the
    author's context. Five engineer-facing skills name a more specific reader instead (see the table below).
 3. **Rewrite pass (synthesis skills only).** A skill with a synthesis or editor step dispatches the
-   [`readability-editor`](./agents/han-communication/readability-editor.md) to audit and rewrite the draft against the
+   [`readability-editor`](../han-communication/docs/agents/readability-editor.md) to audit and rewrite the draft against the
    rule, preserving every fact.
 4. **Self-check.** A discrete pass over the prose regions evaluates six behaviorally-anchored yes/no criteria: main
    point first, descriptive headings, one idea per paragraph, sentence length, no blocklisted word, and every fact
@@ -87,25 +87,34 @@ inline citation identifiers are neither evaluated nor altered, so they still com
 
 ## Scope: which skills are reader-facing
 
-A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end. The table
-below lists the skills that meet that test today. Skills whose primary output is code, or a governed structured artifact
-(a specification, plan, work-item, or coding standard), are out of scope.
+A skill is in scope when its primary deliverable is human-facing prose that a non-author reads end to end. A structured
+specification, plan, phased build, work-item list, coding standard, or test plan also counts when a human reads it end
+to end, whether to approve it, follow it, or grab work from it. A structured artifact consumed only by downstream skills
+as machine input, with no human reading it end to end, is out of scope, and so is code output. The table below lists the
+skills that meet that test today.
 
 | Skill                                                                                  | Reader                                                                                    | Rewrite pass                                                              |
 | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| [`/research`](./skills/han-core/research.md)                                           | Default frame                                                                             | Synthesis: dispatches `readability-editor`                                |
-| [`/gap-analysis`](./skills/han-core/gap-analysis.md)                                   | Default frame                                                                             | Synthesis (at consolidated report sizes): dispatches `readability-editor` |
-| [`/project-documentation`](./skills/han-core/project-documentation.md)                 | A technically-literate reader who needs to understand the feature before reading its code | Synthesis: dispatches `readability-editor`                                |
-| [`/issue-triage`](./skills/han-core/issue-triage.md)                                   | Default frame                                                                             | Self-check only                                                           |
-| [`/runbook`](./skills/han-core/runbook.md)                                             | Default frame                                                                             | Self-check only                                                           |
-| [`/architectural-decision-record`](./skills/han-core/architectural-decision-record.md) | Default frame                                                                             | Self-check only                                                           |
-| [`/code-overview`](./skills/han-coding/code-overview.md)                               | Default frame                                                                             | Synthesis: dispatches `readability-editor`                                |
-| [`/investigate`](./skills/han-coding/investigate.md)                                   | The engineer who will implement the fix and may be paged on the bug                       | Synthesis: dispatches `readability-editor`                                |
-| [`/code-review`](./skills/han-coding/code-review.md)                                   | The author and reviewers of the change under review                                       | Synthesis: dispatches `readability-editor`                                |
-| [`/architectural-analysis`](./skills/han-coding/architectural-analysis.md)             | The engineer weighing the module's design                                                 | Synthesis: dispatches `readability-editor`                                |
-| [`/stakeholder-summary`](./skills/han-reporting/stakeholder-summary.md)                | The non-technical stakeholder                                                             | Synthesis: dispatches `readability-editor`                                |
-| [`/html-summary`](./skills/han-reporting/html-summary.md)                              | The non-technical stakeholder                                                             | Self-check only (prose content; visual layout keeps its own conventions)  |
-| [`/update-pr-description`](./skills/han-github/update-pr-description.md)               | The reviewer evaluating the pull request, who will read the code                          | Synthesis: dispatches `readability-editor`                                |
+| [`/research`](../han-core/docs/skills/research.md)                                           | Default frame                                                                             | Synthesis: dispatches `readability-editor`                                |
+| [`/gap-analysis`](../han-core/docs/skills/gap-analysis.md)                                   | Default frame                                                                             | Synthesis (at consolidated report sizes): dispatches `readability-editor` |
+| [`/project-documentation`](../han-core/docs/skills/project-documentation.md)                 | A technically-literate reader who needs to understand the feature before reading its code | Synthesis: dispatches `readability-editor`                                |
+| [`/issue-triage`](../han-core/docs/skills/issue-triage.md)                                   | Default frame                                                                             | Self-check only                                                           |
+| [`/runbook`](../han-core/docs/skills/runbook.md)                                             | Default frame                                                                             | Self-check only                                                           |
+| [`/architectural-decision-record`](../han-core/docs/skills/architectural-decision-record.md) | Default frame                                                                             | Self-check only                                                           |
+| [`/code-overview`](../han-coding/docs/skills/code-overview.md)                               | Default frame                                                                             | Synthesis: dispatches `readability-editor`                                |
+| [`/investigate`](../han-coding/docs/skills/investigate.md)                                   | The engineer who will implement the fix and may be paged on the bug                       | Synthesis: dispatches `readability-editor`                                |
+| [`/code-review`](../han-coding/docs/skills/code-review.md)                                   | The author and reviewers of the change under review                                       | Synthesis: dispatches `readability-editor`                                |
+| [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md)             | The engineer weighing the module's design                                                 | Synthesis: dispatches `readability-editor`                                |
+| [`/stakeholder-summary`](../han-reporting/docs/skills/stakeholder-summary.md)                | The non-technical stakeholder                                                             | Synthesis: dispatches `readability-editor`                                |
+| [`/html-summary`](../han-reporting/docs/skills/html-summary.md)                              | The non-technical stakeholder                                                             | Self-check only (prose content; visual layout keeps its own conventions)  |
+| [`/update-pr-description`](../han-github/docs/skills/update-pr-description.md)               | The reviewer evaluating the pull request, who will read the code                          | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md)                           | The stakeholder or reviewer who reads the spec                                             | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md)                 | The engineer who will build the feature                                                   | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-a-phased-build`](../han-planning/docs/skills/plan-a-phased-build.md)                 | The reader of the phased build (mixed engineering / product by default)                   | Synthesis: dispatches `readability-editor`                                |
+| [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md)                         | The engineer who grabs a work item and implements it                                      | Self-check only                                                           |
+| [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md)             | The reader of the plan the review refines                                                 | Self-check only                                                           |
+| [`/coding-standard`](../han-coding/docs/skills/coding-standard.md)                           | The engineer who must follow the standard                                                 | Synthesis: dispatches `readability-editor`                                |
+| [`/test-planning`](../han-coding/docs/skills/test-planning.md)                               | The engineer who will implement the tests                                                 | Synthesis: dispatches `readability-editor`                                |
 
 This list is authoritative. A contributor adding a new skill applies the inclusion test above and, if it passes, wires
 the standard in (see [Contributing](../CONTRIBUTING.md#wiring-the-readability-standard-into-a-skill)).
@@ -130,10 +139,11 @@ optional.
   surface to lint. The standard applies at generation time, not as a pipeline gate.
 - **Not a rewrite of the operator-documentation voice.** The existing writing-voice profile continues to govern operator
   docs. This standard reuses its blocklist but does not rewrite it.
-- **Not a guarantee a committed file stays conformant.** The one in-scope skill that writes a committed file
-  ([`/project-documentation`](./skills/han-core/project-documentation.md)) is covered at generation time. A later manual
-  edit is not re-checked automatically. Run
-  [`/edit-for-readability`](./skills/han-communication/edit-for-readability.md) to re-apply the standard to an edited
+- **Not a guarantee a committed file stays conformant.** The in-scope skills that write a committed file (for example
+  [`/project-documentation`](../han-core/docs/skills/project-documentation.md) and
+  [`/coding-standard`](../han-coding/docs/skills/coding-standard.md)) are covered at generation time. A later manual edit is
+  not re-checked automatically. Run
+  [`/edit-for-readability`](../han-communication/docs/skills/edit-for-readability.md) to re-apply the standard to an edited
   file on demand.
 
 ## Design principles
@@ -152,11 +162,11 @@ optional.
 
 - [`han-communication/references/readability-rule.md`](../han-communication/references/readability-rule.md). The
   canonical rule every reader-facing skill sources via `han-communication:readability-guidance`.
-- [`/readability-guidance`](./skills/han-communication/readability-guidance.md). The skill that surfaces the standard
+- [`/readability-guidance`](../han-communication/docs/skills/readability-guidance.md). The skill that surfaces the standard
   into a calling skill's context for in-voice drafting and self-check.
-- [`readability-editor`](./agents/han-communication/readability-editor.md). The agent the synthesis skills dispatch for
+- [`readability-editor`](../han-communication/docs/agents/readability-editor.md). The agent the synthesis skills dispatch for
   the rewrite pass.
-- [`/edit-for-readability`](./skills/han-communication/edit-for-readability.md). The standalone skill that applies this
+- [`/edit-for-readability`](../han-communication/docs/skills/edit-for-readability.md). The standalone skill that applies this
   standard on demand to a file, pasted text, or a conversation draft.
 - [Concepts](./concepts.md). The skill / agent split, and where readability sits among the plugin's mechanics.
 - [YAGNI](./yagni.md) and [Evidence](./evidence.md). The other shared rules, summarized the same way (they remain

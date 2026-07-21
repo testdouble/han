@@ -111,6 +111,11 @@ artifact.
 
 ### 5. Draft the work items
 
+Source the shared readability standard by invoking `han-communication:readability-guidance`, and apply it to the
+work-item prose. Hold the named audience: the engineer who grabs a work item and implements it. The frame governs how a
+fact is said, never whether a required fact appears — keep the plan references, contract links, and dependencies each
+work item names.
+
 Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) with:
 
 - The full plan or context content from Step 1.
@@ -162,6 +167,23 @@ Write one `work-items.md` in the folder resolved in Step 2. The file layout (tit
 shared-artifacts preamble) is specified in
 [references/work-items-file-format.md](./references/work-items-file-format.md). Each work item uses the template in
 [references/work-item-template.md](./references/work-item-template.md).
+
+Before writing, run the standardized readability self-check (the shared standard is in your context from
+`han-communication:readability-guidance`) over the work-item prose regions only — never inside code fences, tables, the
+W-N identifiers, or the structured fields (Type, Depends on, Plan reference, Reference artifacts, Design references),
+which must survive unchanged so they still resolve. Confirm each criterion and fix any failure before writing:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
+   lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
+   precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears. This skill runs no
+separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
 
 Write incrementally per the operating principle: write the title and intro first, then append each work item as it is
 finalized. Save after each.
