@@ -19,10 +19,12 @@ open-question headings carry {#oq-N}. Renaming a phase never breaks a deep link.
 # Han Publishing Cleanup: Build Phase Outline
 
 This document describes the order in which the Han publishing cleanup will be built. The work is broken into a sequence
-of **phases**, where each phase is a thin end-to-end deliverable that can be demonstrated to a real person, and each
-phase builds on the one before it. The cleanup repairs how Han is published to the people who install it: a missing
-plugin, work items that vanish without a trace, frozen version numbers, untrue dependency declarations, and a release
-process that only sees half the places it ships to.
+of **phases**. Each phase is a thin end-to-end deliverable that can be demonstrated to a real person, and each phase
+builds on the one before it.
+
+The cleanup repairs how Han is published to the people who install it: a missing plugin, work items that vanish without
+a trace, frozen version numbers, untrue dependency declarations, and a release process that only sees half the places it
+ships to.
 
 This document is the companion to [source-han-cleanup-plan.md](./source-han-cleanup-plan.md). The source artifact
 describes _what is broken in Han's publishing pipeline today and the seven fixes it recommends, in order_. This
@@ -53,7 +55,7 @@ source-artifact sections it covers, so anyone can trace a phase back to source.
 ## Executive Summary {#executive-summary}
 
 **The goal:** Every Han plugin is published, current, and honestly described on both of the channels people install it
-from, and an automated check makes it impossible to quietly break that again.
+from. An automated check makes it impossible to quietly break that again.
 
 Han ships through two install channels. Following the source artifact, this document calls them the first channel and
 the second channel. The first channel is healthy; the second channel is the one that has been quietly rotting, and it
@@ -73,10 +75,11 @@ is where most of this cleanup lands.
 **Sequencing rationale, in plain language:**
 
 The order comes from the source artifact, and the source is explicit that it is not negotiable. The user-facing harms
-come first because someone following the documented instructions hits an error today. The record cleanup and the
-release-process fix come next because the automated check depends on them. If the check were turned on first, it would
-fail on almost every plugin from day one, someone would disable it, and it would protect nothing. Fixed first, then
-guarded: that is the whole sequencing argument.
+come first because someone following the documented instructions hits an error today.
+
+The record cleanup and the release-process fix come next because the automated check depends on them. If the check were
+turned on first, it would fail on almost every plugin from day one, someone would disable it, and it would protect
+nothing. Fixed first, then guarded: that is the whole sequencing argument.
 
 **Phases deliberately deferred:**
 
@@ -116,12 +119,12 @@ follow under [Build Phases](#build-phases). Decisions the team must resolve befo
 Every phase is tagged with one of four kinds. The taxonomy is used in the Build Phase Index and on each phase entry's
 `**Kind.**` line.
 
-- **Foundation** — A capability that does not deliver new user-facing features on its own, but is required for later
+- **Foundation:** A capability that does not deliver new user-facing features on its own, but is required for later
   phases. Must still be demoable in its own right (e.g., "an admin can edit and persist a new setting"). No phase in
   this plan uses the Foundation kind.
-- **Feature slice** — A thin end-to-end strip of new behavior that a real user can experience.
-- **Polish** — Branding, refinement, observability, or quality-of-life work that enriches a working core.
-- **Deferred** — Listed for traceability; not built in the current plan. Slotted at the end of the index.
+- **Feature slice:** A thin end-to-end strip of new behavior that a real user can experience.
+- **Polish:** Branding, refinement, observability, or quality-of-life work that enriches a working core.
+- **Deferred:** Listed for traceability; not built in the current plan. Slotted at the end of the index.
 
 ---
 
@@ -174,7 +177,7 @@ this is the only one where work silently disappears.
 
 **What we build.** Three plugins publish work items to three different trackers, and all three record what they
 published by marking up the same shared file. When the GitHub publisher meets a file marked up by a different tracker,
-those items match none of the patterns it looks for, so they are neither published nor counted as skipped. They vanish
+those items match none of the patterns it looks for. They are neither published nor counted as skipped, and they vanish
 from the run with no error and no signal. After this phase, every work item in a GitHub publishing run is accounted
 for: published, skipped with a count, or reported as belonging to another tracker.
 
@@ -211,9 +214,9 @@ it "the one worth fixing first" among the ticket-file problems. It depends on no
 
 **Builds on.** Nothing from earlier phases. It holds position 3 in the source's harm-first ordering.
 
-**What we build.** The second channel decides whether an update is available by reading a version number that has not
-moved since the day it was written, so it never offers anyone an update. This phase corrects every frozen version
-number on that channel to match the versions that actually shipped, so people stuck on old copies start being offered
+**What we build.** The second channel decides whether an update is available by reading a version number. That number
+has not moved since the day it was written, so it never offers anyone an update. This phase corrects every frozen version
+number on that channel to match the versions that shipped, so people stuck on old copies start being offered
 updates again.
 
 **Why this is Phase 3.** Everyone on the second channel is affected, but nothing errors: they quietly run old skills.
@@ -328,7 +331,7 @@ that channel's contents are already correct.
 
 **What we build.** Today the release process updates two publishing surfaces and does not know the other two exist,
 which is why roughly twenty releases went by without anyone noticing the rot. After this phase the release process
-starts from the plugins as they actually exist in the repository, rather than trusting a list that can go stale, and
+starts from the plugins as they exist in the repository, rather than trusting a list that can go stale, and
 updates all four surfaces. It also knows the one deliberate exception permanently: the all-in-one bundle cannot be
 published to the second channel because that channel does not support bundles yet.
 
@@ -450,10 +453,10 @@ other's marks and skip work that was never published to their tracker, and the s
 publisher's marks say which tracker they came from. That fix changes the file format, so files marked up the old way
 need a migration path, one that stops and asks rather than guesses.
 
-- **Option A — Adopt tracker-labeled marks across all three publishers now.** Closes the silent gap and the
+- **Option A: Adopt tracker-labeled marks across all three publishers now.** Closes the silent gap and the
   cross-tracker trap in one pass, since it is the fix the source itself names. Costs more: a format change, a
   migration path, and coordinated changes to three plugins instead of one.
-- **Option B — Only close the GitHub publisher's gap now.** The GitHub publisher learns to recognize marks that are
+- **Option B: Only close the GitHub publisher's gap now.** The GitHub publisher learns to recognize marks that are
   not its own and reports them instead of dropping them. Smallest change that ends the silent data loss. The
   cross-tracker trap remains, though it is visible in the skipped counts rather than silent.
 - **Recommendation: Option A.** The source presents the tracker-labeled format as the fix, not an option, and Option B
@@ -468,7 +471,7 @@ visible, and each names the trigger that would put it back on the table.
 
 ### OQ-2. Should plugins declare which versions of each other they work with? {#oq-2}
 
-**Blocks phase(s).** None — carry-over note.
+**Blocks phase(s).** None: carry-over note.
 
 The source reverses the earlier analysis that closed this question. Plugins are installed and updated one at a time,
 so someone can update the Core plugin today while running a months-old Coding plugin, and nothing anywhere notices or
@@ -481,7 +484,7 @@ one plugin knowingly alters behavior another plugin relies on.
 
 ### OQ-3. Does the format-checking step really catch a mismatched ticket file? {#oq-3}
 
-**Blocks phase(s).** None — carry-over note, though it informs Phase 2's demo.
+**Blocks phase(s).** None: carry-over note, though it informs Phase 2's demo.
 
 The source's reviewer could not test whether the step that is supposed to catch a mismatched ticket file catches one
 in practice, because that depends on judgment at the time rather than anything written down. Phase 2's demonstration
@@ -493,5 +496,5 @@ becomes part of Phase 2's fix.
 
 ---
 
-_End of outline. If you need to cite a specific phase elsewhere, use its `Phase N` number — those numbers are stable
+_End of outline. If you need to cite a specific phase elsewhere, use its `Phase N` number: those numbers are stable
 for the life of this document. If you need to cite a specific open question, use its `OQ-N` ID._
