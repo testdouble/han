@@ -81,7 +81,7 @@
     satisfies the same evidence, with the reopening trigger named.
 - **Linked technical notes:** —
 - **Driven by findings:** F3 (the default membership rule and naming the bundle), F6 (single allowance, general
-  format deferred), F11 (fail closed and name itself)
+  format deferred), F11 (fail closed and name itself), F14 (the precondition's requirement-versus-placement split recorded as OI-1)
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome; Actors and Triggers; Primary Flow; Edge Cases and Failure Modes; Coordinations;
   Out of Scope; Open Items
