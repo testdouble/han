@@ -67,6 +67,11 @@ Read these before doing anything. They constrain every step below.
   counts, or any other diff-stat figure — not in the intro, not in a section, not anywhere. BECAUSE these numbers go
   stale the instant the PR is updated and add no understanding; describe what changed and why, never how big the diff
   is.
+- **Every overview cites its context.** The overview lists every source it drew on in a `Context used` section placed
+  directly after the lead why section — linked directly when the source has an address (a repository file path, a PR /
+  issue / commit URL), stated in one plain sentence when it does not (an uncommitted diff, the branch's commit messages,
+  context supplied in conversation). BECAUSE the reader should be able to walk the same evidence the overview was built
+  from, and a fabricated or broken link poisons that trust — never invent a URL or link a path that does not exist.
 - **Ephemeral, not documentation.** The overview is written to a scratch file outside the repository and is never
   committed into the repository's documentation tree. BECAUSE durable feature and system docs are
   `project-documentation`'s job; this skill is an understand-now orientation aid.
@@ -158,6 +163,12 @@ here.
 
 Identify the set of files the change touches; that set scopes the exploration in Step 4.
 
+**Start the context ledger.** From this step on, record every context source consulted — the files and directories read,
+the PR reference and its URL, the commit range and log, CLAUDE.md or project-discovery.md, and any material the user
+supplied in conversation — noting for each whether it has a direct address (a repository file path, a PR / issue /
+commit URL) or not (an uncommitted diff, the branch's commit messages, conversational context). Step 5 renders this
+ledger into the overview's `Context used` section, so an unrecorded source here is a missing citation there.
+
 ## Step 4: Dispatch Exploration Scaled to Size
 
 Dispatch `han-core:codebase-explorer` agents to discover the surrounding code and context — **the evidence of why the
@@ -174,9 +185,12 @@ Each brief must contain: the resolved target (and, in PR mode, the changed-file 
 3); the project-context conventions from Step 1, or a note that surrounding-code inference applies; and the instruction
 to report **the evidence of why the code exists** — the problem it solves or goal it serves, drawn from commit messages,
 PR/issue intent, code comments, naming, and tests — alongside entry points, directly-related context, uses, and the main
-flow, as concrete, file-grounded findings. Instruct each explorer to **report what it found, not to assess quality** —
-this skill raises no findings — and, where the why is not stated anywhere in the evidence, to say so rather than infer
-one.
+flow, as concrete, file-grounded findings. Instruct each explorer to **list the files and sources its findings rest
+on** (paths, commits, PR or issue references) so the skill can fold them into the context ledger from Step 3. Instruct
+each explorer to **report what it found, not to assess quality** — this skill raises no findings — and, where the why is
+not stated anywhere in the evidence, to say so rather than infer one.
+
+When the wave returns, merge each explorer's reported sources into the context ledger, deduplicated.
 
 Wait for the whole wave to return before synthesizing. If the target proves too large to cover fully at the chosen size,
 the explorers cover the highest-signal areas; carry that into the coverage note in Step 5.
@@ -205,17 +219,27 @@ evidence does not support.
 
 **Code mode** renders, in order: the title and intro paragraph; a coverage note **only if** coverage was partial; **Why
 it exists** (the problem the code solves or goal it serves, then briefly what it is and why it works the way it does —
-all flowing from the why); **Main flow** (a Mermaid chart with a one-line scope label, read as how the code delivers on
-the why); **Context and uses** (context and uses kept distinguishable, framed as what it depends on to meet the need and
-where that need is served from); **Where to start** (the concrete entry points the reader opens first).
+all flowing from the why); **Context used** (the context ledger, rendered per the rules below); **Main flow** (a Mermaid
+chart with a one-line scope label, read as how the code delivers on the why); **Context and uses** (context and uses
+kept distinguishable, framed as what it depends on to meet the need and where that need is served from); **Where to
+start** (the concrete entry points the reader opens first).
 
 **PR mode** renders, in order: the same title and intro paragraph; the same conditional coverage note; **Why this change
-exists** (the problem the change solves or goal it advances, then briefly the bottom line of what it does); **Changes by
-intent** (grouped by the reader-visible outcome each group delivers — the why each group serves — not by file, layer, or
-author motivation; a single logical change is one narrative with no grouping header); **How the change flows** (a
-Mermaid chart with a scope label, placed after the grouped changes BECAUSE the reviewer must know what changed before
-that chart is meaningful); **What to watch when reviewing** (navigational only — where the change is hardest to follow
-and why; never a quality or risk judgment).
+exists** (the problem the change solves or goal it advances, then briefly the bottom line of what it does); **Context
+used** (the context ledger, rendered per the rules below); **Changes by intent** (grouped by the reader-visible outcome
+each group delivers — the why each group serves — not by file, layer, or author motivation; a single logical change is
+one narrative with no grouping header); **How the change flows** (a Mermaid chart with a scope label, placed after the
+grouped changes BECAUSE the reviewer must know what changed before that chart is meaningful); **What to watch when
+reviewing** (navigational only — where the change is hardest to follow and why; never a quality or risk judgment).
+
+**Render the `Context used` section from the context ledger** built in Steps 3 and 4, directly after the lead why
+section in both modes. One line per source, each with a short note on what it contributed. Link every source that has a
+direct address: a repository file or directory as a Markdown link whose target is its absolute path (the scratch file
+lives outside the repository, so a relative path would not resolve); a pull request, issue, or commit as its URL (in PR
+mode with a remote, prefer the remote's file URLs at the PR's head so the links work for a reader outside this machine).
+A source with no address — the uncommitted diff, the branch's commit messages, context the user supplied in conversation
+— gets one plain sentence stating what the context was. Never fabricate a URL or link a path that does not exist;
+deduplicate the list and keep it a reference list, not prose.
 
 **Place any captured screenshots inline next to the text they illustrate** — embedded as `![caption](url)` directly
 under the Changes-by-intent item or the flow step they depict, BECAUSE a visual next to its description spares the
@@ -249,7 +273,9 @@ and the resolved target (and, in PR mode, the changed-file set) so it knows what
   inferred; does the code actually do what _Why it exists_ / _Why this change exists_ says; does the **Main flow** /
   **How the change flows** chart match the real control flow, in the right order, with no invented or missing steps; do
   the named **Where to start** entry points exist and are they the right ones; does each **Changes by intent** grouping
-  describe what that change actually does and the why it claims to serve. Surface every claim that is unsupported,
+  describe what that change actually does and the why it claims to serve; does every entry in **Context used** point at
+  a source that exists (the file path resolves, the PR / issue / commit reference is real) — a fabricated or broken link
+  is an inaccuracy like any other. Surface every claim that is unsupported,
   overstated, contradicted by the code, or hallucinated — the why most of all, since it is the load-bearing claim —
   citing the file, line, or commit that disproves it. **Validate the accuracy of the description only — do not assess
   the code's quality and do not raise findings about the code itself.** Return a list of inaccurate or unsupported
@@ -267,10 +293,11 @@ readability rewrite, not two overlapping reviews.
   default reader (a capable reader who did not do this work and lacks the author's context), preserving every fact. Pass
   it the scratch-file path; the editor reads han-communication's own canonical rule, so pass no rule path. It operates
   on **prose regions only**: it does not touch the Mermaid chart bodies, code fences, or the embedded screenshot markup,
-  and it leaves every named file, symbol, and entry point exact. It applies the rewrite to the scratch file in place and
-  returns a rubric verdict and a fact-preservation ledger. Tell it: **rewrite the overview document for readability only
-  — do not review the underlying code, and do not raise findings about it.** This skill makes no quality judgment about
-  the code; the validator guards truth, the editor guards clarity, and neither crosses into evaluating the work itself.
+  and it leaves every named file, symbol, entry point, and `Context used` link target exact. It applies the rewrite to
+  the scratch file in place and returns a rubric verdict and a fact-preservation ledger. Tell it: **rewrite the
+  overview document for readability only — do not review the underlying code, and do not raise findings about it.**
+  This skill makes no quality judgment about the code; the validator guards truth, the editor guards clarity, and
+  neither crosses into evaluating the work itself.
 
 Keep the spec-content discipline through both passes: the result is still an orientation aid with no quality findings,
 led by the why with everything flowing from it, minimal technical detail in the why/flow/context sections, and concrete
