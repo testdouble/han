@@ -153,9 +153,10 @@ upgrade.
 
 ### You want to depend on the whole suite, not only core
 
-Depend on `han` instead of `han-core` when your plugin needs the planning, coding, GitHub, or reporting skills too, not
-only the core skills and agents. The declaration is the same shape, with `han` in the `dependencies` array. Be aware
-that this pulls the entire suite in, so prefer `han-core` when core is all your skill builds on.
+Depend on `han` instead of `han-core` when your plugin needs the documentation, research, planning, coding, GitHub, or
+reporting skills too, not only the shared agents and project discovery. The declaration is the same shape, with `han`
+in the `dependencies` array. Be aware that this pulls the entire suite in, so prefer `han-core` when core is all your
+skill builds on.
 
 ## What you should expect
 

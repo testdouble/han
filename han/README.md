@@ -4,9 +4,9 @@
 bundled suite in a single step through its dependencies, so installing `han` is how you ask for everything the suite
 bundles at once.
 
-**Bundled suite.** Installing `han` brings in `han-communication`, `han-core`, `han-planning`, `han-coding`,
-`han-github`, and `han-reporting` through its dependencies. It does not bundle the opt-in plugins (`han-feedback`,
-`han-atlassian`, `han-linear`, and `han-plugin-builder`); install each of those on its own.
+**Bundled suite.** Installing `han` brings in `han-communication`, `han-core`, `han-documentation`, `han-research`,
+`han-planning`, `han-coding`, `han-github`, and `han-reporting` through its dependencies. It does not bundle the opt-in
+plugins (`han-feedback`, `han-atlassian`, `han-linear`, and `han-plugin-builder`); install each of those on its own.
 
 ```
 /plugin marketplace add testdouble/han

@@ -5,8 +5,8 @@ through the Atlassian MCP server, wrapping the core documentation, planning, and
 Atlassian after you review it. Reach for it when your team's docs and tickets live in Confluence and Jira.
 
 **Opt-in.** Installed on its own, not bundled by the `han` meta-plugin. Install it with
-`/plugin install han-atlassian@han`. Depends on `han-communication`, `han-core`, `han-planning`, and `han-coding`
-(its wrapper skills run skills from each), and requires a configured Atlassian MCP server.
+`/plugin install han-atlassian@han`. Depends on `han-communication`, `han-core`, `han-documentation`, `han-planning`,
+and `han-coding` (its wrapper skills run skills from each), and requires a configured Atlassian MCP server.
 
 ## Skills
 

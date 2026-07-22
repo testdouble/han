@@ -47,8 +47,9 @@ but not the only one.
   frontmatter field `disable-model-invocation` defaults to `false`); no Han skill turns it off. Either way the skill
   runs the same protocol.
 - It follows a defined protocol. Every reader who runs the same skill gets the same shape of output.
-- It is documented by a `SKILL.md` file inside `han-core/skills/{name}/` (or `han-planning/skills/{name}/`,
-  `han-coding/skills/{name}/`, `han-github/skills/{name}/`, and the other plugins' `skills/{name}/` directories).
+- It is documented by a `SKILL.md` file inside its plugin's `skills/{name}/` directory (`han-documentation/skills/{name}/`,
+  `han-research/skills/{name}/`, `han-planning/skills/{name}/`, `han-coding/skills/{name}/`, `han-github/skills/{name}/`,
+  and the other plugins' `skills/{name}/` directories).
 - It may dispatch one or more agents for the steps that need judgment.
 
 **The test:** could you draw the whole thing as a flowchart? If yes, it is a skill.
@@ -60,7 +61,9 @@ An agent is a specialist teammate. A model with a persona, a narrow domain, and 
 - An agent has a name like `adversarial-security-analyst`, `project-manager`, or `junior-developer`.
 - An agent applies contextual judgment. _Is this finding really a problem? Does the plan address the risk? Should we ask
   another specialist?_
-- An agent is documented by a single `.md` file inside `han-core/agents/`.
+- An agent is documented by a single `.md` file inside its plugin's `agents/` directory (`han-core/agents/` for the
+  shared roster; the readability-editor lives in `han-communication/agents/` and the research-analyst in
+  `han-research/agents/`).
 - You can dispatch an agent directly with the `Agent` tool, but most agents get dispatched _for you_ when a skill needs
   their input.
 
@@ -209,28 +212,33 @@ You might invoke an agent directly when:
   produced.
 - You are composing a custom workflow that does not match any slash command cleanly.
 
-Direct invocation uses the `Agent` tool with `subagent_type: han-core:{agent-name}` (for example,
-`han-core:adversarial-security-analyst`).
+Direct invocation uses the `Agent` tool with `subagent_type: {plugin}:{agent-name}` (for example,
+`han-core:adversarial-security-analyst`, or `han-research:research-analyst`).
 
 ## How Han is packaged
 
-Han ships as a family of plugins in one marketplace. `han-core` carries the research, analysis, documentation, and
-operations skills and every agent.
+Han ships as a family of plugins in one marketplace. `han-core` carries the shared specialist agent roster the other
+plugins dispatch, the project-discovery skill, and the canonical rule files.
 
-`han-planning` adds the planning skills you reach for before implementation (`/plan-a-feature`, `/plan-implementation`,
-`/plan-a-phased-build`, `/plan-work-items`, and `/iterative-plan-review`). `han-coding` adds the coding skills you reach
-for while working in code (`/tdd`, `/refactor`, `/code-review`, `/code-overview`, `/architectural-analysis`,
-`/automated-test-planning`, `/manual-test-planning`, `/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
-skills. Each of these four depends on `han-core`, so installing any of them brings the core along.
+`han-documentation` adds the documentation skills (`/project-documentation`, `/architectural-decision-record`, and
+`/runbook`). `han-research` adds the pre-planning knowledge-work skills (`/research`, `/gap-analysis`, and
+`/issue-triage`) plus the research-analyst agent. `han-planning` adds the planning skills you reach for before
+implementation (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and
+`/iterative-plan-review`). `han-coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`,
+`/code-review`, `/code-overview`, `/architectural-analysis`, `/automated-test-planning`, `/manual-test-planning`,
+`/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
+skills. All of these except `han-reporting` depend on `han-core`, so installing any of them brings the shared agents
+along; `han-reporting` depends only on `han-communication`.
 
-`han` is a meta-plugin with no components of its own. It depends on `han-core`, `han-planning`, `han-coding`,
-`han-github`, and `han-reporting`, so installing it pulls in the bundled suite.
+`han` is a meta-plugin with no components of its own. It depends on `han-communication`, `han-core`,
+`han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`, so installing it
+pulls in the bundled suite.
 
-The remaining plugins are opt-in. `han-feedback` adds the post-session feedback skill. `han-atlassian` adds the
-Confluence and Jira skills; it needs a configured Atlassian MCP server, and because its wrapper skills run skills from
-`han-planning` and `han-coding`, it depends on those two as well. `han-linear` adds the work-items-to-Linear skill and
-needs a configured Linear MCP server. Each of these three depends on `han-core` like the other layers, but the `han`
-meta-plugin does not pull them in, so you install each on its own.
+The remaining plugins are opt-in. `han-feedback` adds the post-session feedback skill and depends on no other Han
+plugin. `han-atlassian` adds the Confluence and Jira skills; it needs a configured Atlassian MCP server, and because its
+wrapper skills run skills from `han-documentation`, `han-planning`, and `han-coding`, it depends on those three plus
+`han-core`. `han-linear` adds the work-items-to-Linear skill, needs a configured Linear MCP server, and depends on no
+other Han plugin. The `han` meta-plugin does not pull these in, so you install each on its own.
 
 `han-plugin-builder` carries the guidance for building skills, agents, and plugins, plus the interview-driven
 `/skill-builder` and `/agent-builder` skills. It depends on nothing and is also opt-in.

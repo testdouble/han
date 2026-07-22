@@ -5,14 +5,12 @@ just used, so the maintainers hear what worked and what did not. Reach for it at
 report back on how the suite is working for you.
 
 **Opt-in.** Installed on its own, not bundled by the `han` meta-plugin. Install it with
-`/plugin install han-feedback@han`. Depends on `han-core`.
+`/plugin install han-feedback@han`. Depends on no other Han plugin.
 
 ## Skills
 
 - [`/han-feedback`](docs/skills/han-feedback.md) — Capture structured post-session feedback on the Han skills and agents
   you used across the whole `han-*` plugin family, and optionally post it as a GitHub issue to testdouble/han.
-
-Its skills dispatch shared agents that live in `han-core` (and, for the readability-editor, in `han-communication`).
 
 ## Installation
 

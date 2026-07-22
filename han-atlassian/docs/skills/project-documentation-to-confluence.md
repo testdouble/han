@@ -10,7 +10,7 @@ definition at
 
 ## TL;DR
 
-- **What it does.** Runs the core [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) skill to write
+- **What it does.** Runs the [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) skill to write
   feature documentation to a temporary file, and shows you the file to review. After you confirm, publishes it to a
   Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
 - **When to use it.** You want a feature, system, or component documented _and_ posted to a specific Confluence space or

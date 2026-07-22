@@ -43,9 +43,11 @@ Han ships as multiple plugins:
 
 | Plugin               | Type    | What it brings                                                                                                                                    |
 | -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`han`**            | parent  | the parent plugin that brings in `han-communication`, `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`                 |
+| **`han`**            | parent  | the parent plugin that brings in `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
 | `han-communication`  | bundled | the foundational plugin beneath every other: the shared readability standard and writing-voice profile, plus the skills and agent that apply them |
-| `han-core`           | bundled | research, analysis, and documentation skills plus every agent except the readability-editor                                                       |
+| `han-core`           | bundled | the shared specialist agent roster, the project-discovery skill, and the canonical rule files                                                     |
+| `han-documentation`  | bundled | documentation skills: project docs, architectural decision records, and runbooks                                                                  |
+| `han-research`       | bundled | pre-planning knowledge-work skills: research, gap analysis, and issue triage, plus the research-analyst agent                                     |
 | `han-planning`       | bundled | planning skills you reach for before implementation                                                                                               |
 | `han-coding`         | bundled | coding skills you reach for while working in code                                                                                                 |
 | `han-github`         | bundled | GitHub-facing skills like posting a code review on a PR                                                                                           |
@@ -55,10 +57,10 @@ Han ships as multiple plugins:
 | `han-linear`         | opt-in  | skill for publishing work items to Linear (requires a Linear MCP server)                                                                          |
 | `han-plugin-builder` | opt-in  | carries the guidance and skills for building your own skills, agents, and plugins                                                                 |
 
-Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-communication`, `han-core`, `han-planning`,
-`han-coding`, `han-github`, and `han-reporting`), and is the right choice for most people. If you do not want the
-planning, coding, GitHub, or reporting skills, install `han-core@han` instead, and add other specific plugins as
-desired.
+Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-communication`, `han-core`,
+`han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`), and is the right
+choice for most people. If you want only one slice of Han, install a single layer such as `han-documentation@han` or
+`han-coding@han` instead (each brings the shared `han-core` agents along), and add other specific plugins as desired.
 
 For the full picture and a quick "which one do you need?" guide, see
 [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).
@@ -78,6 +80,8 @@ packages depend on:
 ```
 codex plugin add han-communication@han
 codex plugin add han-core@han
+codex plugin add han-documentation@han
+codex plugin add han-research@han
 codex plugin add han-planning@han
 codex plugin add han-coding@han
 codex plugin add han-github@han
@@ -92,7 +96,7 @@ prose-producing skills source the shared readability standard from it).
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
 - [Plugin index](./docs/choosing-a-han-plugin.md). Every plugin with a one-line scent and a link to its README, the
-  full suite vs. core only, the layer dependencies on `han-core`, and a quick guide to which one to install.
+  full suite vs. a single layer, the layer dependencies on `han-core`, and a quick guide to which one to install.
 - [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
 - [Skills index](./docs/skills/README.md). Every skill, alphabetized, with a scent line and a link to its long-form doc.
 - [Agents index](./docs/agents/README.md). Every agent, alphabetized, with a scent line and a link to its long-form doc.

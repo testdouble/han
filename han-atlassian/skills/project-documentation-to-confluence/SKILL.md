@@ -17,7 +17,7 @@ allowed-tools:
 
 # Project Documentation to Confluence
 
-This skill produces project documentation with the core `han-documentation:project-documentation` skill, lets the user review the
+This skill produces project documentation with the `han-documentation:project-documentation` skill, lets the user review the
 result, and then publishes it to a Confluence location that **the user must specify**. It is a thin orchestrator: the
 documentation work belongs to `han-documentation:project-documentation`, and the publishing work belongs to
 `han-atlassian:markdown-to-confluence`. This skill only validates its inputs, runs the documentation to a temporary
