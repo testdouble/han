@@ -10,7 +10,7 @@
     {
       "name": "han",
       "source": "./han",
-      "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han-communication, han-core, han-planning, han-coding, han-github, and han-reporting so installing it pulls them all in. Does not bundle the opt-in han-feedback, han-atlassian, or han-plugin-builder plugins.",
+      "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han-communication, han-core, han-documentation, han-research, han-planning, han-coding, han-github, and han-reporting so installing it pulls them all in. Does not bundle the opt-in han-feedback, han-atlassian, or han-plugin-builder plugins.",
       "version": "4.6.0"
     },
     {
@@ -24,6 +24,18 @@
       "source": "./han-core",
       "description": "Evidence-based research, architecture, and documentation skills for software projects, plus the adversarial specialist agents the rest of the suite dispatches. Includes issue triage, open-ended research, architectural decision records (ADRs), gap analysis, project discovery, project and feature documentation, and runbooks. Feature- and implementation-planning skills live in han-planning, which depends on han-core.",
       "version": "2.2.1"
+    },
+    {
+      "name": "han-documentation",
+      "source": "./han-documentation",
+      "description": "Documentation skills for the Han suite: writing down what the team built and decided. Home of project-documentation, architectural-decision-record, and runbook. Depends on han-communication and han-core; bundled by the han meta-plugin.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "han-research",
+      "source": "./han-research",
+      "description": "Pre-planning knowledge-work skills for the Han suite: understanding a problem before anyone commits to a plan. Home of research, gap-analysis, and issue-triage, plus the research-analyst agent. Depends on han-communication and han-core; bundled by the han meta-plugin.",
+      "version": "1.0.0"
     },
     {
       "name": "han-planning",
