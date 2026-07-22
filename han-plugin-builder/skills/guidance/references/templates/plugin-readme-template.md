@@ -27,7 +27,7 @@ configured {MCP server} MCP server}.
 - [`/skill-name`](docs/skills/skill-name.md) — {canonical summary line from the long-form doc}
 - [`/another-skill`](docs/skills/another-skill.md) — {canonical summary line from the long-form doc}
 
-<!-- Owned agents: include this section ONLY for han-core and han-communication.
+<!-- Owned agents: include this section ONLY for han-core, han-communication, and han-research.
      Every other plugin omits it and uses the shared-agent-dispatch note below instead. -->
 
 ## Agents
@@ -35,7 +35,7 @@ configured {MCP server} MCP server}.
 - [`agent-name`](docs/agents/agent-name.md) — {canonical summary line from the long-form doc}
 
 <!-- Shared-agent-dispatch note: for every plugin that owns no agents (all except
-     han-core and han-communication), use this line in place of an Agents section. -->
+     han-core, han-communication, and han-research), use this line in place of an Agents section. -->
 
 Its skills dispatch shared agents that live in `han-core` (and, for the readability-editor, in `han-communication`).
 

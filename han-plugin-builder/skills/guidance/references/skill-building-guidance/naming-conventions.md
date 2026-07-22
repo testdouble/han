@@ -72,8 +72,8 @@ produces. When the actual output differs, users avoid the skill (thinking it doe
 may generate the wrong output type.
 
 Consider a skill named `write-tests`. That name implies the skill produces runnable test code, when it actually produces
-a test plan document. Renaming it to `test-planning` names the process/activity rather than an implementation action, so
-users and Claude both predict the right output type.
+a test plan document. Renaming it to `automated-test-planning` names the process/activity rather than an implementation
+action, so users and Claude both predict the right output type.
 
 **Before (`write-tests` — implies executable test code):**
 
@@ -82,14 +82,14 @@ skills/
   write-tests/      # Users wanting test analysis may avoid it; Claude may generate code instead of plans
 ```
 
-**After (`test-planning` — names the process unambiguously):**
+**After (`automated-test-planning` — names the process unambiguously):**
 
 ```
 skills/
-  test-planning/    # Names the activity; the artifact (a test plan) is implied without suggesting runnable code
+  automated-test-planning/    # Names the activity; the artifact (a test plan) is implied without suggesting runnable code
 ```
 
-Prefer gerund process names (`test-planning`, `iterative-plan-review`) over implementation verbs (`write-tests`,
+Prefer gerund process names (`automated-test-planning`, `iterative-plan-review`) over implementation verbs (`write-tests`,
 `generate-docs`) when the skill produces analysis, plans, or documentation rather than runnable artifacts. This matches
 Anthropic's general naming recommendation: gerund form (`processing-pdfs`, `analyzing-spreadsheets`) is the preferred
 convention, with noun phrases (`pdf-processing`) and action forms (`process-pdfs`) acceptable alternatives. Avoid vague
@@ -176,4 +176,4 @@ SKILL.md       # Exactly this, nothing else
 4. No `README.md` inside skill folders — use `SKILL.md` and `references/` instead
 5. Skill definition file must be exactly `SKILL.md` (case-sensitive)
 6. Avoid skill names using implementation verbs that imply the wrong output type — prefer gerund process names for
-   analysis/planning skills (e.g., `test-planning` not `write-tests`)
+   analysis/planning skills (e.g., `automated-test-planning` not `write-tests`)

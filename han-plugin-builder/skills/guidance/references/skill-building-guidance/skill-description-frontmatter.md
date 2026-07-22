@@ -130,8 +130,9 @@ disambiguation leaves a gap that Claude can fall through.
 | `project-documentation` | `coding-standard`               | Feature/system docs vs. coding standards        |
 | `coding-standard`       | `architectural-decision-record` | Enforceable rules vs. decision records          |
 | `project-discovery`     | `project-documentation`         | Tech stack scanning vs. feature/system docs     |
-| `test-planning`         | `code-review`                   | Test coverage plans vs. code quality review     |
-| `test-planning`         | `iterative-plan-review`         | Test plans vs. refining work plans              |
+| `automated-test-planning` | `code-review`                 | Test coverage plans vs. code quality review     |
+| `automated-test-planning` | `manual-test-planning`        | Coverage-gap analysis vs. hand-run test steps   |
+| `automated-test-planning` | `iterative-plan-review`       | Test plans vs. refining work plans              |
 | `brand-messaging`       | `writing-style`                 | Positioning/ICP/campaigns vs. prose style/voice |
 
 **Before (no boundary, `project-documentation`):**
