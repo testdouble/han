@@ -52,7 +52,7 @@ _when_ and _how_ to use the skill. For what the skill does internally, read the 
 
 - **Reviewing code or investigating a bug.** Use [`/code-review`](../../../han-coding/docs/skills/code-review.md) or
   [`/investigate`](../../../han-coding/docs/skills/investigate.md).
-- **Researching how a skill works or what its options are.** Use [`/research`](../../../han-core/docs/skills/research.md).
+- **Researching how a skill works or what its options are.** Use [`/research`](../../../han-research/docs/skills/research.md).
 - **Feedback on components from non-Han plugins.** The skill scans for `han-*` namespaced skills and agents only; skills
   and agents from third-party plugins are out of scope.
 - **Editing or amending prior feedback.** Open `~/.claude/han-feedback/` and edit the file directly.

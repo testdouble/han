@@ -49,7 +49,7 @@ you decide _when_ and _how_ to use the skill. For what the skill does internally
 
 - **Generating documentation from code.** Use
   [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md) to document a feature and publish
-  it in one pass, or [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) for a local-only doc.
+  it in one pass, or [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) for a local-only doc.
 - **Publishing work items to Jira.** Use [`/work-items-to-jira`](./work-items-to-jira.md).
 - **Searching Confluence for where something belongs.** The skill does not search; you provide the destination.
 

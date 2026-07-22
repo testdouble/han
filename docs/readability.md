@@ -95,12 +95,12 @@ skills that meet that test today.
 
 | Skill                                                                                  | Reader                                                                                    | Rewrite pass                                                              |
 | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| [`/research`](../han-core/docs/skills/research.md)                                           | Default frame                                                                             | Synthesis: dispatches `readability-editor`                                |
-| [`/gap-analysis`](../han-core/docs/skills/gap-analysis.md)                                   | Default frame                                                                             | Synthesis (at consolidated report sizes): dispatches `readability-editor` |
-| [`/project-documentation`](../han-core/docs/skills/project-documentation.md)                 | A technically-literate reader who needs to understand the feature before reading its code | Synthesis: dispatches `readability-editor`                                |
-| [`/issue-triage`](../han-core/docs/skills/issue-triage.md)                                   | Default frame                                                                             | Self-check only                                                           |
-| [`/runbook`](../han-core/docs/skills/runbook.md)                                             | Default frame                                                                             | Self-check only                                                           |
-| [`/architectural-decision-record`](../han-core/docs/skills/architectural-decision-record.md) | Default frame                                                                             | Self-check only                                                           |
+| [`/research`](../han-research/docs/skills/research.md)                                           | Default frame                                                                             | Synthesis: dispatches `readability-editor`                                |
+| [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md)                                   | Default frame                                                                             | Synthesis (at consolidated report sizes): dispatches `readability-editor` |
+| [`/project-documentation`](../han-documentation/docs/skills/project-documentation.md)                 | A technically-literate reader who needs to understand the feature before reading its code | Synthesis: dispatches `readability-editor`                                |
+| [`/issue-triage`](../han-research/docs/skills/issue-triage.md)                                   | Default frame                                                                             | Self-check only                                                           |
+| [`/runbook`](../han-documentation/docs/skills/runbook.md)                                             | Default frame                                                                             | Self-check only                                                           |
+| [`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md) | Default frame                                                                             | Self-check only                                                           |
 | [`/code-overview`](../han-coding/docs/skills/code-overview.md)                               | Default frame                                                                             | Synthesis: dispatches `readability-editor`                                |
 | [`/investigate`](../han-coding/docs/skills/investigate.md)                                   | The engineer who will implement the fix and may be paged on the bug                       | Synthesis: dispatches `readability-editor`                                |
 | [`/code-review`](../han-coding/docs/skills/code-review.md)                                   | The author and reviewers of the change under review                                       | Synthesis: dispatches `readability-editor`                                |
@@ -141,7 +141,7 @@ optional.
 - **Not a rewrite of the operator-documentation voice.** The existing writing-voice profile continues to govern operator
   docs. This standard reuses its blocklist but does not rewrite it.
 - **Not a guarantee a committed file stays conformant.** The in-scope skills that write a committed file (for example
-  [`/project-documentation`](../han-core/docs/skills/project-documentation.md) and
+  [`/project-documentation`](../han-documentation/docs/skills/project-documentation.md) and
   [`/coding-standard`](../han-coding/docs/skills/coding-standard.md)) are covered at generation time. A later manual edit is
   not re-checked automatically. Run
   [`/edit-for-readability`](../han-communication/docs/skills/edit-for-readability.md) to re-apply the standard to an edited

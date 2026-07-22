@@ -2,7 +2,7 @@
 
 Operator documentation for the `/issue-triage` skill in the han plugin. This document helps you decide _when_ and _how_
 to use the skill. For what the skill does internally, read the skill definition at
-[`han-core/skills/issue-triage/SKILL.md`](../../skills/issue-triage/SKILL.md).
+[`han-research/skills/issue-triage/SKILL.md`](../../skills/issue-triage/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
 > [All agents](../../../docs/agents/README.md) · [YAGNI](../../../docs/yagni.md)

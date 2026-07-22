@@ -126,7 +126,7 @@ otherwise autonomous run.
 - **Have your standards and ADRs discoverable.** The green and refactor steps apply your coding standards and
   architectural decisions. If they live in `docs/coding-standards/` or `docs/adr/`, or are recorded by
   [`/coding-standard`](./coding-standard.md) and
-  [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md), the skill finds and applies them. If
+  [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md), the skill finds and applies them. If
   they do not exist, it infers conventions from surrounding code, which is weaker.
 - **Let the list be the scope signal.** If the open test list grows past about ten items, the skill flags a scope
   warning and keeps going, then recommends splitting the work in its final summary. Take that warning seriously: a
@@ -256,7 +256,7 @@ URL: https://growing-object-oriented-software.com/
 - [`/code-review`](./code-review.md). Run it on the branch once the list is empty. TDD produces self-testing
   code; it does not replace review.
 - [`/coding-standard`](./coding-standard.md) and
-  [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md). The standards and ADRs `/tdd`
+  [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). The standards and ADRs `/tdd`
   applies in green and refactor come from here.
 - [Skill building guidance](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance). The
   progressive disclosure, description frontmatter, and bash-permission rules this skill follows.

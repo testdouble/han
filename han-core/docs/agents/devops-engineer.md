@@ -323,7 +323,7 @@ URL: https://martinfowler.com/bliki/StranglerFigApplication.html
   medium or large run when the module raises production-readiness concerns.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Conditionally dispatches this agent when the change
   approaches production.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
   touch deployment, observability, or rollout.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Conditionally dispatches this agent in
   team mode when the plan touches production readiness.

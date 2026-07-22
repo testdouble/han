@@ -373,7 +373,7 @@ https://www.projectmanager.com/blog/acceptance-criteria-project-management
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) and
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Skills that dispatch this agent as
   coordinator and synthesizer.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent in synthesis mode at medium and large
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent in synthesis mode at medium and large
   swarm sizes to consolidate swarm output into Section 4 of the report.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise project-management vocabulary (RAID, disagree-and-commit, revisit criterion, servant

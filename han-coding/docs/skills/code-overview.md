@@ -61,7 +61,7 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Reviewing code quality or finding problems.** Use [`/code-review`](./code-review.md) instead (or
   [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md) to post a review to GitHub).
 - **Writing durable feature or system documentation.** Use
-  [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) instead.
+  [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) instead.
 - **Assessing architecture, coupling, or structural risk.** Use [`/architectural-analysis`](./architectural-analysis.md)
   instead.
 - **Diagnosing a bug or root-causing a failure.** Use [`/investigate`](./investigate.md) instead.
@@ -224,7 +224,7 @@ URL: https://www.spinellis.gr/codereading/
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [`/code-review`](./code-review.md). The judgment counterpart: run code-overview to understand a PR, then code-review
   to evaluate it.
-- [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md). The durable counterpart: code-overview is ephemeral
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). The durable counterpart: code-overview is ephemeral
   orientation, project-documentation is maintained docs in the repo tree.
 - [`/architectural-analysis`](./architectural-analysis.md). Reach for this when you need a structural, coupling, and
   risk assessment rather than an orientation.

@@ -139,7 +139,7 @@ URL: https://standards.ieee.org/ieee/829/3787/
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Used by `/gap-analysis` swarms to verify each gap
   against the current state.
 - [`content-auditor`](./content-auditor.md). Sibling for before-and-after content preservation (different problem).
-- [`/gap-analysis`](../skills/gap-analysis.md). Always dispatches this agent.
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Always dispatches this agent.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent to compare a draft spec
   against a PRD or reference spec.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent to compare the

@@ -71,11 +71,11 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **Test planning.** Use [`/automated-test-planning`](./automated-test-planning.md) for a coverage-and-edge-case plan.
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from
   scratch.
-- **Documenting an existing module.** Use [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md).
+- **Documenting an existing module.** Use [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md).
 - **Architectural decision records.** Use
-  [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md) to capture a decision the
+  [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md) to capture a decision the
   architectural analysis motivated.
-- **Researching options or prior art.** Use [`/research`](../../../han-core/docs/skills/research.md) when the question is "what are the
+- **Researching options or prior art.** Use [`/research`](../../../han-research/docs/skills/research.md) when the question is "what are the
   options" or "how does X work", not "is this existing module sound".
 
 ## How to invoke it
@@ -301,7 +301,7 @@ URL: https://www.domainlanguage.com/ddd/
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after synthesis to rewrite
   the report's synthesized prose against the shared readability standard, leaving each analysis section's verbatim agent
   output unchanged.
-- [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md). Record the architectural decisions
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). Record the architectural decisions
   the analysis motivates.
 - [`/investigate`](./investigate.md). Run when a finding reveals a concrete runtime bug.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Stress-test the refactoring plan that implements

@@ -123,9 +123,9 @@ URL: https://standards.ieee.org/ieee/1063/2554/
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
 - [`gap-analyzer`](./gap-analyzer.md). Sibling agent for comparing two distinct artifacts (spec vs. implementation).
 - [`information-architect`](./information-architect.md). Sibling agent for IA structure of the new doc.
-- [`/project-documentation`](../skills/project-documentation.md). Always dispatches this agent in update
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). Always dispatches this agent in update
   mode.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the desired
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the desired
   state is documentation.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent in team mode
   when the plan under review is documentation.

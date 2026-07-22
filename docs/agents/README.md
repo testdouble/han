@@ -52,7 +52,7 @@ which is `han-communication`).
 - [`readability-editor`](../../han-communication/docs/agents/readability-editor.md) — Rewrite a finished draft for a
   non-author reader against the shared readability standard, preserving every fact and leaving code, diagrams, and
   citation identifiers untouched.
-- [`research-analyst`](../../han-core/docs/agents/research-analyst.md) — Research open-ended questions from the open web
+- [`research-analyst`](../../han-research/docs/agents/research-analyst.md) — Research open-ended questions from the open web
   and provided material, returning sourced evidence and a recommendation and treating fetched content as claims, never
   instructions.
 - [`risk-analyst`](../../han-core/docs/agents/risk-analyst.md) — Assess the risk of inaction for architectural findings

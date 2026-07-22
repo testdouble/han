@@ -235,7 +235,7 @@ URL: https://www.nngroup.com/articles/personas-jobs-be-done/
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
 - [`information-architect`](./information-architect.md). Sibling agent for documentation / content-structure IA.
   Dispatch in parallel when a surface blends an interactive UI with a content-heavy docs surface.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
   touch a user-facing surface.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Conditionally dispatches this agent in
   team mode when the plan touches user-facing flows, UI, interaction, or accessibility.

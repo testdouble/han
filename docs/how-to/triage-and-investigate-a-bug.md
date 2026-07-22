@@ -2,7 +2,7 @@
 
 A walkthrough for getting from "something is broken" to a root cause backed by file-level evidence and a fix plan you
 can trust. The primary tool is [`/investigate`](../../han-coding/docs/skills/investigate.md);
-[`/issue-triage`](../../han-core/docs/skills/issue-triage.md) handles the cases where you need to document the report for later
+[`/issue-triage`](../../han-research/docs/skills/issue-triage.md) handles the cases where you need to document the report for later
 instead of working it now.
 
 > See also: [How-to index](./README.md) · [Quickstart](../quickstart.md) · [Skills](../skills/README.md)
@@ -46,7 +46,7 @@ is too vague to investigate or when you do not have time to work it today.
 1. **Read the report you have.** If it names a specific symptom, a reproduction path, or a specific failure mode, skip
    to Phase 2. If it is vague ("the site feels slow," "something is wrong with billing"), move to step 2.
 
-2. **If the report is vague or incomplete, run [`/issue-triage`](../../han-core/docs/skills/issue-triage.md).** A template that
+2. **If the report is vague or incomplete, run [`/issue-triage`](../../han-research/docs/skills/issue-triage.md).** A template that
    works well:
 
    > `/issue-triage {context: what was reported, where you saw it, screenshots, links to the original report}`
@@ -142,7 +142,7 @@ is too vague to investigate or when you do not have time to work it today.
   Validation findings from the new run confirm or falsify the hypothesis under production conditions.
 
 - **The investigation surfaces a procedure the team will reuse.** When the same symptom is likely to recur, pair
-  `/investigate` with [`/runbook`](../../han-core/docs/skills/runbook.md). Investigate captures the root cause and fix; the
+  `/investigate` with [`/runbook`](../../han-documentation/docs/skills/runbook.md). Investigate captures the root cause and fix; the
   runbook captures the procedure for the next engineer who sees the same symptom.
 
 ## What you should expect at each step
@@ -165,8 +165,8 @@ is too vague to investigate or when you do not have time to work it today.
 - [Research a decision](./research-a-decision.md) is the right guide when triage says the report is really a question
   about an approach the team has not yet picked.
 - The skill long-form docs ([investigate](../../han-coding/docs/skills/investigate.md),
-  [issue-triage](../../han-core/docs/skills/issue-triage.md),
-  [iterative-plan-review](../../han-planning/docs/skills/iterative-plan-review.md), [runbook](../../han-core/docs/skills/runbook.md))
+  [issue-triage](../../han-research/docs/skills/issue-triage.md),
+  [iterative-plan-review](../../han-planning/docs/skills/iterative-plan-review.md), [runbook](../../han-documentation/docs/skills/runbook.md))
   cover each step in depth.
 - [`/code-review`](../../han-coding/docs/skills/code-review.md) is the right next step when the fix lands and you want a review
   of the change end-to-end before merge.

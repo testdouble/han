@@ -59,7 +59,7 @@ Something is broken. You want a root cause, not a guess.
 The full walkthrough, including how to bring in production logs and when to triage instead of investigating right away,
 lives in **[How to triage and investigate a bug](./how-to/triage-and-investigate-a-bug.md)**. The skills in the loop:
 
-[`/issue-triage`](../han-core/docs/skills/issue-triage.md) _(as needed)_ →
+[`/issue-triage`](../han-research/docs/skills/issue-triage.md) _(as needed)_ →
 [`/investigate`](../han-coding/docs/skills/investigate.md) →
 [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md) _(optional)_.
 
@@ -95,7 +95,7 @@ Start with the scope that matches:
   **[`/manual-test-planning`](../han-coding/docs/skills/manual-test-planning.md).** Produces a plain-language plan of
   named tests with by-hand steps and expected outcomes, adversarially validated against the supplied context by
   `adversarial-validator` before the file is written.
-- **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](../han-core/docs/skills/gap-analysis.md).**
+- **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](../han-research/docs/skills/gap-analysis.md).**
   Compares two artifacts (current state vs. desired state) and produces a plain-language, stakeholder-readable report
   indexed by stable `G-NNN` gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a
   validator-and-augmenter swarm by default, including `junior-developer`'s actor-perspective sweep across human users,
@@ -118,11 +118,11 @@ need the real skill, spend it here.
 1. **[`/project-discovery`](../han-core/docs/skills/project-discovery.md).** Scans the repository and writes a concise
    `## Project Discovery` section into your AGENTS.md or CLAUDE.md (languages, frameworks, build commands, where things
    live). Other skills consume this automatically.
-2. **[`/project-documentation`](../han-core/docs/skills/project-documentation.md)** _(as needed)._ Document features, systems,
+2. **[`/project-documentation`](../han-documentation/docs/skills/project-documentation.md)** _(as needed)._ Document features, systems,
    and components. `/code-review` and `/architectural-decision-record` read these docs as context.
 3. **[`/coding-standard`](../han-coding/docs/skills/coding-standard.md)** _(as needed)._ Formalize coding conventions, either
    from existing patterns or from research. `/code-review` checks these automatically.
-4. **[`/architectural-decision-record`](../han-core/docs/skills/architectural-decision-record.md)** _(as needed)._ Record
+4. **[`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md)** _(as needed)._ Record
    architectural decisions.
 
 **You are done when:** you have a `## Project Discovery` section in your AGENTS.md or CLAUDE.md and the docs and
@@ -138,8 +138,8 @@ trust before you pick a direction.
 The full walkthrough, including how to capture the recommendation as an ADR so the team has a single canonical record,
 lives in **[How to research a decision and capture it](./how-to/research-a-decision.md)**. The skills in the loop:
 
-[`/research`](../han-core/docs/skills/research.md) →
-[`/architectural-decision-record`](../han-core/docs/skills/architectural-decision-record.md) →
+[`/research`](../han-research/docs/skills/research.md) →
+[`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md) →
 [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) _(optional next step)_.
 
 **You are done when:** you have a research report whose recommendation survived an adversarial pass, with every claim
@@ -159,11 +159,11 @@ next. A few that work:
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).
 - _"Scan this repo, document the auth system, and create a coding standard for how we handle tokens."_ →
   [`/project-discovery`](../han-core/docs/skills/project-discovery.md) →
-  [`/project-documentation`](../han-core/docs/skills/project-documentation.md) →
+  [`/project-documentation`](../han-documentation/docs/skills/project-documentation.md) →
   [`/coding-standard`](../han-coding/docs/skills/coding-standard.md).
 - _"Review my branch, then create an ADR for any architectural decisions in the diff."_ →
   [`/code-review`](../han-coding/docs/skills/code-review.md) →
-  [`/architectural-decision-record`](../han-core/docs/skills/architectural-decision-record.md).
+  [`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md).
 - _"Plan the retry feature, then plan the implementation, then create a test plan for it."_ →
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
@@ -175,14 +175,14 @@ next. A few that work:
 - _"Spec the discount engine, then build it test-first."_ → [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md)
   → [`/tdd`](../han-coding/docs/skills/tdd.md) → [`/code-review`](../han-coding/docs/skills/code-review.md).
 - _"Research our options for background jobs, then spec the one you recommend."_ →
-  [`/research`](../han-core/docs/skills/research.md) → [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).
+  [`/research`](../han-research/docs/skills/research.md) → [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).
 - _"Compare the auth implementation to the auth spec, then plan how to close the gaps, finishing with splitting that
-  work up into task-sized units."_ → [`/gap-analysis`](../han-core/docs/skills/gap-analysis.md) →
+  work up into task-sized units."_ → [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md) →
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
   [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md).
 - _"Compare the share v1 implementation to the share v2 spec, split the gaps into a phased rollout, then plan
   implementation for the first phase, finally laying out individual tasks based on that plan."_ →
-  [`/gap-analysis`](../han-core/docs/skills/gap-analysis.md) →
+  [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md) →
   [`/plan-a-phased-build`](../han-planning/docs/skills/plan-a-phased-build.md) →
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
   [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md).

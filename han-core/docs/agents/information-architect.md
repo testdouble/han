@@ -249,9 +249,9 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
   for findability and scannability.
 - [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md). Dispatches this agent to confirm the plan leads with
   plain language.
-- [`/project-documentation`](../skills/project-documentation.md). Dispatches this agent to audit the
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). Dispatches this agent to audit the
   information architecture of the docs.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent to design the report template.
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent to design the report template.
 - [`user-experience-designer`](./user-experience-designer.md). The sibling agent for live UI surfaces. Dispatch both in
   parallel when a docs site blends content and interactive navigation.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).

@@ -48,7 +48,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 
 **Do not invoke for:**
 
-- **Feature or system documentation.** Use [`/project-documentation`](./project-documentation.md) for describing how a
+- **Feature or system documentation.** Use [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) for describing how a
   specific feature works.
 - **Architectural assessment.** Use [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md) for coupling,
   data flow, and SOLID.
@@ -141,11 +141,11 @@ URL: https://research.google/pubs/why-google-stores-billions-of-lines-of-code-in
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
-- [`/project-documentation`](./project-documentation.md). For feature and system docs. Reads the discovery section to
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). For feature and system docs. Reads the discovery section to
   find the right directory and language.
 - [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md). For coding rules. Reads the discovery section to find the
   standards directory.
-- [`/architectural-decision-record`](./architectural-decision-record.md). For architectural decisions. Reads the
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). For architectural decisions. Reads the
   discovery section to find the ADR directory.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Reads the discovery section for lint/build/test commands and for
   standards and ADR compliance checks.

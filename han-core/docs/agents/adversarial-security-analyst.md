@@ -169,7 +169,7 @@ URL: https://cwe.mitre.org/
   planning when the files touch auth, input handling, isolation, crypto, uploads, or SQL/ORM.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Adds this agent to its security-signal
   roster on a medium or large run.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
   touch a security-sensitive surface.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent into the spec-stage team on a
   security signal.

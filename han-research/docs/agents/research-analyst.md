@@ -2,7 +2,7 @@
 
 Operator documentation for the `research-analyst` agent in the han plugin. This document helps you decide _when_ and
 _how_ to dispatch the agent. For what the agent does internally, read the agent definition at
-[`han-core/agents/research-analyst.md`](../../agents/research-analyst.md).
+[`han-research/agents/research-analyst.md`](../../agents/research-analyst.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All agents](../../../docs/agents/README.md) ·
 > [All skills](../../../docs/skills/README.md)
@@ -44,14 +44,14 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 
 **Do not dispatch for:**
 
-- **Bug or failure evidence from a codebase.** Use [`evidence-based-investigator`](./evidence-based-investigator.md)
+- **Bug or failure evidence from a codebase.** Use [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md)
   instead.
-- **Discovering how a feature is implemented in the repo.** Use [`codebase-explorer`](./codebase-explorer.md) instead.
-- **Comparing two concrete artifacts for gaps.** Use [`gap-analyzer`](./gap-analyzer.md) instead.
+- **Discovering how a feature is implemented in the repo.** Use [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md) instead.
+- **Comparing two concrete artifacts for gaps.** Use [`gap-analyzer`](../../../han-core/docs/agents/gap-analyzer.md) instead.
 
 ## How to invoke it
 
-Dispatch via the `Agent` tool with `subagent_type: han-core:research-analyst`.
+Dispatch via the `Agent` tool with `subagent_type: han-research:research-analyst`.
 
 Give it:
 
@@ -135,10 +135,10 @@ URL: https://en.wikipedia.org/wiki/Stephen_Toulmin#The_Toulmin_model_of_argument
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
-- [`adversarial-validator`](./adversarial-validator.md). The agent that attacks this agent's landscape and
+- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). The agent that attacks this agent's landscape and
   recommendation; they pair in `/research`.
-- [`codebase-explorer`](./codebase-explorer.md). Runs in parallel with this agent on a `/research` run when a codebase
+- [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). Runs in parallel with this agent on a `/research` run when a codebase
   bears on the question; it owns the codebase angle so this agent stays web-isolated.
-- [`evidence-based-investigator`](./evidence-based-investigator.md). The symptom-shaped counterpart for codebase bug
+- [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md). The symptom-shaped counterpart for codebase bug
   evidence.
 - [`/research`](../skills/research.md). The skill that dispatches this agent.

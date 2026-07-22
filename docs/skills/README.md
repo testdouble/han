@@ -19,7 +19,7 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   the plugin-building guidance and apply every fix.
 - [`/architectural-analysis`](../../han-coding/docs/skills/architectural-analysis.md) — Assess a module's coupling, data
   flow, concurrency, risk, and SOLID alignment through a spine of structural, behavioral, risk, and architecture agents.
-- [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md) — Create, extract, or
+- [`/architectural-decision-record`](../../han-documentation/docs/skills/architectural-decision-record.md) — Create, extract, or
   convert architectural decision records.
 - [`/automated-test-planning`](../../han-coding/docs/skills/automated-test-planning.md) — Produce a prioritized test
   plan for a branch or directory.
@@ -33,7 +33,7 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   existing patterns or evidence-based research.
 - [`/edit-for-readability`](../../han-communication/docs/skills/edit-for-readability.md) — Rewrite the prose of a target
   you already have against the shared readability standard, preserving every fact.
-- [`/gap-analysis`](../../han-core/docs/skills/gap-analysis.md) — Compare two artifacts (current state versus desired
+- [`/gap-analysis`](../../han-research/docs/skills/gap-analysis.md) — Compare two artifacts (current state versus desired
   state) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs.
 - [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) — Serve the authoritative guidance for building skills,
   agents, and plugins, or vendor the plugin-building skills into the current repository (`/guidance init`).
@@ -45,7 +45,7 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   or unexpected behavior, with adversarial validation of the proposed fix.
 - [`/investigate-to-confluence`](../../han-atlassian/docs/skills/investigate-to-confluence.md) — Run `/investigate`
   (changing no code), show the report for review, then publish it as one Confluence page after confirmation.
-- [`/issue-triage`](../../han-core/docs/skills/issue-triage.md) — Classify a vague issue or bug report, identify missing
+- [`/issue-triage`](../../han-research/docs/skills/issue-triage.md) — Classify a vague issue or bug report, identify missing
   information, assess severity and reproducibility, and recommend the right next skill to run.
 - [`/iterative-plan-review`](../../han-planning/docs/skills/iterative-plan-review.md) — Stress-test an already-written
   plan through multiple codebase-grounded review passes.
@@ -68,7 +68,7 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   GitHub PR and post the review as comments, after a clarity check on the drafted review body.
 - [`/project-discovery`](../../han-core/docs/skills/project-discovery.md) — Scan the repository for languages,
   frameworks, tooling, and structure, and write a concise reference section into AGENTS.md or CLAUDE.md.
-- [`/project-documentation`](../../han-core/docs/skills/project-documentation.md) — Create and maintain documentation for
+- [`/project-documentation`](../../han-documentation/docs/skills/project-documentation.md) — Create and maintain documentation for
   features, systems, and components.
 - [`/project-documentation-to-confluence`](../../han-atlassian/docs/skills/project-documentation-to-confluence.md) — Run
   `/project-documentation`, show it for review, then publish it to a user-specified Confluence location.
@@ -77,9 +77,9 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   copy.
 - [`/refactor`](../../han-coding/docs/skills/refactor.md) — Restructure existing code without changing its behavior
   through a test-gated loop that re-runs the full suite after every small step.
-- [`/research`](../../han-core/docs/skills/research.md) — Research an open-ended question across the codebase and the
+- [`/research`](../../han-research/docs/skills/research.md) — Research an open-ended question across the codebase and the
   open web and end at an adversarially-validated recommendation, without committing the team to any artifact.
-- [`/runbook`](../../han-core/docs/skills/runbook.md) — Create or update a runbook for a single operational scenario,
+- [`/runbook`](../../han-documentation/docs/skills/runbook.md) — Create or update a runbook for a single operational scenario,
   with a symptom-first template and a YAGNI preflight that requires real evidence before writing.
 - [`/skill-builder`](../../han-plugin-builder/docs/skills/skill-builder.md) — Build a new skill from scratch through an
   evidence-based interview that walks the design tree decision-by-decision, then review the finished files against the

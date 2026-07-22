@@ -370,7 +370,7 @@ URL: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Che
   medium or large run when the module touches schema, storage, or data access.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Conditionally dispatches this agent when the change touches
   schema, queries, migrations, or data access.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
   touch a data-design surface.
 - [`/investigate`](../../../han-coding/docs/skills/investigate.md). Dispatches this agent when the investigation centers on
   schema, queries, or data access.

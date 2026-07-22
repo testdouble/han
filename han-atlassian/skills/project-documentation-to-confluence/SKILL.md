@@ -17,9 +17,9 @@ allowed-tools:
 
 # Project Documentation to Confluence
 
-This skill produces project documentation with the core `han-core:project-documentation` skill, lets the user review the
+This skill produces project documentation with the core `han-documentation:project-documentation` skill, lets the user review the
 result, and then publishes it to a Confluence location that **the user must specify**. It is a thin orchestrator: the
-documentation work belongs to `han-core:project-documentation`, and the publishing work belongs to
+documentation work belongs to `han-documentation:project-documentation`, and the publishing work belongs to
 `han-atlassian:markdown-to-confluence`. This skill only validates its inputs, runs the documentation to a temporary
 file, gets the user's review and publish choice, and hands the file to the publisher.
 
@@ -35,10 +35,10 @@ Confirm the skill has everything it needs before spending effort producing docum
    returns no accessible resources (typically an authentication or configuration problem), **stop immediately**. Tell
    the user this skill requires the Atlassian MCP server to be installed, configured, and authenticated, and that they
    can re-run it once it is connected. Do not fall back to a local-only run; for local-only documentation, point them at
-   `han-core:project-documentation`. This preflight runs first so a missing server fails before any documentation is
+   `han-documentation:project-documentation`. This preflight runs first so a missing server fails before any documentation is
    generated.
 2. **A documentation subject.** Confirm the request names a feature, system, component, or existing doc to document.
-   This is forwarded to `han-core:project-documentation` verbatim in Step 2.
+   This is forwarded to `han-documentation:project-documentation` verbatim in Step 2.
 3. **A Confluence destination.** Confirm the request provides a target location: a **Confluence page URL** (to update
    that page, or create a child under it), or a **space** (key or name) plus an optional **parent page**. If none was
    provided, ask for one with `AskUserQuestion`, explaining plainly that the skill needs an exact destination because it
@@ -47,14 +47,14 @@ Confirm the skill has everything it needs before spending effort producing docum
 
 ## Step 2: Produce the Documentation to a Temporary File
 
-Invoke the `han-core:project-documentation` skill with the **Skill** tool, **forwarding all provided context** verbatim:
+Invoke the `han-documentation:project-documentation` skill with the **Skill** tool, **forwarding all provided context** verbatim:
 the feature name or document path argument, the scope, any known entry points, and the relevant conversation context. Do
-not summarize, trim, or reinterpret the user's context; pass it through so `han-core:project-documentation` runs exactly
+not summarize, trim, or reinterpret the user's context; pass it through so `han-documentation:project-documentation` runs exactly
 as it would on its own — **except** add one explicit instruction: it must write the resulting documentation to a file
 under `/tmp/` (for example `/tmp/<feature-slug>.md`) rather than into the project's docs directory. This keeps the
 working draft out of the repo until the user decides to publish it.
 
-Let `han-core:project-documentation` complete its full process (codebase exploration, writing the doc, content audit,
+Let `han-documentation:project-documentation` complete its full process (codebase exploration, writing the doc, content audit,
 information-architecture review, and verification). **Capture the exact `/tmp/` file path it wrote.** That markdown file
 is the source content for Confluence. Proceed to Step 3 once it finishes.
 
@@ -96,7 +96,7 @@ page's URL and whether it went live or was saved as a draft. If publishing fails
 
 1. **Inputs validated:** the Atlassian server was reachable, a documentation subject was present, and a Confluence
    location was provided — or the skill stopped before doing any work.
-2. **Doc produced to /tmp:** `han-core:project-documentation` ran with the full forwarded context and wrote the
+2. **Doc produced to /tmp:** `han-documentation:project-documentation` ran with the full forwarded context and wrote the
    documentation to a `/tmp/` file whose path was captured.
 3. **User reviewed:** the `/tmp/` path was shown to the user before any publish.
 4. **Explicit choice obtained:** the user chose draft, live, or local-only.

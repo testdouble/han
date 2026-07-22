@@ -132,10 +132,10 @@ escalate.
   positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
 - **Sizing-aware skills.** [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
   [`/code-overview`](../han-coding/docs/skills/code-overview.md), [`/code-review`](../han-coding/docs/skills/code-review.md),
-  [`/gap-analysis`](../han-core/docs/skills/gap-analysis.md),
+  [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md),
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
-  [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md), [`/research`](../han-core/docs/skills/research.md).
+  [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md), [`/research`](../han-research/docs/skills/research.md).
 
 Read the full [Sizing](./sizing.md) reference for the bands, the auto-classification process, and the per-skill rules.
 
@@ -162,7 +162,7 @@ on. Three principles ground the rule. Evidence closer to the originating event o
 at greater remove (proximity, applied as a heuristic, not a ranked ladder). Two independent sources beat one source
 (corroboration, scoped to web sources). The absence of evidence is its own state with a name and a response (no-evidence
 labeling). The vocabulary of trust classes (codebase, web, provided) and the corroboration gate originated in
-[`/research`](../han-core/docs/skills/research.md) and are now extracted into a canonical rule that every evidence-aware skill
+[`/research`](../han-research/docs/skills/research.md) and are now extracted into a canonical rule that every evidence-aware skill
 and agent reads at runtime.
 
 Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`) and the

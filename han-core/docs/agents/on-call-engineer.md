@@ -344,7 +344,7 @@ URL: https://danluu.com/postmortem-lessons/
   medium or large run when the module raises code-level resilience concerns.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Conditionally dispatches this agent when the change carries
   code-level resilience risk.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
   touch application-source resilience.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Conditionally dispatches this agent in
   team mode when the plan touches code-level resilience.

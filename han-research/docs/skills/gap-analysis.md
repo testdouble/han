@@ -2,7 +2,7 @@
 
 Operator documentation for the `/gap-analysis` skill in the han plugin. This document helps you decide _when_ and _how_
 to use the skill. For what the skill does internally, read the skill definition at
-[`han-core/skills/gap-analysis/SKILL.md`](../../skills/gap-analysis/SKILL.md).
+[`han-research/skills/gap-analysis/SKILL.md`](../../skills/gap-analysis/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
 > [All agents](../../../docs/agents/README.md) · [Evidence](../../../docs/evidence.md)
@@ -91,7 +91,7 @@ to use the skill. For what the skill does internally, read the skill definition 
   for multi-pass review of a plan you already drafted. This skill compares two artifacts. It does not refine a single
   plan in place.
 - **Auditing whether documentation updates preserved important content.** Use the
-  [`content-auditor`](../agents/content-auditor.md) agent directly when the question is _"did the rewrite
+  [`content-auditor`](../../../han-core/docs/agents/content-auditor.md) agent directly when the question is _"did the rewrite
   drop facts the original carried."_ This skill compares two distinct artifacts. `content-auditor` validates a single
   artifact across a before-and-after.
 - **Single-artifact analysis with no comparison target, even implied.** If there is genuinely no second artifact and no
@@ -365,7 +365,7 @@ is the agent's own vocabulary. The skill renders gap entries using that taxonomy
 _"Missing"_ or _"Partial"_ into looser language would degrade the precision a stakeholder needs to decide what kind of
 remediation each gap requires.
 
-URL: see [`gap-analyzer` agent definition](../../agents/gap-analyzer.md)
+URL: see [`gap-analyzer` agent definition](../../../han-core/agents/gap-analyzer.md)
 
 ### Rosenfeld & Morville: _Information Architecture_ (4th edition)
 
@@ -446,23 +446,23 @@ URLs: https://hbr.org/2007/09/performing-a-project-premortem and https://en.wiki
 - [Evidence](../../../docs/evidence.md). The canonical evidence rule the skill applies when characterizing each gap's evidence
   pair. Trust classes, the corroboration gate for web-source claims, and the no-evidence label for silent desired-state
   evidence.
-- [`gap-analyzer`](../agents/gap-analyzer.md). The agent that performs the underlying gap analysis. The
+- [`gap-analyzer`](../../../han-core/docs/agents/gap-analyzer.md). The agent that performs the underlying gap analysis. The
   skill always dispatches it once and reads its full output.
-- [`adversarial-validator`](../agents/adversarial-validator.md). Required swarm role at every size. Attacks
+- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). Required swarm role at every size. Attacks
   each gap with counter-evidence to produce per-gap `confirmed` / `contradicted` / `inconclusive` verdicts.
-- [`junior-developer`](../agents/junior-developer.md). Required swarm role at every size. Runs the
+- [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). Required swarm role at every size. Runs the
   actor-perspective sweep: enumerates every actor the desired state addresses or implies, checks each gap against every
   actor type, surfaces gaps the analyzer missed because it only considered one actor.
-- [`evidence-based-investigator`](../agents/evidence-based-investigator.md). Required swarm role when the
+- [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md). Required swarm role when the
   current state is concrete (codebase, document on disk, fetchable URL). Verifies each gap against the current state
   with file-level evidence.
-- [`project-manager`](../agents/project-manager.md). Required swarm role at medium and large. Consolidates
+- [`project-manager`](../../../han-core/docs/agents/project-manager.md). Required swarm role at medium and large. Consolidates
   the four-or-more specialist outputs into Section 4 of the report and produces per-gap confidence values. Not called at
   small.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched on the consolidated reports
   (medium and large, where `project-manager` ran) to rewrite the report against the shared readability standard,
   preserving every fact and gap ID. Skipped at small and on the `no swarm` path.
-- [`information-architect`](../agents/information-architect.md). The agent that designed the report
+- [`information-architect`](../../../han-core/docs/agents/information-architect.md). The agent that designed the report
   template. The template is a one-time IA design output. The agent is not dispatched at runtime.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Pair upstream when the desired-state artifact is
   itself a plan you do not yet trust. Hardening the desired state before comparing produces sharper gaps.

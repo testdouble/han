@@ -73,7 +73,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   needs to be captured as an ADR.
 - **File-level code review.** Use `/code-review` for correctness, style, and maintainability review of committed or
   pending code.
-- **Researching options before there is a feature to spec.** Use [`/research`](../../../han-core/docs/skills/research.md) to weigh options
+- **Researching options before there is a feature to spec.** Use [`/research`](../../../han-research/docs/skills/research.md) to weigh options
   and prior art; bring the recommendation back here to specify it.
 
 ## How to invoke it
@@ -370,7 +370,7 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [Sizing](../../../docs/sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the
   default-to-small rule, and the `$size` override.
-- [`/research`](../../../han-core/docs/skills/research.md). The upstream step when you had options to weigh before specifying. `/research`
+- [`/research`](../../../han-research/docs/skills/research.md). The upstream step when you had options to weigh before specifying. `/research`
   recommends an option among trade-offs; bring that recommendation here to turn it into a behavioral spec. The pairing
   is bidirectional: `/research` closes by pointing here.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after the synthesis pass to

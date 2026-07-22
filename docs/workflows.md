@@ -36,10 +36,10 @@ flowchart TD
     linear --> build
 ```
 
-- **[`/issue-triage`](../han-core/docs/skills/issue-triage.md) → [`/investigate`](../han-coding/docs/skills/investigate.md).**
+- **[`/issue-triage`](../han-research/docs/skills/issue-triage.md) → [`/investigate`](../han-coding/docs/skills/investigate.md).**
   When a report is vague, triage it first, then investigate the root cause.
-- **[`/issue-triage`](../han-core/docs/skills/issue-triage.md) →
-  [`/research`](../han-core/docs/skills/research.md) → [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).**
+- **[`/issue-triage`](../han-research/docs/skills/issue-triage.md) →
+  [`/research`](../han-research/docs/skills/research.md) → [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).**
   When triage finds a problem-space unknown, research the options first, then specify the chosen one.
 - **[`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
@@ -63,10 +63,10 @@ flowchart TD
     phased --> impl
 ```
 
-- **[`/gap-analysis`](../han-core/docs/skills/gap-analysis.md) →
+- **[`/gap-analysis`](../han-research/docs/skills/gap-analysis.md) →
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md).** The gap report's `G-NNN` IDs become
   work in the implementation plan.
-- **[`/gap-analysis`](../han-core/docs/skills/gap-analysis.md) →
+- **[`/gap-analysis`](../han-research/docs/skills/gap-analysis.md) →
   [`/plan-a-phased-build`](../han-planning/docs/skills/plan-a-phased-build.md) →
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md).** Order the `G-NNN` IDs into vertical
   slices first, then give each greenlit phase its own implementation plan.
@@ -103,7 +103,7 @@ flowchart TD
 These chains are linear, so they need no diagram.
 
 - **[`/project-discovery`](../han-core/docs/skills/project-discovery.md) →
-  [`/project-documentation`](../han-core/docs/skills/project-documentation.md) →
+  [`/project-documentation`](../han-documentation/docs/skills/project-documentation.md) →
   [`/coding-standard`](../han-coding/docs/skills/coding-standard.md).** Discover the project, document it, then capture
   its conventions as standards.
 - **[`/code-overview`](../han-coding/docs/skills/code-overview.md) →

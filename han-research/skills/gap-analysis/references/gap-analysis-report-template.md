@@ -3,7 +3,7 @@ title: "Gap Analysis: {{source_artifact_name}} vs {{target_artifact_name}}"
 comparison_direction: "{{source_artifact_name}} (current state) -> {{target_artifact_name}} (desired state)"
 scope: "{{one_sentence_describing_what_was_compared_and_what_was_excluded}}"
 generated: "{{YYYY-MM-DD}}"
-generated_by: "han-core:gap-analysis"
+generated_by: "han-research:gap-analysis"
 sections_included:
   - executive_summary
   - indexed_gaps

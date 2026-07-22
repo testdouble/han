@@ -4,7 +4,7 @@ A walkthrough for getting feedback to the Han maintainers in a shape they can ac
 and two paths.
 
 When you have an idea, a feature request, or a rough "this felt off" observation, you sharpen it with
-[`/issue-triage`](../../han-core/docs/skills/issue-triage.md) before you post it.
+[`/issue-triage`](../../han-research/docs/skills/issue-triage.md) before you post it.
 
 When you have just finished a working session and want to report how the skills performed, you install the opt-in
 `han-feedback` plugin. Then [`/han-feedback`](../../han-feedback/docs/skills/han-feedback.md) summarizes the session and posts
@@ -46,7 +46,7 @@ context a maintainer needs to act, and you cannot always see what is missing fro
 `/issue-triage` is built for exactly that gap. It classifies the input, then lists what is absent for that type of input
 before anyone tries to act on it.
 
-1. **Run [`/issue-triage`](../../han-core/docs/skills/issue-triage.md) with your idea or observation, in your own words.** Do
+1. **Run [`/issue-triage`](../../han-research/docs/skills/issue-triage.md) with your idea or observation, in your own words.** Do
    not polish it first. The skill is designed to work on messy, incomplete input, and cleaning it up changes what counts
    as missing information. A template that works well:
 
@@ -153,7 +153,7 @@ It ships in a separate plugin you install once.
 
 ## Where to go next
 
-- [`/issue-triage`](../../han-core/docs/skills/issue-triage.md) is the skill behind Path A, and its long-form doc covers the
+- [`/issue-triage`](../../han-research/docs/skills/issue-triage.md) is the skill behind Path A, and its long-form doc covers the
   full output contract.
 - [`/han-feedback`](../../han-feedback/docs/skills/han-feedback.md) is the skill behind Path B, with the details of the file
   format, the sensitive-content review, and the posting flow.
@@ -167,7 +167,7 @@ It ships in a separate plugin you install once.
 - [How-to index](./README.md). The rest of the end-to-end guides.
 - [Choosing a Han plugin](../choosing-a-han-plugin.md). The end-user view of the plugins, including the opt-in
   `han-feedback`.
-- [`/issue-triage`](../../han-core/docs/skills/issue-triage.md). The skill that shapes an idea or complaint into a structured,
+- [`/issue-triage`](../../han-research/docs/skills/issue-triage.md). The skill that shapes an idea or complaint into a structured,
   postable issue.
 - [`/han-feedback`](../../han-feedback/docs/skills/han-feedback.md). The skill that summarizes a session and posts the feedback
   for you.
