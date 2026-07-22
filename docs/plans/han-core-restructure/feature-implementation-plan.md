@@ -1,12 +1,14 @@
 # Feature Implementation Plan: han-core Restructure
 
 This plan splits han-core into a lean shared-agent plugin plus two new topical plugins, han-documentation and
-han-research, so depending on han-core no longer installs seven skills most dependents never use. The whole restructure
-lands as one merge to the default branch: every moved skill, rewritten manifest, dependency edit, and reconciled
-documentation surface co-lands together, because the suite catalog resolves against the live default branch with no
-staging boundary ([D-1](artifacts/implementation-decision-log.md#d-1-single-merge-atomicity-is-the-coordination-and-release-unit)).
-This is a pure markdown-and-JSON change with no code, no build step, and no test runner, so verification is grep sweeps,
-a manifest consistency check, link resolution, and one real-install procedure before release.
+han-research, so depending on han-core no longer installs seven skills most dependents never use.
+
+The whole restructure lands as one merge to the default branch. Every moved skill, rewritten manifest, dependency edit,
+and reconciled documentation surface co-lands together, because the suite catalog resolves against the live default
+branch with no staging boundary ([D-1](artifacts/implementation-decision-log.md#d-1-single-merge-atomicity-is-the-coordination-and-release-unit)).
+
+This is a pure markdown-and-JSON change with no code, no build step, and no test runner. Verification is grep sweeps, a
+manifest consistency check, link resolution, and one real-install procedure before release.
 
 ## Outcome
 
@@ -18,8 +20,10 @@ research-analyst agent. Three plugins that declared han-core without using it (h
 drop the dependency, and han-atlassian re-points its one cross-plugin skill call to han-documentation.
 
 Full-suite users keep every skill and agent they have today, now organized so each plugin's name matches its contents.
-Edge-plugin users stop receiving the roster they never invoke. Every reader-facing surface across the repository matches
-the new layout, and every reachable upgrade shape is verified against a real install before release.
+Edge-plugin users stop receiving the roster they never invoke.
+
+Every reader-facing surface across the repository matches the new layout, and every reachable upgrade shape is verified
+against a real install before release.
 
 ## User Stories
 
@@ -53,17 +57,19 @@ the new layout, and every reachable upgrade shape is verified against a real ins
 ## Implementation Approach
 
 The restructure moves leaf skills, not shared infrastructure. The agent roster stays put because han-planning and
-han-coding each dispatch most of it, and six of the seven skills have zero cross-plugin callers, so moving them breaks
+han-coding each dispatch most of it. Six of the seven skills have zero cross-plugin callers, so moving them breaks
 almost nothing (investigation E1, E2, E8). The work is mechanical relocation plus reference rewriting plus surface
 reconciliation, all landing in one merge.
 
 The two new plugins reuse the existing five-part plugin shape rather than introducing any new structure: README,
 `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `skills/`, `docs/`, and `references/` with vendored rule
-copies. Rule files are vendored per plugin and never read cross-plugin, so each new plugin carries byte-identical copies
+copies.
+
+Rule files are vendored per plugin and never read cross-plugin, so each new plugin carries byte-identical copies
 of evidence-rule.md and yagni-rule.md, following the han-planning and han-atlassian precedent
 ([D-12](artifacts/implementation-decision-log.md#trivial-decisions), investigation E12).
 
-Each moved skill is one atomic unit, not just a directory. A skill moves with its `references/` folder and its long-form
+Each moved skill is one atomic unit, not simply a directory. A skill moves with its `references/` folder and its long-form
 doc; the research skill additionally moves the research-analyst agent definition and that agent's doc. Nothing enforces
 this pairing automatically, so the plan tracks each move as a unit
 ([D-3](artifacts/implementation-decision-log.md#d-3-each-moved-skill-is-one-atomic-multi-artifact-unit)).
@@ -71,13 +77,13 @@ this pairing automatically, so the plan tracks each move as a unit
 ### Reference rewriting
 
 Namespace references are rewritten per moving entity across a repo-wide search, never by a blunt `han-core:` prefix
-replace and never by a plugin-scoped sweep. A single file mixes moving and staying references, and some references sit
+replace and never by a plugin-scoped sweep. A single file mixes moving and staying references. Some references also sit
 outside the spec's named blast radius (the han-plugin-builder guidance cites `han-core:project-documentation`), so only
 a per-entity repo-wide search resolves both hazards
 ([D-2](artifacts/implementation-decision-log.md#d-2-entity-name-scoped-repo-wide-grep-drives-every-namespace-rewrite)).
 
 The moved long-form docs carry 23 relative agent-doc links. Twenty-two rewrite to the cross-plugin form
-`../../../han-core/docs/agents/{name}.md`; the one exception is research.md's link to research-analyst, which stays
+`../../../han-core/docs/agents/{name}.md`. The one exception is research.md's link to research-analyst, which stays
 relative because that agent moves with the doc into han-research
 ([D-7](artifacts/implementation-decision-log.md#d-7-moved-doc-agent-links-are-rewritten-per-entity-sparing-the-one-link-that-moves)).
 
@@ -87,6 +93,7 @@ The manifest changes form one co-land set checked by a single scripted consisten
 entries across marketplace and both manifest platforms, the han-core and re-pointed descriptions, the han meta-plugin
 and han-atlassian dependency additions, and the three vestigial dependency drops
 ([D-5](artifacts/implementation-decision-log.md#d-5-a-single-co-land-manifest-set-passes-one-pre-merge-consistency-sweep)).
+
 Dependency edits touch only the `.claude-plugin/plugin.json` manifests. The `.codex-plugin/plugin.json` manifests carry
 no dependencies field, so their edits are content re-authoring only, wherever prose, keywords, or prompts name a moving
 skill ([D-4](artifacts/implementation-decision-log.md#d-4-codex-manifests-get-content-re-authoring-not-dependency-edits)).
@@ -94,8 +101,8 @@ skill ([D-4](artifacts/implementation-decision-log.md#d-4-codex-manifests-get-co
 ### Surface reconciliation
 
 Reconciliation corrects stale statements, not only additions. The false "its skills dispatch shared han-core agents"
-claim sits on three plugin READMEs, not one; two docs/agents index prose lines assert han-core owns every agent but
-readability-editor; and docs/concepts.md carries three dependency-prose corrections beyond link repoints
+claim sits on three plugin READMEs, not one. Two docs/agents index prose lines assert han-core owns every agent but
+readability-editor. And docs/concepts.md carries three dependency-prose corrections beyond link repoints
 ([D-8](artifacts/implementation-decision-log.md#d-8-reconciliation-corrects-stale-surfaces-including-three-false-readme-claims)).
 han-research's reader surfaces present it as pre-planning knowledge work so all three of its skills are predictable from
 its scent line, without renaming anything
@@ -104,8 +111,8 @@ its scent line, without renaming anything
 ## Work Units and Sequencing
 
 The work units below are an authoring order, not a release order. Everything co-lands in one merge
-([D-1](artifacts/implementation-decision-log.md#d-1-single-merge-atomicity-is-the-coordination-and-release-unit)); the
-dependencies express which work must be authored before which, inside that single change.
+([D-1](artifacts/implementation-decision-log.md#d-1-single-merge-atomicity-is-the-coordination-and-release-unit)). The
+dependencies below express which work must be authored before which, inside that single change.
 
 | # | Work Unit | Story | Delivers | Depends On | Verification |
 | --- | --------- | ----- | -------- | ---------- | ------------ |
@@ -137,8 +144,7 @@ dependencies express which work must be authored before which, inside that singl
 ## Testing Strategy
 
 This is a markdown-and-JSON change with no test runner, so "testing" means reproducible searches, a manifest check, link
-resolution, and one real-install procedure. State that plainly to any reader expecting unit tests: there are none to
-write, and none to run.
+resolution, and one real-install procedure. There are no unit tests to write and none to run.
 
 - **Observable behaviors to verify:** every bare skill name still resolves to exactly one skill suite-wide; every moved
   skill resolves at its new namespaced home; every agent dispatch inside a moved skill resolves at its post-split home;
@@ -158,13 +164,13 @@ write, and none to run.
 ## Operational Readiness
 
 - **Release gate:** Release is gated on the OI-1 procedure passing for all four upgrade shapes (full `han`, standalone
-  han-core, partial such as han-coding-only, and han-atlassian). Implementation may proceed before the gate; release may
+  han-core, partial such as han-coding-only, and han-atlassian). Implementation may proceed before the gate. Release may
   not ([D-6](artifacts/implementation-decision-log.md#d-6-oi-1-verification-runs-a-concrete-per-shape-install-and-revert-procedure)).
 - **Atomicity:** The marketplace resolves against the default branch with no ref pinning, so the merged state is the live
   state. The whole change lands in one merge to avoid any inconsistent intermediate catalog
   ([D-1](artifacts/implementation-decision-log.md#d-1-single-merge-atomicity-is-the-coordination-and-release-unit)).
 - **Recovery:** Because the change is pure markdown and JSON, reverting the merge with `git revert -m 1` is a complete
-  recovery; upgraded installs return to their prior working set on next resolve. The revert is verified in the same OI-1
+  recovery. Upgraded installs return to their prior working set on next resolve. The revert is verified in the same OI-1
   run ([D-6](artifacts/implementation-decision-log.md#d-6-oi-1-verification-runs-a-concrete-per-shape-install-and-revert-procedure)).
 - **Pre-merge check:** The jq consistency sweep over the co-land manifest set runs before merge and must pass
   ([D-5](artifacts/implementation-decision-log.md#d-5-a-single-co-land-manifest-set-passes-one-pre-merge-consistency-sweep)).
@@ -201,7 +207,7 @@ write, and none to run.
 
 ## Specialist Handoffs for Implementation
 
-- **`devops-engineer` (as the han-release owner)** — dispatch at release time; needs the old-to-new namespace map and
+- **`devops-engineer` (as the han-release owner)**, dispatched at release time, needs the old-to-new namespace map and
   the per-skill restore step this restructure produces, which han-release publishes as the release notes
   ([D-11](artifacts/implementation-decision-log.md#d-11-the-release-notes-namespace-map-is-handed-to-han-release)).
 
@@ -218,4 +224,4 @@ write, and none to run.
 
 Ship as planned: proceed to implementation now. The restructure is fully specified, every open question raised in
 planning was resolved by codebase evidence, and the YAGNI sweep found nothing to defer. Release is gated on the OI-1
-install-and-revert procedure passing for all four upgrade shapes; implementation does not wait on that gate.
+install-and-revert procedure passing for all four upgrade shapes. Implementation does not wait on that gate.
