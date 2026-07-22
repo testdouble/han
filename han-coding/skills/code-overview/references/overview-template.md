@@ -24,6 +24,13 @@ exactly as written.
   need. Every section after it (flow, context, handoff) exists to give the reader the context to understand that why.
   Never invent a business rationale the evidence does not support; when the why can only be inferred, mark it as
   inferred.
+- **List the context used, directly after the lead why section.** The `Context used` section names every source the
+  overview drew on — the files and directories read, the pull request or issue, the commit history consulted, the
+  project-context docs, and any material the user supplied. Link each source directly when it has an address: repository
+  files link by path, and a pull request, issue, or commit links by URL. When a source has no address to link to (an
+  uncommitted diff, the branch's commit messages, context supplied in conversation), state in one plain sentence what
+  the context was. Never fabricate a URL or link to a path that does not exist. This section is a reference list, not
+  prose — one line per source, with a short note on what it contributed.
 - **Progressive disclosure, anchored on the why.** The most important understanding comes first, and that is _why the
   code exists_ — the problem it solves or goal it serves. Detail unfolds beneath it, every section flowing from and
   serving that why. A reader who stops after the lead section still knows why the target exists and what need it meets.
@@ -62,6 +69,15 @@ date, or size as metadata fields; weave whatever is worth saying into this sente
 solution to a need, not technical mechanics — and why it works the way it does. Then, briefly, what it is, so the reader
 has a concrete referent. The single most important orientation fact is the why; if the why can only be inferred from the
 code and its intent, say so rather than inventing a rationale.}
+
+## Context used
+
+<!-- One line per source the overview drew on. Link directly when the source has an address (a repository file path, a
+PR / issue / commit URL); when it does not, state plainly what the context was. Never fabricate a link. -->
+
+- [{source name}]({file path or URL}) — {one line on what it contributed}.
+- {Plain statement of a source with no address — e.g. "The uncommitted changes in the working tree" — and what it
+  contributed}.
 
 ## Main flow
 
@@ -115,6 +131,16 @@ for the business or a user — the need that motivated it, as a solution to that
 need, not technical mechanics. Then, briefly, the bottom line of what it does. If
 the why can only be inferred from intent (commit messages, PR/issue text), say so
 rather than inventing one.}
+
+## Context used
+
+<!-- One line per source the overview drew on. Link directly when the source has
+an address (the PR URL, an issue, a repository file path); when it does not,
+state plainly what the context was. Never fabricate a link. -->
+
+- [{source name}]({file path or URL}) — {one line on what it contributed}.
+- {Plain statement of a source with no address — e.g. "The branch's commit
+  messages" or "The uncommitted diff" — and what it contributed}.
 
 ## Changes by intent
 

@@ -15,8 +15,9 @@ to use the skill. For what the skill does internally, read the skill definition 
   working on or reviewing it.
 - **When to use it.** You have landed in code you do not know, or a PR you are about to review, and you want a fast
   orientation before you start.
-- **What you get back.** A scratch overview file (written outside the repository) with a purpose statement, Mermaid flow
-  charts, the directly-related context, and where to start, all at minimal technical depth.
+- **What you get back.** A scratch overview file (written outside the repository) with a purpose statement, a linked
+  list of the context the overview drew on, Mermaid flow charts, the directly-related context, and where to start, all
+  at minimal technical depth.
 - **Size-aware.** The skill classifies the target as small / medium / large, defaults to small, and scales how many
   `codebase-explorer` agents it dispatches. Pass the size as the first positional argument to override
   (`/code-overview medium`). See [Sizing](../../../docs/sizing.md).
@@ -93,11 +94,17 @@ not maintained; it is a point-in-time orientation aid.
 The document follows one structure per mode, under a shared grammar. It opens with a title and a short intro paragraph
 naming what is being examined (not a metadata block), then leads with the why and lets every later section flow from it:
 
-- **Code mode:** _Why it exists_ (the problem solved or goal served, then briefly what it is) → _Main flow_ (a Mermaid
-  chart with a scope label, read as how the code delivers on the why) → _Context and uses_ → _Where to start_.
-- **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does) → _Changes by
-  intent_ (grouped by the outcome, the why, each group delivers) → _How the change flows_ (a Mermaid chart with a scope
-  label) → _What to watch when reviewing_ (navigational only).
+- **Code mode:** _Why it exists_ (the problem solved or goal served, then briefly what it is) → _Context used_ (the
+  sources the overview drew on) → _Main flow_ (a Mermaid chart with a scope label, read as how the code delivers on the
+  why) → _Context and uses_ → _Where to start_.
+- **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does) → _Context
+  used_ → _Changes by intent_ (grouped by the outcome, the why, each group delivers) → _How the change flows_ (a Mermaid
+  chart with a scope label) → _What to watch when reviewing_ (navigational only).
+
+The _Context used_ section, placed directly after the lead why section, lists every source the overview drew on. Each
+source with an address is a direct link — a repository file by path, a pull request, issue, or commit by URL — so you
+can walk the same evidence the overview was built from. A source with no address (an uncommitted diff, the branch's
+commit messages, context supplied in conversation) is stated in one plain sentence instead.
 
 In PR mode, when the pull request has screenshots, the overview embeds them inline next to the text they illustrate, so
 you do not have to switch back to the PR to see them.
