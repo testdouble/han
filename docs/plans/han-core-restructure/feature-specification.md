@@ -86,12 +86,16 @@ The restructure produces this target shape. Each numbered item is a behavior the
 - **Entry condition:** A user installs han-linear, han-feedback, or han-reporting without the meta-plugin.
 - **Sequence:** The marketplace installs the requested plugin and only the dependencies its skills use. han-linear and
   han-feedback install standalone; han-reporting brings han-communication.
-- **Exit:** The user has a working plugin without the agents and skills the old han-core dependency dragged in.
+- **Exit:** The user has a working plugin without the agents and skills the old han-core dependency dragged in. A
+  han-reporting-only install still reads a project-discovery file when the repository already has one, and loses only
+  the ability to generate that file itself
+  ([D5](artifacts/decision-log.md#d5-drop-the-vestigial-han-core-dependencies)).
 
 ### Upgrade of an existing full-suite install
 
 - **Entry condition:** A user who already has `han` installed upgrades after the restructure ships.
-- **Sequence:** The upgraded meta-plugin's dependency list pulls in han-documentation and han-research; the slimmed
+- **Sequence:** The upgraded meta-plugin's dependency list pulls in han-documentation and han-research
+  ([D8](artifacts/decision-log.md#d8-both-new-plugins-are-bundled-by-the-han-meta-plugin)); the slimmed
   han-core replaces the old one. From the user's perspective the upgrade is all-or-nothing: they hold either the
   complete prior skill set or the complete new one, and any unavoidable in-between state surfaces as a visible signal
   rather than a silently missing skill
@@ -165,14 +169,14 @@ The restructure's coordinations are the post-split dependency edges between plug
   han-communication component, so there is no usage to support the dependency.
 - **Reopen when:** The han-feedback skill starts sourcing the shared readability standard or dispatching the
   readability-editor.
-- **Source:** Investigation open question; resolved by a repo-wide search during specification.
+- **Source:** Investigation open question; resolved by a repo-wide search during specification (D6).
 
 ### han-communication dependency for han-linear
 
 - **Why deferred:** Evidence test failed. han-linear's skill and reference files contain no han-communication
   reference.
 - **Reopen when:** The work-items-to-linear skill starts sourcing the shared readability standard.
-- **Source:** Investigation open question; resolved by a repo-wide search during specification.
+- **Source:** Investigation open question; resolved by a repo-wide search during specification (D6).
 
 ### Finer-grained roster split by conditional dispatch
 
@@ -194,7 +198,8 @@ The restructure's coordinations are the post-split dependency edges between plug
 ## Open Items
 
 - **OI-1:** Whether plugin dependency resolution behaves correctly for every reachable upgrade shape when the
-  restructure ships.
+  restructure ships
+  ([D13](artifacts/decision-log.md#d13-the-release-gate-verifies-every-upgrade-shape-and-a-recovery-path)).
   - **Resolves when:** Pre-release verification exercises each shape against a real install and each passes this
     condition: after upgrading, the set of invocable skills and dispatchable agents matches what the spec commits for
     that shape, with no manual intervention and no silently missing skill. The shapes: a full `han` install (must

@@ -173,7 +173,8 @@ han-core:devops-engineer. Overlapping findings from multiple agents are merged i
 
 ## Minor edits
 
-- F12: Record that suite-wide skill-name uniqueness becomes a standing constraint future plugin work must preserve,
-  since bare-name references depend on it — junior-developer — Primary Flow
-- F13: Forwarding signpost at han-core's old surfaces considered and deferred under the simpler-version test (release
-  notes and indexes satisfy the same need) — information-architect — Deferred (YAGNI)
+- F12: Suite-wide skill-name uniqueness becomes a standing constraint future plugin work must preserve, since
+  bare-name references depend on it (junior-developer; affects D9; changed in spec: Primary Flow).
+- F13: Forwarding signpost at han-core's old surfaces considered and deferred under the simpler-version test, since
+  release notes and indexes satisfy the same need (information-architect; affects no decision; changed in spec:
+  Deferred (YAGNI)).

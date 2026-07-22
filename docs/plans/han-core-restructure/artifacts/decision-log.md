@@ -102,8 +102,13 @@ trust class for repo checks made during specification is **codebase**. F# IDs re
   han-reporting README claim about dispatching shared han-core agents is corrected.
 - **Rationale:** Repo-wide searches found zero functional usage in all three: han-reporting has no dispatch site
   behind its README claim, han-feedback's mentions are namespace-parsing examples, and han-linear has no reference at
-  all. Validation counter-checks confirmed no hidden dispatches.
-- **Evidence:** Investigation E4, E5, E6 and validation V6 (provided).
+  all. Validation counter-checks confirmed no hidden dispatches. One touchpoint is file-level rather than a plugin
+  dependency: han-reporting's stakeholder-summary probes the user's repository for the project-discovery output file
+  by name (E9), which reads a repository file rather than a han-core component. That probe keeps working whenever the
+  file is present and degrades to no context when it is not, so dropping the dependency removes only the ability to
+  generate that file from a han-reporting-only install, a capability the optional probe never required; a user
+  restores it by installing han-core or the full suite.
+- **Evidence:** Investigation E4, E5, E6, E9 and validation V6 (provided).
 - **Rejected alternatives:**
   - Keep the dependencies for safety — rejected because each one installs the full agent roster and skill set for
     nothing, which is the exact pain being fixed.
