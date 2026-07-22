@@ -189,7 +189,7 @@ Reversible, Last validated) that a tired reader needs before committing to any s
 
 The skill's structure is grounded in established runbook practice and the project's own evidence-based conventions.
 
-### Google SRE Workbook — On-Call
+### Google SRE Workbook: On-Call
 
 The "playbook entry" pattern in Google SRE (every alert ties to a playbook entry with severity, impact, debugging, and
 mitigation) anchors the skill's per-scenario structure and the alert-to-runbook linking convention. The corroborated 3x

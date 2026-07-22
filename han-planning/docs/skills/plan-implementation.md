@@ -36,13 +36,13 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   pass audits and corrects the artifacts, not just writes and populates them: the PM reconciles the artifacts against
   each other and rewrites inconsistencies in place, such as a decision-log title copied from another entry, or a path
   one section assumes that another section's layout never places there.
-- **Planning altitude — intention over prescription.** The plan carries the intention and goals of the work, its touch
+- **Planning altitude: intention over prescription.** The plan carries the intention and goals of the work, its touch
   points (a module, a contract, a boundary), and the decision-bearing values (a flag default, a key name, a threshold).
   It never prescribes line-level edits or inlines full file contents: a non-author must be able to read it, plans are
-  executed after the codebase has moved on (a prescribed edit list goes stale and misleads), and the implementer —
-  human or coding agent — reads the current code at build time.
+  executed after the codebase has moved on (a prescribed edit list goes stale and misleads), and the implementer,
+  human or coding agent, reads the current code at build time.
 - **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose.
-  Technical detail is minimal references only, placed below or after the plain language it illustrates — never mixed
+  Technical detail is minimal references only, placed below or after the plain language it illustrates, never mixed
   into it. When choosing between more plain language and more technical detail, the plan chooses more plain language.
 - **User stories carry the intent.** When the feature has a describable actor benefit, the plan opens the work with
   user stories derived from the specification's committed behavior, and each work unit names the story it advances.
@@ -134,7 +134,7 @@ Three cross-referenced files in the same folder as the source specification, plu
   `([D-3](artifacts/implementation-decision-log.md#d-3-rollout-strategy))`) linking back to the decision that drove
   them. Sections include:
   - An **opening paragraph and Outcome.** What is being built, the implementation posture the plan commits to, and what
-    exists when the work is done — in plain language.
+    exists when the work is done, in plain language.
   - **User stories.** The intent of the work at a high level, derived from behavior the specification commits to:
     "As a {actor}, I want {capability}, so that {benefit}", each with a `US-N` ID. Present whenever an actor benefits
     in a describable way; omitted otherwise.
@@ -155,7 +155,7 @@ Three cross-referenced files in the same folder as the source specification, plu
     companions (whichever exist, in `artifacts/` or at the folder root for legacy layouts), the decisions the plan
     inherits, and the two companion artifacts where decision rationale, team composition, and round-by-round history
     live. A one-or-two-sentence **recommendation** (ship as planned, hold, or blocked) ends the plan. There is no
-    team-composition table and no statistics summary in the plan itself — that detail lives one hop away in the
+    team-composition table and no statistics summary in the plan itself; that detail lives one hop away in the
     artifacts.
 - An **`artifacts/implementation-decision-log.md`** file at
   `{same-folder-as-source}/artifacts/implementation-decision-log.md`. One `D-N` entry per decision committed during the
