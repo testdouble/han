@@ -1,8 +1,12 @@
 # Manual Test Plan: Han version 5.0.0 changes
 
-## Summary
+## What this plan checks
 
-This plan checks the changes heading into Han version 5.0.0 by hand. Anyone with Claude Code installed can run it; one test also needs a GitHub project where you can create issues. It contains nine tests. Start at the top: the first two confirm the install and the command list that every later test relies on.
+This plan checks the changes heading into Han version 5.0.0 by hand. It contains nine tests.
+
+Anyone with Claude Code installed can run it. One test also needs a GitHub project where you can create issues.
+
+Start at the top. The first two tests confirm the install and the command list that every later test relies on.
 
 ## Tests at a Glance
 
@@ -16,7 +20,7 @@ This plan checks the changes heading into Han version 5.0.0 by hand. Anyone with
 - **Rewriting a rough document for readability**: the new rewrite command makes a document clearer without losing any fact.
 - **Browsing the reorganized documentation**: each plugin now carries its own documentation, and the indexes link into it.
 
-## Test Details
+## How to run each test
 
 ### Installing the full Han suite
 
