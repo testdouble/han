@@ -49,6 +49,9 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   [`/code-review`](../../../han-coding/docs/skills/code-review.md) to audit it. This skill edits prose, not code.
 - **Judging the underlying work.** The skill rewrites the writing and raises no findings about the bug, the plan, the
   architecture, or whether a claim is true.
+- **Surfacing the standard into a skill's own context.** Use
+  [`/readability-guidance`](./readability-guidance.md) when a prose-producing skill needs the shared standard in
+  context before it drafts; this skill rewrites a target that already exists.
 
 ## How to invoke it
 
@@ -142,6 +145,8 @@ The word-level blocklist the standard reuses lives in
   the fidelity guard.
 - [`readability-editor`](../agents/readability-editor.md). The agent this skill dispatches to do
   the rewrite.
+- [`/readability-guidance`](./readability-guidance.md). The sibling that surfaces the standard into a calling skill's
+  context before drafting, where this skill rewrites an existing target.
 - [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). Use to write new docs; this skill rewrites prose
   that already exists.
 - [`/refactor`](../../../han-coding/docs/skills/refactor.md). The code counterpart: restructure code without changing behavior, where this

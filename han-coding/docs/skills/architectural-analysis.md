@@ -65,6 +65,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 
 **Do not invoke for:**
 
+- **Getting oriented in unfamiliar code.** Use [`/code-overview`](./code-overview.md) to understand what code does and
+  why before assessing whether its structure is sound.
 - **Investigating a specific bug.** Use [`/investigate`](./investigate.md) for evidence-based root-cause work.
 - **File-level correctness review.** Use [`/code-review`](./code-review.md) for per-file correctness, testing, and
   compliance.

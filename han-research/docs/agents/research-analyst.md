@@ -13,8 +13,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   entries, plain-language results, indexed options when applicable, and a recommendation.
 - **When to dispatch it.** You need multi-angle research into options, prior art, or how something works, and every
   claim must trace to a checkable source.
-- **What you get back.** An indexed Sources registry (A1, A2, …) — link, summary, trust class, corroboration status per
-  source — plus plain-language results, indexed options when applicable, and a recommendation with its explicit evidence
+- **What you get back.** An indexed Sources registry (A1, A2, …) with link, summary, trust class, and corroboration
+  status per source, plus plain-language results, indexed options when applicable, and a recommendation with its explicit evidence
   basis (or "no clear winner").
 
 ## Key concepts
@@ -72,7 +72,7 @@ Example prompts:
 
 You get an indexed Sources registry (A1, A2, …). Each entry carries a link or location, a retrieval date for web
 sources, a trust class (codebase / web / provided), a short plain-language summary, and an evidence status (corroborated
-by A#, single source — caveated, or contradicted by A#).
+by A#, single source and caveated, or contradicted by A#).
 
 You also get plain-language Research Results that cross-reference artifacts by ID. When the question implies
 alternatives, you get an indexed Options to Consider list (O1, O2, …), each option presented in its strongest form with
@@ -104,15 +104,15 @@ one.
 ## In more detail
 
 `research-analyst` exists because no prior han agent fit open-ended, idea-space research. `evidence-based-investigator`
-is built around bug vocabulary — root cause, regression, reproduction — and `codebase-explorer` is scoped to discovering
+is built around bug vocabulary (root cause, regression, reproduction) and `codebase-explorer` is scoped to discovering
 implementation inside a repo. Forcing either into "what are the options out there" produced a vocabulary mismatch that
 degraded the work. The agent's protocols, anti-patterns, and output format are built around options, prior art, source
 provenance, and corroboration instead.
 
 The isolation from codebase context is deliberate and load-bearing. Because the agent fetches arbitrary web content,
 letting it also hold repository contents would create an exfiltration path. A crafted page could ask the agent to
-include codebase material in its output. The brief contract — web angle gets no repo context, codebase evidence comes
-only from a separate `codebase-explorer` — closes that path.
+include codebase material in its output. The brief contract (the web angle gets no repo context, and codebase evidence
+comes only from a separate `codebase-explorer`) closes that path.
 
 ## Sources
 
@@ -125,7 +125,7 @@ URL: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
 
 ### Toulmin: The Uses of Argument (1958)
 
-The evidence-grounds-recommendation discipline — no recommendation without corroborated grounds — applies Toulmin's
+The evidence-grounds-recommendation discipline, no recommendation without corroborated grounds, applies Toulmin's
 argument model to research output.
 
 URL: https://en.wikipedia.org/wiki/Stephen_Toulmin#The_Toulmin_model_of_argument
