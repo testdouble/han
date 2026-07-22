@@ -102,7 +102,7 @@ naming what is being examined (not a metadata block), then leads with the why an
   chart with a scope label) → _What to watch when reviewing_ (navigational only).
 
 The _Context used_ section, placed directly after the lead why section, lists every source the overview drew on. Each
-source with an address is a direct link — a repository file by path, a pull request, issue, or commit by URL — so you
+source with an address is a direct link (a repository file by path, a pull request, issue, or commit by URL), so you
 can walk the same evidence the overview was built from. A source with no address (an uncommitted diff, the branch's
 commit messages, context supplied in conversation) is stated in one plain sentence instead.
 

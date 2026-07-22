@@ -40,7 +40,8 @@ helps you decide _when_ and _how_ to use the skill. For what the skill does inte
   missing server fails fast. If the server is missing or not authenticated, the skill stops and points you at
   `/code-overview` for a local-only run. It never silently falls back to local.
 - **The overview lands in a scratch file first.** `/code-overview` always writes its overview to a scratch file outside
-  your repo (for example `/tmp/code-overview-<slug>.md`), so it never gets committed unless you move it there yourself.
+  your repo (for example `${TMPDIR:-/tmp}/code-overview-<slug>.md`), so it never gets committed unless you move it there
+yourself.
 - **You review before publishing.** The skill shows you the scratch-file path so you can open and read the overview,
   then asks how to publish. Nothing is posted until you choose.
 - **You must provide the location.** The skill does not search Confluence for the right page. A real Confluence instance
@@ -108,7 +109,7 @@ Example prompts:
 Two artifacts:
 
 - **The working draft.** A markdown overview in a scratch file outside your repo (for example
-  `/tmp/code-overview-<slug>.md`) that [`/code-overview`](../../../han-coding/docs/skills/code-overview.md) writes. In code mode, it
+  `${TMPDIR:-/tmp}/code-overview-<slug>.md`) that [`/code-overview`](../../../han-coding/docs/skills/code-overview.md) writes. In code mode, it
   covers what the code does and why, the main flow as a Mermaid chart, context and uses, and where to start. In PR mode,
   it covers what the change does, the changes grouped by intent, how the change flows, and what to watch when reviewing.
   This file is the source content for Confluence and the thing you review before publishing. It lives in a scratch file,
