@@ -44,7 +44,7 @@ and _how_ the skill is used. For what the skill does internally, read the skill 
 
 ## How it works
 
-The skill reads its own two canonical reference files — the readability rule and the writing-voice profile — so their
+The skill reads its own two canonical reference files (the readability rule and the writing-voice profile) so their
 content enters the caller's context, then instructs the caller to hold the audience frame, draft into its template, run
 the standardized self-check, and (for a synthesis skill) dispatch the editor. It closes by telling the caller to return
 to the workflow that invoked it.

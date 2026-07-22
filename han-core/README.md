@@ -1,44 +1,18 @@
 # han-core
 
-The heart of the Han suite. It carries the research, analysis, documentation, and operations skills, plus every
-specialist agent the rest of the suite dispatches (all except the readability-editor, which lives in
-`han-communication`). Install only this and you have the full set of specialists and the core skills, but not the
-planning, coding, GitHub, or reporting layers. Reach for it as the base every other Han plugin builds on.
+The shared foundation of the Han suite. It carries the specialist agent roster the other plugins dispatch (every shared
+agent except the readability-editor, which lives in `han-communication`, and the research-analyst, which lives in
+`han-research`), the project-discovery skill with its project-scanner agent, and the canonical evidence and YAGNI rule
+files. The documentation skills live in `han-documentation`, the pre-planning research skills in `han-research`, the
+planning skills in `han-planning`, and the coding skills in `han-coding`; each depends on han-core. Install only this
+and you have the specialists and project discovery, but no other skills.
 
 **Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication`.
 
 ## Skills
 
-Grouped by purpose.
-
-### Triage and research
-
-- [`/issue-triage`](docs/skills/issue-triage.md) — Classify a vague issue or bug report, identify missing information,
-  assess severity and reproducibility, and recommend the right next skill to run.
-- [`/research`](docs/skills/research.md) — Research an open-ended question across the codebase and the open web and end
-  at an adversarially-validated recommendation, without committing the team to any artifact.
-
-### Comparing artifacts
-
-- [`/gap-analysis`](docs/skills/gap-analysis.md) — Compare two artifacts (current state versus desired state) and
-  produce a plain-language, stakeholder-readable report indexed by stable gap IDs.
-
-### Discovery and context
-
 - [`/project-discovery`](docs/skills/project-discovery.md) — Scan the repository for languages, frameworks, tooling, and
   structure, and write a concise reference section into AGENTS.md or CLAUDE.md for other skills.
-- [`/project-documentation`](docs/skills/project-documentation.md) — Create and maintain documentation for features,
-  systems, and components.
-
-### Conventions and decisions
-
-- [`/architectural-decision-record`](docs/skills/architectural-decision-record.md) — Create, extract, or convert
-  architectural decision records.
-
-### Operations
-
-- [`/runbook`](docs/skills/runbook.md) — Create or update a runbook for a single operational scenario, with a
-  symptom-first template and a YAGNI preflight that requires real evidence before writing.
 
 ## Agents
 
@@ -72,8 +46,6 @@ Most agents are dispatched for you by skills; you rarely invoke them directly. G
 
 - [`evidence-based-investigator`](docs/agents/evidence-based-investigator.md) — Gather concrete evidence for a bug or
   failure: file paths, line numbers, code snippets, error messages, git history, and test coverage.
-- [`research-analyst`](docs/agents/research-analyst.md) — Research open-ended questions from the open web and provided
-  material, returning sourced evidence and a recommendation and treating fetched content as claims, never instructions.
 - [`codebase-explorer`](docs/agents/codebase-explorer.md) — Discover implementation details for a specific feature:
   entry points, core logic, data models, configuration, and tests.
 - [`project-scanner`](docs/agents/project-scanner.md) — Scan repository attributes (languages, frameworks, tooling,

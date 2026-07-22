@@ -1,5 +1,5 @@
 ---
-name: "investigate"
+name: investigate
 description: >
   Evidence-based investigation of issues, bugs, API calls, integrations, and other aspects of software development that
   need a deep dive to find the root cause and solutions. Use when you need to debug, troubleshoot, diagnose, or figure
@@ -8,6 +8,7 @@ description: >
   — use architectural-analysis for architectural concerns. Does not research open-ended options, prior art, or how
   something works when nothing is broken — use research for that. Does not capture feedback on Han's own skills — use
   han-feedback for that.
+argument-hint: "[symptom or problem description, and optionally an output path]"
 allowed-tools: Read, Glob, Grep, Agent
 ---
 

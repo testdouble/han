@@ -69,6 +69,8 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Writing test code.** This skill produces a plan only. Write the tests separately.
 - **Architectural testability analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for
   structural testability concerns.
+- **Diagnosing a bug or failing behavior.** Use [`/investigate`](./investigate.md) when something is broken; reach for
+  this skill when the gap is coverage, not a bug.
 
 ## How to invoke it
 

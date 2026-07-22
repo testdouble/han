@@ -61,7 +61,7 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Reviewing code quality or finding problems.** Use [`/code-review`](./code-review.md) instead (or
   [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md) to post a review to GitHub).
 - **Writing durable feature or system documentation.** Use
-  [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) instead.
+  [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) instead.
 - **Assessing architecture, coupling, or structural risk.** Use [`/architectural-analysis`](./architectural-analysis.md)
   instead.
 - **Diagnosing a bug or root-causing a failure.** Use [`/investigate`](./investigate.md) instead.
@@ -102,7 +102,7 @@ naming what is being examined (not a metadata block), then leads with the why an
   chart with a scope label) → _What to watch when reviewing_ (navigational only).
 
 The _Context used_ section, placed directly after the lead why section, lists every source the overview drew on. Each
-source with an address is a direct link — a repository file by path, a pull request, issue, or commit by URL — so you
+source with an address is a direct link (a repository file by path, a pull request, issue, or commit by URL), so you
 can walk the same evidence the overview was built from. A source with no address (an uncommitted diff, the branch's
 commit messages, context supplied in conversation) is stated in one plain sentence instead.
 
@@ -224,7 +224,7 @@ URL: https://www.spinellis.gr/codereading/
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [`/code-review`](./code-review.md). The judgment counterpart: run code-overview to understand a PR, then code-review
   to evaluate it.
-- [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md). The durable counterpart: code-overview is ephemeral
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). The durable counterpart: code-overview is ephemeral
   orientation, project-documentation is maintained docs in the repo tree.
 - [`/architectural-analysis`](./architectural-analysis.md). Reach for this when you need a structural, coupling, and
   risk assessment rather than an orientation.

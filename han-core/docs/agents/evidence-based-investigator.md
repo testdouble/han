@@ -137,7 +137,7 @@ URL: https://www.etsy.com/codeascraft/blameless-postmortems
 - [`codebase-explorer`](./codebase-explorer.md). Sibling agent for general codebase discovery (not bug-focused).
 - [`/investigate`](../../../han-coding/docs/skills/investigate.md). Always dispatches this agent (usually two or more in
   parallel).
-- [`/gap-analysis`](../skills/gap-analysis.md). Required swarm role when the current state is concrete. The
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Required swarm role when the current state is concrete. The
   swarm runs by default.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent in team mode.
 - [Evidence](../../../docs/evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes, the

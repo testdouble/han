@@ -127,15 +127,15 @@ URL: https://pragprog.com/titles/atevol/software-design-x-rays/
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
 - [`evidence-based-investigator`](./evidence-based-investigator.md). Sibling for bug-focused investigation.
 - [`project-scanner`](./project-scanner.md). Sibling for stack and tooling detection.
-- [`/project-documentation`](../skills/project-documentation.md). Always dispatches this agent.
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). Always dispatches this agent.
 - [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md). Dispatches this agent for pattern discovery.
-- [`/architectural-decision-record`](../skills/architectural-decision-record.md). Dispatches this agent in
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). Dispatches this agent in
   create-new mode.
-- [`/research`](../skills/research.md). Dispatches this agent on codebase-bearing questions.
+- [`/research`](../../../han-research/docs/skills/research.md). Dispatches this agent on codebase-bearing questions.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Dispatches this agent for a large or
   unfamiliar focus area.
 - [`/code-overview`](../../../han-coding/docs/skills/code-overview.md). Dispatches this agent, scaled to size, to discover entry
   points, context, uses, and flow for an understand-now overview.
-- [`/gap-analysis`](../skills/gap-analysis.md). Dispatches this agent to map an unfamiliar current state.
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent to map an unfamiliar current state.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent for unfamiliar
   code regions.

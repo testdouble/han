@@ -39,7 +39,7 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 
 ### Phase 1: Research the question
 
-1. **Frame the decision and run [`/research`](../../han-core/docs/skills/research.md).** "Background jobs" is too thin to
+1. **Frame the decision and run [`/research`](../../han-research/docs/skills/research.md).** "Background jobs" is too thin to
    research; "should we adopt a job queue separate from our database, given we already run Postgres" is researchable.
    The framing names the decision, the constraint, and the comparison set. A template that works well when you already
    have a current choice:
@@ -71,7 +71,7 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
 
 ### Phase 2: Capture the decision as an ADR
 
-1. **Run [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md) with the recommended
+1. **Run [`/architectural-decision-record`](../../han-documentation/docs/skills/architectural-decision-record.md) with the recommended
    option and the alternatives.** A template that works well:
 
    > `/architectural-decision-record the choice of using {option}, with the other options as alternatives. We chose {option} because {reasons}. Reference the research report at {path}.`
@@ -136,5 +136,5 @@ The workflow has two short phases. Phase 1 produces the recommendation; Phase 2 
   a defect rather than an open question.
 - [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md) is the next step when the decision is broad enough to
   become a standard the team will apply repeatedly, rather than a one-off architectural call.
-- The skill long-form docs ([research](../../han-core/docs/skills/research.md),
-  [architectural-decision-record](../../han-core/docs/skills/architectural-decision-record.md)) cover each step in depth.
+- The skill long-form docs ([research](../../han-research/docs/skills/research.md),
+  [architectural-decision-record](../../han-documentation/docs/skills/architectural-decision-record.md)) cover each step in depth.

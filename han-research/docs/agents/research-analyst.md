@@ -2,7 +2,7 @@
 
 Operator documentation for the `research-analyst` agent in the han plugin. This document helps you decide _when_ and
 _how_ to dispatch the agent. For what the agent does internally, read the agent definition at
-[`han-core/agents/research-analyst.md`](../../agents/research-analyst.md).
+[`han-research/agents/research-analyst.md`](../../agents/research-analyst.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All agents](../../../docs/agents/README.md) ·
 > [All skills](../../../docs/skills/README.md)
@@ -13,8 +13,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   entries, plain-language results, indexed options when applicable, and a recommendation.
 - **When to dispatch it.** You need multi-angle research into options, prior art, or how something works, and every
   claim must trace to a checkable source.
-- **What you get back.** An indexed Sources registry (A1, A2, …) — link, summary, trust class, corroboration status per
-  source — plus plain-language results, indexed options when applicable, and a recommendation with its explicit evidence
+- **What you get back.** An indexed Sources registry (A1, A2, …) with link, summary, trust class, and corroboration
+  status per source, plus plain-language results, indexed options when applicable, and a recommendation with its explicit evidence
   basis (or "no clear winner").
 
 ## Key concepts
@@ -44,14 +44,14 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 
 **Do not dispatch for:**
 
-- **Bug or failure evidence from a codebase.** Use [`evidence-based-investigator`](./evidence-based-investigator.md)
+- **Bug or failure evidence from a codebase.** Use [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md)
   instead.
-- **Discovering how a feature is implemented in the repo.** Use [`codebase-explorer`](./codebase-explorer.md) instead.
-- **Comparing two concrete artifacts for gaps.** Use [`gap-analyzer`](./gap-analyzer.md) instead.
+- **Discovering how a feature is implemented in the repo.** Use [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md) instead.
+- **Comparing two concrete artifacts for gaps.** Use [`gap-analyzer`](../../../han-core/docs/agents/gap-analyzer.md) instead.
 
 ## How to invoke it
 
-Dispatch via the `Agent` tool with `subagent_type: han-core:research-analyst`.
+Dispatch via the `Agent` tool with `subagent_type: han-research:research-analyst`.
 
 Give it:
 
@@ -72,7 +72,7 @@ Example prompts:
 
 You get an indexed Sources registry (A1, A2, …). Each entry carries a link or location, a retrieval date for web
 sources, a trust class (codebase / web / provided), a short plain-language summary, and an evidence status (corroborated
-by A#, single source — caveated, or contradicted by A#).
+by A#, single source and caveated, or contradicted by A#).
 
 You also get plain-language Research Results that cross-reference artifacts by ID. When the question implies
 alternatives, you get an indexed Options to Consider list (O1, O2, …), each option presented in its strongest form with
@@ -104,15 +104,15 @@ one.
 ## In more detail
 
 `research-analyst` exists because no prior han agent fit open-ended, idea-space research. `evidence-based-investigator`
-is built around bug vocabulary — root cause, regression, reproduction — and `codebase-explorer` is scoped to discovering
+is built around bug vocabulary (root cause, regression, reproduction) and `codebase-explorer` is scoped to discovering
 implementation inside a repo. Forcing either into "what are the options out there" produced a vocabulary mismatch that
 degraded the work. The agent's protocols, anti-patterns, and output format are built around options, prior art, source
 provenance, and corroboration instead.
 
 The isolation from codebase context is deliberate and load-bearing. Because the agent fetches arbitrary web content,
 letting it also hold repository contents would create an exfiltration path. A crafted page could ask the agent to
-include codebase material in its output. The brief contract — web angle gets no repo context, codebase evidence comes
-only from a separate `codebase-explorer` — closes that path.
+include codebase material in its output. The brief contract (the web angle gets no repo context, and codebase evidence
+comes only from a separate `codebase-explorer`) closes that path.
 
 ## Sources
 
@@ -125,7 +125,7 @@ URL: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
 
 ### Toulmin: The Uses of Argument (1958)
 
-The evidence-grounds-recommendation discipline — no recommendation without corroborated grounds — applies Toulmin's
+The evidence-grounds-recommendation discipline, no recommendation without corroborated grounds, applies Toulmin's
 argument model to research output.
 
 URL: https://en.wikipedia.org/wiki/Stephen_Toulmin#The_Toulmin_model_of_argument
@@ -135,10 +135,10 @@ URL: https://en.wikipedia.org/wiki/Stephen_Toulmin#The_Toulmin_model_of_argument
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
-- [`adversarial-validator`](./adversarial-validator.md). The agent that attacks this agent's landscape and
+- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). The agent that attacks this agent's landscape and
   recommendation; they pair in `/research`.
-- [`codebase-explorer`](./codebase-explorer.md). Runs in parallel with this agent on a `/research` run when a codebase
+- [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). Runs in parallel with this agent on a `/research` run when a codebase
   bears on the question; it owns the codebase angle so this agent stays web-isolated.
-- [`evidence-based-investigator`](./evidence-based-investigator.md). The symptom-shaped counterpart for codebase bug
+- [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md). The symptom-shaped counterpart for codebase bug
   evidence.
 - [`/research`](../skills/research.md). The skill that dispatches this agent.

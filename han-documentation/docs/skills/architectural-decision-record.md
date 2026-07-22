@@ -2,7 +2,7 @@
 
 Operator documentation for the `/architectural-decision-record` skill in the han plugin. This document helps you decide
 _when_ and _how_ to use the skill. For what the skill does internally, read the skill definition at
-[`han-core/skills/architectural-decision-record/SKILL.md`](../../skills/architectural-decision-record/SKILL.md).
+[`han-documentation/skills/architectural-decision-record/SKILL.md`](../../skills/architectural-decision-record/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
 > [All agents](../../../docs/agents/README.md) · [YAGNI](../../../docs/yagni.md) · [Evidence](../../../docs/evidence.md)
@@ -199,14 +199,14 @@ URL: https://www.thoughtworks.com/radar/techniques/lightweight-architecture-deci
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Often produces decisions worth recording as
   ADRs.
 - [`/project-documentation`](./project-documentation.md). For feature docs that reference the ADR.
-- [`codebase-explorer`](../agents/codebase-explorer.md). Dispatched in create-new mode for context
+- [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). Dispatched in create-new mode for context
   discovery.
-- [`software-architect`](../agents/software-architect.md),
-  [`system-architect`](../agents/system-architect.md). One of the two reviews the proposed decision; pick by
+- [`software-architect`](../../../han-core/docs/agents/software-architect.md),
+  [`system-architect`](../../../han-core/docs/agents/system-architect.md). One of the two reviews the proposed decision; pick by
   whether the decision is intra-codebase or cross-service.
-- [`risk-analyst`](../agents/risk-analyst.md). Scores the chosen option and rejected alternatives on
+- [`risk-analyst`](../../../han-core/docs/agents/risk-analyst.md). Scores the chosen option and rejected alternatives on
   likelihood, severity, blast radius, and reversibility.
-- [`junior-developer`](../agents/junior-developer.md). Catches unexplained jargon and unjustified dismissals
+- [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). Catches unexplained jargon and unjustified dismissals
   before the ADR is written.
 - [`SKILL.md` for /architectural-decision-record](../../skills/architectural-decision-record/SKILL.md). The
   internal process definition.

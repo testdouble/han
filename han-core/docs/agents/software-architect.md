@@ -222,8 +222,8 @@ URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
   as its final synthesis step.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). The skill that includes this agent in its
   roster for feature implementation planning.
-- [`/architectural-decision-record`](../skills/architectural-decision-record.md),
-  [`/gap-analysis`](../skills/gap-analysis.md),
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md),
+  [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md),
   [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md),
   [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). The other skills that conditionally dispatch this
   agent when the work touches intra-codebase module boundaries or abstractions.

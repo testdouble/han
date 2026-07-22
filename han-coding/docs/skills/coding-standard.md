@@ -56,15 +56,15 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 
 **Do not invoke for:**
 
-- **Architectural decisions.** Use [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md) to
+- **Architectural decisions.** Use [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md) to
   record a decision. A coding standard encodes a rule; an ADR records a choice and its alternatives.
-- **Feature documentation.** Use [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) for describing how a
+- **Feature documentation.** Use [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) for describing how a
   system works.
 - **Style rules that a linter or formatter can enforce.** Configure the tool. Do not write a standard that duplicates
   it.
-- **Open-ended research not destined for a standard.** Use [`/research`](../../../han-core/docs/skills/research.md) to survey options and
+- **Open-ended research not destined for a standard.** Use [`/research`](../../../han-research/docs/skills/research.md) to survey options and
   prior art when the output you want is a recommendation, not an enforceable rule.
-- **Runbooks for operational scenarios.** Use [`/runbook`](../../../han-core/docs/skills/runbook.md). A runbook captures the procedure for
+- **Runbooks for operational scenarios.** Use [`/runbook`](../../../han-documentation/docs/skills/runbook.md). A runbook captures the procedure for
   an alert or incident; a coding standard encodes a rule the code itself must follow.
 
 ## How to invoke it
@@ -278,9 +278,9 @@ URL: https://code.claude.com/docs/en/memory
 - [Evidence](../../../docs/evidence.md). The companion rule the skill applies to the standard's supporting evidence: trust
   classes, the corroboration gate for web sources, and the no-evidence label.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
-- [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md). For decisions rather than rules.
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). For decisions rather than rules.
   Link the standard to the ADR when the rule embeds a choice.
-- [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md). For system and feature documentation that is not a
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). For system and feature documentation that is not a
   rule.
 - [`/code-review`](./code-review.md). Reads standards during every review. Violations become findings.
 - [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md),

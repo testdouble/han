@@ -122,7 +122,7 @@ URL: https://www.howtomeasureanything.com/
 - [`software-architect`](./software-architect.md). Consumes this agent's risk ratings alongside the upstream findings to
   produce recommendations.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Always dispatches this agent.
-- [`/architectural-decision-record`](../skills/architectural-decision-record.md). Dispatches this agent for
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). Dispatches this agent for
   ADR risk scoring.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Conditionally dispatches this agent when the feature
   carries significant blast radius.

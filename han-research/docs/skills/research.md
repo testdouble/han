@@ -2,7 +2,7 @@
 
 Operator documentation for the `/research` skill in the han plugin. This document helps you decide _when_ and _how_ to
 use the skill. For what the skill does internally, read the skill definition at
-[`han-core/skills/research/SKILL.md`](../../skills/research/SKILL.md).
+[`han-research/skills/research/SKILL.md`](../../skills/research/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
 > [All agents](../../../docs/agents/README.md) · [Evidence](../../../docs/evidence.md)
@@ -221,11 +221,11 @@ URL: https://hbr.org/2007/09/performing-a-project-premortem
   spec.
 - [`research-analyst`](../agents/research-analyst.md). The agent the skill dispatches for the web /
   prior-art / option-comparison angles.
-- [`adversarial-validator`](../agents/adversarial-validator.md). The agent that attacks the evidence and
+- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). The agent that attacks the evidence and
   recommendation before the report is presented.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after validation to rewrite
   the report draft against the shared readability standard, preserving every fact and citation identifier.
-- [`codebase-explorer`](../agents/codebase-explorer.md). Dispatched for the codebase-grounded angle when a
+- [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). Dispatched for the codebase-grounded angle when a
   repository bears on the question.
 - [Evidence](../../../docs/evidence.md). The canonical evidence rule. The trust classes, the corroboration gate, and the
   no-evidence label originated in `/research` and are now extracted as a plugin-wide rule other skills and agents share.

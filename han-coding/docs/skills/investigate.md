@@ -52,7 +52,7 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Test planning.** Use [`/automated-test-planning`](./automated-test-planning.md) when the gap is coverage, not a bug.
 - **Plan review.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) for multi-pass review of an
   existing plan.
-- **Open-ended research.** Use [`/research`](../../../han-core/docs/skills/research.md) when nothing is broken and you want options, prior
+- **Open-ended research.** Use [`/research`](../../../han-research/docs/skills/research.md) when nothing is broken and you want options, prior
   art, or how something works before committing to a direction.
 - **Feedback on Han's own skills.** Use [`/han-feedback`](../../../han-feedback/docs/skills/han-feedback.md) to capture post-session
   feedback on the Han skills you ran.
@@ -195,9 +195,9 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
-- [`/issue-triage`](../../../han-core/docs/skills/issue-triage.md). Run before investigation when the incoming report is too vague to
+- [`/issue-triage`](../../../han-research/docs/skills/issue-triage.md). Run before investigation when the incoming report is too vague to
   trace; triage produces the sharp problem statement investigation needs.
-- [`/research`](../../../han-core/docs/skills/research.md). The question-shaped sibling. Use it when nothing is broken and you want
+- [`/research`](../../../han-research/docs/skills/research.md). The question-shaped sibling. Use it when nothing is broken and you want
   options, prior art, or how something works before committing.
 - [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md). The agent the skill dispatches
   in parallel for multi-angle evidence gathering.
@@ -216,6 +216,6 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Pair when the fix plan needs further
   stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
-- [`/runbook`](../../../han-core/docs/skills/runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate
+- [`/runbook`](../../../han-documentation/docs/skills/runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate
   captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
 - [`SKILL.md` for /investigate](../../skills/investigate/SKILL.md). The internal process definition.

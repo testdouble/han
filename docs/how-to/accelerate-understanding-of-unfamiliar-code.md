@@ -43,7 +43,7 @@ orient you, then check it against the code," not "read the summary and move on."
   [`/architectural-analysis`](../../han-coding/docs/skills/architectural-analysis.md) when you are about to change the code, or
   a root-caused investigation from [`/investigate`](../../han-coding/docs/skills/investigate.md) when something is broken.
 - A durable, grounded feature doc in the repo, produced by
-  [`/project-documentation`](../../han-core/docs/skills/project-documentation.md): real code examples, absolute file paths, and
+  [`/project-documentation`](../../han-documentation/docs/skills/project-documentation.md): real code examples, absolute file paths, and
   a reference added to `CLAUDE.md` so future Claude sessions read it automatically. This is the "remember it later"
   artifact, and it is the one that makes the cost of understanding pay off more than once.
 - Optionally, that same understanding published to a shared space your whole team and Claude can reach, through the
@@ -135,7 +135,7 @@ can invent a different explanation each time. The defense is a grounded artifact
    finds the docs directory and aligns the doc's code fences with the project's actual stack, so the durable doc lands
    in the right place in the right language.
 
-2. **Run [`/project-documentation`](../../han-core/docs/skills/project-documentation.md) to write the understanding into the
+2. **Run [`/project-documentation`](../../han-documentation/docs/skills/project-documentation.md) to write the understanding into the
    repo.** Where `/code-overview` is the ephemeral, understand-now counterpart, this is the durable one: it writes a
    maintained `docs/{feature}.md` with real code examples and absolute paths.
 
@@ -190,7 +190,7 @@ can invent a different explanation each time. The defense is a grounded artifact
 
 - **The overview surfaced a decision or a convention, not only behavior.** If understanding the code turned up an
   architectural choice nobody recorded, capture it with
-  [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md). If it turned up a pattern the
+  [`/architectural-decision-record`](../../han-documentation/docs/skills/architectural-decision-record.md). If it turned up a pattern the
   team should follow, capture it with [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md). Documentation
   describes how the code works; those two capture why it was decided and what the rule is.
 
@@ -223,7 +223,7 @@ can invent a different explanation each time. The defense is a grounded artifact
 - The skill long-form docs cover each step in depth: [code-overview](../../han-coding/docs/skills/code-overview.md),
 [architectural-analysis](../../han-coding/docs/skills/architectural-analysis.md),
 [investigate](../../han-coding/docs/skills/investigate.md), [project-discovery](../../han-core/docs/skills/project-discovery.md),
-[project-documentation](../../han-core/docs/skills/project-documentation.md), and the Atlassian wrappers
+[project-documentation](../../han-documentation/docs/skills/project-documentation.md), and the Atlassian wrappers
 [project-documentation-to-confluence](../../han-atlassian/docs/skills/project-documentation-to-confluence.md) and
 [code-overview-to-confluence](../../han-atlassian/docs/skills/code-overview-to-confluence.md).
 </content>

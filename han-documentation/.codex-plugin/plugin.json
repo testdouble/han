@@ -1,0 +1,28 @@
+{
+  "name": "han-documentation",
+  "version": "1.0.0",
+  "description": "Documentation skills for writing down what the team built and decided: project docs, ADRs, and runbooks.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "documentation", "adr", "runbook"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Documentation",
+    "shortDescription": "Project documentation, ADRs, and runbooks.",
+    "longDescription": "Documentation skills for writing down what the team built and decided: feature and system documentation, architectural decision records, and operational runbooks.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Create project documentation with Han.",
+      "Record an architectural decision.",
+      "Write a runbook for this alert."
+    ]
+  }
+}

@@ -54,7 +54,7 @@ Give it:
 Example prompts:
 
 - `/stakeholder-summary docs/features/share/feature-specification.md`
-- `/stakeholder-summary docs/features/share/feature-specification.md — emphasize the customer-trust angle for leadership`
+- `/stakeholder-summary docs/features/share/feature-specification.md, emphasize the customer-trust angle for leadership`
 
 If a `stakeholder-summary.md` already exists in the target directory, the skill asks whether to overwrite it, append a
 timestamp suffix, or stop. It never overwrites an existing summary without asking.

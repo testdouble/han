@@ -1,9 +1,10 @@
 # How To: Extend Han with Plugin Dependencies
 
 A walkthrough of how one Claude Code plugin builds on another through dependencies, using Han's own plugins as the
-worked example. By the end you understand how `han-github`, `han-reporting`, and `han-feedback` extend `han-core`. You
-understand why the `han` meta-plugin exists, why it bundles `han-core`, `han-github`, and `han-reporting` but
-deliberately leaves `han-feedback` opt-in, and what install and enable do when a plugin names the plugins it needs.
+worked example. By the end you understand how `han-github`, `han-documentation`, and `han-atlassian` extend
+`han-core`. You understand why the `han` meta-plugin exists, why it bundles `han-core`, `han-documentation`, and
+`han-github` but deliberately leaves `han-atlassian` opt-in, and what install and enable do when a plugin names the
+plugins it needs.
 
 > See also: [How-to index](./README.md) · [Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md)
 > ·
@@ -37,9 +38,9 @@ next step.
 
 - A working model of the `dependencies` field: what an entry looks like, what install does with it, and what enabling
   and disabling do across a dependency chain.
-- The ability to read Han's plugin topology and explain why `han-github`, `han-reporting`, and `han-feedback` depend on
-  `han-core`, why the `han` meta-plugin depends on `han-core`, `han-github`, and `han-reporting`, and why it leaves
-  `han-feedback` out.
+- The ability to read Han's plugin topology and explain why `han-github`, `han-documentation`, and `han-atlassian`
+  depend on `han-core`, why the `han` meta-plugin depends on `han-core`, `han-documentation`, and `han-github`, and why
+  it leaves `han-atlassian` out.
 - Enough grounding to follow [Build a plugin that depends on Han](./build-a-plugin-that-depends-on-han.md) without
   backtracking.
 
@@ -84,8 +85,8 @@ Han is its own worked example. It ships as a family of plugins in one marketplac
 `han-core` is the base layer in this simplified example, so it is shown depending on nothing. (In the real suite it
 takes one dependency — on the foundational `han-communication` plugin that owns the shared readability standard — the
 first dependency `han-core` has ever had; the example keeps it dependency-free to show the base case.) It carries the
-planning, investigation, review, and documentation skills, plus every agent those skills dispatch except the
-readability-editor:
+shared specialist agent roster the other plugins dispatch, plus the project-discovery skill and the canonical rule
+files:
 
     {
       "name": "han-core",
@@ -105,45 +106,46 @@ Because it cannot do its job without core, it declares core as a dependency:
       ]
     }
 
-`han-reporting` is a second layer on top of core, built the same way. It adds the reporting skills
-(`stakeholder-summary`, which turns a feature specification into a plain-language summary, and `html-summary`, which
-renders that summary as a single self-contained HTML report), and it declares core as a dependency for the same reason
-`han-github` does:
+`han-documentation` is a second layer on top of core, built the same way. It adds the documentation skills
+(`project-documentation`, which writes feature and system docs, `architectural-decision-record`, which records
+decisions, and `runbook`, which captures operational procedures), and its skills dispatch core's shared agents, so it
+declares core as a dependency for the same reason `han-github` does:
 
     {
-      "name": "han-reporting",
+      "name": "han-documentation",
       "version": "1.0.0",
       "dependencies": [
         "han-core"
       ]
     }
 
-`han-feedback` is a third layer on top of core, and it is built exactly like the other two. It adds the `han-feedback`
-skill (which captures post-session feedback on Han skill runs), and it declares core as a dependency for the same
-reason:
+`han-atlassian` is a third layer on top of core, and it is built exactly like the other two. It adds the
+Confluence-publishing and Jira skills (its `project-documentation-to-confluence` wrapper, for example, runs
+`han-documentation`'s `/project-documentation` and then publishes the result), and it declares core as a dependency for
+the same reason:
 
     {
-      "name": "han-feedback",
+      "name": "han-atlassian",
       "version": "1.0.0",
       "dependencies": [
         "han-core"
       ]
     }
 
-`han` is a meta-plugin. It has no skills or agents of its own. Its entire job is to pull in `han-core`, `han-github`,
-and `han-reporting` so that one install command gives you the bundled suite.
+`han` is a meta-plugin. It has no skills or agents of its own. Its entire job is to pull in `han-core`,
+`han-documentation`, and `han-github` so that one install command gives you the bundled suite.
 
-Notice what is _not_ in its `dependencies` array: `han-feedback`. The feedback plugin depends on core like every other
-layer, but the meta-plugin deliberately leaves it out, so installing `han` does not pull it in. That is the point worth
-holding on to: depending on `han-core` and being bundled by the meta-plugin are two independent decisions.
+Notice what is _not_ in its `dependencies` array: `han-atlassian`. The Atlassian plugin depends on core like the other
+layers, but the meta-plugin deliberately leaves it out, so installing `han` does not pull it in. That is the point
+worth holding on to: depending on `han-core` and being bundled by the meta-plugin are two independent decisions.
 
     {
       "name": "han",
       "version": "3.0.0",
       "dependencies": [
         "han-core",
-        "han-github",
-        "han-reporting"
+        "han-documentation",
+        "han-github"
       ]
     }
 
@@ -152,31 +154,33 @@ The plugins are all listed in one `marketplace.json`, each with a relative `sour
     {
       "name": "han",
       "plugins": [
-        { "name": "han",           "source": "./han",           "version": "3.0.0" },
-        { "name": "han-core",      "source": "./han-core",      "version": "1.0.0" },
-        { "name": "han-github",    "source": "./han-github",    "version": "1.0.0" },
-        { "name": "han-reporting", "source": "./han-reporting", "version": "1.0.0" },
-        { "name": "han-feedback",  "source": "./han-feedback",  "version": "1.0.0" }
+        { "name": "han",               "source": "./han",               "version": "3.0.0" },
+        { "name": "han-core",          "source": "./han-core",          "version": "1.0.0" },
+        { "name": "han-documentation", "source": "./han-documentation", "version": "1.0.0" },
+        { "name": "han-github",       "source": "./han-github",       "version": "1.0.0" },
+        { "name": "han-atlassian",    "source": "./han-atlassian",    "version": "1.0.0" }
       ]
     }
 
-Notice the topology that falls out of this: `han` depends on `han-core`, `han-github`, and `han-reporting`;
-`han-github`, `han-reporting`, and `han-feedback` all depend on `han-core`; `han-core` depends on nothing in this
+Notice the topology that falls out of this: `han` depends on `han-core`, `han-documentation`, and `han-github`;
+`han-documentation`, `han-github`, and `han-atlassian` all depend on `han-core`; `han-core` depends on nothing in this
 example. The graph is acyclic, with the base layer at the bottom. (In the full suite, the foundational
 `han-communication` plugin sits beneath `han-core` as the true base — it depends on nothing and owns the shared
-readability standard — and every prose-producing plugin declares a direct dependency on it.)
+readability standard — and every prose-producing plugin declares a direct dependency on it. The real `han-atlassian`
+also depends on `han-documentation`, `han-planning`, and `han-coding` because its wrappers run skills from each; the
+example trims that to the single edge that shows the shape.)
 
-`han-feedback` sits in the graph as a leaf that nothing else points to: it depends on core, but the meta-plugin does not
-depend on it, which is what makes it opt-in. That is the shape you copy when you extend Han. Where you copy it to, and
-whether the meta-plugin bundles it, are the only things that change, and that is the subject of the next guide.
+`han-atlassian` sits in the graph as a leaf that nothing else points to: it depends on core, but the meta-plugin does
+not depend on it, which is what makes it opt-in. That is the shape you copy when you extend Han. Where you copy it to,
+and whether the meta-plugin bundles it, are the only things that change, and that is the subject of the next guide.
 
 ## Why it's built this way
 
 The split is not decoration. It buys three things, and naming them tells you when to reach for the same pattern.
 
-First, **a reader can take a smaller slice.** Someone who never touches GitHub can install `han-core` on its own and get
-the planning, investigation, and review skills without the PR-facing ones. Bundling everything into a single plugin
-would have taken that choice away. Dependencies let the pieces ship separately and still compose.
+First, **a reader can take a smaller slice.** Someone who never touches GitHub can install `han-documentation` on its
+own and get the documentation skills plus the shared agents without the PR-facing ones. Bundling everything into a
+single plugin would have taken that choice away. Dependencies let the pieces ship separately and still compose.
 
 Second, **the dependency is honest about what it needs.** `han-github` declares `han-core` because it genuinely cannot
 run without it. The `post-code-review-to-pr` skill runs core's `/code-review` as a step before it posts anything.
@@ -185,11 +189,11 @@ never reaches for a `han-core` agent that is not there. The declaration is docum
 the same time.
 
 Third, **the meta-plugin gives one install command for the bundled suite, and bundling is a choice.** `han` carries no
-components. Its only job is to depend on `han-core`, `han-github`, and `han-reporting` so that `/plugin install han@han`
-delivers them in one step. A plugin with no components and nothing but a `dependencies` array is a pattern worth naming,
-because it is how you bundle a set of plugins under a single install.
+components. Its only job is to depend on `han-core`, `han-documentation`, and `han-github` (in this example) so that
+`/plugin install han@han` delivers them in one step. A plugin with no components and nothing but a `dependencies` array
+is a pattern worth naming, because it is how you bundle a set of plugins under a single install.
 
-But it bundles only what its `dependencies` array names. `han-feedback` is a working plugin that depends on core and
+But it bundles only what its `dependencies` array names. `han-atlassian` is a working plugin that depends on core and
 ships in the same marketplace, yet the meta-plugin leaves it out so it stays opt-in. The lesson for your own extension
 is that you decide, separately from whether your plugin depends on core, whether the meta-plugin should bundle it.
 
@@ -199,7 +203,7 @@ shape on its own. Treat it as observed practice that Han relies on, rather than 
 
 Put together, the three properties are the reason to extend Han through a dependency rather than by copying its skills
 into your own plugin. You get a smaller install surface, a load-time guarantee that the core is present, and the option
-to bundle your extension into the suite later (or leave it opt-in, the way `han-feedback` is).
+to bundle your extension into the suite later (or leave it opt-in, the way `han-atlassian` is).
 
 ## What you should expect
 
@@ -209,9 +213,9 @@ to bundle your extension into the suite later (or leave it opt-in, the way `han-
   pruning, and error handling are documented at
   [code.claude.com/docs/en/plugin-dependencies](https://code.claude.com/docs/en/plugin-dependencies). When a behavior
   here and a behavior there ever seem to disagree, the canonical docs win.
-- **The versions in this guide are the versions on disk.** `han-core`, `han-github`, `han-reporting`, and `han-feedback`
-  are at 1.0.0 and `han` is at 3.0.0 as written. If you are reading the manifests and the numbers differ, the manifests
-  are right; this guide is describing the shape, not pinning the numbers.
+- **The versions in this guide are illustrative.** The example manifests pin every plugin at 1.0.0 and `han` at 3.0.0
+  to keep the shape readable. If you are reading the real manifests and the numbers differ, the manifests are right;
+  this guide is describing the shape, not pinning the numbers.
 - **The meta-plugin shape is observed, not specified.** A zero-component plugin works because of what install does with
   dependencies, not because the docs name it as a construct. Han relies on it in production, so it is safe to copy, but
   read the canonical docs if install ever does something you did not expect.

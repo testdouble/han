@@ -9,8 +9,10 @@ plugin. If you only want to use the plugin, start with the [Plugin landing page]
 
 ## TL;DR
 
-- Skills ship from the plugin that matches what they do: [`han-core/skills/`](./han-core/skills/) (research, analysis,
-  documentation, operations), [`han-planning/skills/`](./han-planning/skills/) (specifying, planning, sequencing,
+- Skills ship from the plugin that matches what they do: [`han-core/skills/`](./han-core/skills/) (project discovery
+  only), [`han-documentation/skills/`](./han-documentation/skills/) (project docs, ADRs, runbooks),
+  [`han-research/skills/`](./han-research/skills/) (research, gap analysis, issue triage),
+  [`han-planning/skills/`](./han-planning/skills/) (specifying, planning, sequencing,
   breaking down, and stress-testing work before implementation), [`han-coding/skills/`](./han-coding/skills/) (writing,
   reviewing, analyzing, testing, investigating, and standardizing code), [`han-github/skills/`](./han-github/skills/)
   (GitHub-facing), [`han-reporting/skills/`](./han-reporting/skills/) (stakeholder reporting),
@@ -19,12 +21,13 @@ plugin. If you only want to use the plugin, start with the [Plugin landing page]
   [`han-feedback/skills/`](./han-feedback/skills/) (feedback on Han itself); the contributor authoring guidance lives in
   [`han-plugin-builder/skills/`](./han-plugin-builder/skills/); the foundational
   [`han-communication/skills/`](./han-communication/skills/) carries the readability capability. Agents live in
-  [`han-core/agents/{name}.md`](./han-core/agents/), with one exception: the `readability-editor` agent lives in
-  `han-communication` alongside the readability skills it belongs with. See
+  [`han-core/agents/{name}.md`](./han-core/agents/), with two exceptions: the `readability-editor` agent lives in
+  `han-communication` alongside the readability skills it belongs with, and the `research-analyst` lives in
+  `han-research` alongside the research skill that dispatches it. See
   [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) before you start.
 - Long-form docs (for humans deciding _when_ and _how_ to use a skill or agent) live inside the plugin they describe, at
-  `{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md` (agents today are `han-core` or
-  `han-communication`).
+  `{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md` (agents today are `han-core`,
+  `han-communication`, or `han-research`).
 - **Every skill and every agent gets a long-form doc.** No exceptions. See the
   [coverage rule](./docs/templates/coverage-rule.md).
 - Use the [long-form skill template](./docs/templates/skill-long-form-template.md) or the
@@ -89,10 +92,17 @@ change goes before you scaffold anything. (For the user-facing version of this m
   standard and writing-voice profile, the `readability-guidance` and `edit-for-readability` skills, and the
   `readability-editor` agent. It depends on nothing; the plugins that produce prose output depend on it. A component
   goes here only when it is part of the shared readability capability.
-- **`han-core`** carries the research, analysis, documentation, and operations skills, plus **every agent in the suite
-  except the `readability-editor`** (which lives in `han-communication`). New agents go here by default. A skill goes
-  here when its job is research, analysis, documentation, or capturing operational knowledge, and it needs no external
-  service. `han-core` now depends on `han-communication` for the readability standard.
+- **`han-core`** carries the shared specialist agent roster — **every agent in the suite except the
+  `readability-editor`** (which lives in `han-communication`) **and the `research-analyst`** (which lives in
+  `han-research`) — plus the `project-discovery` skill and the canonical evidence and YAGNI rule files. New agents go
+  here by default. A skill goes here only when it is shared infrastructure the whole suite leans on, like project
+  discovery. `han-core` depends on `han-communication` for the readability standard.
+- **`han-documentation`** carries the documentation skills (`project-documentation`, `architectural-decision-record`,
+  `runbook`). A skill goes here when its job is writing down what the team built and decided: feature and system docs,
+  decision records, or operational knowledge. It depends on `han-core` and is bundled by the `han` meta-plugin.
+- **`han-research`** carries the pre-planning knowledge-work skills (`research`, `gap-analysis`, `issue-triage`) plus
+  the `research-analyst` agent. A skill goes here when its job is understanding a problem before anyone commits to a
+  plan. It depends on `han-core` and is bundled by the `han` meta-plugin.
 - **`han-planning`** carries the planning skills (`plan-a-feature`, `plan-implementation`, `plan-a-phased-build`,
   `plan-work-items`, `iterative-plan-review`). A skill goes here when its job is specifying what a feature does,
   planning how to build it, sequencing the build, breaking it into work, or stress-testing a plan before implementation.
@@ -111,30 +121,33 @@ change goes before you scaffold anything. (For the user-facing version of this m
   `project-documentation-to-confluence`, `investigate-to-confluence`, `code-overview-to-confluence`,
   `plan-a-feature-to-confluence`, `work-items-to-jira`). A skill goes here when it publishes a Han artifact to
   Confluence or Jira through the Atlassian MCP server. It is opt-in, requires a configured Atlassian MCP server, and
-  depends on `han-core`, `han-planning`, and `han-coding` because its wrapper skills run skills from each, plus
-  `han-communication` because those wrapped prose-producing skills source the shared readability standard.
+  depends on `han-core`, `han-documentation`, `han-planning`, and `han-coding` because its wrapper skills run skills
+  from each, plus `han-communication` because those wrapped prose-producing skills source the shared readability
+  standard.
 - **`han-linear`** carries the single `work-items-to-linear` skill. A skill goes here when it publishes Han work items
-  to Linear through the Linear MCP server. It is opt-in, requires a configured Linear MCP server, and depends on
-  `han-core`.
+  to Linear through the Linear MCP server. It is opt-in, requires a configured Linear MCP server, and depends on no
+  other Han plugin.
 - **`han-plugin-builder`** carries the contributor authoring guidance (the `guidance` skill and its reference set, plus
   the interview-driven `skill-builder` and `agent-builder` skills). It is opt-in and depends on nothing. Edit it when
   you change how skills, agents, or plugins are built; it is not where product-facing skills go.
 - **`han`** is the meta-plugin. It has no components of its own; it depends on `han-communication`, `han-core`,
-  `han-planning`, `han-coding`, `han-github`, and `han-reporting` so one install pulls them all in. `han-feedback`,
+  `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` so one install
+  pulls them all in. `han-feedback`,
   `han-atlassian`, `han-linear`, and `han-plugin-builder` are deliberately left out so they stay opt-in. You add a
   component to `han` only by adding it to one of the child plugins; you never put a skill or agent directly in `han`.
 
 Two rules keep the dependency direction clean:
 
-- **Every plugin depends on `han-core`,** so a skill in `han-planning`, `han-coding`, `han-github`, `han-reporting`, or
-  `han-feedback` may dispatch any `han-core` agent freely. That is why nearly all agents live in `han-core` — the sole
-  exception is the `readability-editor`, which lives in the foundational `han-communication` plugin alongside the
-  readability skills, and which every prose-producing plugin reaches by declaring a direct dependency on
-  `han-communication`.
-- **`han-core` depends only on `han-communication`.** It reaches nothing in `han-planning`, `han-coding`, `han-github`,
-  `han-reporting`, or `han-feedback`; a `han-core` skill that needs a capability from one of those means the capability
-  belongs in `han-core`. Its one outward edge is to `han-communication`, the layer beneath it that owns the shared
-  readability standard — the first dependency `han-core` has ever taken.
+- **Every plugin whose skills dispatch shared agents depends on `han-core`,** so a skill in `han-documentation`,
+  `han-research`, `han-planning`, `han-coding`, or `han-github` may dispatch any `han-core` agent freely. That is why
+  nearly all agents live in `han-core` — the exceptions are the `readability-editor`, which lives in the foundational
+  `han-communication` plugin alongside the readability skills and which every prose-producing plugin reaches by
+  declaring a direct dependency on `han-communication`, and the `research-analyst`, which lives in `han-research`
+  because only the `research` skill dispatches it. `han-reporting`, `han-feedback`, and `han-linear` dispatch no shared
+  agents and so carry no `han-core` dependency.
+- **`han-core` depends only on `han-communication`.** It reaches nothing in the plugins above it; a `han-core` skill
+  that needs a capability from one of those means the capability belongs in `han-core`. Its one outward edge is to
+  `han-communication`, the layer beneath it that owns the shared readability standard.
 
 When a change adds, removes, or moves a skill between plugins, update the marketplace registry at
 [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) so the plugin's component set stays accurate.
@@ -143,8 +156,9 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
 ## Adding a skill
 
 1. Decide the plugin using [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) above,
-   then scaffold the folder under that plugin's `skills/{name}/` directory (`han-core`, `han-planning`, `han-coding`,
-   `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, or `han-linear`) and add a `SKILL.md`.
+   then scaffold the folder under that plugin's `skills/{name}/` directory (`han-core`, `han-documentation`,
+   `han-research`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, or
+   `han-linear`) and add a `SKILL.md`.
 2. Write the `SKILL.md`:
    - Frontmatter with `name`, `description`, `allowed-tools`. See
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
@@ -162,8 +176,9 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
 ## Adding an agent
 
 1. Create `han-core/agents/{name}.md` with frontmatter (`name`, `description`, `tools`, `model`) and the agent body. New
-   agents live in `han-core` by default; the readability-editor is the one exception, living in `han-communication` with
-   the readability skills it serves. See
+   agents live in `han-core` by default; the exceptions are the readability-editor, living in `han-communication` with
+   the readability skills it serves, and the research-analyst, living in `han-research` with the research skill that
+   dispatches it. See
    [agent-domain-focus.md](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md)
    for how narrow and named the domain vocabulary should be.
 2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `{plugin}/docs/agents/{name}.md`

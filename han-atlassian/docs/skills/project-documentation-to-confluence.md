@@ -10,7 +10,7 @@ definition at
 
 ## TL;DR
 
-- **What it does.** Runs the core [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) skill to write
+- **What it does.** Runs the [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) skill to write
   feature documentation to a temporary file, and shows you the file to review. After you confirm, publishes it to a
   Confluence location you specify by handing the file to [`/markdown-to-confluence`](./markdown-to-confluence.md).
 - **When to use it.** You want a feature, system, or component documented _and_ posted to a specific Confluence space or
@@ -21,7 +21,7 @@ definition at
 ## Key concepts
 
 - **A thin orchestrator over two skills.** The documentation work, the codebase exploration, the content audit, and the
-  information-architecture review all belong to [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md). The
+  information-architecture review all belong to [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). The
   publishing work, the location resolution, and the create-or-update call all belong to
   [`/markdown-to-confluence`](./markdown-to-confluence.md). This skill only validates its inputs, runs the documentation
   to a temporary file, lets you review it, takes your publish choice, and hands the file to the publisher.
@@ -52,14 +52,14 @@ definition at
 
 **Do not invoke for:**
 
-- **Local-only documentation.** Use [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md). This skill is for
+- **Local-only documentation.** Use [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). This skill is for
   when the doc also needs to land in Confluence.
 - **Publishing an existing markdown file.** Use [`/markdown-to-confluence`](./markdown-to-confluence.md) when you
   already have the file and only want it posted, without generating new documentation.
 - **Technology stack discovery.** Use [`/project-discovery`](../../../han-core/docs/skills/project-discovery.md).
-- **Architectural decisions.** Use [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md).
+- **Architectural decisions.** Use [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md).
 - **Coding conventions.** Use [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md).
-- **Runbooks for operational scenarios.** Use [`/runbook`](../../../han-core/docs/skills/runbook.md).
+- **Runbooks for operational scenarios.** Use [`/runbook`](../../../han-documentation/docs/skills/runbook.md).
 - **Planning or specifying a new feature.** Use [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md).
   This skill documents a feature that already exists; that one specs a feature before it is built and publishes the
   spec.
@@ -96,7 +96,7 @@ Example prompts:
 Two artifacts:
 
 - **The working draft.** A markdown file under `/tmp/` that
-  [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) writes, leading with behavior. This file is the
+  [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) writes, leading with behavior. This file is the
   source content for Confluence and the thing you review before publishing. It lives in `/tmp/`, not your repo, so it
   does not get committed unless you move it there yourself.
 - **The Confluence page.** A page created at, or updated in place at, the location you named, either as an unpublished
@@ -124,7 +124,7 @@ If you keep it local only at the confirmation step, you still keep the `/tmp/` d
 ## Cost and latency
 
 The skill itself dispatches no agents. Its cost is whatever
-[`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) costs: two to three `codebase-explorer` agents in
+[`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) costs: two to three `codebase-explorer` agents in
 parallel, one `content-auditor` in update mode, and one `information-architect` before verification, all on their
 default models. On top of that, it costs the handful of fast Atlassian MCP calls
 [`/markdown-to-confluence`](./markdown-to-confluence.md) makes to resolve the location and publish the page. For a
@@ -155,7 +155,7 @@ The skill walks a short, deterministic five-step process:
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
-- [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md). The core skill this one runs to produce the
+- [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). The core skill this one runs to produce the
   documentation. Use it directly for local-only documentation.
 - [`/markdown-to-confluence`](./markdown-to-confluence.md). The publisher this skill hands the file to. Use it directly
   to publish any existing markdown file to Confluence.

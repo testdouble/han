@@ -76,8 +76,8 @@ short ordered "Getting started" line before the skills list. Skip it when the sk
 
 ### Rule: List owned agents, or note shared-agent dispatch
 
-Only `han-core` and `han-communication` own agents. Their READMEs add an agents section listing each owned agent as a
-scent line linking to its long-form doc under `docs/agents/`.
+Only `han-core`, `han-communication`, and `han-research` own agents. Their READMEs add an agents section listing each
+owned agent as a scent line linking to its long-form doc under `docs/agents/`.
 
 Every other plugin owns no agents. Its README omits an agents section and instead notes that its skills dispatch shared
 agents, which live in `han-core` and, for the readability-editor, in `han-communication`. Do not list the dispatched
@@ -115,7 +115,8 @@ lays out the light front-door shape with HTML comments marking the sections a gi
 2. Open with the H1 and a one-paragraph what/how/why.
 3. State bundled-vs-opt-in and dependencies, including any required MCP server.
 4. List skills as scent lines that reuse the long-form doc's summary line and link into `docs/skills/`.
-5. List owned agents (`han-core`, `han-communication` only), or note shared-agent dispatch for every other plugin.
+5. List owned agents (`han-core`, `han-communication`, and `han-research` only), or note shared-agent dispatch for every
+   other plugin.
 6. Close with lateral navigation to the plugin index, the repository root, and the workflows page.
 7. The `han` meta-plugin omits the skills and agents sections.
 8. Follow the light template at

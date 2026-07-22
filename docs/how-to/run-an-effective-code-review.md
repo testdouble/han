@@ -81,7 +81,7 @@ The reviewer that only sees the diff is guessing at intent; the reviewer that se
    but it is guessing at where your rules live.
 
 3. **Keep the rules current, and keep them relevant.** If the change lands a decision worth recording, capture it with
-   [`/architectural-decision-record`](../../han-core/docs/skills/architectural-decision-record.md). If it establishes a
+   [`/architectural-decision-record`](../../han-documentation/docs/skills/architectural-decision-record.md). If it establishes a
    convention the team will apply again, write it down with
    [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md). Both then feed every later review automatically. One
    caution that the evidence is clear on: more context is not strictly better. The lever is the _right_ context, not all
@@ -226,4 +226,4 @@ lower before you ever read it. Then it hands you a result to judge, not a verdic
 - The skill long-form docs ([code-review](../../han-coding/docs/skills/code-review.md),
   [post-code-review-to-pr](../../han-github/docs/skills/post-code-review-to-pr.md),
   [coding-standard](../../han-coding/docs/skills/coding-standard.md),
-  [architectural-decision-record](../../han-core/docs/skills/architectural-decision-record.md)) cover each step in depth.
+  [architectural-decision-record](../../han-documentation/docs/skills/architectural-decision-record.md)) cover each step in depth.

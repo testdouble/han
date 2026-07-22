@@ -2,7 +2,7 @@
 
 Operator documentation for the `/runbook` skill in the han plugin. This document helps you decide _when_ and _how_ to
 use the skill. For what the skill does internally, read the skill definition at
-[`han-core/skills/runbook/SKILL.md`](../../skills/runbook/SKILL.md).
+[`han-documentation/skills/runbook/SKILL.md`](../../skills/runbook/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
 > [All agents](../../../docs/agents/README.md) · [YAGNI](../../../docs/yagni.md) · [Evidence](../../../docs/evidence.md)
@@ -179,8 +179,8 @@ The skill walks an eight-step process:
    each criterion, and fix any failure before presenting. The skill runs no rewrite pass, so this self-check is the
    output's fidelity guard.
 
-The template is reviewed by [`information-architect`](../agents/information-architect.md) and
-[`junior-developer`](../agents/junior-developer.md) inputs that landed during its design pass. Progressive
+The template is reviewed by [`information-architect`](../../../han-core/docs/agents/information-architect.md) and
+[`junior-developer`](../../../han-core/docs/agents/junior-developer.md) inputs that landed during its design pass. Progressive
 disclosure runs in two directions: from observable symptom toward likely cause and adjacent failures, and from quick fix
 toward branching procedure with verification and rollback. The metadata block carries the front-door signals (Severity,
 Reversible, Last validated) that a tired reader needs before committing to any step.
@@ -189,7 +189,7 @@ Reversible, Last validated) that a tired reader needs before committing to any s
 
 The skill's structure is grounded in established runbook practice and the project's own evidence-based conventions.
 
-### Google SRE Workbook — On-Call
+### Google SRE Workbook: On-Call
 
 The "playbook entry" pattern in Google SRE (every alert ties to a playbook entry with severity, impact, debugging, and
 mitigation) anchors the skill's per-scenario structure and the alert-to-runbook linking convention. The corroborated 3x
@@ -213,13 +213,13 @@ OpenShift's runbook repository, where the runbook file name is the alert it answ
 
 URL: https://github.com/openshift/runbooks
 
-### `han-core/references/yagni-rule.md`
+### `han-documentation/references/yagni-rule.md`
 
 The skill's YAGNI preflight applies the project's own evidence-based YAGNI rule. The canonical anti-pattern, "runbook
 for an alert that has never fired," comes directly from this rule and from the `devops-engineer` agent definition that
 codifies it.
 
-URL: [`han-core/references/yagni-rule.md`](../../references/yagni-rule.md)
+URL: [`han-documentation/references/yagni-rule.md`](../../references/yagni-rule.md)
 
 ### `docs/research/runbook-skill-research.md`
 
@@ -245,10 +245,10 @@ URL: [`docs/research/runbook-skill-research.md`](../../../docs/research/runbook-
   background a feature doc already provides.
 - [`/architectural-decision-record`](./architectural-decision-record.md). For decisions that produce the system the
   runbook operates on.
-- [`information-architect`](../agents/information-architect.md). Reviewed the runbook output template for
+- [`information-architect`](../../../han-core/docs/agents/information-architect.md). Reviewed the runbook output template for
   progressive disclosure during the skill's design pass.
-- [`junior-developer`](../agents/junior-developer.md). Reviewed the runbook output template for generalist
+- [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). Reviewed the runbook output template for generalist
   readability during the skill's design pass.
-- [`devops-engineer`](../agents/devops-engineer.md). The agent that consumes runbooks during
+- [`devops-engineer`](../../../han-core/docs/agents/devops-engineer.md). The agent that consumes runbooks during
   production-readiness review and whose YAGNI anti-pattern definition anchors the skill's preflight.
 - [`SKILL.md` for /runbook](../../skills/runbook/SKILL.md). The internal process definition.

@@ -1,0 +1,6 @@
+{
+  "name": "han-documentation",
+  "description": "Documentation skills for the Han suite: writing down what the team built and decided. Home of project-documentation (create and maintain documentation for features, systems, and components), architectural-decision-record (create, extract, or convert ADRs), and runbook (create or update a runbook for a single operational scenario, gated by a YAGNI preflight). Depends on han-communication and han-core; bundled by the han meta-plugin.",
+  "version": "1.0.0",
+  "dependencies": ["han-communication", "han-core"]
+}

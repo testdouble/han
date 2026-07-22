@@ -304,8 +304,8 @@ URL: https://www.melconway.com/Home/Committees_Paper.html
   roster when a feature crosses a service boundary.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Chains to `software-architect`, which
   defers cross-service concerns. When those deferrals appear, dispatch this agent.
-- [`/architectural-decision-record`](../skills/architectural-decision-record.md),
-  [`/gap-analysis`](../skills/gap-analysis.md),
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md),
+  [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md),
   [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). The other skills that conditionally
   dispatch this agent when the work crosses a service or bounded-context boundary. `/plan-a-feature` includes it only
   when you explicitly ask.

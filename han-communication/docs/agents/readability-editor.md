@@ -120,9 +120,9 @@ command to act on. Its adversarial posture is aimed at the draft, never at the a
   [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md),
   [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md),
   [`/manual-test-planning`](../../../han-coding/docs/skills/manual-test-planning.md),
-  [`/gap-analysis`](../../../han-core/docs/skills/gap-analysis.md),
-  [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md),
-  [`/research`](../../../han-core/docs/skills/research.md), [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md),
+  [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md),
+  [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md),
+  [`/research`](../../../han-research/docs/skills/research.md), [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md),
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md),
   [`/plan-a-phased-build`](../../../han-planning/docs/skills/plan-a-phased-build.md),
   [`/update-pr-description`](../../../han-github/docs/skills/update-pr-description.md), and

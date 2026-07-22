@@ -74,18 +74,18 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Breaking a plan into atomic work items.** Use [`/plan-work-items`](./plan-work-items.md) to split a trusted plan
   into independently-grabbable, atomic work items a team picks up one at a time. This skill sequences the build into
   demoable phases. It does not produce the grabbable work units within a phase.
-- **Comparing two artifacts.** Use [`/gap-analysis`](../../../han-core/docs/skills/gap-analysis.md) when the question is _"what's missing
+- **Comparing two artifacts.** Use [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md) when the question is _"what's missing
   from X compared to Y."_ This skill assumes the gap is already identified (or otherwise described) and orders the build
   to close it.
 - **Refining or stress-testing an existing plan.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for
   multi-pass review of a plan you have already drafted. This skill produces a new outline. It does not iterate on one in
   place.
 - **Recording an architectural decision.** Use
-  [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md) for ADRs. This skill produces a build
+  [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md) for ADRs. This skill produces a build
   sequence, not a record of a single decision and its alternatives.
 - **Investigating runtime bugs or failures.** Use [`/investigate`](../../../han-coding/docs/skills/investigate.md) for evidence-based
   root-cause work on a defect.
-- **Documenting an already-built feature.** Use [`/project-documentation`](../../../han-core/docs/skills/project-documentation.md) for
+- **Documenting an already-built feature.** Use [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md) for
   descriptive docs of features, systems, and components that exist. This skill plans work yet to be built.
 
 ## How to invoke it
@@ -396,7 +396,7 @@ URL: see [`information-architect` agent definition](../../../han-core/agents/inf
   to review the rendered outline. Also the agent that reviewed the output template before the skill shipped.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched once the outline is final to
   rewrite its prose for the reader of the phased build, preserving every fact and every `Phase N` identifier.
-- [`/gap-analysis`](../../../han-core/docs/skills/gap-analysis.md). Pair upstream when the source artifact is a comparison between current
+- [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Pair upstream when the source artifact is a comparison between current
   and desired state. Run `/gap-analysis` first to produce the gap report, then point this skill at the report. `G-NNN`
   gap IDs become source citations on the phase entries that close them.
 - [`/plan-a-feature`](./plan-a-feature.md). Pair upstream when the source artifact is a single feature that needs a
@@ -410,7 +410,7 @@ URL: see [`information-architect` agent definition](../../../han-core/agents/inf
   verify"_ become Open Items.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Use to refine an _existing_ outline that needs sharpening.
   This skill produces a new outline from scratch. `/iterative-plan-review` iterates on one in place.
-- [`/architectural-decision-record`](../../../han-core/docs/skills/architectural-decision-record.md). The sibling skill for recording an
+- [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). The sibling skill for recording an
   architectural decision. Use `/architectural-decision-record` when the question is _"what did we decide and why."_ Use
   `/plan-a-phased-build` when the question is _"in what order do we build."_
 - [Build-phase outline template](../../skills/plan-a-phased-build/references/build-phase-outline-template.md).

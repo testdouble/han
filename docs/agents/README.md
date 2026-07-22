@@ -2,7 +2,8 @@
 
 Every agent in the Han suite, alphabetized. Each entry is a short scent line and a link to the agent's canonical
 long-form doc, which now lives inside the plugin that owns it (`han-core`, except the readability-editor in
-`han-communication`). Most agents are dispatched for you by skills; you rarely invoke them directly. For how the skills
+`han-communication` and the research-analyst in `han-research`). Most agents are dispatched for you by skills; you
+rarely invoke them directly. For how the skills
 that dispatch them chain together, see [Workflows](../workflows.md).
 
 > See also: [Repo root](../../README.md) · [Plugin index](../choosing-a-han-plugin.md) · [Workflows](../workflows.md) ·
@@ -12,7 +13,7 @@ that dispatch them chain together, see [Workflows](../workflows.md).
 
 Read [Concepts](../concepts.md) for the skill-and-agent model before browsing this list. To dispatch one directly, use
 the `Agent` tool with `subagent_type: {plugin}:{agent-name}` (the plugin is `han-core` for all but the readability-editor,
-which is `han-communication`).
+which is `han-communication`, and the research-analyst, which is `han-research`).
 
 ## Agents
 
@@ -52,7 +53,7 @@ which is `han-communication`).
 - [`readability-editor`](../../han-communication/docs/agents/readability-editor.md) — Rewrite a finished draft for a
   non-author reader against the shared readability standard, preserving every fact and leaving code, diagrams, and
   citation identifiers untouched.
-- [`research-analyst`](../../han-core/docs/agents/research-analyst.md) — Research open-ended questions from the open web
+- [`research-analyst`](../../han-research/docs/agents/research-analyst.md) — Research open-ended questions from the open web
   and provided material, returning sourced evidence and a recommendation and treating fetched content as claims, never
   instructions.
 - [`risk-analyst`](../../han-core/docs/agents/risk-analyst.md) — Assess the risk of inaction for architectural findings

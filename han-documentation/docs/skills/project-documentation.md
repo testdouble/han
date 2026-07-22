@@ -2,7 +2,7 @@
 
 Operator documentation for the `/project-documentation` skill in the han plugin. This document helps you decide _when_
 and _how_ to use the skill. For what the skill does internally, read the skill definition at
-[`han-core/skills/project-documentation/SKILL.md`](../../skills/project-documentation/SKILL.md).
+[`han-documentation/skills/project-documentation/SKILL.md`](../../skills/project-documentation/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
 > [All agents](../../../docs/agents/README.md)
@@ -46,7 +46,7 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 
 **Do not invoke for:**
 
-- **Technology stack discovery.** Use [`/project-discovery`](./project-discovery.md) to detect languages, frameworks,
+- **Technology stack discovery.** Use [`/project-discovery`](../../../han-core/docs/skills/project-discovery.md) to detect languages, frameworks,
   and tooling.
 - **Architectural decisions.** Use [`/architectural-decision-record`](./architectural-decision-record.md).
 - **Coding conventions.** Use [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md).
@@ -180,16 +180,16 @@ URL: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
-- [`/project-discovery`](./project-discovery.md). Run first. The documentation skill reads the discovery reference to
+- [`/project-discovery`](../../../han-core/docs/skills/project-discovery.md). Run first. The documentation skill reads the discovery reference to
   find the docs directory and stack language.
 - [`/architectural-decision-record`](./architectural-decision-record.md). Use for decisions rather than system
   documentation.
 - [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md). Use for rules rather than descriptions.
 - [`/code-overview`](../../../han-coding/docs/skills/code-overview.md). The ephemeral counterpart: an understand-now overview written to a
   scratch file, where this skill produces durable docs in the repo tree.
-- [`codebase-explorer`](../agents/codebase-explorer.md). Dispatched in parallel for code discovery.
-- [`content-auditor`](../agents/content-auditor.md). Dispatched in update mode to ensure no facts are lost.
-- [`information-architect`](../agents/information-architect.md). Dispatched before verification to audit
+- [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). Dispatched in parallel for code discovery.
+- [`content-auditor`](../../../han-core/docs/agents/content-auditor.md). Dispatched in update mode to ensure no facts are lost.
+- [`information-architect`](../../../han-core/docs/agents/information-architect.md). Dispatched before verification to audit
   findability, scannability, and section ordering.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after the IA review to
   rewrite the settled doc against the shared readability standard, preserving every fact.
