@@ -30,7 +30,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Plain language first, technical detail nested.** The summary is three to five very short plain sentences saying why
   the work is needed and what is being done, with no technical detail and no ID references. The body is a
   `Work to be done` bullet list in the same plain language, with technical detail nested beneath the bullet it supports
-  — intention, goals, and touch points, never a prescribed edit list — because work items are often implemented long
+  (intention, goals, and touch points, never a prescribed edit list), because work items are often implemented long
   after they are written, and a prescribed edit list goes stale against the moving codebase while intention and
   criteria stay valid. Plan references live in the References block, each ID paired with a one-sentence description of
   what it is.
