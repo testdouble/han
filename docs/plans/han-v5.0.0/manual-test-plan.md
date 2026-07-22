@@ -29,7 +29,7 @@ This test verifies that installing the main Han plugin pulls in all eight bundle
 **Steps**
 
 1. Open Claude Code.
-2. Type `/plugin marketplace add testdouble/han` and press enter. If the marketplace is already added, that is fine; continue.
+2. Type `/plugin marketplace add git@github.com:testdouble/han#han-v5.0.0-alpha-1` and press enter. If the marketplace is already added, that is fine; continue.
 3. Type `/plugin install han@han` and press enter. Accept any prompts.
 4. Type `/plugin` and open the list of installed plugins.
 
