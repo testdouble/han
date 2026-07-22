@@ -49,8 +49,8 @@ exists for the source spec, so the T#-contradiction classification does not appl
   - OQ-4: Do `.codex-plugin/plugin.json` manifests carry a `dependencies` field that must mirror the drops? (implicit in devops R2c item 5)
 - **Spec-maturity tags:** plan-level: all claims and OQ-1/OQ-2/OQ-4; spec-level: OQ-3 only (D11 silent on new-plugin initial versions) — 1 finding from 1 specialist, far below the gate (≥5 from ≥3). T#-contradiction: n/a (no technical notes exist). **Gate did not trip.**
 - **Resolution source:** see R2.
-- **Decisions produced:** — (backfilled at synthesis)
-- **Changed in plan:** — (backfilled at synthesis)
+- **Decisions produced:** D-1, D-2, D-3, D-4, D-5, D-6, D-7, D-8, D-9, D-10, D-11, D-12 (initial forms), and raised the Open Question that became D-13. The full-decision skeleton comes from this round: D-1 (R1c/JD-3), D-2 (S2/S3/S4/S5), D-3 (S1), D-4 (S11), D-5 (R2c/R3c/S8), D-6 (R4c/R5c/R6c), D-7 (JD-6), D-8 (S6/IA-1/IA-2/IA-3), D-9 (IA-inv/JD-4), D-10 (IA-scent), D-11 (R7c), D-12 (S7).
+- **Changed in plan:** Implementation Approach, Work Units and Sequencing, Definition of Done, Testing Strategy, Operational Readiness, Risks and Assumptions, Specialist Handoffs for Implementation.
 - **Next-step recommendation (deterministic):** Continue iterating — four plan-level Open Questions resolvable by evidence; no specialist re-engagement named.
 
 ## R2: Evidence resolution of the four Open Questions
@@ -75,7 +75,7 @@ exists for the source spec, so the T#-contradiction classification does not appl
   level by suite convention without fabricating behavior — the spec's D11 governs only existing plugins.)
 - **Resolution source:** OQ-1: evidence. OQ-2: evidence (spec OI-1 + devops R5c). OQ-3: evidence (precedent).
   OQ-4: evidence.
-- **Decisions produced:** — (backfilled at synthesis)
-- **Changed in plan:** — (backfilled at synthesis)
+- **Decisions produced:** D-13 (new plugins start at 1.0.0, from OQ-3r); refined D-1 (OQ-1r confirmed the default-branch atomicity unit), D-4 (OQ-4r confirmed no codex dependencies field), D-6 (OQ-2r folded the re-fetch question in as the OI-1 procedure's first assertion), and D-7 (JD-6r recount to 23 links, 22 rewrite).
+- **Changed in plan:** Constraints and Boundaries (new-plugin version 1.0.0), Operational Readiness (OI-1 first assertion and re-fetch handling), Work Units and Sequencing (22-of-23 link recount), Testing Strategy, Risks and Assumptions.
 - **Next-step recommendation (deterministic):** Go to synthesis — zero unresolved Open Questions, most recent
   round produced no new findings and no major findings.
