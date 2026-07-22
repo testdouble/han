@@ -1,8 +1,8 @@
 # Feature Specification: han-core Restructure
 
-Splitting han-core into a lean shared-agent plugin plus two new topical plugins, han-documentation and han-research, so
-that depending on han-core no longer installs seven skills most dependents never use. Three plugins that depend on
-han-core without using it drop the dependency entirely.
+Splitting han-core into a lean shared-agent plugin plus two new topical plugins, han-documentation and han-research.
+That means depending on han-core no longer installs seven skills most dependents never use. Three plugins that depend
+on han-core without using it drop the dependency entirely.
 
 ## Outcome
 
@@ -12,7 +12,7 @@ the project-discovery skill, and the canonical rule files, with nothing else rid
 ([D1](artifacts/decision-log.md#d1-split-han-core-along-the-agents-versus-skills-line)). Users who install only an
 edge plugin such as han-linear or han-feedback no longer receive the full agent roster and skill set they never invoke
 ([D5](artifacts/decision-log.md#d5-drop-the-vestigial-han-core-dependencies)). Users on partial installs that relied on
-han-core for the moved skills see those skills leave their footprint; that reduction is the feature's purpose, and the
+han-core for the moved skills see those skills leave their footprint. That reduction is the feature's purpose. The
 release tells them which plugin restores each skill
 ([D12](artifacts/decision-log.md#d12-partial-installs-accept-reduced-skill-availability-with-release-notes-guidance)).
 
@@ -22,11 +22,11 @@ release tells them which plugin restores each skill
   - **Suite maintainers** carry out the restructure and maintain the resulting plugins.
   - **End users** install, upgrade, and invoke Han plugins through the marketplace and slash commands.
   - **Claude Code sessions** dispatch the shared agents and invoke skills across plugin boundaries at runtime.
-- **Triggers** — a user installs or upgrades a Han plugin; a session invokes a skill or dispatches an agent that now
+- **Triggers**: a user installs or upgrades a Han plugin; a session invokes a skill or dispatches an agent that now
   lives in a different plugin than before.
-- **Preconditions** — the restructure lands as one coordinated change: the new plugins exist, the moved skills live in
+- **Preconditions**: the restructure lands as one coordinated change. The new plugins exist, the moved skills live in
   their new homes, and every dependency list and documentation surface reflects the new layout before release. The
-  same all-or-nothing property must hold for what a user observes: at no point may the suite's catalog advertise a
+  same all-or-nothing property must hold for what a user observes. At no point may the suite's catalog advertise a
   bundled plugin that cannot be installed, or a dependency list name a plugin absent from the catalog
   ([D13](artifacts/decision-log.md#d13-the-release-gate-verifies-every-upgrade-shape-and-a-recovery-path)).
 
@@ -53,7 +53,7 @@ The restructure produces this target shape. Each numbered item is a behavior the
    ([D5](artifacts/decision-log.md#d5-drop-the-vestigial-han-core-dependencies),
    [D6](artifacts/decision-log.md#d6-han-feedback-and-han-linear-gain-no-han-communication-dependency)).
 6. **han-atlassian** depends on han-documentation for its project-documentation wrapper and keeps its direct han-core
-   dependency, because the skills it wraps genuinely dispatch han-core's shared agents; that distinguishes it from the
+   dependency, because the skills it wraps genuinely dispatch han-core's shared agents. That distinguishes it from the
    three dependents whose han-core edges carried no usage at all
    ([D7](artifacts/decision-log.md#d7-han-atlassian-adds-han-documentation-and-keeps-direct-han-core)).
 7. **han-github, han-planning, and han-coding** keep their current dependency lists; their installed footprint shrinks
@@ -61,15 +61,15 @@ The restructure produces this target shape. Each numbered item is a behavior the
    only these plugins no longer receives the moved skills
    ([D12](artifacts/decision-log.md#d12-partial-installs-accept-reduced-skill-availability-with-release-notes-guidance)).
 8. Every skill and agent keeps its current name. Cross-plugin invocations of the moved skills resolve at their new
-   namespaced homes, and bare-name references ("use research") keep resolving to a single skill because no two
+   namespaced homes. Bare-name references ("use research") keep resolving to a single skill, because no two
    plugins share a skill name. That uniqueness becomes a standing constraint on future plugin work, since bare-name
    references across the suite depend on it ([D9](artifacts/decision-log.md#d9-names-are-stable-namespaces-change)).
-9. Every reader-facing surface is reconciled with the new layout, corrections included, not just additions
+9. Every reader-facing surface is reconciled with the new layout, corrections included, not only additions
    ([D10](artifacts/decision-log.md#d10-documentation-surfaces-are-reconciled-corrections-included)):
    - Each moved skill's long-form doc moves with it, and the repo-wide skill and agent indexes list every entity at
      its new home.
-   - Every description of what han-core contains — in the plugin-choosing guide, han-core's own front door, the
-     project map, and the suite catalog — describes the slimmed han-core rather than today's contents.
+   - Every description of what han-core contains, in the plugin-choosing guide, han-core's own front door, the
+     project map, and the suite catalog, describes the slimmed han-core rather than today's contents.
    - Every statement of what a re-pointed plugin depends on matches the new dependency edges.
    - Every link or reference to a moved skill from shared surfaces, including the workflows map, resolves at the
      skill's new home.
@@ -97,7 +97,7 @@ The restructure produces this target shape. Each numbered item is a behavior the
 - **Sequence:** The upgraded meta-plugin's dependency list pulls in han-documentation and han-research
   ([D8](artifacts/decision-log.md#d8-both-new-plugins-are-bundled-by-the-han-meta-plugin)); the slimmed
   han-core replaces the old one. From the user's perspective the upgrade is all-or-nothing: they hold either the
-  complete prior skill set or the complete new one, and any unavoidable in-between state surfaces as a visible signal
+  complete prior skill set or the complete new one. Any unavoidable in-between state surfaces as a visible signal
   rather than a silently missing skill
   ([D13](artifacts/decision-log.md#d13-the-release-gate-verifies-every-upgrade-shape-and-a-recovery-path)).
 - **Exit:** The user retains every skill and agent they had before the upgrade, under the new plugin homes. The
@@ -106,13 +106,13 @@ The restructure produces this target shape. Each numbered item is a behavior the
 
 ### Upgrade of a partial install that relied on han-core for the moved skills
 
-- **Entry condition:** A user who installed han-core directly (or a plugin that depends on it, such as han-coding)
-  upgrades after the restructure ships, and they used one or more of the six moved skills.
+- **Entry condition:** A user who installed han-core directly, or a plugin that depends on it such as han-coding,
+  upgrades after the restructure ships. They used one or more of the six moved skills.
 - **Sequence:** The slimmed han-core no longer carries the moved skills, and nothing in a partial install pulls in the
   new plugins. The moved skills leave the user's footprint
   ([D12](artifacts/decision-log.md#d12-partial-installs-accept-reduced-skill-availability-with-release-notes-guidance)).
 - **Exit:** The release notes name each moved skill, the plugin that now carries it, and the install step that
-  restores it, so the loss is a documented migration rather than a silent disappearance (OI-2).
+  restores it. That makes the loss a documented migration rather than a silent disappearance (OI-2).
 
 ### Invoking a moved skill by its old namespaced name
 
@@ -129,13 +129,13 @@ The restructure produces this target shape. Each numbered item is a behavior the
 | Condition | Required Behavior |
 | --------- | ----------------- |
 | A skill in another plugin dispatches a shared agent (for example junior-developer) after the split | The dispatch resolves unchanged: every agent dispatched from more than one plugin stays in han-core ([D4](artifacts/decision-log.md#d4-research-analyst-moves-gap-analyzer-stays)). |
-| A moved skill dispatches an agent after the move | Every agent dispatch inside a moved skill resolves at its post-split home: dispatches of agents that stay in han-core keep resolving there, and the research skill's dispatches of research-analyst resolve inside han-research ([D9](artifacts/decision-log.md#d9-names-are-stable-namespaces-change)). |
+| A moved skill dispatches an agent after the move | Every agent dispatch inside a moved skill resolves at its post-split home. Dispatches of agents that stay in han-core keep resolving there, and the research skill's dispatches of research-analyst resolve inside han-research ([D9](artifacts/decision-log.md#d9-names-are-stable-namespaces-change)). |
 | han-atlassian's project-documentation wrapper runs after the split | The wrapper invokes the skill at its new han-documentation home; the only cross-plugin skill invocation into old han-core is updated as part of the restructure ([D7](artifacts/decision-log.md#d7-han-atlassian-adds-han-documentation-and-keeps-direct-han-core)). |
 | A skill probes the user's repository for the project-discovery output file | The probe keeps working: consumers find the file by name in the user's repository, not through the plugin that wrote it, so the skill's plugin home does not affect them ([D3](artifacts/decision-log.md#d3-project-discovery-and-project-scanner-stay-in-han-core)). |
 | A moved skill's long-form doc links to an agent that stayed in han-core | The link resolves at the agent doc's unchanged home after the move. |
-| A reader follows a boundary disclaimer ("does not do X, use research") from any skill | The bare skill name resolves to exactly one skill suite-wide. When the named skill's plugin is not installed, the session cannot run it; the plugin-choosing guide and release notes name which plugin carries each skill so the user can install the right one ([D12](artifacts/decision-log.md#d12-partial-installs-accept-reduced-skill-availability-with-release-notes-guidance)). |
+| A reader follows a boundary disclaimer ("does not do X, use research") from any skill | The bare skill name resolves to exactly one skill suite-wide. When the named skill's plugin is not installed, the session cannot run it. The plugin-choosing guide and release notes name which plugin carries each skill, so the user can install the right one ([D12](artifacts/decision-log.md#d12-partial-installs-accept-reduced-skill-availability-with-release-notes-guidance)). |
 | An existing install upgrades while the catalog and plugin packages could disagree | The catalog never advertises a bundled plugin that cannot be installed, and no dependency list names a plugin absent from the catalog ([D13](artifacts/decision-log.md#d13-the-release-gate-verifies-every-upgrade-shape-and-a-recovery-path)). |
-| The restructure ships and an upgrade path turns out broken | Reverting the suite's catalog and layout to the prior release restores existing installs to their pre-restructure working set on their next resolve; this recovery path is verified as part of the OI-1 release gate ([D13](artifacts/decision-log.md#d13-the-release-gate-verifies-every-upgrade-shape-and-a-recovery-path)). |
+| The restructure ships and an upgrade path turns out broken | Reverting the suite's catalog and layout to the prior release restores existing installs to their pre-restructure working set on their next resolve. This recovery path is verified as part of the OI-1 release gate ([D13](artifacts/decision-log.md#d13-the-release-gate-verifies-every-upgrade-shape-and-a-recovery-path)). |
 
 ## Coordinations
 
@@ -157,7 +157,7 @@ The restructure's coordinations are the post-split dependency edges between plug
   this change uses.
 - Changing what any skill or agent does. The restructure moves entities without altering their behavior.
 - Preserving the moved skills in partial installs. A user whose install carried the moved skills only through han-core
-  keeps them by installing the new plugins; the restructure does not add dependencies to han-planning, han-coding, or
+  keeps them by installing the new plugins. The restructure does not add dependencies to han-planning, han-coding, or
   han-github to compensate
   ([D12](artifacts/decision-log.md#d12-partial-installs-accept-reduced-skill-availability-with-release-notes-guidance)).
 
@@ -200,19 +200,22 @@ The restructure's coordinations are the post-split dependency edges between plug
 - **OI-1:** Whether plugin dependency resolution behaves correctly for every reachable upgrade shape when the
   restructure ships
   ([D13](artifacts/decision-log.md#d13-the-release-gate-verifies-every-upgrade-shape-and-a-recovery-path)).
-  - **Resolves when:** Pre-release verification exercises each shape against a real install and each passes this
+  - **Resolves when:** Pre-release verification exercises each shape against a real install. Each shape must pass this
     condition: after upgrading, the set of invocable skills and dispatchable agents matches what the spec commits for
-    that shape, with no manual intervention and no silently missing skill. The shapes: a full `han` install (must
-    retain everything), a standalone han-core install (must end with the slimmed han-core and nothing broken), a
-    partial install such as han-coding-only (must keep working minus the moved skills), and a han-atlassian install
-    (its wrapper must resolve project-documentation at its new home). The same verification confirms the recovery
-    path: reverting the catalog and layout restores upgraded installs to their prior working set on next resolve.
-  - **Blocks implementation:** No — the restructure work can proceed, but release is gated on every shape passing.
+    that shape, with no manual intervention and no silently missing skill. The shapes are:
+    - a full `han` install (must retain everything)
+    - a standalone han-core install (must end with the slimmed han-core and nothing broken)
+    - a partial install such as han-coding-only (must keep working minus the moved skills)
+    - a han-atlassian install (its wrapper must resolve project-documentation at its new home)
+
+    The same verification confirms the recovery path: reverting the catalog and layout restores upgraded installs to
+    their prior working set on next resolve.
+  - **Blocks implementation:** No. The restructure work can proceed, but release is gated on every shape passing.
 - **OI-2:** Whether external user documentation or user muscle memory depends on the old namespaced forms such as
   `han-core:research`.
-  - **Resolves when:** The release notes name every namespace change (old form to new form) and, for each moved
-    skill, the plugin that now carries it and the install step that restores it on partial installs.
-  - **Blocks implementation:** No — the bare skill names keep working wherever the new plugins are installed.
+  - **Resolves when:** The release notes name every namespace change, from old form to new form. For each moved
+    skill, they also name the plugin that now carries it and the install step that restores it on partial installs.
+  - **Blocks implementation:** No. The bare skill names keep working wherever the new plugins are installed.
 
 ## Summary
 
@@ -221,12 +224,12 @@ The restructure's coordinations are the post-split dependency edges between plug
   surface is reconciled and every upgrade shape is verified before release.
 - **Primary actors:** Suite maintainers, end users installing or upgrading plugins, and Claude Code sessions
   dispatching cross-plugin agents and skills.
-- **Decisions settled by evidence:** 13 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 0 — the user-provided investigation supplied the direction; no decision needed a
-  fresh user ruling — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Sub-agents consulted:** junior-developer, gap-analyzer, information-architect, devops-engineer — see
+- **Decisions settled by evidence:** 13. See [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 0. The user-provided investigation supplied the direction, so no decision needed
+  a fresh user ruling. See [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Sub-agents consulted:** junior-developer, gap-analyzer, information-architect, devops-engineer. See
   [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** The documentation commitment now covers correcting stale surfaces, not just adding
-  new ones; the upgrade story now covers partial installs, an explicit release-gate pass condition, and a recovery
-  path — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** The documentation commitment now covers correcting stale surfaces, not only adding
+  new ones. The upgrade story now covers partial installs, an explicit release-gate pass condition, and a recovery
+  path. See [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 2
