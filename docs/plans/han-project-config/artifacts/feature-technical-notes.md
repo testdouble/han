@@ -13,6 +13,6 @@
   existing CLAUDE.md and project-discovery probes, so the content is spliced into the prompt before the skill's steps
   run. Exact key names, section headings, and agent-name matching rules are finalized during implementation planning;
   the frontmatter-plus-named-sections split is the committed shape.
-- **Supports decisions:** D1, D2, D7, D14, D15
+- **Supports decisions:** D1, D2, D5, D7, D14, D15
 - **Driven by findings:** F1, F2, F4
 - **Referenced in spec:** Primary Flow; User Interactions.
