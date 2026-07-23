@@ -60,7 +60,9 @@ the feature name or document path argument, the scope, any known entry points, a
 not summarize, trim, or reinterpret the user's context; pass it through so `han-documentation:project-documentation` runs exactly
 as it would on its own — **except** add one explicit instruction: it must write the resulting documentation to a file
 under `/tmp/` (for example `/tmp/<feature-slug>.md`) rather than into the project's docs directory. This keeps the
-working draft out of the repo until the user decides to publish it.
+working draft out of the repo until the user decides to publish it, and because the path is explicit input it outranks
+any `output-directory` in the project's `.han/config.md` (see
+[../../references/config-rule.md](../../references/config-rule.md)).
 
 Let `han-documentation:project-documentation` complete its full process (codebase exploration, writing the doc, content audit,
 information-architecture review, and verification). **Capture the exact `/tmp/` file path it wrote.** That markdown file

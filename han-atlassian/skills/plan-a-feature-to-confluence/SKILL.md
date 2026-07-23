@@ -75,7 +75,9 @@ it through so `han-planning:plan-a-feature` runs exactly as it would on its own 
 resolution, and project-manager synthesis included — **except** add one explicit instruction: it must write its output
 folder under `/tmp/` (for example `/tmp/<feature-slug>/`) rather than into the repo's docs directory, and it should not
 prompt the user to choose or confirm an output location, because this skill owns that decision. This keeps the working
-plan out of the repo until the user decides to publish it.
+plan out of the repo until the user decides to publish it, and because the path is explicit input it outranks any
+`output-directory` in the project's `.han/config.md` (see
+[../../references/config-rule.md](../../references/config-rule.md)).
 
 Let `han-planning:plan-a-feature` complete its full process. **Capture the exact `/tmp/` paths of every file it wrote:**
 

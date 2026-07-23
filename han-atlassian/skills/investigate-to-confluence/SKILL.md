@@ -70,7 +70,8 @@ adversarial validation, and the final report) — **except** add two explicit in
 
 - It must write the resulting investigation report to a file under `/tmp/` (for example `/tmp/<symptom-slug>.md`) rather
   than into the project's docs or plans directory. This keeps the working report out of the repo until the user decides
-  to publish it.
+  to publish it, and because the path is explicit input it outranks any `output-directory` in the project's
+  `.han/config.md` (see [../../references/config-rule.md](../../references/config-rule.md)).
 - It must **stop after producing the report**. `han-coding:investigate` normally ends by presenting the plan for
   approval and can trigger the fix's implementation on approval; this skill wants the report only, so instruct it not to
   implement the fix or change any code — this skill publishes findings, it does not ship them.
