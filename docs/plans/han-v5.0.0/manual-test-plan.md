@@ -2,7 +2,7 @@
 
 ## What this plan checks
 
-This plan checks the changes heading into Han version 5.0.0 by hand. It contains nine tests.
+This plan checks the changes heading into Han version 5.0.0 by hand. It contains thirteen tests.
 
 Anyone with Claude Code installed can run it. One test also needs a GitHub project where you can create issues.
 
@@ -18,7 +18,11 @@ Start at the top. The first two tests confirm the install and the command list t
 - **Breaking a plan into plain-language work items**: each work item leads with a plain summary and ends with its acceptance criteria.
 - **Turning work items into GitHub issues**: published issues keep the same plain-first shape.
 - **Rewriting a rough document for readability**: the new rewrite command makes a document clearer without losing any fact.
+- **Choosing where Han writes its documents**: a project configuration file sends Han's documents to a folder you choose.
+- **Ignoring a broken configuration setting**: a bad configuration setting never fails a run; it is set aside with a one-line note.
+- **Keeping a pointer to the configuration file**: project discovery offers to record a pointer to the configuration file, and to remove it once the file is gone.
 - **Browsing the reorganized documentation**: each plugin now carries its own documentation, and the indexes link into it.
+- **Reading the new configuration guide**: the shared documentation now includes a guide to the project configuration file.
 
 ## How to run each test
 
@@ -138,13 +142,70 @@ This test verifies that the new rewrite command makes a document clearer while k
 
 1. Pick a rough document you have on hand, such as meeting notes or a draft that buries its point. Note two or three specific facts it states.
 2. Run `/han-communication:edit-for-readability` and name that document.
-3. When it finishes, read the document again.
+3. When it tells you which file it will rewrite and asks for a go-ahead, agree.
+4. When it finishes, read the document again.
 
 **Expected outcomes**
 
 - The document now leads with its main point, its headings say what each section covers, and its sentences read shorter and plainer.
 - The facts you noted in step 1 are still present with their exact meaning intact.
 - The command reports what it changed and confirms the facts were preserved.
+
+### Choosing where Han writes its documents
+
+This test verifies that a project configuration file sends Han's documents to a folder you choose.
+
+**Steps**
+
+1. Open a real project you can make changes in, one that holds actual code, not an empty folder. At its top level, create a folder named `.han`, and inside it a file named `config.md`.
+2. Put these three lines in the file, exactly as shown:
+
+   ```
+   ---
+   output-directory: docs/han
+   ---
+   ```
+
+3. Start a new Claude Code session in that project.
+4. Run `/han-coding:manual-test-planning` and describe a small change a person could check by hand. Wait for it to finish.
+
+**Expected outcomes**
+
+- The plan document is written inside the `docs/han` folder, which is created if it did not exist.
+- The run says nothing about the configuration.
+
+### Ignoring a broken configuration setting
+
+This test verifies that a bad configuration setting never fails a run. It follows on from the previous test and uses the same project and configuration file.
+
+**Steps**
+
+1. Edit the configuration file and change its folder line to point outside the project: `output-directory: ../elsewhere`.
+2. Start a new session and run the same planning command again, with the same description. Wait for it to finish.
+
+**Expected outcomes**
+
+- The run completes normally.
+- A one-line note says the folder setting was set aside and why.
+- The new plan document lands in the folder you ran the command from, not outside the project.
+
+### Keeping a pointer to the configuration file
+
+This test verifies that project discovery offers to record a pointer to the configuration file, and to remove that pointer once the file is gone. It uses the same project as the previous two tests, and it cleans up the configuration file at the end.
+
+**Steps**
+
+1. Edit the configuration file and change its folder line back to a folder inside the project: `output-directory: docs/han`.
+2. Run `/han-core:project-discovery` in that project. When it offers to add a pointer to the configuration file in the project's instructions file, accept.
+3. Open the project's instructions file (the AGENTS.md or CLAUDE.md file at the top of the project) and look near the project discovery section.
+4. Delete the `.han` folder and the configuration file inside it.
+5. Run `/han-core:project-discovery` again. When it offers to remove the stale pointer, accept.
+6. Open the project's instructions file again.
+
+**Expected outcomes**
+
+- After step 2, the instructions file contains a one-line pointer to the configuration file.
+- After step 5, that pointer line is gone.
 
 ### Browsing the reorganized documentation
 
@@ -159,4 +220,16 @@ This test verifies that each plugin now carries its own documentation and the sh
 **Expected outcomes**
 
 - Each plugin folder has its own README with a one-line description of every skill it carries.
-- Every index entry you click opens a full page for that skill or agent that lives inside its plugin's own folder, and none of the clicked links is broken.
+- Every index entry you click opens a full page for that skill or agent, and that page lives inside its plugin's own folder. None of the clicked links is broken.
+
+### Reading the new configuration guide
+
+This test verifies that the shared documentation now includes a guide to the project configuration file.
+
+**Steps**
+
+1. On the Han project page on GitHub, go to the shared documentation folder and open the configuration guide.
+
+**Expected outcomes**
+
+- The guide explains the optional project configuration file: where Han writes its documents, and extra agents for Han to consider.
