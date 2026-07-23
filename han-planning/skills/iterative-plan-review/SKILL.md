@@ -15,6 +15,11 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Review Approach
 
@@ -214,6 +219,11 @@ review. Draw from:
 **Selection rules**:
 
 - Honor any agents the user named explicitly.
+- Extra agents named in the project config's `## Extra Agents` list join this specialist pool and compete under the
+  same what-the-plan-touches selection and size caps, per
+  [../../references/config-rule.md](../../references/config-rule.md): select one only when the plan touches its stated
+  specialty, count it against the size cap, and skip an entry that does not resolve to a dispatchable agent with a
+  one-line note.
 - Justify each additional specialist in one line — what in the plan requires them.
 - `han-core:risk-analyst`, `han-core:software-architect`, and `han-core:system-architect` consume upstream findings;
   only include them when at least one of `han-core:structural-analyst`, `han-core:behavioral-analyst`, or

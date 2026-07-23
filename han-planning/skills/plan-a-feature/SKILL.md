@@ -16,6 +16,11 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Operating Principles
 
@@ -327,6 +332,12 @@ assumptions. Select the remaining specialists from this list, matching domain to
   collaborator-boundary framing is deferred to `plan-implementation`).
 - `han-core:gap-analyzer` — if a PRD or reference spec exists, compare the draft against it.
 - `han-core:risk-analyst` — prioritization of risks if the feature has significant blast radius.
+
+Extra agents named in the project config's `## Extra Agents` list join this review-team pool and compete under the same
+domain-to-feature matching and size cap, per
+[../../references/config-rule.md](../../references/config-rule.md): select one only when the feature touches its
+stated specialty, count it against the size cap, brief it with the spec sections relevant to its domain, and skip an
+entry that does not resolve to a dispatchable agent with a one-line note.
 
 **Mechanic-focused specialists — `han-core:structural-analyst`, `han-core:behavioral-analyst`,
 `han-core:concurrency-analyst`, `han-core:software-architect`, and `han-core:system-architect` — are intentionally

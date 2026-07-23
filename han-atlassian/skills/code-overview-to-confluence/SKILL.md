@@ -15,6 +15,14 @@ argument-hint:
 allowed-tools: Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Code Overview to Confluence
 
 This skill runs a progressive-disclosure code overview with the core `han-coding:code-overview` skill, lets the user
@@ -61,10 +69,12 @@ the relevant conversation context. Do not summarize, trim, or reinterpret the us
 `han-coding:code-overview` runs exactly as it would on its own (target resolution, mode and size selection, parallel
 `codebase-explorer` exploration, synthesis, and the readability-review pass).
 
-`han-coding:code-overview` already writes its overview to a scratch file outside the repository and changes no code, so
-this skill adds no behavioral instructions — it only needs the resulting file. **Capture the exact scratch-file path it
-wrote** (for example `${TMPDIR:-/tmp}/code-overview-<slug>.md`). That markdown file is the source content for
-Confluence. Proceed to Step 3 once it finishes.
+`han-coding:code-overview` already writes its overview to a scratch file outside the repository and changes no code —
+**except** add one explicit instruction: it must write the overview to an explicit scratch path this skill names (for
+example `${TMPDIR:-/tmp}/code-overview-<slug>.md`). Passing the path explicitly keeps the file where this skill expects
+it even when the project's `.han/config.md` configures an output directory, because explicit input outranks the config
+(see [../../references/config-rule.md](../../references/config-rule.md)). **Capture the exact scratch-file path it
+wrote.** That markdown file is the source content for Confluence. Proceed to Step 3 once it finishes.
 
 ## Step 3: Show the File for Review
 

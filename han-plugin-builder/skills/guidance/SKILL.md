@@ -11,6 +11,14 @@ description: >
 allowed-tools: Read, Glob, Grep, Bash(find *)
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 This skill has three modes. Pick the mode from how it was invoked, then follow only that mode's steps.
 
 - If the invocation argument is `init` or `initialize` (any case), run **Initialization Mode**.

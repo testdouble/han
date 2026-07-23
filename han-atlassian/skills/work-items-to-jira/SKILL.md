@@ -19,6 +19,14 @@ allowed-tools:
   mcp__claude_ai_Atlassian__transitionJiraIssue, mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Work Items to Jira Tickets
 
 Take an already-broken-down `work-items.md` file (produced by `/plan-work-items`) and publish each slice as a Jira

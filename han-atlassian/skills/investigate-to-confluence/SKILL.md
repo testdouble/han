@@ -14,6 +14,14 @@ argument-hint:
 allowed-tools: Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Investigate to Confluence
 
 This skill runs an evidence-based investigation with the core `han-coding:investigate` skill, lets the user review the
@@ -62,7 +70,8 @@ adversarial validation, and the final report) — **except** add two explicit in
 
 - It must write the resulting investigation report to a file under `/tmp/` (for example `/tmp/<symptom-slug>.md`) rather
   than into the project's docs or plans directory. This keeps the working report out of the repo until the user decides
-  to publish it.
+  to publish it, and because the path is explicit input it outranks any `output-directory` in the project's
+  `.han/config.md` (see [../../references/config-rule.md](../../references/config-rule.md)).
 - It must **stop after producing the report**. `han-coding:investigate` normally ends by presenting the plan for
   approval and can trigger the fix's implementation on approval; this skill wants the report only, so instruct it not to
   implement the fix or change any code — this skill publishes findings, it does not ship them.

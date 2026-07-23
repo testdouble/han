@@ -10,6 +10,14 @@ argument-hint: "[path to stakeholder-summary.md]"
 allowed-tools: Read, Write
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # HTML Summary
 
 Convert a stakeholder summary markdown file into a single self-contained HTML report tailored for executive readers —

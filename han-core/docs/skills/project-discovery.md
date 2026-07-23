@@ -33,6 +33,11 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   Makefile was found), the skill surfaces the contradiction and asks which is correct.
 - **Multi-project aware.** Monorepos get repository-level bullets (default branch, docs, ADRs, coding standards, layout)
   plus one compact per-project block for each project's stack and commands.
+- **Keeps the `.han/config.md` pointer honest.** When the project carries a
+  [`.han/config.md`](../../../docs/configuration.md), the skill offers to add a one-line pointer to it beside the
+  Project Discovery section so the override file stays visible in the document every contributor reads. When the config
+  is gone but a pointer remains, it offers to remove the stale line. Both only with your consent, and never as a
+  duplicate of a reference that already exists.
 
 ## When to use it
 
@@ -104,7 +109,7 @@ two of fan-out plus merge time. Cheap enough to re-run on every major stack chan
 
 ## In more detail
 
-The skill walks a five-step process:
+The skill walks a six-step process:
 
 1. **Choose and read the target file.** Pick the file by priority (AGENTS.md, then CLAUDE.md, then a new CLAUDE.md).
    Read whichever exists to build the deduplication baseline of what is already documented.
@@ -115,7 +120,9 @@ The skill walks a five-step process:
 4. **Write the discovery into the target file.** Build a concise `## Project Discovery` section, drop every fact the
    file already states, ask about any contradiction, then add or update the section in place. If nothing new remains,
    write nothing.
-5. **Verification.** Spot-check a few discovered paths with Glob, confirm no placeholders remain, report results to you.
+5. **Keep the `.han/config.md` pointer honest.** When the config file exists and the target file does not reference it,
+   offer to add a one-line pointer; when the config is gone but a pointer remains, offer to remove it. Both consent-gated.
+6. **Verification.** Spot-check a few discovered paths with Glob, confirm no placeholders remain, report results to you.
 
 ## Sources
 

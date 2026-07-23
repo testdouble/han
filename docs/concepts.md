@@ -200,6 +200,14 @@ skills as machine input, are out of scope.
 Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope
 table, and the fidelity guard.
 
+## Project-local configuration
+
+A project can carry one optional file, `.han/config.md`, that every Han skill reads on every run. It sets a base
+directory for the skills' markdown deliverables and names extra agents for the dispatching skills to consider. A
+project without the file sees no change, and a broken file degrades quietly to defaults with a one-line note. Read the
+full [Configuration](./configuration.md) reference for the file's schema, the precedence chain, and the degradation
+contract.
+
 ## When would you invoke an agent directly?
 
 Most of the time you will not. A skill calling an agent is the typical flow.
@@ -268,6 +276,7 @@ Skim the indexes after you read this page. Pick the one skill you need right now
 - **Want to know what survives a review?** → [YAGNI](./yagni.md).
 - **Want to know how confident to be in what survives?** → [Evidence](./evidence.md).
 - **Want to know how skill output is kept readable?** → [Readability](./readability.md).
+- **Want to adjust where skills write and which agents they consider?** → [Configuration](./configuration.md).
 - **Writing your own skill or agent?** → [Contributing](../CONTRIBUTING.md).
 
 ## Related reading

@@ -14,6 +14,11 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *)
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Operating Principles
 
@@ -191,6 +196,12 @@ specialist rather than discovering a gap late. Unless the user specified a team 
 - `han-core:test-engineer` — observable-behavior test planning and test doubles.
 - `han-core:edge-case-explorer` — boundary values, input messiness, state-dependent failures.
 - `han-core:data-engineer` — schema changes, migrations, data movement, analytics implications.
+
+Extra agents named in the project config's `## Extra Agents` list join this specialist pool and compete under the same
+what-the-feature-touches selection and team caps, per
+[../../references/config-rule.md](../../references/config-rule.md): select one only when the feature touches its
+stated specialty, count it against the team cap, and skip an entry that does not resolve to a dispatchable agent with
+a one-line note.
 
 If the user specified which agents to include, honor that. Otherwise, state the proposed team composition to the user
 briefly before launching — one line per specialist with the reason they were selected — and proceed.

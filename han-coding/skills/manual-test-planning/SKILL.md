@@ -12,6 +12,14 @@ argument-hint: "[optional: files, a branch, a plan, a PR, or a description of wh
 allowed-tools: Bash(git *), Read, Grep, Glob, Write, Agent
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 ## Operating Principles
 
 - **Group outcomes only when the steps are identical.** A test verifies a single outcome, or a group of related

@@ -16,6 +16,11 @@ allowed-tools: Read, Write, Glob, Grep, Agent, Bash(find *), Bash(git *)
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Operating Principles
 
@@ -177,6 +182,12 @@ from:
 - `han-core:content-auditor` — gaps where the desired state is documentation and content preservation is in question.
 - `han-core:codebase-explorer` — gaps where the current state is unfamiliar code that needs deeper discovery before the
   validators can act.
+
+Extra agents named in the project config's `## Extra Agents` list join this domain-specialist pool and compete under
+the same gap-driven selection and size caps, per
+[../../references/config-rule.md](../../references/config-rule.md): add one only when a gap touches its stated
+specialty, count it against the size cap, and skip an entry that does not resolve to a dispatchable agent with a
+one-line note.
 
 State the size, the chosen swarm composition, and the per-specialist justification to the user in a short message — for
 example:

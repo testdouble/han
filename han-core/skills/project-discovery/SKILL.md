@@ -15,6 +15,11 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git symbolic-ref *), B
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - README: !`find . -maxdepth 1 -name "README*" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 # Project Discovery
 
@@ -96,7 +101,24 @@ Then write the result into the target file:
 If, after deduplication, nothing meaningful remains to add, do **not** write an empty section. Tell the user the target
 file already covers the project's core attributes, and stop.
 
-## Step 5: Verification
+## Step 5: Keep the `.han/config.md` pointer honest
+
+Han skills read project-local overrides from `.han/config.md` when a project carries one (see
+[../../references/config-rule.md](../../references/config-rule.md)). This step keeps the target file's pointer to that
+config accurate, using the same consent gate and deduplication discipline as Step 4. The Project Context probe above
+shows whether the file exists.
+
+- **`.han/config.md` exists and the target file contains no reference to it:** use `AskUserQuestion` to offer adding a
+  one-line pointer beside the `## Project Discovery` section, for example:
+  `Han skills in this project read overrides from [.han/config.md](./.han/config.md).` Never add a pointer when any
+  reference to the file is already present, even phrased differently.
+- **`.han/config.md` does not exist but the target file still references it:** use `AskUserQuestion` to offer removing
+  the stale pointer.
+- **Otherwise:** do nothing and say nothing about the config.
+
+Write or remove the pointer only with the user's consent.
+
+## Step 6: Verification
 
 Read back the target file's `## Project Discovery` section. Confirm: no `{placeholder}` text remains, every bullet has a
 real discovered value, and nothing duplicates content stated elsewhere in the file. Spot-check 2-3 discovered paths or

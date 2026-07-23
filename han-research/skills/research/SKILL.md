@@ -21,6 +21,11 @@ allowed-tools: Read, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *)
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Operating Principles
 
@@ -157,6 +162,11 @@ the question, then `han-core:adversarial-validator` (2–3 agents); **medium** r
 then `han-core:adversarial-validator` (3–5 agents); **large** runs a `han-research:research-analyst` per major domain or
 option cluster plus `han-core:codebase-explorer`, then `han-core:adversarial-validator` (5–8 agents). The
 option-comparison angle is skipped entirely for questions with no discrete alternatives.
+
+Extra agents named in the project config's `## Extra Agents` list join the candidate pool and compete under the same
+signal-based selection and band caps, per [../../references/config-rule.md](../../references/config-rule.md): add one
+only when its stated specialty bears on the question, count it against the band's cap, and skip an entry that does not
+resolve to a dispatchable agent with a one-line note.
 
 **Announce the decision in one line before dispatching**, with the scope it reflects — for example:
 

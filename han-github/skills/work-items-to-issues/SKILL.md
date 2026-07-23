@@ -11,6 +11,14 @@ argument-hint:
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(gh *), Bash(git *), Bash(find *)
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Work Items to GitHub Issues
 
 Take an already-broken-down `work-items.md` file (produced by `/plan-work-items`) and publish each slice as a GitHub

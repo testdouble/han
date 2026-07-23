@@ -38,6 +38,11 @@ allowed-tools: Bash(git *), Bash(find *), Bash(ls *), Read, Grep, Glob, Agent
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Step 1: Determine Scope
 
@@ -118,6 +123,11 @@ Inspect the file list before launching. Skip any that do not apply.
    {branch} if applicable}: {file list}. Focus on exploit paths that tests could catch before production — authorization
    bypass, injection, broken isolation, insecure defaults. Return test recommendations, not general threat modeling.
    {any additional context from user arguments}"
+
+Extra agents named in the project config's `## Extra Agents` list join this conditional-dispatch pool under the same
+file-list-signal selection, per [../../references/config-rule.md](../../references/config-rule.md): dispatch one only
+when the file list carries a signal matching its stated specialty, and skip an entry that does not resolve to a
+dispatchable agent with a one-line note.
 
 Wait for every dispatched agent to complete and collect full output for processing in Step 3.
 
