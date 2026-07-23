@@ -140,6 +140,7 @@ han-plugin-builder skill:
 │   └── docs/           # In-plugin long-form docs: docs/skills/{name}.md
 ├── docs/               # Operator-facing documentation (cross-plugin surfaces; long-form docs now live in each plugin)
 │   ├── concepts.md
+│   ├── configuration.md   # The .han/config.md project-local configuration guide (canonical annotated example)
 │   ├── quickstart.md
 │   ├── sizing.md
 │   ├── yagni.md
@@ -201,6 +202,15 @@ such as Claude, shnould be referenced here.
   Read before changing any file under `han-core/`, `han-github/`, or `docs/`.
 - **[CHANGELOG.md](./CHANGELOG.md).** Version history. Check when a behavior or skill name in user-supplied context
   doesn't match what's on disk. May be a pre-2.0 rename or a removed feature.
+
+### Project-local configuration
+
+- **[docs/configuration.md](./docs/configuration.md).** The operator guide for `.han/config.md`, the optional file a
+  consuming project carries to set an output base directory and extra agents for Han skills. Holds the single canonical
+  annotated schema example.
+- **[han-core/references/config-rule.md](./han-core/references/config-rule.md).** The canonical interpretation contract
+  (schema tokens, precedence, containment, pool-join, degradation) every participating skill applies. Vendored
+  byte-identical into every skill-carrying plugin's `references/`; edit the canonical copy and re-sync the others.
 
 ### Writing voice
 
