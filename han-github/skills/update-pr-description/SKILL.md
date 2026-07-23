@@ -24,6 +24,11 @@ allowed-tools: Read, Glob, Grep, Agent, Bash(git *), Bash(gh *)
 - branch summary: !`git log origin/HEAD..HEAD --oneline 2>/dev/null || echo unknown`
 - branch stats: !`git diff origin/HEAD...HEAD --stat 2>/dev/null || echo unknown`
 - branch changes: !`git diff origin/HEAD...HEAD 2>/dev/null || echo unknown`
+- .han/config.md: !`cat .han/config.md 2>/dev/null`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Step 1: Validate Branch State
 

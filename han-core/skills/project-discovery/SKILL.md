@@ -15,6 +15,11 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git symbolic-ref *), B
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - README: !`find . -maxdepth 1 -name "README*" -type f`
+- .han/config.md: !`cat .han/config.md 2>/dev/null`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 # Project Discovery
 

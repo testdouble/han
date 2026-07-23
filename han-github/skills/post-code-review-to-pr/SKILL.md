@@ -24,6 +24,11 @@ be installed. In either case, immediately stop.
 - current branch: !`git branch --show-current 2>/dev/null || echo unknown`
 - default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 - changed files: !`gh pr diff --name-only 2>/dev/null || echo "no pr"`
+- .han/config.md: !`cat .han/config.md 2>/dev/null`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
 
 ## Step 1: Validate PR State
 
