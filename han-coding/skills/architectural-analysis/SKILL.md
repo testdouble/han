@@ -155,6 +155,11 @@ note the omitted domains in the executive summary so the user can re-run larger.
 and `han-core:on-call-engineer` are signalled, prefer `han-core:on-call-engineer` if the focus area is application
 source and `han-core:devops-engineer` if it is infrastructure or pipelines; include both at large size only.
 
+Extra agents named in the project config's `## Extra Agents` list join the signal-selected specialist pool and compete
+under the same signals and band caps, per [../../references/config-rule.md](../../references/config-rule.md): add one
+only when a signal in the focus area matches its stated specialty, count it against the band's cap, and skip an entry
+that does not resolve to a dispatchable agent with a one-line note.
+
 `han-core:system-architect` is the only specialist that changes `han-core:software-architect`'s behavior: when
 `han-core:system-architect` is on the roster, `han-core:software-architect` still defers boundary-crossing findings but
 the report carries `han-core:system-architect`'s recommendations for them instead of only listing them as deferred.

@@ -163,6 +163,11 @@ then `han-core:adversarial-validator` (3–5 agents); **large** runs a `han-rese
 option cluster plus `han-core:codebase-explorer`, then `han-core:adversarial-validator` (5–8 agents). The
 option-comparison angle is skipped entirely for questions with no discrete alternatives.
 
+Extra agents named in the project config's `## Extra Agents` list join the candidate pool and compete under the same
+signal-based selection and band caps, per [../../references/config-rule.md](../../references/config-rule.md): add one
+only when its stated specialty bears on the question, count it against the band's cap, and skip an entry that does not
+resolve to a dispatchable agent with a one-line note.
+
 **Announce the decision in one line before dispatching**, with the scope it reflects — for example:
 
 > **Size: medium.** "Should we adopt an event bus, and what are the options" — two domains (messaging, delivery

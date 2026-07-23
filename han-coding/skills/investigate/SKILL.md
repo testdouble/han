@@ -77,6 +77,11 @@ every applicable specialist in parallel with the `han-core:evidence-based-invest
    {symptom}. Focus on the specific data-engineering principles violated and the concrete data-level impact. Return
    numbered findings keyed to file paths, line numbers, and schema or migration references."
 
+Extra agents named in the project config's `## Extra Agents` list join this conditional-specialist pool under the same
+symptom-driven selection, per [../../references/config-rule.md](../../references/config-rule.md): dispatch one only
+when the classified bug type matches its stated specialty, and skip an entry that does not resolve to a dispatchable
+agent with a one-line note.
+
 After all agents complete (investigators and specialists), compile an **evidence summary** — a numbered list of concrete
 findings (E1, E2, E3, ...) that will feed into the root cause analysis. Specialist findings go into the same E-series
 list, tagged with the specialist's domain (e.g., `E3 (concurrency)`).

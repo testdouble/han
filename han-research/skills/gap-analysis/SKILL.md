@@ -183,6 +183,12 @@ from:
 - `han-core:codebase-explorer` — gaps where the current state is unfamiliar code that needs deeper discovery before the
   validators can act.
 
+Extra agents named in the project config's `## Extra Agents` list join this domain-specialist pool and compete under
+the same gap-driven selection and size caps, per
+[../../references/config-rule.md](../../references/config-rule.md): add one only when a gap touches its stated
+specialty, count it against the size cap, and skip an entry that does not resolve to a dispatchable agent with a
+one-line note.
+
 State the size, the chosen swarm composition, and the per-specialist justification to the user in a short message — for
 example:
 

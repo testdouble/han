@@ -124,6 +124,11 @@ Inspect the file list before launching. Skip any that do not apply.
    bypass, injection, broken isolation, insecure defaults. Return test recommendations, not general threat modeling.
    {any additional context from user arguments}"
 
+Extra agents named in the project config's `## Extra Agents` list join this conditional-dispatch pool under the same
+file-list-signal selection, per [../../references/config-rule.md](../../references/config-rule.md): dispatch one only
+when the file list carries a signal matching its stated specialty, and skip an entry that does not resolve to a
+dispatchable agent with a one-line note.
+
 Wait for every dispatched agent to complete and collect full output for processing in Step 3.
 
 ## Step 3: Merge and Prioritize

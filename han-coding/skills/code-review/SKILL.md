@@ -240,6 +240,11 @@ the rubric in `references/agent-finding-classification.md`. Do not re-derive siz
 **Selection rules:**
 
 - Honor any agent the user named explicitly.
+- Extra agents named in the project config's `## Extra Agents` list join this candidate pool and compete under the same
+  signal-based selection as the roster above, per
+  [../../references/config-rule.md](../../references/config-rule.md): include one only when a signal in the file list
+  matches its stated specialty, justify the inclusion in one line, and skip an entry that does not resolve to a
+  dispatchable agent with a one-line note.
 - For each conditional agent included, justify in one line — name the file or signal that triggered inclusion.
 - Fewer is better. If a signal is borderline, **skip** the agent rather than include it. A small change that nominally
   touches a query but is not modifying its behavior does not require `han-core:data-engineer`.

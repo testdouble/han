@@ -333,6 +333,12 @@ assumptions. Select the remaining specialists from this list, matching domain to
 - `han-core:gap-analyzer` — if a PRD or reference spec exists, compare the draft against it.
 - `han-core:risk-analyst` — prioritization of risks if the feature has significant blast radius.
 
+Extra agents named in the project config's `## Extra Agents` list join this review-team pool and compete under the same
+domain-to-feature matching and size cap, per
+[../../references/config-rule.md](../../references/config-rule.md): select one only when the feature touches its
+stated specialty, count it against the size cap, brief it with the spec sections relevant to its domain, and skip an
+entry that does not resolve to a dispatchable agent with a one-line note.
+
 **Mechanic-focused specialists — `han-core:structural-analyst`, `han-core:behavioral-analyst`,
 `han-core:concurrency-analyst`, `han-core:software-architect`, and `han-core:system-architect` — are intentionally
 excluded from the default spec-stage roster.** The analysts target module boundaries, runtime data flow, and concurrency

@@ -197,6 +197,12 @@ specialist rather than discovering a gap late. Unless the user specified a team 
 - `han-core:edge-case-explorer` — boundary values, input messiness, state-dependent failures.
 - `han-core:data-engineer` — schema changes, migrations, data movement, analytics implications.
 
+Extra agents named in the project config's `## Extra Agents` list join this specialist pool and compete under the same
+what-the-feature-touches selection and team caps, per
+[../../references/config-rule.md](../../references/config-rule.md): select one only when the feature touches its
+stated specialty, count it against the team cap, and skip an entry that does not resolve to a dispatchable agent with
+a one-line note.
+
 If the user specified which agents to include, honor that. Otherwise, state the proposed team composition to the user
 briefly before launching — one line per specialist with the reason they were selected — and proceed.
 
