@@ -46,8 +46,8 @@ The claim ledger, Open Questions, and spec-maturity tags from each round live as
 - **Spec-maturity tags:** plan-level: OQ-1 through OQ-7 (all seven). spec-level: none. T#-contradiction: none. The
   spec-maturity gate did not trip; no PM facilitation call was made.
 - **Resolution source:** carried into R2.
-- **Decisions produced:** —
-- **Changed in plan:** —
+- **Decisions produced:** D-1, D-2, D-3, D-4, D-5, D-6, D-7, D-8, D-9, D-10, D-11, D-12, D-13 (every implementation decision traces to an R1 finding; D-8, D-10, D-11, D-12 and the R1 halves of the rest were settled by R1 convergent evidence, the seven OQ-linked decisions carried into R2).
+- **Changed in plan:** Implementation Approach (all subsections); Work Units and Sequencing; Definition of Done; Testing Strategy; Risks and Assumptions; Deferred (YAGNI).
 - **Next-step recommendation (deterministic):** Continue iterating — junior-developer named system-architect (OQ-1)
   and behavioral-analyst (OQ-3) as candidate handoffs, and plan-level Open Questions remained unresolved. R2 first
   attempts evidence resolution per Step 6 before any re-engagement.
@@ -97,7 +97,7 @@ The claim ledger, Open Questions, and spec-maturity tags from each round live as
 - **Spec-maturity tags:** plan-level: 7 of 7 resolved. spec-level: none. T#-contradiction: none. Gate did not trip.
 - **Resolution source:** OQ-1 evidence; OQ-2 evidence; OQ-3 evidence (spec D6); OQ-4 evidence; OQ-5 evidence (T1 plus
   suite convention); OQ-6 evidence; OQ-7 evidence (live documentation check plus local install inspection).
-- **Decisions produced:** —
-- **Changed in plan:** —
+- **Decisions produced:** D-2, D-4, D-5, D-6, D-7, D-9, D-13 (the seven decisions settled by R2's OQ resolutions; each also lists R1 under Driven by rounds).
+- **Changed in plan:** Implementation Approach (Where the shared contract lives; The config schema tokens; Keeping the output base inside the project; Extra agents joining the candidate pool; Wrapper skills and wrapped temporary files); Work Units and Sequencing; Definition of Done.
 - **Next-step recommendation (deterministic):** Go to synthesis. No open plan-level questions remain, no handoffs are
   outstanding, and the round produced zero new findings.
