@@ -12,7 +12,7 @@ allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *)
 ## Project Context
 
 - Today's date: !`date +%Y-%m-%d`
-- .han/config.md: !`cat .han/config.md 2>/dev/null`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 When the `.han/config.md` probe returns content, apply it per the config rule in
 [../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is

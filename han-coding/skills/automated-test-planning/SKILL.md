@@ -38,7 +38,7 @@ allowed-tools: Bash(git *), Bash(find *), Bash(ls *), Read, Grep, Glob, Agent
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- .han/config.md: !`cat .han/config.md 2>/dev/null`
+- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 When the `.han/config.md` probe returns content, apply it per the config rule in
 [../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is

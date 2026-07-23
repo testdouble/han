@@ -102,7 +102,7 @@ skills, and a few others) would need a separate decision about whether project o
 - **What it is:** One markdown file in a `.han/` folder at the project root. Optional YAML frontmatter carries the few
   simple values (an output directory, for example); named markdown sections carry the prose overrides (extra agents to
   consider per skill, output conventions). Each participating skill adds a probe to its `## Project Context` block, such
-  as `` !`cat .han/config.md 2>/dev/null` ``, plus a short resolution step that honors what the file supplies.
+  as `` !`cat .han/config.md 2>/dev/null || echo ""` ``, plus a short resolution step that honors what the file supplies.
 - **Trade-offs:** The config is guaranteed in context every time a participating skill runs, independent of the model's
   judgment. Han fully owns the schema. The costs: it is a Han-invented convention with no native discoverability,
   since nothing in Claude Code surfaces `.han/` to the user. The rollout touches every participating skill: 26 have
