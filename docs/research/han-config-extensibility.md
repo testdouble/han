@@ -2,26 +2,31 @@
 
 The question: how should Han support per-project configuration overrides, such as a `.han/` folder at a consuming
 project's root, for things like "write all markdown outputs to `.scratch/`" and "when picking agents to dispatch for a
-skill, also consider these extra agents"? Which format fits best (JSON or markdown), where should the config live
-(`.han/`, `.claude/rules/`, or CLAUDE.md), and how should every skill read it consistently?
+skill, also consider these extra agents"? Which format fits best, JSON or markdown? Where should the config live, in
+`.han/`, `.claude/rules/`, or CLAUDE.md? And how should every skill read it consistently?
 
 Evidence mode: strict.
 
 ## Summary
 
-Use a markdown config file in a `.han/` folder at the project root, and have each Han skill load it the same
-deterministic way the skills already load project context today. Markdown wins over JSON because most of the overrides
-you want are instructions a language model must interpret, not values a parser checks, and the industry pattern across
-AI coding tools splits exactly this way: structured settings in JSON or YAML, open-ended instructions in markdown. A
-small YAML frontmatter block on that markdown file can carry the few settings that are simple values, such as an output
-directory. The `.claude/rules/` and CLAUDE.md routes both work only as soft guidance the model may or may not follow;
-reading the file from inside each skill is the only route where the config is guaranteed to be in front of the model
-every time a skill runs.
+Store Han's project-level settings in one dedicated markdown file kept at the root of the consuming project, and have
+every Han skill read that file the same reliable way skills already read project context today.
 
-The recommendation's shape is well-corroborated: the format pattern is confirmed by two independent vendors, and the
-loading mechanism is proven working in Han's own skills today. The finer design choices inside it (where the file sits
-in the precedence order, one file versus a folder of files) are design proposals this research did not find settled
-answers for, and one structural constraint rests on a single documentation page.
+Markdown fits better than a structured format like JSON, because most of the overrides people want are instructions a
+language model has to interpret, not fixed values a program checks. Every AI coding tool surveyed splits its
+configuration the same way: structured settings go in a format like JSON or YAML, and open-ended instructions go in
+markdown. A small block of structured values at the top of that markdown file can still hold the handful of settings
+that are simple choices, such as an output directory.
+
+Two other places could hold this configuration instead, but both work only as soft guidance that a language model may
+or may not follow. Reading the settings file directly from inside each skill is the only approach that guarantees the
+configuration reaches the model every time a skill runs.
+
+This recommendation is well supported. Two independent vendors confirm the same format pattern, and Han's own skills
+already prove the loading mechanism works today. Some of the finer design choices are less settled: research did not
+find a firm answer for where this new settings file should rank against other sources of configuration, or whether it
+should be one file or a folder of files, and one structural limit on the approach rests on a single documentation
+page.
 
 - **Confidence:** Medium
 
@@ -39,7 +44,7 @@ EditorConfig deliberately rejected JSON and YAML for a flat INI format on readab
 Two vendors independently converged on a hybrid shape for rule files: a small YAML frontmatter block of machine-readable
 keys on top of a markdown body of prose instructions. Claude Code's `.claude/rules/*.md` files use a `paths` frontmatter
 glob (A2); Cursor's `.cursor/rules/*.mdc` files use `description`, `globs`, and `alwaysApply` (A3). The convergence is
-meaningful corroboration that the hybrid is a real pattern, though the two tools disagree on key names and even on
+meaningful corroboration that the hybrid is a real pattern. But the two tools disagree on key names and even on
 precedence direction: Claude Code and VS Code let project config beat user config (A2, A8), while Cursor lets team rules
 beat project rules (A3). There is no cross-tool standard to inherit here. The AGENTS.md standard goes the other
 direction entirely: plain markdown, no schema at all, with nesting as its only structure (A1).
@@ -63,21 +68,28 @@ Two constraints force the config into the consuming project. First, a CLAUDE.md 
 project context, so Han cannot bundle instructions that become live on install (A13 [single-source]). Second, the
 plugin manifest's `userConfig` mechanism is stored and read only from user-scope settings; project and local settings
 entries are ignored, so it cannot carry a per-repo, version-controlled override (A13 [single-source]). Both claims come
-from the same official documentation page and were not tested against a live plugin install (flagged in V7). Whether
-Claude Code tolerates arbitrary custom keys in a project's `.claude/settings.json` is not answered by the settings
-documentation either way (A12 [single-source]).
+from the same official documentation page and were not tested against a live plugin install (flagged in V7).
+
+One related question stays open: whether Claude Code tolerates arbitrary custom keys in a project's
+`.claude/settings.json` is not answered by the settings documentation either way (A12 [single-source]).
 
 ### Han already has the machinery a config file would plug into
 
 Han's skills resolve project context through a consistent three-tier fallback: read CLAUDE.md's `## Project Discovery`
-section, fall back to `project-discovery.md`, fall back to Glob defaults (A18). The `project-discovery` skill is the
-existing precedent for machine-written, skill-consumed project context, and it writes into CLAUDE.md or AGENTS.md
-precisely because the host loads those files automatically (A21). Output paths are resolved per skill in prose, with
-real inconsistencies (code-overview writes outside the repository while planning skills target `docs/`) (A19). Agent
-rosters are hardcoded tables in each SKILL.md with signal-based selection and band caps, and today there is no
-extension point for project-supplied agents (A20). A narrow search did not surface another Claude Code plugin suite
-with a `.han/`-style config folder, and a community feature request confirms per-project plugin configuration was a
-recognized gap as of late 2025 (A16, A17 [single-source]); read that as "not found," not "does not exist" (V5).
+section, fall back to `project-discovery.md`, fall back to Glob defaults (A18).
+
+The `project-discovery` skill is the existing precedent for machine-written, skill-consumed project context, and it
+writes into CLAUDE.md or AGENTS.md precisely because the host loads those files automatically (A21).
+
+Output paths are resolved per skill in prose, with real inconsistencies: code-overview writes outside the repository,
+while planning skills target `docs/` (A19).
+
+Agent rosters are hardcoded tables in each SKILL.md with signal-based selection and band caps, and today there is no
+extension point for project-supplied agents (A20).
+
+A narrow search did not surface another Claude Code plugin suite with a `.han/`-style config folder. A community
+feature request confirms per-project plugin configuration was a recognized gap as of late 2025 (A16, A17
+[single-source]); read that as "not found," not "does not exist" (V5).
 
 One scoping fact matters for rollout: only 26 of the 49 SKILL.md files in the repo have a `## Project Context` block to
 extend. The other 15 real skills (the Atlassian and Linear wrappers, the communication skills, the plugin-builder
@@ -92,10 +104,10 @@ skills, and a few others) would need a separate decision about whether project o
   consider per skill, output conventions). Each participating skill adds a probe to its `## Project Context` block, such
   as `` !`cat .han/config.md 2>/dev/null` ``, plus a short resolution step that honors what the file supplies.
 - **Trade-offs:** The config is guaranteed in context every time a participating skill runs, independent of the model's
-  judgment. Han fully owns the schema. The costs: it is a Han-invented convention with no native discoverability
-  (nothing in Claude Code surfaces `.han/` to the user), the rollout touches every participating skill (26 have the
-  block today; 15 need a scoping decision), and malformed or invalid content needs an explicit graceful-degradation
-  rule so a bad file cannot silently break dispatch (V9).
+  judgment. Han fully owns the schema. The costs: it is a Han-invented convention with no native discoverability,
+  since nothing in Claude Code surfaces `.han/` to the user. The rollout touches every participating skill: 26 have
+  the block today, and 15 need a scoping decision. And malformed or invalid content needs an explicit
+  graceful-degradation rule, so a bad file cannot silently break dispatch (V9).
 - **Rests on:** (A13), (A14), (A18), (A20), (A23); format choice on (A2), (A3).
 - **Evidence status:** corroborated (loading mechanism proven in-repo; format pattern confirmed by two independent
   vendors). The "must live in the consuming project" constraint is single-source (A13).
@@ -105,8 +117,8 @@ skills, and a few others) would need a separate decision about whether project o
 - **What it is:** The consuming project writes Han's overrides into a Claude Code rules file, which loads ambiently and
   shows up in `/memory` and `/context`.
 - **Trade-offs:** First-class, Anthropic-maintained surface with zero custom parsing in Han. But it is pure guidance
-  with a documented soft-compliance ceiling (A2), the path-scoping frontmatter has a reported reliability bug (A15),
-  the content occupies context in every session whether or not a Han skill runs, and no skill can verify it loaded.
+  with a documented soft-compliance ceiling (A2). The path-scoping frontmatter has a reported reliability bug (A15).
+  The content occupies context in every session, whether or not a Han skill runs, and no skill can verify it loaded.
   Structured overrides such as roster extensions are exactly what free-text ambient rules handle worst.
 - **Rests on:** (A2), (A15).
 - **Evidence status:** corroborated for the mechanism; the reliability caveat is single-source (A15).
@@ -116,8 +128,8 @@ skills, and a few others) would need a separate decision about whether project o
 - **What it is:** A named section beside `## Project Discovery`, which Han's skills already know how to find and read.
 - **Trade-offs:** The tightest match to Han's existing read pattern; validation found this precedent analogy stronger
   for O3 than for O1, since `project-discovery` targets CLAUDE.md precisely because the host auto-loads it (V3). Skills
-  could still read the section explicitly for determinism. The costs: it grows an always-loaded file Anthropic
-  recommends keeping lean, Han cannot seed or validate the section from the plugin side (A13), and mixing Han's
+  could still read the section explicitly for determinism. The costs: it grows an always-loaded file that Anthropic
+  recommends keeping lean. Han cannot seed or validate the section from the plugin side (A13). And mixing Han's
   override schema into a team's shared narrative file invites drift and merge friction.
 - **Rests on:** (A2), (A13), (A18), (A21).
 - **Evidence status:** corroborated.
@@ -128,7 +140,7 @@ skills, and a few others) would need a separate decision about whether project o
 - **Trade-offs:** Deterministic to parse and easy to validate, and the right shape for values a program checks. But
   the overrides you named are mostly instructions a model interprets, and no surveyed source shows JSON handling
   open-ended guidance without degrading into prose stuffed inside strings (A10 [single-source]). Whether custom keys in
-  `settings.json` are tolerated long-term is unconfirmed (A12), and Claude Code already warns on unknown plugin-manifest
+  `settings.json` are tolerated long-term is unconfirmed (A12). Claude Code already warns on unknown plugin-manifest
   fields under strict validation, suggesting Anthropic tightens unknown-key handling over time (A13).
 - **Rests on:** (A10), (A12), (A13).
 - **Evidence status:** single-source (caveated) on the format trade-off claims; inconclusive on settings.json custom
@@ -138,27 +150,30 @@ skills, and a few others) would need a separate decision about whether project o
 
 - **Recommendation:** O1. Create a `.han/config.md` file: YAML frontmatter for the few simple values, named markdown
   sections for the prose overrides, loaded by each participating skill through the same `!`-probe pattern the skills
-  already use. Start with one file rather than a folder of files; that is a deliberate simplification to avoid
-  speculative structure, not a claim that one file is superior on the merits, and splitting into per-concern files
-  later carries a migration cost (V8). Treat O3 as the close runner-up and a natural complement: the
-  `project-discovery` skill could offer to write a pointer to `.han/config.md` into CLAUDE.md so the config is
-  discoverable in the file every contributor already reads. Scope the rollout to the skills that already carry a
-  `## Project Context` block and resolve project context today; decide separately whether the wrapper and builder
-  skills participate at all (V2). Specify graceful degradation up front: unparseable content or unknown keys are
-  ignored with a one-line note to the user, and any project-supplied agent name is validated against the skill's actual
-  roster and band caps before it is honored (V9).
+  already use.
+  - Start with one file rather than a folder of files. That is a deliberate simplification to avoid speculative
+    structure, not a claim that one file is superior on the merits, and splitting into per-concern files later carries
+    a migration cost (V8).
+  - Treat O3 as the close runner-up and a natural complement: the `project-discovery` skill could offer to write a
+    pointer to `.han/config.md` into CLAUDE.md, so the config is discoverable in the file every contributor already
+    reads.
+  - Scope the rollout to the skills that already carry a `## Project Context` block and resolve project context
+    today. Decide separately whether the wrapper and builder skills participate at all (V2).
+  - Specify graceful degradation up front: unparseable content or unknown keys are ignored with a one-line note to the
+    user, and any project-supplied agent name is validated against the skill's actual roster and band caps before it
+    is honored (V9).
 - **Proposed precedence, marked as a design proposal:** explicit user input, then `.han/config.md`, then CLAUDE.md's
   `## Project Discovery`, then `project-discovery.md`, then Glob defaults. No source establishes this ordering; it is a
   design choice to validate in use, and it carries a visibility trade-off: a value the user can see in CLAUDE.md would
   be silently outranked by a file they may forget exists (V4).
-- **Evidence basis:** The format choice (markdown with optional frontmatter over JSON) rests on corroborated evidence:
-  two independent vendors converged on the hybrid shape (A2, A3), and the settings-versus-instructions split recurs
+- **Evidence basis:** The format choice (markdown with optional frontmatter over JSON) rests on corroborated evidence.
+  Two independent vendors converged on the hybrid shape (A2, A3), and the settings-versus-instructions split recurs
   across Claude Code, Gemini CLI, and Aider (A2, A5, A6, A7). The loading mechanism rests on codebase-verified evidence
   (A18, A23) with the official skills documentation as confirmation (A14). The constraint forcing the config into the
-  consuming project rests on a single official documentation page (A13) and deserves a cheap empirical check (install a
-  plugin with a project-scoped `userConfig` entry and see whether it is honored) before implementation locks in. The
-  absence of ecosystem precedent is a narrow negative search result (A16, A17), not corroborated proof the pattern is
-  safe.
+  consuming project rests on a single official documentation page (A13). It deserves a cheap empirical check before
+  implementation locks in: install a plugin with a project-scoped `userConfig` entry and see whether it is honored.
+  The absence of ecosystem precedent is a narrow negative search result (A16, A17), not corroborated proof the pattern
+  is safe.
 
 ## Validation
 
@@ -252,16 +267,21 @@ sub-decisions were corrected or reframed.
 
 ### Adjustments Made
 
-Validation changed the report in five places: the YAGNI objection was re-grounded (V1), the rollout was scoped to the
-26 skills with a `## Project Context` block (V2), O3 was elevated to complement status with the CLAUDE.md-pointer idea
-(V3), the precedence order and single-file choice were relabeled as design proposals (V4, V8), and the
-graceful-degradation requirement was added (V9). The recommendation itself survived.
+Validation changed the report in five places:
+
+1. The YAGNI objection was re-grounded (V1).
+2. The rollout was scoped to the 26 skills with a `## Project Context` block (V2).
+3. O3 was elevated to complement status, with the CLAUDE.md-pointer idea added (V3).
+4. The precedence order and single-file choice were relabeled as design proposals (V4, V8).
+5. The graceful-degradation requirement was added (V9).
+
+The recommendation itself survived.
 
 ### Confidence Assessment
 
 - **Confidence:** Medium
 - **Remaining Risks:** The "config must live in the consuming project" constraint rests on one documentation page
-  (A13) and has not been tested against a live plugin install; if wrong, JSON-plus-userConfig options reopen. The
+  (A13) and has not been tested against a live plugin install. If wrong, JSON-plus-userConfig options reopen. The
   rollout blast radius across the 15 skills without a `## Project Context` block needs a scoping decision before
   implementation. No precedent from another plugin suite validates the `.han/` pattern in production (A16, A17). Web
   sources are dated by access only, so documentation drift is possible.
@@ -296,7 +316,7 @@ graceful-degradation requirement was added (V9). The recommendation itself survi
 | A24 | No existing override mechanism in Han         | repo-wide grep; han-core/agents/junior-developer.md:289                      | n/a        | codebase    | No `.han/` or per-project override anywhere; "speculative configuration knobs" named an anti-pattern | corroborated (validated in V1)           |
 | A25 | Skill composition pattern                     | han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-composition.md | n/a | codebase    | Skills compose via Skill-tool invocation; config informs selection inside existing flows   | corroborated by A18                      |
 
-### A2: Claude Code memory docs — recommendation-bearing
+### A2: Claude Code memory docs (recommendation-bearing)
 
 - **Link / location:** https://code.claude.com/docs/en/memory
 - **Retrieved:** 2026-07-23
@@ -308,7 +328,7 @@ graceful-degradation requirement was added (V9). The recommendation itself survi
   soft-compliance ceiling that rules out ambient-only designs.
 - **Evidence status:** corroborated by A3 (hybrid pattern) and A15 (reliability caveat)
 
-### A3: Cursor rules docs — recommendation-bearing
+### A3: Cursor rules docs (recommendation-bearing)
 
 - **Link / location:** https://cursor.com/docs/rules.md
 - **Retrieved:** 2026-07-23
@@ -320,7 +340,7 @@ graceful-degradation requirement was added (V9). The recommendation itself survi
   exists.
 - **Evidence status:** corroborated by A2
 
-### A13: Claude Code plugins reference — recommendation-bearing
+### A13: Claude Code plugins reference (recommendation-bearing)
 
 - **Link / location:** https://code.claude.com/docs/en/plugins-reference
 - **Retrieved:** 2026-07-23
@@ -332,7 +352,7 @@ graceful-degradation requirement was added (V9). The recommendation itself survi
   pending an empirical check.
 - **Evidence status:** single source (caveated, load-bearing)
 
-### A14: Claude Code skills docs — recommendation-bearing
+### A14: Claude Code skills docs (recommendation-bearing)
 
 - **Link / location:** https://code.claude.com/docs/en/skills
 - **Retrieved:** 2026-07-23
@@ -343,7 +363,7 @@ graceful-degradation requirement was added (V9). The recommendation itself survi
   Han's own skills prove the mechanism independently, so this source is confirmatory rather than load-bearing.
 - **Evidence status:** corroborated by A18, A23
 
-### A18: Han three-tier context fallback — recommendation-bearing
+### A18: Han three-tier context fallback (recommendation-bearing)
 
 - **Link / location:** han-coding/skills/code-review/SKILL.md:16-89
 - **Retrieved:** n/a
@@ -354,7 +374,7 @@ graceful-degradation requirement was added (V9). The recommendation itself survi
   with the suite's conventions, and it is the chain the new file would slot into.
 - **Evidence status:** corroborated across the suite; validated directly in V6
 
-### A20: Han agent roster tables — recommendation-bearing
+### A20: Han agent roster tables (recommendation-bearing)
 
 - **Link / location:** han-planning/skills/plan-implementation/SKILL.md:150-195; han-coding/skills/code-review/SKILL.md:214-234; han-research/skills/research/SKILL.md:137-169
 - **Retrieved:** n/a
@@ -365,7 +385,7 @@ graceful-degradation requirement was added (V9). The recommendation itself survi
   caps before honoring it.
 - **Evidence status:** corroborated (three dispatching skills read directly)
 
-### A21: project-discovery skill — recommendation-bearing
+### A21: project-discovery skill (recommendation-bearing)
 
 - **Link / location:** han-core/skills/project-discovery/SKILL.md:1-107
 - **Retrieved:** n/a
