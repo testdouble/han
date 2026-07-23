@@ -16,6 +16,14 @@ allowed-tools:
   Read, Write, Edit, Glob, Grep, Skill, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Plan a Feature to Confluence
 
 This skill builds a feature specification with the core `han-planning:plan-a-feature` skill, lets the user review the

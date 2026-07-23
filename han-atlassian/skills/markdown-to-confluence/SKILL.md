@@ -16,6 +16,14 @@ allowed-tools:
   mcp__claude_ai_Atlassian__updateConfluencePage
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Markdown to Confluence
 
 This skill takes one local Markdown file and publishes it to a Confluence location that **the user must specify** —

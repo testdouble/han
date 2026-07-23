@@ -15,6 +15,14 @@ allowed-tools:
   mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Project Documentation to Confluence
 
 This skill produces project documentation with the `han-documentation:project-documentation` skill, lets the user review the

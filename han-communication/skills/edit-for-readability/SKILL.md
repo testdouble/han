@@ -14,6 +14,14 @@ argument-hint: "[path to a file, pasted text, or 'the draft above']"
 allowed-tools: Read, Write, Glob, Grep, Agent
 ---
 
+## Project Context
+
+- .han/config.md: !`cat .han/config.md 2>/dev/null`
+
+When the `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
+present and nothing changes.
+
 # Edit for Readability
 
 Take a target the user already has and rewrite its prose against the shared readability standard, preserving every fact.
