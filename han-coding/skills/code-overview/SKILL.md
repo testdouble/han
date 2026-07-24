@@ -11,7 +11,7 @@ description: >
   use architectural-analysis. Does not diagnose bugs or root-cause failures — use investigate.
 arguments: size
 argument-hint:
-  "[size: small | medium | large] [target: file, directory, symbol, or PR reference — defaults to the current branch's
+  "[size: small | medium | large | dynamic] [target: file, directory, symbol, or PR reference — defaults to the current branch's
   changes]"
 allowed-tools: Read, Glob, Grep, Agent, Write, Bash(git *), Bash(gh *), Bash(find *)
 ---
@@ -94,8 +94,8 @@ Read these before doing anything. They constrain every step below.
 
 ## Step 1: Resolve the Target and Select the Mode
 
-**Bind `$size`.** If the user passed `small`, `medium`, or `large` as the first positional argument, bind `$size` to it.
-Anything else is part of the target, not a size; bind `$size` to the literal `none provided`.
+**Bind `$size`.** If the user passed `small`, `medium`, `large`, or `dynamic` as the first positional argument, bind
+`$size` to it. Anything else is part of the target, not a size; bind `$size` to the literal `none provided`.
 
 **Note tool availability.** Read `git installed` and `gh installed` from Project Context. If `git installed` is empty or
 reads `not installed`, git is unavailable — see the degraded paths below.
@@ -133,8 +133,12 @@ signal is borderline.
 - **Medium** — a directory or module, or a moderate change set (several files across one or two adjacent subsystems).
 - **Large** — multiple subsystems, or a large change set (many files across several subsystems).
 
-**Apply the size override.** If `$size` is not `none provided`, use it as the band and skip the signal-based
-classification; a conversational override ("give me a large overview") is equivalent.
+**Apply the size override.** If `$size` is not `none provided`, use it: a band value is the band and skips the
+signal-based classification, while `dynamic` forces the signal-based classification even when the project config sets
+a default band. If `$size` is `none provided` and the project config supplies a band via `default-swarm-size` (per the
+config rule in [../../references/config-rule.md](../../references/config-rule.md)), use that band, skip the
+signal-based classification, and name the config as the source in the announcement below. A conversational override
+("give me a large overview") is equivalent.
 
 **Announce the chosen mode and size in one line before dispatching any exploration** — for example,
 `Code mode, size medium: directory \`src/auth/\` spanning the session and token

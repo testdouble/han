@@ -8,7 +8,7 @@ description: >
   iterative-plan-review. Does not document already-built features — use project-documentation. Does not research
   open-ended options before there is a feature to specify — use research.
 arguments: size
-argument-hint: "[size: small | medium | large] [feature description, optional: output folder path]"
+argument-hint: "[size: small | medium | large | dynamic] [feature description, optional: output folder path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 ---
 
@@ -307,10 +307,14 @@ This size drives the team-size cap in Step 6:
 | Medium | 3 to 4                                              | Typical default; the historical cap.                           |
 | Large  | 4 to 5                                              | Reserved for plans where missed coverage is expensive.         |
 
-**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, or `large` as the first argument), use
-that value as the size and skip the signal-based classification above; the team cap still scales to the chosen size.
-State the chosen size, the recommended specialists, and the reason for the size choice to the user in one short message
-before launching agents (e.g., "Medium: two subsystems, small auth surface" or "Medium: passed via `$size`"). If the
+**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
+argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
+signal-based classification even when the project config sets a default band. If `$size` is empty and the project
+config supplies a band via `default-swarm-size` (per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md)), use that band and skip the signal-based
+classification. The team cap still scales to the chosen size. State the chosen size, the recommended specialists, and
+the reason for the size choice to the user in one short message before launching agents (e.g., "Medium: two subsystems,
+small auth surface", "Medium: passed via `$size`", or "Medium: from `.han/config.md` `default-swarm-size`"). If the
 user disagrees, accept their override (size, specific specialists, or both) and proceed.
 
 ## Step 6: Dispatch the Review Team

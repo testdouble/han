@@ -11,7 +11,7 @@ description:
   han-feedback."
 arguments: size
 argument-hint:
-  '[size: small | medium | large] [the open-ended question to research] [optional output path] [optional: "evidence
+  '[size: small | medium | large | dynamic] [the open-ended question to research] [optional output path] [optional: "evidence
   optional" / "exploratory" to relax the evidence requirement]'
 allowed-tools: Read, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *)
 ---
@@ -79,8 +79,8 @@ Read these before dispatching anything. They constrain every step below.
 
 ## Step 1: Capture the Question and Resolve Context
 
-**Bind `$size`.** If the user passed `small`, `medium`, or `large` as the first positional argument, bind `$size` to it.
-Anything else is part of the question, not a size; bind `$size` to the literal `none provided`.
+**Bind `$size`.** If the user passed `small`, `medium`, `large`, or `dynamic` as the first positional argument, bind
+`$size` to it. Anything else is part of the question, not a size; bind `$size` to the literal `none provided`.
 
 **Capture the question and output path.** Take the remaining argument and conversation context as the question to
 research. If the user supplied an output path and a report already exists there, ask whether to overwrite it or write
@@ -134,10 +134,13 @@ smaller.
 - **Medium** — two to three domains, several competing options, or codebase-plus-web reach.
 - **Large** — many options across multiple domains, or an explicit request for full breadth, or `$size` is `large`.
 
-**Apply the size override.** If `$size` is not `none provided`, use it as the band and skip the signal-based
-classification — but still pick angles by signal (a `large` override does not run a codebase angle when there is no
-codebase, or an option-comparison angle when there are no options). A conversational override ("research this broadly")
-is equivalent to `$size`.
+**Apply the size override.** If `$size` is not `none provided`, use it: a band value is the band and skips the
+signal-based classification, while `dynamic` forces the signal-based classification even when the project config sets
+a default band. If `$size` is `none provided` and the project config supplies a band via `default-swarm-size` (per the
+config rule in [../../references/config-rule.md](../../references/config-rule.md)), use that band, skip the
+signal-based classification, and announce the config as the source. In every case still pick angles by signal (a
+`large` band does not run a codebase angle when there is no codebase, or an option-comparison angle when there are no
+options). A conversational override ("research this broadly") is equivalent to `$size`.
 
 ## Step 4: Build the Roster and Announce It
 

@@ -9,7 +9,7 @@ description:
   options, prior art, or how something works — use research. Not for writing documentation or architectural decision
   records."
 arguments: size
-argument-hint: "[size: small | medium | large] [focus area: module, directory, or feature to analyze]"
+argument-hint: "[size: small | medium | large | dynamic] [focus area: module, directory, or feature to analyze]"
 allowed-tools: Read, Glob, Grep, Agent, Bash(find *)
 ---
 
@@ -66,8 +66,9 @@ Read these before dispatching anything. They constrain every step below.
 
 ## Step 1: Validate the Focus Area and Resolve Project Context
 
-**Bind `$size`.** If the user passed `small`, `medium`, or `large` as the first positional argument, bind `$size` to it.
-Anything else is part of the focus-area context, not a size; bind `$size` to the literal `none provided`.
+**Bind `$size`.** If the user passed `small`, `medium`, `large`, or `dynamic` as the first positional argument, bind
+`$size` to it. Anything else is part of the focus-area context, not a size; bind `$size` to the literal
+`none provided`.
 
 **Resolve the focus area.** Take the remaining argument and conversation context as the focus area. Confirm it resolves
 to real files using `Glob` and `Read`. Identify the boundary: which files and directories the focus area includes, and
@@ -116,9 +117,13 @@ borderline, stay at the smaller band.
 - **Large** — more than roughly a dozen files across multiple subsystems, OR two or more cross-cutting concerns present
   together, OR a system-seam signal is present, OR `$size` is `large`.
 
-**Apply the size override.** If `$size` is not `none provided`, use it as the band and skip the signal-based
-classification above — but still select specialists by signal (a `large` override does not dispatch agents whose domain
-the code never touches). A conversational override ("run this large") is equivalent to `$size`.
+**Apply the size override.** If `$size` is not `none provided`, use it: a band value is the band and skips the
+signal-based classification above, while `dynamic` forces the signal-based classification even when the project config
+sets a default band. If `$size` is `none provided` and the project config supplies a band via `default-swarm-size`
+(per the config rule in [../../references/config-rule.md](../../references/config-rule.md)), use that band, skip the
+signal-based classification, and announce the config as the source. In every case still select specialists by signal
+(a `large` band does not dispatch agents whose domain the code never touches). A conversational override ("run this
+large") is equivalent to `$size`.
 
 ## Step 3: Build the Roster and Announce It
 

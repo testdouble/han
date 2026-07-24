@@ -7,7 +7,7 @@ description: >
   feasibility of an approach. Does not implement plan steps, write test plans, review code, or investigate bugs, and
   does not generate new plans from scratch — use plan-a-feature for a new plan.
 arguments: size
-argument-hint: "[size: small | medium | large] [context or path to plan file]"
+argument-hint: "[size: small | medium | large | dynamic] [context or path to plan file]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 ---
 
@@ -157,9 +157,13 @@ The size determines:
 | Medium | team        | 3–4                    | 2         |
 | Large  | team        | 4–5                    | 3         |
 
-**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, or `large` as the first argument), use
-that value as the size and skip the signal-based classification above. State the chosen size and mode to the user in one
-line with the justification (e.g., "Medium: 4 files, one auth surface" or "Medium: passed via `$size`"). If the user
+**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
+argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
+signal-based classification even when the project config sets a default band. If `$size` is empty and the project
+config supplies a band via `default-swarm-size` (per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md)), use that band and skip the signal-based
+classification. State the chosen size and mode to the user in one line with the justification (e.g., "Medium: 4 files,
+one auth surface", "Medium: passed via `$size`", or "Medium: from `.han/config.md` `default-swarm-size`"). If the user
 asked for team review on a plan that would otherwise be small, honor the request and treat it as medium-or-larger. If
 the user explicitly names a size in conversation, accept the override.
 
