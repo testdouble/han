@@ -12,6 +12,16 @@ The file is markdown: optional YAML frontmatter for scalar settings, then named 
 - `output-directory` (frontmatter key): a base path, relative to the working directory, under which the skill writes
   its markdown deliverables while keeping its own folder and file structure beneath it. Create the directory on first
   write when it does not exist.
+- `default-swarm-size` (frontmatter key): the default size band for skills that classify a swarm or team size before
+  dispatching agents. Accepted values, trimmed of surrounding whitespace and matched case-insensitively: `small`,
+  `medium`, `large`, `dynamic`. A value of `small`, `medium`, or `large` is adopted exactly as if the user had passed
+  it as the skill's size argument: the skill skips its signal-based classification, scales its caps to the band, and
+  announces the band with the config named as the source. Specialists are still selected by signal within the band's
+  caps. `dynamic`, or an absent setting, leaves the skill classifying the size itself from the work's signals, with no
+  mention of the config. Explicit user input outranks the setting per the precedence chain, and `dynamic` is also a
+  valid explicit size input that forces signal-based classification for that run. An unrecognized size argument (a
+  typo) supplies no explicit value, so the configured band still applies. A skill that dispatches no agent swarm
+  ignores the setting silently.
 - `## Extra Agents` (section heading): one agent per list line, in qualified `plugin:agent` form or bare-name form.
   Match names case-insensitively against the agents available in the session.
 
