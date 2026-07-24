@@ -4,7 +4,9 @@ description: >
   Produce a plain-language manual test plan from the context supplied to it — an executive summary, a high-level list
   of named tests, and a detail section per test with the steps a person follows by hand and the outcomes they should
   expect. Use when you want to create, draft, generate, or outline a manual test plan, manual QA steps, hands-on
-  verification steps, or an acceptance walkthrough for a feature, change, branch, plan, or PR. When nothing in the
+  verification steps, or an acceptance walkthrough for a feature, change, branch, plan, or PR. When the plan holds
+  more than five tests and at least two natural categories emerge, both the test list and the detail sections are
+  organized under plain-language categories. When nothing in the
   supplied context can be manually tested, it says so and asks for more context instead of producing a document. Does
   not analyze code for automated test coverage gaps — use automated-test-planning. Does not write test code — use tdd. Does not
   review code quality — use code-review. Does not stress-test an existing plan — use iterative-plan-review.
@@ -77,6 +79,14 @@ Turn the outcomes into a list of named tests:
    wrong password"), not how.
 4. Order the tests in the sequence a person would sensibly run them: tests that set up state other tests rely on come
    first, then the most important behaviors, then the rest.
+5. Count the tests. When there are more than 5, look for natural plain-language categories among them — by the area
+   of the product they exercise, the kind of person who runs them, or the feature they verify. When at least two
+   natural categories emerge, categorize: assign each test to exactly one category, name each category with the same
+   short plain-language rule as test names, and put every test that fits no natural category under a final category
+   named "Other tests". Keep the run order: categories in the order their first test would run, "Other tests" last,
+   and tests in run order within each category. When only one natural category emerges, or none do, keep the flat
+   list, BECAUSE a single category or a forced grouping adds structure without helping the tester see how the tests
+   relate. With 5 tests or fewer, always keep the flat list.
 
 ## Step 4: Draft the Plan
 
@@ -88,6 +98,11 @@ draft the document using the template at [references/template.md](./references/t
 - **Tests at a Glance** — the high-level list: every test name with one sentence on what it verifies.
 - **Test Details** — one section per named test: one sentence on what it verifies, a numbered list of steps to follow,
   and the expected outcome or outcomes.
+
+When Step 3 produced categories, organize both Tests at a Glance and Test Details under the category names, following
+the categorized layout in the template: each category is a heading in both sections, its tests sit beneath it, and the
+categories and tests appear in the same order in both sections, BECAUSE the reader jumps between the glance list and
+the details by matching names.
 
 Apply the Operating Principles as you write: short sentences, plain words, no technical detail, expected outcomes in
 every detail section.
@@ -135,7 +150,7 @@ overwriting discards a document you did not produce in this run.
 Dispatch `han-communication:readability-editor` (one Agent call) to audit and rewrite the plan's prose against the
 readability standard. Pass it the file path and the named audience: the person who will run these tests by hand, who
 may not be technical. The editor reads han-communication's own canonical rule, so pass no rule path. It must preserve
-every fact — every step, expected outcome, and test name must survive with its meaning intact.
+every fact — every step, expected outcome, test name, and category name must survive with its meaning intact.
 
 Then run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the document. Confirm each criterion and fix any failure:
@@ -147,6 +162,8 @@ Then run the standardized readability self-check (the shared standard is in your
 5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to
    avoid" lists) is present.
 6. Every test still has its steps and expected outcomes, and no technical detail has crept in.
+7. When the plan uses categories, Tests at a Glance and Test Details still carry the same category names in the same
+   order, with every test under its category in both sections.
 
 Finish by presenting a short in-channel summary: the file path, the number of tests, and the test names. Do not
 repeat the full document in the channel.

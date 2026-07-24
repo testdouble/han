@@ -25,6 +25,10 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   change code, and the result is directly observable. Internal refactors and dependency bumps do not qualify.
 - **One test per outcome, grouped only on identical steps.** A test verifies a single outcome, or a group of related
   outcomes only when the exact same steps produce every outcome in the group. Different steps means a different test.
+- **Categories for larger plans.** When the plan holds more than five tests, the skill looks for natural
+  plain-language categories among them. When at least two emerge, both the test list and the detail sections are
+  organized under the category names, and any test that fits no category goes under a final "Other tests" category.
+  With one natural category or none, the flat list stays.
 - **No manual tests means no document.** When the supplied context has nothing a person can test by hand, the skill
   says so and asks whether there is more context to consider. If there is none, its only output is that statement.
 - **Plain language throughout.** The plan is written for the person running the tests, who may not be technical. No
@@ -79,6 +83,10 @@ A `manual-test-plan.md` file with three sections:
 - **Test Details.** One section per named test: what it verifies, a numbered list of steps to follow by hand, and the
   expected outcome or outcomes the person should observe.
 
+When the plan holds more than five tests and at least two natural categories emerge, both Tests at a Glance and Test
+Details are organized under plain-language category names, with the same categories in the same order in both
+sections and any uncategorized test under a final "Other tests" category.
+
 When nothing in the context can be manually tested and you have no more context to add, there is no file; the skill
 tells you that in the channel and stops.
 
@@ -108,7 +116,9 @@ The skill walks a seven-step process:
 2. **Identify what can be manually tested.** List candidate outcomes a person can verify by hand. If the list is
    empty, say so and ask for more context; with none, stop with no document.
 3. **Group outcomes into named tests.** One outcome per test, merged only when the exact same steps produce every
-   outcome in the group, each with a short plain-language name.
+   outcome in the group, each with a short plain-language name. When there are more than five tests, the skill looks
+   for natural plain-language categories; when at least two emerge, the plan is organized under them with any
+   uncategorized test under a final "Other tests" category, and otherwise the flat list stays.
 4. **Draft the plan.** Source the shared readability standard via `han-communication:readability-guidance`, then fill
    the template at [`references/template.md`](../../skills/manual-test-planning/references/template.md).
 5. **Adversarially validate the plan.** Dispatch `adversarial-validator` against the draft with the context it was
