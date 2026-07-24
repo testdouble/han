@@ -104,7 +104,8 @@ reading it correctly. T# exists for plan-implementation and for a reader who ask
 
 ## Actors and Triggers
 
-- **Actors** — who or what uses this feature (end users, internal services, scheduled jobs, upstream systems). Name roles, not implementation classes.
+- **Actors** — who or what uses this feature (end users, internal services, scheduled jobs, upstream systems). Name
+  roles, not implementation classes.
 - **Triggers** — the conditions that cause the feature to run (user action, event, timer, API call).
 - **Preconditions** — what must be true before the feature can run.
 
@@ -142,8 +143,8 @@ Append `([D#](artifacts/decision-log.md#...))` links to non-obvious steps only.
 <!-- What the system does when things go wrong: malformed input, missing data, timeouts, partial failures, adversarial input, concurrent access, rollback scenarios. Each entry names the condition and the user- or system-observable behavior that must result. Required behavior is stated in observable terms — not "the handler returns a 500", but "the user sees an error state and the record is left unchanged". -->
 
 | Condition | Required Behavior |
-|-----------|-------------------|
-| ... | ... |
+| --------- | ----------------- |
+| ...       | ...               |
 
 ## User Interactions
 
@@ -173,9 +174,9 @@ system" is the level of abstraction — not "NATS JetStream publisher group" or
 "Kafka consumer group" or "Rails ActionCable channel".
 -->
 
-| Coordinating System | Direction | Interaction | Ordering / Consistency Requirement |
-|---------------------|-----------|-------------|-----------------------------------|
-| ... | inbound / outbound | ... | ... |
+| Coordinating System | Direction          | Interaction | Ordering / Consistency Requirement |
+| ------------------- | ------------------ | ----------- | ---------------------------------- |
+| ...                 | inbound / outbound | ...         | ...                                |
 
 ## Out of Scope
 
@@ -206,6 +207,7 @@ For each deferred item:
 -->
 
 ### {item name}
+
 - **Why deferred:** {evidence-test failure or simpler-version replacement, with the specific reason}
 - **Reopen when:** {concrete trigger}
 - **Source:** {finding ID, agent name, conversation context}
@@ -225,7 +227,10 @@ For each deferred item:
 - **Decisions settled by evidence:** N — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Decisions settled by user input:** N — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** <!-- list --> — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** <!-- One or two sentences --> — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** <!-- One or two sentences --> — see
+  [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** N
+
 <!-- Include the next line ONLY if artifacts/feature-technical-notes.md exists: -->
+
 - **Technical notes:** N — see [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)

@@ -1,0 +1,6 @@
+{
+  "name": "han-research",
+  "description": "Pre-planning knowledge-work skills for the Han suite: understanding a problem before anyone commits to a plan. Home of research (research an open-ended question and end at an adversarially-validated recommendation), gap-analysis (compare two artifacts and report what is missing, incomplete, or conflicting), and issue-triage (turn a vague issue or bug report into a structured triage document), plus the research-analyst agent the research skill dispatches. Depends on han-communication and han-core; bundled by the han meta-plugin.",
+  "version": "1.0.0",
+  "dependencies": ["han-communication", "han-core"]
+}

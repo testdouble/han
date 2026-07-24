@@ -1,87 +1,43 @@
 # {Plugin Name} Plugin
 
-{One-paragraph description of the plugin — what it does, who it helps, and when to use it.}
+{One paragraph: what this plugin does, how it does it, and why a reader would reach for it. Keep it to a paragraph. The
+per-skill detail lives in each skill's long-form doc under `docs/skills/`, not here.}
 
-<!-- Optional: Include Getting Started only if skills have dependency chains
-     (e.g., one skill writes a reference file that other skills consume).
-     Remove this section entirely for single-skill or independent-skill plugins. -->
+{Bundled-vs-opt-in and dependencies. Pick one shape:}
 
-## Getting Started
+**Bundled.** Installed with the `han` meta-plugin. Depends on `{dependency}`{, `{dependency}`}.
 
-{Explain the recommended order and why it matters. Then list each step:}
+<!-- or -->
 
-### 1. {First Step Name}
+**Opt-in.** Installed on its own, not bundled by the `han` meta-plugin. Depends on `{dependency}`{ and requires a
+configured {MCP server} MCP server}.
 
-{Why this step comes first, what it produces, and what depends on it.}
+<!-- Optional: one short ordered line only when skills build on each other's output
+     (one skill writes a reference file a later skill consumes). Skip it for
+     independent-skill plugins. -->
 
-**Skill:** `/skill-name`
-
-**Example prompts:**
-- "Example prompt 1"
-- "Example prompt 2"
-
-### 2. {Second Step Name}
-
-{Why this step comes second and how it builds on step 1.}
-
-**Skill:** `/skill-name`
-
-**Example prompts:**
-- "Example prompt 1"
-- "Example prompt 2"
-
-<!-- Optional: Include Combining Skills in Prompts when the plugin has multiple
-     skills that can be chained together in a single prompt. Recommended for
-     multi-skill plugins where sequential composition adds value.
-     Remove this section entirely for single-skill plugins. -->
-
-### {N}. Combining Skills in Prompts
-
-{2-3 sentences explaining that users can reference multiple skills in a single prompt and Claude will fire them in sequence, with each skill's output feeding context into the next. Tailor the explanation to the plugin's specific skill combinations.}
-
-**Example prompts:**
-
-- "{Example prompt combining two or more skills in a natural sentence.}"
-  Triggers `/first-skill` first, then `/second-skill` {brief explanation of the chain}.
-
-- "{Another example prompt combining a different set of skills.}"
-  Triggers `/skill-a`, then `/skill-b`, then `/skill-c`.
-
-<!-- End of optional Getting Started section -->
+**Getting started:** run [`/first-skill`](docs/skills/first-skill.md) to {produce X}, then
+[`/second-skill`](docs/skills/second-skill.md) to {consume it}.
 
 ## Skills
 
-- `/skill-name` - One-line description condensed from frontmatter
-- `/another-skill` - One-line description condensed from frontmatter
+<!-- One scent line per skill. Reuse the long-form doc's own canonical summary line;
+     do not write a fresh one. No per-skill paragraph, files line, or example prompts. -->
 
-<!-- Optional: Include only if the plugin defines custom agents.
-     Remove this section entirely if not applicable. -->
+- [`/skill-name`](docs/skills/skill-name.md) — {canonical summary line from the long-form doc}
+- [`/another-skill`](docs/skills/another-skill.md) — {canonical summary line from the long-form doc}
 
-## Custom Agents
+<!-- Owned agents: include this section ONLY for han-core, han-communication, and han-research.
+     Every other plugin omits it and uses the shared-agent-dispatch note below instead. -->
 
-- `agent-name` - One-line description of what the agent does and when to use it
-- `another-agent` - One-line description
+## Agents
 
-<!-- Optional: Include only if the plugin defines hooks.
-     Remove this section entirely if not applicable. -->
+- [`agent-name`](docs/agents/agent-name.md) — {canonical summary line from the long-form doc}
 
-## Hooks
+<!-- Shared-agent-dispatch note: for every plugin that owns no agents (all except
+     han-core, han-communication, and han-research), use this line in place of an Agents section. -->
 
-- `hook-name` - One-line description of when the hook fires and what it does
-
-<!-- Optional: Include only if the plugin provides MCP server configurations.
-     Remove this section entirely if not applicable. -->
-
-## MCP
-
-- `server-name` - One-line description of the MCP server and what it provides
-
-<!-- Optional: Include only if the plugin provides LSP configurations.
-     Remove this section entirely if not applicable. -->
-
-## LSP
-
-- `server-name` - One-line description of the LSP server and what it provides
+Its skills dispatch shared agents that live in `han-core` (and, for the readability-editor, in `han-communication`).
 
 ## Installation
 
@@ -92,27 +48,6 @@ Add your marketplace to Claude Code, then install the plugin:
 /plugin install {plugin-name}@your-marketplace
 ```
 
-## Skills Reference
-
-### `/skill-name` - Skill Display Name
-
-{Paragraph description of the skill — what it does, when to use it, and what it produces. More detail than the one-liner in the Skills section above.}
-
-**Files:** `SKILL.md`, `references/template.md`
-
-**Example prompts:**
-- `/skill-name` — "Example prompt showing a common use case"
-- `/skill-name` — "Example prompt showing a different use case"
-- `/skill-name` — "Example prompt showing an edge case or advanced usage"
-
 ---
 
-### `/another-skill` - Another Skill Display Name
-
-{Paragraph description.}
-
-**Files:** `SKILL.md`
-
-**Example prompts:**
-- `/another-skill` — "Example prompt 1"
-- `/another-skill` — "Example prompt 2"
+[Plugin index](../docs/choosing-a-han-plugin.md) · [Repo root](../README.md) · [Workflows](../docs/workflows.md)

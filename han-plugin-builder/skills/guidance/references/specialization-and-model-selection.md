@@ -1,28 +1,53 @@
 # Specialization and Model Selection
 
-How specialization in skill and agent definitions interacts with model tier and effort. This is the unifying rationale behind why some agents can run on `haiku` or `sonnet` even when the task looks complex on the surface, and why others stay on `opus` no matter how tightly the prompt is written.
+How specialization in skill and agent definitions interacts with model tier and effort. This is the unifying rationale
+behind why some agents can run on `haiku` or `sonnet` even when the task looks complex on the surface, and why others
+stay on `opus` no matter how tightly the prompt is written.
 
 ## The mechanism
 
-A well-specified skill or agent definition shifts work from inference-time compute (model tier, thinking budget) to prompt-time design. On the tasks the prompt was built for, this lets a smaller model and lower effort match a larger model and higher effort. **It does not raise the model's capability ceiling. It stops the model from wasting capability on disambiguation and planning.**
+A well-specified skill or agent definition shifts work from inference-time compute (model tier, thinking budget) to
+prompt-time design. On the tasks the prompt was built for, this lets a smaller model and lower effort match a larger
+model and higher effort. **It does not raise the model's capability ceiling. It stops the model from wasting capability
+on disambiguation and planning.**
 
-The simpler claim *"more specialization = less model needed"* is directionally correct but trades accuracy for slogan. The version above is the one supported by the literature.
+The simpler claim _"more specialization = less model needed"_ is directionally correct but trades accuracy for slogan.
+The version above is the one supported by the literature.
 
 ## What the evidence says
 
-**1. Prompt specialization closes the model-size gap on narrow tasks.** Multiple research lines show smaller/cheaper models matching larger ones once the prompt encodes the task tightly. Orq.ai cites up to ~4x performance improvement from prompt optimization on classification tasks. The *Specializing Smaller Language Models Toward Multi-Step Reasoning* paper (arXiv 2301.12726) is built around exactly this finding for sub-10B models.
+**1. Prompt specialization closes the model-size gap on narrow tasks.** Multiple research lines show smaller/cheaper
+models matching larger ones once the prompt encodes the task tightly. Orq.ai cites up to ~4x performance improvement
+from prompt optimization on classification tasks. The _Specializing Smaller Language Models Toward Multi-Step Reasoning_
+paper (arXiv 2301.12726) is built around exactly this finding for sub-10B models.
 
-**2. Task decomposition is the formal name for what we're doing.** Amazon Science explicitly frames decomposition as a way to *"use cost-effective, smaller, more-specialized task- or domain-adapted LLMs"* without losing accuracy. The systematic-decomposition paper (arXiv 2510.07772) reports 10–40 percentage-point gains when complexity-guided decomposition is applied. The *same* model performs dramatically better when the task is pre-shaped for it. A specialized skill or agent definition is doing this work upfront.
+**2. Task decomposition is the formal name for what we're doing.** Amazon Science explicitly frames decomposition as a
+way to _"use cost-effective, smaller, more-specialized task- or domain-adapted LLMs"_ without losing accuracy. The
+systematic-decomposition paper (arXiv 2510.07772) reports 10–40 percentage-point gains when complexity-guided
+decomposition is applied. The _same_ model performs dramatically better when the task is pre-shaped for it. A
+specialized skill or agent definition is doing this work upfront.
 
-**3. Anthropic's own design implies the same thing.** Claude's adaptive thinking *"dynamically decides when and how much to think… at lower effort levels, it may skip thinking for simpler problems."* A highly specialized prompt makes the problem *appear simpler* to the model. Fewer branches to consider, narrower output space, pre-resolved ambiguity. Which is precisely what reduces the value of extended thinking.
+**3. Anthropic's own design implies the same thing.** Claude's adaptive thinking _"dynamically decides when and how much
+to think… at lower effort levels, it may skip thinking for simpler problems."_ A highly specialized prompt makes the
+problem _appear simpler_ to the model. Fewer branches to consider, narrower output space, pre-resolved ambiguity. Which
+is precisely what reduces the value of extended thinking.
 
-**4. Few-shot/structured demonstrations substitute for raw reasoning.** Anthropic's chain-of-thought guidance notes that demonstrating the reasoning pattern in the prompt causes Claude to *"mimic that approach… often to great effect."* Embedding the reasoning pattern in a skill or agent definition is a permanent few-shot. It shifts work from inference-time compute to prompt design.
+**4. Few-shot/structured demonstrations substitute for raw reasoning.** Anthropic's chain-of-thought guidance notes that
+demonstrating the reasoning pattern in the prompt causes Claude to _"mimic that approach… often to great effect."_
+Embedding the reasoning pattern in a skill or agent definition is a permanent few-shot. It shifts work from
+inference-time compute to prompt design.
 
 ## The honest caveats
 
-- **The inverse correlation is real for narrow, well-specified tasks. It weakens for genuinely novel reasoning.** Specialization can't manufacture capability the model doesn't have. It can only stop the model from squandering capability on figuring out what we want. If a task requires reasoning a smaller model genuinely can't perform, no prompt fixes that.
-- **No published study tests *exactly* "Claude Code skill specificity vs. Opus/Sonnet/effort levels."** The mechanism is well-established in the literature. Our specific Claude Code experience is consistent with it but not formally measured in any paper located.
-- **Brittleness trade-off.** Specialized prompts perform worse on out-of-distribution inputs. A general Opus + high-effort run is more robust to surprise. A tight skill definition is more efficient on the path it was built for.
+- **The inverse correlation is real for narrow, well-specified tasks. It weakens for genuinely novel reasoning.**
+  Specialization can't manufacture capability the model doesn't have. It can only stop the model from squandering
+  capability on figuring out what we want. If a task requires reasoning a smaller model genuinely can't perform, no
+  prompt fixes that.
+- **No published study tests _exactly_ "Claude Code skill specificity vs. Opus/Sonnet/effort levels."** The mechanism is
+  well-established in the literature. Our specific Claude Code experience is consistent with it but not formally
+  measured in any paper located.
+- **Brittleness trade-off.** Specialized prompts perform worse on out-of-distribution inputs. A general Opus +
+  high-effort run is more robust to surprise. A tight skill definition is more efficient on the path it was built for.
 
 ## How this shapes model choices
 
@@ -34,9 +59,17 @@ Three signals to weigh when choosing a model for an agent (and, where supported,
 
 The pattern that falls out, by agent archetype:
 
-- **Drop to `haiku`** for lookup or classification agents with a fixed output shape: the agent reads a bounded input, applies a known rule, and emits a predictable structure. Scanners, extractors, and content auditors that fill a fixed template fit here.
-- **Drop `opus` → `sonnet`** where heavy domain-framework loading is already baked into the prompt: named methodologies, named anti-patterns, fixed rubrics that the agent walks rather than invents. This is where mechanism #1 above is strongest. Most specialist reviewers and analysts that work from an explicit checklist or domain framework fit this tier.
-- **Keep `opus`** where synthesis spans unbounded input that the prompt cannot pre-shape (cross-cutting architecture, system design, coordination across many sources), or where the task is genuinely novel reasoning (open-ended planning, adversarial exploit-path construction). No amount of prompt specialization manufactures the reasoning these tasks need.
+- **Drop to `haiku`** for lookup or classification agents with a fixed output shape: the agent reads a bounded input,
+  applies a known rule, and emits a predictable structure. Scanners, extractors, and content auditors that fill a fixed
+  template fit here.
+- **Drop `opus` → `sonnet`** where heavy domain-framework loading is already baked into the prompt: named methodologies,
+  named anti-patterns, fixed rubrics that the agent walks rather than invents. This is where mechanism #1 above is
+  strongest. Most specialist reviewers and analysts that work from an explicit checklist or domain framework fit this
+  tier.
+- **Keep `opus`** where synthesis spans unbounded input that the prompt cannot pre-shape (cross-cutting architecture,
+  system design, coordination across many sources), or where the task is genuinely novel reasoning (open-ended planning,
+  adversarial exploit-path construction). No amount of prompt specialization manufactures the reasoning these tasks
+  need.
 
 ## Sources
 
@@ -51,8 +84,15 @@ The pattern that falls out, by agent archetype:
 
 ## Cross-References
 
-- [Agent Model Selection](./agent-building-guidelines/agent-model-selection.md). Decision criteria for the `model` frontmatter field on agents.
-- [Agent Domain Focus](./agent-building-guidelines/agent-domain-focus.md). How vocabulary routing, persona length, and named anti-patterns activate expert knowledge.
-- [Multi-Agent Economics](./agent-building-guidelines/multi-agent-economics.md). When to add agents vs. improve existing ones.
-- [Progressive Disclosure](./skill-building-guidance/progressive-disclosure.md). How skills layer information so the model isn't loading everything at once.
+- [Per-Model Authoring Guidance](./per-model-authoring.md). This document is about which model _tier_ to run (opus,
+  sonnet, haiku) and at what effort. Its counterpart is about how to _write the instructions_ for a given model. Read
+  that one when the question is how to phrase instructions for Sonnet 5, Opus 4.8, or Fable 5, not which tier to run.
+- [Agent Model Selection](./agent-building-guidelines/agent-model-selection.md). Decision criteria for the `model`
+  frontmatter field on agents.
+- [Agent Domain Focus](./agent-building-guidelines/agent-domain-focus.md). How vocabulary routing, persona length, and
+  named anti-patterns activate expert knowledge.
+- [Multi-Agent Economics](./agent-building-guidelines/multi-agent-economics.md). When to add agents vs. improve existing
+  ones.
+- [Progressive Disclosure](./skill-building-guidance/progressive-disclosure.md). How skills layer information so the
+  model isn't loading everything at once.
 - [Context Hygiene](./skill-building-guidance/context-hygiene.md). Why every token competes for attention.
