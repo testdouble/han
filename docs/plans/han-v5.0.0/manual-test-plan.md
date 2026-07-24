@@ -2,7 +2,7 @@
 
 ## What this plan checks
 
-This plan checks the changes heading into Han version 5.0.0 by hand. It contains nineteen tests, organized into six
+This plan checks the changes heading into Han version 5.0.0 by hand. It contains twenty-one tests, organized into six
 groups so you can see how they relate.
 
 Anyone with Claude Code installed can run it. One test also needs a GitHub project where you can create issues. The
@@ -37,12 +37,14 @@ Start at the top. The first two tests confirm the install and the command list t
 - **Setting a standing team size**: a configured team size makes the bigger review commands start at that size and credit the configuration.
 - **Overriding the standing team size for one run**: a size given on the command itself wins over the configured one.
 - **Ignoring a broken team size setting**: a team size Han does not recognize is set aside with a one-line note, and the command sizes the work itself.
+- **Writing in your project's own voice**: a voice guide of your own, named in the configuration file, changes the words Han uses when it rewrites a document.
+- **Pointing at a voice guide that is missing**: a voice line naming a guide that cannot be found makes the run ask you which way to go, instead of quietly picking for you.
 - **Keeping a pointer to the configuration file**: project discovery offers to record a pointer to the configuration file, and to remove it once the file is gone.
 
 ### Reading the documentation
 
 - **Browsing the reorganized documentation**: each plugin now carries its own documentation, and the indexes link into it.
-- **Reading the new configuration guide**: the shared documentation now includes a guide to the project configuration file and its three settings.
+- **Reading the new configuration guide**: the shared documentation now includes a guide to the project configuration file and its four settings.
 - **Reading how team sizes are chosen**: the sizing guide now covers the project-wide default and the decision behind it.
 
 ### Wrapping up
@@ -289,6 +291,58 @@ This test verifies that a team size Han does not recognize is set aside without 
 - A one-line note says the team size setting was set aside.
 - The run chooses its own size from the work in front of it.
 
+#### Writing in your project's own voice
+
+This test verifies that a voice guide of your own, named in the configuration file, changes the words Han uses when it
+rewrites a document. It uses the same project and configuration file as the previous tests.
+
+**Steps**
+
+1. In the project, create a short voice guide as a document named `our-voice.md` inside the `docs` folder. Under a
+   heading named "Avoided words and phrases", give it two swap rules you can spot on sight. The first: never write
+   "document"; write "write-up" instead. The second: never address the reader as "you"; address them as "team"
+   instead.
+2. Edit the configuration file so it reads:
+
+   ```
+   ---
+   output-directory: docs/han
+   default-swarm-size: small
+   writing-voice: docs/our-voice.md
+   ---
+   ```
+
+3. Write a short rough paragraph that buries its point, addresses the reader as "you" at least once, and uses the
+   word "document" at least once. Save it as a document in the project.
+4. Start a new session. Run `/han-communication:edit-for-readability` and name the rough document. When it tells you
+   which file it will rewrite and asks for a go-ahead, agree.
+5. When it finishes, read the rewritten document.
+
+**Expected outcomes**
+
+- The rewritten document follows your swap rules: it says "write-up" where the old text said "document", and it
+  addresses the reader as "team" instead of "you".
+- The run completes normally, with no note about the configuration's voice line.
+
+#### Pointing at a voice guide that is missing
+
+This test verifies that a voice line naming a guide that cannot be found makes the run ask you which way to go,
+instead of quietly picking for you. It uses the same project and configuration file as the previous test.
+
+**Steps**
+
+1. Edit the configuration file and change its voice line to name a guide that does not exist:
+   `writing-voice: docs/no-such-voice.md`.
+2. Start a new session. Run `/han-communication:edit-for-readability` on the document from the previous test.
+3. When the run warns you that the voice guide was not found and asks how to proceed, choose the built-in voice.
+4. When it tells you which file it will rewrite and asks for a go-ahead, agree.
+
+**Expected outcomes**
+
+- The run warns you that the configured voice guide was not found, and asks whether to use the built-in voice or skip
+  the writing voice for this run.
+- After you choose, the rewrite completes normally.
+
 #### Keeping a pointer to the configuration file
 
 This test verifies that project discovery offers to record a pointer to the configuration file, and to remove that pointer once the file is gone. It uses the same project as the previous tests, and it cleans up the configuration file at the end.
@@ -325,7 +379,7 @@ This test verifies that each plugin now carries its own documentation and the sh
 
 #### Reading the new configuration guide
 
-This test verifies that the shared documentation now includes a guide to the project configuration file and its three settings.
+This test verifies that the shared documentation now includes a guide to the project configuration file and its four settings.
 
 **Steps**
 
@@ -333,7 +387,7 @@ This test verifies that the shared documentation now includes a guide to the pro
 
 **Expected outcomes**
 
-- The guide explains the optional project configuration file. It covers all three settings: where Han writes its documents, the standing team size for the bigger review commands, and extra agents for Han to consider.
+- The guide explains the optional project configuration file. It covers all four settings: where Han writes its documents, the standing team size for the bigger review commands, the writing voice its documents follow, and extra agents for Han to consider.
 - The guide includes a full example of the file you can copy from.
 
 #### Reading how team sizes are chosen
