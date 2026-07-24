@@ -20,6 +20,9 @@ sizing-aware skills are `/architectural-analysis`, `/code-overview`, `/code-revi
 - **Always overridable.** Pass the size as the first positional argument when invoking the skill (`/code-review medium`,
   `/plan-a-feature small "describe the feature"`, and so on). The skill honors the override and still scales the team
   and round caps to the chosen size.
+- **Project-configurable default.** A project can set a standing default band with the `default-swarm-size` setting in
+  [`.han/config.md`](./configuration.md). A configured band is forced exactly like a passed size argument; an explicit
+  size on the invocation, including `dynamic` to auto-classify one run, always wins over it.
 - **Conservative by design.** Fewer agents producing higher-signal findings is the goal; quantity is not the metric. The
   skill prefers under-dispatching that you can re-run at a larger size to over-dispatching that drowns you in low-signal
   findings.
@@ -85,8 +88,10 @@ Pass the size as the first positional argument when invoking the skill:
 /plan-implementation large docs/features/checkout/feature-specification.md
 ```
 
-Accepted values: `small`, `medium`, `large`. Anything else is treated as part of the trailing context, not as a size,
-and the skill falls back to auto-classification.
+Accepted values: `small`, `medium`, `large`, and `dynamic`. A band forces that size; `dynamic` forces auto-classification
+for that run, which is how you get one signal-classified run in a project whose config sets a default band. Anything
+else is treated as part of the trailing context, not as a size — it supplies no explicit value, so the resolution
+continues down the chain: the config's `default-swarm-size` if the project sets one, and auto-classification otherwise.
 
 When the size is overridden with `$size`:
 
@@ -123,8 +128,12 @@ Read each skill's **Sizing** section for the full per-skill rules.
 - **Sizing scales the team and the brief.** A larger size dispatches more agents _and_ tells each agent that more
   severity bands are in scope and more findings are acceptable. A smaller size narrows both the roster and what each
   agent escalates.
-- **Sizing is overridable, not configurable.** There is no project-level "always run as medium" setting. You opt in to
-  the override on each invocation, when the auto-classification is wrong.
+- **Sizing is overridable, and a project can set the default.** The `default-swarm-size` setting in
+  [`.han/config.md`](./configuration.md) gives a project a standing default band, adopted exactly like a passed size
+  argument and announced with the config named as the source. The per-invocation override still always wins, including
+  `dynamic` to auto-classify a single run. This revises the original principle that sizing was overridable but never
+  project-configurable;
+  [ADR 0001](./adr/0001-project-configurable-default-swarm-size.md) records that reversal and explains why.
 
 ## Related reading
 
