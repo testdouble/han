@@ -42,7 +42,7 @@ description of what it does. The `han` meta-plugin is a convenience wrapper that
 - **[`han-coding`](../han-coding/README.md).** The coding layer: writing, reviewing, analyzing, testing, investigating,
   and standardizing code. Bundled; depends on `han-core`.
 - **[`han-github`](../han-github/README.md).** The GitHub layer: posting reviews, writing PR descriptions, and
-  publishing work items as issues through the `gh` CLI. Bundled; depends on `han-core`.
+  publishing work items as issues through the `gh` CLI. Bundled; depends on `han-core` and `han-coding`.
 - **[`han-reporting`](../han-reporting/README.md).** The reporting layer: turning a spec into a plain-language
   stakeholder summary and a shareable HTML report. Bundled; depends on `han-communication`.
 - **[`han-feedback`](../han-feedback/README.md).** The opt-in feedback layer: structured post-session feedback on the

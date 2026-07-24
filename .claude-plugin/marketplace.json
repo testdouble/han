@@ -40,7 +40,7 @@
     {
       "name": "han-planning",
       "source": "./han-planning",
-      "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, and iterative-plan-review. Depends on han-core; bundled by the han meta-plugin.",
+      "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, and iterative-plan-review. Depends on han-communication and han-core; bundled by the han meta-plugin.",
       "version": "2.1.0"
     },
     {

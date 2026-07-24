@@ -107,7 +107,7 @@ han-plugin-builder skill:
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
 │   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md)
-├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues (depends on han-communication for the readability standard)
+├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues (depends on han-communication, han-core, and han-coding, whose code-review skill post-code-review-to-pr wraps)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json

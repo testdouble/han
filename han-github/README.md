@@ -4,7 +4,8 @@ The GitHub layer of the Han suite: the skills that talk to GitHub through the `g
 request, writes a PR description from the branch's changes, and publishes a work-items file as GitHub issues. Reach for
 it when you want Han's output to land on GitHub rather than stay local.
 
-**Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication` and `han-core`. Requires the `gh` CLI.
+**Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication`, `han-core`, and `han-coding` (the
+post-code-review-to-pr skill wraps han-coding's code-review). Requires the `gh` CLI.
 
 ## Skills
 
