@@ -203,7 +203,8 @@ table, and the fidelity guard.
 ## Project-local configuration
 
 A project can carry one optional file, `.han/config.md`, that every Han skill reads on every run. It sets a base
-directory for the skills' markdown deliverables and names extra agents for the dispatching skills to consider. A
+directory for the skills' markdown deliverables, a default swarm size for the sizing-aware skills, and extra agents
+for the dispatching skills to consider. A
 project without the file sees no change, and a broken file degrades quietly to defaults with a one-line note. Read the
 full [Configuration](./configuration.md) reference for the file's schema, the precedence chain, and the degradation
 contract.

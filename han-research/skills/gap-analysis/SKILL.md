@@ -8,7 +8,7 @@ description: >
   to compare against — use research.
 arguments: size
 argument-hint:
-  "[size: small | medium | large] [current state artifact, desired state artifact, optional: scope and modes]"
+  "[size: small | medium | large | dynamic] [current state artifact, desired state artifact, optional: scope and modes]"
 allowed-tools: Read, Write, Glob, Grep, Agent, Bash(find *), Bash(git *)
 ---
 
@@ -201,10 +201,14 @@ example:
 > - `han-core:adversarial-security-analyst` — three gaps touch session-token handling.
 > - `han-core:project-manager` — required at medium; consolidates swarm output into Section 4.
 
-**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, or `large` as the first argument), use
-that value as the size and skip the signal-based classification above; the swarm composition still scales to the chosen
-size. If the user named specific specialists, honor those. If the user requested a different size in conversation rather
-than via `$size`, accept the override.
+**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
+argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
+signal-based classification even when the project config sets a default band. If `$size` is empty and the project
+config supplies a band via `default-swarm-size` (per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md)), use that band, skip the signal-based
+classification, and announce the config as the source. The swarm composition still scales to the chosen size. If the
+user named specific specialists, honor those. If the user requested a different size in conversation rather than via
+`$size`, accept the override.
 
 ## Step 4: Confirm Swarm and Technical-Detail Modes
 

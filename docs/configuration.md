@@ -1,9 +1,10 @@
 # Project-Local Configuration
 
 A project that uses Han can carry one optional file, `.han/config.md`, to adjust how Han skills behave in that project.
-The file controls two things: where skills write their markdown deliverables, and which extra agents dispatching skills
-consider. Every Han skill reads the file on every run, so the overrides take effect without depending on the model
-remembering to look. A project without the file sees no change of any kind.
+The file controls three things: where skills write their markdown deliverables, which extra agents dispatching skills
+consider, and the default swarm size the sizing-aware skills start at. Every Han skill reads the file on every run, so
+the overrides take effect without depending on the model remembering to look. A project without the file sees no
+change of any kind.
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [Quickstart](./quickstart.md) ·
 > [All skills](./skills/README.md) · [All agents](./agents/README.md)
@@ -13,9 +14,9 @@ remembering to look. A project without the file sees no change of any kind.
 - **You write the file; Han cannot.** Han cannot ship or seed a project-level config from the plugin side. You create
   `.han/config.md` by hand in a `.han/` folder at your project root, and it travels through version control like any
   other file. The annotated example below is the canonical source to author from.
-- **Two overrides ship.** `output-directory` sets one base directory for every skill's markdown deliverables.
-  `## Extra Agents` names project-defined or third-party agents that Han's dispatching skills consider alongside their
-  built-in rosters.
+- **Three overrides ship.** `output-directory` sets one base directory for every skill's markdown deliverables.
+  `default-swarm-size` sets the size band every sizing-aware skill starts at. `## Extra Agents` names project-defined
+  or third-party agents that Han's dispatching skills consider alongside their built-in rosters.
 - **A bad config can never fail a skill run.** The worst it can do is be ignored, with a one-line note naming what was
   ignored. A missing or empty file changes nothing and says nothing.
 - **The interpretation contract lives in
@@ -35,6 +36,14 @@ optional, and everything unrecognized is ignored.
 # creates the directory on first write. Must stay inside the project: absolute
 # paths and paths escaping upward are refused.
 output-directory: docs/han
+
+# Default size band for the skills that dispatch an agent swarm:
+# small | medium | large | dynamic. A band is adopted exactly as if you passed
+# it as the skill's size argument, on every sizing-aware run, so it scales
+# agent cost across all of them together. "dynamic" (or omitting the line)
+# lets each skill classify the size itself. Passing a size on an invocation,
+# including "dynamic" to auto-classify one run, always wins over this default.
+default-swarm-size: dynamic
 ---
 
 ## Extra Agents
@@ -54,6 +63,27 @@ Skills that write markdown deliverables (plans, reports, documentation) write th
 their default locations, keeping their own folder structure beneath it. A skill that writes nothing ignores the setting
 silently. The value must be a relative path that stays inside the project; an absolute path or a `..` escape is
 refused with a one-line note, and the skill falls back to its default location.
+
+### `default-swarm-size`
+
+The eight sizing-aware skills ([`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
+[`/code-overview`](../han-coding/docs/skills/code-overview.md),
+[`/code-review`](../han-coding/docs/skills/code-review.md),
+[`/gap-analysis`](../han-research/docs/skills/gap-analysis.md),
+[`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
+[`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
+[`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md), and
+[`/research`](../han-research/docs/skills/research.md)) start at this band instead of classifying the size themselves.
+A configured `small`, `medium`, or `large` is forced exactly like an explicit size argument: the skill skips its
+signal-based classification, scales its caps to the band, and announces the band with the config named as the source.
+Specialists are still selected by signal within the band's caps. `dynamic`, or omitting the setting, keeps today's
+auto-classification. Values are trimmed and matched case-insensitively; anything else degrades with a one-line note
+and the skill classifies the size itself.
+
+One configured band applies to all eight skills at once, and their bands scope differently (a `large` code review and
+a `large` research swarm cost different work), so a global `large` raises agent cost on every sizing-aware run. The
+per-run correction never needs a file edit: passing a size on the invocation always wins, and passing `dynamic`
+auto-classifies that run. See [Sizing](./sizing.md) for the bands and per-skill caps.
 
 ### `## Extra Agents`
 

@@ -7,7 +7,7 @@ description:
   architectural-analysis for that. Does not explain code or a PR to build understanding before reviewing — use
   code-overview for that. Does not capture feedback on Han''s own skills — use han-feedback for that.'
 arguments: size
-argument-hint: "[size: small | medium | large] [optional context about changes or areas to focus on]"
+argument-hint: "[size: small | medium | large | dynamic] [optional context about changes or areas to focus on]"
 allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Grep, Glob, Agent
 ---
 
@@ -204,12 +204,16 @@ clearly require it. When a signal is borderline, stay at the smaller band. Use t
 - **Large** — more than 10 files, multiple subsystems, architectural changes, security or data implications,
   multi-service coordination, or the user explicitly requests full agent review.
 
-**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, or `large` as the first argument), use
-that value as the size and skip the signal-based classification. If `$size` is empty, classify from the signals above.
-Anywhere else in this skill body that mentions a "user override" of size, this argument is the override.
+**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
+argument), use it: a band value is the size and skips the signal-based classification, while `dynamic` forces the
+signal-based classification even when the project config sets a default band. If `$size` is empty and the project
+config supplies a band via `default-swarm-size` (per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md)), use that band and skip the signal-based
+classification. Otherwise classify from the signals above. Anywhere else in this skill body that mentions a "user
+override" of size, this argument is the override.
 
 State the chosen size in one line with the justification (e.g., "Medium: 6 files touched, adds one index and a query for
-it" or "Medium: passed via `$size`"). Also draft a one-line summary of what the change does — this is reused in agent
+it", "Medium: passed via `$size`", or "Medium: from `.han/config.md` `default-swarm-size`"). Also draft a one-line summary of what the change does — this is reused in agent
 briefs below.
 
 **This step is the authoritative source for `{size}`.** Every later consumer reads `{size}` from here: the Review
