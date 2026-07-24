@@ -1,42 +1,43 @@
 # Investigation: Reducing the Required Skills and Agents Installed with Any Given Han Plugin
 
-Investigation report. Read the Summary, then approve the Planned Fix or push back.
+This plan cuts one unused plugin dependency and adds one missing one, so each Han plugin installs only what it
+needs. Read the Summary, then approve the Planned Fix or push back.
 
 ## Summary
 
-- **Root Cause:** Plugin-level dependency edges are the only install-granularity mechanism, and one remaining edge is
-  carried with zero usage: `han-core` declares `han-communication` and never invokes it (E2); the other candidate edge,
-  `han-github → han-core`, turned out to be real and to sit next to an undeclared `han-coding` dependency (E15).
-- **Fix:** Cut the unused `han-core → han-communication` edge, declare `han-github`'s missing `han-coding` dependency,
-  and correct every documentation surface that narrates either graph edge; leave the shared agent roster, the
-  `han-atlassian` edges, and the readability single-copy decision alone.
+- **Root Cause:** Plugin-level dependency edges are the only install-granularity mechanism. One edge is carried with
+  zero usage: `han-core` declares `han-communication` and never invokes it (E2). A second edge, `han-github → han-core`,
+  turned out to be real, but it sits next to an undeclared `han-coding` dependency the manifest is missing (E15).
+- **Fix:** Cut the unused `han-core → han-communication` edge and declare `han-github`'s missing `han-coding`
+  dependency, then correct every documentation surface that narrates either graph edge. Leave the shared agent roster,
+  the `han-atlassian` edges, and the readability single-copy decision alone.
 - **Why Correct:** Independent re-search confirmed zero `han-communication` invocations inside `han-core` and confirmed
   every consumer already declares its own direct edge, so the cut can strand nothing (E2, V5, V6).
-- **Validation Outcome:** Validation refuted the draft's second cut: softening `han-github`'s `han-core` edge rested on
-  closure numbers that missed the `/code-review` skill invocation (V1), borrowed a degradation precedent that does not
-  cover baseline dispatch sites (V2), and would have dropped the very review pass the skills call their asset (V3); that
-  cut was withdrawn and replaced with the missing-dependency repair.
-- **Remaining Risks:** The one-level auto-install premise is single-sourced from an internal decision log, and the
-  failure mode of invoking `/code-review` without `han-coding` installed was not tested live; see the Confidence
-  Assessment.
+- **Validation Outcome:** Validation refuted the draft's second cut. Softening `han-github`'s `han-core` edge rested on
+  closure numbers that missed the `/code-review` skill invocation (V1). It also borrowed a degradation precedent that
+  does not cover baseline dispatch sites (V2), and it would have dropped the very review pass the skills call their
+  asset (V3). That cut was withdrawn and replaced with the missing-dependency repair.
+- **Remaining Risks:** The one-level auto-install premise is single-sourced from an internal decision log. The failure
+  mode of invoking `/code-review` without `han-coding` installed was not tested live. See the Confidence Assessment.
 
 ## Problem Statement
 
 Installing a single Han plugin can pull in more skills and agents than that plugin uses, and in one case fewer than it
 needs. `han-core` declares a dependency on `han-communication` that nothing inside `han-core` invokes (E2), so a
-standalone `han-core` install carries 2 extra skills and 1 extra agent for nothing. In the other direction,
-`han-github` declares `han-core` for one agent, while its central skill also invokes the `han-coding:code-review`
-skill, a dependency its manifest never declares, so a standalone `han-github` install cannot run that skill's main step
-at all (E3, E15).
+standalone `han-core` install carries 2 extra skills and 1 extra agent for nothing.
+
+`han-github` has the opposite problem. It declares `han-core` for one agent, but its central skill also invokes the
+`han-coding:code-review` skill, a dependency its manifest never declares. A standalone `han-github` install cannot run
+that skill's main step at all (E3, E15).
 
 The question this investigation answers: which changes would meaningfully reduce the number of required skills and
 agents installed with any given Han plugin, and which reductions look tempting but should not be made.
 
-The impact falls on operators who install one plugin rather than the `han` meta-plugin. Every unused agent definition
+The impact falls on operators who install one plugin rather than the `han` meta-plugin: every unused agent definition
 still loads its description into session context and appears in the agent roster. Meta-plugin users are unaffected by
 the proposed cut, because the meta-plugin declares `han-communication` directly (V6).
 
-## Root Cause Analysis
+## Why the Graph Has an Unused Edge and a Missing One
 
 ### Root Cause
 
@@ -45,55 +46,62 @@ usage: `han-core → han-communication` has zero invocations (E2). Every other e
 by broad overlapping usage that resists further splitting (E5, E9), or, in `han-github`'s case, understated rather than
 overstated (E15).
 
-### Detailed Analysis
+### How the Extra Edge Survived and the Missing One Surfaced
 
 The suite already took its biggest footprint reduction. The v5.0.0 restructure split the old `han-core` into
 `han-core`, `han-documentation`, and `han-research`, and dropped vestigial `han-core` edges from `han-reporting`,
-`han-feedback`, and `han-linear` (E9). That work also established the boundary condition on going further: the shared
-specialist roster stays in one plugin because almost every specialist is dispatched by skills in at least two sibling
-plugins, so splitting the roster would duplicate most of it (E5). Three plugins already install with no Han
-dependencies at all (`han-feedback`, `han-linear`, `han-plugin-builder`), and `han-reporting` needs only
-`han-communication` (E1).
+`han-feedback`, and `han-linear` (E9).
 
-One edge survived the earlier pruning pass without justification. No skill or agent in `han-core` invokes any
-`han-communication` capability, and the decision log that introduced the edge shows it was added for phase sequencing,
-with the real consumers (the six prose-producing plugins) each given their own direct edge afterward (E2). The earlier
+That earlier work also set the boundary on going further: the shared specialist roster stays in one plugin because
+almost every specialist is dispatched by skills in at least two sibling plugins, so splitting the roster would
+duplicate most of it (E5). Three plugins already install with no Han dependencies at all (`han-feedback`, `han-linear`,
+`han-plugin-builder`), and `han-reporting` needs only `han-communication` (E1).
+
+One edge survived that earlier pruning pass without justification. No skill or agent in `han-core` invokes any
+`han-communication` capability. The decision log that introduced the edge shows it was added for phase sequencing, and
+the real consumers, the six prose-producing plugins, were each later given their own direct edge (E2). The earlier
 vestigial-edge pass targeted edges pointing *to* `han-core`, not edges *from* it, so this one was never audited (E9).
-Independent re-search during validation confirmed the zero-invocation claim, confirmed no hook or codex-manifest
-dispatch surface exists, and confirmed no plugin reaches `han-communication` only transitively through `han-core`, so
-the cut can strand nothing (V5, V6).
+Independent re-search during validation confirmed the zero-invocation claim. It also confirmed no hook or
+codex-manifest dispatch surface exists, and confirmed no plugin reaches `han-communication` only transitively through
+`han-core`. The cut can strand nothing (V5, V6).
 
-The draft's second cut did not survive validation. `han-github`'s `han-core` edge is narrow on paper, two dispatches of
-`han-core:junior-developer` (E3), but validation surfaced that `post-code-review-to-pr` also invokes the
+The draft's second cut did not survive validation. `han-github`'s `han-core` edge looked narrow on paper: two
+dispatches of `han-core:junior-developer` (E3). But validation found that `post-code-review-to-pr` also invokes the
 `han-coding:code-review` skill as its central step, a dependency `han-github`'s manifest has never declared (E15, V1).
 The draft's closure arithmetic never counted that edge, so its headline reduction described an install that could not
-run the skill it ships. The proposed soft-dispatch fallback also borrowed authority it did not have: the degradation
-convention it cited is scoped to config-named Extra Agents, not to a skill's baseline dispatch table (V2), and
-degrading `post-code-review-to-pr`'s junior-developer pass would post an unreviewed draft to a public PR (V3). The
-honest repair runs the other way: declare the `han-coding` edge so the manifest matches what the plugin already
-requires.
+run the skill it ships.
 
-The tempting cuts that should not be made are equally evidence-backed. `han-atlassian`'s direct edges on `han-core` and
-`han-communication` look redundant, because its three wrapped-skill dependencies each pull both in, but the repo's own
+The proposed soft-dispatch fallback also borrowed authority it did not have. The degradation convention it cited is
+scoped to config-named Extra Agents, not to a skill's baseline dispatch table (V2). And degrading
+`post-code-review-to-pr`'s junior-developer pass would post an unreviewed draft to a public PR (V3). The honest repair
+runs the other way: declare the `han-coding` edge so the manifest matches what the plugin already requires.
+
+Some tempting cuts should not be made, and each is evidence-backed. `han-atlassian`'s direct edges on `han-core` and
+`han-communication` look redundant, because its three wrapped-skill dependencies each pull both in. But the repo's own
 decision log records that dependency auto-install is one level deep, so those direct edges are load-bearing for a
-standalone `han-atlassian` install (E10). Vendoring `readability-rule.md` and `writing-voice.md` into consuming plugins
-would let some `han-communication` edges go soft, but the suite deliberately decided that standard lives in exactly one
-canonical copy, and the win is small because `han-communication`'s whole closure is 2 skills and 1 agent (E11). The
-runtime sizing controls (`default-swarm-size`, the sizing bands) govern how many agents a skill dispatches per run, not
-how many are installed, so they are out of scope here (E13).
+standalone `han-atlassian` install (E10).
+
+Vendoring `readability-rule.md` and `writing-voice.md` into consuming plugins would let some `han-communication` edges
+go soft. But the suite deliberately decided that standard lives in exactly one canonical copy, and the win is small
+because `han-communication`'s whole closure is 2 skills and 1 agent (E11).
+
+The runtime sizing controls (`default-swarm-size`, the sizing bands) govern how many agents a skill dispatches per run,
+not how many are installed. They are out of scope here (E13).
 
 ## Planned Fix
 
 ### Approach
 
 Cut the unused `han-core → han-communication` edge, declare `han-github`'s missing `han-coding` dependency, and update
-every documentation surface that narrates either edge; make no change to the shared agent roster, the `han-atlassian`
+every documentation surface that narrates either edge. Make no change to the shared agent roster, the `han-atlassian`
 edges, or the readability single-copy decision.
 
 The measurable effect: a standalone `han-core` install drops from 2 plugins / 3 skills / 23 agents to 1 plugin / 1
-skill / 22 agents (E4). The `han-github` change moves in the other direction on purpose: its declared closure grows to
-match what the plugin already needs to function, repairing a broken standalone install rather than shrinking a working
-one (E15). Meta-plugin installs are unchanged in what they pull in (V6), and no skill's runtime behavior changes.
+skill / 22 agents (E4).
+
+The `han-github` change moves in the other direction on purpose. Its declared closure grows to match what the plugin
+already needs to function, repairing a broken standalone install rather than shrinking a working one (E15).
+Meta-plugin installs are unchanged in what they pull in (V6), and no skill's runtime behavior changes.
 
 No plugin version is bumped by this plan; versioning happens at release time through the release skill.
 
@@ -133,11 +141,12 @@ No plugin version is bumped by this plan; versioning happens at release time thr
 
 #### `CLAUDE.md`
 
-- **Change:** Three narration corrections: the intro paragraph's and repo-layout tree's `han-core` entries drop
-  "depends on `han-communication`"; the composition paragraph at line 163 removes `han-core` from the list of plugins
-  declaring a direct `han-communication` dependency; and the `han-github` tree entry, which today reads "depends on
-  han-communication for the readability standard", gains the full edge set (`han-communication`, `han-core`,
-  `han-coding`).
+- **Change:** Three narration corrections:
+  1. The intro paragraph's and repo-layout tree's `han-core` entries drop "depends on `han-communication`".
+  2. The composition paragraph at line 163 removes `han-core` from the list of plugins declaring a direct
+     `han-communication` dependency.
+  3. The `han-github` tree entry, which today reads "depends on han-communication for the readability standard", gains
+     the full edge set (`han-communication`, `han-core`, `han-coding`).
 - **Evidence:** (E12), (E15).
 - **Standards:** one-canonical-source convention; count-free convention (no new hardcoded roster totals).
 
@@ -224,11 +233,11 @@ All items carry the trust-class label "codebase" except where noted.
   `han-core/skills/` and `han-core/agents/`; `docs/plans/han-communication-plugin/artifacts/implementation-decision-log.md:32-36`
   (decision D-1); commit `ba2fe8b`
 - **Finding:** No file under `han-core/` invokes a `han-communication` skill or the `readability-editor` agent. The
-  edge was added in the phased rollout commit `ba2fe8b` before consumers were rewired; D-1's rationale names the six
-  prose-producing plugins as the consumers, and each got its own direct edge, while D-1 also rejected relying on
-  `han-core` as a transitive pass-through. Validation independently re-ran the searches: the only `readability` hits
-  under `han-core/` are prose in `han-core/README.md:4,10` and a cross-reference list entry in
-  `han-core/docs/agents/junior-developer.md:322`, neither an invocation (V5).
+  edge was added in the phased rollout commit `ba2fe8b` before consumers were rewired. D-1's rationale names the six
+  prose-producing plugins as the consumers, and each got its own direct edge; D-1 also rejected relying on `han-core`
+  as a transitive pass-through. Validation independently re-ran the searches: the only `readability` hits under
+  `han-core/` are prose in `han-core/README.md:4,10` and a cross-reference list entry in
+  `han-core/docs/agents/junior-developer.md:322`. Neither is an invocation (V5).
 - **Relevance:** A declared dependency with zero usage and no pass-through purpose. The strongest cut candidate, and
   the one that survived adversarial validation cleanly.
 
@@ -263,7 +272,7 @@ All items carry the trust-class label "codebase" except where noted.
 
 - **Source:** `docs/plans/han-core-restructure/investigation.md:27,45`; full dispatch table built from every
   `*/skills/*/SKILL.md`
-- **Finding:** Every `han-core` domain specialist is dispatched by skills in at least two sibling plugins; the
+- **Finding:** Every `han-core` domain specialist is dispatched by skills in at least two sibling plugins. The
   han-coding review rosters (`architectural-analysis`, `code-review`, `automated-test-planning`) are near-identical to
   the han-planning rosters (`plan-implementation`, `iterative-plan-review`, `plan-a-feature`) by design. The
   restructure plan recorded: splitting the roster between han-planning and han-coding would duplicate most of it.
@@ -319,8 +328,8 @@ All items carry the trust-class label "codebase" except where noted.
   auto-install the direct declarations are what guarantee they are present on a standalone install.
 - **Relevance:** Counter-evidence that keeps the `han-atlassian` edges in place, and the premise that lets the new
   `han-github` declaration stop at `han-coding` without re-declaring its closure. Trust note: the one-level claim is a
-  repo-internal citation of external Claude Code documentation, single-sourced from one decision log, and validation
-  found the repo's own how-to paraphrase carries no explicit one-level caveat (V5). It was not re-verified against the
+  repo-internal citation of external Claude Code documentation, single-sourced from one decision log. Validation found
+  the repo's own how-to paraphrase carries no explicit one-level caveat (V5), and it was not re-verified against the
   external documentation. The fix treats it as true and takes the conservative option, so being wrong could only mean a
   further reduction was missed, not that the plan breaks anything.
 
@@ -385,8 +394,8 @@ section records how the plan changed in response, and the Confidence Assessment 
 - **Hypothesis:** E3's "han-github uses exactly one han-core agent and nothing else outside han-communication/han-core"
   was incomplete.
 - **Investigation:** `han-github/skills/post-code-review-to-pr/SKILL.md:40-41` invokes the `/code-review` skill, which
-  lives at `han-coding/skills/code-review/SKILL.md`; `han-github/docs/skills/post-code-review-to-pr.md:150` confirms
-  the wrap; `han-github/.claude-plugin/plugin.json` declares no `han-coding` edge.
+  lives at `han-coding/skills/code-review/SKILL.md`. `han-github/docs/skills/post-code-review-to-pr.md:150` confirms
+  the wrap. `han-github/.claude-plugin/plugin.json` declares no `han-coding` edge.
 - **Result:** Refuted (the draft's claim did not hold).
 - **Impact:** The draft's headline reduction for `han-github` described an install that could not run its central
   skill. The soft-dispatch cut was withdrawn and replaced by declaring the missing `han-coding` edge; E3, E4, and E12
@@ -415,7 +424,7 @@ section records how the plan changed in response, and the Confidence Assessment 
 
 - **Hypothesis:** E12's surface list was incomplete.
 - **Investigation:** Repo-wide grep for dependency narration found `docs/concepts.md:238-240` and
-  `docs/how-to/build-a-plugin-that-depends-on-han.md:14` stating the `han-github → han-core` edge, plus
+  `docs/how-to/build-a-plugin-that-depends-on-han.md:14` stating the `han-github → han-core` edge. It also found
   `docs/how-to/provide-feedback.md:90` claiming a `han-feedback → han-core` edge that was removed in v5.0.0.
 - **Result:** Refuted (the draft's "full blast radius" claim did not hold).
 - **Impact:** E12 amended. Under the rescoped fix the two `han-github`-edge surfaces stay true and drop out; the
@@ -425,8 +434,8 @@ section records how the plan changed in response, and the Confidence Assessment 
 
 - **Hypothesis:** Something in `han-core` (skills, agents, hooks, codex manifests, docs instructing runtime invocation)
   invokes `han-communication`, or some plugin reaches `han-communication` only transitively through `han-core`.
-- **Investigation:** Re-ran the greps across `han-core/`; checked every `.codex-plugin/plugin.json` for `dependencies`;
-  swept for `hooks/` directories and `"hooks"` manifest keys (none exist outside guidance templates); checked every
+- **Investigation:** Re-ran the greps across `han-core/`. Checked every `.codex-plugin/plugin.json` for `dependencies`.
+  Swept for `hooks/` directories and `"hooks"` manifest keys (none exist outside guidance templates). Checked every
   opt-in plugin's skills for `han-communication:`/`han-core:` invocation strings against their declared dependencies
   (only documentation-pattern text found). Also cross-checked E10's one-level auto-install premise: it is
   single-sourced from the decision log, and the repo's own how-to paraphrase of the external docs carries no explicit
@@ -459,11 +468,11 @@ section records how the plan changed in response, and the Confidence Assessment 
 ### Confidence Assessment
 
 - **Confidence:** High for the rescoped plan. The validator rated the draft Low, driven entirely by the `han-github`
-  cut (V1 through V4); every refuted element was withdrawn or repaired, and the surviving cut is the one part the
+  cut (V1 through V4). Every refuted element was withdrawn or repaired, and the surviving cut is the one part the
   validator confirmed cleanly under independent re-search (V5, V6).
-- **Remaining Risks:** The one-level auto-install premise (E10) remains single-sourced and externally unverified; if
-  wrong, a further `han-atlassian` reduction was missed, but nothing in this plan breaks. The live failure mode of
-  invoking `/code-review` when `han-coding` is absent (loud error versus silent misresolution) was not tested in a
+- **Remaining Risks:** The one-level auto-install premise (E10) remains single-sourced and externally unverified. If
+  it is wrong, a further `han-atlassian` reduction was missed, but nothing in this plan breaks. The live failure mode
+  of invoking `/code-review` when `han-coding` is absent (loud error versus silent misresolution) was not tested in a
   sandboxed install; the fix removes the case by declaring the edge, but the behavior is worth one manual test at
   implementation time. E5's dispatch counts (21 and 17) are carried from the restructure plan and were not
   independently recounted.
