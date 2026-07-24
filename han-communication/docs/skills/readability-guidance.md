@@ -44,10 +44,12 @@ and _how_ the skill is used. For what the skill does internally, read the skill 
 
 ## How it works
 
-The skill reads its own two canonical reference files (the readability rule and the writing-voice profile) so their
-content enters the caller's context, then instructs the caller to hold the audience frame, draft into its template, run
-the standardized self-check, and (for a synthesis skill) dispatch the editor. It closes by telling the caller to return
-to the workflow that invoked it.
+The skill first resolves which writing-voice profile the run uses: the project's own file when `.han/config.md` sets
+`writing-voice` and the file exists, otherwise the built-in profile. When the configured file is missing, it warns you
+and asks whether to fall back to the built-in Han voice or skip the writing voice entirely. It then reads the
+readability rule and the resolved voice profile so their content enters the caller's context, and instructs the caller
+to hold the audience frame, draft into its template, run the standardized self-check, and (for a synthesis skill)
+dispatch the editor. It closes by telling the caller to return to the workflow that invoked it.
 
 ## Cost and latency
 

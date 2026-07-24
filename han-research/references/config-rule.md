@@ -22,6 +22,14 @@ The file is markdown: optional YAML frontmatter for scalar settings, then named 
   valid explicit size input that forces signal-based classification for that run. An unrecognized size argument (a
   typo) supplies no explicit value, so the configured band still applies. A skill that dispatches no agent swarm
   ignores the setting silently.
+- `writing-voice` (frontmatter key): a file path, relative to the working directory, naming the writing-voice profile
+  the readability skills apply in place of the built-in profile at
+  `han-communication/references/writing-voice.md`. An absent or blank setting keeps the built-in profile. When a value
+  is present, verify the file exists before using it. When it exists, that file is the writing-voice profile for the
+  run, including the vocabulary blocklist the readability rule points to. When it does not exist, do not degrade
+  silently: warn the user that the configured writing-voice file was not found, and ask whether to use the built-in Han
+  voice or skip the writing voice entirely for the run. Skipping means the run applies the readability rule with no
+  voice profile and no vocabulary blocklist. A skill that produces no prose deliverable ignores the setting silently.
 - `## Extra Agents` (section heading): one agent per list line, in qualified `plugin:agent` form or bare-name form.
   Match names case-insensitively against the agents available in the session.
 
@@ -62,7 +70,9 @@ to a dispatchable agent is skipped with the one-line note naming it.
 ## Degradation and the one-line note
 
 A bad config can never fail a skill run; the worst it can do is be ignored. Show a one-line note only when content
-that attempts a recognized override cannot be used; pass over everything else silently.
+that attempts a recognized override cannot be used; pass over everything else silently. A `writing-voice` value naming
+a file that does not exist is the one exception: per its definition above, it asks the user which fallback to take
+instead of degrading with a note.
 
 - Malformed frontmatter, or a file unreadable as text: ignore the unusable portion, resolve those settings from the
   rest of the precedence chain, and note what was ignored.

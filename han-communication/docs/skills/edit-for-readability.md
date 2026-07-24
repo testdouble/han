@@ -114,8 +114,10 @@ The skill runs a short, four-step process:
    dispatching, because the in-place rewrite is the one action that changes a file you own. Scratch copies of pasted
    text or a conversation draft skip the gate, because the original is untouched.
 3. **Dispatch the readability-editor.** One `Agent` call hands the editor the target path and the reader frame, with the
-   instruction to operate on prose regions only and preserve every fact. The editor reads its own co-located canonical
-   rule and owns the rubric.
+   instruction to operate on prose regions only and preserve every fact. When `.han/config.md` sets `writing-voice` to
+   a file that exists, the dispatch also names that file so the editor applies it in place of the built-in voice
+   profile; when the configured file is missing, the skill warns you and asks whether to use the built-in Han voice or
+   skip the writing voice before dispatching. The editor reads its own co-located canonical rule and owns the rubric.
 4. **Deliver the result.** Report the rewrite with the editor's rubric verdict, fact-preservation ledger, and untouched
    regions. If the ledger flags a fact that could not be preserved while satisfying a criterion, the skill relays it
    rather than presenting the result as clean.
@@ -135,7 +137,9 @@ properties, staged application, and fidelity guard.
 ### The writing-voice profile
 
 The word-level blocklist the standard reuses lives in
-[`han-communication/references/writing-voice.md`](../../references/writing-voice.md).
+[`han-communication/references/writing-voice.md`](../../references/writing-voice.md). A project can replace it with
+its own profile through the `writing-voice` setting in `.han/config.md`; see
+[Configuration](../../../docs/configuration.md).
 
 ## Related documentation
 
