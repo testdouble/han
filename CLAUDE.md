@@ -206,8 +206,8 @@ such as Claude, shnould be referenced here.
 ### Project-local configuration
 
 - **[docs/configuration.md](./docs/configuration.md).** The operator guide for `.han/config.md`, the optional file a
-  consuming project carries to set an output base directory and extra agents for Han skills. Holds the single canonical
-  annotated schema example.
+  consuming project carries to set an output base directory, a default swarm size, and extra agents for Han skills.
+  Holds the single canonical annotated schema example.
 - **[han-core/references/config-rule.md](./han-core/references/config-rule.md).** The canonical interpretation contract
   (schema tokens, precedence, containment, pool-join, degradation) every participating skill applies. Vendored
   byte-identical into every skill-carrying plugin's `references/`; edit the canonical copy and re-sync the others.

@@ -125,7 +125,8 @@ need the real skill, spend it here.
 4. **[`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md)** _(as needed)._ Record
    architectural decisions.
 5. **[`.han/config.md`](./configuration.md)** _(as needed)._ Carry one optional config file to set a base directory for
-   Han's markdown outputs and name extra agents for dispatching skills to consider.
+   Han's markdown outputs, a default swarm size for the sizing-aware skills, and extra agents for dispatching skills
+   to consider.
 
 **You are done when:** you have a `## Project Discovery` section in your AGENTS.md or CLAUDE.md and the docs and
 standards you need to give other skills useful context.
