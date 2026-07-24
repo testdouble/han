@@ -7,7 +7,7 @@ plugin beneath every other: it owns the single canonical readability standard an
 `readability-guidance` skill that surfaces them, the `edit-for-readability` skill, and the `readability-editor` agent;
 it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
 specialist agent roster the rest of the suite dispatches — every shared agent except the `readability-editor` and the
-`research-analyst` — plus the `project-discovery` skill and the canonical rule files; depends on `han-communication`),
+`research-analyst` — plus the `project-discovery` skill and the canonical rule files; depends on no other Han plugin),
 `han-documentation` (the documentation skills: `project-documentation`, `architectural-decision-record`, and `runbook`;
 depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin), `han-research` (the
 pre-planning knowledge-work skills — `research`, `gap-analysis`, and `issue-triage` — plus the `research-analyst`
@@ -70,7 +70,7 @@ han-plugin-builder skill:
 │   ├── skills/         # readability-guidance (inline, surfaces the standard) + edit-for-readability
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md
 │   └── references/     # Canonical readability-rule.md + writing-voice.md (owned here; no vendored copies elsewhere)
-├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery (depends on han-communication)
+├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery (depends on no other Han plugin)
 │   ├── README.md       # Light front door; skills and agents grouped by purpose
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -160,9 +160,9 @@ The plugins are shipped from `han-communication/`, `han-core/`, `han-documentati
 `han-plugin-builder/`; the `han/` meta-plugin pulls in `han-communication`, `han-core`, `han-documentation`,
 `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` through its `dependencies`.
 `han-communication` is the foundational layer beneath every other plugin: it depends on nothing and owns the single
-canonical readability standard, and every plugin that produces prose output (`han-core`, `han-documentation`,
-`han-research`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a
-direct dependency on it. `han-documentation`, `han-research`, `han-planning`, and `han-coding` depend on
+canonical readability standard, and every plugin that produces prose output (`han-documentation`, `han-research`,
+`han-planning`, `han-coding`, `han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a direct
+dependency on it. `han-documentation`, `han-research`, `han-planning`, and `han-coding` depend on
 `han-communication` and `han-core` and are bundled by the meta-plugin, as are `han-github` and `han-reporting`
 (`han-reporting` depends only on `han-communication`). `han-feedback`, `han-atlassian`, and `han-linear` are
 deliberately left out of the meta-plugin, so each is opt-in and installed on its own: `han-atlassian` depends on

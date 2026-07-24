@@ -7,7 +7,7 @@ files. The documentation skills live in `han-documentation`, the pre-planning re
 planning skills in `han-planning`, and the coding skills in `han-coding`; each depends on han-core. Install only this
 and you have the specialists and project discovery, but no other skills.
 
-**Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication`.
+**Bundled.** Installed with the `han` meta-plugin. Depends on no other Han plugin.
 
 ## Skills
 

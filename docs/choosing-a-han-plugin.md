@@ -32,7 +32,7 @@ description of what it does. The `han` meta-plugin is a convenience wrapper that
 - **[`han-communication`](../han-communication/README.md).** The foundational plugin beneath every other. Owns the
   single canonical readability standard and the skills and agent that apply it. Bundled; depends on nothing.
 - **[`han-core`](../han-core/README.md).** The shared foundation: the specialist agent roster the other plugins
-  dispatch, the project-discovery skill, and the canonical rule files. Bundled; depends on `han-communication`.
+  dispatch, the project-discovery skill, and the canonical rule files. Bundled; depends on no other Han plugin.
 - **[`han-documentation`](../han-documentation/README.md).** The documentation layer: feature and system docs,
   architectural decision records, and runbooks. Bundled; depends on `han-core`.
 - **[`han-research`](../han-research/README.md).** The pre-planning knowledge-work layer: open-ended research, gap

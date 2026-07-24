@@ -1,6 +1,5 @@
 {
   "name": "han-core",
   "description": "The shared foundation of the Han suite: the specialist agent roster the other plugins dispatch (adversarial reviewers, analysts, architects, investigators, and the project-manager facilitator), the project-discovery skill with its project-scanner agent, and the canonical evidence and YAGNI rule files. The documentation skills live in han-documentation, the pre-planning research skills in han-research, the planning skills in han-planning, and the coding skills in han-coding; each depends on han-core.",
-  "version": "3.0.0",
-  "dependencies": ["han-communication"]
+  "version": "3.0.0"
 }

@@ -82,11 +82,9 @@ short:
 Han is its own worked example. It ships as a family of plugins in one marketplace, wired together with exactly the
 `dependencies` array above.
 
-`han-core` is the base layer in this simplified example, so it is shown depending on nothing. (In the real suite it
-takes one dependency — on the foundational `han-communication` plugin that owns the shared readability standard — the
-first dependency `han-core` has ever had; the example keeps it dependency-free to show the base case.) It carries the
-shared specialist agent roster the other plugins dispatch, plus the project-discovery skill and the canonical rule
-files:
+`han-core` is the base layer in this simplified example, so it is shown depending on nothing, matching the real suite.
+It carries the shared specialist agent roster the other plugins dispatch, plus the project-discovery skill and the
+canonical rule files:
 
     {
       "name": "han-core",
