@@ -5,8 +5,8 @@ description: >
   of named tests, and a detail section per test with the steps a person follows by hand and the outcomes they should
   expect. Use when you want to create, draft, generate, or outline a manual test plan, manual QA steps, hands-on
   verification steps, or an acceptance walkthrough for a feature, change, branch, plan, or PR. When the plan holds
-  more than five tests and a natural grouping exists, both the test list and the detail sections are organized under
-  plain-language categories. When nothing in the
+  more than five tests and at least two natural categories emerge, both the test list and the detail sections are
+  organized under plain-language categories. When nothing in the
   supplied context can be manually tested, it says so and asks for more context instead of producing a document. Does
   not analyze code for automated test coverage gaps — use automated-test-planning. Does not write test code — use tdd. Does not
   review code quality — use code-review. Does not stress-test an existing plan — use iterative-plan-review.
@@ -79,12 +79,14 @@ Turn the outcomes into a list of named tests:
    wrong password"), not how.
 4. Order the tests in the sequence a person would sensibly run them: tests that set up state other tests rely on come
    first, then the most important behaviors, then the rest.
-5. Count the tests. When there are more than 5, look for a plain-language way to categorize them — by the area of the
-   product they exercise, the kind of person who runs them, or the feature they verify. Assign each test to exactly
-   one category, name each category with the same short plain-language rule as test names, and keep the run order:
-   categories in the order their first test would run, tests in run order within each category. When no natural
-   grouping covers every test, keep the flat list, BECAUSE a forced or partial categorization misleads the tester
-   about how the tests relate. With 5 tests or fewer, always keep the flat list.
+5. Count the tests. When there are more than 5, look for natural plain-language categories among them — by the area
+   of the product they exercise, the kind of person who runs them, or the feature they verify. When at least two
+   natural categories emerge, categorize: assign each test to exactly one category, name each category with the same
+   short plain-language rule as test names, and put every test that fits no natural category under a final category
+   named "Other tests". Keep the run order: categories in the order their first test would run, "Other tests" last,
+   and tests in run order within each category. When only one natural category emerges, or none do, keep the flat
+   list, BECAUSE a single category or a forced grouping adds structure without helping the tester see how the tests
+   relate. With 5 tests or fewer, always keep the flat list.
 
 ## Step 4: Draft the Plan
 

@@ -21,7 +21,8 @@
 
 <!-- Categorized layout (the plan has categories): replace the flat list with one heading -->
 <!-- per category, its tests listed beneath it. Category names and their order must match -->
-<!-- Test Details exactly. -->
+<!-- Test Details exactly. Tests that fit no natural category sit under a final category -->
+<!-- named "Other tests". -->
 
 ### {Category name}
 
