@@ -2,36 +2,58 @@
 
 ## What this plan checks
 
-This plan checks the changes heading into Han version 5.0.0 by hand. It contains eighteen tests.
+This plan checks the changes heading into Han version 5.0.0 by hand. It contains nineteen tests, organized into six
+groups so you can see how they relate.
 
-Anyone with Claude Code installed can run it. One test also needs a GitHub project where you can create issues, and the last test briefly uninstalls and reinstalls the Han plugins.
+Anyone with Claude Code installed can run it. One test also needs a GitHub project where you can create issues. The
+final group holds a single test that briefly uninstalls and reinstalls the Han plugins, so it comes last.
 
 Start at the top. The first two tests confirm the install and the command list that every later test relies on.
 
 ## Tests at a Glance
 
+### Installing the plugins
+
 - **Installing the full Han suite**: installing the main plugin brings in all eight bundled plugins, including the three new ones.
 - **Finding the new and moved commands**: the command list shows every command under its new home, and the retired names are gone.
+
+### Planning tests by hand
+
 - **Creating a manual test plan**: the new manual test planning command produces a plain-language plan a person can follow.
 - **Asking for a manual test plan with nothing to test by hand**: the command says so and asks for more, instead of writing a plan.
+- **Getting an organized plan when there are many tests**: a plan holding more than five tests is organized into named groups.
+
+### Working with plans and documents
+
 - **Getting a code overview that lists its sources**: a code overview now lists everything it drew on, right after explaining why the code exists.
 - **Breaking a plan into plain-language work items**: each work item leads with a plain summary and ends with its acceptance criteria.
 - **Turning work items into GitHub issues**: published issues keep the same plain-first shape.
 - **Rewriting a rough document for readability**: the new rewrite command makes a document clearer without losing any fact.
+
+### Configuring a project
+
 - **Choosing where Han writes its documents**: a project configuration file sends Han's documents to a folder you choose.
 - **Ignoring a broken configuration setting**: a bad configuration setting never fails a run; it is set aside with a one-line note.
 - **Setting a standing team size**: a configured team size makes the bigger review commands start at that size and credit the configuration.
 - **Overriding the standing team size for one run**: a size given on the command itself wins over the configured one.
 - **Ignoring a broken team size setting**: a team size Han does not recognize is set aside with a one-line note, and the command sizes the work itself.
 - **Keeping a pointer to the configuration file**: project discovery offers to record a pointer to the configuration file, and to remove it once the file is gone.
+
+### Reading the documentation
+
 - **Browsing the reorganized documentation**: each plugin now carries its own documentation, and the indexes link into it.
 - **Reading the new configuration guide**: the shared documentation now includes a guide to the project configuration file and its three settings.
 - **Reading how team sizes are chosen**: the sizing guide now covers the project-wide default and the decision behind it.
-- **Installing the GitHub plugin on its own**: installing only the GitHub plugin brings along the plugins it needs to work.
+
+### Wrapping up
+
+- **Installing the GitHub plugin on its own**: installing only the GitHub plugin brings along the plugins it needs to work. This test uninstalls and reinstalls the suite, so run it last.
 
 ## How to run each test
 
-### Installing the full Han suite
+### Installing the plugins
+
+#### Installing the full Han suite
 
 This test verifies that installing the main Han plugin pulls in all eight bundled plugins, including the three new ones.
 
@@ -47,7 +69,7 @@ This test verifies that installing the main Han plugin pulls in all eight bundle
 - The list shows the `han` plugin plus eight bundled plugins: `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`.
 - The three new plugins (`han-communication`, `han-documentation`, `han-research`) are present without you installing them separately.
 
-### Finding the new and moved commands
+#### Finding the new and moved commands
 
 This test verifies that every command sits under its new home and that the retired names are gone.
 
@@ -65,7 +87,9 @@ This test verifies that every command sits under its new home and that the retir
 - `han-communication` offers two commands: edit-for-readability and readability-guidance.
 - None of the moved commands still appear under `han-core`.
 
-### Creating a manual test plan
+### Planning tests by hand
+
+#### Creating a manual test plan
 
 This test verifies that the new manual test planning command produces a plain-language plan a person can follow by hand.
 
@@ -81,7 +105,7 @@ This test verifies that the new manual test planning command produces a plain-la
 - The document opens with a short summary, then a list of named tests, then one section per test with numbered steps and the outcomes to expect.
 - The whole document reads in plain language: no file paths, no code, no technical jargon.
 
-### Asking for a manual test plan with nothing to test by hand
+#### Asking for a manual test plan with nothing to test by hand
 
 This test verifies that the command refuses to invent tests when nothing can be checked by hand.
 
@@ -95,7 +119,26 @@ This test verifies that the command refuses to invent tests when nothing can be 
 - The command says clearly that nothing in the context can be manually tested and asks whether there is more context to consider.
 - No plan document is written.
 
-### Getting a code overview that lists its sources
+#### Getting an organized plan when there are many tests
+
+This test verifies that a plan holding more than five tests is organized into named groups. The document you are reading is an example of the shape to expect.
+
+**Steps**
+
+1. Open a project with changes that mix distinct kinds of work a person could check by hand, such as new screens, settings, and documentation together, enough to fill more than five tests.
+2. Run `/han-coding:manual-test-planning` and ask for a plan covering all of those changes.
+3. Wait for it to finish, then open the document it writes.
+
+**Expected outcomes**
+
+- The plan holds more than five tests.
+- The test list and the detail sections sit under the same short, plain-language group headings, in the same order, with each test under exactly one group.
+- Any test that fits none of the groups sits under a final group named "Other tests", placed last. When every test fits a group, that final group does not appear.
+- If the tests do not fall into at least two natural groups, the plan keeps a single flat list instead. That means the change was too narrow for groups, not that the test failed; pick a broader change and run it again.
+
+### Working with plans and documents
+
+#### Getting a code overview that lists its sources
 
 This test verifies that a code overview now lists everything it drew on, so a reader can walk the same evidence.
 
@@ -109,7 +152,7 @@ This test verifies that a code overview now lists everything it drew on, so a re
 - The overview explains why the code exists, what it does, how it flows, and where to start reading.
 - The overview contains a section named "Context used" that lists every source it drew on, with links for the sources that can be opened.
 
-### Breaking a plan into plain-language work items
+#### Breaking a plan into plain-language work items
 
 This test verifies that each work item now leads with a plain summary and ends with its acceptance criteria.
 
@@ -125,7 +168,7 @@ This test verifies that each work item now leads with a plain summary and ends w
 - A plain-language list of the work to be done follows the summary; technical hints appear only nested underneath the plain items they belong to.
 - The acceptance criteria sit at the bottom of each work item, immediately before a short line naming what the item depends on.
 
-### Turning work items into GitHub issues
+#### Turning work items into GitHub issues
 
 This test verifies that issues published from work items keep the same plain-first shape. It needs a GitHub project where you can create issues, and the work items document from the previous test.
 
@@ -139,7 +182,7 @@ This test verifies that issues published from work items keep the same plain-fir
 - One new issue exists per work item.
 - Each issue opens with the plain-language summary, and its acceptance criteria appear near the bottom as a checklist, followed by a line naming what the issue depends on.
 
-### Rewriting a rough document for readability
+#### Rewriting a rough document for readability
 
 This test verifies that the new rewrite command makes a document clearer while keeping every fact.
 
@@ -156,7 +199,9 @@ This test verifies that the new rewrite command makes a document clearer while k
 - The facts you noted in step 1 are still present with their exact meaning intact.
 - The command reports what it changed and confirms the facts were preserved.
 
-### Choosing where Han writes its documents
+### Configuring a project
+
+#### Choosing where Han writes its documents
 
 This test verifies that a project configuration file sends Han's documents to a folder you choose.
 
@@ -179,7 +224,7 @@ This test verifies that a project configuration file sends Han's documents to a 
 - The plan document is written inside the `docs/han` folder, which is created if it did not exist.
 - The run says nothing about the configuration.
 
-### Ignoring a broken configuration setting
+#### Ignoring a broken configuration setting
 
 This test verifies that a bad configuration setting never fails a run. It follows on from the previous test and uses the same project and configuration file.
 
@@ -194,7 +239,7 @@ This test verifies that a bad configuration setting never fails a run. It follow
 - A one-line note says the folder setting was set aside and why.
 - The new plan document lands in the folder you ran the command from, not outside the project.
 
-### Setting a standing team size
+#### Setting a standing team size
 
 This test verifies that a configured team size makes the bigger review commands start at that size and credit the configuration. It uses the same project and configuration file as the previous tests.
 
@@ -217,7 +262,7 @@ This test verifies that a configured team size makes the bigger review commands 
 - Early in the run, it announces it is working at the small size and names the project configuration as the source.
 - The review completes normally.
 
-### Overriding the standing team size for one run
+#### Overriding the standing team size for one run
 
 This test verifies that a size given on the command itself wins over the configured one. It uses the same project and configuration file as the previous test.
 
@@ -229,7 +274,7 @@ This test verifies that a size given on the command itself wins over the configu
 
 - The run chooses its own size from the work in front of it and announces that size without crediting the configuration.
 
-### Ignoring a broken team size setting
+#### Ignoring a broken team size setting
 
 This test verifies that a team size Han does not recognize is set aside without failing the run. It uses the same project and configuration file as the previous test.
 
@@ -244,7 +289,7 @@ This test verifies that a team size Han does not recognize is set aside without 
 - A one-line note says the team size setting was set aside.
 - The run chooses its own size from the work in front of it.
 
-### Keeping a pointer to the configuration file
+#### Keeping a pointer to the configuration file
 
 This test verifies that project discovery offers to record a pointer to the configuration file, and to remove that pointer once the file is gone. It uses the same project as the previous tests, and it cleans up the configuration file at the end.
 
@@ -261,7 +306,9 @@ This test verifies that project discovery offers to record a pointer to the conf
 - After step 1, the instructions file contains a one-line pointer to the configuration file.
 - After step 4, that pointer line is gone.
 
-### Browsing the reorganized documentation
+### Reading the documentation
+
+#### Browsing the reorganized documentation
 
 This test verifies that each plugin now carries its own documentation and the shared indexes link into it.
 
@@ -276,7 +323,7 @@ This test verifies that each plugin now carries its own documentation and the sh
 - Each plugin folder has its own README with a one-line description of every skill it carries.
 - Every index entry you click opens a full page for that skill or agent, and that page lives inside its plugin's own folder. None of the clicked links is broken.
 
-### Reading the new configuration guide
+#### Reading the new configuration guide
 
 This test verifies that the shared documentation now includes a guide to the project configuration file and its three settings.
 
@@ -289,7 +336,7 @@ This test verifies that the shared documentation now includes a guide to the pro
 - The guide explains the optional project configuration file. It covers all three settings: where Han writes its documents, the standing team size for the bigger review commands, and extra agents for Han to consider.
 - The guide includes a full example of the file you can copy from.
 
-### Reading how team sizes are chosen
+#### Reading how team sizes are chosen
 
 This test verifies that the sizing guide now covers the project-wide default and the decision behind it.
 
@@ -302,9 +349,11 @@ This test verifies that the sizing guide now covers the project-wide default and
 - The guide explains that a project can set a standing default team size in the project configuration file. It also explains that a size given on the command itself always wins over that default.
 - The guide links to a decision record that explains why the project-wide default was added.
 
-### Installing the GitHub plugin on its own
+### Wrapping up
 
-This test verifies that installing only the GitHub plugin brings along the plugins it needs to work. It briefly removes the Han plugins, so run it last.
+#### Installing the GitHub plugin on its own
+
+This test verifies that installing only the GitHub plugin brings along the plugins it needs to work. It briefly removes the Han plugins, so run it last, after every other test in this plan.
 
 **Steps**
 
