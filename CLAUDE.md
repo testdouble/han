@@ -141,11 +141,18 @@ han-plugin-builder skill:
 ├── docs/               # Operator-facing documentation (cross-plugin surfaces; long-form docs now live in each plugin)
 │   ├── concepts.md
 │   ├── configuration.md   # The .han/config.md project-local configuration guide (canonical annotated example)
+│   ├── evidence.md     # What counts as evidence in Han and how skills characterize its strength
+│   ├── local-development.md   # Testing skill changes locally via a local marketplace source
+│   ├── plugin-readme.md   # What every plugin's front-door README.md carries
 │   ├── quickstart.md
+│   ├── readability.md  # The shared readability standard and how skills apply it
+│   ├── semantic-versioning.md   # Versioning policy for plugin.json and marketplace.json
 │   ├── sizing.md
+│   ├── why-solo-and-small-teams.md   # Who Han is for and why it targets solo and small-team engineers
 │   ├── yagni.md
 │   ├── workflows.md    # The map of which skills chain together, with mermaid flow diagrams
 │   ├── choosing-a-han-plugin.md   # The plugin index (scent + link to each plugin README) and install guide
+│   ├── adr/            # Architectural decision records for the Han repo itself
 │   ├── agents/         # Agents index README only (long-form agent docs moved into their plugins)
 │   ├── skills/         # Skills index README only (long-form skill docs moved into their plugins)
 │   ├── how-to/         # End-to-end workflow guides (planning, bugs, research)
@@ -192,7 +199,7 @@ and agents indexes (`docs/skills/README.md`, `docs/agents/README.md`), the plugi
 ## When to use which doc
 
 This section does not need to list docs for all the skills, agents, etc. Only docs that are relevant to using an agent
-such as Claude, shnould be referenced here.
+such as Claude, should be referenced here.
 
 ### Entry points
 

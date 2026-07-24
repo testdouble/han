@@ -10,20 +10,20 @@ to use the skill. For what the skill does internally, read the skill definition 
 ## TL;DR
 
 - **What it does.** Produces a human-readable, progressive-disclosure overview of unfamiliar code or of a pull request's
-  changes. It leads with _why_: the real problem the code solves or the goal it accomplishes for the business or a user.
-  Everything else (what it does, how it works, where to start) flows out of that, so you can get up to speed before
+  changes, leading with _why_ (the real problem the code solves or the goal it accomplishes for the business or a
+  user) and flowing from there into what it does, how it works, and where to start, so you can get up to speed before
   working on or reviewing it.
 - **When to use it.** You have landed in code you do not know, or a PR you are about to review, and you want a fast
   orientation before you start.
 - **What you get back.** A scratch overview file (written outside the repository) with a purpose statement, a linked
   list of the context the overview drew on, Mermaid flow charts, the directly-related context, and where to start, all
   at minimal technical depth.
-- **Size-aware.** The skill classifies the target as small / medium / large, defaults to small, and scales how many
-  `codebase-explorer` agents it dispatches. Pass the size as the first positional argument to override
-  (`/code-overview medium`). See [Sizing](../../../docs/sizing.md).
 
 ## Key concepts
 
+- **Size-aware.** The skill classifies the target as small / medium / large, defaults to small, and scales how many
+  `codebase-explorer` agents it dispatches. Pass the size as the first positional argument to override
+  (`/code-overview medium`). See [Sizing](../../../docs/sizing.md).
 - **Why first.** The overview is built to answer one question before any other: _why does this code exist?_ The answer
   is the real problem it solves or the goal it accomplishes for the business or a user, not the technical mechanics.
   What it does, how it flows, and where to start are not dropped; they flow out of the why and exist to give you the

@@ -9,13 +9,13 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 ## TL;DR
 
-- **What it does.** Produces a standalone test plan by analyzing code for coverage gaps and edge cases. Dispatches
-  `test-engineer` and `edge-case-explorer` in parallel and adds `concurrency-analyst` or `adversarial-security-analyst`
-  when the files touch those concerns, then merges all findings.
+- **What it does.** Produces a standalone test plan by analyzing code for coverage gaps and edge cases, dispatching
+  `test-engineer` and `edge-case-explorer` in parallel (plus `concurrency-analyst` or `adversarial-security-analyst`
+  when the files touch those concerns) and merging all findings.
 - **When to use it.** You want a prioritized test plan for a branch, a directory, or specific files, without running a
   full code review.
-- **What you get back.** A test plan that leads with plain language: a Summary, a What Needs Testing and Why section,
-  and a What Each Test Covers walkthrough. Below that sits a Technical Reference holding up to 40 items tagged CRIT /
+- **What you get back.** A test plan that leads with plain language (a Summary, a What Needs Testing and Why section,
+  and a What Each Test Covers walkthrough), backed by a Technical Reference holding up to 40 items tagged CRIT /
   HIGH / MED / LOW, each with `file:line` references, test approach, code paths, and risk assessment.
 
 ## Key concepts

@@ -79,7 +79,7 @@ Example prompts:
   `kubectl rollout restart deploy/consumer -n workers` and verify queue depth dropped below 1000 within five minutes."_
 - `/runbook`. _"Capture our weekly Postgres reindex procedure. Schedule lives in `ops/cron/reindex.yaml`; the steps are
   in my head."_
-- `/runbook docs/runbooks/postgres-primary-unreachable.md`. _"Update — we changed the escalation channel from PagerDuty
+- `/runbook docs/runbooks/postgres-primary-unreachable.md`. _"Update: we changed the escalation channel from PagerDuty
   to OpsGenie last week, and I ran the procedure end-to-end this morning."_
 - `/runbook`. _"I want to write a runbook for a Sentry alert we don't have data flowing to yet."_ The skill will defer
   this per YAGNI.

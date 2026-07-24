@@ -15,8 +15,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **When to use it.** You have a feature, change, branch, plan, or PR and want a document a person can follow to
   verify it by hand, without reading any code.
 - **What you get back.** A `manual-test-plan.md` file written in short, plain sentences, free of technical detail,
-  with expected outcomes in every test. When nothing in the context can be manually tested, you get that statement
-  instead of a document.
+  with expected outcomes in every test, or a plain statement instead of a document when nothing in the context can be
+  manually tested.
 
 ## Key concepts
 

@@ -318,8 +318,6 @@ URL: https://www.nngroup.com/articles/5-whys/
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) and
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Skills that always include this agent in
   their review rounds.
-- [`/code-overview`](../../../han-coding/docs/skills/code-overview.md). Dispatches this agent (with `information-architect`) to
-  review the drafted overview for readability before the reader sees it.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns even when the domain is "being a generalist."
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).
