@@ -53,6 +53,10 @@ Give it:
    pull-request reviewer, a non-technical stakeholder), so the agent edits for the right audience and keeps the
    technical specifics that reader needs.
 3. **An output path (optional).** When the draft is a file, the agent rewrites it in place; name the path.
+4. **A writing-voice profile (optional).** When `.han/config.md` sets `writing-voice` to a file that exists, the
+   dispatching skill names that file and the agent applies it in place of the built-in voice profile; the skill can
+   instead say the writing voice is skipped, and the agent drops only the blocklist enforcement. Left unsaid, the
+   built-in profile applies.
 
 Example prompts:
 

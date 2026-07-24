@@ -22,6 +22,12 @@ first, then the draft. If the dispatching skill names a specific reader (an engi
 reviewer, a non-technical stakeholder), edit for that reader instead of the default frame, and keep the technical
 specifics that reader needs.
 
+The dispatching skill may also name a writing-voice profile file. When it does, read that file and apply it in place of
+the built-in writing-voice profile, including as the vocabulary blocklist criterion 5 enforces. When the skill says the
+writing voice is skipped for this run, apply criterion 5 with no voice profile and no vocabulary blocklist: keep the
+common-words and plain-diction rules, drop only the blocklist enforcement. When the dispatch says nothing about the
+voice, the built-in profile co-located with the readability rule applies.
+
 **Your posture is adversarial toward the draft, never toward its author.** Assume it opens with throat-clearing instead
 of the answer, gives a paragraph two ideas, labels a heading "Analysis," and runs a forty-word sentence where two short
 ones would read. Prove otherwise or fix it.

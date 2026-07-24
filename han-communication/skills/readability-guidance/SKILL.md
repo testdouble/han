@@ -35,17 +35,30 @@ human reads it end to end — to approve it, follow it, or build from it — eve
 an artifact consumed purely as a pipeline input, with no human reading it end to end, falls outside the standard. If a
 human reads your deliverable end to end, apply the standard to it.
 
-## Step 1: Read the canonical standard
+## Step 1: Resolve the writing-voice source, then read the standard
 
-Read both canonical reference files, in this order, so their full content enters your context:
+First resolve which writing-voice profile this run uses:
+
+- When the `.han/config.md` probe supplied a `writing-voice` value, treat the value as a file path relative to the
+  working directory and check that the file exists.
+  - When the file exists, it is the writing-voice profile for this run, used in place of the built-in profile.
+  - When the file does not exist, warn the user that the configured writing-voice file was not found, and ask whether
+    to use the built-in Han voice or skip the writing voice entirely for this run. Honor the answer: fall back to the
+    built-in profile, or proceed with no voice profile at all.
+- When the probe supplied no `writing-voice` value, the built-in profile at
+  `${CLAUDE_PLUGIN_ROOT}/references/writing-voice.md` applies.
+
+Then read the reference files, in this order, so their full content enters your context:
 
 1. `${CLAUDE_PLUGIN_ROOT}/references/readability-rule.md` — the Human-Readable Output Standard: the audience frame, the
    output properties, the length guidance, the prose-only and fidelity rules, and the standardized self-check.
-2. `${CLAUDE_PLUGIN_ROOT}/references/writing-voice.md` — the writing-voice profile, whose "Avoided words and phrases"
-   and "AI slop to avoid" sections are the authoritative vocabulary blocklist the rule points to.
+2. The resolved writing-voice profile — the configured file, or the built-in
+   `${CLAUDE_PLUGIN_ROOT}/references/writing-voice.md`, whose "Avoided words and phrases" and "AI slop to avoid"
+   sections are the authoritative vocabulary blocklist the rule points to. A configured profile stands in for the
+   built-in one wholesale: apply whatever voice and vocabulary guidance it carries. When the user chose to skip the
+   writing voice, read only the readability rule and apply it with no voice profile and no vocabulary blocklist.
 
-Read them from this plugin's own `references/` directory. Do not paraphrase or summarize them in place of reading them —
-the surfaced content is the point.
+Do not paraphrase or summarize the files in place of reading them — the surfaced content is the point.
 
 ## Step 2: Hold the audience frame while you draft
 

@@ -1,8 +1,8 @@
 # Project-Local Configuration
 
 A project that uses Han can carry one optional file, `.han/config.md`, to adjust how Han skills behave in that project.
-The file controls three things: where skills write their markdown deliverables, which extra agents dispatching skills
-consider, and the default swarm size the sizing-aware skills start at. Every Han skill reads the file on every run, so
+The file controls where skills write their markdown deliverables, which extra agents dispatching skills consider, the
+default swarm size the sizing-aware skills start at, and the writing-voice profile the readability skills apply. Every Han skill reads the file on every run, so
 the overrides take effect without depending on the model remembering to look. A project without the file sees no
 change of any kind.
 
@@ -14,9 +14,10 @@ change of any kind.
 - **You write the file; Han cannot.** Han cannot ship or seed a project-level config from the plugin side. You create
   `.han/config.md` by hand in a `.han/` folder at your project root, and it travels through version control like any
   other file. The annotated example below is the canonical source to author from.
-- **Three overrides ship.** `output-directory` sets one base directory for every skill's markdown deliverables.
-  `default-swarm-size` sets the size band every sizing-aware skill starts at. `## Extra Agents` names project-defined
-  or third-party agents that Han's dispatching skills consider alongside their built-in rosters.
+- **These overrides ship.** `output-directory` sets one base directory for every skill's markdown deliverables.
+  `default-swarm-size` sets the size band every sizing-aware skill starts at. `writing-voice` points the readability
+  skills at a project-supplied writing-voice profile in place of the built-in Han voice. `## Extra Agents` names
+  project-defined or third-party agents that Han's dispatching skills consider alongside their built-in rosters.
 - **A bad config can never fail a skill run.** The worst it can do is be ignored, with a one-line note naming what was
   ignored. A missing or empty file changes nothing and says nothing.
 - **The interpretation contract lives in
@@ -26,7 +27,7 @@ change of any kind.
 
 ## The file, annotated
 
-Create `.han/config.md` in the directory you run Han skills from. This is the one canonical example; both settings are
+Create `.han/config.md` in the directory you run Han skills from. This is the one canonical example; every setting is
 optional, and everything unrecognized is ignored.
 
 ```markdown
@@ -44,6 +45,14 @@ output-directory: docs/han
 # lets each skill classify the size itself. Passing a size on an invocation,
 # including "dynamic" to auto-classify one run, always wins over this default.
 default-swarm-size: dynamic
+
+# Writing-voice profile for the readability skills, as a file path relative to
+# this project's root. When set and the file exists, it replaces the built-in
+# Han voice (han-communication's writing-voice.md) for the run. When set and
+# the file is missing, the skill warns you and asks whether to use the built-in
+# voice or skip the writing voice entirely. Omit the line to keep the built-in
+# voice.
+writing-voice: docs/our-writing-voice.md
 ---
 
 ## Extra Agents
@@ -85,6 +94,22 @@ a `large` research swarm cost different work), so a global `large` raises agent 
 per-run correction never needs a file edit: passing a size on the invocation always wins, and passing `dynamic`
 auto-classifies that run. See [Sizing](./sizing.md) for the bands and per-skill caps.
 
+### `writing-voice`
+
+The readability surfaces in `han-communication` ([`/readability-guidance`](../han-communication/docs/skills/readability-guidance.md),
+[`/edit-for-readability`](../han-communication/docs/skills/edit-for-readability.md), and the
+[`readability-editor`](../han-communication/docs/agents/readability-editor.md) agent they feed) read their
+writing-voice profile from this setting. The value is a file path, relative to the project root, naming a
+writing-voice profile of your own. When the file exists, it replaces the built-in profile at
+[`han-communication/references/writing-voice.md`](../han-communication/references/writing-voice.md) wholesale,
+including the vocabulary blocklist the readability rule enforces, so every prose-producing Han skill drafts in your
+project's voice instead of Han's.
+
+When the setting names a file that does not exist, the skill does not degrade silently: it warns you that the file was
+not found and asks whether to use the built-in Han voice or skip the writing voice entirely for that run. Skipping
+applies the readability rule with no voice profile and no vocabulary blocklist. Omitting the setting keeps the
+built-in Han voice with no mention of the config.
+
 ### `## Extra Agents`
 
 Skills that select among candidate agents (for example [`/code-review`](../han-coding/docs/skills/code-review.md),
@@ -122,6 +147,10 @@ rule: a one-line note appears only when content that attempts a recognized overr
 frontmatter, an unrecognized setting name, a blank value, an out-of-bounds `output-directory`, or an unresolvable agent
 name. Content the suite has no use for (plain prose in the file) is passed over silently, and when everything applies
 cleanly the skills say nothing about the config at all.
+
+`writing-voice` naming a missing file is the one exception to the note-and-move-on rule: because the wrong fallback
+would silently change the voice of everything a run writes, the skill asks you whether to use the built-in Han voice
+or skip the writing voice, instead of picking for you.
 
 ## Keeping the file visible
 

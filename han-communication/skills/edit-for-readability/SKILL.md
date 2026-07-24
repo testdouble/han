@@ -71,6 +71,13 @@ Also settle the reader frame: default to a capable reader who did not do this wo
 the user names a specific reader (an engineer implementing a fix, a PR reviewer, a non-technical stakeholder), carry
 that reader to the editor instead so the technical specifics that reader needs are kept.
 
+Finally, resolve the writing-voice source. When the `.han/config.md` probe supplied a `writing-voice` value, treat it
+as a file path relative to the working directory and check that the file exists. When it exists, that file replaces
+the built-in writing-voice profile for this run. When it does not exist, warn the user that the configured
+writing-voice file was not found, and ask whether to use the built-in Han voice or skip the writing voice entirely for
+this run; honor the answer. When no `writing-voice` value is configured, the editor's own co-located built-in profile
+applies and you pass nothing about the voice.
+
 ## Step 2: Confirm before rewriting a file in place
 
 If the target is a file on disk (not a scratch copy of pasted text or a conversation draft), tell the user which file
@@ -91,6 +98,10 @@ Dispatch `han-communication:readability-editor` with one `Agent` call
 - The reader frame from Step 1: the default capable-reader frame, or the specific reader the user named.
 - The instruction to operate on prose regions only — never inside code fences, diagram bodies, rendered markup, or
   citation identifiers, which survive unchanged — and to apply its rewrite to the file in place, preserving every fact.
+- The writing-voice resolution from Step 1, when it differs from the default: the path to the configured
+  writing-voice file the editor uses in place of the built-in profile, or the instruction that the writing voice is
+  skipped for this run. When no `writing-voice` is configured, say nothing about the voice; the editor's built-in
+  profile applies.
 
 Do not paraphrase the standard into the prompt or list its criteria yourself; the editor reads the rule and owns the
 rubric. If the dispatch fails or the editor is unavailable, tell the user the readability pass could not run rather than
