@@ -23,13 +23,18 @@ over-inclusion burns tokens and dilutes the report.
 
 ### control flow
 
+Step order alone is not the test: a skill whose steps run once in sequence still fires when a wrong value in
+forward-carried state would make it emit a wrong result.
+
 - **Does not fire:** linear steps run in order, even when sub-agents are dispatched along the way; a single halt; a
-  one-time mode branch that routes to otherwise-linear steps. Counters or IDs that only number or label outputs (`D1`,
-  `F2`, `CRIT-001`) are bookkeeping, not control flow.
-- **Fires:** non-linear control that could emit a wrong result under some state combination — a loop, an iterative
-  interview or refinement pass that re-evaluates earlier decisions, a counter that must reset, cross-step state that
-  gates whether a step re-runs or which branch executes, or a resume/halt path that could rerun a committed step.
-- **Example:** numbering findings `E1, E2, E3` → no; a round counter that gates re-dispatch → yes.
+  one-time mode branch that routes to otherwise-linear steps. State only appended then rendered verbatim — counters or
+  IDs that number or label outputs (`D1`, `F2`, `CRIT-001`) — is bookkeeping, not control flow.
+- **Fires on either:** (a) a non-linear path — a loop, an iterative interview or refinement pass that re-evaluates
+  earlier decisions, a counter that must reset, or a resume/halt path that could rerun a committed step; or (b) forward
+  decision state — a value set or accumulated in one step that a later step reads to gate a branch, a re-run, or the
+  final result.
+- **Example:** numbering findings `E1, E2, E3` → no; a round counter that gates re-dispatch → yes; a flag or tally set
+  early that decides a later step's branch or the final result → yes.
 
 ### handles untrusted input
 

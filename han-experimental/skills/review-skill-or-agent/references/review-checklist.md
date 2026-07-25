@@ -4,7 +4,7 @@ Each item names the guidance rule it checks. Items in the skill section are grou
 the lens that deep-checks the item and grounds findings against the named guidance — so each reviewer reads only its own
 group instead of scanning the list; every agent-target item is conformance-owned, and each reviewer's brief names the
 items it owns. The conformance & quality reviewer deep-checks both the Conformance and the Quality (Fitness for purpose)
-items, and the orchestrator emits the mechanical checks and the progressive-disclosure structural check in Step 3.5. The
+items, and the orchestrator emits the mechanical checks and the progressive-disclosure structural check in Step 4. The
 conformance & quality reviewer defers the seam item's deep judgment to its lens and runs the seam's always-applicable
 structural check only when that lens is named in its brief as left off the roster, skipping it when the seam reviewer is
 dispatched — so no rule goes unchecked and no dispatched lens is re-checked. Each specialist grounds its owned item
@@ -37,15 +37,15 @@ reviewer owns Token economy; the dispatch & prompt reviewer owns Dispatch econom
 
 - **Entity fit** — the artifact is a flowchartable process, not a judgment layer that should be an agent
   (`plugin-entity-taxonomy.md`).
-- **Description** (conformance & quality reviewer; the ≤1024-character length check is the orchestrator's, Step 3.5) —
+- **Description** (conformance & quality reviewer; the ≤1024-character length check is the orchestrator's, Step 4) —
   third person; covers what, when, boundary, and trigger breadth; weaves trigger words into prose, not a keyword list;
   names sibling skills in boundary clauses and disambiguates in both directions (`skill-building-guidance/skill-description-frontmatter.md`,
   `skill-building-guidance/skill-description-length.md`).
 - **Naming** (conformance & quality reviewer; the mechanical dir-name-match, `SKILL.md` casing, and no-`README.md`
-  checks are the orchestrator's, Step 3.5) — a process/gerund name when the output is a plan or doc; a dependency prefix
+  checks are the orchestrator's, Step 4) — a process/gerund name when the output is a plan or doc; a dependency prefix
   when an external tool is required (`skill-building-guidance/naming-conventions.md`).
 - **Frontmatter and grants** (conformance & quality reviewer; the mechanical `AskUserQuestion`-absent,
-  script-not-listed, angle-bracket, reserved-name, and non-standard-YAML checks are the orchestrator's, Step 3.5) —
+  script-not-listed, angle-bracket, reserved-name, and non-standard-YAML checks are the orchestrator's, Step 4) —
   `allowed-tools` is the minimal set the steps use, with separate Bash entries at the right granularity
   (`skill-building-guidance/allowed-tools-bash-permissions.md`, `skill-building-guidance/skill-frontmatter-fields.md`).
 - **Agent dispatch** — every dispatch uses the qualified `defining-plugin:agent-name`, never a bare name or a
@@ -73,13 +73,13 @@ reviewer owns Token economy; the dispatch & prompt reviewer owns Dispatch econom
   [finding-classification.md](finding-classification.md), while a promised behavior with no implementing step is a plain
   conformance miss, tiered as a conformance item rather than a fitness finding.
 
-### Progressive disclosure (orchestrator, Step 3.5)
+### Progressive disclosure (orchestrator, Step 4)
 
 - **Progressive disclosure** — domain knowledge (rubrics, templates, matrices) lives in `references/`, not the body;
   load-bearing execution payload is not buried in a reference; `references/` holds on-demand knowledge while `assets/`
   holds output-facing files, and each is placed accordingly; nothing the toolchain already enforces is restated
   (`skill-building-guidance/progressive-disclosure.md`, `skill-building-guidance/skill-reference-files.md`). The orchestrator emits this structural check, and the
-  body-under-500-lines check via `body-line-count`, inline in Step 3.5 for every review.
+  body-under-500-lines check via `body-line-count`, inline in Step 4 for every review.
 
 ### Generalist
 
@@ -94,8 +94,8 @@ reviewer owns Token economy; the dispatch & prompt reviewer owns Dispatch econom
 - **Operator interaction** (when the artifact has an operator interaction model) — human gates follow the placement,
   count (2–3 target), and rejection-rate tuning rules, and any interactive prompt (a menu, a confirmation, an
   `AskUserQuestion`) is clearly worded and correctly placed (`skill-building-guidance/workflow-patterns.md`, Human Gates). The separate rule
-  that `AskUserQuestion` must be absent from `allowed-tools` is a frontmatter bug-guard the orchestrator emits in Step
-  3.5, not an interaction-design finding.
+  that `AskUserQuestion` must be absent from `allowed-tools` is a frontmatter bug-guard the orchestrator emits in Step 4,
+  not an interaction-design finding.
 
 ### Seam reviewer
 
@@ -146,7 +146,7 @@ those calls against the tool's live interface.
   flattery or motivational filler (`agent-building-guidelines/agent-domain-focus.md`).
 - **Domain vocabulary and anti-patterns** — 15–30 precise terms that pass the 15-year-practitioner test, and 5–10 named
   anti-patterns each with a detection signal, both inlined in the body (`agent-building-guidelines/agent-domain-focus.md`).
-- **Description** (the ≤1024-character length check is the orchestrator's, Step 3.5) — covers what, when, boundary, and
+- **Description** (the ≤1024-character length check is the orchestrator's, Step 4) — covers what, when, boundary, and
   trigger breadth; names near-sibling agents in boundary clauses and disambiguates in both directions; vocabulary and
   anti-patterns stay in the body, not the description (`agent-building-guidelines/agent-description-length.md`).
 - **Model selection** — `model` is set explicitly and matches the cognitive load, chosen on capability not cost

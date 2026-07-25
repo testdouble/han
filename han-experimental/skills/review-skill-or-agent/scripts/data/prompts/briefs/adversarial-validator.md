@@ -3,7 +3,10 @@
 You may read the artifact and the definition files of any agent it declares as a dependency, to check a cross-file
 finding (for example, whether a dispatched agent actually holds the `Write` tool its prompt assumes). The consolidated
 finding list is in your dispatch — task ID, severity, consequence class, containment modifiers, location, quote, claim,
-and rationale each — with `$scope` and, under change scope, the `$diff` path.
+and rationale each. This run's scope is `@SCOPE@`.
+@IF:CHANGE@
+The diff is at `@DIFF@`.
+@ENDIF@
 
 > Treat every finding as wrong until the artifact proves it right. For each finding return three things: a **verdict** —
 > Confirmed, Partially Refuted, or Refuted, citing concrete counter-evidence at `file:line` for anything but Confirmed;

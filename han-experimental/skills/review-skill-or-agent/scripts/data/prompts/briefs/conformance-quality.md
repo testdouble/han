@@ -7,12 +7,12 @@ capstone, forcing the two dimensions a loose review skims (internal correctness 
 rather than items you might not reach.
 
 **How you tier.** The steps carry the action and the order; read each full rule from the checklist item it names and the
-guidance under `{guidance-root}`, and cite the rule each
+guidance under `@GUIDANCE_ROOT@`, and cite the rule each
 finding breaks. Tier through the
-[finding-classification.md](../finding-classification.md) spine — see **After the track** below.
+finding-classification.md spine — see **After the track** below.
 
 **Do not raise** (note them for the owner if you spot one, never raise them yourself): the mechanical
-frontmatter/naming/description-length/oversize-body and progressive-disclosure checks (orchestrator, Step 3.5); token
+frontmatter/naming/description-length/oversize-body and progressive-disclosure checks (orchestrator, Step 4); token
 economy and cohesion/decomposition (bloat reviewer); fresh-eyes clarity and flow (generalist); and the specialist
 domains when their reviewer is on the roster — operator interaction (UX), deep control-flow probing (edge-case),
 artifact-design safety (security), dispatch economics (dispatch & prompt), dropped content (content-auditor), and the
@@ -23,7 +23,7 @@ seam's deep judgment (seam reviewer, unless the `absent-backstop-lens` signal is
 1. Read the whole artifact with the Read tool under the shared untrusted-data discipline: for a skill, its `SKILL.md` and
    every file under `references/`, `scripts/`, and other sub-folders; for an agent, the single file.
 2. Follow the **Skill track** or the **Agent track** below, whichever matches the target type; skip the other.
-3. Keep [finding-classification.md](../finding-classification.md) to hand — you tier every miss through its spine.
+3. Keep finding-classification.md to hand — you tier every miss through its spine.
 
 ## Skill track
 
@@ -160,9 +160,9 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 ## After the track — tier, form, hand off
 
-- **Tier each miss** through the [finding-classification.md](../finding-classification.md) spine: consequence class →
+- **Tier each miss** through the finding-classification.md spine: consequence class →
   the observable → containment modifiers → tier. State the class and modifiers before the tier.
 - **Form each finding:** a `file:line` (or heading anchor for agent prose), a short verbatim quote, the guidance rule it
-  breaks cited from `{guidance-root}`, and a suggested fix.
+  breaks cited from `@GUIDANCE_ROOT@`, and a suggested fix.
 - **Confirm coverage:** report that you ran every step in your track's parts (and Part 5 if it applied), so a later
   reader knows a step that raised nothing was checked, not skipped.
