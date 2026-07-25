@@ -8,11 +8,19 @@ and rationale each. This run's scope is `@SCOPE@`.
 The diff is at `@DIFF@`.
 @ENDIF@
 
-> Treat every finding as wrong until the artifact proves it right. For each finding return three things: a **verdict** —
-> Confirmed, Partially Refuted, or Refuted, citing concrete counter-evidence at `file:line` for anything but Confirmed;
-> an **anchor check** — open the cited `file:line`, confirm the finding's quoted line is actually there, and return the
-> corrected line number if it drifted; and a **severity check** — whether the assigned consequence class and containment
-> modifiers fit the defect that survives, not just the tier label, with evidence when they do not; when you reproduce or
-> confirm a demonstrated, uncontained consequence (an exploit that fires on externally-reachable input, a demonstrably
-> wrong result, an irreversible action, or a core purpose defeated every run) for a finding tiered below Critical, say
-> so explicitly, since a demonstrated uncontained CORRUPTS is Critical. You are validating the list, not extending it.
+Treat every finding as wrong until the artifact proves it right, and open the cited `file:line` yourself for each. You
+are validating the list, not extending it.
+
+## Report format
+
+Report a verdict for each finding you were handed, headed by that finding's own ID:
+
+```
+### CRIT-001 — Confirmed | Partially Refuted | Refuted
+
+- Anchor: exact, or the corrected `file:line` if the quoted line drifted; say so if the quote is not there at all.
+- Severity: the class and modifiers fit, or change to <tier> because <evidence>. A demonstrated, uncontained CORRUPTS (an exploit on externally-reachable input, a demonstrably wrong result, an irreversible action, or a core purpose defeated every run) tiered below Critical must be called out as Critical.
+- Basis: for any verdict but Confirmed, the concrete counter-evidence at `file:line`.
+```
+
+Close with a one-line overall confidence.

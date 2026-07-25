@@ -5,7 +5,8 @@
 # (literal values, unknown tokens untouched, no re-trigger), @IF:CHANGE@ /
 # @IF:BRANCH_CONTEXT@ conditional blocks resolved before expansion, per-reviewer
 # and validator file assembly, the key: value stdout manifest, and fail-loud
-# non-zero exits. Pure bash crafted fixtures; no jq/python3.
+# non-zero exits. Pure bash crafted fixtures, plus one integration test that
+# assembles the full shipped roster from the real templates; no jq/python3.
 
 setup() {
   TMP="$(mktemp -d)"
@@ -308,4 +309,24 @@ absent() { ! grep -qF "$1" "$2"; }
   [ "$status" -ne 0 ]
   [[ "$output" == *scope* ]]
   [ ! -f "$OUT/shared.md" ]
+}
+
+# Integration over the shipped templates (not fixtures): every reviewer key the skill's
+# Step 3 roster can select must have a real brief, and the real shared/reviewer/validator
+# templates must assemble under change scope with branch context. Runs the script from its
+# own location so it resolves the shipped scripts/data/prompts. Guards the roster-to-brief
+# contract a fixture run cannot: add a roster key in SKILL.md without a brief and this fails.
+@test "integration: the shipped templates assemble the full Step 3 roster and validator" {
+  local roster=conformance-quality,bloat-restatement,junior-developer,user-experience-designer,edge-case-explorer,skill-tool-seam,adversarial-security-analyst,content-auditor,dispatch-prompt
+  run "$BATS_TEST_DIRNAME/make-prompt.sh" --out "$OUT" \
+    --target /repo/skill --scope change --diff /tmp/d.diff --branch-context /tmp/bc.md \
+    --guidance-root /gr --backstop seam --reviewers "$roster"
+  [ "$status" -eq 0 ]
+  [ -f "$OUT/shared.md" ]
+  [ "$(get "$output" validator)" = "$OUT/validator.md" ]
+  local key
+  for key in ${roster//,/ }; do
+    [ -f "$OUT/$key.md" ]
+    [ "$(get "$output" "reviewer:$key")" = "$OUT/$key.md" ]
+  done
 }

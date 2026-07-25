@@ -8,3 +8,18 @@ through their security row. For each unsafe path, write out a concrete exploit p
 reach: a demonstrated exploit on externally-reachable input is Critical (uncontained); an undemonstrated discipline gap,
 or a demonstrated payload only you can feed on your own machine, is Warning (contained). Touch a grant only through your
 own lens, as a demonstrated security exposure.
+
+## Report format
+
+Report each finding in this exact shape, numbered from 001 in the order you raise them:
+
+```
+### SEC-001 — Critical | Warning | Suggestion
+
+- Class: <consequence class> — <the containment modifiers that decide the tier>
+- Location: `file:line` — "verbatim quote of the cited line"
+- Finding: what is wrong, and why it lands in that class.
+- Fix: the concrete change.
+```
+
+If you found nothing, say so plainly.

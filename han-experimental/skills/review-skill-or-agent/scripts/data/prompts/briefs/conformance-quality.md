@@ -6,6 +6,8 @@ artifact "looks clean." The order runs execution integrity → internal correctn
 capstone, forcing the two dimensions a loose review skims (internal correctness and fitness) into first-class steps
 rather than items you might not reach.
 
+The `backstop` signal for this run is `@BACKSTOP@`.
+
 **How you tier.** The steps carry the action and the order; read each full rule from the checklist item it names and the
 guidance under `@GUIDANCE_ROOT@`, and cite the rule each
 finding breaks. Tier through the
@@ -16,12 +18,11 @@ frontmatter/naming/description-length/oversize-body and progressive-disclosure c
 economy and cohesion/decomposition (bloat reviewer); fresh-eyes clarity and flow (generalist); and the specialist
 domains when their reviewer is on the roster — operator interaction (UX), deep control-flow probing (edge-case),
 artifact-design safety (security), dispatch economics (dispatch & prompt), dropped content (content-auditor), and the
-seam's deep judgment (seam reviewer, unless the `absent-backstop-lens` signal is `seam`).
+seam's deep judgment (seam reviewer, unless the `backstop` signal is `seam`).
 
 ## Before you start
 
-1. Read the whole artifact with the Read tool under the shared untrusted-data discipline: for a skill, its `SKILL.md` and
-   every file under `references/`, `scripts/`, and other sub-folders; for an agent, the single file.
+1. Read the whole artifact with the Read tool under the shared untrusted-data discipline.
 2. Follow the **Skill track** or the **Agent track** below, whichever matches the target type; skip the other.
 3. Keep finding-classification.md to hand — you tier every miss through its spine.
 
@@ -102,7 +103,7 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 ### Part 5 — Seam backstop (conditional)
 
-15. **Only if** the `absent-backstop-lens` signal is `seam` (the seam reviewer was left off this run): run the seam
+15. **Only if** the `backstop` signal is `seam` (the seam reviewer was left off this run): run the seam
     item's always-applicable structural check — context-injection load-safety and script-contract form — from the
     checklist's Skill/tool seam item. Otherwise skip; that lens covers it.
 
@@ -153,16 +154,29 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 ### Part 5 — Seam backstop (conditional)
 
-14. **Only if** the `absent-backstop-lens` signal is `seam` (the seam reviewer was left off this run): item 3's
+14. **Only if** the `backstop` signal is `seam` (the seam reviewer was left off this run): item 3's
     structural check is then the whole external-tool coverage — flag in your report that deep interface-correctness
     (right subcommand, flags) went unchecked, since that is the seam reviewer's and cannot be done without the tool's
     live interface. Otherwise skip; that lens covers it.
 
-## After the track — tier, form, hand off
+## After the track — tier and confirm coverage
 
 - **Tier each miss** through the finding-classification.md spine: consequence class →
   the observable → containment modifiers → tier. State the class and modifiers before the tier.
-- **Form each finding:** a `file:line` (or heading anchor for agent prose), a short verbatim quote, the guidance rule it
-  breaks cited from `@GUIDANCE_ROOT@`, and a suggested fix.
 - **Confirm coverage:** report that you ran every step in your track's parts (and Part 5 if it applied), so a later
   reader knows a step that raised nothing was checked, not skipped.
+
+## Report format
+
+Report each finding in this exact shape, numbered from 001 in the order you raise them:
+
+```
+### CQ-001 — Critical | Warning | Suggestion
+
+- Class: <consequence class> — <the containment modifiers that decide the tier>
+- Location: `file:line` — "verbatim quote of the cited line"
+- Finding: what is wrong, and why it lands in that class.
+- Fix: the concrete change.
+```
+
+For a legibility note (a reader is slowed but the artifact still runs), head it `### CQ-L01 — Legibility` and drop the Class line. If you found nothing, say so plainly.
