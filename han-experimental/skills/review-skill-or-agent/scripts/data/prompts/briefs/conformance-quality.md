@@ -13,6 +13,12 @@ guidance under `@GUIDANCE_ROOT@`, and cite the rule each
 finding breaks. Tier through the
 finding-classification.md spine — see **After the track** below.
 
+@IF:REPO_CONVENTIONS@
+**Repo-convention sweep (you own it).** The repo conventions delivered above are yours to sweep systematically: in your
+Part 3 conformance judgment, check the artifact against each and raise a violation as a conformance finding cited to that
+convention's own `file:line`, not a `@GUIDANCE_ROOT@` filename. Confirm in your coverage report that you checked them.
+@ENDIF@
+
 **Do not raise** (note them for the owner if you spot one, never raise them yourself): the mechanical
 frontmatter/naming/description-length/oversize-body and progressive-disclosure checks (orchestrator, Step 4); token
 economy and cohesion/decomposition (bloat reviewer); fresh-eyes clarity and flow (generalist); and the specialist

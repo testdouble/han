@@ -16,13 +16,14 @@ usage() {
   cat >&2 <<'EOF'
 Usage: make-prompt.sh --out DIR [--data DIR] --target PATH
          --scope whole-artifact|change [--diff PATH] --branch-context PATH|none
-         --guidance-root DIR --backstop seam|none --reviewers k1,k2,...
+         --guidance-root DIR --backstop seam|none [--repo-conventions PATHS|none]
+         --reviewers k1,k2,...
 EOF
 }
 
 die() { printf 'make-prompt: %s\n' "$1" >&2; exit 2; }
 
-OUT="" DATA="" TARGET="" SCOPE="" DIFF="" BRANCH_CONTEXT="" GUIDANCE_ROOT="" BACKSTOP="" REVIEWERS=""
+OUT="" DATA="" TARGET="" SCOPE="" DIFF="" BRANCH_CONTEXT="" GUIDANCE_ROOT="" BACKSTOP="" REPO_CONVENTIONS="" REVIEWERS=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --out) OUT="$2"; shift 2 ;;
@@ -33,22 +34,25 @@ while [ $# -gt 0 ]; do
     --branch-context) BRANCH_CONTEXT="$2"; shift 2 ;;
     --guidance-root) GUIDANCE_ROOT="$2"; shift 2 ;;
     --backstop) BACKSTOP="$2"; shift 2 ;;
+    --repo-conventions) REPO_CONVENTIONS="$2"; shift 2 ;;
     --reviewers) REVIEWERS="$2"; shift 2 ;;
     *) printf 'make-prompt: unknown argument: %s\n' "$1" >&2; usage; exit 2 ;;
   esac
 done
 
-# Keep or drop @IF:CHANGE@ / @IF:BRANCH_CONTEXT@ blocks (own-line markers,
-# non-nested) by the two 1/0 flags, stripping the marker lines either way. Runs
-# before expansion so a dropped block's tokens are never expanded. Exits non-zero
-# on a block left unterminated at end of input, so a malformed template fails
-# loudly rather than silently truncating the rest of the stream. Reads stdin.
+# Keep or drop @IF:CHANGE@ / @IF:BRANCH_CONTEXT@ / @IF:REPO_CONVENTIONS@ blocks
+# (own-line markers, non-nested) by the three 1/0 flags, stripping the marker
+# lines either way. Runs before expansion so a dropped block's tokens are never
+# expanded. Exits non-zero on a block left unterminated at end of input, so a
+# malformed template fails loudly rather than silently truncating the rest of the
+# stream. Reads stdin.
 resolve_conditionals() {
-  awk -v change="$1" -v bc="$2" '
+  awk -v change="$1" -v bc="$2" -v rc="$3" '
     BEGIN { keep = 1; open = 0 }
-    $0 == "@IF:CHANGE@"         { keep = (change + 0); open = 1; next }
-    $0 == "@IF:BRANCH_CONTEXT@" { keep = (bc + 0); open = 1; next }
-    $0 == "@ENDIF@"             { keep = 1; open = 0; next }
+    $0 == "@IF:CHANGE@"           { keep = (change + 0); open = 1; next }
+    $0 == "@IF:BRANCH_CONTEXT@"   { keep = (bc + 0); open = 1; next }
+    $0 == "@IF:REPO_CONVENTIONS@" { keep = (rc + 0); open = 1; next }
+    $0 == "@ENDIF@"               { keep = 1; open = 0; next }
     keep != 0 { print }
     END { if (open) { print "make-prompt: unterminated @IF@ block in template" > "/dev/stderr"; exit 1 } }'
 }
@@ -60,10 +64,11 @@ resolve_conditionals() {
 # emitted byte-for-byte. Reads stdin, writes stdout.
 expand() {
   TARGET="$TARGET" SCOPE="$SCOPE" DIFF="$DIFF" BRANCH_CONTEXT="$BRANCH_CONTEXT" \
-    GUIDANCE_ROOT="$GUIDANCE_ROOT" BACKSTOP="$BACKSTOP" SKILL_DIR="$SKILL_DIR" \
+    GUIDANCE_ROOT="$GUIDANCE_ROOT" BACKSTOP="$BACKSTOP" REPO_CONVENTIONS="$REPO_CONVENTIONS" \
+    SKILL_DIR="$SKILL_DIR" \
     awk '
     BEGIN {
-      split("TARGET SCOPE DIFF BRANCH_CONTEXT GUIDANCE_ROOT BACKSTOP SKILL_DIR", a, " ")
+      split("TARGET SCOPE DIFF BRANCH_CONTEXT GUIDANCE_ROOT BACKSTOP REPO_CONVENTIONS SKILL_DIR", a, " ")
       for (i in a) allow[a[i]] = 1
     }
     {
@@ -83,6 +88,9 @@ expand() {
 }
 
 DATA="${DATA:-$SKILL_DIR/scripts/data/prompts}"
+# --repo-conventions is optional; absent (or empty) means the review found none, so
+# its @IF:REPO_CONVENTIONS@ blocks drop out and the review proceeds (fail-open).
+REPO_CONVENTIONS="${REPO_CONVENTIONS:-none}"
 
 for req in OUT:--out TARGET:--target SCOPE:--scope BRANCH_CONTEXT:--branch-context \
   GUIDANCE_ROOT:--guidance-root BACKSTOP:--backstop; do
@@ -110,10 +118,11 @@ mkdir -p -- "$OUT" || die "cannot create --out directory: $OUT"
 
 CHANGE=0; [ "$SCOPE" = change ] && CHANGE=1
 BC=0; [ "$BRANCH_CONTEXT" != none ] && BC=1
+RC=0; [ "$REPO_CONVENTIONS" != none ] && RC=1
 
 # Concatenate the given template files, resolve their conditional blocks, expand
 # their variables, and print the result.
-assemble() { cat -- "$@" | resolve_conditionals "$CHANGE" "$BC" | expand; }
+assemble() { cat -- "$@" | resolve_conditionals "$CHANGE" "$BC" "$RC" | expand; }
 
 assemble "$DATA/shared.md" >"$OUT/shared.md"
 printf 'shared-prompt: %s\n' "$OUT/shared.md"

@@ -7,7 +7,7 @@ description:
   handoff problems, or portability. Does not build or edit a skill or agent — use skill-builder or agent-builder for
   that. Does not review documentation — use project-documentation. Does not review application code — use code-review."
 argument-hint: "[skill-dir | agent-file | PR ref/URL — omit to discover from the current branch]"
-allowed-tools: Bash(git *), Bash(gh *), Read, Write, Agent
+allowed-tools: Bash(git *), Bash(gh *), Read, Write, Glob, Grep, Agent
 ---
 
 When reviewing a skill or agent, follow the process here. The review grounds every conformance judgment against the
@@ -153,7 +153,9 @@ Condense what survives into a bounded intent summary of at most 200 words, write
 content, write no file and bind `$branch_context` to `none`, emit a one-line warning
 that the reviewers ran without branch context, and proceed.
 
-## Step 2: Resolve Guidance and Artifact Type
+## Step 2: Resolve Grounding and Artifact Type
+
+### 2.1: Resolve Guidance and Artifact Type
 
 Run `${CLAUDE_SKILL_DIR}/scripts/detect-guidance-and-type-context.sh "$target"` and capture its `key: value` output.
 Every run emits `target-path` (the resolved target, which differs from `$target` when a `SKILL.md` path was redirected
@@ -175,6 +177,31 @@ the detector failure as the reason.
 
 **Guidance halt:** if `guidance-root: none` or `guidance-complete` is not `true`, **halt**
 with required guidance, the paths searched, and any missing files as the reason.
+
+### 2.2: Discover Repo Conventions
+
+Discover the target repository's own conventions for authoring skills and agents — house rules under
+`docs/coding-standards/`, or authoring-convention prose in CLAUDE.md/AGENTS.md — so every reviewer and the validator can
+grade the artifact against them alongside the plugin-authoring guidance. This step resolves _paths_ and **never halts**;
+a target with no conventions is the common case.
+
+**Anchor on the target, never the CWD.** Resolve the target's repository root with
+`git -C "<target-dir>" rev-parse --show-toplevel`, where `<target-dir>` is 2.1's `target-path` (the skill directory, or
+the agent file's parent). A CWD-relative search reads the orchestrator's own repo when the target lives elsewhere, so
+scope every `Glob`/`Grep` under the resolved root. If the target is not in a git repo, walk up from `<target-dir>` to the
+nearest ancestor holding a `CLAUDE.md` or `AGENTS.md` and use that root; if none, fail open.
+
+**Select and bind `$repo_convention_paths`.** Under the root, `Glob` for `CLAUDE.md`, `AGENTS.md`, the
+`docs/coding-standards/` directory (or the one a `## Project Discovery` section names — `Grep` for it), and
+`.claude/rules/coding-standards/` (which `Glob` sees even when gitignored). Scanning filenames and section headings, not
+whole files, keep only the ones that govern authoring skills or agents — naming, structure, tool grants, dispatch,
+instruction style, testing — not a human-facing prose style guide. Relevant is "governs how a skill or agent is
+authored," not "exists in the directory": an unrelated standard dilutes every sub-agent's signal, since these go to all
+of them. Join the survivors with `:` (like `$PATH`, so a path may contain a space) into `$repo_convention_paths`.
+
+**Fail open.** No git repo, no convention files, or nothing relevant → bind `$repo_convention_paths` to `none`, note that
+in one line, and proceed. Do not load the files' contents or add a context-injection command; Step 4 passes the paths on
+and the sub-agents read the files themselves.
 
 ## Step 3: Classify the Artifact and Select the Roster
 
@@ -251,6 +278,7 @@ Run `${CLAUDE_SKILL_DIR}/scripts/make-prompt.sh` once with arguments:
 - `--scope whole-artifact|change`: this run's scope; add `--diff <path>` under change scope.
 - `--branch-context <path>|none`: the Step 1.2 scratch path, or `none`.
 - `--guidance-root <path>`: the guidance root from Step 2.
+- `--repo-conventions <paths>|none`: the `$repo_convention_paths` from Step 2.2 (colon-separated), or `none`.
 - `--out <dir>`: a fresh scratch directory for the output.
 
 It writes one finished prompt file per reviewer plus the shared discipline and the validator, and prints a `key: value`

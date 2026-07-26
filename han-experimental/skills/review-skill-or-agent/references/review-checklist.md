@@ -58,6 +58,10 @@ reviewer owns Token economy; the dispatch & prompt reviewer owns Dispatch econom
   script actually emits (`skill-building-guidance/script-execution-instructions.md`). A script invoked without its syntax is the canonical
   execution-breaking miss.
 - **Tests** — each use case maps to a triggering and a functional test (`skill-building-guidance/success-criteria-and-testing.md`).
+- **Repo-convention conformance** (conformance & quality reviewer owns the systematic sweep) — when the repo's own
+  conventions for authoring skills and agents were delivered to you, the artifact conforms to them, and a violation is
+  cited to the convention's own `file:line`, not a `han-plugin-builder` guidance filename. Grounding source: the
+  delivered repo convention file.
 
 ### Quality
 
@@ -138,7 +142,8 @@ All agent-target items are owned by the conformance & quality reviewer: an agent
 progressive-disclosure structural check does not apply (no `references/`), and the skill/tool seam's _form_ checks (`!`
 lines, scripts, git) are skill-only. The generalist adds instruction and role clarity, and the security lens adds design
 safety, on top when dispatched. The **skill/tool seam reviewer**, when the agent uses external tools or MCP, verifies
-those calls against the tool's live interface.
+those calls against the tool's live interface. The skill section's **Repo-convention conformance** item applies to
+agents too.
 
 - **Entity fit and single role** — the artifact is a judgment layer, targets one narrow domain, and only generates or
   only evaluates, never both (`plugin-entity-taxonomy.md`, `agent-building-guidelines/agent-domain-focus.md`).

@@ -138,6 +138,38 @@ absent() { ! grep -qF "$1" "$2"; }
   grep -qF 'B.' "$OUT/shared.md"
 }
 
+@test "keeps an @IF:REPO_CONVENTIONS@ block and expands the colon-separated @REPO_CONVENTIONS@" {
+  tpl shared.md 'P.\n@IF:REPO_CONVENTIONS@\nConventions: @REPO_CONVENTIONS@.\n@ENDIF@\nQ.\n'
+  # Colon-separated paths, one of which contains a space — the reason the delimiter is `:`, not ` `.
+  run "$SRC" --out "$OUT" --data "$DATA" \
+    --target /t --scope whole-artifact --branch-context none \
+    --guidance-root /g --backstop none \
+    --repo-conventions '/r/CLAUDE.md:/r/docs/coding standards/authoring.md' --reviewers ''
+  [ "$status" -eq 0 ]
+  grep -qF 'Conventions: /r/CLAUDE.md:/r/docs/coding standards/authoring.md.' "$OUT/shared.md"
+  absent '@IF:REPO_CONVENTIONS@' "$OUT/shared.md"
+  grep -qF 'P.' "$OUT/shared.md"
+  grep -qF 'Q.' "$OUT/shared.md"
+}
+
+@test "drops the @IF:REPO_CONVENTIONS@ block when repo conventions are none or the flag is omitted" {
+  tpl shared.md 'P.\n@IF:REPO_CONVENTIONS@\nConventions: @REPO_CONVENTIONS@.\n@ENDIF@\nQ.\n'
+  run "$SRC" --out "$OUT" --data "$DATA" \
+    --target /t --scope whole-artifact --branch-context none \
+    --guidance-root /g --backstop none --repo-conventions none --reviewers ''
+  [ "$status" -eq 0 ]
+  absent 'Conventions:' "$OUT/shared.md"
+  absent '@IF:REPO_CONVENTIONS@' "$OUT/shared.md"
+  grep -qF 'P.' "$OUT/shared.md"
+  grep -qF 'Q.' "$OUT/shared.md"
+  # Omitting --repo-conventions defaults to none: the block drops, and no missing-arg error.
+  run "$SRC" --out "$OUT" --data "$DATA" \
+    --target /t --scope whole-artifact --branch-context none \
+    --guidance-root /g --backstop none --reviewers ''
+  [ "$status" -eq 0 ]
+  absent 'Conventions:' "$OUT/shared.md"
+}
+
 @test "formats each reviewer in --reviewers order, one file and manifest line each" {
   tpl shared.md 'S.\n'
   tpl reviewer.md 'R.\n'
@@ -320,7 +352,8 @@ absent() { ! grep -qF "$1" "$2"; }
   local roster=conformance-quality,bloat-restatement,junior-developer,user-experience-designer,edge-case-explorer,skill-tool-seam,adversarial-security-analyst,content-auditor,dispatch-prompt
   run "$BATS_TEST_DIRNAME/make-prompt.sh" --out "$OUT" \
     --target /repo/skill --scope change --diff /tmp/d.diff --branch-context /tmp/bc.md \
-    --guidance-root /gr --backstop seam --reviewers "$roster"
+    --guidance-root /gr --backstop seam --repo-conventions '/repo/CLAUDE.md:/repo/docs/coding-standards/skill-authoring.md' \
+    --reviewers "$roster"
   [ "$status" -eq 0 ]
   [ -f "$OUT/shared.md" ]
   [ "$(get "$output" validator)" = "$OUT/validator.md" ]
@@ -329,4 +362,9 @@ absent() { ! grep -qF "$1" "$2"; }
     [ -f "$OUT/$key.md" ]
     [ "$(get "$output" "reviewer:$key")" = "$OUT/$key.md" ]
   done
+  # Repo conventions are a shared grounding corpus: delivered to every reviewer (via reviewer.md) and the
+  # validator (via validator.md), not just the conformance reviewer.
+  grep -qF '/repo/docs/coding-standards/skill-authoring.md' "$OUT/conformance-quality.md"
+  grep -qF '/repo/docs/coding-standards/skill-authoring.md' "$OUT/bloat-restatement.md"
+  grep -qF '/repo/docs/coding-standards/skill-authoring.md' "$OUT/validator.md"
 }

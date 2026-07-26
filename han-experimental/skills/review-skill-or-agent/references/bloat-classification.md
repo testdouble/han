@@ -21,12 +21,16 @@ Some repetition is deliberate and correct. Do not flag it.
 - **A pointer that adds local context** — why the rule bites _here_, a scoping nuance the canonical source omits — is
   the authoritative-home pattern working, not duplication.
 - **Explicit narrowing** — "apply steps 1 and 2 from X" when X has more steps — narrows X on purpose.
+- **Non-co-resident dispatch fragments** — duplication across sub-agent briefs or prompt fragments a skill-local
+  assembler routes one-per-agent, with the orchestrator loading only their paths. No runtime context holds two copies,
+  so there is no attention tax; do not raise it as an attention-tax big fish. Drift between such fragments is still
+  Critical. Fragments authored inline in one `SKILL.md` body do co-load every run, so they stay flagged.
 
 ## Consolidate to a reference or a script, not to a sub-skill
 
 When Pass A recommends consolidating a big fish, the target is a `references/` file, a skill-local script, or a single
 earlier step whose result the later steps reuse. Within-skill duplication that a reference or script would cleanly
-absorb is a real big fish — flag it.
+absorb is a real big fish — flag it, unless no runtime context co-loads the copies (see Warranted duplication).
 
 Do **not** recommend factoring shared logic — discovery lines, `!` injections, repeated instructions — out into a
 separate sub-skill to satisfy DRY. `skill-composition.md` shows a data-fetch sub-skill is fragile (the `api_retry`
@@ -41,11 +45,11 @@ argument does not extend to references or skill-local scripts, which have no suc
 - **A pattern repeated with drift (Critical)** — the same control structure expressed several times with parameters that
   differ enough that the reader cannot tell deliberate scoping from copy-paste drift. _Example:_ four retry policies
   across four steps, each worded differently for the same "a dispatch did not return" event.
-- **A pattern or section duplicated without drift (Warning)** — the same rule, block, or example expressed in several
-  places, or a body section that re-states a reference in full. Consolidate to one home and reference it. Warning,
-  because it taxes attention on every run and every copy is a place to forget to update. _Example:_ a roster of sibling
-  role briefs where the owning ones repeat the same "ground against these files and cite the rule" shape — lift the
-  shape into one shared instruction and let each brief keep only its distinctive scope.
+- **A pattern or section duplicated without drift (Warning)** — the same rule, block, or example in several places that
+  load into the same runtime context, or a body section that re-states a reference in full. Consolidate to one home and
+  reference it. Warning, because co-resident copies tax attention on every run and every copy is a place to forget to
+  update. _Example:_ a step's sibling bullets that each restate the same guard, or a body section repeating a
+  `references/` rule in full. Copies that never share a runtime context are exempt (see Warranted duplication).
 
 ## Local (small-fish) findings — Pass B
 
