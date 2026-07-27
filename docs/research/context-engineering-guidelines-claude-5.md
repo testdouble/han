@@ -7,21 +7,27 @@ updated in response? Evidence mode: strict.
 ## Summary
 
 Anthropic has published new context engineering guidance for its Claude 5-generation models, and nearly all of it
-confirms what Han's plugin-building guidance already teaches. The new guidance names six shifts: write instructions
-that state a goal and trust the model's judgment instead of spelling out rigid rules, design tool interfaces so the
-parameters explain themselves instead of relying on usage examples, load context progressively instead of up front,
-remove instructions that repeat across surfaces, let the model save its own memory instead of maintaining memory
-files by hand, and point the model at code, test suites, and rubrics instead of long prose descriptions. Anthropic
-reports it cut its own coding assistant's system prompt by more than eighty percent with no measured loss.
+confirms what Han's plugin-building guidance already teaches. The new guidance names six shifts:
+
+1. Write instructions that state a goal and trust the model's judgment, instead of spelling out rigid rules.
+2. Design tool interfaces so the parameters explain themselves, instead of relying on usage examples.
+3. Load context progressively, instead of all at once up front.
+4. Remove instructions that repeat across surfaces.
+5. Let the model save its own memory, instead of maintaining memory files by hand.
+6. Point the model at code, test suites, and rubrics, instead of long prose descriptions.
+
+Anthropic reports it cut its own coding assistant's system prompt by more than eighty percent with no measured loss.
 
 Adversarial validation cut the needed update down to a small one. Two gaps the initial research claimed turned out
 not to exist: the guidance already carries a rule against restating what the platform provides, and its
-code-reference coverage is broader than first credited. The recommended update is narrow: re-verify the one guidance
-file that describes how each Claude model wants its instructions written against Anthropic's official per-model
-documentation, refresh its checked date, and record the remaining new items only as dated, caveated notes, because
-they rest on Anthropic's own unverified self-reporting. The direction of the new guidance is consistent across
-Anthropic's published material, but every quantitative claim traces to Anthropic alone, so this report treats the
-announcement as directional vendor guidance rather than settled fact.
+code-reference coverage is broader than first credited.
+
+The recommended update stays narrow. Re-verify the one guidance file that describes how each Claude model wants its
+instructions written, checking it against Anthropic's official per-model documentation, and refresh its checked
+date. Record the remaining new items only as dated, caveated notes, because they rest on Anthropic's own unverified
+self-reporting. The direction of the new guidance is consistent across Anthropic's published material, but every
+quantitative claim traces to Anthropic alone. So this report treats the announcement as directional vendor guidance
+rather than settled fact.
 
 - **Confidence:** Medium
 
@@ -60,9 +66,9 @@ The new announcement sits on top of a consistent body of Anthropic engineering g
 it. Its core claims, corroborated across several separate Anthropic artifacts:
 
 - **Context is a finite, depleting resource.** Model performance degrades as tokens accumulate ("context rot"), so
-  the goal is the smallest set of high-signal tokens that produces the desired outcome (A2, corroborated
+  the goal is the smallest set of high-signal tokens that produces the desired outcome (A2). This is corroborated
   operationally by A3's high-signal tool responses, A6's automatic stale-tool-result clearing, and A8's CLAUDE.md
-  pruning test "would removing this line cause a mistake?").
+  pruning test ("would removing this line cause a mistake?").
 - **System prompts sit at the right altitude.** Specific enough to guide, flexible enough to avoid brittle
   if-else logic, organized with structural markup (A2). The framing is A2's own [single-source], but A1's docstring
   example is a concrete instance of the same shift.
@@ -70,26 +76,29 @@ it. Its core claims, corroborated across several separate Anthropic artifacts:
   tool sets are a named failure mode (A2, corroborated by A3's consolidation and naming rules and A5's
   prefer-specialized-tools heuristic).
 - **Curated canonical examples beat exhaustive edge-case lists** (A2) [single-source].
-- **Just-in-time retrieval beats pre-loading, with a hybrid recommended.** Lightweight identifiers loaded at runtime,
-  critical data loaded up front (A2, corroborated by A7's three-level skill loading model and A8's split of
-  frequently-needed material into CLAUDE.md and occasional material into skills).
+- **Just-in-time retrieval beats pre-loading, with a hybrid recommended.** Lightweight identifiers load at runtime;
+  critical data loads up front (A2). This is corroborated by A7's three-level skill loading model and by A8's split
+  of frequently-needed material into CLAUDE.md and occasional material into skills.
 - **Compaction and external memory handle long horizons.** Summarize and reinitiate, clear stale tool results first,
   and keep structured notes outside the context window (A2, corroborated by A6's shipped context-editing and memory
   tool features). A6's percentage improvements are Anthropic's internal benchmarks [single-source].
-- **Subagents get clean contexts and return condensed summaries.** A lead agent decomposes work; each subagent needs
-  an explicit objective, output format, tool guidance, and boundaries, or agents duplicate work (A2, A5, corroborated
-  at the product level by A8). A5's figures, including that multi-agent systems use roughly fifteen times the tokens
-  for a 90.2 percent quality gain on complex research, are internal single-study numbers [single-source].
+- **Subagents get clean contexts and return condensed summaries.** A lead agent decomposes the work. Each subagent
+  needs an explicit objective, an output format, tool guidance, and boundaries, or agents end up duplicating work
+  (A2, A5, corroborated at the product level by A8). A5's figures, including that multi-agent systems use roughly
+  fifteen times the tokens for a 90.2 percent quality gain on complex research, are internal single-study numbers
+  [single-source].
 - **Skills are the unit of progressive disclosure.** Name and description are the trigger signal; the SKILL.md body
   loads on trigger; supplementary files load only when a sub-scenario needs them; scripts handle deterministic
   operations (A7, corroborated by A8).
 
-Anthropic's harness post (A9) adds three named failure modes for long-running agent work: agentic laziness, declaring
-a multi-part job done early; self-preferential bias, favoring one's own output when judging it; and goal drift, losing
-the objective across many turns. It also names workflow patterns including adversarial verification, tournament, and
-loop-until-done, and advises reserving heavy multi-agent machinery for high-value tasks [single-source]. A companion
-post on working with Claude Fable (A10) recommends practices such as a deliberate blind-spot pass, prototypes over
-detailed specs for subjective work, and treating source code as the best reference [single-source].
+Anthropic's harness post (A9) adds three named failure modes for long-running agent work. Agentic laziness is
+declaring a multi-part job done early. Self-preferential bias is favoring one's own output when judging it. Goal
+drift is losing the objective across many turns. The post also names workflow patterns including adversarial
+verification, tournament, and loop-until-done, and advises reserving heavy multi-agent machinery for high-value tasks
+[single-source].
+
+A companion post on working with Claude Fable (A10) recommends practices such as a deliberate blind-spot pass,
+prototypes over detailed specs for subjective work, and treating source code as the best reference [single-source].
 
 ### What Han's guidance corpus already covers
 
@@ -117,13 +126,13 @@ corpus, often with more operational specificity than Anthropic's own posts:
 The initial research claimed five gaps; validation refuted or narrowed three of them. What remains:
 
 1. **One dated per-model file to re-verify, not rewrite.** `per-model-authoring.md` (A14) was last checked against
-   Anthropic's official per-model documentation on 2026-07-20, four days before the announcement. Its claim that
+   Anthropic's official per-model documentation on 2026-07-20, four days before the announcement. Its claim is that
    Opus 4.8 and Sonnet 5 "follow instructions literally and do not generalize on their own, so they want each
-   behavior spelled out" sits on a different axis from A1's shift: literal instruction-following is a behavior claim,
-   while A1 describes removing redundant instruction volume (V2). The two are not contradictory, so the file is not
-   known to be wrong. It is dated against a moved target, went through its own spec review on the day it was written
-   (V8), and should be re-verified against the same official per-model pages it already cites, not against the
-   marketing announcement.
+   behavior spelled out." That claim sits on a different axis from A1's shift (V2): literal instruction-following is
+   a behavior claim, while A1 describes removing redundant instruction volume. The two are not contradictory, so the
+   file is not known to be wrong. It is dated against a moved target, and it went through its own spec review on the
+   day it was written (V8). It should be re-verified against the same official per-model pages it already cites, not
+   against the marketing announcement.
 2. **Automatic memory and the rightsizing tool are unrepresented.** Neither automatic memory-saving (A1) nor the
    `/doctor` command (A11) [single-source] appears anywhere in the corpus (confirmed by search, V4). Both rest on
    the announcement and derivative press only, so they qualify as caveated notes at most, not guidance rules.
@@ -131,16 +140,17 @@ The initial research claimed five gaps; validation refuted or narrowed three of 
    single-role rule; agentic laziness and goal drift (A9) [single-source] are not named in the corpus (V4). Same
    evidence ceiling: caveated notes at most.
 
-Two claimed gaps did not survive validation: the missing de-duplication rule exists in the context-hygiene guidance
-(V1 refuted it), and the code-based-reference coverage is broader than the "scripts only" characterization (V3).
+Two claimed gaps did not survive validation. The missing de-duplication rule exists in the context-hygiene guidance
+(V1 refuted it). The code-based-reference coverage is broader than the "scripts only" characterization (V3).
 
 ### Evidence-gathering integrity notes
 
-One fetched page (A8) contained directive-style text ahead of its article body instructing the fetcher to retrieve a
+One fetched page (A8) contained directive-style text ahead of its article body, instructing the fetcher to retrieve a
 documentation index file. That text was recorded as a claim and not acted on, and the web-facing agents ran with no
-repository or user context to surrender. Validation (V6) flagged that the equivalent screening result was not
-explicitly logged for A1, A6, A9, and A10, which share the same blog format; that screening should be repeated and
-logged before any doc edit cites those pages.
+repository or user context to surrender.
+
+Validation (V6) flagged that the equivalent screening was not logged for A1, A6, A9, and A10, which share the same
+blog format. That screening should be repeated and logged before any doc edit cites those pages.
 
 ## Options to Consider
 
@@ -158,9 +168,9 @@ logged before any doc edit cites those pages.
 ### O2: One new dedicated context-engineering reference doc
 
 - **What it is:** Add a single new reference file carrying the Claude 5 shifts, cross-linked from the existing files.
-- **Trade-offs:** One clean edit, but the corpus routes authors to guidance by decision point, and a topic-shaped file
-  would duplicate content the decision-scoped files already carry or leave authors two places to look. That
-  duplication is what A1's fourth shift and the corpus's own existing rule (A15) both warn against.
+- **Trade-offs:** This is one clean edit. But the corpus routes authors to guidance by decision point, so a
+  topic-shaped file would duplicate content the decision-scoped files already carry, or leave authors with two places
+  to look. That duplication is what A1's fourth shift and the corpus's own existing rule (A15) both warn against.
 - **Rests on:** (A1), (A13).
 - **Evidence status:** corroborated
 
@@ -168,7 +178,7 @@ logged before any doc edit cites those pages.
 
 - **What it is:** Reorganize the guidance corpus around "thin prompts, thick artifacts" as its central organizing
   idea.
-- **Trade-offs:** The cost far exceeds the evidence. Most of the new guidance's substance is already present, and the
+- **Trade-offs:** The cost far exceeds the evidence. Most of the new guidance's substance is already present. The
   strongest justification for radical change, the eighty percent prompt cut, is an uncorroborated self-reported
   figure [single-source].
 - **Rests on:** (A1, A11).
@@ -185,9 +195,9 @@ logged before any doc edit cites those pages.
 
 ### O5: Verify and caveat
 
-- **What it is:** Re-verify `per-model-authoring.md` against Anthropic's current official per-model documentation
-  (the same source class it already cites) and refresh its last-checked date, checking its four in-corpus referrers
-  for stale cross-references (V7). Cross-link the existing de-duplication and code-reference rules to the new
+- **What it is:** Re-verify `per-model-authoring.md` against Anthropic's current official per-model documentation,
+  the same source class it already cites, and refresh its last-checked date. Check its four in-corpus referrers for
+  stale cross-references (V7). Cross-link the existing de-duplication and code-reference rules to the new
   announcement as supporting citation where useful. Record the genuinely absent items, automatic memory, the
   `/doctor` command, and the agentic-laziness and goal-drift failure modes, as dated single-source notes or decline
   them until official documentation confirms them. Add no new rules.
@@ -202,14 +212,14 @@ logged before any doc edit cites those pages.
 - **Recommendation:** O5, verify and caveat. Re-verify `per-model-authoring.md` against Anthropic's official
   per-model documentation and refresh its checked date, checking the four files that reference it before editing
   (the guidance SKILL.md, the specialization guidance, and the two portable assets). Treat the announcement's shifts
-  as supporting citations for rules the corpus already carries, and hold the genuinely new items (automatic memory,
+  as supporting citations for rules the corpus already carries. Hold the genuinely new items (automatic memory,
   `/doctor`, the named failure modes) to dated, caveated notes until Anthropic's official documentation confirms
   them. Before making any edit that cites the blog sources, repeat the directive-text screening that was logged for
   the best-practices page and log the result (V6).
-- **Evidence basis:** The six shifts and their direction rest on Anthropic's announcement (A1) restated by derivative
-  press (A11) and consistent with Anthropic's separate established corpus (A2 through A8); this is internally
-  consistent vendor guidance, not independently verified fact, and validation (V5) requires it be carried as a
-  self-report. The claim that Han's corpus already encodes the established guidance rests on codebase evidence (A13,
+- **Evidence basis:** The six shifts and their direction rest on Anthropic's announcement (A1), restated by
+  derivative press (A11), and are consistent with Anthropic's separate established corpus (A2 through A8). This is
+  internally consistent vendor guidance, not independently verified fact, and validation (V5) requires it be carried
+  as a self-report. The claim that Han's corpus already encodes the established guidance rests on codebase evidence (A13,
   A15, A16, A17, A18, A19) verified directly by validation (V1, V3). The datedness of `per-model-authoring.md` rests
   on codebase evidence (A14). No part of the recommendation rests on the uncorroborated quantitative figures.
 
@@ -292,8 +302,8 @@ logged before any doc edit cites those pages.
 
 ### Adjustments Made
 
-Validation reshaped the report. The pre-validation recommendation (O1, a targeted multi-file delta update) did not
-survive: two of its three content additions duplicated rules the corpus already carries (V1, V3), and the urgency of
+Validation reshaped the report. The pre-validation recommendation, O1, a targeted multi-file delta update, did not
+survive. Two of its three content additions duplicated rules the corpus already carries (V1, V3), and the urgency of
 its per-model rewrite was overstated (V2, V8). O5 was added (V4) and became the recommendation. Corroboration
 language for the announcement was downgraded (V5), the screening precondition was added (V6), and the referrer check
 was added to the recommended edit (V7). The confidence rating was lowered from Medium-High to Medium.
@@ -304,10 +314,10 @@ was added to the recommended edit (V7). The confidence rating was lowered from M
 - **Remaining Risks:** Every claim about the new guidance traces to Anthropic's own publications; no independent
   measurement of any quantitative figure exists. The `/doctor` command rests on secondary press only. The
   directive-text screening for four of the blog sources (V6) has not yet been re-run and logged. The validator did
-  not re-fetch the web sources; its attack tested internal consistency and fit against the repository, so if the
+  not re-fetch the web sources. Its attack tested internal consistency and fit against the repository, so if the
   announcement's content differs from how the registry characterizes it, the affected findings would need
   re-checking. Anthropic's official per-model pages were not fetched in this pass, so whether they changed after
-  2026-07-20 is unknown; that check is the first step of the recommended update.
+  2026-07-20 is unknown. That check is the first step of the recommended update.
 
 ## Sources
 
@@ -333,7 +343,7 @@ was added to the recommended edit (V7). The confidence rating was lowered from M
 | A18 | Builder skills (interview and review checklists)    | `han-plugin-builder/skills/skill-builder/SKILL.md` and `agent-builder/SKILL.md`               | n/a        | codebase    | Evidence-first interviews; conformance review checklists mapping to guidance files        | codebase anchor                              |
 | A19 | Code-reference and example guidance                 | `writing-effective-instructions.md` (lines 396-472) and `success-criteria-and-testing.md` (line 41), under `skill-building-guidance/` | n/a | codebase | Scripts for deterministic validation, canonical examples, example test suites | covers most of A1's sixth shift              |
 
-### A1: The New Rules of Context Engineering for Claude 5 Generation Models — recommendation-bearing
+### A1: The New Rules of Context Engineering for Claude 5 Generation Models (recommendation-bearing)
 
 - **Link / location:** <https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models>
 - **Retrieved:** 2026-07-27
@@ -345,7 +355,7 @@ was added to the recommended edit (V7). The confidence rating was lowered from M
   loss, and recommends keeping CLAUDE.md to repository gotchas while moving situational guidance into Skills.
 - **Evidence status:** restated by A11 without independent verification; carried as a vendor self-report per V5
 
-### A14: per-model-authoring.md — recommendation-bearing
+### A14: per-model-authoring.md (recommendation-bearing)
 
 - **Link / location:** `han-plugin-builder/skills/guidance/references/per-model-authoring.md`
 - **Retrieved:** n/a
@@ -353,11 +363,12 @@ was added to the recommended edit (V7). The confidence rating was lowered from M
 - **Summary:** States it was last checked against Anthropic's published guidance on 2026-07-20 for Sonnet 5, Opus 4.8,
   and Fable 5. Claims Opus 4.8 and Sonnet 5 follow instructions literally and want each behavior spelled out, while
   Fable 5 wants short, goal-based instructions and degrades under exhaustive checklists. Validation (V2) established
-  this is a behavior claim on a different axis from the announcement's density shift, and (V8) that it carries its own
-  same-day review provenance; the defect is datedness, not established error.
+  that this is a behavior claim on a different axis from the announcement's density shift. Validation (V8)
+  established that the file carries its own same-day review provenance. The defect is datedness, not established
+  error.
 - **Evidence status:** codebase anchor; re-verification against Anthropic's official per-model pages is the recommended action
 
-### A15: context-hygiene.md — recommendation-bearing
+### A15: context-hygiene.md (recommendation-bearing)
 
 - **Link / location:** `han-plugin-builder/skills/guidance/references/skill-building-guidance/context-hygiene.md`
   (lines 177-182 for the no-restating rule)
