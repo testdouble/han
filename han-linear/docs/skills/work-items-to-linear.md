@@ -139,6 +139,8 @@ Issues in Linear plus one file change on disk:
   create, and waits. This is the moment to catch a wrong team, Project, or parent.
 - **Re-run after a partial failure.** Heading annotations make the run idempotent. A re-run skips slices that already
   carry a Linear identifier and only creates the rest, then completes the dependency relations across the whole file.
+  One exception: if an issue is created but its heading annotation fails, the skill stops and reports the orphaned
+  Linear identifier so you can annotate the heading by hand or delete the issue before re-running.
 
 ## YAGNI (when applicable)
 

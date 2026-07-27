@@ -84,13 +84,13 @@ and make sure the Atlassian MCP server is configured and authenticated. See
 
 Give it:
 
-1. **The feature to plan.** _"A bulk-export jobs feature," "team invite links with expiration."_ This, the optional
+1. **The size, optional.** `small`, `medium`, or `large` as the first argument, forwarded to `/plan-a-feature` to set
+   its review-team size. Omit it to let `/plan-a-feature` classify the feature itself.
+2. **The feature to plan.** _"A bulk-export jobs feature," "team invite links with expiration."_ This, the optional
    size, and your conversation context are forwarded to `/plan-a-feature` unchanged, which runs its full interview.
-2. **The Confluence destination.** A page URL, or a space (key or name) plus an optional parent page. This is where the
+3. **The Confluence destination.** A page URL, or a space (key or name) plus an optional parent page. This is where the
    spec page goes; the artifact pages become its children. If you do not provide a destination, the skill asks for it
    before doing anything, because it does not search Confluence for the right place.
-3. **The size, optional.** `small`, `medium`, or `large` as the first argument, forwarded to `/plan-a-feature` to set
-   its review-team size. Omit it to let `/plan-a-feature` classify the feature itself.
 
 Example prompts:
 

@@ -16,8 +16,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   Dispatched by `/investigate` when the symptom matches a data-flow or error-propagation bug. Dispatched by
   `/plan-implementation` by signal when plan sections describe runtime behavior, data flow, error propagation, or state.
   Conditionally dispatched by `/iterative-plan-review` when the review covers runtime behavior, data flow, error
-  propagation, or state. Dispatched by `/plan-a-feature` by signal when the feature specification touches runtime
-  behavior, data flow, error propagation, or state.
+  propagation, or state. Dispatched by `/plan-a-feature` only when you ask for it by name: the mechanic-focused
+  specialists are excluded from its default spec-stage roster, and their findings defer to `/plan-implementation`.
 - **What you get back.** Numbered `B#` findings, each tied to a behavioral dimension (Data Flow / Error Propagation /
   State Management / Integration Boundaries), file paths, verbatim code, and an impact statement.
 
@@ -135,5 +135,6 @@ URL: https://martinfowler.com/bliki/TwoHardThings.html
   sections describe runtime behavior, data flow, error propagation, or state.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Conditionally dispatches this agent
   when the review covers runtime behavior, data flow, error propagation, or state.
-- [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent by signal when the feature
-  specification touches runtime behavior, data flow, error propagation, or state.
+- [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent only when the user asks for
+  it by name; the mechanic-focused specialists are excluded from the default spec-stage roster, and implementation-level
+  findings defer to `/plan-implementation`.

@@ -80,7 +80,7 @@ The rewritten target plus the editor's report:
 - **For pasted text or a conversation draft**, the rewrite comes back inline, with the scratch file path where the
   working copy was written. The original is never touched, so no confirmation is needed.
 - **Rubric verdict.** One line per criterion (main point first, descriptive headings, one idea per paragraph, sentence
-  length, common words / no blocklisted words, progressive disclosure): pass, or what changed to make it pass.
+  length, no blocklisted words, every fact preserved): pass, or what changed to make it pass.
 - **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
   Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
 - **Untouched regions.** The non-prose regions left unchanged (code fences, diagrams, citation identifiers).

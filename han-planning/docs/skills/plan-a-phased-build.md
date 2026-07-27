@@ -132,7 +132,8 @@ reordering before writing the file.
 
 ## What you get back
 
-One file on disk plus an in-channel summary:
+One file on disk plus an in-channel summary. If a `build-phase-outline.md` already exists in the chosen folder, the
+skill asks whether to overwrite it, append a timestamp suffix, or stop; it never silently overwrites. You get:
 
 - The **`build-phase-outline.md`**. The stakeholder-readable artifact. Sections, in order:
   - **Front matter** (YAML). Title, source-artifact relative path, audience, generated date, generated-by skill name.

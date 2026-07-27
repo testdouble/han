@@ -318,6 +318,16 @@ URL: https://www.nngroup.com/articles/5-whys/
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) and
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Skills that always include this agent in
   their review rounds.
+- [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md),
+  [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md),
+  [`/code-review`](../../../han-coding/docs/skills/code-review.md),
+  [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md),
+  [`/update-pr-description`](../../../han-github/docs/skills/update-pr-description.md),
+  [`/code-overview`](../../../han-coding/docs/skills/code-overview.md),
+  [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md),
+  [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md), and
+  [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). The other
+  skills that dispatch this agent for generalist clarity and assumption checks.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns even when the domain is "being a generalist."
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

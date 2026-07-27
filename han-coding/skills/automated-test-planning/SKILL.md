@@ -9,7 +9,7 @@ description: >
   for full code review. Does not evaluate architectural testability or structural coupling — use architectural-analysis
   for architectural assessment.
 argument-hint: "[optional: file paths, directories, or description of what to test]"
-allowed-tools: Bash(git *), Bash(find *), Bash(ls *), Read, Grep, Glob, Agent
+allowed-tools: Bash(git *), Bash(find *), Read, Grep, Glob, Agent
 ---
 
 ## Operating Principles

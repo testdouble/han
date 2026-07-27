@@ -15,9 +15,10 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **When to dispatch it.** A focus area uses threads, async, parallel execution, or shared mutable state. Dispatched by
   `/architectural-analysis` when the focus area shows a concurrency signal (it joins the signal-selected discovery
   roster, not the always-on synthesis spine). Conditionally dispatched by `/code-review`, `/automated-test-planning`, and
-  `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation`,
-  `/iterative-plan-review`, and `/plan-a-feature` by signal when plan sections or the feature specification touch
-  concurrent access, race conditions, or async coordination.
+  `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation` and
+  `/iterative-plan-review` by signal when plan sections touch concurrent access, race conditions, or async
+  coordination, and by `/plan-a-feature` only when you ask for it by name (the mechanic-focused specialists are
+  excluded from its default spec-stage roster).
 - **What you get back.** Numbered `C#` findings, each tied to a concurrency dimension (Race Conditions / Resource
   Contention / Deadlock / Async Errors / Synchronization), file paths, verbatim code, and a concrete failure-scenario
   description. Or an explicit _"no concurrency patterns found"_ report when none apply.
@@ -137,7 +138,9 @@ URL: https://go.dev/talks/2012/waza.slide
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md),
   [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md),
   [`/investigate`](../../../han-coding/docs/skills/investigate.md). Conditionally dispatch this agent based on file signals.
-- [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md),
-  [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md), and
-  [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatch this agent by signal when plan sections or
-  the feature specification touch concurrent access, race conditions, or async coordination.
+- [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md) and
+  [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatch this agent by signal when
+  plan sections touch concurrent access, race conditions, or async coordination.
+- [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent only when the user asks for
+  it by name; the mechanic-focused specialists are excluded from the default spec-stage roster, and implementation-level
+  findings defer to `/plan-implementation`.

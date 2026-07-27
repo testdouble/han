@@ -17,8 +17,9 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   a focus area that lives inside a single codebase or bounded context. Then dispatch it when you want synthesis into
   recommended changes with pseudocode sketches. Always dispatched by `/architectural-analysis` (it runs on the synthesis
   spine at every size). Conditionally dispatched by `/architectural-decision-record`, `/gap-analysis`,
-  `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the work touches intra-codebase module
-  boundaries or abstractions.
+  `/iterative-plan-review`, and `/plan-implementation` when the work touches intra-codebase module boundaries or
+  abstractions. `/plan-a-feature` excludes it from the default spec-stage roster and includes it only when you ask for
+  it by name.
 - **What you get back.** Numbered `A#` recommendations, each cross-referencing the upstream findings it addresses, the
   SOLID or cohesion/coupling principle it grounds, the recommended change with pseudocode, and the risk if deferred.
 
@@ -224,9 +225,10 @@ URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
   roster for feature implementation planning.
 - [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md),
   [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md),
-  [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md),
-  [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). The other skills that conditionally dispatch this
-  agent when the work touches intra-codebase module boundaries or abstractions.
+  [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). The other skills that conditionally
+  dispatch this agent when the work touches intra-codebase module boundaries or abstractions.
+- [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent only when the user asks for
+  it by name; the mechanic-focused specialists are excluded from the default spec-stage roster.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).
