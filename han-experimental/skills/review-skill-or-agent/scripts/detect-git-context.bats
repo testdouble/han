@@ -168,13 +168,14 @@ set_remote_tracking() { # repo remote branch sha
 }
 
 @test "does not let a merged-in candidate win over the branch's own base" {
-  git_init "$TMP"                  # C0 on main
+  git_init "$TMP"                  # C0 on the initial branch
+  base=$(git -C "$TMP" rev-parse HEAD)
   set_origin_default "$TMP" main   # origin/main declared default at C0
   git -C "$TMP" checkout -q -b develop
   echo helper >"$TMP/helper.txt"   # develop advances past C0
   git -C "$TMP" add -A
   git -C "$TMP" commit -q -m D1
-  git -C "$TMP" checkout -q -b feature main # cut from main@C0, not develop
+  git -C "$TMP" checkout -q -b feature "$base" # cut from C0, not develop
   echo f >"$TMP/feature.txt"
   git -C "$TMP" add -A
   git -C "$TMP" commit -q -m F1
