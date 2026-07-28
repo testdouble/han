@@ -4,7 +4,7 @@
 # (git availability, current branch, base-branch selection across remotes and
 # well-known trunk/integration names by the branch's own line of work, and the
 # committed-changes-vs-base listing or its `changed-files: none` fallback). Kept
-# in sync with the test-planning and review-skill-or-agent copies of this
+# in sync with the automated-test-planning and review-skill-or-agent copies of this
 # detector's tests.
 
 setup() {

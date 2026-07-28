@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Detect git availability and review context
-# NOTE: Kept in sync with test-planning/scripts/detect-test-context.sh
+# NOTE: Kept in sync with automated-test-planning/scripts/detect-test-context.sh
 
 # Check if git is installed
 if ! command -v git &>/dev/null; then

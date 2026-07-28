@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-# Tests for test-planning's detect-test-context.sh: the git-context contract
+# Tests for automated-test-planning's detect-test-context.sh: the git-context contract
 # (git availability, current branch, base-branch selection across remotes and
 # well-known trunk/integration names by the branch's own line of work, and the
 # committed-changes-vs-base listing or its `changed-files: none` fallback). Kept
@@ -8,7 +8,7 @@
 # detector's tests.
 
 setup() {
-  SRC="$BATS_TEST_DIRNAME/../han-coding/skills/test-planning/scripts/detect-test-context.sh"
+  SRC="$BATS_TEST_DIRNAME/../han-coding/skills/automated-test-planning/scripts/detect-test-context.sh"
   TMP="$(mktemp -d)"
 }
 
