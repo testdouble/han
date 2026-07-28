@@ -28,30 +28,27 @@ echo "branch: ${BRANCH:-none}"
 # nearest the current commit, measured along the branch's own line of work so a
 # candidate the branch merely merged in cannot win on absorbed commits.
 
-# The branch's own line of work (first-parent history), newest first: a candidate
-# reachable only through a merge's second parent is not on it.
-OWNLINE=$(git rev-list --first-parent HEAD 2>/dev/null)
+# The length of the branch's own line of work (first-parent history). A candidate
+# that contains none of these commits is reachable only through a merge's second
+# parent, or shares no history, and is skipped.
+OWNLINE_COUNT=$(git rev-list --count --first-parent HEAD 2>/dev/null)
 
 DEFAULT=none
 best_distance=""
 seen=" "
 
 # Fold one candidate ref into the running nearest-wins selection. Its distance is
-# the number of own-line commits above the newest own-line commit the candidate
-# contains; a ref already seen, or one sharing no history with the own line, is
-# skipped.
+# the count of own-line commits not reachable from the candidate, which equals
+# the number sitting above the newest own-line commit it contains. That is one
+# rev-list per candidate, rather than an is-ancestor probe per own-line commit. A
+# ref already seen, or one containing no own-line commit (distance equals the full
+# own-line length, so nothing was excluded), is skipped.
 consider() { # candidate-ref
   case "$seen" in *" $1 "*) return ;; esac
   seen="$seen$1 "
-  local commit count=0 distance=""
-  while IFS= read -r commit; do
-    if git merge-base --is-ancestor "$commit" "$1" 2>/dev/null; then
-      distance=$count
-      break
-    fi
-    count=$((count + 1))
-  done <<<"$OWNLINE"
-  [ -n "$distance" ] || return
+  local distance
+  distance=$(git rev-list --count --first-parent HEAD "^$1" 2>/dev/null)
+  { [ -n "$distance" ] && [ -n "$OWNLINE_COUNT" ] && [ "$distance" -lt "$OWNLINE_COUNT" ]; } || return
   if [ -z "$best_distance" ] || [ "$distance" -lt "$best_distance" ]; then
     best_distance=$distance
     DEFAULT=$1
