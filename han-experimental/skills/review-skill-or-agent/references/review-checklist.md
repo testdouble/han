@@ -16,7 +16,7 @@ the section matching the resolved `target-type`, plus the cross-cutting lenses w
 ## Cross-cutting (either target type)
 
 These lenses apply to a skill or an agent when their signal holds, independent of the type sections below. The bloat
-reviewer owns Token economy; the dispatch & prompt reviewer owns Dispatch economics and prompt efficacy.
+reviewer owns Token economy; the conformance & quality reviewer owns Dispatch economics and prompt efficacy.
 
 - **Token economy** — every token earns its place; no restatement of context the model already has, no duplication of a
   linked reference. Ground against `skill-building-guidance/context-hygiene.md`; tier every instance per
@@ -27,8 +27,8 @@ reviewer owns Token economy; the dispatch & prompt reviewer owns Dispatch econom
   agents run in parallel and sequential chains stay short (under three); each dispatched agent carries the right
   specialization and model tier for its task; and each brief is specific, gated, and effective
   (`agent-building-guidelines/multi-agent-economics.md`, `specialization-and-model-selection.md`, `agent-building-guidelines/agent-model-selection.md`,
-  `skill-building-guidance/writing-effective-instructions.md`). This is dispatch judgment; the qualified-name and declared-dependency wiring is
-  conformance's. Tier findings as chronic CORRUPTS via the dispatch & prompt efficacy row of the per-lens map in
+  `skill-building-guidance/writing-effective-instructions.md`). This is dispatch-economics judgment, distinct from the qualified-name and declared-dependency wiring. Tier findings as
+  chronic CORRUPTS via the dispatch & prompt efficacy row of the per-lens map in
   [finding-classification.md](finding-classification.md).
 
 ## Skill target

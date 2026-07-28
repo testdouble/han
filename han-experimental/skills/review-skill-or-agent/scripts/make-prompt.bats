@@ -349,7 +349,7 @@ absent() { ! grep -qF "$1" "$2"; }
 # own location so it resolves the shipped scripts/data/prompts. Guards the roster-to-brief
 # contract a fixture run cannot: add a roster key in SKILL.md without a brief and this fails.
 @test "integration: the shipped templates assemble the full Step 3 roster and validator" {
-  local roster=conformance-quality,bloat-restatement,junior-developer,user-experience-designer,edge-case-explorer,skill-tool-seam,adversarial-security-analyst,content-auditor,dispatch-prompt
+  local roster=conformance-quality,bloat-restatement,junior-developer,user-experience-designer,edge-case-explorer,skill-tool-seam,adversarial-security-analyst,content-auditor
   run "$BATS_TEST_DIRNAME/make-prompt.sh" --out "$OUT" \
     --target /repo/skill --scope change --diff /tmp/d.diff --branch-context /tmp/bc.md \
     --guidance-root /gr --backstop seam --repo-conventions '/repo/CLAUDE.md:/repo/docs/coding-standards/skill-authoring.md' \

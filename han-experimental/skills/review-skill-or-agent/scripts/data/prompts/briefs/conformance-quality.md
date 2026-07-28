@@ -1,10 +1,11 @@
 # Role brief — conformance & quality reviewer (`general-purpose`)
 
 This is an ordered procedure, not a menu. You own guidance conformance, the execution-breaking classes, internal
-correctness, and fitness for purpose. Walk the steps in order — do every one, do not reorder or stop early because the
-artifact "looks clean." The order runs execution integrity → internal correctness → conformance judgment → fitness
-capstone, forcing the two dimensions a loose review skims (internal correctness and fitness) into first-class steps
-rather than items you might not reach.
+correctness, fitness for purpose, and — when the artifact dispatches a real sub-agent roster — its dispatch economics
+and prompt efficacy. Walk the steps in order — do every one, do not reorder or stop early because the artifact "looks
+clean." The order runs execution integrity → internal correctness → conformance judgment → fitness capstone → dispatch
+economics, forcing the dimensions a loose review skims (internal correctness, fitness, and dispatch quality) into
+first-class steps rather than items you might not reach.
 
 The `backstop` signal for this run is `@BACKSTOP@`.
 
@@ -23,7 +24,7 @@ convention's own `file:line`, not a `@GUIDANCE_ROOT@` filename. Confirm in your 
 frontmatter/naming/description-length/oversize-body and progressive-disclosure checks (orchestrator, Step 4); token
 economy and cohesion/decomposition (bloat reviewer); fresh-eyes clarity and flow (generalist); and the specialist
 domains when their reviewer is on the roster — operator interaction (UX), deep control-flow probing (edge-case),
-artifact-design safety (security), dispatch economics (dispatch & prompt), dropped content (content-auditor), and the
+artifact-design safety (security), dropped content (content-auditor), and the
 seam's deep judgment (seam reviewer, unless the `backstop` signal is `seam`).
 
 ## Before you start
@@ -107,9 +108,17 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
     Also confirm the body crosses no boundary the description disclaims.
 
-### Part 5 — Seam backstop (conditional)
+### Part 5 — Dispatch economics and prompt efficacy (conditional)
 
-15. **Only if** the `backstop` signal is `seam` (the seam reviewer was left off this run): run the seam
+15. **Only if** the artifact dispatches a real sub-agent roster (not a lone helper) — run the checklist's **Dispatch
+    economics and prompt efficacy** item: the escalation cascade, per-run roster match, and each agent's specialization,
+    tier, and brief, separate from the Name/Existence/Capability wiring you checked in Part 1 step 2. Ground against the
+    artifact's own stated purpose, not a rule; chronic CORRUPTS via the dispatch & prompt efficacy row. If it dispatches
+    no roster, record it did not apply.
+
+### Part 6 — Seam backstop (conditional)
+
+16. **Only if** the `backstop` signal is `seam` (the seam reviewer was left off this run): run the seam
     item's always-applicable structural check — context-injection load-safety and script-contract form — from the
     checklist's Skill/tool seam item. Otherwise skip; that lens covers it.
 
@@ -158,9 +167,15 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
     that produces it reliably, and the stated method matches the actual one. No mechanism → conformance miss; shallow
     wiring or a method/mechanism mismatch → chronic-CORRUPTS fitness finding (`agent-building-guidelines/agent-domain-focus.md`).
 
-### Part 5 — Seam backstop (conditional)
+### Part 5 — Dispatch economics and prompt efficacy (conditional)
 
-14. **Only if** the `backstop` signal is `seam` (the seam reviewer was left off this run): item 3's
+14. **Only if** the agent's own protocol dispatches a real sub-agent roster (not a lone helper) — run the same checklist
+    item, separate from the tool-grant wiring in Part 1. Ground against the agent's stated purpose; chronic CORRUPTS via
+    the dispatch & prompt efficacy row. If it dispatches no roster, record it did not apply.
+
+### Part 6 — Seam backstop (conditional)
+
+15. **Only if** the `backstop` signal is `seam` (the seam reviewer was left off this run): item 3's
     structural check is then the whole external-tool coverage — flag in your report that deep interface-correctness
     (right subcommand, flags) went unchecked, since that is the seam reviewer's and cannot be done without the tool's
     live interface. Otherwise skip; that lens covers it.
@@ -169,7 +184,7 @@ Walk each; read the rule from the named checklist item and cite it. A miss is MI
 
 - **Tier each miss** through the finding-classification.md spine: consequence class →
   the observable → containment modifiers → tier. State the class and modifiers before the tier.
-- **Confirm coverage:** report that you ran every step in your track's parts (and Part 5 if it applied), so a later
+- **Confirm coverage:** report that you ran every step in your track's parts (and Parts 5 and 6 if they applied), so a later
   reader knows a step that raised nothing was checked, not skipped.
 
 ## Report format

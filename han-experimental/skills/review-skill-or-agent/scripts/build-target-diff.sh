@@ -45,6 +45,15 @@ if [ -n "$DEFAULT" ] && [ "$DEFAULT" != none ]; then
   DEFAULT_KNOWN=true
   BASE="$(git merge-base "$DEFAULT" HEAD 2>/dev/null || true)"
 fi
+# Fallback to the repo's own origin/HEAD when no base was passed. This is a
+# best-effort last resort; the caller normally passes a base. For the
+# review-skill-or-agent detector, the candidate pool subsumes origin/HEAD in the
+# common case, so a detector `none` usually means no related default exists here
+# either. The two are not strictly equivalent: the detector rejects a candidate
+# via first-parent (own-line) ancestry while this uses full-graph merge-base, so
+# on an unusual history this fallback can still resolve a base the detector
+# skipped. If that pool is narrowed, this fallback can also resurface a
+# stale-default base; keep them aligned.
 if [ -z "$BASE" ]; then
   DEF="$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true)"
   if [ -n "$DEF" ]; then
