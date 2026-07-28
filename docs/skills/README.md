@@ -119,6 +119,12 @@ The opt-in plugin-building plugin. It carries the authoring guidance for skills,
 - **[`/skill-builder`](./han-plugin-builder/skill-builder.md).** Build a new skill from scratch through an evidence-based interview that walks the skill's design tree decision-by-decision, then review the finished files against the plugin-building guidance and apply every fix.
 - **[`/agent-builder`](./han-plugin-builder/agent-builder.md).** Build a new agent from scratch through an evidence-based interview that walks the agent's design tree decision-by-decision, then review the finished self-contained agent file against the plugin-building guidance and apply every fix.
 
+## han-experimental
+
+The opt-in experimental plugin. It carries not-yet-stabilized skills that may change or graduate to another plugin without notice. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han-experimental@han`. Depends on `han-core` (for the reviewer agents it dispatches) and `han-plugin-builder` (for the authoring guidance it grounds against).
+
+- **[`/review-skill-or-agent`](./han-experimental/review-skill-or-agent.md).** Review a finished skill or agent against the plugin-authoring guidance and quality dimensions, catching bloat and restatement as first-class corrective findings. Resolves the target's type, grounds against the type-appropriate guidance (halting if it is absent or incomplete), and dispatches a signal-scaled roster of fresh-context reviewers — conformance-and-quality, bloat, and a `junior-developer` fresh-eyes pass always, plus `information-architect`, `user-experience-designer`, `edge-case-explorer`, `adversarial-security-analyst`, a skill/tool-seam reviewer, and a dispatch-economics reviewer as the artifact's reference tree, operator flow, control flow, untrusted-input surface, scripts, and sub-agent fan-out call for them — each handed the artifact as untrusted data. It then validates the findings with `adversarial-validator` and emits a `code-review`-shaped report. The reviewer sibling of `/skill-builder` and `/agent-builder`.
+
 ---
 
 ## How dispatch scales: sizing

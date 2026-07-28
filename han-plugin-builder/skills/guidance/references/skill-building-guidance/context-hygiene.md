@@ -58,6 +58,10 @@ A region is **self-sufficient** when the routing is already resolved: the step n
 
 This is the idea progressive disclosure already runs on: a `references/` file is a self-sufficient region, Read into focus only when a step needs it. Keep the source normalized, and build the region a step acts from at the point of use. See [Resolve variation at the point of use](./writing-effective-instructions.md) for the form this takes when a step drives many similar items.
 
+### Rule: The attention cost is per-context, not per-file
+
+Copies compete for attention only when they load into the same context. When a skill dispatches sub-agents, a script can partition content across their contexts — one self-contained brief per agent, with the orchestrator holding only the briefs' paths — so no single context ever holds two copies. Duplicating a shared brief shape across those briefs is legitimate: it removes variance between agents rather than diluting attention, and the token-economy rule does not reach across the sub-agent boundary. Keep the briefs from drifting apart, since divergence makes the agents behave inconsistently.
+
 ### Rule: Position critical content at the edges, not the middle
 
 Front-load constraints, prerequisites, and context that shapes the entire skill execution. Back-load checklists, validation criteria, and summary structures. Avoid placing the skill's most important instructions in the middle steps, where they receive the least attention weight.
@@ -156,6 +160,6 @@ Cross-references:
 - [Progressive Disclosure](./progressive-disclosure.md) — The three-level architecture that controls context loading
 - [Workflow Patterns](./workflow-patterns.md) — Recency bias and lost-in-the-middle within step design
 - [Writing Effective Instructions](./writing-effective-instructions.md) — Conciseness and structure rules for SKILL.md body
-- [Multi-Agent Economics](../agent-building-guidelines/multi-agent-economics.md) — Self-contained briefs across the sub-agent boundary
+- [Multi-Agent Economics](../agent-building-guidelines/multi-agent-economics.md) — When dispatching sub-agents is justified vs. wasteful (token cost vs. quality)
 - [Skill Description Frontmatter](./skill-description-frontmatter.md) — Frontmatter token efficiency and trigger accuracy
 - [Documentation Maintenance](./documentation-maintenance.md) — Audit process for stale context
