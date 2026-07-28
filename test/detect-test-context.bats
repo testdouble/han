@@ -283,3 +283,29 @@ set_remote_tracking() { # repo remote branch sha
   # default is enumerated first and must win the tie over the name-guessed branch.
   [ "$(get "$output" default-branch)" = origin/main ]
 }
+
+@test "recognizes a candidate that reaches the own line only via its own second parent" {
+  git_init "$TMP"                          # R0 on the initial branch
+  git -C "$TMP" checkout -q -b spine
+  echo x >"$TMP/x.txt"
+  git -C "$TMP" add -A
+  git -C "$TMP" commit -q -m X             # X: an own-line commit
+  xsha=$(git -C "$TMP" rev-parse HEAD)
+  echo h >"$TMP/head.txt"
+  git -C "$TMP" add -A
+  git -C "$TMP" commit -q -m HEADc         # own line: R0 -> X -> HEADc
+  git -C "$TMP" checkout -q --orphan zline # a candidate on a second root
+  git -C "$TMP" rm -rfq .
+  git -C "$TMP" commit -q --allow-empty -m Z1
+  git -C "$TMP" merge -q --no-ff --allow-unrelated-histories "$xsha" -m "absorb X as a second parent"
+  set_remote_head "$TMP" origin cand "$(git -C "$TMP" rev-parse HEAD)"
+  git -C "$TMP" checkout -q spine
+  cd "$TMP"
+  run "$SRC"
+  [ "$status" -eq 0 ]
+  # cand reaches own-line commit X only through the merge's second parent. Full
+  # reachability exclusion (correct) counts X as contained and selects cand at the
+  # nearer fork; a first-parent-limited exclusion would treat cand as unrelated and
+  # fall back to the initial branch at the older fork.
+  [ "$(get "$output" default-branch)" = origin/cand ]
+}
