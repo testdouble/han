@@ -311,7 +311,6 @@ async function fetchUser(id: string) {
   }
 }
 ```
-````
 
 ### Input validation at boundaries
 
@@ -335,15 +334,17 @@ Functions with network calls or file writes must name the side effect.
 ```
 
 ````
+
 Each convention is independently parseable: heading, rule, example.
 
 ### Rule: Resolve variation at the point of use
 
 When a step drives several similar items that each take a slightly different set of inputs — dispatching sub-agents with different reference files, applying rules each scoped to different files — do not express the variation as a matrix the model must join against a separate list. Reading a table, extracting each item's cells, and binding them to a separate enumeration makes the model do an in-head join. That such a join trips the model is a reasoned bet — by analogy to documented weaknesses in large-table lookup and multi-hop binding, though no study tests it at this small a scale — so prefer to remove the join rather than rely on the model to get it right. Give each item its resolved, self-contained set instead.
 
-Keep the *source* normalized — author the shared parts once — but denormalize into the point of use, resolving the variation with a deterministic step (a script, or the driver that assembles each dispatch) where one exists. This does not contradict [Progressive Disclosure](./progressive-disclosure.md): a reference resolved by a Read co-locates its content at the point of use, so it is not an in-head join. See [Context Hygiene](./context-hygiene.md) for the loadable-pointer vs. in-head-reference distinction.
+Keep the _source_ normalized — author the shared parts once — but denormalize into the point of use, resolving the variation with a deterministic step (a script, or the driver that assembles each dispatch) where one exists. This does not contradict [Progressive Disclosure](./progressive-disclosure.md): a reference resolved by a Read co-locates its content at the point of use, so it is not an in-head join. See [Context Hygiene](./context-hygiene.md) for the loadable-pointer vs. in-head-reference distinction.
 
 **Before (variation as a matrix the model must join):**
+
 ```markdown
 ## Step 4: Dispatch Reviewers
 
@@ -359,7 +360,7 @@ Prompts:
 1. Review for injection and authz.
 2. Review schema normalization and indexes.
 3. Review endpoint contracts.
-````
+```
 
 The model must read the matrix, extract each reviewer's "yes" columns, and bind them to the right numbered prompt before
 it can dispatch anything.

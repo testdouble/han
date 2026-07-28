@@ -41,7 +41,7 @@ helps you decide _when_ and _how_ to use the skill. For what the skill does inte
   `/code-overview` for a local-only run. It never silently falls back to local.
 - **The overview lands in a scratch file first.** `/code-overview` always writes its overview to a scratch file outside
   your repo (for example `${TMPDIR:-/tmp}/code-overview-<slug>.md`), so it never gets committed unless you move it there
-yourself.
+  yourself.
 - **You review before publishing.** The skill shows you the scratch-file path so you can open and read the overview,
   then asks how to publish. Nothing is posted until you choose.
 - **You must provide the location.** The skill does not search Confluence for the right page. A real Confluence instance

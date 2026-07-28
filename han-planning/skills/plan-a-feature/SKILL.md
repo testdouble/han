@@ -437,20 +437,21 @@ After all review agents return, compile their findings. **Do not dump raw findin
    sentence behaviorally and either extracting the mechanic to a `T#` note (if load-bearing) or removing it entirely (if
    pure implementation or discoverable from code). Do not escalate these to the user unless the rewrite would change the
    feature's meaning.
-
-5a. **`YAGNI candidate` findings** — apply the YAGNI rule per
-[../../references/yagni-rule.md](../../references/yagni-rule.md). For each finding, three resolution paths exist: (a)
-cite the missing evidence (per the rule's evidence test) and keep the spec item — record the citation in the relevant
-`D#`'s `Evidence:` field and close the finding; (b) replace with the strictly simpler version that satisfies the same
-evidence — update the spec sentence and the related `D#`, list the larger version under that `D#`'s
-`Rejected alternatives:` with the reason "simpler version satisfies the same evidence"; (c) demote to the spec's
-`## Deferred (YAGNI)` section with the reopening trigger named, removing the inline behavior from the affected sections.
-Surface YAGNI deferrals to the user in Step 7's escalation pass so the user can override consciously, but do not require
-user input when evidence resolves the finding directly. 6. **Escalate only what genuinely needs the user.** For findings
-that remain open, draft a recommended answer with rationale and alternatives, the same way Step 4 surfaces questions.
-Present them to the user together, organized by the decision they affect — not by which agent raised them. 7. **Capture
-the user's answers** in the relevant `D#` entry in `artifacts/decision-log.md`, finish populating the `F#` entry
-(`Resolved by: user input`), update any dependent decisions or tech-notes, and keep all files' cross-refs in sync.
+6. **`YAGNI candidate` findings** — apply the YAGNI rule per
+   [../../references/yagni-rule.md](../../references/yagni-rule.md). For each finding, three resolution paths exist: (a)
+   cite the missing evidence (per the rule's evidence test) and keep the spec item — record the citation in the relevant
+   `D#`'s `Evidence:` field and close the finding; (b) replace with the strictly simpler version that satisfies the same
+   evidence — update the spec sentence and the related `D#`, list the larger version under that `D#`'s
+   `Rejected alternatives:` with the reason "simpler version satisfies the same evidence"; (c) demote to the spec's
+   `## Deferred (YAGNI)` section with the reopening trigger named, removing the inline behavior from the affected
+   sections. Surface YAGNI deferrals to the user in Step 7's escalation pass so the user can override consciously, but do
+   not require user input when evidence resolves the finding directly.
+7. **Escalate only what genuinely needs the user.** For findings that remain open, draft a recommended answer with
+   rationale and alternatives, the same way Step 4 surfaces questions. Present them to the user together, organized by
+   the decision they affect — not by which agent raised them.
+8. **Capture the user's answers** in the relevant `D#` entry in `artifacts/decision-log.md`, finish populating the `F#`
+   entry (`Resolved by: user input`), update any dependent decisions or tech-notes, and keep all files' cross-refs in
+   sync.
 
 ## Step 8: Project Manager Synthesis
 

@@ -41,21 +41,21 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 
 Han ships as multiple plugins:
 
-| Plugin               | Type    | What it brings                                                                                                                                    |
-| -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Plugin               | Type    | What it brings                                                                                                                                                         |
+| -------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`han`**            | parent  | the parent plugin that brings in `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
-| `han-communication`  | bundled | the foundational plugin beneath every other: the shared readability standard and writing-voice profile, plus the skills and agent that apply them |
-| `han-core`           | bundled | the shared specialist agent roster, the project-discovery skill, and the canonical rule files                                                     |
-| `han-documentation`  | bundled | documentation skills: project docs, architectural decision records, and runbooks                                                                  |
-| `han-research`       | bundled | pre-planning knowledge-work skills: research, gap analysis, and issue triage, plus the research-analyst agent                                     |
-| `han-planning`       | bundled | planning skills you reach for before implementation                                                                                               |
-| `han-coding`         | bundled | coding skills you reach for while working in code                                                                                                 |
-| `han-github`         | bundled | GitHub-facing skills like posting a code review on a PR                                                                                           |
-| `han-reporting`      | bundled | reporting skills like the stakeholder summary                                                                                                     |
-| `han-feedback`       | opt-in  | skill for capturing post-session feedback on Han skill runs                                                                                       |
-| `han-atlassian`      | opt-in  | skills for publishing docs and work items to Atlassian products                                                                                   |
-| `han-linear`         | opt-in  | skill for publishing work items to Linear (requires a Linear MCP server)                                                                          |
-| `han-plugin-builder` | opt-in  | carries the guidance and skills for building your own skills, agents, and plugins                                                                 |
+| `han-communication`  | bundled | the foundational plugin beneath every other: the shared readability standard and writing-voice profile, plus the skills and agent that apply them                      |
+| `han-core`           | bundled | the shared specialist agent roster, the project-discovery skill, and the canonical rule files                                                                          |
+| `han-documentation`  | bundled | documentation skills: project docs, architectural decision records, and runbooks                                                                                       |
+| `han-research`       | bundled | pre-planning knowledge-work skills: research, gap analysis, and issue triage, plus the research-analyst agent                                                          |
+| `han-planning`       | bundled | planning skills you reach for before implementation                                                                                                                    |
+| `han-coding`         | bundled | coding skills you reach for while working in code                                                                                                                      |
+| `han-github`         | bundled | GitHub-facing skills like posting a code review on a PR                                                                                                                |
+| `han-reporting`      | bundled | reporting skills like the stakeholder summary                                                                                                                          |
+| `han-feedback`       | opt-in  | skill for capturing post-session feedback on Han skill runs                                                                                                            |
+| `han-atlassian`      | opt-in  | skills for publishing docs and work items to Atlassian products                                                                                                        |
+| `han-linear`         | opt-in  | skill for publishing work items to Linear (requires a Linear MCP server)                                                                                               |
+| `han-plugin-builder` | opt-in  | carries the guidance and skills for building your own skills, agents, and plugins                                                                                      |
 
 Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-communication`, `han-core`,
 `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`), and is the right
