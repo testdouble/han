@@ -768,3 +768,111 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Driven by rounds:** R4
 - **Dependent decisions:** None
 - **Referenced in plan:** Testing Strategy, Work Units and Sequencing (unit 1), Definition of Done
+
+### D-22: The target length's effectiveness is not tracked
+
+- **Question:** The proportionality signal ships delivered by brief alone, and nothing proves a reviewer honors it.
+  Should the plan carry that as an open question?
+- **Decision:** No. The signal ships exactly as specification D28 requires, and nothing measures whether it works. The
+  open item is closed as ignored by user decision, the walkthrough no longer checks returned review length, and the
+  concern stays visible only as accepted risk R1 with no owner and no mitigation.
+- **Rationale:** The user was given the question in plain language and dismissed it. That is a legitimate disposition
+  for a risk whose worst case is the status quo: if the target proves inert, reviewer output stays as long as it is
+  today, which is what happens if the signal were never added. Nothing degrades and no operator is misled. Carrying it
+  as an open item would have cost a walkthrough check and a specialist dispatch to learn something the user has said
+  they do not want to know.
+- **Evidence:** User input, given directly after the question was presented with its consequence, its failure mode, and
+  its designed fallback. Specification D28's rejected alternatives already keep a hard cap on record as the fallback, so
+  the reopening path exists whenever anyone wants it, without this plan tracking it.
+- **Rejected alternatives:**
+  - Keeping the open item and checking length during the walkthrough. Rejected by the user.
+  - Dropping the proportionality signal itself. Rejected because specification D28 commits to it and this plan does not
+    reopen settled behavior; the user dismissed measuring the signal, not shipping it.
+  - Recording it in the deferred section. Rejected because nothing is being deferred: the work ships in full, and only
+    the verification of its effect is dropped.
+- **Specialist owner:** None. The risk is accepted unowned.
+- **Revisit criterion:** Someone reports reviewer output that is disproportionate to the size of the work item, at which
+  point specification D28's hard cap is the ready answer.
+- **Dissent (if any):** None recorded. Note that `han-core:test-engineer` raised the underlying concern in the build
+  rounds and `han-core:junior-developer` raised it again in review; both are answered by accepting the risk rather than
+  by refuting them.
+- **Driven by rounds:** R1, R3, R4, R6
+- **Dependent decisions:** None
+- **Referenced in plan:** Constraints and Boundaries, Risks and Assumptions, Open Items, Review History
+
+### D-23: The completeness gate in `plan-work-items` covers only what that run received
+
+- **Question:** `plan-work-items` runs late in the chain and usually receives no visual material of its own. Does its
+  completeness gate check only material that run took in, or the whole boundary record including material an earlier
+  skill persisted?
+- **Decision:** Only material that run itself received. Material an earlier skill persisted is the inventory's business,
+  and the inventory already reads that folder and already notices when an item it maps is absent. The shared boundary
+  reference records this scope as settled rather than leaving the choice to the run.
+- **Rationale:** The decisive argument is what a failure would produce. If material an earlier session saved has gone
+  missing, this run cannot recover it, because the session that held the file is over. A broad gate would therefore
+  report a problem nobody present can fix, and the plan already has a rule for that case: an artifact nobody can supply
+  is recorded and drafted around, never stopped for. The broad reading buys a note and costs a second read of the
+  boundary record plus a change to the skill's own statement about how many files it writes.
+- **The applicability table stays satisfied:** The specification gives "persist and confirm visual material" to all four
+  skills. This decision scopes the gate in one skill rather than removing it, so the commitment is present there.
+- **Evidence:**
+  - The consumer reference already inventories the folder and maps each item to a work item, so absence is already
+    observable there without a second gate.
+  - The missing-artifact rule this plan reconciles splits on who can supply the artifact, and cross-session loss falls
+    on the nobody-can-supply side ([D-3](#d-3-the-missing-artifact-rule-stays-local-to-plan-work-items)).
+  - `plan-work-items` states that it writes exactly one file. The narrow reading leaves that statement needing one
+    edit; the broad reading would need a second ([D-7](#d-7-the-plan-work-items-autonomy-and-one-file-principles-are-edited-not-worked-around)).
+  - User input: the recommendation was presented with both readings and their costs, and accepted.
+- **Rejected alternatives:**
+  - Checking the whole boundary record, making this skill a last line of defense before work items ship. Rejected
+    because its only outcome on a real failure is a note about material nobody in the session can restore, duplicating
+    coverage the inventory already provides.
+  - Leaving the scope unstated and letting each run decide. Rejected because that is the defect class this whole change
+    set exists to remove: a rule with two readings and the choice left to the run.
+- **Specialist owner:** `han-core:information-architect`
+- **Revisit criterion:** A run ships work items referencing visual material that went missing between sessions, and the
+  inventory did not catch it.
+- **Dissent (if any):** None.
+- **Driven by rounds:** R4, R6
+- **Dependent decisions:** None
+- **Referenced in plan:** Implementation Approach (Where the shared rules live), Risks and Assumptions, Open Items,
+  Review History
+
+### D-24: The explanation standard carries guidance only and no self-check
+
+- **Question:** The new explanation standard mirrors the readability pairing. The readability rule ends in a six-item
+  self-check that consuming skills run as a discrete step. Does the new rule carry one too?
+- **Decision:** No. `explanation-rule.md` carries guidance only, and none of the four planning skills gains a check
+  step. The mirroring covers the file pairing and the inline surfacing skill, not the check.
+- **Rationale:** The specification already made this call one level up. It considered a rewrite pass for escalation
+  prose and deferred it, reasoning that a standard the escalating skills source while drafting satisfies the same
+  evidence as a separate reviewing pass, because the evidence was that escalations were written in jargon rather than
+  that a review of them was missing. A self-check is a smaller version of that same rejected pass, performed by the
+  skill instead of an agent, so the deferral's logic reaches it without a new argument.
+
+  Two further reasons. The artifact is the wrong size for an audit: the readability check earns its keep over a whole
+  document, where a reader can lose the thread across many paragraphs, while this standard governs one conversational
+  turn. And a check would invent four steps the specification forbids, since its rule is that where a skill has no step
+  a commitment attaches to, the commitment does not create one, and none of the four skills has a check step for this.
+- **The gap this accepts:** Nothing verifies the standard took effect. That is the same gap the specification accepted
+  when it deferred the rewrite pass, and it carries the same reopening trigger, so the two stay consistent rather than
+  one being stricter than the other.
+- **Evidence:**
+  - The specification's own deferred entry for a rewrite pass for escalation prose, with its stated reasoning.
+  - `han-communication/references/readability-rule.md` ends in a six-item standardized self-check that consuming skills
+    run as a discrete step, which is the machinery this decision declines to copy.
+  - The four planning skills already run the readability check over their written deliverables, which is where a
+    post-draft audit belongs and already exists. An escalation is a turn rather than a deliverable.
+  - User input: the guidance-only version was recommended with its accepted gap stated, and accepted.
+- **Rejected alternatives:**
+  - Mirroring the readability rule fully, including its self-check. Rejected because it obliges four skills to gain a
+    check step, which is both a materially larger edit and four steps the specification's own rule forbids inventing.
+  - Leaving the question to unit 1's author. Rejected because the larger version looks like the faithful reading of
+    "mirror the readability pairing," so an implementer would plausibly pick it by accident.
+- **Specialist owner:** `han-core:information-architect`
+- **Revisit criterion:** Escalations still read as jargon after the standard is in place. This is deliberately the same
+  trigger the specification attached to its own deferral of the rewrite pass.
+- **Dissent (if any):** None.
+- **Driven by rounds:** R4, R6
+- **Dependent decisions:** None
+- **Referenced in plan:** Implementation Approach (The explanation standard), Open Items, Review History

@@ -82,3 +82,34 @@ globally unique across both files.
 - **Next-step recommendation:** Stop. The deterministic stop rule is met after these two are applied: the round
   produced two findings, and neither touches security, a committed mechanic, a coordination, or a failure mode in a
   primary path. A third round under the size cap would be re-checking bookkeeping already checked twice.
+
+## R6: User dispositions on the non-blocking open items
+
+- **Mode:** team, no specialists dispatched. The round records two user decisions that closed open items after the
+  review converged.
+- **Spec-aware mode:** not engaged.
+- **Specialists engaged:** none.
+- **New input provided:** OI-1 and OI-2 presented to the user one at a time in plain language, each with its failure
+  mode, its cost either way, and a recommendation.
+
+- **Findings raised:** none.
+
+- **Resolution source:** user input, three times.
+  - OI-1 closed as ignored. The proportionality signal ships as the specification requires and its effectiveness is not
+    measured.
+  - OI-2 closed by accepting the recommendation. In `plan-work-items` the completeness gate covers only material that
+    run itself received.
+  - OI-3 closed by accepting the recommendation. The explanation standard carries guidance only, so no planning skill
+    gains a check step.
+
+- **Changed in plan:** Constraints and Boundaries, Implementation Approach (Where the shared rules live, The explanation
+  standard), Risks and Assumptions, Open Items, Specialist Handoffs for Implementation, Review History, Recommendation.
+
+- **Decisions produced:** D-22, D-23, D-24. Assumption A3 retired, its ID left recorded rather than reused.
+
+- **Stability assessment:** Stable. No finding was reopened, and the only behavior touched is one gate's scope. The plan
+  carries zero open items where it carried three, and one accepted unowned risk where a tracked question used to be.
+  Two of the three closures took the smaller of two available implementations, and each names the gap it accepts rather
+  than claiming none exists.
+
+- **Next-step recommendation:** Stop. The plan is ready to build.

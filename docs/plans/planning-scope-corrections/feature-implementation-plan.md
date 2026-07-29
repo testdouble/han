@@ -66,9 +66,10 @@ an accepted exception to this plan's own centralizing argument, not an oversight
     plan changes a version.
   - Any tool grant that reads a work item from a tracker
     ([D-17](artifacts/implementation-decision-log.md#d-17-han-planning-stays-filesystem-only-with-no-work-item-read-tool)).
-- **Watch after ship:** Whether a reviewer honors the rough target length its brief names. That is the one commitment
-  still delivered by brief alone, and it is carried as R1 below. The disclosure it used to sit beside moved into the
-  agent definitions, so it is no longer part of this watch.
+- **Watch after ship:** Nothing. The one candidate, whether a reviewer honors the target length its brief names, was
+  dismissed by the user
+  ([D-22](artifacts/implementation-decision-log.md#d-22-the-target-lengths-effectiveness-is-not-tracked)). The signal
+  still ships; its effectiveness is not measured.
 
 ## Implementation Approach
 
@@ -116,8 +117,13 @@ general single-stop rule that binds all four skills lives in the escalation file
 Three places in `plan-work-items` have to agree with each other afterward: the canonical rule in its reference, the
 contradicting step at `SKILL.md:134-137`, and the operating principle at `SKILL.md:36-40`.
 
-Four things `planning-boundary-rule.md` has to settle outright, because the plan leaves each of them open and unit 1
-cannot be built without them.
+The file also records one scoping decision rather than leaving it to the run: in `plan-work-items`, the completeness
+gate covers only material that run itself received, never material an earlier skill already persisted
+([D-23](artifacts/implementation-decision-log.md#d-23-the-completeness-gate-in-plan-work-items-covers-only-what-that-run-received)).
+The inventory is what reads the folder there.
+
+Four further things `planning-boundary-rule.md` has to settle outright, because the plan leaves each of them open and
+unit 1 cannot be built without them.
 
 - **What "beside the plan" means** when `plan-work-items` is invoked on its own and its output folder differs from any
   input plan's folder. State which folder wins.
@@ -148,6 +154,11 @@ file. The three pointers each serve a different surface: the new skill's frontma
 clause in `readability-guidance`'s description, where skill selection happens; the existing "A different kind of
 standard" bullet in `docs/readability.md`, the operator's surface; and the readability-wiring introduction in
 `CONTRIBUTING.md`, the contributor's surface.
+
+The rule carries guidance only. It has no self-check, so none of the four planning skills gains a check step
+([D-24](artifacts/implementation-decision-log.md#d-24-the-explanation-standard-carries-guidance-only-and-no-self-check)).
+That is where the mirroring of the readability pairing stops: the readability rule ends in a six-item check because it
+governs a whole written document, and this standard governs one conversational turn.
 
 The new skill does not probe `.han/config.md` and does not resolve a writing voice. See
 [Deferred (YAGNI)](#deferred-yagni) for why, and for what would reopen it.
@@ -487,7 +498,7 @@ is what stops unit 1 from being verified against a file that does not exist yet.
 
 | ID  | Risk                                                                                                                                                                                          | Impact                                                                                                                                        | Mitigation                                                                                                                                                                                                                                                                       | Owner                          |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| R1  | The proportionality signal is still delivered by brief alone. Specification D28 needs a rough target length in each reviewer's brief, and a length is per-dispatch context rather than a stable property of an agent, so it cannot move to the agent definition the way the disclosure did ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). The agent definitions prescribe their own section lists in detail, and a returned review may not fit inside a named target. | One commitment in units 5 and 6 could ship as text that never takes effect. Reviewer output stays as long as it is today. | Check the returned length during the engineered walkthrough rather than in a separate experiment. Specification D28's own rejected alternatives already keep a hard cap on record as the fallback if a named target proves inert, so a negative result has a designed answer rather than an open question. | `han-core:test-engineer`       |
+| R1  | The proportionality signal is still delivered by brief alone. Specification D28 needs a rough target length in each reviewer's brief, and a length is per-dispatch context rather than a stable property of an agent, so it cannot move to the agent definition the way the disclosure did ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). The agent definitions prescribe their own section lists in detail, and a returned review may not fit inside a named target. | One commitment in units 6 and 7 could ship as text that never takes effect. Reviewer output stays as long as it is today. | None. Accepted untracked by user decision ([D-22](artifacts/implementation-decision-log.md#d-22-the-target-lengths-effectiveness-is-not-tracked)). The signal ships as specified and nothing measures whether it works. Specification D28 already records a hard cap as the fallback, so the reopening path exists whenever someone wants it. | Accepted, unowned            |
 | R2  | `Bash(cp *)` is an unscoped grant narrowed only by prompt text, because `allowed-tools` scopes by command prefix and not by path ([D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)). | A run could copy to a destination outside the resolved plan folder.                                                                            | Each skill's body states that every copy destination is the plan folder's `ui-designs/`, which a reviewer reading the skill can check.                                                                                                                                            | `han-core:junior-developer`    |
 | R3  | Ten of the roughly fifteen commitments have no stated success criterion. The specification's `## How We Will Know It Worked` covers four.                                                       | A commitment could ship as text and never be observed to fire.                                                                                 | The acceptance checklist names what you would see in the produced artifact folder for each remaining commitment ([D-12](artifacts/implementation-decision-log.md#d-12-verification-is-a-committed-acceptance-checklist-plus-manual-walkthroughs)). This adds prose to a section that already exists, not machinery. | `han-core:test-engineer`       |
 | R4  | "Beside the plan" is underdefined for `plan-work-items` when it is invoked standalone, because its output folder may differ from any input plan's folder.                                       | The boundary record and the visual-material folder could land in two different places across one chain.                                        | Resolve it in `planning-boundary-rule.md` by stating which folder wins, alongside the other three questions that file settles ([D-1](artifacts/implementation-decision-log.md#d-1-three-han-planning-reference-files-grouped-by-what-interlocks)).                                 | `han-core:information-architect` |
@@ -500,7 +511,10 @@ is what stops unit 1 from being verified against a file that does not exist yet.
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
 | A1  | Technical note T1's mechanic holds. The host does not cache a pasted image as a file, which is the fallback branch T1 already names, and the copy branch stays correct for material the operator already holds as a file. | Nothing. This was verified: `~/.claude/paste-cache/` holds only `.txt`, so a genuinely pasted image does not land on disk as a file. | Verified      |
 | A2  | A dispatched agent can open a persisted image by path when its brief supplies one.                                                                                              | If it cannot, the visual-material-to-reviewer commitment ships inert, and the engineered walkthrough is where that shows up.        | Runtime-only  |
-| A3  | In `plan-work-items` the completeness gate covers only material that run itself received, not material an upstream skill already persisted, which the inventory reads instead. The specification's applicability table gives "Persist and confirm visual material" to all four skills, so the gate is not absent there; it is scoped to what that run took in. | If the gate is meant to re-confirm upstream-persisted material too, the skill gains a second read of the boundary record, and its one-file statement changes accordingly ([D-7](artifacts/implementation-decision-log.md#d-7-the-plan-work-items-autonomy-and-one-file-principles-are-edited-not-worked-around)). | Open          |
+Assumption A3 was retired. It held the completeness gate's scope in `plan-work-items` as an open question, which is now
+a settled decision
+([D-23](artifacts/implementation-decision-log.md#d-23-the-completeness-gate-in-plan-work-items-covers-only-what-that-run-received)).
+The ID is left recorded here rather than reused, so references to it in the review artifacts still resolve.
 
 Every `han-core` agent carries `Read`, which makes A2 likely, but no run has confirmed it end to end.
 
@@ -588,35 +602,31 @@ Every `han-core` agent carries `Read`, which makes A2 likely, but no run has con
 
 ## Open Items
 
-- **OI-1:** Will a reviewer honor a rough target length carried in its brief, when its own definition prescribes the
-  sections it must return? Carried as R1 above. The disclosure half of this question closed when the placement rule
-  moved into the agent definitions
-  ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)); the
-  length half cannot follow it there.
-  - **Resolves when:** The engineered walkthrough runs and the returned reviews are either near the named target or
-    are not.
-  - **Blocks implementation:** No. It affects one commitment inside units 5 and 6, and specification D28 already
-    records a hard cap as the designed fallback.
+- **OI-1, closed as ignored by user decision.** Whether a reviewer honors the rough target length its brief names is
+  not tracked ([D-22](artifacts/implementation-decision-log.md#d-22-the-target-lengths-effectiveness-is-not-tracked)).
+  The signal still ships as specification D28 requires. Nothing measures its effect, and the walkthrough no longer
+  checks the returned length. It stays visible here as the accepted risk R1 rather than as a question awaiting an
+  answer.
 
-- **OI-2:** In `plan-work-items`, does the completeness gate cover only the material that run received, or also
-  material an upstream skill already persisted? Carried as A3 above.
-  - **Resolves when:** Unit 1 states the answer in `planning-boundary-rule.md`, alongside the other three questions
-    that file settles.
-  - **Blocks implementation:** No, but it blocks unit 1 specifically, along with the other three. Either answer leaves
-    the specification's applicability table satisfied.
+- **OI-2, closed by user decision.** In `plan-work-items` the completeness gate covers only material that run itself
+  received
+  ([D-23](artifacts/implementation-decision-log.md#d-23-the-completeness-gate-in-plan-work-items-covers-only-what-that-run-received)).
+  The specification's applicability table stays satisfied, because the gate is present in that skill and scoped rather
+  than absent from it. Unit 1 records the scope as settled instead of asking the question.
 
-- **OI-3:** Does `explanation-rule.md` carry a standardized self-check the escalating skills run as a discrete step,
-  the way `readability-rule.md` does?
-  - **Resolves when:** Unit 1 writes the rule file and decides.
-  - **Blocks implementation:** No, but the answer changes unit 1's size materially. A self-check obliges each of the
-    four skills to gain a check step, which is a larger edit than sourcing a short rule while drafting. The smaller
-    version is the default unless a reason to expand appears.
+- **OI-3, closed by user decision.** `explanation-rule.md` carries guidance only and no self-check, so no planning skill
+  gains a check step
+  ([D-24](artifacts/implementation-decision-log.md#d-24-the-explanation-standard-carries-guidance-only-and-no-self-check)).
+  The gap this accepts is that nothing verifies the standard took effect, which is the same gap the specification
+  accepted when it deferred a rewrite pass for escalation prose, under the same reopening trigger.
+
+None remain. All three items this plan carried after review were closed by user decision, and the record of where each
+went is kept above so a reader can follow them.
 
 ## Specialist Handoffs for Implementation
 
-- **`han-core:test-engineer`.** Dispatch to author the acceptance checklist, and again during the engineered
-  walkthrough to judge whether returned reviews honored the named target length behind R1 and OI-1; needs the feature
-  specification's D28 and the walkthrough scenario.
+- **`han-core:test-engineer`.** Dispatch at unit 1 to author the acceptance checklist's structure and the sections that
+  unit can fill; needs the risk ranking in the Testing Strategy and the work-unit table.
 - **`han-core:structural-analyst`.** Dispatch at unit 2, to apply the findings-returning test across all twenty-four
   agent definitions, confirm the one rule line reads consistently against each output-format shape, and log the
   exclusions and the `gap-analyzer` insert-point exception; needs
@@ -648,7 +658,7 @@ Every `han-core` agent carries `Read`, which makes A2 likely, but no run has con
 ## Review History
 
 - **Review mode:** team.
-- **Rounds completed:** 2 (R4, R5). See
+- **Rounds completed:** 3 (R4, R5, R6). See
   [artifacts/review-iteration-history.md](artifacts/review-iteration-history.md). Round IDs continue from the plan's own
   build history, so they stay unique across both records.
 - **Team composition:**
@@ -669,12 +679,15 @@ Every `han-core` agent carries `Read`, which makes A2 likely, but no run has con
 - **Ambiguities resolved:** The rule's scope moved from a count to a test. The seam between the agent and the consuming
   skill gained a stated shape. The acceptance checklist gained a path and an owning unit. The four questions the shared
   boundary reference has to settle were named rather than left implicit.
-- **Open items remaining:** 3, namely OI-1, OI-2, and OI-3 above. None blocks the plan. OI-2 and OI-3 block unit 1
-  specifically and are settled at its start; OI-1 resolves by observation during the walkthrough.
+- **Open items remaining:** 0. All three closed by user decision after the review converged: OI-1 as ignored
+  ([D-22](artifacts/implementation-decision-log.md#d-22-the-target-lengths-effectiveness-is-not-tracked)), OI-2 by
+  scoping the gate
+  ([D-23](artifacts/implementation-decision-log.md#d-23-the-completeness-gate-in-plan-work-items-covers-only-what-that-run-received)),
+  and OI-3 by taking the guidance-only version of the new standard
+  ([D-24](artifacts/implementation-decision-log.md#d-24-the-explanation-standard-carries-guidance-only-and-no-self-check)).
 
 ## Recommendation
 
-Ship as planned, in the sequence above. Settle OI-2 and OI-3 at the start of unit 1, along with the four questions
-`planning-boundary-rule.md` owns, since unit 1 cannot be written around them. OI-1 needs nothing before the work
-starts: it resolves by observation during the engineered walkthrough, and specification D28 already records the
-fallback if the answer is unfavorable.
+Ship as planned, in the sequence above. No open item blocks the start. The one thing unit 1 has to settle before it can
+be written is the set of four questions `planning-boundary-rule.md` owns: which folder wins for "beside the plan", the
+boundary record's sections, the enumerated file set, and the ownership preamble's wording.
