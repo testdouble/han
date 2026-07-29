@@ -21,6 +21,6 @@ findings live in [team-findings.md](team-findings.md).
   made a piece of supplied material reachable as a file, the copy cannot happen, and the run falls back to the
   single-stop rule and asks the operator to supply the files. That fallback is why the specification commits to a stop
   rather than to guaranteed persistence.
-- **Supports decisions:** D15, D17, D18, D20
-- **Driven by findings:** —
-- **Referenced in spec:** Primary Flow
+- **Supports decisions:** D15, D17, D18, D20, D25
+- **Driven by findings:** F11
+- **Referenced in spec:** Actors and Triggers, Primary Flow, Edge Cases and Failure Modes

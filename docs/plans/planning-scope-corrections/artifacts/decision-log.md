@@ -27,8 +27,9 @@ two overlap; every #156 improvement also appears in #157.
 - D16: The findings record names evidence classes no reviewer could audit — when decisions rest on material no
   reviewer received, the record says so. — Referenced in spec: Edge Cases and Failure Modes.
 - D21: Each recorded finding carries the originating reviewer's own identifier — the identifier the reviewer assigned
-  is a field on the finding (considered reconciling the two lists by hand at synthesis; rejected because that is what
-  lost a finding in the reported run). — Referenced in spec: Edge Cases and Failure Modes.
+  is a field on the finding, and a finding raised by two reviewers merges into one record carrying both identifiers
+  (considered reconciling the two lists by hand at synthesis; rejected because that is what lost a finding in the
+  reported run). — Referenced in spec: Edge Cases and Failure Modes.
 - D26: `han-feedback` treats a same-day file as updatable, not closed — when the session continued past an existing
   same-day file, or the operator asks for a compiled report, the file is updated in place and the update is stated. —
   Referenced in spec: Edge Cases and Failure Modes.
@@ -82,8 +83,8 @@ two overlap; every #156 improvement also appears in #157.
     available and never opened it.
   - Treating the upstream specification as the boundary — rejected because that is the failure being corrected.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D3, D4, D5, D6, D8, D9, D11
+- **Driven by findings:** F4, F5
+- **Dependent decisions:** D3, D4, D5, D6, D8, D9, D11, D33, D34
 - **Referenced in spec:** Primary Flow, Alternate Flows and States
 
 ### D3: The work-item read does not traverse outward
@@ -112,22 +113,32 @@ two overlap; every #156 improvement also appears in #157.
 
 - **Question:** How does a run learn whether the code it touches is being deprecated, replaced, or migrated away
   from?
-- **Decision:** The skill asks the operator one question about direction of travel in the same turn that confirms the
-  work item, and records the answer, including "not known", in the context artifact so later skills inherit it.
+- **Decision:** The skill asks the operator one question about direction of travel in the opening confirmation turn,
+  naming its subjects from the work item it has already read rather than asking in the abstract, and records the
+  answer in the boundary record so later skills inherit it. A recorded deprecation is treated by the scope sweep the
+  same way a stated exclusion is treated. An unanswered question is recorded as unanswered, which is a different state
+  from a recorded "not known".
 - **Rationale:** The answer is not derivable from code and appears in no artifact the skills read, yet it changes
   whether work is merely out of scope or actively wrong. Bundling it with the work-item turn costs no extra round
-  trip, which matters given that the same reports fault the runs for spending too many of the operator's turns.
-- **Evidence:** User input (bundling confirmed directly). Provided: #157 improvement 6, which records that the run
-  did not know the domain object involved was being deprecated.
+  trip, which matters given that the same reports fault the runs for spending too many of the operator's turns. Naming
+  the subjects converts a recall task with no cue into a recognition task, which is what makes the question
+  answerable. Wiring the answer to the sweep is what makes the turn worth spending: without it the run collects an
+  input it never uses.
+- **Evidence:** User input (bundling confirmed directly). Provided: #157 improvement 6 and section 5, which records
+  that the run did not know the domain object involved was being deprecated and that this made the work "actively
+  wrong rather than merely out of scope".
 - **Rejected alternatives:**
   - Asking only when the code carries deprecation markers — rejected because the case that caused the failure left no
     marker the run could find.
   - A dedicated turn of its own — rejected because it adds a round trip to every planning run for a question that
     fits in an existing turn.
+  - Deferring the question entirely, on the grounds that D3 and D4 already stop the outward search that made the
+    deprecation matter — rejected because the deprecation makes the work wrong on its own, not only when the run has
+    wandered. Once wired to the sweep the question passes the evidence test rather than recording an unused input.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow
+- **Driven by findings:** F9
+- **Dependent decisions:** D31
+- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### D6: Every work unit names what it descends from
 
@@ -136,7 +147,9 @@ two overlap; every #156 improvement also appears in #157.
   design artifact it descends from. A unit that cannot fill it is not written into the plan; it moves to a visible cut
   list with the reason.
 - **Rationale:** A required field turns creep into something a reader can see. The cut list preserves the record of
-  what was considered and dropped, which a silent omission destroys.
+  what was considered and dropped, which a silent omission destroys. What counts as a valid descent is settled by two
+  companion decisions: the scope gate's floor, which keeps necessities of the asked-for work from failing the field,
+  and the attached-material rule, which says which design artifacts qualify.
 - **Evidence:** User input (strictness confirmed directly). Provided: #157 improvements 3 and 10.
 - **Rejected alternatives:**
   - A required field with no cut section — rejected because the cut becomes invisible and the reader loses the record
@@ -144,8 +157,8 @@ two overlap; every #156 improvement also appears in #157.
   - An advisory field — rejected because it leaves creep detection to review, which is what failed four times in the
     reported session.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D7, D30
+- **Driven by findings:** F1, F2, F10
+- **Dependent decisions:** D7, D30, D31, D32, D35
 - **Referenced in spec:** Primary Flow, Alternate Flows and States
 
 ### D8: The YAGNI sweep gains a scope gate covering inherited commitments
@@ -166,16 +179,17 @@ two overlap; every #156 improvement also appears in #157.
     and applies to code and coding standards too, where "the work item" has no referent. The gate belongs to the
     planning skills that have a work item.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D9
+- **Driven by findings:** F1
+- **Dependent decisions:** D9, D31
 - **Referenced in spec:** Primary Flow
 
 ### D9: An upstream specification is an artifact, not a scope authority
 
 - **Question:** How far may a plan-stage skill disagree with the specification it was given?
-- **Decision:** A plan-stage skill may cut a specification commitment the work item excludes, by statement or by
-  silence, citing the work item. It may not re-open behavior the work item does cover. The license is narrow and
-  scoped to what the work item excludes.
+- **Decision:** A plan-stage skill may cut a specification commitment for a subsystem, integration, or artifact the
+  work item never asks for, citing the work item. It may not re-open behavior the work item covers, and it may not cut
+  behavior required to deliver what the work item does ask for. The license reaches unrequested subsystems and
+  nothing else.
 - **Rationale:** Declaring the specification "ground truth" made it unfalsifiable on scope, and left no path to the
   verdict "this is not part of this work". Specifications drift beyond their work item, and the upstream one in the
   reported session did. Scoping the license to exclusions is the strictly simpler version that satisfies the same
@@ -189,8 +203,8 @@ two overlap; every #156 improvement also appears in #157.
   - Leaving the principle unchanged and relying on the scope gate alone — rejected because the principle would still
     contradict the gate, which is the kind of two-rules-one-situation conflict this change set exists to remove.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D10, D11
+- **Driven by findings:** F1
+- **Dependent decisions:** D10, D11, D31
 - **Referenced in spec:** Alternate Flows and States, Out of Scope
 
 ### D10: The mechanic-contradiction protocol gains an out-of-scope verdict
@@ -198,7 +212,13 @@ two overlap; every #156 improvement also appears in #157.
 - **Question:** What does a specialist do when it believes a committed mechanic should not exist at all?
 - **Decision:** A third verdict sits beside confirm and contradict: out of scope for this work item, resolved by
   citing the work item rather than by escalating to the operator. The same third verdict applies to specification
-  decisions, not only to technical notes.
+  decisions, not only to technical notes. The verdict is recorded as its own finding kind and does not count toward
+  the threshold that decides whether the upstream specification is too immature to plan against.
+- **Why it needs its own kind:** The existing classification detects a mechanic contradiction by whether the
+  specialist named an alternative mechanic. An out-of-scope verdict names none, so without its own kind it falls
+  through to the general path and reaches the operator as an escalation, which is what this decision exists to
+  prevent. Excluding it from the immaturity threshold follows from what that threshold measures: a specification that
+  committed to work outside its ticket is drifted, not immature, and pausing spec-stage work is the wrong remedy.
 - **Rationale:** The contradiction protocol demands the specialist name the alternative mechanic they recommend, which
   forces someone who thinks the mechanic should not exist to invent a replacement. The protocol assumes the answer is
   a different implementation, never no implementation.
@@ -208,7 +228,7 @@ two overlap; every #156 improvement also appears in #157.
   - Letting the specialist raise it as a generic finding — rejected because the aggregation classifies findings by
     text rules, so an unnamed verdict would route back into the escalation path this decision exists to avoid.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F7
 - **Dependent decisions:** —
 - **Referenced in spec:** Alternate Flows and States
 
@@ -234,46 +254,76 @@ two overlap; every #156 improvement also appears in #157.
 ### D12: Escalations are one question at a time, led by plain language
 
 - **Question:** What shape does an escalation take?
-- **Decision:** One question per turn by default. Each leads with the consequence in plain language, as a person who
-  will not read the code would describe it. Paths, identifiers, and line numbers sit below the question or are left
-  out entirely.
+- **Decision:** The rule governs escalations, meaning questions that survive evidence and reframing and need the
+  operator's judgment. One question per turn, each leading with the consequence in plain language as a person who will
+  not read the code would describe it, each carrying named candidate answers, with paths, identifiers, and line
+  numbers below the question or left out. The run states how many questions are pending on the first one, and presents
+  more than one in a turn only when the operator asks for that. The opening confirmation turn is not an escalation and
+  is the one turn that carries more than one ask.
 - **Rationale:** The current guidance specifies what an escalation must contain and says nothing about register or
   batch size, while explicitly inviting a batch. Following it produced four questions each leading with a file path
   and a line number, which the operator rejected outright. The operator's own correction is a better specification
-  than the skill's.
-- **Evidence:** Provided: #157 improvement 8 and section 7; #156 improvement 5. Codebase: `plan-implementation`
-  Step 6 lists the required contents of an escalation and caps it at "a focused batch".
+  than the skill's, and it has four clauses, not three: one issue at a time, plain language, no technical detail, and
+  with options. Scoping the rule to escalations is what lets the opening confirmation turn carry two asks without
+  contradicting it, and what leaves the existing habit of grouping findings by the decision they affect intact as an
+  ordering rather than a batch.
+- **Evidence:** Provided: #157 improvement 8 and section 7, whose verbatim operator instruction is "show me one issue
+  at a time in plain language summary, no technical details, with options"; #156 improvement 5. Codebase:
+  `plan-implementation` Step 6 lists the required contents of an escalation and caps it at "a focused batch";
+  `plan-a-feature` Step 7 presents findings "together, organized by the decision they affect"; `plan-a-phased-build`
+  Steps 5 and 7 batch open items into one presentation.
 - **Rejected alternatives:**
   - Keeping the batch and adding a register rule — rejected because the reported failure was the batch as much as the
     register, and the operator asked for one issue at a time by name.
+  - Applying the rule to every operator-facing turn — rejected because it would forbid the opening confirmation turn
+    this specification also commits to, and would replace two skills' deliberate grouped presentations with nothing
+    better.
+  - Dropping the pending count — rejected on balance, but it is the weakest half of this decision: no reported run
+    complains about not knowing the queue depth, and the evidence is inferential from the turn-efficiency scores.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F6, F26
 - **Dependent decisions:** D13
-- **Referenced in spec:** Primary Flow, User Interactions
+- **Referenced in spec:** Primary Flow, User Interactions, Edge Cases and Failure Modes
 
 ### D13: A shared standard covers explaining technical work to a non-implementer
 
 - **Question:** Where does the guidance live for explaining technical work to a reader who will not implement it?
-- **Decision:** A new standard in `han-communication`, sourced by every escalating skill. It bans invented shorthand
-  for concepts the reader has not been given, and requires a concrete worked example in place of describing a
-  mechanism: a named thing, a real starting value, what the person enters, and the specific wrong result they would
-  see.
+- **Decision:** A new standard in `han-communication`, delivered by a small inline skill that surfaces it into the
+  calling skill's context and hands control straight back, the same shape as the existing `readability-guidance`
+  skill. Every escalating skill invokes it at escalation time. The standard bans invented shorthand for concepts the
+  reader has not been given, and requires a concrete outcome the operator could observe, described in words from their
+  own domain, in place of describing a mechanism. For a question shaped like data entry, that outcome takes the
+  four-part form the reported session landed on: a named thing, a real starting value, what the person enters, and the
+  specific wrong result they would see. A term counts as unintroduced when it appears in neither the work item nor the
+  conversation.
+- **Boundary against the readability standard:** The readability standard governs the shape of a written deliverable.
+  This standard governs what a run says to the operator in a turn. Its scope is every skill that escalates, so it
+  needs no enumerated registry of its own.
 - **Rationale:** Every planning skill escalates to this reader and none offers guidance for it. `han-communication` is
   the foundational plugin that already owns the readability standard and the writing-voice profile, and every
-  prose-producing plugin already depends on it, so the standard reaches every escalating skill with no new dependency.
-  The worked example is the one thing that worked after two failures in the reported session.
-- **Evidence:** User input (scope confirmed directly). Provided: #157 improvement 9 and section 8. Codebase:
-  `han-communication` owns the canonical readability rule and writing-voice profile with no vendored copies, and the
-  planning skills already source them by invoking `han-communication:readability-guidance`.
+  prose-producing plugin already depends on it. The delivery vehicle matters as much as the home: a skill can source a
+  reference from its own plugin, and there is no sanctioned way for a `han-planning` skill to read a file inside
+  `han-communication` by path, so a bare reference file would have no route to its callers. Stating the general
+  property behind the four-part example is what keeps the rule biting on questions with no data entry and no wrong
+  result, which most planning escalations are. Anchoring the unintroduced test to the work item and the conversation
+  replaces a judgment about the operator's mind with a check against what the run holds.
+- **Evidence:** User input (scope and delivery vehicle both confirmed directly). Provided: #157 improvement 9 and
+  section 8, whose failures were "the two flow-side changes" and "the wizard fixes", and whose recovery was a concrete
+  worked example. Codebase: `han-communication` owns the canonical readability rule and writing-voice profile with no
+  vendored copies; all five `han-planning` skills source the readability standard by invoking
+  `han-communication:readability-guidance`, which reads the rule from its own plugin root.
 - **Rejected alternatives:**
   - Inline guidance in each escalating skill — rejected because it duplicates the same content across at least four
     skills, against this repository's one-canonical-source convention.
-  - A full skill with its own dispatch and agent — rejected under the simpler-version test; the evidence is that
-    escalations were written in jargon, not that a separate rewrite pass was missing. Recorded as a deferral.
+  - Extending `readability-guidance` to surface both standards — rejected because it loads escalation guidance at
+    drafting time, when only drafting guidance is wanted, and because it changes a skill this specification otherwise
+    leaves alone.
+  - A skill that reviews and rewrites escalation prose, with its own agent — rejected under the simpler-version test.
+    Recorded as a deferral; the surfacing skill is the vehicle, not that.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F3, F25, F27
 - **Dependent decisions:** —
-- **Referenced in spec:** User Interactions, Coordinations
+- **Referenced in spec:** Actors and Triggers, User Interactions, Coordinations, Edge Cases and Failure Modes
 
 ### D15: Provided visual material is persisted when it arrives
 
@@ -300,16 +350,22 @@ two overlap; every #156 improvement also appears in #157.
 ### D17: A completeness gate confirms visual material reached disk
 
 - **Question:** What catches an image that was supplied but never persisted?
-- **Decision:** Before declaring a specification or plan finished, the skill confirms that any visual material the
-  session received exists on disk beside the plan.
+- **Decision:** Before declaring a specification or plan finished, the skill confirms that visual material it recorded
+  receiving exists on disk beside the plan.
+- **What the gate does not catch:** Its input is the run's own record of what it received. A session compacted before
+  that record was written leaves nothing to check against, and the gate passes. The gate covers the case where the
+  persist step was skipped inside an intact session, which is the case the reported run hit. The narrower claim is
+  stated rather than left to be discovered.
 - **Rationale:** An unpersisted image is a silent failure today. The gate makes it a loud one while the material is
   still in context and recoverable.
 - **Evidence:** Provided: #158 improvement 3.
 - **Rejected alternatives:**
   - Relying on the persist-on-arrival rule alone — rejected because the reported failure class is exactly a rule that
     was never executed, and the gate costs one check.
+  - Claiming the gate catches the whole silent-loss class — rejected because it does not, and overstating it is how a
+    gap survives. Recorded as an open item instead.
 - **Linked technical notes:** T1
-- **Driven by findings:** —
+- **Driven by findings:** F28
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow
 
@@ -317,7 +373,10 @@ two overlap; every #156 improvement also appears in #157.
 
 - **Question:** Which reviewers receive the operator's visual material?
 - **Decision:** All of them. The paths to the persisted material go into every dispatched reviewer's brief, alongside
-  the existing directive that passes the artifact paths, with an instruction to read them.
+  the existing directive that passes the artifact paths, with an instruction to read them. The rule lives in the
+  briefs of the two skills that dispatch a domain-briefed review team, not in the shared agent definitions. When
+  material arrives after dispatch, the run persists it, re-briefs the reviewers it can still reach, and records which
+  reviewers never received it so their design-dependent findings are unverified.
 - **Rationale:** The current briefing instructions name the specification sections each specialist receives and never
   mention visual material, so it was not passed. A design specialist reviewing a design-driven feature was reduced to
   reviewing a paraphrase, and roughly eight decisions citing the designs as evidence could not be audited by anyone.
@@ -325,20 +384,29 @@ two overlap; every #156 improvement also appears in #157.
   per-specialist table, because which specialist is most harmed by the omission varies by feature.
 - **Evidence:** Provided: #155 improvement 1 and its section "The design reviewer was dispatched without the designs,
   and the skill's briefing instructions are why". Codebase: `plan-a-feature` Step 6 specifies each specialist's brief
-  as a set of specification sections plus artifact file paths, with no mention of visual material.
+  as a set of specification sections plus artifact file paths, with no mention of visual material;
+  `plan-implementation` Step 4 carries a structurally identical briefing table with the same gap.
 - **Rejected alternatives:**
   - Passing the material only to the design specialist — rejected because the blind spot is wider than one
     specialist, and which reviewer needs it varies by feature.
+  - Putting the rule in the shared agent definitions — rejected because it would change every skill in the suite,
+    including one this specification defers.
 - **Linked technical notes:** T1
-- **Driven by findings:** —
+- **Driven by findings:** F8, F15, F34
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow
+- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### D19: An uninspected input strips blocking severity from the findings that rest on it
 
 - **Question:** What happens to a finding whose author recorded that it could not inspect a relevant input?
 - **Decision:** Every finding depending on that input is labeled unverified, and cannot carry build-blocking severity.
-  The disclosure travels attached to the finding rather than sitting in a separate assumptions section.
+  The disclosure travels attached to the finding rather than sitting in a separate assumptions section. The rule lives
+  in the two dispatching skills' briefs, not in the shared agent definitions. Findings merge by substance before the
+  rule applies, so the same finding raised twice cannot end up unverified under one identifier and blocking under
+  another.
+- **Assumption this rests on:** The reviewer notices and discloses its own blindness. The rule is inert against a
+  reviewer that does not, and one reported run supplies the only evidence, in which the reviewer did disclose.
+  Recorded as an open item rather than left implicit.
 - **Rationale:** The reviewer in the reported session did disclose its blindness, in an assumptions section well below
   a finding it recommended treating as blocking. The disclosure existed and did not travel where it was needed.
 - **Evidence:** Provided: #155 improvement 2 and its section "That produced a wrong finding, which I then promoted to
@@ -346,8 +414,12 @@ two overlap; every #156 improvement also appears in #157.
 - **Rejected alternatives:**
   - Requiring the reviewer to omit the finding entirely — rejected because the finding may still be real, and
     discarding it loses information the dispatching skill can verify itself.
+  - Relying on D18 and D20 alone, on the grounds that material reaching every reviewer plus the dispatching skill's
+    own check already covers the reported scenario — rejected because both address findings that rest on material the
+    run holds, and this rule covers any input a reviewer could not inspect, including ones the run never had.
+  - Putting the rule in the shared agent definitions — rejected for the same blast-radius reason as D18.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F8, F16, F29, F35
 - **Dependent decisions:** D20
 - **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
 
@@ -388,9 +460,15 @@ two overlap; every #156 improvement also appears in #157.
 ### D23: The two missing-artifact rules are reconciled and split by who can supply the artifact
 
 - **Question:** What does a skill do when an expected artifact is missing?
-- **Decision:** One rule, stated in one place, split by who can supply the artifact. For an artifact the operator can
-  produce on demand, surface it before drafting and ask once. For an artifact nobody can produce now, note it in the
-  report, draft around it, and flag what it blocks. Every other mention references that one statement.
+- **Decision:** One rule, split by who can supply the artifact. For an artifact the operator can produce on demand,
+  surface it before drafting and ask once. For an artifact nobody can produce now, note it in the report, draft around
+  it, and flag what it blocks. The canonical statement lives in the reference that already carries the work-item
+  skill's missing-artifact handling, since both contradicting statements are that skill's; the skill's own step and
+  the operating principle the single-stop rule edits both point at it rather than restating it. The classification
+  test is whether the input exists outside the codebase and the operator can hand it over now.
+- **The boundary record is readable downstream:** The same reference excludes process artifacts from work items. The
+  boundary record is admitted by name, because a downstream skill that cannot read it either re-asks the operator or
+  drafts unbounded.
 - **Rationale:** Today the skill step and its own linked reference give opposite instructions for the same situation,
   which forces the run to pick. Picking is not something a skill should leave to the run.
 - **Evidence:** Provided: #158 improvement 5 and its section "The two missing-artifact rules contradict each other".
@@ -400,18 +478,23 @@ two overlap; every #156 improvement also appears in #157.
 - **Rejected alternatives:**
   - Deleting one of the two rules — rejected because both describe real and different situations; the defect is that
     neither names which situation it covers.
+  - Leaving the canonical home unnamed — rejected because it reproduces one layer up the defect this decision
+    corrects: two candidate homes, no rule, and the choice left to the run.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D25, D27
+- **Driven by findings:** F12, F23, F24
+- **Dependent decisions:** D25, D27, D33
 - **Referenced in spec:** Edge Cases and Failure Modes
 
 ### D24: The visual-material convention lives in one han-planning reference
 
 - **Question:** Where is the `ui-designs/` folder convention defined?
-- **Decision:** In a new reference file owned by `han-planning`, cited by every planning skill that produces or
-  consumes visual material.
+- **Decision:** In a new reference file owned by `han-planning`, cited by the four planning skills this specification
+  covers. The file opens by stating that it is owned by `han-planning` and is not a vendored copy of a shared rule,
+  and the repository map's description of that folder is corrected to say it now holds both kinds.
 - **Rationale:** The convention exists today only inside one consumer's reference file, which is why no producer
-  honors it. Producer and consumer reading one source is what stops the two sides from drifting apart again.
+  honors it. Producer and consumer reading one source is what stops the two sides from drifting apart again. The
+  ownership statement is what keeps the file safe: every other file in that folder is a byte-identical copy a
+  contributor may overwrite from its canonical twin, and a re-sync sweep would silently delete an unmarked owned file.
 - **Evidence:** User input (home confirmed directly). Provided: #158 improvement 7 and its section "The downstream
   mapping mechanism assumes an upstream step that no upstream skill performs". Codebase: the convention appears only
   in `plan-work-items`'s reference-artifact-inventory reference, and `han-planning/references/` currently holds only
@@ -421,17 +504,22 @@ two overlap; every #156 improvement also appears in #157.
     the shared foundation and adds a vendored copy to keep byte-identical.
   - Kept inside `plan-a-feature` and linked cross-skill by the others — rejected because it creates a cross-skill
     reference dependency this repository does not otherwise use.
+  - Placing it without stating its ownership — rejected because the folder's documented contract is vendored copies
+    only, and an unmarked exception is a silent trap for the next contributor who re-syncs.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F22
 - **Dependent decisions:** —
 - **Referenced in spec:** Coordinations
 
 ### D25: A single stop is reserved for an input only the operator can supply
 
 - **Question:** How does the autonomy principle handle a missing input the operator could hand over right now?
-- **Decision:** A skill stops exactly once when the missing input is something only the operator can supply and its
-  absence degrades the deliverable. It names what is missing, names the cost of continuing without it, and offers to
-  continue. Everything else stays autonomous.
+- **Decision:** A skill stops exactly once when a missing input is something only the operator can supply and its
+  absence degrades the deliverable. The test is whether the input exists outside the codebase and the operator can
+  hand it over now. The run gathers every missing input meeting that test and covers them in the one stop, so a second
+  such input joins the stop rather than causing another. The stop is an escalation, so the plain-language rules govern
+  it: it names what is missing, names in plain language what the delivered artifact will be missing without it, names
+  the action that would supply it, and offers to continue. Everything else stays autonomous.
 - **Rationale:** The current principle collapses three different situations: an input nobody can produce, a decision
   with a reasonable default, and an input the operator can supply cheaply right now. Only the third deserves a
   question, and bounding it to one keeps the rule from becoming a general license to pause, which would work against
@@ -444,8 +532,12 @@ two overlap; every #156 improvement also appears in #157.
     continued and produced work items for a visual card with no visual contract.
   - Stopping whenever any expected artifact is missing — rejected because it reintroduces gating on inputs nobody can
     produce right now.
-- **Linked technical notes:** —
-- **Driven by findings:** —
+  - Naming the cost without naming the supply action — rejected because it offers a choice where one branch has no
+    stated move, and the reported run's one-line under-reaction is what the rule exists to prevent.
+  - Leaving the stop outside the plain-language rules — rejected because "the work items will lack design references"
+    satisfies an unbound "names the cost" and tells the operator nothing they can weigh.
+- **Linked technical notes:** T1
+- **Driven by findings:** F11, F12, F13
 - **Dependent decisions:** D27
 - **Referenced in spec:** Alternate Flows and States, Edge Cases and Failure Modes
 
@@ -472,7 +564,12 @@ two overlap; every #156 improvement also appears in #157.
 
 - **Question:** What keeps reviewer output proportionate to the work being planned?
 - **Decision:** The work item's size is passed into every reviewer brief as a stated proportionality signal, separate
-  from the existing team-size bands. It governs how much a reviewer writes, never how many reviewers are chosen.
+  from the existing team-size bands. It governs how much a reviewer writes, never how many reviewers are chosen. The
+  signal lives in the two dispatching skills' briefs, not in the shared agent definitions.
+- **What is not established:** Three source issues evidence the problem. Nothing evidences that a stated signal in a
+  brief changes how much a shared agent writes, and the two levers that would be measurable, team caps and a hard
+  length limit, are both rejected below. Recorded as an open item with the fallback named rather than asserted as
+  settled.
 - **Rationale:** Report length scales with nothing today. The round cap scales with team size, and nothing scales with
   the size of the thing being built, so a three-sentence ticket that adds one card drew four reports totalling roughly
   three thousand lines. Keeping the signal separate from team sizing avoids trading review coverage for brevity, which
@@ -484,8 +581,162 @@ two overlap; every #156 improvement also appears in #157.
   - Shrinking the team caps — rejected because the reports rate finding signal-to-noise at four out of five and name
     volume, not coverage, as the complaint.
   - A hard line limit per report — rejected because it caps the useful and the padded alike; a stated signal lets the
-    reviewer judge.
+    reviewer judge. Kept on record as the fallback if the stated signal proves inert.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F8, F35
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow, Out of Scope, Coordinations
+- **Referenced in spec:** Actors and Triggers, Primary Flow, Out of Scope, Coordinations
+
+### D31: The scope gate cuts subsystems, never necessities of the asked-for work
+
+- **Question:** Where does "silence is exclusion" stop cutting?
+- **Decision:** The sweep cuts subsystems, integrations, and artifacts the work item never asks for. It does not cut
+  behavior required to deliver what the work item does ask for. A short work item does not enumerate its own
+  necessities, and the sweep does not read that silence as exclusion.
+- **Rationale:** Without a floor, the rule that stops over-reach has no bound on under-reach, and the failure it
+  creates is quieter than the one it fixes. A three-sentence ticket is silent about validation, focus behavior, error
+  copy, tests, and accessibility, so a literal reading cuts all of them. An over-scoped plan gets caught by the
+  operator asking why images are being planned; an over-cut plan ships a card with no error handling and nobody
+  notices until implementation. The source issues calibrate the line directly: the image subsystem the ticket never
+  mentioned is the correct cut, and the validation and focus behavior on the card the ticket did ask for are the
+  correct non-cuts.
+- **Evidence:** User input (floor confirmed directly). Provided: #157 section 2, where the cut commitment is an image
+  subsystem, against #156's record that the same run's specialists correctly surfaced focus behavior, error
+  association, and announcement behavior for the card the ticket did ask for.
+- **Rejected alternatives:**
+  - Cutting anything not named and relying on the cut list to catch mistakes — rejected because it produces a long
+    cut list on every terse ticket, and real work is lost when the list gets skimmed.
+  - Sweeping only commitments inherited from an upstream document — rejected because a run can author out-of-scope
+    work itself, which is one of the reported failures.
+- **Linked technical notes:** —
+- **Driven by findings:** F1
+- **Dependent decisions:** D32
+- **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, Out of Scope
+
+### D32: Material the operator attached is part of the boundary
+
+- **Question:** When attached design material depicts work the work item's text never mentions, does the material
+  justify the work or does silence cut it?
+- **Decision:** Material the operator attached alongside the request sets scope the same way the work item's text
+  does, because attaching it is part of the act of asking. Material reached by other means, a linked document or a
+  folder from an earlier run, does not.
+- **Rationale:** A design-driven feature would otherwise lose work the operator clearly intended, and the operator
+  would have to restate every frame in prose. The distinction by how the material arrived is what keeps this from
+  reopening the door D3 closed: an artifact the run went looking for is not scope evidence, and an artifact the
+  operator handed over is.
+- **Evidence:** User input (precedence confirmed directly). Provided: #158, which establishes that the visual material
+  was the primary specification of the card's appearance; #155, whose decisions cite the designs as evidence.
+- **Rejected alternatives:**
+  - Ticket text always wins — rejected because it discards the visual contract the reported failure was about.
+  - Writing the unit but flagging it as design-justified — rejected because nearly every unit in a design-driven
+    feature would carry the flag, which makes the flag meaningless.
+- **Linked technical notes:** —
+- **Driven by findings:** F2
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes
+
+### D33: The boundary record has one name and one home
+
+- **Question:** Where is the recorded boundary written, and what does a skill do when it finds none?
+- **Decision:** Every planning skill writes and reads a boundary record beside the plan under one agreed name. A skill
+  that finds no record establishes the boundary itself rather than proceeding unbounded, and an absent record is never
+  read as a recorded statement that no work item exists. A skill handed a work item different from the one recorded
+  surfaces the conflict in its confirmation turn and asks which governs.
+- **Rationale:** Only one of the four skills writes a named context artifact today, and one writes no context artifact
+  at all, so an unnamed location gives the downstream contract nothing to look for and gives each skill license to
+  invent its own. The absent-record case is the most likely runtime state, since a skill is routinely invoked on a
+  plan folder written before this change or by hand, and without a rule the whole change set silently does nothing on
+  that path. The two states must stay distinct because the second step deliberately makes "no work item exists" a
+  recorded finding.
+- **Evidence:** Provided: #157 improvement 1, which requires the boundary be recorded where downstream work reads it.
+  Codebase: `plan-implementation` writes a discovery-notes file; `plan-a-feature` and `plan-a-phased-build` record
+  discovery findings with no file named; `plan-work-items` writes exactly one output file and has no context artifact.
+- **Rejected alternatives:**
+  - Letting each skill record the boundary in whatever artifact it already writes — rejected because the downstream
+    contract then has no name to look for, and four different locations is the drift the record exists to stop.
+  - Treating an absent record as equivalent to "no work item exists" — rejected because it converts the most common
+    runtime state into a silent no-op.
+- **Linked technical notes:** —
+- **Driven by findings:** F4, F14, F24
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, Coordinations
+
+### D34: Operator-stated shaping context is part of the boundary
+
+- **Question:** How does the work-item boundary apply to a skill whose source is a folder of documents or inline
+  context, and which deliberately invites the operator to state goals that diverge from that source?
+- **Decision:** The boundary is the work item plus whatever the operator said about scope when invoking the skill,
+  recorded together. A goal the operator states out loud is a boundary statement.
+- **Rationale:** `plan-a-phased-build` treats divergence from its source as a feature, not a defect, and phasing a
+  roadmap where the operator wants something the source lacks is its normal case. A stated goal is a user-described
+  need, which passes the evidence test on its own, so admitting it costs nothing and preserves a deliberate part of
+  the skill.
+- **Evidence:** User input (treatment confirmed directly). Codebase: `plan-a-phased-build` Step 1 accepts a folder of
+  related documents or inline context, and Step 3 captures shaping context that explicitly may diverge from the
+  source. Provided: #157, which names this skill among the three the fixes target.
+- **Rejected alternatives:**
+  - Requiring divergence to trace to a work item — rejected because it breaks the skill's deliberate design for the
+    sake of uniformity across four skills that are not uniform.
+  - Exempting the skill from the boundary — rejected because it leaves one of the named skills unfixed, and phased
+    builds feed the others.
+- **Linked technical notes:** —
+- **Driven by findings:** F5
+- **Dependent decisions:** —
+- **Referenced in spec:** Coordinations
+
+### D35: The cut list is visible, reversible, and distinct from a YAGNI deferral
+
+- **Question:** Where does the operator see the cut list, what does each entry say, and can they overturn a cut?
+- **Decision:** The cut list appears in the run's closing summary alongside the artifact paths. Each entry names what
+  the unit would have done, in the same plain language an escalation uses, plus the reason it was cut. The operator
+  may reinstate any entry, and their direction is itself a valid justification the reinstated unit records. The cut
+  list holds work the work item excludes; the existing deferral section holds work no evidence supports yet, with a
+  reopening trigger. An entry belongs to one or the other, never both.
+- **Rationale:** The change set closes the escalation path for scope questions on purpose, which removes the channel
+  every reported correction actually travelled: the operator saw a proposal and objected. If the cut list lives only
+  in a written artifact the operator has no reason to open, the correction loop depends on them reading it, and the
+  new failure direction goes undetected. A negative reason tells the operator nothing about consequence, which is what
+  they need to catch a wrong cut. The reinstatement rule carries through the shared rule that the user always wins,
+  which this change set would otherwise contradict.
+- **Evidence:** Provided: #157, where all four scope corrections came from the operator objecting to a visible
+  proposal; #158 section 4, where a one-line report of a total loss was the wrong proportion. Codebase: the shared
+  YAGNI rule's escalation clause states that the user may direct an item to be kept against the rule, and fixes the
+  deferral section's format and its reopening-trigger field.
+- **Rejected alternatives:**
+  - Recording cuts in the artifact only — rejected because it makes detection depend on the operator reading a file
+    the run gives them no reason to open.
+  - Folding the cut list into the existing deferral section — rejected because the two answer different questions and
+    a deferral's reopening trigger has no meaning for work the work item excludes outright.
+  - A negative reason alone — rejected because it is the reason the run cut, not the consequence the operator needs.
+- **Linked technical notes:** —
+- **Driven by findings:** F10, F21
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow, Alternate Flows and States, User Interactions
+
+### D36: Each commitment names the skills it applies to
+
+- **Question:** Do all four planning skills gain every commitment?
+- **Decision:** No. Each commitment names which of the four it applies to, and where a skill has no step a commitment
+  attaches to, the commitment does not create one. The review-behavior rules live in the four skills' briefs rather
+  than in the shared agent definitions.
+- **Rationale:** The four skills differ materially in the steps this change touches, so a single flow described as one
+  run reads as either a large change or a no-op for two of them, and both readings are defensible from the same text.
+  Naming the applicability is what makes the change set implementable without a second round of guessing. Keeping the
+  review rules in the briefs contains the blast radius to the four named skills, which is what lets this
+  specification defer `iterative-plan-review` honestly.
+- **Evidence:** User input (rule location confirmed directly). Codebase: `plan-work-items` dispatches one agent rather
+  than a domain-briefed review team, runs no sweep step, and has no escalation step; `plan-a-phased-build` runs a
+  single review pass over the rendered document rather than a team of domain briefs, and has no escalation loop;
+  `plan-a-feature` and `plan-implementation` have all four. The shared agent roster is dispatched by `han-coding`,
+  `han-research`, and `iterative-plan-review` as well as by these skills.
+- **Rejected alternatives:**
+  - Putting the review rules in the shared agent definitions — rejected because it changes every skill in the suite,
+    contradicting this specification's own deferral, and is a far larger change than the issues asked for.
+  - Splitting the two review rules across both homes — rejected because two mechanisms for one class of rule is
+    harder to explain than the containment is worth.
+  - Describing one uniform run — rejected because it leaves an implementer to decide which of two very different
+    change sets was meant.
+- **Linked technical notes:** —
+- **Driven by findings:** F18, F8
+- **Dependent decisions:** —
+- **Referenced in spec:** Actors and Triggers, Out of Scope
