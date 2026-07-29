@@ -5,9 +5,29 @@ behavior, so every commitment is checked either by a read-through against a name
 an engineered input
 ([D-12](implementation-decision-log.md#d-12-verification-is-a-committed-acceptance-checklist-plus-manual-walkthroughs)).
 
-Unit 1 wrote the structure and filled the sections it could. Each later unit fills its own section as it lands
-([D-21](implementation-decision-log.md#d-21-the-acceptance-checklist-has-a-path-and-an-owning-unit)). A section marked
-`Not yet landed` is waiting on its unit, not failing.
+Unit 1 wrote the structure and filled the sections it could. Each later unit filled its own section as it landed
+([D-21](implementation-decision-log.md#d-21-the-acceptance-checklist-has-a-path-and-an-owning-unit)).
+
+All nine units have landed. Every check that can be closed by reading a file is closed. What remains is the set of checks
+that need a live run to produce, listed together below so they are not mistaken for oversights.
+
+## What still needs a live run
+
+These cannot be closed by read-through. Each names the run that would close it.
+
+- The engineered `plan-a-feature` walkthrough
+  ([D-14](implementation-decision-log.md#d-14-one-engineered-plan-a-feature-run-carries-the-main-walkthrough)), which
+  covers Risk 1 end to end, the scope gate's floor, and the merge and unverified passes.
+- The same walkthrough's review-behavior findings repeated against `plan-implementation`.
+- One dispatch per agent output-format shape against an input the agent cannot open, confirming the disclosure rides on
+  the finding in the named shape.
+- A `plan-work-items` run against a plan with no visual surface at all.
+- A `plan-a-phased-build` run where the user states scope out loud at invocation.
+- Two `han-feedback` runs: a same-day second run, and a run in an environment that refuses to publish.
+- One `han-github` upload against a real target repo holding a non-PNG item.
+
+The read-through checks below stand on their own: they confirm the rules are written where the skills will read them. The
+runs above are what confirm the rules fire.
 
 The sections are ordered by the risk ranking in the plan's Testing Strategy, highest risk first, rather than by unit
 number.
@@ -369,12 +389,22 @@ target repo and remains.
 
 ## Unit 9: Repository documentation sweep
 
-**Status:** Not yet landed.
+**Status:** Landed.
 
-- [ ] `CLAUDE.md`'s plugin roster sentence and its two tree comments name the new skill and standard.
-- [ ] `CONTRIBUTING.md`'s `han-communication` component list names the new skill.
-- [ ] `docs/choosing-a-han-plugin.md` names the new standard in the `han-communication` entry.
-- [ ] The skills index lists every skill in every plugin's `skills/` directory, verified by enumeration rather than by a
-      count.
-- [ ] No surface still describes `han-planning/references/` as vendored copies only.
-- [ ] No plugin version changed in this work.
+- [x] `CLAUDE.md`'s plugin roster sentence names the explanation standard and the new skill.
+- [x] Both `CLAUDE.md` tree comments for `han-communication` name the new skill and the new reference file.
+- [x] `CLAUDE.md`'s foundational-layer paragraph names the explanation standard alongside the readability standard.
+- [x] `CLAUDE.md`'s "When to use which doc" section gains an entry for `explanation-rule.md` and a new subsection for the
+      three `han-planning`-owned convention files, closing with the statement that all three are owned rather than
+      vendored.
+- [x] `CONTRIBUTING.md`'s `han-communication` component list names both guidance skills and both standards, and its
+      "a component goes here only when" test widens from readability to communication.
+- [x] `docs/choosing-a-han-plugin.md` names the explanation standard in the `han-communication` entry.
+- [x] The skills index lists every skill in every plugin's `skills/` directory, verified by enumerating the directories
+      against the index rather than by a count. Same enumeration confirmed every skill has a long-form doc in its plugin's
+      `docs/skills/` and a scent line in its plugin's `README.md`.
+- [x] No surface outside `docs/plans/` and `docs/research/` describes `han-planning/references/` as vendored copies only.
+      The two `docs/research/` mentions are left alone: that report is a dated historical record of what was true when it
+      was written, not a live description of the folder.
+- [x] No plugin version changed in this work, verified by diffing every `plugin.json` and the marketplace manifest across
+      the range of commits this work produced.

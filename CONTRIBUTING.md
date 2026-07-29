@@ -88,10 +88,11 @@ Han ships as a family of plugins. Most carry components; the `han` meta-plugin b
 change goes before you scaffold anything. (For the user-facing version of this map, see
 [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).)
 
-- **`han-communication`** is the foundational plugin beneath every other. It owns the single canonical readability
-  standard and writing-voice profile, the `readability-guidance` and `edit-for-readability` skills, and the
+- **`han-communication`** is the foundational plugin beneath every other. It owns the canonical readability standard, the
+  writing-voice profile, and the explanation standard for talking to a reader who will not implement the work, plus the
+  `readability-guidance` and `explanation-guidance` skills that surface them, the `edit-for-readability` skill, and the
   `readability-editor` agent. It depends on nothing; the plugins that produce prose output depend on it. A component
-  goes here only when it is part of the shared readability capability.
+  goes here only when it is part of a shared communication capability: how output reads, or how a run talks to a person.
 - **`han-core`** carries the shared specialist agent roster — **every agent in the suite except the
   `readability-editor`** (which lives in `han-communication`) **and the `research-analyst`** (which lives in
   `han-research`) — plus the `project-discovery` skill and the canonical evidence and YAGNI rule files. New agents go
