@@ -5,14 +5,14 @@ This file records how the implementation plan for Planning Scope Corrections evo
 discussion rounds. Committed decisions live in [implementation-decision-log.md](implementation-decision-log.md)
 and the primary plan lives in [../feature-implementation-plan.md](../feature-implementation-plan.md).
 
-This file ALSO consolidates each round's aggregation — no separate facilitation files are
+This file ALSO consolidates each round's aggregation. No separate facilitation files are
 written. The claim ledger, Open Questions, and spec-maturity tags from each round live as
 fields on that round's entry below.
 -->
 
 ## Team composition
 
-Size band: **medium** — three plugins change (`han-planning`, `han-communication`, `han-feedback`), thirteen
+Size band: **medium**. Three plugins change (`han-planning`, `han-communication`, `han-feedback`), thirteen
 commitments spread unevenly across four skills, and the change introduces a new cross-plugin capability. No
 authentication, PII, or data migration surface, so it does not reach large. Team cap 5, round cap 2.
 
@@ -72,16 +72,16 @@ authentication, PII, or data migration surface, so it does not reach large. Team
   and resolved without reopening the spec, because its remedy honors T1's mechanic rather than replacing it.
 
 - **Resolution source:**
-  - OQ-1 — **PM synthesis (Step 8 evidence).** Settled as an implementation naming decision.
-  - OQ-2 — **evidence.** Settled by grouping on interlock; see R2.
-  - OQ-3 — **evidence.** D23 read in full: it scopes to `plan-work-items`' own two contradicting statements, so its
+  - OQ-1: **PM synthesis (Step 8 evidence).** Settled as an implementation naming decision.
+  - OQ-2: **evidence.** Settled by grouping on interlock; see R2.
+  - OQ-3: **evidence.** D23 read in full: it scopes to `plan-work-items`' own two contradicting statements, so its
     home stays local. D24 separately rejects cross-skill reference links, confirming the rule is not cited by the other
     three. The conflict dissolved. The erroneous line in `.discovery-notes.md` was corrected in place.
-  - OQ-4 — **user input.** See R2.
-  - OQ-5 — **PM synthesis (Step 8 evidence).**
-  - OQ-6 — **deferred as a stated risk with a named verification step.**
+  - OQ-4: **user input.** See R2.
+  - OQ-5: **PM synthesis (Step 8 evidence).**
+  - OQ-6: **deferred as a stated risk with a named verification step.**
 
-- **Decisions produced:** D-1, D-2, D-3, D-4, D-5, D-6, D-7, D-8, D-9, D-10, D-11, D-12, D-13, D-14
+- **Decisions produced:** D-1, D-2, D-3, D-4, D-5, D-6, D-7, D-8, D-9, D-10, D-11, D-12, D-13, D-14, D-15, D-16
 - **Changed in plan:** All sections (the plan did not exist before this round).
 - **Next-step recommendation:** Continue iterating. At least one plan-level Open Question was unresolved, and OQ-4
   needed user input.
@@ -113,14 +113,14 @@ authentication, PII, or data migration surface, so it does not reach large. Team
   the copy branch it commits to remains correct for material the operator already holds as a file. T1 stands unchanged.
 
 - **Resolution source:**
-  - OQ-4, work-item read — **user input.** No grant. The operator supplies the work item through the confirmation turn
+  - OQ-4, work-item read: **user input.** No grant. The operator supplies the work item through the confirmation turn
     the run already takes, and `han-planning` stays filesystem-only.
-  - OQ-4, visual-material copy — **user input.** Grant the copy tool, and additionally constrain every copy
+  - OQ-4, visual-material copy: **user input.** Grant the copy tool, and additionally constrain every copy
     destination to the resolved plan folder in the skill's own prompt text, so the narrow intent is stated rather than
     implied by the permission line.
 
-- **Decisions produced:** D-15, D-16, D-17
-- **Changed in plan:** Constraints and Boundaries, Implementation Approach, Work Units and Sequencing, Risks and
-  Assumptions, Definition of Done
+- **Decisions produced:** D-17, D-18
+- **Changed in plan:** Constraints and Boundaries, Implementation Approach (Tool grants), Work Units and Sequencing,
+  Definition of Done, Risks and Assumptions, Deferred (YAGNI)
 - **Next-step recommendation:** Go to synthesis. Every Open Question is resolved or carried as a stated risk with a
   named verification step, and the round produced no major unresolved findings.
