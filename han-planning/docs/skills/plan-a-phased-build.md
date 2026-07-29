@@ -16,8 +16,8 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   to build first, second, third_. And you want a stakeholder-readable plan, not raw analyst output.
 - **What you get back.** `build-phase-outline.md`. A plain-language document indexed by stable `Phase N` IDs, with an
   executive summary, a scan-view phase index, optional "departures from source" section, per-phase entries (kind,
-  builds-on, what we build, why this phase, demo script, source citations, connects-to, preconditions), and stable
-  `OQ-N` open questions.
+  builds-on, what we build, why this phase, justification, demo script, source citations, connects-to, preconditions),
+  and stable `OQ-N` open questions. A boundary record sits beside it naming the scope the run stayed inside.
 
 ## Key concepts
 
@@ -36,6 +36,14 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   permission model, schema, or configuration foundation exists, the foundation comes first. And even then it must be
   demoable on its own. _"An admin can edit the new setting and see it persist"_ qualifies as a foundation phase. _"We
   added a database table"_ does not. Fold it forward into the first feature slice that uses it.
+- **The scope boundary, and shaping context inside it.** Before phasing anything, the skill records the work item's stated
+  scope and exclusions, plus whatever scope you stated when invoking it. Scope you state out loud counts as a boundary
+  statement here rather than a divergence to justify, because this skill treats divergence from its source as a feature.
+  Every phase then names what it descends from, on its own `Justification` line.
+- **A scope cut is not a YAGNI deferral.** Both land at the bottom of the index, and the outline marks which is which. A
+  YAGNI deferral is work no evidence supports yet, and carries the trigger that would reopen it. A scope cut is work the
+  boundary excludes, and carries no trigger, because the boundary already settled it. You can reinstate any cut, and your
+  saying so becomes the reinstated phase's justification.
 - **Stable `Phase N` and `OQ-N` IDs.** Phase numbers and open-question IDs are stable for the life of the document.
   Tickets, threads, and Slack messages cite `Phase 5` or `OQ-3`. The template uses explicit `{#phase-N}` and `{#oq-N}`
   heading anchors so deep links survive phase renames.
@@ -132,8 +140,9 @@ reordering before writing the file.
 
 ## What you get back
 
-One file on disk plus an in-channel summary. If a `build-phase-outline.md` already exists in the chosen folder, the
-skill asks whether to overwrite it, append a timestamp suffix, or stop; it never silently overwrites. You get:
+The outline on disk, two companion artifacts beside it, and an in-channel summary. If a `build-phase-outline.md` already
+exists in the chosen folder, the skill asks whether to overwrite it, append a timestamp suffix, or stop; it never silently
+overwrites. You get:
 
 - The **`build-phase-outline.md`**. The stakeholder-readable artifact. Sections, in order:
   - **Front matter** (YAML). Title, source-artifact relative path, audience, generated date, generated-by skill name.
@@ -156,16 +165,22 @@ skill asks whether to overwrite it, append a timestamp suffix, or stop; it never
     cold-arriving reader sees the dependency at a glance), `What we build`, `Why this is Phase N`,
     `Outcome to demonstrate` (numbered demo script), `Source citations` (links to source-artifact sections this phase
     covers), `Connects to` (links to other phases this one builds on or feeds into),
-    `Preconditions to verify before starting`. Every phase heading carries an explicit `{#phase-N}` anchor so renames
-    don't break inbound deep links.
+    `Justification` (what the phase descends from, on its own line so you can check every phase against the boundary by
+    scanning one field), `Preconditions to verify before starting`. Every phase heading carries an explicit `{#phase-N}`
+    anchor so renames don't break inbound deep links.
   - **Open Questions.** `OQ-N` entries with options and a recommended answer. Ordered by the lowest-numbered phase each
     question blocks, ascending. Carry-over questions that don't block any specific phase live at the bottom under a
     `### Carry-over notes` sub-heading. Each entry carries a `Blocks phase(s).` line so a stakeholder scanning the
     section can see at a glance which decisions block their next greenlight.
-- An **in-channel summary** with the file path, a count of phases by kind (foundational / feature slice / polish /
-  deferred), the open-question count and whether any block phase 1 from starting, the `information-architect`'s overall
-  verdict, and the next concrete action. Typically _"review the executive summary and the phase 1 entry, then either
-  greenlight phase 1 or reorder."_
+- **`artifacts/scope-boundary.md`** beside it. The boundary record: the work item, its stated scope and exclusions, the
+  scope you stated when invoking the skill, the direction-of-travel answer, and any visual material the run received. A
+  later skill in the chain reads it instead of asking you again.
+- **`ui-designs/`**, when you supply visual material. The files themselves, named for the state each one shows.
+- An **in-channel summary** with the file path and the boundary record's path, a count of phases by kind (foundational /
+  feature slice / polish / deferred), the cut list when anything was cut for scope, the escalation register when the run
+  took its single stop, the open-question count and whether any block phase 1 from starting, the
+  `information-architect`'s overall verdict, and the next concrete action. Typically _"review the executive summary and
+  the phase 1 entry, then either greenlight phase 1 or reorder."_
 
 The default output is the smallest viable artifact. Optional sections (_"How {{this build}} Differs from
 {{the source}}"_, deferred phase entries, and the _"Phases deliberately deferred"_ paragraph in the executive summary)

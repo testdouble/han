@@ -215,20 +215,37 @@ against an input the agent cannot open, and it is listed under Risk 2 rather tha
 
 ## Unit 5: `plan-a-phased-build`
 
-**Status:** Not yet landed.
+**Status:** Landed by read-through. One follow-on run remains.
 
-- [ ] The skill reads and records the boundary, and admits operator-stated shaping context as part of it.
-- [ ] The direction-of-travel answer is inherited when already recorded, and asked once when not.
-- [ ] Visual material is persisted on arrival, with `Bash(cp *)` present and the destination stated in the body.
-- [ ] Every phase carries a filled justification, and unjustifiable candidates land in the cut list.
-- [ ] The scope gate attaches at candidate evaluation, with cuts flowing to the deferred-phases list.
-- [ ] The single stop is present, and no escalation pass was added to a skill that has none
+- [x] A new Step 1.5 reads and records the boundary, before the Step 3 interview begins.
+- [x] Operator-stated shaping context goes into the record's Operator-Stated Scope section, treated as a boundary
+      statement rather than a divergence to justify, and the Step 3 divergences join it as they are captured
+      ([D-34 in the specification](decision-log.md#d34-operator-stated-shaping-context-is-part-of-the-boundary)).
+- [x] The direction-of-travel answer is inherited when already recorded and asked once when not, with its subjects named
+      from the work item.
+- [x] The conflict rule is present.
+- [x] Visual material is persisted on arrival, `Bash(cp *)` is on `allowed-tools`, and Step 1.5 states that copy
+      destinations are always the resolved output folder's `ui-designs/`.
+- [x] The completeness gate runs before the finished outline is presented.
+- [x] Every phase carries a `**Justification.**` line of its own in the outline template, on both the Phase 1 and the
+      Phase N block, so it is not a clause of the sequencing rationale.
+- [x] The scope gate attaches as step 6 of the existing candidate evaluation in Step 4, with cuts flowing to the
+      deferred-phases list. No sweep step was added
+      ([D-5](implementation-decision-log.md#d-5-the-scope-gate-attaches-to-existing-yagni-points-not-to-a-new-sweep-step)).
+- [x] The floor is stated at the attach point, along with the rule that an upstream artifact is not a scope authority.
+- [x] The template distinguishes a scope cut from a YAGNI deferral in the Phase Kinds glossary and in the deferred-phase
+      block, and says a scope cut carries no reopening trigger.
+- [x] The single stop is present as an operating principle, and no escalation pass was added. The principle says so
+      outright: questions that need a decision land in Open Questions, where they already belong
       ([D-6](implementation-decision-log.md#d-6-the-escalation-register-lands-as-a-register-in-two-skills-only)).
-- [ ] The reviewer-scope clause is present, stating that this skill's single fixed-domain reviewer sits outside the
-      visual-material brief rule
+- [x] The escalation register attaches to the single stop in the closing summary rather than standing on its own.
+- [x] The reviewer-scope clause is present at Step 7, stating that this skill's single fixed-domain reviewer sits outside
+      the visual-material brief rule, and telling the next implementer not to widen the step to a review team
       ([D-9](implementation-decision-log.md#d-9-the-single-phased-build-reviewer-is-outside-the-visual-material-brief-rule)).
-- [ ] Checked by a follow-on run where the operator states scope out loud at invocation.
-- [ ] The long-form doc matches the behavior the skill now carries.
+- [x] `han-communication:explanation-guidance` is sourced before the confirmation turn and before the single stop.
+- [x] The long-form doc matches the behavior the skill now carries.
+- [ ] Follow-on run: a run where the user states scope out loud at invocation records that scope in the boundary record
+      and phases inside it.
 
 ## Unit 6: `plan-a-feature`
 
