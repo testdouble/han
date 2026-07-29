@@ -8,7 +8,7 @@
 # detector's tests.
 
 setup() {
-  SRC="$BATS_TEST_DIRNAME/../han-coding/skills/automated-test-planning/scripts/detect-test-context.sh"
+  SRC="$BATS_TEST_DIRNAME/detect-test-context.sh"
   TMP="$(mktemp -d)"
 }
 

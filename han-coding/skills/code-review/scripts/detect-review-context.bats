@@ -8,7 +8,7 @@
 # detector's tests.
 
 setup() {
-  SRC="$BATS_TEST_DIRNAME/../han-coding/skills/code-review/scripts/detect-review-context.sh"
+  SRC="$BATS_TEST_DIRNAME/detect-review-context.sh"
   TMP="$(mktemp -d)"
 }
 
