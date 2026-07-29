@@ -345,16 +345,27 @@ against an input the agent cannot open, and it is listed under Risk 2 rather tha
 
 ## Unit 8: `han-github` screenshot file set
 
-**Status:** Not yet landed.
+**Status:** Landed, with the selection half verified by running the pattern. The upload-and-render half needs a real
+target repo and remains.
 
-- [ ] The upload script's asset-selection pattern accepts every type in the accepted file set, not `.png` alone.
-- [ ] `screenshot-embed-rules.md`'s source-filename requirement accepts the same set.
-- [ ] `issue-template.md`'s embed markdown and stated path scheme accept the same set. This is the one a first pass
-      misses: widening the upload without widening the template writes a PNG extension over a file that is not one, so
+- [x] The upload script's asset-selection pattern accepts every type in the accepted file set, held in one
+      `ASSET_EXT_PATTERN` variable so the set has a single place in the script.
+- [x] `shellcheck` passes on the modified script.
+- [x] `screenshot-embed-rules.md` accepts the same set, names the three places that must agree, and says outright why the
+      third matters: widening the upload without the template writes a `.png` extension over a file that is not one, so
       the upload succeeds and the image still breaks.
-- [ ] Run the upload script against a folder holding one non-PNG item, and confirm the item is selected, uploaded, and
-      renders in the issue
-      ([D-20](implementation-decision-log.md#d-20-the-github-screenshot-chain-widens-with-the-accepted-file-set)).
+- [x] `issue-template.md`'s embed markdown and stated path scheme accept the same set, and both say never to rewrite a
+      source file's extension, since the upload resolves the source by the filename in the URL.
+- [x] The `.pdf` case is handled rather than glossed: GitHub does not render a PDF inline, so it is linked rather than
+      embedded as an image. Stated in both the embed rules and the template.
+- [x] `SKILL.md` and the long-form doc match.
+- [x] Verified by running the widened pattern against a work-items file holding a `.jpg`, a `.png`, and a `.pdf` embed: it
+      selected all three, where the old `.png`-only pattern selected one and dropped the other two silently. That silent
+      drop is the defect this unit fixes.
+- [ ] Remaining: run the full script against a real target repo with one non-PNG item, and confirm it uploads and renders
+      in the issue
+      ([D-20](implementation-decision-log.md#d-20-the-github-screenshot-chain-widens-with-the-accepted-file-set)). This
+      needs a live repo and `gh` credentials, so it cannot be closed by read-through.
 
 ## Unit 9: Repository documentation sweep
 
