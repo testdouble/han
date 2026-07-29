@@ -77,6 +77,9 @@ Example prompts:
 - A **Structural Summary** with the focus area analyzed, the 2-3 key concerns, and any well-structured areas. It also
   names any dimensions that could not be fully assessed (for example, when git is unavailable for churn analysis).
 
+A finding that rests on an input the agent could not inspect carries its own `Unverified:` line on the finding
+itself, so the disclosure travels with the claim instead of sitting only in the summary's skipped-dimensions note.
+
 ## How to get the most out of it
 
 - **Scope narrowly.** A single module produces sharp findings. A broad scope flattens into generic concerns.

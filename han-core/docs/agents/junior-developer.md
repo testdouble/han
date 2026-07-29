@@ -200,6 +200,9 @@ findings. The agent is designed to lean into questions when the brief is thin, w
   - Any hidden assumptions the discussion is resting on.
   - Any specialist sibling the team should pull in next.
 
+A finding that rests on an input the agent could not inspect carries its own `Unverified:` line on the finding
+itself, so the disclosure travels with the claim instead of sitting only in the assumptions list.
+
 In both modes, every question or finding is traceable to a specific uncertainty and a location in the artifact,
 conversation, or codebase. Every specialist handoff is named explicitly (for example, _"Specialist to consult:
 `user-experience-designer`"_) so the team knows which sibling agent to dispatch next. If something is not traceable, the

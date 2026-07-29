@@ -142,6 +142,9 @@ Thin prompts (_"audit the code"_) still work but produce more Open Questions and
     (today / next iteration / paved path next quarter).
   - An On-Call Improvement Summary.
 
+A finding that rests on an input the agent could not inspect carries its own `Unverified:` line on the finding
+itself, so the disclosure travels with the claim instead of sitting only in the assumptions list.
+
 Every finding is traceable to a question in the log and an anti-pattern in the agent's vocabulary. If something is not
 traceable, the agent is instructed to drop it.
 

@@ -93,3 +93,8 @@ verbatim code snippet or error message
 - Cover all interacting layers, not just where the symptom appears
 - If an angle of investigation finds nothing, note what was searched and that no evidence was found
 - Do not propose fixes — your job is to gather evidence, not solve the problem
+- **Put a blind-spot disclosure on the finding itself, not only in an assumptions or limitations section.** When a
+  finding rests on an input you could not inspect, append one line to that finding, as its last line, in this form:
+  `Unverified: could not inspect {the input}, because {the reason}.` State it there even when you also record the
+  same limitation elsewhere in your output. The skill reading your work weighs each finding where it stands, so a
+  disclosure that sits below the finding it qualifies does not travel with it.

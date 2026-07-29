@@ -39,16 +39,25 @@ This is the one commitment with a documented prior failure, and it is silent whe
 Also a documented prior failure, and silent by construction. Both halves are checked, because the agent writes the
 disclosure and the dispatching skill acts on it.
 
-**Status:** Not yet landed. The agent half is delivered by unit 2 and the skill half by units 6 and 7.
+**Status:** Agent half landed in unit 2. Skill half not yet landed; delivered by units 6 and 7.
 
-- [ ] Every agent whose output is a claim a dispatching skill weighs carries the disclosure-placement rule line, in one
-      named shape, in its `## Rules` list. Read-through covers all twenty-four agent definitions in
-      `han-core/agents/`, `han-communication/agents/`, and `han-research/agents/`.
-- [ ] The three exclusions are logged with the reason each was excluded: `project-scanner` and `codebase-explorer`
-      (discovery output), `readability-editor` (a rewritten artifact).
-- [ ] `gap-analyzer` carries the line inside its `## Rules` section rather than after `## Graceful Degradation`, which
-      follows `## Rules` in that one file.
-- [ ] No agent gained a field and no agent's output format changed. Read-through of the diff.
+- [x] Every agent whose output is a claim a dispatching skill weighs carries the disclosure-placement rule line, in one
+      named shape, in its `## Rules` list. The read-through covered all twenty-four agent definitions in
+      `han-core/agents/`, `han-communication/agents/`, and `han-research/agents/`, and the test resolved to twenty-one.
+- [x] The named shape is one line appended to the finding, reading
+      `Unverified: could not inspect {the input}, because {the reason}.` One form serves both output shapes in the
+      roster: the ten agents with per-finding fielded blocks and the rest with numbered items.
+- [x] The three exclusions are logged with the reason each was excluded: `project-scanner` and `codebase-explorer`
+      (discovery output, so there is no claim for a disclosure to attach to), `readability-editor` (a rewritten
+      artifact).
+- [x] `gap-analyzer` carries the line inside its `## Rules` section rather than after `## Graceful Degradation`, which
+      is the one file where `## Rules` is not the last heading. Verified by reading lines 241 through 268 of that file.
+- [x] No agent gained a field and no agent's output format changed. The diff over the three agent directories is 105
+      insertions and zero deletions across 21 files.
+- [x] The long-form docs gained the sentence only where it was needed: the six agents whose docs describe an assumptions
+      section (`data-engineer`, `devops-engineer`, `junior-developer`, `information-architect`, `on-call-engineer`,
+      `user-experience-designer`) and `structural-analyst`, whose doc describes a skipped-dimensions note. A reader of
+      any of those seven could otherwise conclude that a blind spot belongs there.
 - [ ] A live dispatch against an input the agent cannot open returns the disclosure in the named shape, run once per
       output-format shape rather than once overall.
 - [ ] The dispatching skill recognizes that shape and strips blocking severity from the finding. Read-through of
@@ -144,8 +153,11 @@ The default disposition is to proceed with whatever was stated most recently.
 
 ## Unit 2: Agent disclosure placement
 
-**Status:** Not yet landed. See Risk 2 above for this unit's checks; they live there because that is where the risk is
-ranked.
+**Status:** Landed, except the live-dispatch check. See Risk 2 above for this unit's checks; they live there because that
+is where the risk is ranked.
+
+The live dispatch is the one check this unit cannot close by read-through. It needs a real run per output-format shape
+against an input the agent cannot open, and it is listed under Risk 2 rather than here.
 
 ## Unit 3: `han-feedback` corrections
 

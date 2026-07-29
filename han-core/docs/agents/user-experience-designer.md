@@ -94,6 +94,9 @@ Thin prompts (_"review the UI"_) still work but produce more Open Questions and 
   assumptions, open questions, numbered findings tied to principles and locations, and a UX Improvement Summary that
   sequences shipping vs. improving.
 
+A finding that rests on an input the agent could not inspect carries its own `Unverified:` line on the finding
+itself, so the disclosure travels with the claim instead of sitting only in the assumptions list.
+
 Every finding is traceable to a UX principle, a UI location, and a question in the log. If something is not traceable,
 the agent is instructed to drop it.
 

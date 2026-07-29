@@ -108,6 +108,9 @@ Thin prompts (_"review the docs"_) still work but produce more Open Questions an
   - Numbered findings tied to IA principles and locations.
   - An IA Improvement Summary that sequences shipping vs. improving.
 
+A finding that rests on an input the agent could not inspect carries its own `Unverified:` line on the finding
+itself, so the disclosure travels with the claim instead of sitting only in the assumptions list.
+
 Every finding is traceable to an IA principle, a documentation location, and a question in the log. If something is not
 traceable, the agent is instructed to drop it.
 
