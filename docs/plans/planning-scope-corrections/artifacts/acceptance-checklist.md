@@ -249,21 +249,54 @@ against an input the agent cannot open, and it is listed under Risk 2 rather tha
 
 ## Unit 6: `plan-a-feature`
 
-**Status:** Not yet landed.
+**Status:** Landed by read-through. The engineered walkthrough remains.
 
-- [ ] Every applicability row the specification assigns to this skill is present.
-- [ ] The produced specification carries a `Visual Reference` table naming each item and the state it shows, plus inline
-      embeds beside the prose describing each state.
-- [ ] `## Cut for Scope` sits adjacent to `## Deferred (YAGNI)` in the specification template, and each opens with a line
+- [x] A new Step 1.5 reads and records the boundary before Step 2 discovery and the Step 4 interview, with the
+      confirmation turn, the conflict rule, the no-outward-traversal rule, and the note that a recorded boundary is often
+      the user's own words rather than the work item's verbatim text.
+- [x] The specification template carries a `### Visual Reference` table under that exact heading, with the state each item
+      shows and a hosted URL handled in place of a path, plus the instruction to embed each item beside the prose
+      describing its state and the reason why (the downstream inventory maps by that prose).
+- [x] `## Cut for Scope` sits immediately before `## Deferred (YAGNI)` in the template, and each opens with one line
       saying what it is not
       ([D-8](implementation-decision-log.md#d-8-plan-a-feature-gains-the-cut-list-only-not-a-justification-field)).
-- [ ] The skill gained the cut list and no per-unit justification field, because it produces a specification rather than
-      work units.
-- [ ] Decisions are classified into full or trivial once, after the review round rather than before it.
-- [ ] `Bash(cp *)` is present, and the body states the copy destination.
-- [ ] The escalation register is present in the escalation step.
-- [ ] Checked by the engineered walkthrough.
-- [ ] The long-form doc matches the behavior the skill now carries.
+- [x] The skill gained the cut list and no per-unit justification field, because it produces a specification rather than
+      work units. No `Justification` field was added to the specification template.
+- [x] Decisions are classified once, in Step 8 synthesis, after the review round. Step 5 writes every decision in full
+      form and says why it defers the split; the decision-log template says the same, and records that D# numbers do not
+      change during classification so inline links keep resolving.
+- [x] The scope gate attaches at finding-resolution path 5b, beside the existing YAGNI path 5a, with cut entries flowing
+      into Step 8 synthesis. No sweep step was added, and the gate reduces to a work-item check on the skill's own
+      commitments because there is no upstream artifact
+      ([D-5](implementation-decision-log.md#d-5-the-scope-gate-attaches-to-existing-yagni-points-not-to-a-new-sweep-step)).
+- [x] The floor is stated at the attach point, with the calibration line.
+- [x] Step 6 passes the visual material to every dispatched reviewer with the state each item shows, and handles material
+      arriving after dispatch by re-briefing the reachable reviewers and recording which never got it.
+- [x] Step 6's shared brief carries the proportionality signal as a rough target line count rather than a size word, and
+      states that it governs how much each reviewer writes and never how many reviewers are chosen.
+- [x] Step 6's shared brief tells each reviewer to put a blind-spot disclosure on the finding itself.
+- [x] Step 7 runs three passes before per-finding work, in order: merge by substance carrying every reviewer's identifier,
+      strip blocking severity from findings resting on an uninspected input, then check design-dependent findings against
+      the designs. The order is stated along with why merging comes first.
+- [x] Unaudited evidence classes are recorded when decisions rest on material no reviewer received.
+- [x] Escalations go one question per turn, leading with the consequence, carrying named candidate answers, with technical
+      references below the question, and stating how many are pending. Grouping by decision survives as an ordering rather
+      than a batch.
+- [x] The escalation register is present, recorded in `artifacts/team-findings.md` with the question, the answer, and where
+      the answer landed.
+- [x] The team-findings template carries the reviewer-identifiers field, the conditional `Unverified:` field, the
+      design-check field, the unaudited-evidence section, and the escalation register.
+- [x] The completeness gate runs at Step 9 before the summary, reading the record rather than run memory.
+- [x] `Bash(cp *)` is present, and Step 1.5 states the copy destination.
+- [x] The closing summary shows the cut list in the message rather than only pointing at the section, says it can be
+      reinstated, and keeps it distinct from the YAGNI deferral count.
+- [x] `han-communication:explanation-guidance` is sourced before the confirmation turn and before the first escalation.
+- [x] The long-form doc matches the behavior the skill now carries.
+- [ ] The engineered walkthrough
+      ([D-14](implementation-decision-log.md#d-14-one-engineered-plan-a-feature-run-carries-the-main-walkthrough)): a work
+      item with a stated exclusion and an implied necessity, two images at session start (one depicting something the
+      ticket never mentions), a third arriving after dispatch, one reviewer positioned so it cannot inspect an input, and
+      two reviewers raising the same finding under different wording.
 
 ## Unit 7: `plan-implementation`
 

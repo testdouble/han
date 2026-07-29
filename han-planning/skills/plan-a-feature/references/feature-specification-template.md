@@ -163,6 +163,35 @@ Omit this section if the feature has no direct user surface.
 - **Feedback:** ...
 - **Error states:** ...
 
+### Visual Reference
+
+<!--
+Required whenever the run received visual material. The heading text is exactly
+"Visual Reference" — plan-work-items reads this table as its mapping source, so a
+different heading breaks the handoff.
+
+One row per item the run kept, listing the state it shows. A hosted URL (a Figma
+board, a prototype link) is listed the same way, with the URL in place of a path,
+because it is not a file the run can keep.
+
+Omit this section only when the run received no visual material at all.
+-->
+
+| Item | State it shows | Where it lives |
+| ---- | -------------- | -------------- |
+| card-empty-state.png | The card before any entry exists | `ui-designs/card-empty-state.png` |
+| Figma board | Every state of the card | https://figma.com/... |
+
+<!--
+Also embed each item inline, next to the prose describing the state it depicts:
+
+    ![The card before any entry exists](ui-designs/card-empty-state.png)
+
+The inline placement is not decoration. plan-work-items maps an image to a work item
+by reading the prose the embed sits beside, so an embed with no surrounding
+description of the state gives the consumer nothing to map.
+-->
+
 ## Coordinations
 
 <!--
@@ -185,6 +214,36 @@ system" is the level of abstraction — not "NATS JetStream publisher group" or
 - ...
 - ...
 
+## Cut for Scope
+
+<!--
+Commitments the recorded boundary excludes, cut by the scope gate
+([../../references/scope-justification-rule.md](../../../references/scope-justification-rule.md)).
+
+LAZILY CREATED — write this section only if at least one item was cut. If nothing was
+cut, omit the section entirely. Do not write an empty stub.
+
+This section sits immediately before "Deferred (YAGNI)" because the two are the same
+shape and easily confused. Each opens with one line saying what it is not, so a
+reader can tell them apart at a glance.
+
+For each cut item:
+- What it would have done, in plain language — the consequence the user can weigh,
+  not the mechanism. "The card cannot carry a picture" over "image subsystem cut".
+- Why it was cut — the boundary citation that supports the cut.
+
+There is no "reopen when" here. A scope cut has no reopening trigger, because the
+boundary already settled it. The user reinstating it is the only route back, and
+their direction becomes the reinstated item's justification.
+-->
+
+This is work the work item excludes, not work deferred for lack of evidence. Nothing here carries a reopening trigger,
+because the recorded boundary already settled it.
+
+### {what it would have done, in plain language}
+
+- **Why cut:** {the boundary citation that supports the cut}
+
 ## Deferred (YAGNI)
 
 <!--
@@ -205,6 +264,9 @@ For each deferred item:
 - Source — where it was originally proposed (review finding F# ID, agent name,
   conversation context, user request, etc.).
 -->
+
+This is work no evidence supports yet, not work the work item excludes. Every entry carries the trigger that would
+justify revisiting it.
 
 ### {item name}
 
