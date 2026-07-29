@@ -46,7 +46,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   the correct cut, the card's own error and focus behavior are the correct non-cuts.
 - **Resolved by:** user input
 - **Affected decisions:** D31 (new), D6, D8, D9
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, Out of Scope
 
 ### F2: Design material and work-item text had no stated precedence
@@ -60,7 +60,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   other means is not, which keeps the door D3 closed.
 - **Resolved by:** user input
 - **Affected decisions:** D32 (new), D6
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes
 
 ### F3: The explanation standard had no delivery vehicle
@@ -74,7 +74,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   deferral is narrowed to what it always meant: a skill that reviews and rewrites escalation prose.
 - **Resolved by:** user input
 - **Affected decisions:** D13
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Actors and Triggers, Coordinations, Deferred (YAGNI)
 
 ### F4: "The run's context artifact" named no file for three of the four skills
@@ -87,7 +87,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   boundary itself. An absent record is never read as a recorded statement that no work item exists.
 - **Resolved by:** evidence
 - **Affected decisions:** D33 (new), D2
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Primary Flow, Alternate Flows and States, Coordinations
 
 ### F5: The phased-build skill's multi-document source and divergence mechanism were unreconciled
@@ -100,7 +100,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   loud is a user-described need and passes the evidence test on its own.
 - **Resolved by:** user input
 - **Affected decisions:** D34 (new), D2
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Coordinations
 
 ### F6: The one-question rule collided with two skills' batch designs and with the draft's own opening turn
@@ -114,7 +114,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   the operator asks. Grouping findings by the decision they affect survives as an ordering.
 - **Resolved by:** evidence
 - **Affected decisions:** D12
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Primary Flow, User Interactions, Edge Cases and Failure Modes
 
 ### F7: The out-of-scope verdict was not wired into the existing classification
@@ -128,7 +128,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   that committed to work outside its ticket is drifted rather than immature.
 - **Resolved by:** evidence
 - **Affected decisions:** D10
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Alternate Flows and States
 
 ### F8: The review-behavior rules had no stated home, so the blast radius was undefined
@@ -137,10 +137,11 @@ decision or a technical note. Zero dropped, zero silently weakened.
 - **Finding:** The unverified-finding rule and the proportionality signal are properties of agent output. In the
   shared agent definitions they change every skill in the suite, including one this specification defers. In the
   skills' briefs they are only as strong as each brief. The draft read the same either way.
-- **Resolution:** Both live in the four planning skills' briefs. No skill outside those four changes behavior.
+- **Resolution:** Both live in the brief the dispatching planning skill writes. No skill outside the four changes
+  behavior.
 - **Resolved by:** user input
 - **Affected decisions:** D36 (new), D18, D19, D28
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Actors and Triggers, Out of Scope
 
 ### F9: Direction of travel cost a turn and drove no behavior
@@ -154,7 +155,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   passes the evidence test.
 - **Resolved by:** evidence
 - **Affected decisions:** D5
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### F10: The cut list removed the operator's only detection channel
@@ -168,7 +169,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   language. The operator may reinstate any entry, and their direction is itself a valid justification.
 - **Resolved by:** evidence
 - **Affected decisions:** D35 (new), D6
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Primary Flow, Alternate Flows and States, User Interactions
 
 ### F11: The unreachable-material case had no operator-facing flow
@@ -193,7 +194,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   run gathers every input meeting the test and covers them in one stop.
 - **Resolved by:** evidence
 - **Affected decisions:** D25, D23
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Alternate Flows and States, Edge Cases and Failure Modes
 
 ### F13: The single stop named a cost but no supply action, and was bound to no register
@@ -206,7 +207,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   supply the input.
 - **Resolved by:** evidence
 - **Affected decisions:** D25
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Alternate Flows and States, User Interactions
 
 ### F14: A work item conflicting with the recorded boundary had no rule
@@ -218,7 +219,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
 - **Resolution:** The skill surfaces the conflict in its confirmation turn and asks which governs.
 - **Resolved by:** evidence
 - **Affected decisions:** D33
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Edge Cases and Failure Modes
 
 ### F15: Material arriving after reviewer dispatch had no rule
@@ -231,7 +232,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   it so their design-dependent findings are unverified.
 - **Resolved by:** evidence
 - **Affected decisions:** D18
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Edge Cases and Failure Modes
 
 ### F16: A duplicate finding could end up in two contradictory states
@@ -243,7 +244,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   record carries every originating identifier.
 - **Resolved by:** evidence
 - **Affected decisions:** D19, D21
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### F17: An unanswered direction-of-travel question was indistinguishable from a recorded "not known"
@@ -255,7 +256,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   answer of any kind is never re-asked.
 - **Resolved by:** evidence
 - **Affected decisions:** D5
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Edge Cases and Failure Modes
 
 ### F18: The four skills differ materially in the steps the flow changes
@@ -265,10 +266,11 @@ decision or a technical note. Zero dropped, zero silently weakened.
   rather than domain briefs. A reader could not tell whether "the skill dispatches its review team" was a new
   obligation or a no-op, and the two readings are very different change sets.
 - **Resolution:** An applicability table naming which of the four each commitment reaches, and a rule that a
-  commitment does not create a step where none exists.
+  commitment does not create a step where none exists. The table was extended during synthesis to cover the reference
+  table, unaudited evidence classes, reviewer identifiers, and decision classification, which the first pass left out.
 - **Resolved by:** evidence
-- **Affected decisions:** D36 (new)
-- **Affected tech-notes:** —
+- **Affected decisions:** D36 (new), D14, D16, D21, D22
+- **Affected tech-notes:** None
 - **Changed in spec:** Actors and Triggers
 
 ### F19: No definition of done
@@ -278,8 +280,8 @@ decision or a technical note. Zero dropped, zero silently weakened.
   the draft carried no acceptance criteria, so an implementer and the author could disagree on whether it shipped.
 - **Resolution:** Four observable criteria drawn from the source issues, each checkable on a finished artifact.
 - **Resolved by:** evidence
-- **Affected decisions:** —
-- **Affected tech-notes:** —
+- **Affected decisions:** None
+- **Affected tech-notes:** None
 - **Changed in spec:** How We Will Know It Worked (new section), Outcome
 
 ### F20: The Preconditions statement contradicted three committed stops
@@ -290,7 +292,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
 - **Resolution:** The two real preconditions are stated: an operator present and answering, and supplied material
   reachable as a file.
 - **Resolved by:** evidence
-- **Affected decisions:** —
+- **Affected decisions:** None
 - **Affected tech-notes:** T1
 - **Changed in spec:** Actors and Triggers
 
@@ -303,7 +305,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   yet, with a trigger. An entry belongs to one, never both.
 - **Resolved by:** evidence
 - **Affected decisions:** D35 (new)
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Alternate Flows and States, Deferred (YAGNI)
 
 ### F22: The target reference folder is documented as holding vendored copies only
@@ -316,7 +318,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   when it lands.
 - **Resolved by:** evidence
 - **Affected decisions:** D24
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Out of Scope
 
 ### F23: The reconciled missing-artifact rule named no canonical home
@@ -330,7 +332,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   principle point at it.
 - **Resolved by:** evidence
 - **Affected decisions:** D23
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Coordinations
 
 ### F24: The boundary record was excluded by the consumer's own inventory rule
@@ -342,7 +344,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
 - **Resolution:** The boundary record is admitted by name.
 - **Resolved by:** evidence
 - **Affected decisions:** D23, D33 (new)
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Coordinations
 
 ### F25: The two communication standards had overlapping scope and no stated boundary
@@ -355,7 +357,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   run says to the operator in a turn. Its scope is every skill that escalates, so it needs no registry of its own.
 - **Resolved by:** evidence
 - **Affected decisions:** D13
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Out of Scope
 
 ### F26: The escalation shape dropped the operator's own fourth clause
@@ -368,7 +370,7 @@ decision or a technical note. Zero dropped, zero silently weakened.
   lead.
 - **Resolved by:** evidence
 - **Affected decisions:** D12
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** User Interactions
 
 ### F28: The completeness gate can pass without catching the loss it targets
@@ -392,37 +394,45 @@ decision or a technical note. Zero dropped, zero silently weakened.
 - **Resolution:** The assumption is recorded on the decision and carried as an open item, rather than left implicit.
 - **Resolved by:** evidence
 - **Affected decisions:** D19
-- **Affected tech-notes:** —
+- **Affected tech-notes:** None
 - **Changed in spec:** Open Items
 
 ## Minor edits
 
-- F27: The worked-example template only fits questions shaped like data entry, so it stops biting on the many planning
-  escalations with no entry and no wrong result — user-experience-designer (UX-006) — resolved by stating the general
-  property behind the four-part form and anchoring the unintroduced-term test to the work item and the conversation —
-  D13 — Edge Cases and Failure Modes.
-- F30: Success is silent throughout, so the operator's only evidence that material was kept and a boundary recorded is
-  the absence of an error — user-experience-designer (UX-008) — resolved by one line in the opening turn stating what
-  was captured, held to a line because the same reports rate output volume 2/5 — D5 — Primary Flow, User Interactions.
-- F31: Coordinations rows carried file-layout and reference-ownership mechanics rather than behavior —
-  junior-developer (JD-016), user-experience-designer (UX-010), information-architect (IA-009) — resolved by restating
-  each row as the behavior it guarantees and leaving placement in the decision log — D24 — Coordinations, Primary Flow.
-- F32: "Every planning skill" reaches five skills while the defined actor term names four, leaving unclear whether
-  `iterative-plan-review` cites the visual-material convention — information-architect (IA-007) — resolved by using
-  the defined term and deferring that skill's citation alongside its scope boundary — Deferred (YAGNI).
-- F33: The change set's documentation obligations were unacknowledged, and the repository map's reference-folder
-  description goes stale when the new file lands — information-architect (IA-008) — resolved by stating both
-  obligations — Out of Scope.
-- F34: The visual-material decision cited only one skill's briefing table as evidence, though the other dispatching
-  skill carries a structurally identical one with the same gap — gap-analyzer (closing note) — resolved by citing both
-  — D18 — no spec change.
-- F35: Two committed items carry evidence for the problem and not for the chosen mechanism: that a stated
+Each bullet records the finding, the reviewer who raised it, the resolution, and the same three cross-reference fields
+the major findings carry.
+
+- **F27:** The worked-example template only fits questions shaped like data entry, so it stops biting on the many
+  planning escalations with no entry and no wrong result. Raised by user-experience-designer (UX-006). Resolved by
+  stating the general property behind the four-part form and anchoring the unintroduced-term test to the work item and
+  the conversation. Affected decisions: D13. Affected tech-notes: none. Changed in spec: Edge Cases and Failure Modes.
+- **F30:** Success is silent throughout, so the operator's only evidence that material was kept and a boundary
+  recorded is the absence of an error. Raised by user-experience-designer (UX-008). Resolved by one line in the
+  opening turn stating what was captured, held to a line because the same reports rate output volume 2/5. Affected
+  decisions: D5. Affected tech-notes: none. Changed in spec: Primary Flow, User Interactions.
+- **F31:** Coordinations rows carried file-layout and reference-ownership mechanics rather than behavior. Raised by
+  junior-developer (JD-016), user-experience-designer (UX-010), information-architect (IA-009). Resolved by restating
+  each row as the behavior it guarantees and leaving placement in the decision log. Affected decisions: D24. Affected
+  tech-notes: none. Changed in spec: Coordinations, Primary Flow.
+- **F32:** "Every planning skill" reaches five skills while the defined actor term names four, leaving unclear whether
+  `iterative-plan-review` cites the visual-material convention. Raised by information-architect (IA-007). Resolved by
+  using the defined term and deferring that skill's citation alongside its scope boundary. Affected decisions: none.
+  Affected tech-notes: none. Changed in spec: Deferred (YAGNI).
+- **F33:** The change set's documentation obligations were unacknowledged, and the repository's own documentation goes
+  stale when the new shared convention lands. Raised by information-architect (IA-008). Resolved by stating both
+  obligations. Affected decisions: none. Affected tech-notes: none. Changed in spec: Out of Scope.
+- **F34:** The visual-material decision cited only one skill's briefing table as evidence, though the other
+  dispatching skill carries a structurally identical one with the same gap. Raised by gap-analyzer (closing note).
+  Resolved by citing both. Affected decisions: D18. Affected tech-notes: none. Changed in spec: no spec change.
+- **F35:** Two committed items carry evidence for the problem and not for the chosen mechanism: that a stated
   proportionality signal changes reviewer output length, and that the unverified rule adds coverage beyond material
-  reaching reviewers plus the dispatching skill's own check — junior-developer (JD-013) — resolved by citing why each
-  is retained, naming the fallback, and recording the residue as open items — D19, D28 — Open Items.
-- F36: A visual-material folder holding items from an earlier run has no overwrite, append, or collision rule —
-  edge-case-explorer (EC6, second half, raised with the reviewer's own doubt about its evidence) — resolved by
-  deferring under the evidence test — Deferred (YAGNI).
+  reaching reviewers plus the dispatching skill's own check. Raised by junior-developer (JD-013). Resolved by citing
+  why each is retained, naming the fallback, and recording the residue as open items. Affected decisions: D19, D28.
+  Affected tech-notes: none. Changed in spec: Open Items.
+- **F36:** A visual-material folder holding items from an earlier run has no overwrite, append, or collision rule.
+  Raised by edge-case-explorer (EC6, second half, with the reviewer's own doubt about its evidence). Resolved by
+  deferring under the evidence test. Affected decisions: none. Affected tech-notes: none. Changed in spec: Deferred
+  (YAGNI).
 
 ## Findings recorded and closed without a change
 

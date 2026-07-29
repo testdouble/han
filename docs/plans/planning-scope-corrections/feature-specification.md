@@ -7,12 +7,19 @@ operator supplies, and to talk to that operator in plain language one question a
 
 A planning run stays inside the work it was asked to do, and the operator can see that it did.
 
-Four things become true that are not true today. A planning skill reads the work item the work descends from before it
-does anything else, and records that item's stated scope and stated exclusions as the outer boundary of the run. Every
-work unit and work item the run produces names what it descends from, and anything that cannot name one moves to a
-visible cut list instead of into the plan. Visual material the operator supplies survives the session as files beside
-the plan, and every reviewer the run dispatches receives it. When the run does need the operator, it asks one question
-at a time, in language a person who will never open the code can act on.
+Four things become true that are not true today.
+
+A planning skill reads the work item the work descends from before it does anything else. It records that item's
+stated scope and stated exclusions as the outer boundary of the run.
+
+Every work unit and work item the run produces names what it descends from. Anything that cannot name one moves to a
+visible cut list instead of into the plan.
+
+Visual material the operator supplies survives the session as files beside the plan, and every reviewer the run
+dispatches receives it.
+
+When the run does need the operator, it asks one question at a time, in language a person who will never open the code
+can act on.
 
 The change set spans three plugins, addressed together because their fixes interlock
 ([D1](artifacts/decision-log.md#d1-scope-of-the-change-set)).
@@ -26,8 +33,8 @@ The change set spans three plugins, addressed together because their fixes inter
   - **The planning skills.** `plan-a-feature`, `plan-implementation`, `plan-a-phased-build`, and `plan-work-items`.
     These are the skills that gain the scope boundary, the visual-material handling, and the escalation register.
   - **The review team.** The specialist agents a planning skill dispatches to review its draft. The rules this
-    specification adds to review behavior live in the four planning skills' briefs, not in the shared agent
-    definitions, so no skill outside those four changes behavior
+    specification adds to review behavior reach a reviewer only through the brief the dispatching planning skill
+    writes, so no skill outside the four changes behavior
     ([D36](artifacts/decision-log.md#d36-each-commitment-names-the-skills-it-applies-to)).
   - **The feedback skill.** `han-feedback`, which gains two corrections to how it handles a same-day file and a blocked
     publish.
@@ -65,8 +72,12 @@ The four skills are built differently, so not every commitment lands on every on
 | Visual material in reviewer briefs            | `plan-a-feature`, `plan-implementation` (the two that dispatch a domain-briefed review team)    |
 | Unverified-finding rule and design check      | `plan-a-feature`, `plan-implementation`                                                        |
 | Proportionality signal in briefs              | `plan-a-feature`, `plan-implementation`                                                        |
-| Escalation register                           | `plan-a-feature`, `plan-implementation`, `plan-a-phased-build` (the three that escalate)        |
+| Escalation register                           | The three with an escalation step, plus `plan-work-items` for its single stop                  |
 | Single stop for an operator-suppliable input  | All four                                                                                       |
+| Reference table and inline placements         | `plan-a-feature` (the skill that writes the specification the inventory reads)                 |
+| Naming unaudited evidence classes             | `plan-a-feature`, `plan-implementation` (the two that keep a findings record)                  |
+| Reviewer identifiers on merged findings       | `plan-a-feature`, `plan-implementation`                                                        |
+| Classifying decisions once, after the round   | `plan-a-feature` (the skill whose decisions are classified before the round today)             |
 
 Where a skill has no step a commitment attaches to, the commitment does not create one.
 
@@ -76,17 +87,17 @@ The flow below describes a planning run under this specification. Steps 1 throug
 existing behavior changes.
 
 1. The skill identifies the work item this work descends from: a ticket, an issue, a pull request, or a written
-   request from the operator. It reads that item and records its stated scope and its stated exclusions word for word
-   in a boundary record beside the plan, under a name every planning skill uses
+   request from the operator. It reads that item and records its stated scope and its stated exclusions word for word,
+   in a boundary record beside the plan. Every planning skill uses that same record name
    ([D2](artifacts/decision-log.md#d2-the-work-item-is-read-and-recorded-as-the-scope-boundary),
    [D33](artifacts/decision-log.md#d33-the-boundary-record-has-one-name-and-one-home)).
 2. When no work item exists, the skill records that fact explicitly, and records that the operator's request is the
    only boundary the run has. That statement is written down rather than assumed, because a run with no external
    boundary is a materially different situation from a run with one
    ([D2](artifacts/decision-log.md#d2-the-work-item-is-read-and-recorded-as-the-scope-boundary)).
-3. The skill opens with a confirmation turn. It restates the recorded boundary in the operator's own terms, names any
-   visual material it kept, and asks one question about direction of travel: whether the specific things the work item
-   named are being deprecated, replaced, or migrated away from. The question names its subjects from the work item the
+3. The skill opens with a confirmation turn. It restates the recorded boundary in the operator's own terms and names
+   any visual material it kept. Then it asks one question about direction of travel: whether the specific things the
+   work item named are being deprecated, replaced, or migrated away from. The question names its subjects from the work item the
    skill has already read, so the operator recognizes them rather than recalling them
    ([D5](artifacts/decision-log.md#d5-direction-of-travel-is-asked-once-alongside-the-work-item-confirmation)). This
    turn is a confirmation, not an escalation, and is the one turn that carries more than one ask
@@ -95,9 +106,11 @@ existing behavior changes.
    by the state each one depicts. This happens when the material arrives, not when the document is written
    ([D15](artifacts/decision-log.md#d15-provided-visual-material-is-persisted-when-it-arrives),
    [T1](artifacts/feature-technical-notes.md#t1-supplied-visual-material-is-reachable-on-disk)).
-5. The skill discovers its context and drafts its artifact as it does today, with one addition: every work unit and
-   every work item carries a justification naming the work-item language or the attached design material it descends
-   from ([D6](artifacts/decision-log.md#d6-every-work-unit-names-what-it-descends-from),
+5. The skill discovers its context and drafts its artifact as it does today, with one addition. Every work unit and
+   every work item now carries a justification. It names the work-item language it descends from, the design material
+   the operator attached, or the asked-for work it is a necessity of
+   ([D6](artifacts/decision-log.md#d6-every-work-unit-names-what-it-descends-from),
+   [D31](artifacts/decision-log.md#d31-the-scope-gate-cuts-subsystems-never-necessities-of-the-asked-for-work),
    [D32](artifacts/decision-log.md#d32-material-the-operator-attached-is-part-of-the-boundary)).
 6. The skill dispatches its review team. Every dispatched reviewer receives the paths to the persisted visual material
    along with its domain brief, and is told to read it
@@ -115,13 +128,13 @@ existing behavior changes.
    not cut behavior required to deliver what the work item does ask for
    ([D8](artifacts/decision-log.md#d8-the-yagni-sweep-gains-a-scope-gate-covering-inherited-commitments),
    [D31](artifacts/decision-log.md#d31-the-scope-gate-cuts-subsystems-never-necessities-of-the-asked-for-work)).
-9. When a question survives all of that, the skill escalates it to the operator: one question, leading with the
-   consequence a person who will not read the code would describe, carrying named candidate answers, with technical
-   references placed below the question or left out
+9. When a question survives all of that, the skill escalates it to the operator as one question. It leads with the
+   consequence a person who will not read the code would describe, carries named candidate answers, and places
+   technical references below the question or leaves them out
    ([D12](artifacts/decision-log.md#d12-escalations-are-one-question-at-a-time-led-by-plain-language)).
 10. Before declaring the artifact finished, the skill confirms that visual material it recorded receiving exists on
-    disk beside the plan ([D17](artifacts/decision-log.md#d17-a-completeness-gate-confirms-visual-material-reached-disk)),
-    and presents the cut list in the closing summary alongside the artifact paths
+    disk beside the plan ([D17](artifacts/decision-log.md#d17-a-completeness-gate-confirms-visual-material-reached-disk)).
+    It also presents the cut list in the closing summary alongside the artifact paths
     ([D35](artifacts/decision-log.md#d35-the-cut-list-is-visible-reversible-and-distinct-from-a-yagni-deferral)).
 
 ## Alternate Flows and States
@@ -132,13 +145,14 @@ existing behavior changes.
   not identify one.
 - **Sequence:** The skill asks the operator once for the work item or for its scope in their own words, in the same
   confirmation turn that carries the direction-of-travel question. If the operator declines or has none, the skill
-  records that the operator's request is the only boundary and continues.
+  records that the operator's request is the only boundary and continues
+  ([D2](artifacts/decision-log.md#d2-the-work-item-is-read-and-recorded-as-the-scope-boundary)).
 - **Exit:** The run continues with a recorded boundary, never with an assumed one.
 
 ### No boundary record exists from an earlier skill
 
-- **Entry condition:** A skill runs against a plan folder holding no boundary record, because it was invoked on its
-  own, because the folder predates this change, or because the earlier skill in the chain never ran.
+- **Entry condition:** A skill runs against a plan folder holding no boundary record. That happens when it was invoked
+  on its own, when the folder predates this change, or when the earlier skill in the chain never ran.
 - **Sequence:** The skill establishes the boundary itself, exactly as the first step describes, and writes the record.
   It does not proceed unbounded, and it does not treat an absent record as a recorded statement that no work item
   exists ([D33](artifacts/decision-log.md#d33-the-boundary-record-has-one-name-and-one-home)).
@@ -146,12 +160,14 @@ existing behavior changes.
 
 ### A proposed work unit cannot be justified
 
-- **Entry condition:** A work unit or work item cannot name the work-item language or attached design material it
-  descends from.
-- **Sequence:** The skill records the unit in the cut list with what the unit would have done, in the same plain
+- **Entry condition:** A work unit or work item cannot name the work-item language it descends from, the design
+  material the operator attached, or the asked-for work it is a necessity of
+  ([D6](artifacts/decision-log.md#d6-every-work-unit-names-what-it-descends-from)).
+- **Sequence:** The skill records the unit in the cut list. It names what the unit would have done, in the same plain
   language an escalation uses, and the reason it could not be justified. It does not search outward to a linked item,
   a parent epic, or a closed item to find justification, because those are not scope evidence for the item in hand
-  ([D3](artifacts/decision-log.md#d3-the-work-item-read-does-not-traverse-outward)).
+  ([D3](artifacts/decision-log.md#d3-the-work-item-read-does-not-traverse-outward),
+  [D4](artifacts/decision-log.md#trivial-decisions)).
 - **Exit:** The unit is absent from the plan and present in the cut list, which the closing summary shows. The
   operator may reinstate any entry, and their direction is itself a valid justification the reinstated unit records
   ([D35](artifacts/decision-log.md#d35-the-cut-list-is-visible-reversible-and-distinct-from-a-yagni-deferral)).
@@ -173,7 +189,7 @@ existing behavior changes.
   specification committed to.
 - **Sequence:** The specialist chooses one of three verdicts: confirm the mechanic, contradict it by naming an
   alternative mechanic, or declare it outside the scope of this work item. The third verdict resolves by citing the
-  work item, without an escalation to the operator. It is recorded as its own kind of finding, and it does not count
+  work item, without an escalation to the operator. It is recorded as its own kind of finding. It does not count
   toward the threshold that decides whether the upstream specification is too immature to plan against, because a
   scope cut is not a sign of an immature specification
   ([D10](artifacts/decision-log.md#d10-the-mechanic-contradiction-protocol-gains-an-out-of-scope-verdict)).
@@ -183,9 +199,10 @@ existing behavior changes.
 
 - **Entry condition:** Either the plan describes visual work and no visual material exists beside it, or material the
   operator supplied this session could not be kept.
-- **Sequence:** The skill stops once. It gathers every missing input of this kind first, so one stop covers them all.
-  It names what is missing, names in plain language what the delivered artifact will be missing without it, names the
-  action that would supply it, and offers to continue. It does not treat the absence as a template block to omit
+- **Sequence:** The skill stops once. It gathers every missing input of this kind first, so one stop covers them all
+  as a single question rather than as several turns. It names what is missing, names in plain language what the
+  delivered artifact will be missing without it, names the action that would supply it, and offers to continue. It
+  does not treat the absence as a template block to omit
   ([D25](artifacts/decision-log.md#d25-a-single-stop-is-reserved-for-an-input-only-the-operator-can-supply),
   [D27](artifacts/decision-log.md#d27-plan-work-items-separates-no-visual-surface-from-visual-work-with-no-designs)).
 - **Exit:** The operator supplies the material, or directs the run to continue with the cost recorded in the
@@ -198,10 +215,10 @@ existing behavior changes.
 | The work item is silent about a subsystem an upstream document commits to             | Silence is exclusion for a subsystem, integration, or artifact. The commitment is cut with the citation recorded, not escalated as a choice ([D31](artifacts/decision-log.md#d31-the-scope-gate-cuts-subsystems-never-necessities-of-the-asked-for-work)). |
 | The work item is silent about a behavior the work it asked for needs to function       | The behavior stays. A short work item does not enumerate its own necessities, and the sweep does not read that silence as exclusion ([D31](artifacts/decision-log.md#d31-the-scope-gate-cuts-subsystems-never-necessities-of-the-asked-for-work)). |
 | Attached design material depicts work the work item's text never mentions             | The material justifies the work, because attaching it is part of the act of asking. Material reached by other means, a linked document or a folder from an earlier run, does not ([D32](artifacts/decision-log.md#d32-material-the-operator-attached-is-part-of-the-boundary)). |
-| A linked or closed item appears to justify a proposed unit                            | The linked item is not scope evidence. The unit is reported as unjustified ([D4](artifacts/decision-log.md#trivial-decisions)). Its description is not evidence about the current item's platform, status, or intent.       |
+| A linked or closed item appears to justify a proposed unit                            | The linked item is not scope evidence ([D3](artifacts/decision-log.md#d3-the-work-item-read-does-not-traverse-outward)). The unit is reported as unjustified ([D4](artifacts/decision-log.md#trivial-decisions)). Its description is not evidence about the current item's platform, status, or intent. |
 | A skill is handed a work item different from the one already recorded                  | The skill surfaces the conflict in its confirmation turn and asks which governs. It does not silently overwrite the record or silently trust it ([D33](artifacts/decision-log.md#d33-the-boundary-record-has-one-name-and-one-home)). |
 | A reviewer records that it could not inspect an input, then raises a finding that rests on that input | The finding is recorded as unverified and cannot carry blocking severity ([D19](artifacts/decision-log.md#d19-an-uninspected-input-strips-blocking-severity-from-the-findings-that-rest-on-it)). The disclosure travels attached to the finding, not in a separate assumptions list below it. |
-| A finding rests on visual material the skill holds                                    | The skill checks the finding against that material before filing it. A finding the material answers directly is closed with the citation rather than promoted to an open item.                                              |
+| A finding rests on visual material the skill holds                                    | The skill checks the finding against that material before filing it. A finding the material answers directly is closed with the citation rather than promoted to an open item ([D20](artifacts/decision-log.md#d20-design-dependent-findings-are-checked-against-the-designs-before-filing)). |
 | Decisions rest on material no reviewer received                                       | The findings record names that evidence class as unaudited ([D16](artifacts/decision-log.md#trivial-decisions)), so the coverage gap is visible rather than silent.                                                          |
 | The same finding is raised by two reviewers under different identifiers                | Findings merge by substance before the unverified and design-check rules apply, and the merged record carries every originating identifier ([D21](artifacts/decision-log.md#trivial-decisions)), so the two do not end up in contradictory states. |
 | A decision is written before the review round returns                                  | Classification into full or trivial happens once, after the round ([D22](artifacts/decision-log.md#d22-decisions-are-classified-once-after-the-review-round)), because two of its promotion signals cannot exist at draft time. |
@@ -209,7 +226,7 @@ existing behavior changes.
 | Supplied visual material could not be kept because it was never reachable as a file    | This is a different situation from having no material at all. The run names which items it could not keep and asks for them through the single stop, while they are still recoverable ([T1](artifacts/feature-technical-notes.md#t1-supplied-visual-material-is-reachable-on-disk)). |
 | An expected artifact is missing and nobody can produce it now                          | The skill records it in the report, drafts around it, and flags what it blocks. It does not stop ([D23](artifacts/decision-log.md#d23-the-two-missing-artifact-rules-are-reconciled-and-split-by-who-can-supply-the-artifact)). |
 | An expected artifact is missing and the operator could supply it now                   | The skill stops once, names the cost of proceeding, names how to supply it, and offers to proceed ([D25](artifacts/decision-log.md#d25-a-single-stop-is-reserved-for-an-input-only-the-operator-can-supply)). A second missing input of the same kind joins that one stop rather than causing another. |
-| The operator answers the work-item confirmation but not the direction-of-travel question | The absence is recorded as unanswered, which is a different state from a recorded "not known". A later skill may ask once; a recorded answer of any kind is never re-asked.                                                  |
+| The operator answers the work-item confirmation but not the direction-of-travel question | The absence is recorded as unanswered, which is a different state from a recorded "not known" ([D5](artifacts/decision-log.md#d5-direction-of-travel-is-asked-once-alongside-the-work-item-confirmation)). A later skill may ask once; a recorded answer of any kind is never re-asked. |
 | An escalation would carry four questions at once                                       | The run asks one, waits, then asks the next, and says how many are pending. It presents more than one in a turn only when the operator asks for that ([D12](artifacts/decision-log.md#d12-escalations-are-one-question-at-a-time-led-by-plain-language)). |
 | An explanation would name a concept the operator has never been given                  | A term counts as unintroduced when it appears in neither the work item nor this conversation. The run gives a concrete outcome the operator could observe, described in words from their own domain, in place of describing a mechanism ([D13](artifacts/decision-log.md#d13-a-shared-standard-covers-explaining-technical-work-to-a-non-implementer)). |
 | `han-feedback` finds a file for today and the session continued past it                | The file is updated in place and the update is stated ([D26](artifacts/decision-log.md#trivial-decisions)). The run skips only when nothing new has happened.                                                                |
@@ -219,7 +236,9 @@ existing behavior changes.
 
 - **Affordances.** The operator confirms the recorded boundary and answers the direction-of-travel question in one
   opening turn. They see the cut list in the closing summary, naming what each dropped unit would have done, and they
-  can reinstate any of it. They see a record of any evidence class no reviewer could audit.
+  can reinstate any of it
+  ([D35](artifacts/decision-log.md#d35-the-cut-list-is-visible-reversible-and-distinct-from-a-yagni-deferral)).
+  They see a record of any evidence class no reviewer could audit.
 - **Feedback.** The opening turn states what was captured: the boundary in the operator's own terms, and each piece of
   visual material kept, by name. Escalations after that arrive one at a time. Each leads with the consequence in plain
   language, carries named candidate answers, and puts technical references below the question or leaves them out
@@ -235,8 +254,7 @@ existing behavior changes.
 
 The four planning skills and the two supporting plugins pass artifacts and conventions between each other. The
 contracts below are what keeps this change set consistent rather than four separate fixes that disagree. Each row
-states the behavior guaranteed; where a convention has to live somewhere, the decision log records where
-([D31](artifacts/decision-log.md#d31-the-scope-gate-cuts-subsystems-never-necessities-of-the-asked-for-work) onward).
+states the behavior guaranteed; where a convention has to live somewhere, the decision log records where.
 
 | Coordinating System                                | Direction | Interaction                                                                                                                          | Ordering / Consistency Requirement                                                                                                                     |
 | -------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -247,36 +265,40 @@ states the behavior guaranteed; where a convention has to live somewhere, the de
 | Folder convention to every planning skill          | inbound   | Producer and consumer agree on where visual material lives and how it is cited.                                                       | One statement they both read, so the convention cannot drift between them ([D24](artifacts/decision-log.md#d24-the-visual-material-convention-lives-in-one-han-planning-reference)). |
 | Explanation standard to every escalating skill     | inbound   | Every escalating skill sources the standard for explaining technical work to a reader who will not implement it.                      | Sourced through the same kind of inline surfacing skill the readability standard uses, so one copy serves every plugin ([D13](artifacts/decision-log.md#d13-a-shared-standard-covers-explaining-technical-work-to-a-non-implementer)). |
 | Missing-artifact rule to its own skill's steps     | inbound   | One rule states the split by who can supply the artifact; any other mention references it.                                            | Stated once. The contradiction where a step and its own linked reference give opposite instructions is removed ([D23](artifacts/decision-log.md#d23-the-two-missing-artifact-rules-are-reconciled-and-split-by-who-can-supply-the-artifact)). |
-| Proportionality signal to team sizing              | outbound  | The work item's size is passed to reviewer briefs as a stated signal about output length.                                             | Separate from the existing size bands. It governs how much a reviewer writes, never how many reviewers are chosen.                                     |
-| Justification record to sequencing and packaging   | inbound   | Sequencing, phasing, and pull-request splits read the justification record before they run.                                           | A unit whose justification is unrecorded is not packaged ([D7](artifacts/decision-log.md#trivial-decisions)). Existence is established first.           |
+| Proportionality signal to team sizing              | outbound  | The work item's size is passed to reviewer briefs as a stated signal about output length.                                             | Separate from the existing size bands. It governs how much a reviewer writes, never how many reviewers are chosen ([D28](artifacts/decision-log.md#d28-output-volume-scales-to-the-size-of-the-work-item)). |
+| Justification record to sequencing and packaging   | inbound   | Sequencing, phasing, and pull-request splits read the justification record before they run. The justification is a named field of its own, not a line of summary prose ([D30](artifacts/decision-log.md#trivial-decisions)). | A unit whose justification is unrecorded is not packaged ([D7](artifacts/decision-log.md#trivial-decisions)). Existence is established first. |
 | Shaping context to the phased build                | inbound   | Scope the operator states when invoking `plan-a-phased-build` joins the work item in the boundary record.                             | A goal the operator states out loud is a boundary statement, so the skill's deliberate divergence from its source survives ([D34](artifacts/decision-log.md#d34-operator-stated-shaping-context-is-part-of-the-boundary)). |
 
 ## Out of Scope
 
 - Changing which specialists a planning skill selects, or the existing small, medium, and large team caps. The
-  proportionality signal governs output length only.
-- Changing the shared specialist agent definitions. The review-behavior rules live in the four skills' briefs, so no
-  skill outside those four changes behavior.
+  proportionality signal governs output length only
+  ([D28](artifacts/decision-log.md#d28-output-volume-scales-to-the-size-of-the-work-item)).
+- Changing the shared specialist agent definitions. The review-behavior rules reach a reviewer only through the
+  dispatching planning skill's brief, so no skill outside the four changes behavior
+  ([D36](artifacts/decision-log.md#d36-each-commitment-names-the-skills-it-applies-to)).
 - Re-opening behavioral decisions an upstream specification settled that the work item does cover. The license this
   specification grants is narrow: it reaches subsystems, integrations, and artifacts the work item never asks for, and
-  nothing else ([D9](artifacts/decision-log.md#d9-an-upstream-specification-is-an-artifact-not-a-scope-authority)).
+  nothing else ([D9](artifacts/decision-log.md#d9-an-upstream-specification-is-an-artifact-not-a-scope-authority),
+  [D31](artifacts/decision-log.md#d31-the-scope-gate-cuts-subsystems-never-necessities-of-the-asked-for-work)).
 - Changing the readability standard or the writing-voice profile. The new explanation standard sits beside them and
   governs what a run says to the operator in a turn, where the readability standard governs the shape of a written
   deliverable.
 - Changing where planning artifacts are written or what the existing artifacts contain, beyond the fields this
   specification names.
 
-Two obligations fall outside the behavior above and are carried by the same change: the long-form documentation for
-the four planning skills and `han-feedback` is updated to match the behavior, and the repository map's description of
-what the `han-planning` reference folder holds is corrected when the new owned reference lands.
+Two obligations fall outside the behavior above, carried by the same change. The long-form documentation for the four
+planning skills and `han-feedback` is updated to match the behavior. The repository's own documentation is corrected
+wherever the new shared convention leaves it stale
+([D24](artifacts/decision-log.md#d24-the-visual-material-convention-lives-in-one-han-planning-reference)).
 
 ## How We Will Know It Worked
 
 The Outcome's measure is a run that does not happen, which nothing observes directly. These four criteria stand in for
 it, and each one is checkable on a finished artifact.
 
-1. Every run that received visual material finishes with that material on disk beside the plan, and the produced
-   specification carries a reference table naming each item and the state it shows.
+1. Every run that received visual material finishes with that material on disk beside the plan. The produced
+   specification also carries a reference table naming each item and the state it shows.
 2. Every work unit and work item in a produced plan either carries a filled justification or appears in the cut list
    with a reason.
 3. No finding reaches the operator as build-blocking when its author recorded that it could not inspect the input the
@@ -355,14 +377,14 @@ it, and each one is checkable on a finished artifact.
   the operator supplies, and escalate one plain-language question at a time.
 - **Primary actors:** The operator who invokes a planning skill, the four planning skills, and the review teams they
   dispatch.
-- **Decisions settled by evidence:** 27 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 9 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by evidence:** 26; see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 10; see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** `han-core:junior-developer`, `han-core:gap-analyzer`, `han-core:information-architect`,
-  `han-core:edge-case-explorer`, `han-core:user-experience-designer` — see
+  `han-core:edge-case-explorer`, `han-core:user-experience-designer`; see
   [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** The scope gate gained a floor so a short work item cannot cut the necessities of
-  its own request, the boundary record gained a name and a home so downstream skills can find it, the explanation
-  standard gained the inline skill that delivers it, and every commitment now names which of the four skills it
-  applies to — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** The scope gate gained a floor, so a short work item cannot cut the necessities of
+  its own request. The boundary record gained a name and a home, so downstream skills can find it. The explanation
+  standard gained the inline skill that delivers it. The commitments now name which of the four skills each applies
+  to; see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 3
-- **Technical notes:** 1 — see [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)
+- **Technical notes:** 1; see [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)

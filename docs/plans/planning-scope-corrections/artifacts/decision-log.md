@@ -13,31 +13,41 @@ two overlap; every #156 improvement also appears in #157.
 
 ## Trivial decisions
 
-- D4: Unjustifiable work is reported, never re-justified from another item — when a proposed unit cannot be justified
-  from the work item in hand, the run reports it as unjustified rather than searching for a different item that
-  supports it (considered allowing a supporting item to be cited; rejected because the reported run built a confident
-  and wrong history that way). — Referenced in spec: Alternate Flows and States, Edge Cases and Failure Modes.
-- D7: Existence is established before packaging — no skill proposes pull-request splits, phasing, or sequencing for a
-  unit whose justification is unrecorded (considered leaving the order to the run's judgment; rejected because the
-  reported run packaged work it could not justify). — Referenced in spec: Coordinations.
-- D14: The specification emits the visual reference table and the inline placements the downstream inventory already
-  reads — a table listing each image with the state it shows, and each image placed beside the prose describing that
-  state (considered a table only; rejected because the consumer contract names both as its mapping source). —
-  Referenced in spec: Coordinations.
-- D16: The findings record names evidence classes no reviewer could audit — when decisions rest on material no
-  reviewer received, the record says so. — Referenced in spec: Edge Cases and Failure Modes.
-- D21: Each recorded finding carries the originating reviewer's own identifier — the identifier the reviewer assigned
-  is a field on the finding, and a finding raised by two reviewers merges into one record carrying both identifiers
-  (considered reconciling the two lists by hand at synthesis; rejected because that is what lost a finding in the
-  reported run). — Referenced in spec: Edge Cases and Failure Modes.
-- D26: `han-feedback` treats a same-day file as updatable, not closed — when the session continued past an existing
-  same-day file, or the operator asks for a compiled report, the file is updated in place and the update is stated. —
-  Referenced in spec: Edge Cases and Failure Modes.
-- D29: `han-feedback` names a blocked-by-environment publish case — the run says the environment refused rather than
-  that the run declined, does not retry the identical command, and hands over a copy-pasteable command. — Referenced
-  in spec: Edge Cases and Failure Modes.
-- D30: The justification is a structured field, not summary prose — it sits beside the references so the existing rule
-  that a work item's summary carries no identifier references stays intact. — Referenced in spec: Coordinations.
+Each bullet below records the decision, the alternative considered where there was one, and the same four
+cross-reference fields the full decisions carry.
+
+- **D4: Unjustifiable work is reported, never re-justified from another item.** When a proposed unit cannot be
+  justified from the work item in hand, the run reports it as unjustified rather than searching for a different item
+  that supports it. Considered allowing a supporting item to be cited; rejected because the reported run built a
+  confident and wrong history that way. Driven by findings: none. Linked technical notes: none. Dependent decisions:
+  none. Referenced in spec: Alternate Flows and States, Edge Cases and Failure Modes.
+- **D7: Existence is established before packaging.** No skill proposes pull-request splits, phasing, or sequencing for
+  a unit whose justification is unrecorded. Considered leaving the order to the run's judgment; rejected because the
+  reported run packaged work it could not justify. Driven by findings: none. Linked technical notes: none. Dependent
+  decisions: none. Referenced in spec: Coordinations.
+- **D14: The specification emits the visual reference table and the inline placements the downstream inventory already
+  reads.** A table listing each image with the state it shows, and each image placed beside the prose describing that
+  state. Considered a table only; rejected because the consumer contract names both as its mapping source. Driven by
+  findings: none. Linked technical notes: none. Dependent decisions: none. Referenced in spec: Actors and Triggers, Coordinations.
+- **D16: The findings record names evidence classes no reviewer could audit.** When decisions rest on material no
+  reviewer received, the record says so. Driven by findings: none. Linked technical notes: none. Dependent decisions:
+  none. Referenced in spec: Actors and Triggers, Edge Cases and Failure Modes.
+- **D21: Each recorded finding carries the originating reviewer's own identifier.** The identifier the reviewer
+  assigned is a field on the finding, and a finding raised by two reviewers merges into one record carrying both
+  identifiers. Considered reconciling the two lists by hand at synthesis; rejected because that is what lost a finding
+  in the reported run. Driven by findings: F16. Linked technical notes: none. Dependent decisions: none. Referenced in
+  spec: Actors and Triggers, Edge Cases and Failure Modes.
+- **D26: `han-feedback` treats a same-day file as updatable, not closed.** When the session continued past an existing
+  same-day file, or the operator asks for a compiled report, the file is updated in place and the update is stated.
+  Driven by findings: none. Linked technical notes: none. Dependent decisions: none. Referenced in spec: Edge Cases
+  and Failure Modes.
+- **D29: `han-feedback` names a blocked-by-environment publish case.** The run says the environment refused rather
+  than that the run declined, does not retry the identical command, and hands over a copy-pasteable command. Driven by
+  findings: none. Linked technical notes: none. Dependent decisions: none. Referenced in spec: Edge Cases and Failure
+  Modes.
+- **D30: The justification is a structured field, not summary prose.** It sits beside the references so the existing
+  rule that a work item's summary carries no identifier references stays intact. Driven by findings: none. Linked
+  technical notes: none. Dependent decisions: none. Referenced in spec: Coordinations.
 
 ## Full decisions
 
@@ -54,15 +64,15 @@ two overlap; every #156 improvement also appears in #157.
   `plan-implementation`, `plan-a-feature`, and `plan-a-phased-build` together and adds two `han-feedback` items, and
   #158 names `plan-a-feature`, `plan-implementation`, and `plan-work-items`.
 - **Rejected alternatives:**
-  - Planning skills only — rejected because the escalation-register fix would then carry its own inline guidance
+  - Planning skills only. Rejected because the escalation-register fix would then carry its own inline guidance
     rather than sourcing a shared one, which is the duplication this repository's one-canonical-source convention
     exists to prevent.
-  - Planning skills plus `han-communication`, deferring the feedback fixes — rejected because the two feedback items
+  - Planning skills plus `han-communication`, deferring the feedback fixes. Rejected because the two feedback items
     are small, already specified in the source issue, and cost nothing to carry.
-- **Linked technical notes:** —
-- **Driven by findings:** —
+- **Linked technical notes:** None
+- **Driven by findings:** None
 - **Dependent decisions:** D13, D26, D29
-- **Referenced in spec:** Actors and Triggers
+- **Referenced in spec:** Outcome
 
 ### D2: The work item is read and recorded as the scope boundary
 
@@ -79,10 +89,10 @@ two overlap; every #156 improvement also appears in #157.
   and Step 2 discovers implementation context, and neither mentions the originating item; `plan-a-feature` Step 1
   reads the user's argument and Step 2 discovers project context, with the same gap.
 - **Rejected alternatives:**
-  - Reading the work item only when the operator names one — rejected because the reported run had a work item
+  - Reading the work item only when the operator names one. Rejected because the reported run had a work item
     available and never opened it.
-  - Treating the upstream specification as the boundary — rejected because that is the failure being corrected.
-- **Linked technical notes:** —
+  - Treating the upstream specification as the boundary. Rejected because that is the failure being corrected.
+- **Linked technical notes:** None
 - **Driven by findings:** F4, F5
 - **Dependent decisions:** D3, D4, D5, D6, D8, D9, D11, D33, D34
 - **Referenced in spec:** Primary Flow, Alternate Flows and States
@@ -99,13 +109,13 @@ two overlap; every #156 improvement also appears in #157.
 - **Evidence:** Provided: #157 improvement 2 and its section "I read unrelated work items and built an inference
   chain from them".
 - **Rejected alternatives:**
-  - Allowing traversal with a requirement to check the platform or component field first — rejected because it keeps
+  - Allowing traversal with a requirement to check the platform or component field first. Rejected because it keeps
     the anti-pattern and adds a check the run already skipped once. The simpler version, banning the traversal,
     satisfies the same evidence.
-  - Banning all reference to the parent item — rejected because confirming the parent exists is cheap and orients the
+  - Banning all reference to the parent item. Rejected because confirming the parent exists is cheap and orients the
     reader without supplying scope.
-- **Linked technical notes:** —
-- **Driven by findings:** —
+- **Linked technical notes:** None
+- **Driven by findings:** None
 - **Dependent decisions:** D4
 - **Referenced in spec:** Alternate Flows and States, Edge Cases and Failure Modes
 
@@ -128,35 +138,36 @@ two overlap; every #156 improvement also appears in #157.
   that the run did not know the domain object involved was being deprecated and that this made the work "actively
   wrong rather than merely out of scope".
 - **Rejected alternatives:**
-  - Asking only when the code carries deprecation markers — rejected because the case that caused the failure left no
+  - Asking only when the code carries deprecation markers. Rejected because the case that caused the failure left no
     marker the run could find.
-  - A dedicated turn of its own — rejected because it adds a round trip to every planning run for a question that
+  - A dedicated turn of its own. Rejected because it adds a round trip to every planning run for a question that
     fits in an existing turn.
   - Deferring the question entirely, on the grounds that D3 and D4 already stop the outward search that made the
-    deprecation matter — rejected because the deprecation makes the work wrong on its own, not only when the run has
+    deprecation matter. Rejected because the deprecation makes the work wrong on its own, not only when the run has
     wandered. Once wired to the sweep the question passes the evidence test rather than recording an unused input.
-- **Linked technical notes:** —
-- **Driven by findings:** F9
+- **Linked technical notes:** None
+- **Driven by findings:** F9, F17, F30
 - **Dependent decisions:** D31
 - **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### D6: Every work unit names what it descends from
 
 - **Question:** How does scope creep become visible in the artifact rather than only in review?
-- **Decision:** Every work unit and every work item carries a justification field naming the work-item language or the
-  design artifact it descends from. A unit that cannot fill it is not written into the plan; it moves to a visible cut
-  list with the reason.
+- **Decision:** Every work unit and every work item carries a justification field naming one of three things: the
+  work-item language it descends from, the design material the operator attached, or the asked-for work it is a
+  necessity of. A unit that cannot fill it is not written into the plan; it moves to a visible cut list with the
+  reason.
 - **Rationale:** A required field turns creep into something a reader can see. The cut list preserves the record of
   what was considered and dropped, which a silent omission destroys. What counts as a valid descent is settled by two
   companion decisions: the scope gate's floor, which keeps necessities of the asked-for work from failing the field,
   and the attached-material rule, which says which design artifacts qualify.
 - **Evidence:** User input (strictness confirmed directly). Provided: #157 improvements 3 and 10.
 - **Rejected alternatives:**
-  - A required field with no cut section — rejected because the cut becomes invisible and the reader loses the record
+  - A required field with no cut section. Rejected because the cut becomes invisible and the reader loses the record
     of what was considered.
-  - An advisory field — rejected because it leaves creep detection to review, which is what failed four times in the
+  - An advisory field. Rejected because it leaves creep detection to review, which is what failed four times in the
     reported session.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F1, F2, F10
 - **Dependent decisions:** D7, D30, D31, D32, D35
 - **Referenced in spec:** Primary Flow, Alternate Flows and States
@@ -166,7 +177,8 @@ two overlap; every #156 improvement also appears in #157.
 - **Question:** Does the YAGNI sweep cover commitments the plan inherited from an upstream document?
 - **Decision:** Yes. The sweep walks every subsystem, integration, and artifact the plan touches, including everything
   inherited, against one question: does the work item ask for this, or exclude it by statement or by silence? An
-  inherited commitment no work item supports is deferred or cut, with the citation.
+  inherited commitment no work item supports is cut, with the citation, and recorded in the cut list. What silence can
+  cut is bounded by D31: the sweep never cuts behavior required to deliver what the work item does ask for.
 - **Rationale:** The rule's enumerated targets are all things the plan might add, and the sweep walks only what the
   loop produced. Scope arriving pre-committed from an upstream document is never swept, which is exactly the
   inheritance that needed a filter.
@@ -175,10 +187,10 @@ two overlap; every #156 improvement also appears in #157.
   machinery, test scaffolding, schema columns, and indexes, and `plan-implementation`'s operating principles state
   that the plan "inherits the spec's behavioral commitments".
 - **Rejected alternatives:**
-  - Adding the scope question to the shared YAGNI rule itself — rejected because the rule is vendored across plugins
+  - Adding the scope question to the shared YAGNI rule itself. Rejected because the rule is vendored across plugins
     and applies to code and coding standards too, where "the work item" has no referent. The gate belongs to the
     planning skills that have a work item.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F1
 - **Dependent decisions:** D9, D31
 - **Referenced in spec:** Primary Flow
@@ -198,11 +210,11 @@ two overlap; every #156 improvement also appears in #157.
   operating principle "The feature specification is the ground truth for _what_. Do not re-open behavioral decisions
   the specification already settled."
 - **Rejected alternatives:**
-  - A general license to challenge any specification claim — rejected because it reopens the settled-behavior debates
+  - A general license to challenge any specification claim. Rejected because it reopens the settled-behavior debates
     the current principle correctly prevents, and no reported evidence asks for it.
-  - Leaving the principle unchanged and relying on the scope gate alone — rejected because the principle would still
+  - Leaving the principle unchanged and relying on the scope gate alone. Rejected because the principle would still
     contradict the gate, which is the kind of two-rules-one-situation conflict this change set exists to remove.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F1
 - **Dependent decisions:** D10, D11, D31
 - **Referenced in spec:** Alternate Flows and States, Out of Scope
@@ -225,11 +237,11 @@ two overlap; every #156 improvement also appears in #157.
 - **Evidence:** Provided: #157 improvement 5; #156 improvement 3. Codebase: `plan-implementation` Step 4 instructs
   specialists to raise disagreement as a contradiction finding that "names the alternative mechanic they recommend".
 - **Rejected alternatives:**
-  - Letting the specialist raise it as a generic finding — rejected because the aggregation classifies findings by
+  - Letting the specialist raise it as a generic finding. Rejected because the aggregation classifies findings by
     text rules, so an unnamed verdict would route back into the escalation path this decision exists to avoid.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F7
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Alternate Flows and States
 
 ### D11: A question the work item already answers is never escalated
@@ -244,11 +256,11 @@ two overlap; every #156 improvement also appears in #157.
 - **Evidence:** Provided: #157 improvement 7 and section 2; #156 improvement 4. Codebase: `plan-implementation`
   Step 4 already carries the evidence-first directive for the specification.
 - **Rejected alternatives:**
-  - Extending only the forward half, so a work-item-answered question is not raised — rejected because it leaves the
+  - Extending only the forward half, so a work-item-answered question is not raised. Rejected because it leaves the
     out-of-scope case escalating, which is the case that cost the operator turns.
-- **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
+- **Linked technical notes:** None
+- **Driven by findings:** None
+- **Dependent decisions:** None
 - **Referenced in spec:** Alternate Flows and States
 
 ### D12: Escalations are one question at a time, led by plain language
@@ -273,14 +285,14 @@ two overlap; every #156 improvement also appears in #157.
   `plan-a-feature` Step 7 presents findings "together, organized by the decision they affect"; `plan-a-phased-build`
   Steps 5 and 7 batch open items into one presentation.
 - **Rejected alternatives:**
-  - Keeping the batch and adding a register rule — rejected because the reported failure was the batch as much as the
+  - Keeping the batch and adding a register rule. Rejected because the reported failure was the batch as much as the
     register, and the operator asked for one issue at a time by name.
-  - Applying the rule to every operator-facing turn — rejected because it would forbid the opening confirmation turn
+  - Applying the rule to every operator-facing turn. Rejected because it would forbid the opening confirmation turn
     this specification also commits to, and would replace two skills' deliberate grouped presentations with nothing
     better.
-  - Dropping the pending count — rejected on balance, but it is the weakest half of this decision: no reported run
+  - Dropping the pending count. Rejected on balance, but it is the weakest half of this decision: no reported run
     complains about not knowing the queue depth, and the evidence is inferential from the turn-efficiency scores.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F6, F26
 - **Dependent decisions:** D13
 - **Referenced in spec:** Primary Flow, User Interactions, Edge Cases and Failure Modes
@@ -313,16 +325,16 @@ two overlap; every #156 improvement also appears in #157.
   vendored copies; all five `han-planning` skills source the readability standard by invoking
   `han-communication:readability-guidance`, which reads the rule from its own plugin root.
 - **Rejected alternatives:**
-  - Inline guidance in each escalating skill — rejected because it duplicates the same content across at least four
+  - Inline guidance in each escalating skill. Rejected because it duplicates the same content across at least four
     skills, against this repository's one-canonical-source convention.
-  - Extending `readability-guidance` to surface both standards — rejected because it loads escalation guidance at
+  - Extending `readability-guidance` to surface both standards. Rejected because it loads escalation guidance at
     drafting time, when only drafting guidance is wanted, and because it changes a skill this specification otherwise
     leaves alone.
-  - A skill that reviews and rewrites escalation prose, with its own agent — rejected under the simpler-version test.
+  - A skill that reviews and rewrites escalation prose, with its own agent. Rejected under the simpler-version test.
     Recorded as a deferral; the surfacing skill is the vehicle, not that.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F3, F25, F27
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Actors and Triggers, User Interactions, Coordinations, Edge Cases and Failure Modes
 
 ### D15: Provided visual material is persisted when it arrives
@@ -338,12 +350,12 @@ two overlap; every #156 improvement also appears in #157.
   silent and total". Codebase: `plan-work-items` requires design references for UI-bearing work items whenever a
   `ui-designs/` folder is present, and no skill in the family creates that folder.
 - **Rejected alternatives:**
-  - Persisting at document-write time — rejected because the loss window is the whole run, and a compaction inside it
+  - Persisting at document-write time. Rejected because the loss window is the whole run, and a compaction inside it
     destroys the material before the write.
-  - Recording the material's absence in prose and continuing — rejected because that is what the earlier run did, and
+  - Recording the material's absence in prose and continuing. Rejected because that is what the earlier run did, and
     it produced an artifact that looks like it accounted for the problem.
 - **Linked technical notes:** T1
-- **Driven by findings:** —
+- **Driven by findings:** None
 - **Dependent decisions:** D14, D17, D18, D24, D27
 - **Referenced in spec:** Primary Flow
 
@@ -360,13 +372,13 @@ two overlap; every #156 improvement also appears in #157.
   still in context and recoverable.
 - **Evidence:** Provided: #158 improvement 3.
 - **Rejected alternatives:**
-  - Relying on the persist-on-arrival rule alone — rejected because the reported failure class is exactly a rule that
+  - Relying on the persist-on-arrival rule alone. Rejected because the reported failure class is exactly a rule that
     was never executed, and the gate costs one check.
-  - Claiming the gate catches the whole silent-loss class — rejected because it does not, and overstating it is how a
+  - Claiming the gate catches the whole silent-loss class. Rejected because it does not, and overstating it is how a
     gap survives. Recorded as an open item instead.
 - **Linked technical notes:** T1
 - **Driven by findings:** F28
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Primary Flow
 
 ### D18: Provided visual material reaches every dispatched reviewer
@@ -387,13 +399,13 @@ two overlap; every #156 improvement also appears in #157.
   as a set of specification sections plus artifact file paths, with no mention of visual material;
   `plan-implementation` Step 4 carries a structurally identical briefing table with the same gap.
 - **Rejected alternatives:**
-  - Passing the material only to the design specialist — rejected because the blind spot is wider than one
+  - Passing the material only to the design specialist. Rejected because the blind spot is wider than one
     specialist, and which reviewer needs it varies by feature.
-  - Putting the rule in the shared agent definitions — rejected because it would change every skill in the suite,
+  - Putting the rule in the shared agent definitions. Rejected because it would change every skill in the suite,
     including one this specification defers.
 - **Linked technical notes:** T1
 - **Driven by findings:** F8, F15, F34
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### D19: An uninspected input strips blocking severity from the findings that rest on it
@@ -412,13 +424,13 @@ two overlap; every #156 improvement also appears in #157.
 - **Evidence:** Provided: #155 improvement 2 and its section "That produced a wrong finding, which I then promoted to
   a blocking open item".
 - **Rejected alternatives:**
-  - Requiring the reviewer to omit the finding entirely — rejected because the finding may still be real, and
+  - Requiring the reviewer to omit the finding entirely. Rejected because the finding may still be real, and
     discarding it loses information the dispatching skill can verify itself.
   - Relying on D18 and D20 alone, on the grounds that material reaching every reviewer plus the dispatching skill's
-    own check already covers the reported scenario — rejected because both address findings that rest on material the
+    own check already covers the reported scenario. Rejected because both address findings that rest on material the
     run holds, and this rule covers any input a reviewer could not inspect, including ones the run never had.
-  - Putting the rule in the shared agent definitions — rejected for the same blast-radius reason as D18.
-- **Linked technical notes:** —
+  - Putting the rule in the shared agent definitions. Rejected for the same blast-radius reason as D18.
+- **Linked technical notes:** None
 - **Driven by findings:** F8, F16, F29, F35
 - **Dependent decisions:** D20
 - **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
@@ -432,12 +444,12 @@ two overlap; every #156 improvement also appears in #157.
   the run had them and did not re-read them. One rule in the resolution pass catches this with no agent change at all.
 - **Evidence:** Provided: #155 improvement 3.
 - **Rejected alternatives:**
-  - Relying on the unverified label alone — rejected because an unverified finding still reaches the operator, and
+  - Relying on the unverified label alone. Rejected because an unverified finding still reaches the operator, and
     the check is nearly free when the material is already on disk.
 - **Linked technical notes:** T1
-- **Driven by findings:** —
-- **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow
+- **Driven by findings:** None
+- **Dependent decisions:** None
+- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### D22: Decisions are classified once, after the review round
 
@@ -450,12 +462,12 @@ two overlap; every #156 improvement also appears in #157.
   Codebase: the decision-log template lists five promotion signals, two of which are the driving finding and the
   linked technical note.
 - **Rejected alternatives:**
-  - Keeping classification at draft time and accepting the churn — rejected because the churn is guaranteed by
+  - Keeping classification at draft time and accepting the churn. Rejected because the churn is guaranteed by
     construction, not occasional.
-- **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
-- **Referenced in spec:** Edge Cases and Failure Modes
+- **Linked technical notes:** None
+- **Driven by findings:** F18
+- **Dependent decisions:** None
+- **Referenced in spec:** Actors and Triggers, Edge Cases and Failure Modes
 
 ### D23: The two missing-artifact rules are reconciled and split by who can supply the artifact
 
@@ -476,14 +488,14 @@ two overlap; every #156 improvement also appears in #157.
   linked artifact-inventory reference says to surface it to the user before drafting because dependent work items are
   not draftable.
 - **Rejected alternatives:**
-  - Deleting one of the two rules — rejected because both describe real and different situations; the defect is that
+  - Deleting one of the two rules. Rejected because both describe real and different situations; the defect is that
     neither names which situation it covers.
-  - Leaving the canonical home unnamed — rejected because it reproduces one layer up the defect this decision
+  - Leaving the canonical home unnamed. Rejected because it reproduces one layer up the defect this decision
     corrects: two candidate homes, no rule, and the choice left to the run.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F12, F23, F24
 - **Dependent decisions:** D25, D27, D33
-- **Referenced in spec:** Edge Cases and Failure Modes
+- **Referenced in spec:** Coordinations, Edge Cases and Failure Modes
 
 ### D24: The visual-material convention lives in one han-planning reference
 
@@ -500,16 +512,16 @@ two overlap; every #156 improvement also appears in #157.
   in `plan-work-items`'s reference-artifact-inventory reference, and `han-planning/references/` currently holds only
   vendored copies of the shared rules.
 - **Rejected alternatives:**
-  - Canonical in `han-core` and vendored into each plugin — rejected because it puts a planning-only convention in
+  - Canonical in `han-core` and vendored into each plugin. Rejected because it puts a planning-only convention in
     the shared foundation and adds a vendored copy to keep byte-identical.
-  - Kept inside `plan-a-feature` and linked cross-skill by the others — rejected because it creates a cross-skill
+  - Kept inside `plan-a-feature` and linked cross-skill by the others. Rejected because it creates a cross-skill
     reference dependency this repository does not otherwise use.
-  - Placing it without stating its ownership — rejected because the folder's documented contract is vendored copies
+  - Placing it without stating its ownership. Rejected because the folder's documented contract is vendored copies
     only, and an unmarked exception is a silent trap for the next contributor who re-syncs.
-- **Linked technical notes:** —
-- **Driven by findings:** F22
-- **Dependent decisions:** —
-- **Referenced in spec:** Coordinations
+- **Linked technical notes:** None
+- **Driven by findings:** F22, F31
+- **Dependent decisions:** None
+- **Referenced in spec:** Coordinations, Out of Scope
 
 ### D25: A single stop is reserved for an input only the operator can supply
 
@@ -517,8 +529,9 @@ two overlap; every #156 improvement also appears in #157.
 - **Decision:** A skill stops exactly once when a missing input is something only the operator can supply and its
   absence degrades the deliverable. The test is whether the input exists outside the codebase and the operator can
   hand it over now. The run gathers every missing input meeting that test and covers them in the one stop, so a second
-  such input joins the stop rather than causing another. The stop is an escalation, so the plain-language rules govern
-  it: it names what is missing, names in plain language what the delivered artifact will be missing without it, names
+  such input joins the stop rather than causing another. The stop is an escalation put as a single question, which is
+  what keeps it inside the one-question-per-turn rule, and the plain-language rules govern it: it names what is
+  missing, names in plain language what the delivered artifact will be missing without it, names
   the action that would supply it, and offers to continue. Everything else stays autonomous.
 - **Rationale:** The current principle collapses three different situations: an input nobody can produce, a decision
   with a reasonable default, and an input the operator can supply cheaply right now. Only the third deserves a
@@ -528,13 +541,13 @@ two overlap; every #156 improvement also appears in #157.
   principle argues against the correct behavior here". Codebase: `plan-work-items`'s operating principle stops for the
   user only when the skill "genuinely cannot continue without input".
 - **Rejected alternatives:**
-  - Never stopping and reporting the gap loudly instead — rejected because the reported failure is exactly a run that
+  - Never stopping and reporting the gap loudly instead. Rejected because the reported failure is exactly a run that
     continued and produced work items for a visual card with no visual contract.
-  - Stopping whenever any expected artifact is missing — rejected because it reintroduces gating on inputs nobody can
+  - Stopping whenever any expected artifact is missing. Rejected because it reintroduces gating on inputs nobody can
     produce right now.
-  - Naming the cost without naming the supply action — rejected because it offers a choice where one branch has no
+  - Naming the cost without naming the supply action. Rejected because it offers a choice where one branch has no
     stated move, and the reported run's one-line under-reaction is what the rule exists to prevent.
-  - Leaving the stop outside the plain-language rules — rejected because "the work items will lack design references"
+  - Leaving the stop outside the plain-language rules. Rejected because "the work items will lack design references"
     satisfies an unbound "names the cost" and tells the operator nothing they can weigh.
 - **Linked technical notes:** T1
 - **Driven by findings:** F11, F12, F13
@@ -553,11 +566,11 @@ two overlap; every #156 improvement also appears in #157.
 - **Evidence:** Provided: #158 improvement 4 and its section "I under-reacted to my own missing-artifact check".
   Codebase: the work-item template's design-reference block is written as omitted when no `ui-designs/` folder exists.
 - **Rejected alternatives:**
-  - Treating every absent folder as a missing artifact — rejected because most work items have no visual surface, and
+  - Treating every absent folder as a missing artifact. Rejected because most work items have no visual surface, and
     it would produce a false report on each one.
-- **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
+- **Linked technical notes:** None
+- **Driven by findings:** None
+- **Dependent decisions:** None
 - **Referenced in spec:** Alternate Flows and States
 
 ### D28: Output volume scales to the size of the work item
@@ -578,14 +591,14 @@ two overlap; every #156 improvement also appears in #157.
   disproportionate output volume. Codebase: `plan-implementation` Step 3 sets team and round caps by size band, and
   no step constrains report length.
 - **Rejected alternatives:**
-  - Shrinking the team caps — rejected because the reports rate finding signal-to-noise at four out of five and name
+  - Shrinking the team caps. Rejected because the reports rate finding signal-to-noise at four out of five and name
     volume, not coverage, as the complaint.
-  - A hard line limit per report — rejected because it caps the useful and the padded alike; a stated signal lets the
+  - A hard line limit per report. Rejected because it caps the useful and the padded alike; a stated signal lets the
     reviewer judge. Kept on record as the fallback if the stated signal proves inert.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F8, F35
-- **Dependent decisions:** —
-- **Referenced in spec:** Actors and Triggers, Primary Flow, Out of Scope, Coordinations
+- **Dependent decisions:** None
+- **Referenced in spec:** Primary Flow, Coordinations, Out of Scope
 
 ### D31: The scope gate cuts subsystems, never necessities of the asked-for work
 
@@ -604,14 +617,14 @@ two overlap; every #156 improvement also appears in #157.
   subsystem, against #156's record that the same run's specialists correctly surfaced focus behavior, error
   association, and announcement behavior for the card the ticket did ask for.
 - **Rejected alternatives:**
-  - Cutting anything not named and relying on the cut list to catch mistakes — rejected because it produces a long
+  - Cutting anything not named and relying on the cut list to catch mistakes. Rejected because it produces a long
     cut list on every terse ticket, and real work is lost when the list gets skimmed.
-  - Sweeping only commitments inherited from an upstream document — rejected because a run can author out-of-scope
+  - Sweeping only commitments inherited from an upstream document. Rejected because a run can author out-of-scope
     work itself, which is one of the reported failures.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F1
 - **Dependent decisions:** D32
-- **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, Out of Scope
+- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes, Out of Scope
 
 ### D32: Material the operator attached is part of the boundary
 
@@ -627,13 +640,13 @@ two overlap; every #156 improvement also appears in #157.
 - **Evidence:** User input (precedence confirmed directly). Provided: #158, which establishes that the visual material
   was the primary specification of the card's appearance; #155, whose decisions cite the designs as evidence.
 - **Rejected alternatives:**
-  - Ticket text always wins — rejected because it discards the visual contract the reported failure was about.
-  - Writing the unit but flagging it as design-justified — rejected because nearly every unit in a design-driven
+  - Ticket text always wins. Rejected because it discards the visual contract the reported failure was about.
+  - Writing the unit but flagging it as design-justified. Rejected because nearly every unit in a design-driven
     feature would carry the flag, which makes the flag meaningless.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F2
-- **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes
+- **Dependent decisions:** None
+- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
 
 ### D33: The boundary record has one name and one home
 
@@ -652,13 +665,13 @@ two overlap; every #156 improvement also appears in #157.
   Codebase: `plan-implementation` writes a discovery-notes file; `plan-a-feature` and `plan-a-phased-build` record
   discovery findings with no file named; `plan-work-items` writes exactly one output file and has no context artifact.
 - **Rejected alternatives:**
-  - Letting each skill record the boundary in whatever artifact it already writes — rejected because the downstream
+  - Letting each skill record the boundary in whatever artifact it already writes. Rejected because the downstream
     contract then has no name to look for, and four different locations is the drift the record exists to stop.
-  - Treating an absent record as equivalent to "no work item exists" — rejected because it converts the most common
+  - Treating an absent record as equivalent to "no work item exists". Rejected because it converts the most common
     runtime state into a silent no-op.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F4, F14, F24
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, Coordinations
 
 ### D34: Operator-stated shaping context is part of the boundary
@@ -675,13 +688,13 @@ two overlap; every #156 improvement also appears in #157.
   related documents or inline context, and Step 3 captures shaping context that explicitly may diverge from the
   source. Provided: #157, which names this skill among the three the fixes target.
 - **Rejected alternatives:**
-  - Requiring divergence to trace to a work item — rejected because it breaks the skill's deliberate design for the
+  - Requiring divergence to trace to a work item. Rejected because it breaks the skill's deliberate design for the
     sake of uniformity across four skills that are not uniform.
-  - Exempting the skill from the boundary — rejected because it leaves one of the named skills unfixed, and phased
+  - Exempting the skill from the boundary. Rejected because it leaves one of the named skills unfixed, and phased
     builds feed the others.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F5
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Coordinations
 
 ### D35: The cut list is visible, reversible, and distinct from a YAGNI deferral
@@ -693,7 +706,7 @@ two overlap; every #156 improvement also appears in #157.
   list holds work the work item excludes; the existing deferral section holds work no evidence supports yet, with a
   reopening trigger. An entry belongs to one or the other, never both.
 - **Rationale:** The change set closes the escalation path for scope questions on purpose, which removes the channel
-  every reported correction actually travelled: the operator saw a proposal and objected. If the cut list lives only
+  every reported correction travelled: the operator saw a proposal and objected. If the cut list lives only
   in a written artifact the operator has no reason to open, the correction loop depends on them reading it, and the
   new failure direction goes undetected. A negative reason tells the operator nothing about consequence, which is what
   they need to catch a wrong cut. The reinstatement rule carries through the shared rule that the user always wins,
@@ -703,22 +716,22 @@ two overlap; every #156 improvement also appears in #157.
   YAGNI rule's escalation clause states that the user may direct an item to be kept against the rule, and fixes the
   deferral section's format and its reopening-trigger field.
 - **Rejected alternatives:**
-  - Recording cuts in the artifact only — rejected because it makes detection depend on the operator reading a file
+  - Recording cuts in the artifact only. Rejected because it makes detection depend on the operator reading a file
     the run gives them no reason to open.
-  - Folding the cut list into the existing deferral section — rejected because the two answer different questions and
+  - Folding the cut list into the existing deferral section. Rejected because the two answer different questions and
     a deferral's reopening trigger has no meaning for work the work item excludes outright.
-  - A negative reason alone — rejected because it is the reason the run cut, not the consequence the operator needs.
-- **Linked technical notes:** —
+  - A negative reason alone. Rejected because it is the reason the run cut, not the consequence the operator needs.
+- **Linked technical notes:** None
 - **Driven by findings:** F10, F21
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Primary Flow, Alternate Flows and States, User Interactions
 
 ### D36: Each commitment names the skills it applies to
 
 - **Question:** Do all four planning skills gain every commitment?
 - **Decision:** No. Each commitment names which of the four it applies to, and where a skill has no step a commitment
-  attaches to, the commitment does not create one. The review-behavior rules live in the four skills' briefs rather
-  than in the shared agent definitions.
+  attaches to, the commitment does not create one. The review-behavior rules live in the brief each dispatching skill
+  writes rather than in the shared agent definitions, so they reach only the skills this specification names.
 - **Rationale:** The four skills differ materially in the steps this change touches, so a single flow described as one
   run reads as either a large change or a no-op for two of them, and both readings are defensible from the same text.
   Naming the applicability is what makes the change set implementable without a second round of guessing. Keeping the
@@ -730,13 +743,13 @@ two overlap; every #156 improvement also appears in #157.
   `plan-a-feature` and `plan-implementation` have all four. The shared agent roster is dispatched by `han-coding`,
   `han-research`, and `iterative-plan-review` as well as by these skills.
 - **Rejected alternatives:**
-  - Putting the review rules in the shared agent definitions — rejected because it changes every skill in the suite,
+  - Putting the review rules in the shared agent definitions. Rejected because it changes every skill in the suite,
     contradicting this specification's own deferral, and is a far larger change than the issues asked for.
-  - Splitting the two review rules across both homes — rejected because two mechanisms for one class of rule is
+  - Splitting the two review rules across both homes. Rejected because two mechanisms for one class of rule is
     harder to explain than the containment is worth.
-  - Describing one uniform run — rejected because it leaves an implementer to decide which of two very different
+  - Describing one uniform run. Rejected because it leaves an implementer to decide which of two very different
     change sets was meant.
-- **Linked technical notes:** —
+- **Linked technical notes:** None
 - **Driven by findings:** F18, F8
-- **Dependent decisions:** —
+- **Dependent decisions:** None
 - **Referenced in spec:** Actors and Triggers, Out of Scope

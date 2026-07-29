@@ -22,5 +22,5 @@ findings live in [team-findings.md](team-findings.md).
   single-stop rule and asks the operator to supply the files. That fallback is why the specification commits to a stop
   rather than to guaranteed persistence.
 - **Supports decisions:** D15, D17, D18, D20, D25
-- **Driven by findings:** F11
+- **Driven by findings:** F11, F20, F28
 - **Referenced in spec:** Actors and Triggers, Primary Flow, Edge Cases and Failure Modes
