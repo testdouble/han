@@ -161,14 +161,21 @@ against an input the agent cannot open, and it is listed under Risk 2 rather tha
 
 ## Unit 3: `han-feedback` corrections
 
-**Status:** Not yet landed.
+**Status:** Landed by read-through. The two follow-on runs remain.
 
-- [ ] A same-day second run updates today's file in place and states the update, rather than skipping.
-- [ ] The run skips only when nothing new has happened since the existing file was written.
-- [ ] A run in an environment that refuses to publish reports the environment refusing, not the run declining.
-- [ ] That run does not retry the identical command.
-- [ ] That run hands over a copy-pasteable command.
-- [ ] `han-feedback`'s long-form doc matches the behavior the skill now carries.
+- [x] The operating principle now reads "One file per day, updated in place" and states that an existing file is
+      updatable rather than closed.
+- [x] Step 3 branches on whether anything new has happened, updates in place on the "something new" path, and names the
+      skip path as the narrow one.
+- [x] Step 4 keeps the existing filename when updating, so the path already reported to the user still resolves.
+- [x] Step 7 edits in place, preserves every recorded point, and states the update by naming the file and what was added.
+- [x] Step 10 carries an environment-refused case: it says the environment refused rather than that the run declined,
+      does not retry the identical command, and hands over the filled-in command.
+- [x] `han-feedback`'s long-form doc matches the behavior the skill now carries, in its feedback-file bullet, its
+      GitHub-issue output bullet, and a new "run it again later in the same day" tip.
+- [ ] Follow-on run: a same-day second run updates today's file in place and states the update.
+- [ ] Follow-on run: a run in an environment that refuses to publish reports the environment refusing, does not retry,
+      and hands over the command.
 
 ## Unit 4: `plan-work-items`
 
