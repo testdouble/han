@@ -87,7 +87,6 @@ _Scope: {what this chart represents — e.g. the request path from entry to resp
 flowchart TD
   {the main process flow}
 ```
-````
 
 {One or two sentences walking the reader through the chart at a high level — read as how the code delivers on the why
 above.}
@@ -110,7 +109,7 @@ line each on what each is for.}
 
 ## PR mode — explaining a set of changes
 
-```markdown
+````markdown
 # Change Overview: {short name of the pull request or branch}
 
 {Intro paragraph: one or two sentences naming what is being examined — which
@@ -163,7 +162,7 @@ system; what it omits, if partial}._
 ```mermaid
 flowchart TD
   {how the change moves through or affects the system}
-````
+```
 
 {One or two sentences on how to read the chart.}
 
@@ -176,6 +175,4 @@ quality or risk judgment; that is code-review's job, not this skill's. -->
 {The concrete entry points — the specific files or components — where the change is densest or most interconnected, with
 one line each on why a reviewer should slow down there.}
 
-```
-
-```
+````
