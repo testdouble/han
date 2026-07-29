@@ -195,6 +195,13 @@ phased build, work-item list, coding standard, or test plan counts too when a hu
 output is code, or a structured artifact consumed only by downstream skills as machine input with no human reading it
 end to end, are out of scope and skip this section.
 
+There is a second, narrower standard beside it. The
+[explanation standard](./han-communication/references/explanation-rule.md) governs what a run says to a person in a turn:
+an escalation, a confirmation, a stop for a missing input. Readability governs the shape of a written deliverable. A skill
+that both drafts a document and stops to ask questions wires in both, sourcing readability at its drafting point and
+invoking `han-communication:explanation-guidance` at the point it talks to the operator. A skill that never asks a
+question needs only the readability wiring below.
+
 The inclusion test is the guide; the enumerated list in
 [Readability](./docs/readability.md#scope-which-skills-are-reader-facing) is authoritative. When a new skill passes the
 test, add it to that list and wire the standard in:

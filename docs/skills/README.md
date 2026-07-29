@@ -33,6 +33,9 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   existing patterns or evidence-based research.
 - [`/edit-for-readability`](../../han-communication/docs/skills/edit-for-readability.md) — Rewrite the prose of a target
   you already have against the shared readability standard, preserving every fact.
+- [`/explanation-guidance`](../../han-communication/docs/skills/explanation-guidance.md) — Surface the shared standard
+  for explaining technical work to a reader who will not implement it, so a skill's questions and stops name a concrete
+  outcome instead of a mechanism.
 - [`/gap-analysis`](../../han-research/docs/skills/gap-analysis.md) — Compare two artifacts (current state versus desired
   state) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs.
 - [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) — Serve the authoritative guidance for building skills,

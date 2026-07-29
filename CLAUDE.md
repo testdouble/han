@@ -102,7 +102,7 @@ han-plugin-builder skill:
 │   │   └── plugin.json
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
-│   └── references/     # Cross-skill reference files vendored for han-planning skills (yagni-rule.md, evidence-rule.md)
+│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
 ├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/

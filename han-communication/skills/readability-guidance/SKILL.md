@@ -4,9 +4,11 @@ description: >
   Surfaces Han's shared Human-Readable Output Standard — the readability rule and the writing-voice profile — into the
   calling skill's own context, so the caller drafts in voice and runs its self-check against the current standard
   sourced from one canonical copy. Use when a prose-producing skill needs the shared readability standard available in
-  context before it drafts. Runs in the caller's context and hands control straight back; it does not produce a
+  context before it drafts. Governs the shape of a written deliverable, where explanation-guidance governs what a run
+  says to a person in a turn. Runs in the caller's context and hands control straight back; it does not produce a
   deliverable of its own, rewrite anything, or judge the caller's work. Does not run the adversarial rewrite pass —
-  dispatch the readability-editor agent for that, or use edit-for-readability to rewrite an existing target.
+  dispatch the readability-editor agent for that, or use edit-for-readability to rewrite an existing target. Does not
+  cover explaining technical work to a reader who will not implement it — use explanation-guidance for that.
 allowed-tools: Read
 ---
 
