@@ -103,8 +103,10 @@ existing behavior changes.
    turn is a confirmation, not an escalation, and is the one turn that carries more than one ask
    ([D12](artifacts/decision-log.md#d12-escalations-are-one-question-at-a-time-led-by-plain-language)).
 4. The skill persists every piece of visual material the operator supplied into a folder beside the plan, identifiable
-   by the state each one depicts. This happens when the material arrives, not when the document is written
-   ([D15](artifacts/decision-log.md#d15-provided-visual-material-is-persisted-when-it-arrives),
+   by the state each one depicts. This happens when the material arrives, not when the document is written. It also
+   notes each item in the boundary record as that item arrives, so what the run received is on disk rather than held
+   in memory ([D15](artifacts/decision-log.md#d15-provided-visual-material-is-persisted-when-it-arrives),
+   [D17](artifacts/decision-log.md#d17-a-completeness-gate-confirms-visual-material-reached-disk),
    [T1](artifacts/feature-technical-notes.md#t1-supplied-visual-material-is-reachable-on-disk)).
 5. The skill discovers its context and drafts its artifact as it does today, with one addition. Every work unit and
    every work item now carries a justification. It names the work-item language it descends from, the design material
@@ -132,8 +134,9 @@ existing behavior changes.
    consequence a person who will not read the code would describe, carries named candidate answers, and places
    technical references below the question or leaves them out
    ([D12](artifacts/decision-log.md#d12-escalations-are-one-question-at-a-time-led-by-plain-language)).
-10. Before declaring the artifact finished, the skill confirms that visual material it recorded receiving exists on
-    disk beside the plan ([D17](artifacts/decision-log.md#d17-a-completeness-gate-confirms-visual-material-reached-disk)).
+10. Before declaring the artifact finished, the skill confirms that every item the boundary record lists as received
+    exists on disk beside the plan
+    ([D17](artifacts/decision-log.md#d17-a-completeness-gate-confirms-visual-material-reached-disk)).
     It also presents the cut list in the closing summary alongside the artifact paths
     ([D35](artifacts/decision-log.md#d35-the-cut-list-is-visible-reversible-and-distinct-from-a-yagni-deferral)).
 
@@ -338,6 +341,16 @@ it, and each one is checkable on a finished artifact.
 - **Reopen when:** A run reads material from an earlier session and a reviewer or implementer acts on the wrong item.
 - **Source:** F36.
 
+### Detecting a reviewer that does not disclose its own blind spot
+
+- **Why deferred:** Evidence test. The rule that strips blocking severity fires on the reviewer's own disclosure, and
+  the one reported run supplies the only evidence, in which the reviewer did disclose. The design re-check already
+  covers that documented failure without depending on the reviewer saying anything, so building for the silent case
+  now would be speculation.
+- **Reopen when:** A reported run shows a reviewer raising a blocking finding on an input it could not inspect,
+  without saying it could not inspect it.
+- **Source:** F29, carried as an open item through review and settled here.
+
 ### Automated validation that a specification carries its visual reference table
 
 - **Why deferred:** Evidence test. No incident shows the completeness gate being skipped once it exists. The gate
@@ -354,22 +367,21 @@ it, and each one is checkable on a finished artifact.
 
 ## Open Items
 
-- **OI-1:** The completeness gate reads what the run recorded receiving. A session compacted before the record was
-  written leaves the gate nothing to check, so it passes without catching that case.
-  - **Resolves when:** A signal the gate can read that survives a compaction is identified, or the narrower claim is
-    accepted as the whole commitment.
-  - **Blocks implementation:** No. The gate still catches the case where the persist step was skipped inside an intact
-    session, which is the case the reported run hit.
-- **OI-2:** The unverified-finding rule fires on a reviewer's own disclosure, so it is inert against a reviewer that
-  does not notice its own blindness. One reported run supplies the only evidence, and in it the reviewer did disclose.
-  - **Resolves when:** A reported run shows a reviewer raising a blocking finding on an input it could not inspect
-    without saying so.
-  - **Blocks implementation:** No. The rule is additive to the material reaching reviewers in the first place.
-- **OI-3:** Whether a stated proportionality signal changes how much a reviewer writes is not established by any
-  reported run. The problem it addresses is evidenced three times; the mechanism is not.
-  - **Resolves when:** One run measures reviewer output length against a stated signal.
-  - **Blocks implementation:** No. If it fails, the fallback is the length limit recorded under the decision's
-    rejected alternatives.
+None remain. The three items this specification carried after review were each settled, and the record of where they
+went is kept here so a reader can follow them.
+
+- **OI-1, now closed.** The completeness gate read what the run held in memory, so a compacted session left it nothing
+  to check. The run now notes each received item in the boundary record as it arrives, and the gate reads that record
+  ([D17](artifacts/decision-log.md#d17-a-completeness-gate-confirms-visual-material-reached-disk)). This also catches
+  partial loss, where five items were received and three were saved.
+- **OI-2, now closed as an accepted limit.** The unverified-finding rule still fires on a reviewer's own disclosure,
+  so it stays inert against a reviewer that does not notice its own blind spot. The design re-check covers the one
+  failure the reports document, because it does not depend on the reviewer saying anything. The residue moved to
+  `## Deferred (YAGNI)` with the trigger that would reopen it
+  ([D19](artifacts/decision-log.md#d19-an-uninspected-input-strips-blocking-severity-from-the-findings-that-rest-on-it)).
+- **OI-3, now closed.** The proportionality signal named a size band and trusted the reviewer to infer a length. It
+  now names a rough target length instead, which is a target and not a cap
+  ([D28](artifacts/decision-log.md#d28-output-volume-scales-to-the-size-of-the-work-item)).
 
 ## Summary
 
@@ -386,5 +398,6 @@ it, and each one is checkable on a finished artifact.
   its own request. The boundary record gained a name and a home, so downstream skills can find it. The explanation
   standard gained the inline skill that delivers it. The commitments now name which of the four skills each applies
   to; see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 3
+- **Remaining open items:** 0. The three the review round raised were each settled after synthesis; see
+  [artifacts/team-findings.md](artifacts/team-findings.md) for how.
 - **Technical notes:** 1; see [artifacts/feature-technical-notes.md](artifacts/feature-technical-notes.md)

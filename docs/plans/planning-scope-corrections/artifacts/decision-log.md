@@ -362,24 +362,30 @@ cross-reference fields the full decisions carry.
 ### D17: A completeness gate confirms visual material reached disk
 
 - **Question:** What catches an image that was supplied but never persisted?
-- **Decision:** Before declaring a specification or plan finished, the skill confirms that visual material it recorded
-  receiving exists on disk beside the plan.
-- **What the gate does not catch:** Its input is the run's own record of what it received. A session compacted before
-  that record was written leaves nothing to check against, and the gate passes. The gate covers the case where the
-  persist step was skipped inside an intact session, which is the case the reported run hit. The narrower claim is
-  stated rather than left to be discovered.
+- **Decision:** The run notes each piece of visual material in the boundary record as that item arrives. Before
+  declaring a specification or plan finished, the skill confirms that every item the record lists exists on disk
+  beside the plan.
+- **Why the record rather than the run's memory:** The gate's input has to survive a compaction, because compaction is
+  the loss mode the technical note names. A gate reading the run's own memory of what it received passes vacuously
+  after a compaction, since the run no longer remembers receiving anything. Reading a record written when each item
+  arrived closes that, and it catches partial loss as well: five items received against three on disk is a failure the
+  memory-based gate could never see.
 - **Rationale:** An unpersisted image is a silent failure today. The gate makes it a loud one while the material is
   still in context and recoverable.
 - **Evidence:** Provided: #158 improvement 3.
 - **Rejected alternatives:**
   - Relying on the persist-on-arrival rule alone. Rejected because the reported failure class is exactly a rule that
     was never executed, and the gate costs one check.
-  - Claiming the gate catches the whole silent-loss class. Rejected because it does not, and overstating it is how a
-    gap survives. Recorded as an open item instead.
+  - Accepting the narrower claim and stating plainly that the gate misses compaction loss. Rejected because the record
+    already exists and adding a line to it as each item arrives costs nothing, so documenting the gap was more
+    expensive than closing it.
+  - Asking the operator at the end of every run whether they supplied any material. Rejected because it spends a turn
+    on every run, including the many with no visual material at all, against reports that already rate turn efficiency
+    poorly.
 - **Linked technical notes:** T1
-- **Driven by findings:** F28
+- **Driven by findings:** F28, F37
 - **Dependent decisions:** None
-- **Referenced in spec:** Primary Flow
+- **Referenced in spec:** Primary Flow, Open Items
 
 ### D18: Provided visual material reaches every dispatched reviewer
 
@@ -417,8 +423,10 @@ cross-reference fields the full decisions carry.
   rule applies, so the same finding raised twice cannot end up unverified under one identifier and blocking under
   another.
 - **Assumption this rests on:** The reviewer notices and discloses its own blindness. The rule is inert against a
-  reviewer that does not, and one reported run supplies the only evidence, in which the reviewer did disclose.
-  Recorded as an open item rather than left implicit.
+  reviewer that does not, and one reported run supplies the only evidence, in which the reviewer did disclose. This is
+  an accepted limit rather than a gap to close now: the design re-check covers the one documented failure without
+  depending on the reviewer saying anything, so building detection for the silent case would be speculation. The
+  residue is carried in the deferred section with the trigger that would reopen it.
 - **Rationale:** The reviewer in the reported session did disclose its blindness, in an assumptions section well below
   a finding it recommended treating as blocking. The disclosure existed and did not travel where it was needed.
 - **Evidence:** Provided: #155 improvement 2 and its section "That produced a wrong finding, which I then promoted to
@@ -431,9 +439,9 @@ cross-reference fields the full decisions carry.
     run holds, and this rule covers any input a reviewer could not inspect, including ones the run never had.
   - Putting the rule in the shared agent definitions. Rejected for the same blast-radius reason as D18.
 - **Linked technical notes:** None
-- **Driven by findings:** F8, F16, F29, F35
+- **Driven by findings:** F8, F16, F29, F35, F38
 - **Dependent decisions:** D20
-- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
+- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes, Open Items
 
 ### D20: Design-dependent findings are checked against the designs before filing
 
@@ -576,13 +584,15 @@ cross-reference fields the full decisions carry.
 ### D28: Output volume scales to the size of the work item
 
 - **Question:** What keeps reviewer output proportionate to the work being planned?
-- **Decision:** The work item's size is passed into every reviewer brief as a stated proportionality signal, separate
-  from the existing team-size bands. It governs how much a reviewer writes, never how many reviewers are chosen. The
-  signal lives in the two dispatching skills' briefs, not in the shared agent definitions.
-- **What is not established:** Three source issues evidence the problem. Nothing evidences that a stated signal in a
-  brief changes how much a shared agent writes, and the two levers that would be measurable, team caps and a hard
-  length limit, are both rejected below. Recorded as an open item with the fallback named rather than asserted as
-  settled.
+- **Decision:** Each reviewer brief carries a rough target length matched to the size of the work item, not a size
+  word the reviewer has to interpret. For a one-card ticket the brief names a report closer to 150 lines than 750. The
+  target is a target and not a cap, so a reviewer with more worth saying still says it. The signal reaches a reviewer
+  through the brief the dispatching skill writes, and governs how much a reviewer writes, never how many reviewers are
+  chosen.
+- **Why a number rather than an adjective:** A size band leaves the reviewer to infer a length, and nothing
+  establishes that the inference lands. The reported runs supply the relevant precedent from a different surface: the
+  same session's escalations failed twice while framed abstractly and succeeded once given concrete values. A rough
+  target applies that lesson without becoming the hard cap rejected below, which stays on record as the fallback.
 - **Rationale:** Report length scales with nothing today. The round cap scales with team size, and nothing scales with
   the size of the thing being built, so a three-sentence ticket that adds one card drew four reports totalling roughly
   three thousand lines. Keeping the signal separate from team sizing avoids trading review coverage for brevity, which
@@ -593,12 +603,16 @@ cross-reference fields the full decisions carry.
 - **Rejected alternatives:**
   - Shrinking the team caps. Rejected because the reports rate finding signal-to-noise at four out of five and name
     volume, not coverage, as the complaint.
-  - A hard line limit per report. Rejected because it caps the useful and the padded alike; a stated signal lets the
-    reviewer judge. Kept on record as the fallback if the stated signal proves inert.
+  - A hard line limit per report. Rejected because it caps the useful and the padded alike, where a target lets the
+    reviewer judge. Kept on record as the fallback if even a named target proves inert.
+  - Naming only the size band and trusting the reviewer to infer a length. Rejected because nothing establishes the
+    inference lands, and the same session's escalations show abstract framing failing where concrete values worked.
+  - Deferring the whole signal until the scope corrections land, on the grounds that cutting out-of-scope work shrinks
+    what there is to report on. Rejected because it leaves the most-reported symptom unaddressed in the first release.
 - **Linked technical notes:** None
-- **Driven by findings:** F8, F35
+- **Driven by findings:** F8, F35, F39
 - **Dependent decisions:** None
-- **Referenced in spec:** Primary Flow, Coordinations, Out of Scope
+- **Referenced in spec:** Primary Flow, Coordinations, Out of Scope, Open Items
 
 ### D31: The scope gate cuts subsystems, never necessities of the asked-for work
 

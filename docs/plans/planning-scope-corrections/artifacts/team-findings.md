@@ -434,6 +434,53 @@ the major findings carry.
   deferring under the evidence test. Affected decisions: none. Affected tech-notes: none. Changed in spec: Deferred
   (YAGNI).
 
+## Open-item settlements
+
+The three open items the review round left were settled by the author after synthesis, presented one at a time in the
+plain-language register this specification commits to. Each carries the finding it descends from.
+
+### F37: The completeness gate read memory rather than a record
+
+- **Agent:** author, settling the open item raised by junior-developer (JD-010) and recorded as F28
+- **Finding:** The gate checked what the run held in memory. A session compacted before that memory was written down
+  left the gate nothing to check, so it reported all clear on a run whose material was already lost. Compaction is the
+  loss mode the technical note names, so the gate missed the case it was built for.
+- **Resolution:** The run notes each item in the boundary record as that item arrives, and the gate reads the record.
+  The record is already written early and kept on disk, so this costs no new artifact. It also catches partial loss,
+  where more items were received than saved.
+- **Resolved by:** user input
+- **Affected decisions:** D17
+- **Affected tech-notes:** T1
+- **Changed in spec:** Primary Flow, Open Items
+
+### F38: The unverified-finding rule waits for a confession
+
+- **Agent:** author, settling the open item raised by junior-developer (JD-011) and recorded as F29
+- **Finding:** The rule strips blocking severity from a finding whose author said it could not inspect the input. A
+  reviewer that never opens the designs and never notices it skipped them says nothing, so the rule never fires and
+  the finding keeps full severity.
+- **Resolution:** Accepted as a limit rather than closed. The design re-check covers the one documented failure
+  without depending on the reviewer saying anything, and no reported run shows the silent case, so building detection
+  for it now would be speculation. Moved to the deferred section with the trigger that would reopen it.
+- **Resolved by:** user input
+- **Affected decisions:** D19
+- **Affected tech-notes:** None
+- **Changed in spec:** Deferred (YAGNI), Open Items
+
+### F39: The proportionality signal named a size, not a length
+
+- **Agent:** author, settling the open item raised by junior-developer (JD-013) and recorded as F35
+- **Finding:** The brief named a size band and left the reviewer to infer a length. Nothing establishes that the
+  inference lands, and the two levers that would certainly work were both rejected for good reasons, so the
+  commitment rested on hope.
+- **Resolution:** The brief names a rough target length matched to the work item, as a target and not a cap. This
+  applies the lesson the same reported session records on a different surface, where abstract framing failed twice and
+  concrete values worked. The hard limit stays on record as the fallback.
+- **Resolved by:** user input
+- **Affected decisions:** D28
+- **Affected tech-notes:** None
+- **Changed in spec:** Primary Flow, Open Items
+
 ## Findings recorded and closed without a change
 
 - **IA-010:** The technical note is correctly scoped, confining host paths and read-tool mechanics to the note while
