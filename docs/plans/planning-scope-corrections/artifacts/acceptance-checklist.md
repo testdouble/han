@@ -300,16 +300,48 @@ against an input the agent cannot open, and it is listed under Risk 2 rather tha
 
 ## Unit 7: `plan-implementation`
 
-**Status:** Not yet landed.
+**Status:** Landed by read-through. The repeated walkthrough findings remain.
 
-- [ ] Every applicability row the specification assigns to this skill is present, except the reference table and the
-      classification change, which belong to `plan-a-feature`.
-- [ ] The scope gate attaches to the existing YAGNI sweep step.
-- [ ] `Bash(cp *)` and `Bash(mkdir *)` are both present. This is the only one of the four skills that lacked the
-      directory-creating grant.
-- [ ] The escalation register is present in the escalation step.
-- [ ] The engineered walkthrough's review-behavior findings repeat against this skill.
-- [ ] The long-form doc matches the behavior the skill now carries.
+- [x] Every applicability row the specification assigns to this skill is present. The reference table and the
+      classification change are absent, correctly: both belong to `plan-a-feature`.
+- [x] A new Step 1.5 reads and records the boundary before Step 2 discovery, with the confirmation turn, the conflict rule,
+      and the no-outward-traversal rule. It also states that material the upstream specification's `Visual Reference` table
+      already persisted is not this run's to re-copy.
+- [x] The ground-truth operating principle now carves out scope: the specification stays authoritative for behavior and is
+      no longer a scope authority, with the license scoped to unrequested subsystems and nothing else.
+- [x] The scope gate attaches to the existing `## Step 7.5: YAGNI Sweep` as a third gate. This is the one skill of the four
+      with a discrete sweep step to attach to
+      ([D-5](implementation-decision-log.md#d-5-the-scope-gate-attaches-to-existing-yagni-points-not-to-a-new-sweep-step)).
+- [x] The scope gate's in-scope set is explicitly wider than the YAGNI gates': it walks everything inherited from the
+      specification, not only what the loop produced, and the asymmetry is stated rather than left to be noticed.
+- [x] The floor is stated at the attach point, with the calibration line.
+- [x] The mechanic-contradiction protocol gains the out-of-scope verdict as a third kind, with the reason it needs its own
+      kind (the protocol detects disagreement by whether an alternative was named), and it does not count toward the
+      spec-maturity threshold.
+- [x] Step 4 passes visual material to every dispatched specialist with the state each item shows, plus the boundary
+      record's path.
+- [x] Step 4 carries the proportionality signal as a rough target line count, stated as a target not a cap, governing
+      output length and never team size.
+- [x] Step 4 tells each specialist to put a blind-spot disclosure on the finding itself.
+- [x] Step 5 runs the three passes in order before building the claim ledger, and the ledger gains an `Unverified` state.
+- [x] Escalations in Step 6 and Step 7 go one question per turn with the consequence leading, technical detail below, and a
+      pending count. Step 7 states there is no end-of-run batch.
+- [x] The escalation register is present, recorded in `artifacts/implementation-iteration-history.md`.
+- [x] The single stop is present at Step 7 for an input only the user can supply.
+- [x] The plan template carries a `Justification` column on the work-unit table, a `## Cut for Scope` section immediately
+      before `## Deferred (YAGNI)` with each opening on what it is not, and a `Recorded boundary` bullet in Constraints.
+- [x] The synthesis audit checks that every `Justification` cell is filled and that no entry appears in both the cut list
+      and the deferral list.
+- [x] The completeness gate runs at Step 9 before the summary, reading the record rather than run memory.
+- [x] `Bash(cp *)` and `Bash(mkdir *)` are both present. This was the only one of the four skills lacking the
+      directory-creating grant, which it needs because it may create `artifacts/` and `ui-designs/`.
+- [x] The closing summary shows the cut list in the message, keeps it distinct from the deferral count, and names any
+      finding that stayed unverified.
+- [x] `han-communication:explanation-guidance` is sourced before the confirmation turn and before the first escalation.
+- [x] The long-form doc matches the behavior the skill now carries.
+- [ ] The engineered walkthrough's review-behavior findings, repeated against this skill: visual material reaching every
+      specialist, a specialist positioned so it cannot inspect an input, and two specialists raising the same finding under
+      different wording.
 
 ## Unit 8: `han-github` screenshot file set
 

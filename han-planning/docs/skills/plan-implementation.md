@@ -13,8 +13,9 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   team conversation.
 - **When to use it.** You have a `feature-specification.md` (or equivalent design doc) and need a plan for _how_ to
   build it.
-- **What you get back.** Three cross-referenced files: `feature-implementation-plan.md`,
-  `artifacts/implementation-decision-log.md`, `artifacts/implementation-iteration-history.md`.
+- **What you get back.** Four cross-referenced files: `feature-implementation-plan.md`,
+  `artifacts/implementation-decision-log.md`, `artifacts/implementation-iteration-history.md`, and
+  `artifacts/scope-boundary.md`. Plus a `ui-designs/` folder when you supply visual material.
 - **Size-aware.** The skill classifies the feature as small / medium / large, defaults to small, and caps both the team
   size and the iteration round count proportional to scope. Pass the size as the first positional argument to override
   (`/plan-implementation large path/to/spec.md`). See [Sizing](#sizing).
@@ -27,6 +28,26 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Team sized to the feature.** Always includes `project-manager` and `junior-developer`. Other specialists are chosen
   by what the feature touches: DevOps for rollout, data-engineer for schema, UX for interactions, security for threat
   surface, `software-architect` for intra-codebase design, `system-architect` for cross-service topology.
+- **The scope boundary, and what it licenses.** Before discovery, the skill records the work item this work descends
+  from at `artifacts/scope-boundary.md`, then opens with one confirmation turn to check it with you. The specification
+  stays the ground truth for _what_, but it is no longer the authority on scope: a commitment it carries for a subsystem,
+  integration, or artifact the work item never asks for is cut with the citation and lands in a visible `Cut for Scope`
+  section. The license reaches unrequested subsystems and nothing else, and it never cuts behavior the asked-for work
+  needs to function.
+- **The sweep now covers inherited scope.** The YAGNI sweep walks what the loop produced. The scope gate that runs beside
+  it walks that plus everything inherited from the specification, because pre-committed scope was otherwise never swept.
+- **A specialist can say "not part of this work."** Alongside confirming or contradicting a committed mechanic, a
+  specialist can declare it out of scope for this work item, citing the boundary. That verdict names no replacement
+  mechanic, resolves without an escalation, and does not count toward the spec-maturity threshold, because a specification
+  that drifted past its ticket is not an immature one.
+- **Visual material is kept and shared.** Designs and mockups you supply are written to `ui-designs/` as they arrive and
+  passed by path to every specialist the skill dispatches, not only the design specialist.
+- **One question per turn.** Escalations arrive one at a time, each opening with the consequence a person who will not read
+  the code would describe, each carrying named candidate answers, with specialist identifiers and paths below the question
+  or left out. The opening confirmation turn is the one exception.
+- **A finding on something nobody read cannot block.** When a specialist says it could not inspect an input, every finding
+  resting on that input is marked `Unverified` in the claim ledger and cannot reach you as build-blocking. Findings that
+  turn on your designs are checked against the designs before they become open questions.
 - **Junior-developer reframing.** When a decision lacks evidence, the skill asks `junior-developer` to restate the
   question in plain language before escalating. Often a reframing exposes an unstated assumption and the specialists
   resolve it among themselves.
@@ -126,7 +147,7 @@ proceeding. But pointing at the spec path directly is faster.
 
 ## What you get back
 
-Three cross-referenced files in the same folder as the source specification, plus an in-channel summary:
+Four cross-referenced files in the same folder as the source specification, plus an in-channel summary:
 
 - A **`feature-implementation-plan.md`** file at `{same-folder-as-source}/feature-implementation-plan.md`. The primary
   plan, structured for progressive disclosure: a plain-language opening a reader can stop after, then intention-level
@@ -143,12 +164,16 @@ Three cross-referenced files in the same folder as the source specification, plu
     illustrate. Focused subsections appear only for surfaces the plan commits a real decision on (a schema change, a
     new external interface); each is a few sentences of intention plus decision links, not an inventory of changes.
   - A **work units and sequencing** table. The plan broken into work units sized to ship, each with the user story it
-    advances, what it delivers (in outcome terms), what it depends on, and how it is verified.
+    advances, what it delivers (in outcome terms), what it descends from (its justification), what it depends on, and how
+    it is verified. A unit that cannot name what it descends from is not in this table; it is in `Cut for Scope`.
   - A **definition of done** (testable, unambiguous, agreed across specialists) and a **testing strategy** grounded in
     the `test-engineer`'s observable-behavior recommendations.
   - **Lazily created specialist sections**, each present only when there is real content: security posture, operational
-    readiness, on-call resilience posture, risks and assumptions, deferred (YAGNI) items, and specialist handoffs for
-    implementation. An absent section records the judgment that the surface is genuinely absent, never an empty stub.
+    readiness, on-call resilience posture, risks and assumptions, cut for scope, deferred (YAGNI) items, and specialist
+    handoffs for implementation. An absent section records the judgment that the surface is genuinely absent, never an
+    empty stub. `Cut for Scope` and `Deferred (YAGNI)` sit next to each other and each opens with a line saying what it is
+    not: a cut is work the work item excludes and carries no reopening trigger, while a deferral is work no evidence
+    supports yet and carries one.
   - A **remaining open items** list. Questions the project-manager could not resolve through evidence, junior-developer
     reframing, or user input. Each one names what would resolve it and whether it blocks implementation.
   - A **sources and plan records** section closing the file: links to the source `feature-specification.md` and its
@@ -275,7 +300,7 @@ after spec changes), not for tight-loop iteration. Use `/iterative-plan-review` 
 ## In more detail
 
 The skill's input is the ground truth for _what_ the feature does: a `feature-specification.md` produced by
-`/plan-a-feature`, or an equivalent PRD, design doc, or product brief. Its output is three cross-referenced files,
+`/plan-a-feature`, or an equivalent PRD, design doc, or product brief. Its output is four cross-referenced files,
 covering _how_ to build it, written to the same folder. The skill's defining behavior is the loop. It assembles a team
 of specialist sub-agents sized to what the feature touches, always including `project-manager` as coordinator and
 `junior-developer` as generalist stress-tester. It runs rounds of facilitated discussion until the project-manager

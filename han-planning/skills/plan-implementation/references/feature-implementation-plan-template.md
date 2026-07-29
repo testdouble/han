@@ -38,6 +38,7 @@ and more technical detail, choose more plain language.
 <!-- Only the bullets with real content — omit the rest. -->
 
 - **Driving constraint:** <!-- why now — deadline, incident, commitment -->
+- **Recorded boundary:** <!-- the work item this plan descends from, and its stated exclusions. Points at artifacts/scope-boundary.md rather than restating it in full. -->
 - **Out of scope:** <!-- what this plan deliberately does not do, and why -->
 - **Watch after ship:** <!-- omit when nothing qualifies -->
 
@@ -49,11 +50,11 @@ and more technical detail, choose more plain language.
 
 ## Work Units and Sequencing
 
-<!-- Work units sized to ship. Keep Delivers at intention altitude ("invite emails send through the existing mailer"), not a file list. Story names the US-N each unit advances (or `—` when none applies; drop the column when the User Stories section was omitted). Link non-obvious shapes to D-N. -->
+<!-- Work units sized to ship. Keep Delivers at intention altitude ("invite emails send through the existing mailer"), not a file list. Story names the US-N each unit advances (or `—` when none applies; drop the column when the User Stories section was omitted). Justification names what the unit descends from: the work item's own language, the visual material the user attached, or the asked-for work it is a necessity of. A unit that cannot fill it belongs in Cut for Scope, not in this table. Link non-obvious shapes to D-N. -->
 
-| #   | Work Unit | Story | Delivers | Depends On | Verification |
-| --- | --------- | ----- | -------- | ---------- | ------------ |
-| 1   | …         | US-1  | …        | —          | …            |
+| #   | Work Unit | Story | Delivers | Justification | Depends On | Verification |
+| --- | --------- | ----- | -------- | ------------- | ---------- | ------------ |
+| 1   | …         | US-1  | …        | …             | —          | …            |
 
 ## Definition of Done
 
@@ -100,9 +101,29 @@ and more technical detail, choose more plain language.
 | --- | ---------- | --------------------- | ------ |
 | A1  | …          | …                     | …      |
 
+## Cut for Scope
+
+<!-- LAZILY CREATED — only if the scope gate cut something; never an empty stub. Sits immediately before Deferred (YAGNI)
+     because the two are the same shape and easily confused, and each opens with a line saying what it is not.
+
+     Name what the item would have done in plain language — the consequence the user can weigh, not the mechanism. There is
+     no "Reopen when" here: a scope cut has no reopening trigger, because the recorded boundary already settled it. The
+     user reinstating it is the only route back, and their direction becomes the reinstated unit's justification. -->
+
+This is work the work item excludes, not work deferred for lack of evidence. Nothing here carries a reopening trigger,
+because the recorded boundary already settled it.
+
+### {what it would have done, in plain language}
+
+- **Why cut:** {the boundary citation that supports the cut}
+- **Source:** {R# and specialist, or the specification section this commitment was inherited from}
+
 ## Deferred (YAGNI)
 
 <!-- LAZILY CREATED — only if at least one item was deferred under the YAGNI rule; never an empty stub. -->
+
+This is work no evidence supports yet, not work the work item excludes. Every entry carries the trigger that would justify
+revisiting it.
 
 ### {item name}
 
