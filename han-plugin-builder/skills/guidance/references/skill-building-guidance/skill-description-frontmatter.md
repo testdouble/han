@@ -122,18 +122,18 @@ disambiguation leaves a gap that Claude can fall through.
 
 **Commonly confused skill pairs and their boundary statements:**
 
-| Skill A                 | Skill B                         | How to disambiguate                             |
-| ----------------------- | ------------------------------- | ----------------------------------------------- |
-| `code-review`           | `post-code-review-to-pr`        | Local analysis vs. GitHub integration           |
-| `update-pr-description` | `post-code-review-to-pr`        | PR body/summary vs. review comments             |
-| `project-documentation` | `architectural-decision-record` | Feature/system docs vs. architectural decisions |
-| `project-documentation` | `coding-standard`               | Feature/system docs vs. coding standards        |
-| `coding-standard`       | `architectural-decision-record` | Enforceable rules vs. decision records          |
-| `project-discovery`     | `project-documentation`         | Tech stack scanning vs. feature/system docs     |
-| `automated-test-planning` | `code-review`                 | Test coverage plans vs. code quality review     |
-| `automated-test-planning` | `manual-test-planning`        | Coverage-gap analysis vs. hand-run test steps   |
-| `automated-test-planning` | `iterative-plan-review`       | Test plans vs. refining work plans              |
-| `brand-messaging`       | `writing-style`                 | Positioning/ICP/campaigns vs. prose style/voice |
+| Skill A                   | Skill B                         | How to disambiguate                             |
+| ------------------------- | ------------------------------- | ----------------------------------------------- |
+| `code-review`             | `post-code-review-to-pr`        | Local analysis vs. GitHub integration           |
+| `update-pr-description`   | `post-code-review-to-pr`        | PR body/summary vs. review comments             |
+| `project-documentation`   | `architectural-decision-record` | Feature/system docs vs. architectural decisions |
+| `project-documentation`   | `coding-standard`               | Feature/system docs vs. coding standards        |
+| `coding-standard`         | `architectural-decision-record` | Enforceable rules vs. decision records          |
+| `project-discovery`       | `project-documentation`         | Tech stack scanning vs. feature/system docs     |
+| `automated-test-planning` | `code-review`                   | Test coverage plans vs. code quality review     |
+| `automated-test-planning` | `manual-test-planning`          | Coverage-gap analysis vs. hand-run test steps   |
+| `automated-test-planning` | `iterative-plan-review`         | Test plans vs. refining work plans              |
+| `brand-messaging`         | `writing-style`                 | Positioning/ICP/campaigns vs. prose style/voice |
 
 **Before (no boundary, `project-documentation`):**
 

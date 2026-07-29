@@ -154,10 +154,10 @@ options). A conversational override ("research this broadly") is equivalent to `
 
 **Signal-selected angle — added when present and the band allows:**
 
-| Angle                                                     | Add when                                                    | Min band |
-| --------------------------------------------------------- | ----------------------------------------------------------- | -------- |
-| `han-core:codebase-explorer` (codebase-grounded evidence) | A repository exists and the question has a codebase bearing | Small    |
-| Additional parallel `han-research:research-analyst` angles    | The question spans multiple domains or many options         | Medium   |
+| Angle                                                      | Add when                                                    | Min band |
+| ---------------------------------------------------------- | ----------------------------------------------------------- | -------- |
+| `han-core:codebase-explorer` (codebase-grounded evidence)  | A repository exists and the question has a codebase bearing | Small    |
+| Additional parallel `han-research:research-analyst` angles | The question spans multiple domains or many options         | Medium   |
 
 Roster caps by band: **small** runs one `han-research:research-analyst` plus `han-core:codebase-explorer` if a repo bears on
 the question, then `han-core:adversarial-validator` (2–3 agents); **medium** runs two to three parallel

@@ -90,18 +90,22 @@ Lead with behavior. These rules make the doc an overview first and a reference s
    component listings under the `## Technical Reference` region, below the behavioral spine. Treat them as lookup
    material, not the document's main body.
 
-Apply to every section: 5. **Absolute file paths** from repo root (e.g., `src/services/auth.ts`, not `./auth.ts`). 6.
-**Prefer pointers over long code.** In Technical Reference, point to the file and function and include a short
-illustrative snippet only where the source is non-obvious. Do not reproduce long (10-30 line) source blocks; link to the
-source instead. 7. **Code fence language identifiers** must match the project's actual languages (from Step 1). 8.
-**Document constants and magic numbers** with their actual values in the Constants table. 9. **Skip CONDITIONAL
-sections** from the template that don't apply. Don't include empty sections. 10. **One plain-language description** in
-the title area summarizing what the feature does. 11. **Separate backend and frontend content.** Use `### Backend` /
-`### Frontend` sub-headings for cross-cutting features; skip sub-headings for single-layer features. 12. **Diagrams are
-Mermaid, not ASCII.** Render the Architecture diagram, any Primary Flow diagram, and the Component Hierarchy as Mermaid
-in a ` ```mermaid ` fence — `flowchart` for structure and trees, `sequenceDiagram` for actor-to-system exchanges. Label
-nodes with parts a reader recognizes and label edges with what passes between them. Keep each diagram to the parts that
-matter; a reader should grasp the shape at a glance.
+Apply to every section:
+
+5. **Absolute file paths** from repo root (e.g., `src/services/auth.ts`, not `./auth.ts`).
+6. **Prefer pointers over long code.** In Technical Reference, point to the file and function and include a short
+   illustrative snippet only where the source is non-obvious. Do not reproduce long (10-30 line) source blocks; link to
+   the source instead.
+7. **Code fence language identifiers** must match the project's actual languages (from Step 1).
+8. **Document constants and magic numbers** with their actual values in the Constants table.
+9. **Skip CONDITIONAL sections** from the template that don't apply. Don't include empty sections.
+10. **One plain-language description** in the title area summarizing what the feature does.
+11. **Separate backend and frontend content.** Use `### Backend` / `### Frontend` sub-headings for cross-cutting
+    features; skip sub-headings for single-layer features.
+12. **Diagrams are Mermaid, not ASCII.** Render the Architecture diagram, any Primary Flow diagram, and the Component
+    Hierarchy as Mermaid in a ` ```mermaid ` fence — `flowchart` for structure and trees, `sequenceDiagram` for
+    actor-to-system exchanges. Label nodes with parts a reader recognizes and label edges with what passes between them.
+    Keep each diagram to the parts that matter; a reader should grasp the shape at a glance.
 
 **Updating existing documents:** Read the entire existing document first and note all content sources (existing doc,
 content migrated from CLAUDE.md or other files, any other inputs). Preserve the existing structure; don't reorganize
