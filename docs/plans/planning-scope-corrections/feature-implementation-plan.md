@@ -3,8 +3,8 @@
 This plan teaches Han's four planning skills to stay inside the work item they descend from, to keep the visual
 material an operator supplies, and to ask the operator one plain-language question at a time.
 
-The work ships as markdown prompt text and manifests across three plugins, landing as seven sequenced units that are
-committed and pushed as each one completes
+The work ships as markdown prompt text, one shell script, and manifests across five plugins, landing as nine sequenced
+units that are committed and pushed as each one completes
 ([D-15](artifacts/implementation-decision-log.md#d-15-the-change-lands-as-sequenced-units-not-one-simultaneous-rewrite)).
 The one thing to know first: the shared conventions land before any skill uses them, and every skill that runs against
 a plan folder without a boundary record establishes one itself. That fallback is what makes a partly-adopted repository
@@ -20,6 +20,11 @@ person who will never open the code can act on.
 The change serves two readers. The operator running a planning skill gets a run that stays inside the ticket and can
 show that it did. The implementer maintaining these skills gets three shared convention files and one shared
 communication standard, each stated in one place instead of restated in four.
+
+One rule deliberately breaks that pattern. The disclosure-placement rule is copied into twenty-one agent definitions
+rather than stated once, because it has to live where each agent's own output format is specified
+([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). That is
+an accepted exception to this plan's own centralizing argument, not an oversight.
 
 ## User Stories
 
@@ -37,6 +42,8 @@ communication standard, each stated in one place instead of restated in four.
   environment refused a publish, so I am not told the run declined when it was blocked.
 - **US-7:** As the implementer maintaining these skills, I want each shared convention stated once in a named,
   clearly-owned file, so four skills cannot drift apart on the same rule.
+- **US-8:** As an operator, I want a reviewer's admission that it could not read something to arrive attached to the
+  finding that rests on it, so a finding I cannot trust never reaches me looking build-blocking.
 
 ## Constraints and Boundaries
 
@@ -49,23 +56,29 @@ communication standard, each stated in one place instead of restated in four.
   rest of that boundary holds: no agent gains a field, changes an output format, or takes on a review rule.
 - **Out of scope:**
   - Every other review-behavior rule, which still reaches a reviewer only through the dispatching skill's brief.
-  - `iterative-plan-review`, which the specification deferred by name.
+  - `iterative-plan-review`'s own steps, which the specification deferred by name. Note the one way this plan does
+    reach it: that skill dispatches shared agents, so the disclosure-placement rule changes what its reviewers return.
+    Its own behavior is untouched, and the distinction is stated here because the earlier phrasing of this bullet was
+    simply false once the rule moved into the shared roster
+    ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)).
   - Which specialists a skill selects, and the existing team size caps.
   - Any plugin version bump. Versioning is a separate release decision, owned by the release skill, and nothing in this
     plan changes a version.
   - Any tool grant that reads a work item from a tracker
     ([D-17](artifacts/implementation-decision-log.md#d-17-han-planning-stays-filesystem-only-with-no-work-item-read-tool)).
-- **Watch after ship:** Whether reviewer briefs reliably produce the per-finding disclosure the unverified-finding rule
-  depends on. That is the one commitment whose delivery mechanism is unproven, and it is carried as R1 below.
+- **Watch after ship:** Whether a reviewer honors the rough target length its brief names. That is the one commitment
+  still delivered by brief alone, and it is carried as R1 below. The disclosure it used to sit beside moved into the
+  agent definitions, so it is no longer part of this watch.
 
 ## Implementation Approach
 
 The work is prompt text. There is no runtime, no traffic, and no production surface, so the shape of the
 implementation is about where each rule is stated and which skill reads it, not about how code executes.
 
-Three groups of change land. A shared communication standard joins `han-communication`. Three shared convention files
-join `han-planning`. Each of the four planning skills then wires itself to those conventions at the steps it already
-has, and `han-feedback` takes two unrelated corrections.
+Five groups of change land. A shared communication standard joins `han-communication`. Three shared convention files
+join `han-planning`. One rule line joins the shared agent roster. Each of the four planning skills then wires itself to
+those conventions at the steps it already has. Finally `han-feedback` takes two unrelated corrections, and
+`han-github`'s screenshot chain widens to match the file set `han-planning` now accepts.
 
 ### Where the shared rules live
 
@@ -101,11 +114,22 @@ it reconciles are that skill's own, and the specification separately rejects cro
 general single-stop rule that binds all four skills lives in the escalation file instead.
 
 Three places in `plan-work-items` have to agree with each other afterward: the canonical rule in its reference, the
-contradicting step at `SKILL.md:133-137`, and the operating principle at `SKILL.md:36-40`.
+contradicting step at `SKILL.md:134-137`, and the operating principle at `SKILL.md:36-40`.
 
-One question that `planning-boundary-rule.md` has to answer outright is what "beside the plan" means when
-`plan-work-items` is invoked on its own and its output folder differs from any input plan's folder. State which folder
-wins.
+Four things `planning-boundary-rule.md` has to settle outright, because the plan leaves each of them open and unit 1
+cannot be built without them.
+
+- **What "beside the plan" means** when `plan-work-items` is invoked on its own and its output folder differs from any
+  input plan's folder. State which folder wins.
+- **The boundary record's shape.** The name is fixed, but four mechanics read it back: the confirmation turn restates
+  it, the completeness gate iterates the items it lists as received, `plan-work-items` reads it instead of re-asking,
+  and the conflict rule compares an incoming work item against it. A freeform record leaves the gate with nothing to
+  iterate, which is the memory-based failure the specification's own OI-1 closed. Give it named sections.
+- **The accepted visual-material file set, enumerated.** The plan names raster images, mockup PDFs, and Figma URLs
+  across three sentences without fixing the list. Note that a Figma URL is not a file and cannot be copied, so the
+  rule states how a URL is recorded separately from how a file is persisted.
+- **The ownership preamble's wording.** No precedent exists to copy: `han-communication`'s two owned files carry no
+  such preamble today. Fix one form so all three files match and the Definition of Done item is checkable.
 
 ### The explanation standard
 
@@ -170,17 +194,36 @@ and quietly widen the change.
 ### Visual material, producer and consumer
 
 The producer and the consumer already share three strings, and the implementation reuses them exactly rather than
-coining new ones ([D-10](artifacts/implementation-decision-log.md#trivial-decisions)). The consumer greps for the table
-heading, so writing anything else silently breaks the handoff that specification D14 commits to.
+coining new ones ([D-10](artifacts/implementation-decision-log.md#trivial-decisions)). The consumer names the table
+heading as its mapping source, so writing a different heading breaks the handoff that specification D14 commits to.
 
 - Folder: `ui-designs/`
 - Producer's table heading: `Visual Reference`
-- Inline embed form: `![alt text](ui-designs/{name}.png)`
+- Inline embed form: an image embed whose path sits under `ui-designs/`
+
+The consumer's reference writes the last two as ellipsis placeholders rather than as literal examples, and it hedges
+the heading with "or equivalent." Replace both with one concrete form when that file is edited, so the producer has an
+exact target instead of a pattern to infer.
 
 The consumer's PNG-only sentence changes to cite the accepted file set rather than restate an extension
 ([D-11](artifacts/implementation-decision-log.md#trivial-decisions)). Today a JPG or a mockup PDF persisted into that
 folder is dropped silently, while the specification says "visual material" throughout and separately names mockup PDFs
 and Figma URLs. `planning-boundary-rule.md` states the accepted set once, and the inventory's sentence points at it.
+
+Widening that set reaches a second plugin, which the first pass missed
+([D-20](artifacts/implementation-decision-log.md#d-20-the-github-screenshot-chain-widens-with-the-accepted-file-set)).
+`han-github`'s `work-items-to-issues` reads the same `ui-designs/` folder and is hardcoded to PNG in two places: its
+upload script selects assets with a `.png` pattern, and its embed rules require a `.png` source filename. Left alone,
+a JPG that now flows into a work item is skipped by the upload and renders as a broken image in the issue. Both places
+widen to the same set.
+
+- `han-github/skills/work-items-to-issues/scripts/upload-screenshots.sh`, at its asset-selection pattern
+- `han-github/skills/work-items-to-issues/references/screenshot-embed-rules.md`, at its source-filename requirement
+- `han-github/skills/work-items-to-issues/references/issue-template.md`, at the embed markdown an implementer copies
+  and at its stated path scheme
+
+The third of those is the one a first pass misses. Widening the upload without widening the template produces an issue
+body that still writes a PNG extension over a file that is not one, so the upload succeeds and the image still breaks.
 
 ### Tool grants
 
@@ -206,35 +249,66 @@ what narrows it, and a reviewer reading the skill can check it.
 
 ### Where the blind-spot disclosure is stated
 
-Every agent definition gains one line telling it to put a blind-spot disclosure on the finding itself, not only in an
-assumptions section
+Twenty-one agent definitions gain one line telling them to put a blind-spot disclosure on the finding itself, not only
+in an assumptions section
 ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). This
 expands the specification's scope deliberately, because its Out of Scope leaves the shared agent definitions alone.
 
 The reason the expansion is worth it: the reported failure was placement, not disobedience. The reviewer in that
 session did disclose its blindness. It put the disclosure in an assumptions section, well below a finding it
 recommended treating as blocking. Six agents already carry such a section, and `structural-analyst` already reports
-dimensions it could not assess. So these agents already produce the disclosure because their definitions ask for it.
-What no agent is told is where to put it.
+dimensions it could not assess. So these agents already have somewhere to put a disclosure, and none is told to put it
+where the reader of the finding will see it.
 
 A rule stated in the agent's own definition also survives a model change better than a runtime instruction competing
 with that definition, which is the durability argument for accepting the wider surface.
+
+#### Which agents take the rule
+
+The test is what the agent returns, not which plugin holds it. An agent takes the rule when its output is a claim a
+dispatching skill weighs: a finding, a verdict, an assessment, or a recommendation. An agent does not take the rule
+when its output is an inventory of what it found, or a rewritten artifact, because neither has a finding for a
+disclosure to attach to.
+
+That resolves to twenty-one of the repository's twenty-four agent definitions. Applying the test is part of unit 2's
+work rather than a list to copy, and the three known exclusions are named so the boundary is not re-litigated.
+
+- Excluded, discovery output: `han-core/agents/project-scanner.md`, `han-core/agents/codebase-explorer.md`
+- Excluded, rewritten artifact: `han-communication/agents/readability-editor.md`
+- Included from outside `han-core`: `han-research/agents/research-analyst.md`
 
 Three consequences follow, and each belongs in the work.
 
 - **The disclosure and its consequence live in different places.** The agent supplies the disclosure. The dispatching
   skill still applies the rule that strips blocking severity from findings resting on an uninspected input, and that
   rule stays in the two skills' briefs where the specification puts it.
-- **The change reaches every skill that dispatches these agents**, not only the four planning skills. That is twelve
-  skills across seven plugins, and it is accepted rather than incidental. A finding that rests on something unread is
+- **The change reaches every skill that dispatches these agents**, not only the four planning skills. That is nineteen
+  skills across six plugins, and it is accepted rather than incidental. A finding that rests on something unread is
   worth flagging in a code review or a gap analysis too.
 - **No output format changes.** The rule is a placement correction added to each agent's existing rules list, so no
   agent gains a field and the long-form docs need at most a sentence.
 
-The insert point is uniform: a bullet list at the end of every file.
+#### The seam between the agent and the skill needs a stated shape
 
-- `han-core/agents/*.md`, in each file's `## Rules` section, all twenty-two for consistency
-- `han-core/docs/agents/*.md`, in "What you get back", only where the sentence is needed
+The agent writes the disclosure and the dispatching skill acts on it, so the two need to agree on what "on the finding"
+looks like. The plan's first pass asserted no format change without saying what the consuming skill looks for, which
+left the seam undefined across agents whose output formats already differ: ten carry a findings section with per-finding
+fields, and the rest use numbered items.
+
+Fix it by naming one form in the rule line itself, so every agent writes the same shape and both consuming skills read
+the same shape. Naming the form is what keeps "no format change" and "the skill can reliably detect it" from
+contradicting each other.
+
+#### The insert point is uniform except once
+
+Every included agent carries a `## Rules` bullet list, and the rule line joins it. One file breaks the pattern and has
+to be handled by name rather than by an append: in `han-core/agents/gap-analyzer.md`, `## Rules` is followed by a
+`## Graceful Degradation` section, so it is not the last heading. An implementer appending to the end of that file
+lands the rule outside any rules list.
+
+- `han-core/agents/*.md` and `han-research/agents/research-analyst.md`, in each file's `## Rules` section
+- `han-core/docs/agents/*.md` and `han-research/docs/agents/research-analyst.md`, in "What you get back", only where
+  the sentence is needed
 
 The proportionality signal does not move with it. A rough target length is per-dispatch context rather than a stable
 property of an agent, so it stays in the brief and remains the one unproven delivery mechanism in this plan.
@@ -268,25 +342,45 @@ convenient is the specification's own fallback: a skill that finds no boundary r
 updated skill run against a folder produced by a not-yet-updated sibling still works
 ([D-15](artifacts/implementation-decision-log.md#d-15-the-change-lands-as-sequenced-units-not-one-simultaneous-rewrite)).
 
-Two contracts must land whole inside a single unit rather than split across units: the visual-material producer and
-consumer pair, and the boundary record's shared name.
+One contract lands whole inside a single unit: the boundary record's shared name, written in unit 1 and read by every
+skill unit afterward.
+
+The visual-material producer and consumer pair is deliberately split instead, consumer first. `plan-work-items` reads
+the table in unit 4 and `plan-a-feature` writes it in unit 6, so the inventory has no updated producer between them.
+That gap is safe for the same reason the rest of the sequence is: a skill that finds nothing to read establishes or
+degrades rather than failing. What both halves do share is the exact heading string, and unit 1 fixes that string
+before either half moves.
 
 | #   | Work Unit                            | Story           | Delivers                                                                                                                                                                                                             | Depends On | Verification                                                                                       |
 | --- | ------------------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
-| 1   | Shared plumbing                      | US-4, US-5, US-7 | The explanation standard and its inline surfacing skill, the three `han-planning` reference files, the boundary record's name and its admission to the inventory, plus the new skill's own docs, manifests, and index entry ([D-1](artifacts/implementation-decision-log.md#d-1-three-han-planning-reference-files-grouped-by-what-interlocks), [D-2](artifacts/implementation-decision-log.md#d-2-the-boundary-record-is-a-visible-artifact-under-one-filename), [D-4](artifacts/implementation-decision-log.md#d-4-the-explanation-standard-ships-as-a-rule-file-plus-an-inline-surfacing-skill)) | None       | Read-through against the acceptance checklist. No caller exists yet, which is an expected state.    |
-| 2   | `han-feedback` corrections           | US-6            | Today's feedback file updates in place with the update stated, and a refused publish is reported as the environment refusing rather than the run declining, with a copy-pasteable command handed over                 | None       | Two follow-on checks: a same-day second run, and a run in an environment that refuses to publish.   |
-| 2b  | Agent disclosure placement           | US-3, US-7      | One rule line in all twenty-two agent definitions placing a blind-spot disclosure on the finding rather than only in an assumptions section, plus the long-form doc sentences that need it ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)) | None       | Dispatch one agent against an input it cannot open, and confirm the disclosure rides on the finding. |
-| 3   | `plan-work-items`                    | US-1, US-2, US-5 | Boundary read and record, visual-material inventory, justification field, single stop, the no-visual-surface split, the reconciled missing-artifact rule, and the corrected autonomy and one-file principles ([D-3](artifacts/implementation-decision-log.md#d-3-the-missing-artifact-rule-stays-local-to-plan-work-items), [D-7](artifacts/implementation-decision-log.md#d-7-the-plan-work-items-autonomy-and-one-file-principles-are-edited-not-worked-around)) | 1          | Follow-on check: a run against a plan with no visual surface at all.                                |
-| 4   | `plan-a-phased-build`                | US-1, US-2, US-4 | Boundary read with operator-stated shaping context, direction-of-travel inheritance, visual material, justification, the scope gate at candidate evaluation, the single stop with its register, and the reviewer-scope clause ([D-5](artifacts/implementation-decision-log.md#d-5-the-scope-gate-attaches-to-existing-yagni-points-not-to-a-new-sweep-step), [D-6](artifacts/implementation-decision-log.md#d-6-the-escalation-register-lands-as-a-register-in-two-skills-only), [D-9](artifacts/implementation-decision-log.md#d-9-the-single-phased-build-reviewer-is-outside-the-visual-material-brief-rule)) | 1          | Follow-on check: a run where the operator states scope out loud at invocation.                      |
-| 5   | `plan-a-feature`                     | US-1, US-2, US-3, US-4 | Every applicability row, including the visual reference table and inline placements the inventory reads, the cut list without a per-unit justification field, and classification of decisions once after the review round ([D-8](artifacts/implementation-decision-log.md#d-8-plan-a-feature-gains-the-cut-list-only-not-a-justification-field), [D-10](artifacts/implementation-decision-log.md#trivial-decisions)) | 1, 3       | The engineered walkthrough ([D-14](artifacts/implementation-decision-log.md#d-14-one-engineered-plan-a-feature-run-carries-the-main-walkthrough)). |
-| 6   | `plan-implementation`                | US-1, US-2, US-3, US-4 | Every applicability row except the reference table and the classification change, the scope gate on its existing sweep, and the directory-creating grant it uniquely lacks ([D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)) | 1, 3, 4, 5 | The engineered walkthrough's review-behavior findings, repeated against this skill.                 |
-| 7   | Repository documentation sweep       | US-7            | The cross-plugin surfaces the new convention and the new skill leave stale, and the correction to the `han-planning` references line ([D-16](artifacts/implementation-decision-log.md#d-16-the-documentation-sweep-covers-a-verified-fan-out-list)) | 1 - 6      | Read-through against the acceptance checklist's documentation section.                              |
+| 1   | Shared plumbing                      | US-4, US-5, US-7 | The acceptance checklist's first sections, the explanation standard and its inline surfacing skill, the three `han-planning` reference files with the four questions they settle, the boundary record's name and its admission to the inventory, the exact heading and embed strings, the new skill's own docs and manifests and index entry, and the `CLAUDE.md` references-line correction this unit makes necessary ([D-1](artifacts/implementation-decision-log.md#d-1-three-han-planning-reference-files-grouped-by-what-interlocks), [D-2](artifacts/implementation-decision-log.md#d-2-the-boundary-record-is-a-visible-artifact-under-one-filename), [D-4](artifacts/implementation-decision-log.md#d-4-the-explanation-standard-ships-as-a-rule-file-plus-an-inline-surfacing-skill), [D-21](artifacts/implementation-decision-log.md#d-21-the-acceptance-checklist-has-a-path-and-an-owning-unit)) | None       | Read-through against the checklist sections this unit writes. No caller exists yet, which is expected. |
+| 2   | Agent disclosure placement           | US-8            | One rule line, in one named shape, in the twenty-one agent definitions that return findings, plus the long-form doc sentences that need it, handling `gap-analyzer` by name rather than by append ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)) | None       | Dispatch one agent per output-format shape against an input it cannot open, and confirm the disclosure rides on the finding in the named shape. |
+| 3   | `han-feedback` corrections           | US-6            | Today's feedback file updates in place with the update stated, and a refused publish is reported as the environment refusing rather than the run declining, with a copy-pasteable command handed over                 | None       | Two follow-on checks: a same-day second run, and a run in an environment that refuses to publish.   |
+| 4   | `plan-work-items`                    | US-1, US-2, US-5 | Boundary read and record, visual-material inventory, justification field, single stop, the no-visual-surface split, the reconciled missing-artifact rule, the corrected autonomy and one-file principles, and this skill's copy grant ([D-3](artifacts/implementation-decision-log.md#d-3-the-missing-artifact-rule-stays-local-to-plan-work-items), [D-7](artifacts/implementation-decision-log.md#d-7-the-plan-work-items-autonomy-and-one-file-principles-are-edited-not-worked-around), [D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)) | 1          | Follow-on check: a run against a plan with no visual surface at all.                                |
+| 5   | `plan-a-phased-build`                | US-1, US-2, US-4 | Boundary read with operator-stated shaping context, direction-of-travel inheritance, visual material with this skill's copy grant, justification, the scope gate at candidate evaluation, the single stop with no escalation pass added, and the reviewer-scope clause ([D-5](artifacts/implementation-decision-log.md#d-5-the-scope-gate-attaches-to-existing-yagni-points-not-to-a-new-sweep-step), [D-6](artifacts/implementation-decision-log.md#d-6-the-escalation-register-lands-as-a-register-in-two-skills-only), [D-9](artifacts/implementation-decision-log.md#d-9-the-single-phased-build-reviewer-is-outside-the-visual-material-brief-rule), [D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)) | 1          | Follow-on check: a run where the operator states scope out loud at invocation.                      |
+| 6   | `plan-a-feature`                     | US-1, US-2, US-3, US-4 | Every applicability row, including the visual reference table and inline placements the inventory reads, the cut list without a per-unit justification field, classification of decisions once after the review round, and this skill's copy grant ([D-8](artifacts/implementation-decision-log.md#d-8-plan-a-feature-gains-the-cut-list-only-not-a-justification-field), [D-10](artifacts/implementation-decision-log.md#trivial-decisions), [D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)) | 1, 4       | The engineered walkthrough ([D-14](artifacts/implementation-decision-log.md#d-14-one-engineered-plan-a-feature-run-carries-the-main-walkthrough)). |
+| 7   | `plan-implementation`                | US-1, US-2, US-3, US-4 | Every applicability row except the reference table and the classification change, the scope gate on its existing sweep, and both grants it needs, the copy tool and the directory-creating one it uniquely lacks ([D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)) | 1, 4, 5, 6 | The engineered walkthrough's review-behavior findings, repeated against this skill.                 |
+| 8   | `han-github` screenshot file set     | US-3            | The upload script's asset pattern and the embed rules widen to the file set unit 1 fixed, so material that is not a PNG survives into a GitHub issue ([D-20](artifacts/implementation-decision-log.md#d-20-the-github-screenshot-chain-widens-with-the-accepted-file-set)) | 1          | Run the upload script against a folder holding one non-PNG item and confirm it is selected and rendered. |
+| 9   | Repository documentation sweep       | US-7            | The remaining cross-plugin surfaces the new convention and the new skill leave stale ([D-16](artifacts/implementation-decision-log.md#d-16-the-documentation-sweep-covers-a-verified-fan-out-list)) | 1, 2, 4, 5, 6, 7, 8 | Read-through against the acceptance checklist's documentation section.                              |
 
 Two intermediate states are expected rather than defects. After unit 1, the three new reference files have no caller
-yet, which is not a dangling link. After unit 3 and before unit 5, the inventory briefly has no updated producer to
+yet, which is not a dangling link. After unit 4 and before unit 6, the inventory briefly has no updated producer to
 consume from.
 
+Unit 2 is a third case worth naming, because it is not the same kind. Its rule takes effect for every dispatching skill
+in the repository the moment it lands, even though no unit lists it as a dependency. The dependency column tracks what
+a unit needs in order to be built; it cannot express a shared file that every skill reads at dispatch time. Unit 2
+delivers an observable change on its own, and it delivers operator-visible value only once units 6 and 7 add the rule
+that acts on the disclosure.
+
 ## Definition of Done
+
+The first item is the per-unit gate that closes the coverage gap R3 names. The rest are the outcomes worth checking
+individually.
+
+- [ ] Every unit's Delivers cell landed in full, checked unit by unit against the table above. This one line is what
+      keeps the commitments with no individual criterion below from shipping as text nobody observed
+      ([D-12](artifacts/implementation-decision-log.md#d-12-verification-is-a-committed-acceptance-checklist-plus-manual-walkthroughs)).
 
 - [ ] Every run that received visual material finishes with that material on disk beside the plan, and the produced
       specification carries a `Visual Reference` table naming each item and the state it shows
@@ -323,9 +417,25 @@ consume from.
 - [ ] The acceptance checklist is written and committed alongside the change, covering every commitment including the
       ten with no stated success criterion
       ([D-12](artifacts/implementation-decision-log.md#d-12-verification-is-a-committed-acceptance-checklist-plus-manual-walkthroughs)).
-- [ ] Every agent definition states where a blind-spot disclosure belongs, no agent gained a field or changed an output
-      format, and one dispatch against an unopenable input returns the disclosure on the finding
+- [ ] Every agent that returns findings states where a blind-spot disclosure belongs, in one named shape, and no agent
+      gained a field or changed an output format. The read-through covered all twenty-four definitions and logged the
+      three exclusions and the `gap-analyzer` exception
       ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)).
+- [ ] A live dispatch against an unopenable input returned the disclosure in the named shape, run once per
+      output-format shape rather than once overall.
+- [ ] Each of the four planning skills escalates one question at a time, leading with the consequence, carrying named
+      candidate answers, and keeping technical references below the question, with the register present in the two
+      skills that have an escalation step
+      ([D-6](artifacts/implementation-decision-log.md#d-6-the-escalation-register-lands-as-a-register-in-two-skills-only)).
+- [ ] `han-feedback` updates today's file in place and states the update, and reports a refused publish as the
+      environment refusing rather than the run declining, with a copy-pasteable command handed over.
+- [ ] A non-PNG item in the visual-material folder survives the `han-github` upload and renders in the issue
+      ([D-20](artifacts/implementation-decision-log.md#d-20-the-github-screenshot-chain-widens-with-the-accepted-file-set)).
+- [ ] The four `han-planning` long-form skill docs and `han-feedback`'s long-form doc match the behavior their skills
+      now carry, each having travelled with its own unit.
+- [ ] `Bash(cp *)` is present on all four planning skills, and each skill's body states that the copy destination is
+      the resolved plan folder's visual-material folder
+      ([D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)).
 - [ ] No plugin version changed in this work.
 
 ## Testing Strategy
@@ -336,11 +446,20 @@ checklist committed alongside the change, plus manual walkthroughs run against e
 Reading the diff cannot observe whether a multi-step cross-skill behavior fires, and an unrecorded walkthrough leaves
 the next editor nothing.
 
+The checklist is a real deliverable with an address, not a promise
+([D-21](artifacts/implementation-decision-log.md#d-21-the-acceptance-checklist-has-a-path-and-an-owning-unit)). It
+lives beside the plan's other artifacts, one section per work unit, ordered by the risk ranking below. Unit 1 writes
+the sections it can fill and stubs the rest, and each later unit fills its own section as it lands. Writing it that way
+is what stops unit 1 from being verified against a file that does not exist yet.
+
+- `docs/plans/planning-scope-corrections/artifacts/acceptance-checklist.md`
+
 - **Observable behaviors to test, in priority order.** The checklist is ordered by risk, highest first.
   1. Visual material reaches every reviewer, including items that arrive after dispatch. This is the one commitment
      with a documented prior failure, and it is silent when broken.
   2. An uninspected input strips blocking severity from the findings resting on it. Also a documented prior failure,
-     and silent by construction.
+     and silent by construction. Check both halves: the agent writes the disclosure in the named shape, and the
+     dispatching skill recognizes that shape and acts on it.
   3. The completeness gate reads the boundary record rather than run memory. An agent naturally reasons over what it
      remembers, which is the failure mode the gate was redesigned to avoid.
   4. The scope gate's floor holds. This is the highest-nuance new rule, and a wrong cut looks legitimate because it
@@ -353,9 +472,10 @@ the next editor nothing.
   It carries a work item with an explicit stated exclusion and an implied-but-unstated necessity. Two images arrive at
   session start, and one of them depicts something the ticket text never mentions. A third image arrives after the
   review team is dispatched. One reviewer is positioned so it cannot inspect an input. Two reviewers raise the same
-  finding under different wording. Three follow-on checks cover what that run cannot reach: a `plan-work-items` run
-  with no visual surface at all, a `plan-a-phased-build` run where the operator states scope out loud at invocation,
-  and the two `han-feedback` corrections.
+  finding under different wording. Five follow-on checks cover what that run cannot reach: a `plan-work-items` run with
+  no visual surface at all, a `plan-a-phased-build` run where the operator states scope out loud at invocation, the two
+  `han-feedback` corrections, one dispatch per agent output-format shape against an unopenable input, and one
+  `han-github` upload of a folder holding a non-PNG item.
 - **Test doubles posture and levels:** None apply. There is no code under test and no dependency to stub. The
   substitute for a test double is the engineered input that forces a behavior to fire, above all the reviewer
   positioned so it cannot inspect an input
@@ -368,17 +488,18 @@ the next editor nothing.
 | ID  | Risk                                                                                                                                                                                          | Impact                                                                                                                                        | Mitigation                                                                                                                                                                                                                                                                       | Owner                          |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
 | R1  | The proportionality signal is still delivered by brief alone. Specification D28 needs a rough target length in each reviewer's brief, and a length is per-dispatch context rather than a stable property of an agent, so it cannot move to the agent definition the way the disclosure did ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). The agent definitions prescribe their own section lists in detail, and a returned review may not fit inside a named target. | One commitment in units 5 and 6 could ship as text that never takes effect. Reviewer output stays as long as it is today. | Check the returned length during the engineered walkthrough rather than in a separate experiment. Specification D28's own rejected alternatives already keep a hard cap on record as the fallback if a named target proves inert, so a negative result has a designed answer rather than an open question. | `han-core:test-engineer`       |
-| R5  | The disclosure placement rule reaches twelve skills across seven plugins, because it lands in the shared agent roster rather than in two briefs.                                                                                                                                                | A rule written for planning review changes what every dispatching skill in Han gets back.                                                       | Accepted deliberately, and the reason it is safe is that the rule adds no field and changes no output format. It relocates a disclosure those agents already produce. Unit 2b lands on its own so the change can be observed before any planning skill depends on it.                                    | `han-core:structural-analyst`  |
 | R2  | `Bash(cp *)` is an unscoped grant narrowed only by prompt text, because `allowed-tools` scopes by command prefix and not by path ([D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)). | A run could copy to a destination outside the resolved plan folder.                                                                            | Each skill's body states that every copy destination is the plan folder's `ui-designs/`, which a reviewer reading the skill can check.                                                                                                                                            | `han-core:junior-developer`    |
 | R3  | Ten of the roughly fifteen commitments have no stated success criterion. The specification's `## How We Will Know It Worked` covers four.                                                       | A commitment could ship as text and never be observed to fire.                                                                                 | The acceptance checklist names what you would see in the produced artifact folder for each remaining commitment ([D-12](artifacts/implementation-decision-log.md#d-12-verification-is-a-committed-acceptance-checklist-plus-manual-walkthroughs)). This adds prose to a section that already exists, not machinery. | `han-core:test-engineer`       |
-| R4  | "Beside the plan" is underdefined for `plan-work-items` when it is invoked standalone, because its output folder may differ from any input plan's folder.                                       | The boundary record and the visual-material folder could land in two different places across one chain.                                        | Resolve it in `planning-boundary-rule.md` by stating which folder wins ([D-1](artifacts/implementation-decision-log.md#d-1-three-han-planning-reference-files-grouped-by-what-interlocks)).                                                                                        | `han-core:information-architect` |
+| R4  | "Beside the plan" is underdefined for `plan-work-items` when it is invoked standalone, because its output folder may differ from any input plan's folder.                                       | The boundary record and the visual-material folder could land in two different places across one chain.                                        | Resolve it in `planning-boundary-rule.md` by stating which folder wins, alongside the other three questions that file settles ([D-1](artifacts/implementation-decision-log.md#d-1-three-han-planning-reference-files-grouped-by-what-interlocks)).                                 | `han-core:information-architect` |
+| R5  | The disclosure placement rule reaches nineteen skills across six plugins, because it lands in the shared agent roster rather than in two briefs. That includes `iterative-plan-review`, whose own steps this plan lists as out of scope. | A rule written for planning review changes what every dispatching skill in Han gets back, including one the plan does not otherwise touch.       | Accepted deliberately, and the reason it is safe is that the rule adds no field and changes no output format. It relocates a disclosure those agents already produce. Unit 2 lands on its own so the change can be observed before any planning skill depends on it, and the Out of Scope bullet now states the reach rather than denying it. | `han-core:structural-analyst`  |
+| R6  | The rule is copied into twenty-one files rather than stated once, which is the drift pattern this plan otherwise exists to prevent.                                                             | Twenty-one copies of one line can diverge over time, and a future editor has no single source to correct.                                       | Accepted as the cost of the durability the placement rule buys, and bounded by the line being a single sentence in a fixed shape. Unit 2's read-through is what catches divergence, and the Outcome section states the exception so no reader mistakes it for an oversight.                             | `han-core:structural-analyst`  |
 
 ### Assumptions
 
 | ID  | Assumption                                                                                                                                                                     | What Changes If Wrong                                                                                                              | Status        |
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
 | A1  | Technical note T1's mechanic holds. The host does not cache a pasted image as a file, which is the fallback branch T1 already names, and the copy branch stays correct for material the operator already holds as a file. | Nothing. This was verified: `~/.claude/paste-cache/` holds only `.txt`, so a genuinely pasted image does not land on disk as a file. | Verified      |
-| A2  | A dispatched agent can open a persisted PNG by path when its brief supplies one.                                                                                                | If it cannot, the visual-material-to-reviewer commitment ships inert and R1's experiment widens to cover it.                        | Runtime-only  |
+| A2  | A dispatched agent can open a persisted image by path when its brief supplies one.                                                                                              | If it cannot, the visual-material-to-reviewer commitment ships inert, and the engineered walkthrough is where that shows up.        | Runtime-only  |
 | A3  | In `plan-work-items` the completeness gate covers only material that run itself received, not material an upstream skill already persisted, which the inventory reads instead. The specification's applicability table gives "Persist and confirm visual material" to all four skills, so the gate is not absent there; it is scoped to what that run took in. | If the gate is meant to re-confirm upstream-persisted material too, the skill gains a second read of the boundary record, and its one-file statement changes accordingly ([D-7](artifacts/implementation-decision-log.md#d-7-the-plan-work-items-autonomy-and-one-file-principles-are-edited-not-worked-around)). | Open          |
 
 Every `han-core` agent carries `Read`, which makes A2 likely, but no run has confirmed it end to end.
@@ -479,25 +600,33 @@ Every `han-core` agent carries `Read`, which makes A2 likely, but no run has con
 
 - **OI-2:** In `plan-work-items`, does the completeness gate cover only the material that run received, or also
   material an upstream skill already persisted? Carried as A3 above.
-  - **Resolves when:** Unit 1 states the answer in `planning-boundary-rule.md`, alongside the "beside the plan" answer
-    R4 needs from the same file.
-  - **Blocks implementation:** No. It scopes one paragraph inside unit 1 and one sentence inside unit 3. Either answer
-    leaves the specification's applicability table satisfied.
+  - **Resolves when:** Unit 1 states the answer in `planning-boundary-rule.md`, alongside the other three questions
+    that file settles.
+  - **Blocks implementation:** No, but it blocks unit 1 specifically, along with the other three. Either answer leaves
+    the specification's applicability table satisfied.
+
+- **OI-3:** Does `explanation-rule.md` carry a standardized self-check the escalating skills run as a discrete step,
+  the way `readability-rule.md` does?
+  - **Resolves when:** Unit 1 writes the rule file and decides.
+  - **Blocks implementation:** No, but the answer changes unit 1's size materially. A self-check obliges each of the
+    four skills to gain a check step, which is a larger edit than sourcing a short rule while drafting. The smaller
+    version is the default unless a reason to expand appears.
 
 ## Specialist Handoffs for Implementation
 
 - **`han-core:test-engineer`.** Dispatch to author the acceptance checklist, and again during the engineered
   walkthrough to judge whether returned reviews honored the named target length behind R1 and OI-1; needs the feature
   specification's D28 and the walkthrough scenario.
-- **`han-core:structural-analyst`.** Dispatch at unit 2b, to confirm the one rule line reads consistently against
-  twenty-two differently-shaped agent definitions and that no agent's existing rules contradict it; needs
+- **`han-core:structural-analyst`.** Dispatch at unit 2, to apply the findings-returning test across all twenty-four
+  agent definitions, confirm the one rule line reads consistently against each output-format shape, and log the
+  exclusions and the `gap-analyzer` insert-point exception; needs
   [D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule) and the
   agent roster.
-- **`han-core:information-architect`.** Dispatch at unit 7, for the repository-root documentation sweep; needs the
+- **`han-core:information-architect`.** Dispatch at unit 9, for the repository-root documentation sweep; needs the
   verified fan-out list in
   [D-16](artifacts/implementation-decision-log.md#d-16-the-documentation-sweep-covers-a-verified-fan-out-list) and the
   new skill as it landed in unit 1.
-- **`han-core:junior-developer`.** Dispatch after unit 5, to run the engineered walkthrough as a naive operator; needs
+- **`han-core:junior-developer`.** Dispatch after unit 6, to run the engineered walkthrough as a naive operator; needs
   the walkthrough scenario in
   [D-14](artifacts/implementation-decision-log.md#d-14-one-engineered-plan-a-feature-run-carries-the-main-walkthrough)
   and the acceptance checklist.
@@ -516,7 +645,36 @@ Every `han-core` agent carries `Read`, which makes A2 likely, but no run has con
 - **Team composition and round-by-round history:**
   [artifacts/implementation-iteration-history.md](artifacts/implementation-iteration-history.md)
 
+## Review History
+
+- **Review mode:** team.
+- **Rounds completed:** 2 (R4, R5). See
+  [artifacts/review-iteration-history.md](artifacts/review-iteration-history.md). Round IDs continue from the plan's own
+  build history, so they stay unique across both records.
+- **Team composition:**
+  - `han-core:junior-developer`, required: generalist stress-test of a plan amended by hand.
+  - `han-core:adversarial-validator`, required: the scope-expanding amendment was the freshest and least-tested
+    reasoning in the plan.
+  - `han-core:evidence-based-investigator`, conditionally mandatory and clearly triggered: the plan carries file paths
+    with line references throughout.
+  - `han-core:structural-analyst`, because the reference-file decomposition and the shared-roster change are the plan's
+    coupling decisions.
+- **Findings raised:** 26. See [artifacts/review-findings.md](artifacts/review-findings.md). Twenty resolved by
+  evidence, two by user input, one deferred to an open item, and three minor edits applied directly.
+- **Assumptions challenged:** Three claims the plan presented as measured were refuted by direct check: the
+  blast-radius count, the uniformity of the insert point, and the size of the agent roster. A fourth, that agents
+  already disclose reliably, was softened to what one reported incident supports.
+- **Consolidations made:** None. The review found no redundant work unit or duplicated rule; its findings were
+  bookkeeping, scope, and two real gaps in coverage.
+- **Ambiguities resolved:** The rule's scope moved from a count to a test. The seam between the agent and the consuming
+  skill gained a stated shape. The acceptance checklist gained a path and an owning unit. The four questions the shared
+  boundary reference has to settle were named rather than left implicit.
+- **Open items remaining:** 3, namely OI-1, OI-2, and OI-3 above. None blocks the plan. OI-2 and OI-3 block unit 1
+  specifically and are settled at its start; OI-1 resolves by observation during the walkthrough.
+
 ## Recommendation
 
-Ship as planned, in the sequence above. Run the reviewer-brief experiment before unit 5 begins, since OI-1 gates two
-commitments rather than the plan itself. OI-2 resolves inside unit 1 and blocks nothing.
+Ship as planned, in the sequence above. Settle OI-2 and OI-3 at the start of unit 1, along with the four questions
+`planning-boundary-rule.md` owns, since unit 1 cannot be written around them. OI-1 needs nothing before the work
+starts: it resolves by observation during the engineered walkthrough, and specification D28 already records the
+fallback if the answer is unfavorable.

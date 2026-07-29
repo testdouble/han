@@ -16,7 +16,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - D-10: Reuse the visual-material strings the consumer already reads. The folder name `ui-designs/`, the table heading
   `Visual Reference`, and the inline embed form `![alt text](ui-designs/{name}.png)` are copied from the existing
   consumer rather than coined fresh. Referenced in plan: Implementation Approach (Visual material, producer and
-  consumer), Work Units and Sequencing (unit 5), Definition of Done.
+  consumer), Work Units and Sequencing (unit 6), Definition of Done.
 - D-11: The accepted file set is stated once and cited by the inventory. `planning-boundary-rule.md` names which file
   types count as visual material, and the inventory's PNG sentence cites that set instead of restating an extension.
   Referenced in plan: Implementation Approach (Visual material, producer and consumer).
@@ -33,7 +33,9 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
      (the `ui-designs/` folder, naming, persist-on-arrival, noting each item into the boundary record, the completeness
      gate, the reference-table heading, and the inline-embed format). Consumers: all four planning skills.
   2. `scope-justification-rule.md` carries the justification field, the cut list, and the scope gate with its floor.
-     Consumers: all four for the justification and cut list, three for the scope gate.
+     Consumers: three for the justification field, since `plan-a-feature` produces no work units and takes the cut
+     list only ([D-8](#d-8-plan-a-feature-gains-the-cut-list-only-not-a-justification-field)); all four for the cut
+     list; three for the scope gate.
   3. `operator-escalation-rule.md` carries one question at a time, the plain-language lead, named candidate answers,
      technical references below the question or omitted, the single stop, and the escalation register. Consumers: all
      four.
@@ -109,7 +111,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
   `han-planning/skills/plan-work-items/references/reference-artifact-inventory.md` and is not cited from the other three
   skills. The general single-stop rule that binds all four lives in `operator-escalation-rule.md` instead
   ([D-1](#d-1-three-han-planning-reference-files-grouped-by-what-interlocks)). Three places in that skill are brought
-  into agreement: the canonical rule in the reference, the contradicting step in `SKILL.md:133-137`, and the operating
+  into agreement: the canonical rule in the reference, the contradicting step in `SKILL.md:134-137`, and the operating
   principle at `SKILL.md:36-40`.
 - **Rationale:** The apparent conflict dissolved on reading both specification decisions in full. D23 scopes the
   reconciliation to `plan-work-items`' own two contradicting statements, one of which says surface before drafting while
@@ -118,7 +120,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Evidence:**
   - `han-planning/skills/plan-work-items/references/reference-artifact-inventory.md`, "Missing-artifact handling",
     instructs the run to surface the gap before drafting work items.
-  - `han-planning/skills/plan-work-items/SKILL.md:133-137` instructs the run to note the gap in the breakdown report
+  - `han-planning/skills/plan-work-items/SKILL.md:134-137` instructs the run to note the gap in the breakdown report
     rather than stopping. These are the two contradicting statements D23 names.
   - Specification D24 rejects cross-skill reference links by name.
   - `.discovery-notes.md` carried an earlier line placing this rule in `han-planning/references/`; that line was
@@ -135,7 +137,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
   decisions in full rather than by choosing between the two positions.
 - **Driven by rounds:** R1
 - **Dependent decisions:** D-7
-- **Referenced in plan:** Implementation Approach (Where the shared rules live), Work Units and Sequencing (unit 3)
+- **Referenced in plan:** Implementation Approach (Where the shared rules live), Work Units and Sequencing (unit 4)
 
 ### D-4: The explanation standard ships as a rule file plus an inline surfacing skill
 
@@ -218,7 +220,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Driven by rounds:** R1
 - **Dependent decisions:** D-12
 - **Referenced in plan:** Implementation Approach (Reading the applicability table against the real skill files), Work
-  Units and Sequencing (unit 4), Definition of Done
+  Units and Sequencing (unit 5), Definition of Done
 
 ### D-6: The escalation register lands as a register in two skills only
 
@@ -247,7 +249,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Driven by rounds:** R1
 - **Dependent decisions:** D-12, D-14
 - **Referenced in plan:** Implementation Approach (Reading the applicability table against the real skill files), Work
-  Units and Sequencing (unit 4), Definition of Done
+  Units and Sequencing (unit 5), Definition of Done
 
 ### D-7: The `plan-work-items` autonomy and one-file principles are edited, not worked around
 
@@ -285,7 +287,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Driven by rounds:** R1
 - **Dependent decisions:** D-14, D-15
 - **Referenced in plan:** Implementation Approach (Reading the applicability table against the real skill files), Work
-  Units and Sequencing (unit 3), Risks and Assumptions
+  Units and Sequencing (unit 4), Risks and Assumptions
 
 ### D-8: `plan-a-feature` gains the cut list only, not a justification field
 
@@ -315,7 +317,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Driven by rounds:** R1
 - **Dependent decisions:** D-14
 - **Referenced in plan:** Implementation Approach (Reading the applicability table against the real skill files), Work
-  Units and Sequencing (unit 5), Definition of Done
+  Units and Sequencing (unit 6), Definition of Done
 
 ### D-9: The single phased-build reviewer is outside the visual-material brief rule
 
@@ -346,7 +348,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Driven by rounds:** R1
 - **Dependent decisions:** None
 - **Referenced in plan:** Implementation Approach (Reading the applicability table against the real skill files), Work
-  Units and Sequencing (unit 4)
+  Units and Sequencing (unit 5)
 
 ### D-12: Verification is a committed acceptance checklist plus manual walkthroughs
 
@@ -445,19 +447,25 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Dissent (if any):** None.
 - **Driven by rounds:** R1
 - **Dependent decisions:** None
-- **Referenced in plan:** Testing Strategy, Work Units and Sequencing (unit 5), Specialist Handoffs for Implementation
+- **Referenced in plan:** Testing Strategy, Work Units and Sequencing (unit 6), Specialist Handoffs for Implementation
 
 ### D-15: The change lands as sequenced units, not one simultaneous rewrite
 
 - **Question:** In what order does this change land, and what makes a skill-by-skill sequence safe?
-- **Decision:** Land the change as seven sequenced units, each leaving the repository coherent and each committed and
-  pushed as it completes: shared plumbing first, then the two `han-feedback` corrections, then `plan-work-items`, then
-  `plan-a-phased-build`, then `plan-a-feature`, then `plan-implementation`, then the repository-root documentation
-  sweep.
+- **Decision:** Land the change as nine sequenced units, each leaving the repository coherent and each committed and
+  pushed as it completes: shared plumbing first, then the agent disclosure placement rule
+  ([D-19](#d-19-agent-definitions-carry-the-disclosure-placement-rule)), then the two `han-feedback` corrections, then
+  `plan-work-items`, then `plan-a-phased-build`, then `plan-a-feature`, then `plan-implementation`, then the
+  `han-github` screenshot file set ([D-20](#d-20-the-github-screenshot-chain-widens-with-the-accepted-file-set)), then
+  the repository-root documentation sweep.
 
-  Two contracts must land together within a unit rather than being split across units: the visual-material producer and
-  consumer pair, and the boundary record's shared name
-  ([D-2](#d-2-the-boundary-record-is-a-visible-artifact-under-one-filename)).
+  One contract lands whole inside a single unit: the boundary record's shared name
+  ([D-2](#d-2-the-boundary-record-is-a-visible-artifact-under-one-filename)), written in unit 1.
+
+  The visual-material producer and consumer pair is deliberately split, consumer first, so the inventory has no updated
+  producer between units 4 and 6. What both halves share is the exact heading string, and unit 1 fixes that string
+  before either half moves. An earlier draft of this decision claimed the pair had to land together, which its own
+  chosen ordering contradicted.
 - **Rationale:** What makes a skill-by-skill sequence safe rather than merely convenient is specification D33's own
   fallback. A skill that finds no boundary record establishes one itself rather than proceeding unbounded, so an updated
   skill run against a folder produced by a not-yet-updated sibling still works. The order runs from least coupled to
@@ -547,7 +555,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Dissent (if any):** None.
 - **Driven by rounds:** R1
 - **Dependent decisions:** None
-- **Referenced in plan:** Implementation Approach (Documentation fan-out), Work Units and Sequencing (unit 7),
+- **Referenced in plan:** Implementation Approach (Documentation fan-out), Work Units and Sequencing (unit 9),
   Definition of Done, Deferred (YAGNI), Specialist Handoffs for Implementation
 
 ### D-17: `han-planning` stays filesystem-only with no work-item read tool
@@ -622,7 +630,7 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Dissent (if any):** None.
 - **Driven by rounds:** R1, R2
 - **Dependent decisions:** None
-- **Referenced in plan:** Implementation Approach (Tool grants), Work Units and Sequencing (unit 6), Definition of
+- **Referenced in plan:** Implementation Approach (Tool grants), Work Units and Sequencing (units 4, 5, 6, 7), Definition of
   Done, Risks and Assumptions
 
 ### D-19: Agent definitions carry the disclosure placement rule
@@ -630,7 +638,12 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Question:** Where is a reviewer told to put a blind-spot disclosure, so the rule that strips blocking severity has
   something to fire on?
 - **Decision:** In every agent definition, as one line in the file's existing rules list, stating that a disclosure
-  belongs on the finding itself and not only in an assumptions section. All twenty-two agents take the line, for
+  belongs on the finding itself and not only in an assumptions section, in one named shape both consuming skills read.
+  The rule applies by a test rather than by a roster: an agent takes the line when its output is a claim a dispatching
+  skill weighs, and does not when its output is an inventory of what it found or a rewritten artifact. That resolves to
+  twenty-one of the repository's twenty-four agent definitions, excluding `project-scanner` and `codebase-explorer`
+  (discovery output) and `readability-editor` (a rewritten artifact), and including `research-analyst` from outside
+  `han-core`. An earlier draft of this decision said all twenty-two `han-core` agents take the line, for
   consistency across the roster rather than only the sixteen the two planning skills dispatch. No agent gains a field
   and no output format changes. The rule that strips blocking severity from a finding resting on an uninspected input
   stays in the two dispatching skills' briefs, where specification D19 puts it. This deliberately expands the
@@ -650,15 +663,22 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
     already exists, which is why adding another one solves nothing.
   - `han-core/agents/structural-analyst.md` already reports "Skipped dimensions: any dimensions that could not be fully
     assessed and why," which is the same idea in a summary rather than on a finding.
-  - Every agent file ends in a `## Rules` bullet list, verified across the roster, so the insert point is uniform.
-  - Twelve skills across seven plugins dispatch `han-core` agents, which is the measured blast radius.
+  - Every agent file carries a `## Rules` bullet list. It is the last heading in every file except
+    `han-core/agents/gap-analyzer.md`, where `## Rules` at line 241 is followed by `## Graceful Degradation` at line
+    258. That one file is handled by name rather than by appending to the end.
+  - Nineteen skills across six plugins dispatch `han-core` agents, which is the measured blast radius. It includes
+    `iterative-plan-review`, whose own steps this plan lists as out of scope, so the rule reaches a skill the plan does
+    not otherwise touch. An earlier draft of this decision recorded twelve skills across seven plugins, which a
+    repository-wide check refuted.
+  - The repository holds twenty-four agent definitions, not twenty-two: `han-communication/agents/readability-editor.md`
+    and `han-research/agents/research-analyst.md` sit outside `han-core`.
   - User input: the expansion was chosen over the brief-only route for consistency and for durability against future
     model changes.
 - **Rejected alternatives:**
   - Brief-only delivery, which the specification committed to. Rejected by the user because it leaves the mechanism
     unproven and competing with each agent's own definition, and because a future model change could break it silently.
   - Adding a new per-finding field to each agent's output format. Rejected as the larger version of the same fix: the
-    agents already disclose, so a field addition would restructure twenty-two output formats and twenty-two long-form
+    agents already disclose, so a field addition would restructure twenty-one output formats and twenty-one long-form
     docs to buy what a placement line buys.
   - Editing only the sixteen agents the two planning skills dispatch. Rejected because partial coverage of a shared
     roster is its own inconsistency, and the reviewer that goes uncovered is the one nobody remembers to check.
@@ -672,5 +692,79 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Driven by rounds:** R1, R3
 - **Dependent decisions:** None
 - **Referenced in plan:** Constraints and Boundaries, Implementation Approach (Where the blind-spot disclosure is
-  stated), Work Units and Sequencing (unit 2b), Definition of Done, Risks and Assumptions, Open Items, Specialist
+  stated), Work Units and Sequencing (unit 2), Definition of Done, Risks and Assumptions, Open Items, Specialist
   Handoffs for Implementation
+
+### D-20: The GitHub screenshot chain widens with the accepted file set
+
+- **Question:** Widening the accepted visual-material file set past PNG changes a folder a second plugin also reads.
+  What happens to that plugin?
+- **Decision:** `han-github`'s `work-items-to-issues` widens to the same set, in all three places it is hardcoded: the
+  upload script's asset-selection pattern, the embed rules' source-filename requirement, and the issue template's own
+  embed markdown and path scheme. One file-set convention
+  spans both plugins, with no mismatch to document. It lands as its own work unit, depending only on unit 1 fixing the
+  set.
+- **Rationale:** `plan-a-feature` persists visual material into a folder, and two separate consumers read that folder:
+  `plan-work-items` builds work items from it, and `work-items-to-issues` uploads it into GitHub issues. Widening one
+  consumer and not the other converts a silent drop into a broken image, which is worse than the defect being fixed:
+  the item reaches the work item and then fails at the last hop, where nobody is looking. The alternative that keeps
+  scope smaller leaves two conventions for one folder, which is the drift this whole change set exists to remove.
+- **Evidence:**
+  - `han-github/skills/work-items-to-issues/scripts/upload-screenshots.sh:47` selects assets with a pattern ending in
+    a literal `.png`, so a non-PNG asset is never uploaded.
+  - `han-github/skills/work-items-to-issues/references/screenshot-embed-rules.md:27` requires the embedded filename to
+    match a `.png` source in the visual-material folder.
+  - `han-github/skills/work-items-to-issues/references/issue-template.md` carries the embed markdown an implementer
+    copies, and a stated path scheme, both ending in `.png`. A verification round found this third location after the
+    decision was first written with two. Widening the upload without widening the template produces an issue body that
+    writes a PNG extension over a file that is not one.
+  - The plan's own documentation fan-out claimed the surfaces were checked file by file; `han-github` was not in that
+    list, and this decision closes the gap the review found.
+  - User input: widen `han-github` too, chosen over scoping the widening to the planning consumer.
+- **Rejected alternatives:**
+  - Scoping the widened set to the planning consumer only and leaving `han-github` on PNG. Rejected by the user because
+    it leaves two conventions for one folder and pushes the failure to the last hop.
+  - Dropping the widening entirely and keeping PNG everywhere. Rejected because the silent-drop defect stays, which is
+    what raised the decision.
+- **Specialist owner:** `han-core:structural-analyst`
+- **Revisit criterion:** A third consumer of the visual-material folder appears, at which point the accepted set wants
+  a single stated home rather than three files agreeing.
+- **Dissent (if any):** None. Note this adds an executable shell script to a change set that is otherwise prose, which
+  is why the unit carries its own run-the-script verification rather than a read-through.
+- **Driven by rounds:** R4
+- **Dependent decisions:** None
+- **Referenced in plan:** Implementation Approach (Visual material, producer and consumer), Work Units and Sequencing
+  (unit 8), Definition of Done
+
+### D-21: The acceptance checklist has a path and an owning unit
+
+- **Question:** Where does the acceptance checklist live, who writes it, and how is unit 1 verified against a checklist
+  that does not exist when unit 1 starts?
+- **Decision:** It lives at `docs/plans/planning-scope-corrections/artifacts/acceptance-checklist.md`, one section per
+  work unit, ordered by the risk ranking in the Testing Strategy. Unit 1 writes the sections it can fill and stubs the
+  rest; each later unit fills its own section as it lands. `han-core:test-engineer` authors the initial structure.
+- **Rationale:** The checklist carries three loads: it is the sole mitigation for the coverage risk, the stated
+  verification for two units, and a Definition of Done item. An artifact with three loads and no address is a promise.
+  The circularity is real and the fix is ordinary: a checklist written incrementally is verifiable at every unit,
+  where one written up front is verified against commitments whose attach points do not exist yet.
+- **Evidence:**
+  - The plan's Definition of Done requires the checklist committed alongside the change.
+  - Units 1 and 9 both state their verification as a read-through against it.
+  - The risk register names it as the mitigation for the commitments that have no individual success criterion.
+  - The precedent for caring about an artifact's exact name is this plan's own boundary-record decision
+    ([D-2](#d-2-the-boundary-record-is-a-visible-artifact-under-one-filename)), which spent a full decision on a
+    filename because a downstream reader has to find it.
+- **Rejected alternatives:**
+  - Writing the whole checklist in unit 1. Rejected because ten of the commitments it must cover are defined by units
+    4 through 7, so unit 1 would be writing against attach points that do not exist.
+  - Writing it last, after every unit lands. Rejected because units 1 and 9 name it as their verification, so it has
+    to exist from the first commit.
+  - Leaving it unaddressed and letting the implementer choose. Rejected because two units verify against it, and a
+    verification target nobody can locate is not a verification.
+- **Specialist owner:** `han-core:test-engineer`
+- **Revisit criterion:** The checklist and the Definition of Done drift apart, at which point one of the two is
+  redundant.
+- **Dissent (if any):** None.
+- **Driven by rounds:** R4
+- **Dependent decisions:** None
+- **Referenced in plan:** Testing Strategy, Work Units and Sequencing (unit 1), Definition of Done
