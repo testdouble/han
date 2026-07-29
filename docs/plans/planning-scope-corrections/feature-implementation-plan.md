@@ -43,9 +43,12 @@ communication standard, each stated in one place instead of restated in four.
 - **Driving constraint:** Reported runs show planning skills widening past their work item, losing supplied design
   material, and escalating in jargon. The feature specification is settled with no open items, so the corrections are
   ready to build.
+- **Deliberate scope expansion:** The specification's Out of Scope leaves the shared specialist agent definitions
+  alone. This plan changes them anyway, by one line each, to state where a blind-spot disclosure belongs
+  ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). The
+  rest of that boundary holds: no agent gains a field, changes an output format, or takes on a review rule.
 - **Out of scope:**
-  - The shared specialist agent definitions. Review-behavior rules reach a reviewer only through the dispatching
-    skill's brief.
+  - Every other review-behavior rule, which still reaches a reviewer only through the dispatching skill's brief.
   - `iterative-plan-review`, which the specification deferred by name.
   - Which specialists a skill selects, and the existing team size caps.
   - Any plugin version bump. Versioning is a separate release decision, owned by the release skill, and nothing in this
@@ -201,6 +204,41 @@ what narrows it, and a reviewer reading the skill can check it.
 - `Bash(cp *)` on all four skills' `allowed-tools`
 - `Bash(mkdir *)` on `plan-implementation`, whose `allowed-tools` line carries `Bash(git *)` instead
 
+### Where the blind-spot disclosure is stated
+
+Every agent definition gains one line telling it to put a blind-spot disclosure on the finding itself, not only in an
+assumptions section
+([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). This
+expands the specification's scope deliberately, because its Out of Scope leaves the shared agent definitions alone.
+
+The reason the expansion is worth it: the reported failure was placement, not disobedience. The reviewer in that
+session did disclose its blindness. It put the disclosure in an assumptions section, well below a finding it
+recommended treating as blocking. Six agents already carry such a section, and `structural-analyst` already reports
+dimensions it could not assess. So these agents already produce the disclosure because their definitions ask for it.
+What no agent is told is where to put it.
+
+A rule stated in the agent's own definition also survives a model change better than a runtime instruction competing
+with that definition, which is the durability argument for accepting the wider surface.
+
+Three consequences follow, and each belongs in the work.
+
+- **The disclosure and its consequence live in different places.** The agent supplies the disclosure. The dispatching
+  skill still applies the rule that strips blocking severity from findings resting on an uninspected input, and that
+  rule stays in the two skills' briefs where the specification puts it.
+- **The change reaches every skill that dispatches these agents**, not only the four planning skills. That is twelve
+  skills across seven plugins, and it is accepted rather than incidental. A finding that rests on something unread is
+  worth flagging in a code review or a gap analysis too.
+- **No output format changes.** The rule is a placement correction added to each agent's existing rules list, so no
+  agent gains a field and the long-form docs need at most a sentence.
+
+The insert point is uniform: a bullet list at the end of every file.
+
+- `han-core/agents/*.md`, in each file's `## Rules` section, all twenty-two for consistency
+- `han-core/docs/agents/*.md`, in "What you get back", only where the sentence is needed
+
+The proportionality signal does not move with it. A rough target length is per-dispatch context rather than a stable
+property of an agent, so it stays in the brief and remains the one unproven delivery mechanism in this plan.
+
 ### Documentation fan-out
 
 The documentation surfaces were checked file by file rather than assumed, and two of them were verified as needing
@@ -237,6 +275,7 @@ consumer pair, and the boundary record's shared name.
 | --- | ------------------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
 | 1   | Shared plumbing                      | US-4, US-5, US-7 | The explanation standard and its inline surfacing skill, the three `han-planning` reference files, the boundary record's name and its admission to the inventory, plus the new skill's own docs, manifests, and index entry ([D-1](artifacts/implementation-decision-log.md#d-1-three-han-planning-reference-files-grouped-by-what-interlocks), [D-2](artifacts/implementation-decision-log.md#d-2-the-boundary-record-is-a-visible-artifact-under-one-filename), [D-4](artifacts/implementation-decision-log.md#d-4-the-explanation-standard-ships-as-a-rule-file-plus-an-inline-surfacing-skill)) | None       | Read-through against the acceptance checklist. No caller exists yet, which is an expected state.    |
 | 2   | `han-feedback` corrections           | US-6            | Today's feedback file updates in place with the update stated, and a refused publish is reported as the environment refusing rather than the run declining, with a copy-pasteable command handed over                 | None       | Two follow-on checks: a same-day second run, and a run in an environment that refuses to publish.   |
+| 2b  | Agent disclosure placement           | US-3, US-7      | One rule line in all twenty-two agent definitions placing a blind-spot disclosure on the finding rather than only in an assumptions section, plus the long-form doc sentences that need it ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)) | None       | Dispatch one agent against an input it cannot open, and confirm the disclosure rides on the finding. |
 | 3   | `plan-work-items`                    | US-1, US-2, US-5 | Boundary read and record, visual-material inventory, justification field, single stop, the no-visual-surface split, the reconciled missing-artifact rule, and the corrected autonomy and one-file principles ([D-3](artifacts/implementation-decision-log.md#d-3-the-missing-artifact-rule-stays-local-to-plan-work-items), [D-7](artifacts/implementation-decision-log.md#d-7-the-plan-work-items-autonomy-and-one-file-principles-are-edited-not-worked-around)) | 1          | Follow-on check: a run against a plan with no visual surface at all.                                |
 | 4   | `plan-a-phased-build`                | US-1, US-2, US-4 | Boundary read with operator-stated shaping context, direction-of-travel inheritance, visual material, justification, the scope gate at candidate evaluation, the single stop with its register, and the reviewer-scope clause ([D-5](artifacts/implementation-decision-log.md#d-5-the-scope-gate-attaches-to-existing-yagni-points-not-to-a-new-sweep-step), [D-6](artifacts/implementation-decision-log.md#d-6-the-escalation-register-lands-as-a-register-in-two-skills-only), [D-9](artifacts/implementation-decision-log.md#d-9-the-single-phased-build-reviewer-is-outside-the-visual-material-brief-rule)) | 1          | Follow-on check: a run where the operator states scope out loud at invocation.                      |
 | 5   | `plan-a-feature`                     | US-1, US-2, US-3, US-4 | Every applicability row, including the visual reference table and inline placements the inventory reads, the cut list without a per-unit justification field, and classification of decisions once after the review round ([D-8](artifacts/implementation-decision-log.md#d-8-plan-a-feature-gains-the-cut-list-only-not-a-justification-field), [D-10](artifacts/implementation-decision-log.md#trivial-decisions)) | 1, 3       | The engineered walkthrough ([D-14](artifacts/implementation-decision-log.md#d-14-one-engineered-plan-a-feature-run-carries-the-main-walkthrough)). |
@@ -284,6 +323,9 @@ consume from.
 - [ ] The acceptance checklist is written and committed alongside the change, covering every commitment including the
       ten with no stated success criterion
       ([D-12](artifacts/implementation-decision-log.md#d-12-verification-is-a-committed-acceptance-checklist-plus-manual-walkthroughs)).
+- [ ] Every agent definition states where a blind-spot disclosure belongs, no agent gained a field or changed an output
+      format, and one dispatch against an unopenable input returns the disclosure on the finding
+      ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)).
 - [ ] No plugin version changed in this work.
 
 ## Testing Strategy
@@ -325,7 +367,8 @@ the next editor nothing.
 
 | ID  | Risk                                                                                                                                                                                          | Impact                                                                                                                                        | Mitigation                                                                                                                                                                                                                                                                       | Owner                          |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| R1  | A reviewer brief may not reliably add a required per-finding field to an agent whose definition owns its own output format. Specification D19 needs an "input I could not inspect" disclosure on each finding, and D28 needs a rough target length. The agent definitions prescribe their output structure in detail, and the specification's Out of Scope forbids changing them. | Two review-behavior commitments in units 5 and 6 could ship as text that never takes effect.                                                    | Run a thirty-minute experiment before those units land: add the disclosure field to one brief by hand, dispatch one agent, and check whether the returned finding carries it. If it does not, the trigger is that the specification's Out of Scope boundary needs revisiting. Specification D28's own rejected alternatives already keep a hard cap on record as the fallback if a named target proves inert. | `han-core:test-engineer`       |
+| R1  | The proportionality signal is still delivered by brief alone. Specification D28 needs a rough target length in each reviewer's brief, and a length is per-dispatch context rather than a stable property of an agent, so it cannot move to the agent definition the way the disclosure did ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)). The agent definitions prescribe their own section lists in detail, and a returned review may not fit inside a named target. | One commitment in units 5 and 6 could ship as text that never takes effect. Reviewer output stays as long as it is today. | Check the returned length during the engineered walkthrough rather than in a separate experiment. Specification D28's own rejected alternatives already keep a hard cap on record as the fallback if a named target proves inert, so a negative result has a designed answer rather than an open question. | `han-core:test-engineer`       |
+| R5  | The disclosure placement rule reaches twelve skills across seven plugins, because it lands in the shared agent roster rather than in two briefs.                                                                                                                                                | A rule written for planning review changes what every dispatching skill in Han gets back.                                                       | Accepted deliberately, and the reason it is safe is that the rule adds no field and changes no output format. It relocates a disclosure those agents already produce. Unit 2b lands on its own so the change can be observed before any planning skill depends on it.                                    | `han-core:structural-analyst`  |
 | R2  | `Bash(cp *)` is an unscoped grant narrowed only by prompt text, because `allowed-tools` scopes by command prefix and not by path ([D-18](artifacts/implementation-decision-log.md#d-18-the-four-planning-skills-gain-a-copy-tool-constrained-by-prompt-text)). | A run could copy to a destination outside the resolved plan folder.                                                                            | Each skill's body states that every copy destination is the plan folder's `ui-designs/`, which a reviewer reading the skill can check.                                                                                                                                            | `han-core:junior-developer`    |
 | R3  | Ten of the roughly fifteen commitments have no stated success criterion. The specification's `## How We Will Know It Worked` covers four.                                                       | A commitment could ship as text and never be observed to fire.                                                                                 | The acceptance checklist names what you would see in the produced artifact folder for each remaining commitment ([D-12](artifacts/implementation-decision-log.md#d-12-verification-is-a-committed-acceptance-checklist-plus-manual-walkthroughs)). This adds prose to a section that already exists, not machinery. | `han-core:test-engineer`       |
 | R4  | "Beside the plan" is underdefined for `plan-work-items` when it is invoked standalone, because its output folder may differ from any input plan's folder.                                       | The boundary record and the visual-material folder could land in two different places across one chain.                                        | Resolve it in `planning-boundary-rule.md` by stating which folder wins ([D-1](artifacts/implementation-decision-log.md#d-1-three-han-planning-reference-files-grouped-by-what-interlocks)).                                                                                        | `han-core:information-architect` |
@@ -424,13 +467,15 @@ Every `han-core` agent carries `Read`, which makes A2 likely, but no run has con
 
 ## Open Items
 
-- **OI-1:** Can a reviewer brief add a required per-finding field to an agent whose definition specifies its own output
-  format?
-  - **Resolves when:** The thirty-minute experiment in R1 runs: one brief carries the disclosure field by hand, one
-    agent is dispatched, and the returned finding either carries the field or does not.
-  - **Blocks implementation:** No. Units 1 through 4 are unaffected. It blocks only the two review-behavior
-    commitments inside units 5 and 6, and a negative result routes to revisiting the specification's Out of Scope
-    boundary rather than to a redesign here.
+- **OI-1:** Will a reviewer honor a rough target length carried in its brief, when its own definition prescribes the
+  sections it must return? Carried as R1 above. The disclosure half of this question closed when the placement rule
+  moved into the agent definitions
+  ([D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule)); the
+  length half cannot follow it there.
+  - **Resolves when:** The engineered walkthrough runs and the returned reviews are either near the named target or
+    are not.
+  - **Blocks implementation:** No. It affects one commitment inside units 5 and 6, and specification D28 already
+    records a hard cap as the designed fallback.
 
 - **OI-2:** In `plan-work-items`, does the completeness gate cover only the material that run received, or also
   material an upstream skill already persisted? Carried as A3 above.
@@ -441,9 +486,13 @@ Every `han-core` agent carries `Read`, which makes A2 likely, but no run has con
 
 ## Specialist Handoffs for Implementation
 
-- **`han-core:test-engineer`.** Dispatch before unit 5 begins, to run the reviewer-brief experiment behind R1 and
-  OI-1, and again to author the acceptance checklist; needs the feature specification's D19 and D28, one existing
-  reviewer brief from `plan-a-feature`, and one `han-core` agent definition.
+- **`han-core:test-engineer`.** Dispatch to author the acceptance checklist, and again during the engineered
+  walkthrough to judge whether returned reviews honored the named target length behind R1 and OI-1; needs the feature
+  specification's D28 and the walkthrough scenario.
+- **`han-core:structural-analyst`.** Dispatch at unit 2b, to confirm the one rule line reads consistently against
+  twenty-two differently-shaped agent definitions and that no agent's existing rules contradict it; needs
+  [D-19](artifacts/implementation-decision-log.md#d-19-agent-definitions-carry-the-disclosure-placement-rule) and the
+  agent roster.
 - **`han-core:information-architect`.** Dispatch at unit 7, for the repository-root documentation sweep; needs the
   verified fan-out list in
   [D-16](artifacts/implementation-decision-log.md#d-16-the-documentation-sweep-covers-a-verified-fan-out-list) and the

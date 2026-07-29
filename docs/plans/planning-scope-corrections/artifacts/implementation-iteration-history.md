@@ -124,3 +124,47 @@ authentication, PII, or data migration surface, so it does not reach large. Team
   Definition of Done, Risks and Assumptions, Deferred (YAGNI)
 - **Next-step recommendation:** Go to synthesis. Every Open Question is resolved or carried as a stated risk with a
   named verification step, and the round produced no major unresolved findings.
+
+## R3: Post-synthesis scope decision on the disclosure mechanism
+
+This round ran after synthesis, on one question the plan shipped as an open item. It is recorded as a round because it
+changed a committed decision, not because the facilitation loop reopened.
+
+- **Specialists engaged:** None dispatched. The question was investigated directly against the agent roster, then put
+  to the user.
+- **New input provided:** OI-1 as the plan stated it, plus a direct survey of `han-core/agents/` for output-format
+  shape, existing assumptions sections, rules-list structure, and the measured set of skills that dispatch these
+  agents.
+
+- **Claim ledger:**
+
+| Claim                                                                                                                                  | Raised by      | State     |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | -------------- | --------- |
+| The reported failure was placement, not disobedience: specification D19 records that the reviewer did disclose, below the finding       | (verification) | Evidenced |
+| Six agents already carry a `## Assumptions` section, so the section the failure used already exists                                     | (verification) | Evidenced |
+| `structural-analyst` already reports dimensions it could not assess, which is the same idea in a summary rather than on a finding       | (verification) | Evidenced |
+| Every agent file ends in a `## Rules` bullet list, so a placement line has a uniform insert point across all twenty-two                 | (verification) | Evidenced |
+| Twelve skills across seven plugins dispatch `han-core` agents, which is the measured blast radius of any roster change                  | (verification) | Evidenced |
+| Ten agents carry a `## Findings` section with per-finding fields; the rest use numbered items under `## Output Format`                  | (verification) | Evidenced |
+| The proportionality signal cannot move to the agent definitions, because a target length is per-dispatch context                        | (verification) | Evidenced |
+
+- **Open Questions raised:**
+  - **OQ-7:** Should the blind-spot disclosure stay in the dispatching skills' briefs, or move into the shared agent
+    definitions and accept the wider surface?
+
+- **Spec-maturity tags:** plan-level 6; spec-level 1 (OQ-7 changes a boundary the specification's Out of Scope
+  settled); T#-contradiction 0. The gate did not trip: it requires five spec-level findings from three distinct
+  specialists, and this is one finding from a direct verification pass, resolved by the user rather than by fabricating
+  behavior.
+
+- **Resolution source:**
+  - OQ-7: **user input.** Move the placement rule into all twenty-two agent definitions, as one line in each rules
+    list, chosen for consistency across the roster and for durability against future model changes. The larger variant,
+    adding a per-finding field, was rejected as unnecessary because the agents already disclose. The consequence that
+    strips blocking severity stays in the two skills' briefs.
+
+- **Decisions produced:** D-19
+- **Changed in plan:** Constraints and Boundaries, Implementation Approach, Work Units and Sequencing, Definition of
+  Done, Risks and Assumptions, Open Items, Specialist Handoffs for Implementation
+- **Next-step recommendation:** Go to synthesis. OI-1 narrowed to the proportionality signal alone, which the
+  engineered walkthrough already observes and which specification D28 already carries a designed fallback for.

@@ -624,3 +624,53 @@ dependent decision, or carries recorded dissent. It is trivial otherwise.
 - **Dependent decisions:** None
 - **Referenced in plan:** Implementation Approach (Tool grants), Work Units and Sequencing (unit 6), Definition of
   Done, Risks and Assumptions
+
+### D-19: Agent definitions carry the disclosure placement rule
+
+- **Question:** Where is a reviewer told to put a blind-spot disclosure, so the rule that strips blocking severity has
+  something to fire on?
+- **Decision:** In every agent definition, as one line in the file's existing rules list, stating that a disclosure
+  belongs on the finding itself and not only in an assumptions section. All twenty-two agents take the line, for
+  consistency across the roster rather than only the sixteen the two planning skills dispatch. No agent gains a field
+  and no output format changes. The rule that strips blocking severity from a finding resting on an uninspected input
+  stays in the two dispatching skills' briefs, where specification D19 puts it. This deliberately expands the
+  specification's Out of Scope, which leaves the shared agent definitions alone.
+- **Rationale:** The reported failure was placement, not disobedience. Specification D19's own rationale records that
+  the reviewer did disclose its blindness, in an assumptions section well below a finding it recommended treating as
+  blocking, and that "the disclosure existed and did not travel where it was needed." So these agents already produce
+  the disclosure reliably, because their definitions ask for it. What no agent is told is where to put it, and
+  placement is precisely what an agent definition specifies. A runtime brief asking an agent to relocate something its
+  own definition positions elsewhere is the weaker mechanism, and it also has to win that argument again on every
+  future model. A rule in the definition does not.
+- **Evidence:**
+  - Specification `decision-log.md` D19 rationale: the reviewer disclosed, and the disclosure sat in an assumptions
+    section below the finding.
+  - Six agents already carry a `## Assumptions` section: `data-engineer`, `devops-engineer`, `junior-developer`,
+    `information-architect`, `on-call-engineer`, `user-experience-designer`. The section the reported failure used
+    already exists, which is why adding another one solves nothing.
+  - `han-core/agents/structural-analyst.md` already reports "Skipped dimensions: any dimensions that could not be fully
+    assessed and why," which is the same idea in a summary rather than on a finding.
+  - Every agent file ends in a `## Rules` bullet list, verified across the roster, so the insert point is uniform.
+  - Twelve skills across seven plugins dispatch `han-core` agents, which is the measured blast radius.
+  - User input: the expansion was chosen over the brief-only route for consistency and for durability against future
+    model changes.
+- **Rejected alternatives:**
+  - Brief-only delivery, which the specification committed to. Rejected by the user because it leaves the mechanism
+    unproven and competing with each agent's own definition, and because a future model change could break it silently.
+  - Adding a new per-finding field to each agent's output format. Rejected as the larger version of the same fix: the
+    agents already disclose, so a field addition would restructure twenty-two output formats and twenty-two long-form
+    docs to buy what a placement line buys.
+  - Editing only the sixteen agents the two planning skills dispatch. Rejected because partial coverage of a shared
+    roster is its own inconsistency, and the reviewer that goes uncovered is the one nobody remembers to check.
+  - Running the thirty-minute experiment first and deciding after. Rejected by the user, who preferred the
+    higher-confidence route directly rather than spending a round to justify it.
+- **Specialist owner:** `han-core:structural-analyst`
+- **Revisit criterion:** An agent's returned finding carries no disclosure despite an input it could not open, or the
+  rule line reads as contradictory against an agent whose rules already govern the same ground.
+- **Dissent (if any):** None. Note that the plan carries the wider blast radius as risk R5 rather than as a settled
+  non-issue.
+- **Driven by rounds:** R1, R3
+- **Dependent decisions:** None
+- **Referenced in plan:** Constraints and Boundaries, Implementation Approach (Where the blind-spot disclosure is
+  stated), Work Units and Sequencing (unit 2b), Definition of Done, Risks and Assumptions, Open Items, Specialist
+  Handoffs for Implementation
