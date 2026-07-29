@@ -80,8 +80,9 @@ How Prettier treats your files:
   `han-reporting/skills/html-summary/assets/`, are left untouched (`.prettierignore`).
 
 Shell scripts are linted with ShellCheck. A script's tests sit next to it as a `*.bats` file in the same directory
-(for example `scripts/detect-git-context.sh` is covered by `scripts/detect-git-context.bats`); harness-level checks
-that aren't tied to one script live in `test/`. `npm test` discovers every `*.bats` file in the repo outside
+(for example `han-coding/skills/code-review/scripts/detect-review-context.sh` is covered by
+`detect-review-context.bats` in that same directory); harness-level checks that aren't tied to one script live in
+`test/`. `npm test` discovers every `*.bats` file in the repo outside
 `node_modules`. Tests run in CI rather than on commit; run them locally with `npm test`.
 
 ## Which plugin does the change belong in?

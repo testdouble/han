@@ -264,3 +264,13 @@ such as Claude, should be referenced here.
   `han-communication/agents/`, and `han-research/agents/` (long-form docs in `{plugin}/docs/agents/`, indexed in
   `docs/agents/README.md`). Verify the indexes list every entity when editing them, rather than tracking a running
   total.
+
+## Project Discovery
+
+- Default branch: `main`
+- Language: Markdown (skill, agent, and doc content) and Bash (skill `scripts/`)
+- Package manager: npm. The root `package.json` manages dev tooling only; there is no application build or dev server.
+- Install: `npm install` installs prek, Prettier, and Bats locally, with nothing on the global PATH.
+- Lint: `npm run lint` runs `prek run --all-files` (Prettier, ShellCheck, and file-hygiene hooks).
+- Test: `npm test` runs Bats over every `*.bats` file in the repo outside `node_modules`; a script's tests sit beside
+  it in the same directory, and harness-level checks live in `test/`.
