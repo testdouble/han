@@ -179,26 +179,39 @@ against an input the agent cannot open, and it is listed under Risk 2 rather tha
 
 ## Unit 4: `plan-work-items`
 
-**Status:** Not yet landed.
+**Status:** Landed by read-through. One follow-on run remains.
 
-- [ ] The skill reads the boundary record instead of re-asking, and establishes one when it finds none.
-- [ ] The confirmation turn fires here only on the absent-record path.
-- [ ] Every work item carries a filled justification field, sitting beside the references rather than in the summary.
-- [ ] A work item that cannot be justified appears in the cut list with what it would have done and why it was cut.
-- [ ] The single stop is present, gathers every qualifying missing input into one question, and names the cost, the
-      supply action, and an offer to continue.
-- [ ] No visual surface and visual work with no designs are handled as two different situations
+- [x] A new Step 0 reads `artifacts/scope-boundary.md` when it exists and establishes one when it does not.
+- [x] The confirmation turn fires only on the absent-record path, and a recorded direction-of-travel answer is never
+      re-asked.
+- [x] The conflict rule is present: a work item conflicting with the record surfaces the conflict rather than
+      overwriting or silently trusting it.
+- [x] Every work item carries a `**Justification.**` field of its own, placed immediately before `**References.**`, and
+      the format invariants say so. It is required on every item.
+- [x] A candidate that cannot be justified goes in `## Cut for Scope`, which names what it would have done in plain
+      language and why, opens with a line distinguishing it from the deferral section, and is printed in the closing
+      summary so the user can reverse it.
+- [x] The single stop is named in the operating principles as one of exactly two exceptions to autonomy, and the
+      missing-artifact rule routes qualifying inputs into it.
+- [x] No visual surface and visual work with no designs are handled as two different situations, stated as a rule
       ([D-27 in the specification](decision-log.md#d27-plan-work-items-separates-no-visual-surface-from-visual-work-with-no-designs)).
-      Checked by a follow-on run against a plan with no visual surface at all.
-- [ ] The missing-artifact rule is reconciled and split by who can supply the artifact, and the three places that must
-      agree do agree: the canonical rule in the inventory reference, the step that contradicted it, and the operating
-      principle
+- [x] The missing-artifact rule is reconciled and split by who can supply the artifact, and the three places agree: the
+      canonical rule now lives in the inventory reference's "Missing-artifact handling", Step 4 points at it rather than
+      restating it, and the operating principle names the stop as an exception instead of forbidding it
       ([D-3](implementation-decision-log.md#d-3-the-missing-artifact-rule-stays-local-to-plan-work-items)).
-- [ ] The autonomy principle and the one-file statement no longer contradict the skill's own steps
+- [x] The autonomy principle and the one-file statement no longer contradict the skill's own steps. Autonomy names its
+      two exceptions; the one-file statement scopes itself to the breakdown and names the companion artifacts
       ([D-7](implementation-decision-log.md#d-7-the-plan-work-items-autonomy-and-one-file-principles-are-edited-not-worked-around)).
-- [ ] `Bash(cp *)` is present on `allowed-tools`, and the body states that the copy destination is the resolved plan
+- [x] The lead paragraph at the top of the skill matches, describing the run as autonomous apart from those two turns.
+- [x] `Bash(cp *)` is present on `allowed-tools`, and Step 0 states that copy destinations are always the resolved output
       folder's `ui-designs/`.
-- [ ] The long-form doc matches the behavior the skill now carries.
+- [x] The completeness gate runs before the file is declared finished, and covers only material this run received
+      ([D-23](implementation-decision-log.md#d-23-the-completeness-gate-in-plan-work-items-covers-only-what-that-run-received)).
+- [x] `han-communication:explanation-guidance` is sourced before the confirmation turn and before the single stop.
+- [x] The drafting agent receives the boundary record and the justification-and-cutting directive, including the floor.
+- [x] The long-form doc matches the behavior the skill now carries.
+- [ ] Follow-on run: a run against a plan with no visual surface at all omits the design-reference block and reports no
+      missing artifact.
 
 ## Unit 5: `plan-a-phased-build`
 

@@ -5,6 +5,7 @@ disclosure: the summary says why the work is needed and what is being done, the 
 implementer will do, the acceptance criteria at the bottom say how anyone knows it is done, and everything in between
 exists to support a criterion. The criteria are drafted immediately after the summary — before any detail — even though
 they render at the bottom, so the detail is forced to serve them. Required fields appear in the order shown. The
+`**Justification.**` block is always required: no work item ships without naming what it descends from. The
 `**References.**` block is required whenever the work item consumes any artifact identified in Step 4 of the skill or
 restates a plan decision — omit it only when neither applies. Additional `**Bold paragraph.**` context blocks are
 allowed between the work-to-be-done list and the reference blocks when a work item needs them — common ones:
@@ -27,6 +28,8 @@ SDK or platform caveats that affect acceptance.
 **Design references.** *(Required for UI-bearing work items when the plan folder contains a `ui-designs/` subfolder. Reference each relevant screenshot by a relative path from the `work-items.md` file to the screenshot — e.g., `ui-designs/<file>.png` when the file lives alongside the plan. Embed the image inline and wrap it in a link to the same relative path so a reader can open the full-size image. One image per bullet, with a short caption naming the depicted state. Omit the entire block when the work item has no UI surface or no `ui-designs/` folder exists.)*
 
 - *<state-or-scenario name>* — `[![<alt text>](ui-designs/<file>.png)](ui-designs/<file>.png)`
+
+**Justification.** One sentence naming what this work item descends from: the work-item language it comes from (quoted or named), the visual material the operator attached, or the asked-for work it is a necessity of. This is a required field of its own, not a line of the summary. A work item that cannot fill it belongs in the cut list, not in this file.
 
 **References.**
 - **Plan decisions** — every plan decision or work unit this item satisfies, one bullet each: the ID as a link (e.g., `[D-6](feature-implementation-plan.md#d-6-...)`) followed by one short plain sentence saying what that decision or work unit actually is. Never a bare ID list — a reader must not need the plan open to know what the ID means. This block replaces any inline `See plan: ...` reference and any standalone "Work items addressed" field — do not add either.
@@ -58,6 +61,7 @@ SDK or platform caveats that affect acceptance.
 - Heading line begins with `## ` followed by `<W-N>` (the prefix letters, a dash, then digits), then `—` (em-dash with
   surrounding spaces), then the title.
 - A work item body ends at the next `## ` heading or end of file.
+- `**Justification.**` sits immediately before `**References.**`, and is present on every work item.
 - `**Summary.**` comes first; `**Acceptance criteria.**` renders at the bottom, immediately before `**Depends on.**`.
   Every block between them supports a criterion; there is no separate `**Tests.**` block — test expectations live
   inside the acceptance criteria.

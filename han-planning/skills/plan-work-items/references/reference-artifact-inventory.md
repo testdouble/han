@@ -51,5 +51,23 @@ breadcrumb, and never a link to the decision log itself.
 
 ## Missing-artifact handling
 
-If an expected artifact is missing — for example, the plan touches an HTTP boundary but no contract file exists —
-surface it to the user **before drafting work items**. Work items that consume an undefined contract are not draftable.
+This is the canonical rule for a missing artifact. The skill's own Step 4 points here rather than restating it, so there
+is one instruction rather than two that disagree.
+
+One rule, split by **who can supply the artifact**. The test: does the input exist outside the codebase, and can the user
+hand it over right now?
+
+**The user can supply it now.** Design frames the run never persisted, a contract only they have, a document on their
+machine. Surface it **before drafting work items**, as part of the single stop described in
+[`operator-escalation-rule.md`](../../../references/operator-escalation-rule.md). Gather every input of this kind into
+that one stop rather than stopping twice: name what is missing, name in plain language what the work items will be
+missing without it, name the action that would supply it, and offer to continue anyway. Work items that consume an
+undefined contract are not draftable, so say which ones are blocked.
+
+**Nobody can produce it now.** An endpoint that has not been designed, a schema that does not exist yet. Note it in the
+breakdown report and keep going: draft the work items that do not depend on it, and flag the ones it blocks as not
+draftable until the artifact exists. Do not stop. Stop only when no work items are draftable at all without it.
+
+The distinction is the whole rule. Stopping for an artifact nobody can produce gates the run on something no answer can
+unblock, and continuing past an artifact the user is holding produces work items with a hole in them that nobody
+noticed.

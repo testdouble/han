@@ -8,7 +8,7 @@ description: >
   plan or iterative-plan-review to harden it first. Does not sequence work into demoable delivery phases — use
   plan-a-phased-build for that. Does not write code — use tdd to implement a work item.
 argument-hint: "[implementation plan path or feature name, optional; output folder, optional]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *)
 ---
 
 ## Project Context
@@ -27,26 +27,44 @@ present and nothing changes.
 Break an implementation plan into vertical slices (tracer bullets) and write them as work items to a single
 `work-items.md` file.
 
-This skill mostly coordinates: locating the plan or context, resolving where the file goes, printing the breakdown,
-writing the work-items file. It runs autonomously end to end. Step 5 is where the judgement comes into play, in dividing
-up the plan.
+This skill mostly coordinates: reading the boundary this work descends from, locating the plan or context, resolving
+where the file goes, printing the breakdown, writing the work-items file. It runs autonomously apart from two named
+turns: the confirmation turn it takes when no boundary record exists, and the single stop for an input only the user can
+supply. Step 5 is where the judgement comes into play, in dividing up the plan.
 
 ## Operating Principles
 
-- **Run autonomously.** After the initial request, run end to end without pausing for human confirmation. When a
-  decision has a reasonable default (where the file goes, how the plan divides), make it, state it, and proceed. Print
-  the work item breakdown for visibility, but never gate on approval to continue. Stop for the user only when the skill
-  genuinely cannot continue without input — there is no plan or context to work from at all.
-- **One file, no repository awareness.** This skill produces exactly one `work-items.md`. It does not split work by
-  repository, count repositories, or reason about cross-repository integration. The breakdown is driven only by the plan
-  or context it is given.
+- **Run autonomously, with two named exceptions.** After the initial request, run end to end without pausing for human
+  confirmation. When a decision has a reasonable default (where the file goes, how the plan divides), make it, state it,
+  and proceed. Print the work item breakdown for visibility, but never gate on approval to continue. Two situations are
+  exceptions, and they are the only ones:
+  - **The confirmation turn**, taken when no boundary record exists, per Step 0.
+  - **The single stop**, taken once when an input only the user can supply is missing and its absence degrades the work
+    items, per [operator-escalation-rule.md](../../references/operator-escalation-rule.md).
+
+  Beyond those two, stop only when the skill genuinely cannot continue: there is no plan or context to work from at all.
+  An expected artifact nobody can produce right now is recorded as a gap and does not stop the run.
+- **One work-items file, no repository awareness.** This skill produces exactly one `work-items.md`. Beside it, the run
+  also writes or updates the boundary record and persists any visual material it receives, per Step 0 and
+  [planning-boundary-rule.md](../../references/planning-boundary-rule.md); those are companion artifacts, not a second
+  breakdown. The skill does not split work by repository, count repositories, or reason about cross-repository
+  integration. The breakdown is driven only by the plan or context it is given.
 - **Save incrementally — never lose work.** Write the work-items file as soon as the title and intro are drafted, then
   append each work item as it is finalized. Do not buffer the whole document in conversation memory and write it at the
   end.
 
 ## Rules
 
-- Do NOT modify, annotate, or comment on the source implementation plan or context. It is read-only input.
+- Do NOT modify, annotate, or comment on the source implementation plan or context. It is read-only input. The boundary
+  record and the visual-material folder are the exception: those the run writes, per Step 0.
+- **Every work item carries a justification.** It is a named field of its own, `**Justification.**`, placed immediately
+  before the `**References.**` block, never a line of summary prose. It names one of three things: the work-item
+  language it descends from, the visual material the operator attached, or the asked-for work it is a necessity of. A
+  work item that cannot fill it does not go in the breakdown; it goes in the cut list. Full rule in
+  [scope-justification-rule.md](../../references/scope-justification-rule.md).
+- **Unjustifiable work goes in a visible cut list**, in the work-items file and in the closing summary, naming what the
+  item would have done in plain language and why it was cut. Do not search outward to a linked, sibling, or closed item
+  to find a justification for it.
 - Each work item is a **vertical slice**: a narrow but complete path through the relevant layers (schema, API, UI,
   tests) that is demoable or verifiable on its own. Not a layer, not a stub.
 - **Summary and acceptance criteria drive the item; criteria render at the bottom.** Draft each work item's
@@ -73,9 +91,15 @@ up the plan.
 - Every work item body MUST link the reference artifacts an implementer needs: API/event contracts, design frames,
   schema docs, runbooks, ADRs, coding standards. A work item that consumes an HTTP endpoint or event payload MUST link
   the contract section that defines it.
-- UI work items, when the plan folder has a `ui-designs/` subfolder, MUST reference the relevant design screenshots by a
-  relative path from the work-items file to the screenshot. See
-  [references/work-item-template.md](./references/work-item-template.md).
+- UI work items, when the plan folder has a `ui-designs/` subfolder, MUST reference the relevant visual material by a
+  relative path from the work-items file to the file. See
+  [references/work-item-template.md](./references/work-item-template.md). The accepted file set is named in
+  [planning-boundary-rule.md](../../references/planning-boundary-rule.md); a hosted URL the boundary record lists is
+  cited by URL, since there is no file to reference.
+- **An absent `ui-designs/` folder is two different situations, not one.** A work item with no UI surface omits the
+  design-reference block and that is the end of it. A work item that implements visual work with no material available is
+  a missing artifact: report it as one, note that the upstream skill may never have persisted it, and note that the user
+  can supply it now. One line of output for a lost visual specification is the wrong proportion.
 - `Depends on` lists other work items **in this same file** that must complete first, or `None`.
 - NEVER include process artifacts in work item bodies or the preamble. Excluded categories: iteration histories,
   decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an
@@ -85,6 +109,41 @@ up the plan.
   [references/reference-artifact-inventory.md](./references/reference-artifact-inventory.md).
 
 ## Process
+
+### 0. Read the boundary this work descends from
+
+Before anything else, establish the outer boundary of the run. Read
+[planning-boundary-rule.md](../../references/planning-boundary-rule.md) for the record's name, its sections, and the
+accepted visual-material file set, then take one of two paths.
+
+**A boundary record already exists.** Look for `artifacts/scope-boundary.md` in the plan's folder. When it is there, read
+it and use it. Do not re-ask the user for anything it already answers, including the direction-of-travel question: a
+recorded answer of any kind is never re-asked. When your output folder differs from the plan's folder, write your own
+record beside your own deliverable and name the path you inherited it from.
+
+**No boundary record exists.** Establish the boundary yourself and take one confirmation turn. This is the one turn that
+carries more than one ask. It restates the boundary in the user's own terms, names any visual material you kept, and asks
+the direction-of-travel question with its subjects named from the work item you have already read. Write the record before
+you draft.
+
+Before writing that turn, or the single stop later in the run, source the explanation standard by invoking
+`han-communication:explanation-guidance`. Both turns go to someone who will not open the code, so each names a concrete
+outcome they could observe rather than a mechanism, and keeps paths and identifiers below the question or leaves them
+out.
+
+An absent record is not a recorded statement that no work item exists. Those are different, and only the second is a
+finding you write down.
+
+When the user hands you a work item that conflicts with the recorded one, surface the conflict in the confirmation turn
+and ask which governs. Do not silently overwrite the record and do not silently trust it.
+
+Persist any visual material the user supplies into `ui-designs/` beside your deliverable as it arrives, and note each item
+into the record's Visual Material Received section. Copy destinations are always the resolved output folder's
+`ui-designs/`.
+
+Before you finish, run the completeness gate: confirm that every item the record lists as received exists on disk. The
+gate covers only material **this run** received. Material an earlier skill already persisted is not this run's to
+account for; Step 4's inventory is what reads the folder for that.
 
 ### 1. Locate the implementation plan or context
 
@@ -104,7 +163,8 @@ does not.
 
 ### 2. Resolve the output location
 
-The skill writes exactly one file: `{folder}/work-items.md`.
+The breakdown is one file: `{folder}/work-items.md`. The boundary record and any visual material go beside it, at
+`{folder}/artifacts/scope-boundary.md` and `{folder}/ui-designs/`, so the same `{folder}` resolves all three.
 
 Resolve `{folder}` in this order:
 
@@ -129,12 +189,11 @@ exploration if the plan is self-contained and the boundaries are already clear.
 
 Before drafting work items, list every artifact an implementer of those work items will need. See
 [references/reference-artifact-inventory.md](./references/reference-artifact-inventory.md) for the include list, exclude
-list, and screenshot-to-work-item mapping rules.
+list, and the visual-material-to-work-item mapping rules.
 
-If an expected artifact is missing (for example, the plan touches an HTTP boundary but no contract file exists), note it
-in the breakdown report rather than stopping: draft the work items that do not depend on it, and flag the work items it
-blocks as not draftable until the artifact exists. Stop only if no work items are draftable without the missing
-artifact.
+When an expected artifact is missing, that reference's "Missing-artifact handling" section is the canonical rule and it
+splits the case by who can supply the artifact. Apply it rather than deciding here. In short: an artifact only the user
+can hand over right now joins the single stop, and an artifact nobody can produce now is recorded and drafted around.
 
 ### 5. Draft the work items
 
@@ -146,8 +205,17 @@ work item names.
 Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) with:
 
 - The full plan or context content from Step 1.
+- The boundary record from Step 0: the recorded scope, the stated exclusions, any scope the user stated at invocation, and
+  the direction-of-travel answer. This is the outer edge of what may be drafted.
 - The artifact inventory from Step 4.
 - The Rules section of this skill verbatim.
+- A directive on justification and cutting, quoting
+  [scope-justification-rule.md](../../references/scope-justification-rule.md): every work item names what it descends
+  from, in a `**Justification.**` field of its own. A candidate that cannot name one goes in the cut list with what it
+  would have done and why, and is not to be justified by searching outward to a linked, sibling, or closed item. Apply the
+  floor: cut subsystems, integrations, and artifacts the work item never asks for, and never cut behavior required to
+  deliver what it does ask for. A short work item does not enumerate its own necessities, and that silence is not
+  exclusion. A recorded deprecation in the direction-of-travel answer is treated the same way a stated exclusion is.
 - A directive to draft vertical slices: each work item is a narrow but complete path through the appropriate layers
   (schema, API, UI, tests), demoable or verifiable on its own. Classify each work item as **HITL** (requires human
   interaction: an architectural decision, a design review) or **AFK** (can be implemented and merged without a sync).
@@ -164,7 +232,8 @@ Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) 
   If the assumption turns out wrong, does something break, or does it fall back to a safe default? Mark it HITL only
   when you cannot settle it from code **and** getting it wrong causes real breakage. Otherwise it is AFK. Reserve HITL
   for genuine architectural or design calls.
-- A directive to return the proposed breakdown as a numbered list. Do not write any files.
+- A directive to return the proposed breakdown as a numbered list, plus a separate list of anything cut for scope with the
+  reason for each. Do not write any files.
 
 Return the han-core:project-manager's output verbatim. Proceed to Step 6.
 
@@ -189,8 +258,11 @@ Print a numbered list for visibility. For each work item show:
 - **Plan reference**: the decisions or work units from the parent plan this work item satisfies (e.g.,
   `D-3, D-7, Work Unit 2`)
 - **Reference artifacts**: contract sections, design frame IDs, ADRs, and other references from Step 4
-- **Design references**: when `ui-designs/` exists and the work item is UI-bearing, the screenshot filenames that will
-  be referenced
+- **Design references**: when `ui-designs/` exists and the work item is UI-bearing, the filenames that will be referenced
+- **Justification**: what this work item descends from
+
+Then, when anything was cut, print the cut list under its own heading: what each cut item would have done, in plain
+language, and why it was cut. The user cannot reverse a cut they never saw.
 
 This report is for visibility, not approval. Do not wait for the user's confirmation — proceed directly to Step 8 and
 write the file.
@@ -198,14 +270,15 @@ write the file.
 ### 8. Write the work-items file
 
 Write one `work-items.md` in the folder resolved in Step 2. The file layout (title line, intro, optional
-shared-artifacts preamble) is specified in
+shared-artifacts preamble, and the `## Cut for Scope` section when anything was cut) is specified in
 [references/work-items-file-format.md](./references/work-items-file-format.md). Each work item uses the template in
 [references/work-item-template.md](./references/work-item-template.md).
 
 Before writing, run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the work-item prose regions only — never inside code fences, tables, the
 W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (Depends on, inline plan references,
-References, Design references), which must survive unchanged so they still resolve. Confirm each criterion and fix any failure before writing:
+Justification, References, Design references), which must survive unchanged so they still resolve. Confirm each criterion
+and fix any failure before writing:
 
 1. The opening line states the main point.
 2. Each heading names its content and is not a generic label.
@@ -222,5 +295,15 @@ separate editor pass, so criterion 6 is the only fact-preservation guard the out
 Write incrementally per the operating principle: write the title and intro first, then append each work item as it is
 finalized. Save after each.
 
-When the file is complete, give the user a short in-channel summary: the file path, the count of work items by type
-(HITL / AFK), and the next concrete action (typically "review the breakdown, then start the first AFK work item").
+Before you declare the file finished, run the completeness gate from Step 0: every item the boundary record lists as
+received by this run exists on disk.
+
+When the file is complete, give the user a short in-channel summary:
+
+- The file path, plus the boundary record's path.
+- The count of work items by type (HITL / AFK).
+- The cut list, when anything was cut: what each entry would have done and why. Any of it can be reinstated, and their
+  saying so is a valid justification the reinstated item records.
+- The escalation register, when this run took the single stop: what was asked, what came back, and where the answer
+  landed. This skill has no escalation step, so the register attaches to the stop rather than standing on its own.
+- The next concrete action (typically "review the breakdown, then start the first AFK work item").
