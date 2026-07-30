@@ -52,7 +52,8 @@ fully verified.
   machine during a planning session. There is no service, no deployment, no pipeline change, and no telemetry, so this
   plan carries no operational-readiness or on-call section. That absence is a judgment recorded here, not an omission.
 - **Watch after ship:** whether the four copies of the design-image check stay identical, and whether the reduced teams
-  change the quality of a plan. The second is unmeasured and recorded as an inherited open item.
+  change the quality of a plan. The second is unmeasured and deferred until after implementation, because the comparison
+  needs the reduced counts to exist first.
 
 ## Implementation Approach
 
