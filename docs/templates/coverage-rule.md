@@ -47,6 +47,45 @@ Each long-form doc answers the same questions:
 
 The skill and agent templates in this folder lay out the section order. Follow it.
 
+## The inline-guidance variant
+
+One family of skills does not fit the template's headings, and its docs deviate on purpose. An **inline-guidance skill**
+runs in a calling skill's context and hands control straight back. A person never invokes it, and it returns no artifact.
+Today that family is [`readability-guidance`](../../han-communication/docs/skills/readability-guidance.md) and
+[`explanation-guidance`](../../han-communication/docs/skills/explanation-guidance.md).
+
+Their docs carry this section list, in this order:
+
+```markdown
+## TL;DR
+
+## Key concepts
+
+## When it is used
+
+## How it works
+
+## Cost and latency
+
+## Troubleshooting
+
+## Related documentation
+```
+
+Three headings are renamed and four are dropped, each for a reason that follows from the skill having no operator and no
+output:
+
+- **`When to use it` becomes `When it is used`.** The reader is not the one deciding to invoke it; a calling skill is.
+- **`How to invoke it` becomes `How it works`.** There is nothing for a person to invoke, so the section describes the
+  mechanism instead.
+- **`Troubleshooting` replaces `What you get back`.** Nothing comes back. What a reader needs is what to do when the
+  standard fails to surface.
+- **`How to get the most out of it` and `Sources` are dropped.** There are no invocation levers to tune, and the standard
+  the skill surfaces carries its own citations.
+
+Use this variant only for a skill that both runs inline in the caller's context and produces no deliverable. A skill an
+operator invokes directly follows the full template, even when its output is small.
+
 ## What is _not_ the long-form doc
 
 The long-form doc does not duplicate the SKILL.md or agent definition. The definition is the implementation: protocols,

@@ -168,7 +168,9 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `{plugin}/docs/skills/{name}.md` and
-   fill it in. Every skill gets a long-form doc.
+   fill it in. Every skill gets a long-form doc. If the skill runs inline in a calling skill's context and returns no
+   artifact, follow the inline-guidance variant in the
+   [coverage rule](./docs/templates/coverage-rule.md#the-inline-guidance-variant) instead.
 4. Add a scent line to the plugin's `README.md` and one alphabetized entry to the [skills index](./docs/skills/README.md),
    both reusing the long-form doc's own summary line as the canonical scent so the three do not drift.
 5. Add the skill to the catalog in [Root CLAUDE.md](./CLAUDE.md). The indexes and concept docs list skills without a
