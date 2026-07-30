@@ -128,8 +128,8 @@ table above assigns them.
 
 - **Entry condition:** the editor cannot be reached, returns nothing, or returns a report the run cannot read as either a
   confirmation or a named kept-fact.
-- **Sequence:** the run walks the six-point checklist itself. With no usable report, the checklist is the only
-  fidelity guard left, and says in its summary that it did so and why
+- **Sequence:** the run walks the six-point checklist itself, and says in its summary that it did so and why. With no
+  usable report, that checklist is the only fidelity guard left
   ([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).
 - **Exit:** the run presents its output with the substitution named.
 
