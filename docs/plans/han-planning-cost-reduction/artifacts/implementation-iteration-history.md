@@ -123,4 +123,73 @@ Dispatching it is reserved for Round 2 if the operator's answer to `OQ-1` opens 
 
 | Question asked                                                                     | Answer received | Where it landed |
 | ---------------------------------------------------------------------------------- | --------------- | --------------- |
-| `OQ-1`: does the permission declaration stand, or does the repository rule govern?  | pending         | pending         |
+| `OQ-1`: does the permission declaration stand, or does the repository rule govern? | "go with recommendation" (follow the repository guidance) | `D10` in [implementation-decision-log.md](implementation-decision-log.md); the specification's `D10`, Preconditions, User Interactions, and Coordinations |
+
+## R2: Resolution round
+
+- **Specialists engaged:** none. This round resolved the one Open Question Round 1 left open and ran the YAGNI and scope
+  sweep. No specialist named a handoff, and no new claim entered the ledger.
+- **New input provided:** the operator's answer to `OQ-1`.
+
+### Open Question resolved
+
+`OQ-1` is closed by operator input. The operator chose to follow the repository's own authoring guidance: no skill declares
+its check in the permission frontmatter, the operator approves the check once per run, and the specification's claim about
+what a declaration buys was corrected rather than kept.
+
+That correction reached four places in the specification (Preconditions, the note under the skill table, the User
+Interactions error-states entry, and the Coordinations permission row) and rewrote `D10`, which was renamed. The
+specification's own findings file records it as `S3` under findings found after the review round closed, so a later reader
+can see that a presented-as-finished specification changed at plan stage and why.
+
+### Next-step recommendation
+
+`go to synthesis`. No Open Question remains, no specialist named a handoff, and every plan-level claim is resolved by
+evidence. The loop exits after two rounds against a cap of two, without needing the second specialist wave.
+
+- **Decisions produced:** —
+- **Changed in plan:** —
+
+## YAGNI and scope sweep (Step 7.5)
+
+Walked every claim in R1's ledger, every Open Question that proposed adding an artifact, and every specialist
+recommendation that survived the loop. Three gates: evidence, simpler-version, and scope.
+
+### Items the sweep changed
+
+| Item                                                                        | Failure                    | Resolution                                                                                                                                                          | Source          |
+| --------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| A test asserting each skill's permission frontmatter declares the check      | Evidence test, now vacuous | **Dropped.** The operator's answer to `OQ-1` removed the declarations this test would assert. It was the one prose edit worth testing precisely because it was a structured field; with no declaration there is no field. | `R1-C17` (`han-core:test-engineer` §3) |
+| Echoing the offending cell's value on every refusal                          | Simpler-version test       | **Replaced with the simpler form** the same specialist proposed as primary: identify a refusal by row number plus the item's name, and echo the value only where the operator needs it, through the bounded transform. Less untrusted text crosses the boundary by default. | `R1-C13` (`S-14`) |
+
+### Items the sweep confirmed rather than changed
+
+Each cleared the evidence test with a cited artifact, and each is already the simpler of the alternatives considered.
+
+- **Four per-skill copies of the design-image check** rather than one shared copy: a written rule requires it
+  (`script-execution-instructions.md:77-81`), and four copies is the structurally simpler shape.
+- **One test file with a drift assertion** rather than four duplicated test files: the specialist cited measured friction,
+  and the skill confirmed it. `han-coding/skills/code-review/scripts/detect-review-context.bats` names three copies in its
+  own header comment while only two exist, so a sync note has already drifted at two copies in this repository.
+- **Two positional arguments** on the design-image check: three of its four call sites already resolve the folder
+  differently, and `D13` requires the caller rather than the script to choose which record is read.
+- **A one-sentence convention in `plan-work-items`** rather than a provenance column or a scope flag: resolves `OQ-2` with
+  no format change and no configuration knob.
+- **A third encoding of the accepted file set with a citing comment** rather than a shared constant: the boundary rule
+  prescribes exactly that remedy, and the set has one commit of history.
+
+### Scope gate
+
+No new cut. The specification's own scope gate already produced six cut entries, and every item this plan adds is a
+necessity of what the boundary asks for rather than an unrequested subsystem. Three items were tested against the floor
+specifically, because each could look like added scope: the drift assertion is a necessity of the four-copies decision, the
+stale repeat-count correction is a necessity of committing to the current ceilings, and the `plan-work-items` convention is
+a necessity of the check being correct in one of its four callers. None is cut.
+
+### Items the specialists declined on their own, carried forward with triggers
+
+Recorded so the plan's deferred section is complete rather than re-derived: a plugin-level shared scripts directory; a
+shared check harness or output-formatting library across the two scripts; a shared Bash constant for the accepted file set;
+a `--this-run-only` flag; a shared validation or sanitizing helper; JSON output; a configurable extension allow-list or
+strict mode; and an audit trail of refused rows beyond what `D12` already requires. Each carries a reopening trigger in the
+plan's deferred section.
