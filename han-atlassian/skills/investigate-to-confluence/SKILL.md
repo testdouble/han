@@ -16,11 +16,14 @@ allowed-tools: Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atla
 
 ## Project Context
 
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal .han/config.md: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+When either `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). The project file overrides the personal one setting
+by setting, and a relative path in either file resolves against that file's own directory. When both probes return
+nothing, no config is present and nothing changes.
 
 # Investigate to Confluence
 
@@ -70,8 +73,8 @@ adversarial validation, and the final report) — **except** add two explicit in
 
 - It must write the resulting investigation report to a file under `/tmp/` (for example `/tmp/<symptom-slug>.md`) rather
   than into the project's docs or plans directory. This keeps the working report out of the repo until the user decides
-  to publish it, and because the path is explicit input it outranks any `output-directory` in the project's
-  `.han/config.md` (see [../../references/config-rule.md](../../references/config-rule.md)).
+  to publish it, and because the path is explicit input it outranks any `output-directory` the project or personal
+  `.han/config.md` supplies (see [../../references/config-rule.md](../../references/config-rule.md)).
 - It must **stop after producing the report**. `han-coding:investigate` normally ends by presenting the plan for
   approval and can trigger the fix's implementation on approval; this skill wants the report only, so instruct it not to
   implement the fix or change any code — this skill publishes findings, it does not ship them.

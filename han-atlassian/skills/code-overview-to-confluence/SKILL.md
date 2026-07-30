@@ -17,11 +17,14 @@ allowed-tools: Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atla
 
 ## Project Context
 
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal .han/config.md: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+When either `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). The project file overrides the personal one setting
+by setting, and a relative path in either file resolves against that file's own directory. When both probes return
+nothing, no config is present and nothing changes.
 
 # Code Overview to Confluence
 
@@ -72,7 +75,7 @@ the relevant conversation context. Do not summarize, trim, or reinterpret the us
 `han-coding:code-overview` already writes its overview to a scratch file outside the repository and changes no code —
 **except** add one explicit instruction: it must write the overview to an explicit scratch path this skill names (for
 example `${TMPDIR:-/tmp}/code-overview-<slug>.md`). Passing the path explicitly keeps the file where this skill expects
-it even when the project's `.han/config.md` configures an output directory, because explicit input outranks the config
+it even when either `.han/config.md` configures an output directory, because explicit input outranks the config
 (see [../../references/config-rule.md](../../references/config-rule.md)). **Capture the exact scratch-file path it
 wrote.** That markdown file is the source content for Confluence. Proceed to Step 3 once it finishes.
 

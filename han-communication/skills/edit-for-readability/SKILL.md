@@ -16,11 +16,14 @@ allowed-tools: Read, Write, Glob, Grep, Agent
 
 ## Project Context
 
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal .han/config.md: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+When either `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). The project file overrides the personal one setting
+by setting, and a relative path in either file resolves against that file's own directory. When both probes return
+nothing, no config is present and nothing changes.
 
 # Edit for Readability
 
@@ -71,12 +74,16 @@ Also settle the reader frame: default to a capable reader who did not do this wo
 the user names a specific reader (an engineer implementing a fix, a PR reviewer, a non-technical stakeholder), carry
 that reader to the editor instead so the technical specifics that reader needs are kept.
 
-Finally, resolve the writing-voice source. When the `.han/config.md` probe supplied a `writing-voice` value, treat it
-as a file path relative to the working directory and check that the file exists. When it exists, that file replaces
-the built-in writing-voice profile for this run. When it does not exist, warn the user that the configured
-writing-voice file was not found, and ask whether to use the built-in Han voice or skip the writing voice entirely for
-this run; honor the answer. When no `writing-voice` value is configured, the editor's own co-located built-in profile
-applies and you pass nothing about the voice.
+Finally, resolve the writing-voice source. When either `.han/config.md` probe supplied a `writing-voice` value, resolve
+it and check that the file exists. A relative value resolves against the folder holding the file that declared it: the
+working directory for the project file, and the `personal config directory` the probe reported for the personal file. A
+full path is used as it stands, and a leading `~` expands to the home directory. When both files supply a value, the
+project file's wins. Resolve the path here and pass the editor an absolute one, so the editor and this skill apply the
+same profile. When it exists, that file replaces the built-in writing-voice profile for this run. When it does not
+exist, warn the user that the configured writing-voice file was not found, naming which of the two configuration files
+declared it, and ask whether to use the built-in Han voice or skip the writing voice entirely for this run; honor the
+answer. When neither file configures a `writing-voice` value, the editor's own co-located built-in profile applies and
+you pass nothing about the voice.
 
 ## Step 2: Confirm before rewriting a file in place
 

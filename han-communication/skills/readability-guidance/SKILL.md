@@ -44,13 +44,15 @@ human reads your deliverable end to end, apply the standard to it.
 
 First resolve which writing-voice profile this run uses:
 
-- When the `.han/config.md` probe supplied a `writing-voice` value, treat the value as a file path relative to the
-  working directory and check that the file exists.
+- When either `.han/config.md` probe supplied a `writing-voice` value, resolve it and check that the file exists. A
+  relative value resolves against the folder holding the file that declared it: the working directory for the project
+  file, and the `personal config directory` the probe reported for the personal file. A full path is used as it stands,
+  and a leading `~` expands to the home directory. When both files supply a value, the project file's wins.
   - When the file exists, it is the writing-voice profile for this run, used in place of the built-in profile.
-  - When the file does not exist, warn the user that the configured writing-voice file was not found, and ask whether
-    to use the built-in Han voice or skip the writing voice entirely for this run. Honor the answer: fall back to the
-    built-in profile, or proceed with no voice profile at all.
-- When the probe supplied no `writing-voice` value, the built-in profile at
+  - When the file does not exist, warn the user that the configured writing-voice file was not found, naming which of
+    the two configuration files declared it, and ask whether to use the built-in Han voice or skip the writing voice
+    entirely for this run. Honor the answer: fall back to the built-in profile, or proceed with no voice profile at all.
+- When neither probe supplied a `writing-voice` value, the built-in profile at
   `${CLAUDE_PLUGIN_ROOT}/references/writing-voice.md` applies.
 
 Then read the reference files, in this order, so their full content enters your context:

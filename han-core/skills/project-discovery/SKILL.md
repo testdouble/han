@@ -15,11 +15,14 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(git symbolic-ref *), B
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - README: !`find . -maxdepth 1 -name "README*" -type f`
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal .han/config.md: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+When either `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). The project file overrides the personal one setting
+by setting, and a relative path in either file resolves against that file's own directory. When both probes return
+nothing, no config is present and nothing changes.
 
 # Project Discovery
 
@@ -103,7 +106,7 @@ file already covers the project's core attributes, and stop.
 
 ## Step 5: Keep the `.han/config.md` pointer honest
 
-Han skills read project-local overrides from `.han/config.md` when a project carries one (see
+Han skills read project-local overrides from the project's `.han/config.md` when a project carries one (see
 [../../references/config-rule.md](../../references/config-rule.md)). This step keeps the target file's pointer to that
 config accurate, using the same consent gate and deduplication discipline as Step 4. The Project Context probe above
 shows whether the file exists.

@@ -14,11 +14,14 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), 
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal .han/config.md: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+When either `.han/config.md` probe returns content, apply it per the config rule in
+[../../references/config-rule.md](../../references/config-rule.md). The project file overrides the personal one setting
+by setting, and a relative path in either file resolves against that file's own directory. When both probes return
+nothing, no config is present and nothing changes.
 
 ## Operating Principles
 
@@ -229,8 +232,8 @@ config supplies a band via `default-swarm-size` (per the config rule in
 [../../references/config-rule.md](../../references/config-rule.md)), use that band and skip the signal-based
 classification. The specialist cap and round cap still scale to the chosen size. State the chosen size, the recommended team,
 and the reason for the size choice to the user in one short message before launching agents (e.g., "Medium: two
-subsystems, small auth surface", "Medium: passed via `$size`", or "Medium: from `.han/config.md`
-`default-swarm-size`"). If
+subsystems, small auth surface", "Medium: passed via `$size`", or "Medium: from the project `.han/config.md`
+`default-swarm-size`", naming whichever of the two files supplied it). If
 the user disagrees, accept the override (size, specific specialists, or both) and proceed.
 
 The team **always includes**:
