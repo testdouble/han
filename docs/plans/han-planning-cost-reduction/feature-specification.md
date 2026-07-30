@@ -11,26 +11,31 @@ less. The saving is real and the trade is real, and this section states both.
 
 **Fewer domain experts, on the runs that convene a team.** Three skills convene a review team: `plan-a-feature`,
 `plan-implementation`, and `iterative-plan-review`. The reduction reaches two of them, `plan-implementation` and
-`iterative-plan-review`; `plan-a-feature` keeps the team it convenes today and is cut for scope
-([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)). Every team fills some
-seats before any domain expert is chosen, so the reduction is counted in experts rather than in total seats
-([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)). In
-`plan-implementation`, two seats are filled first, and a large run drops from four-to-six experts to three or four, a
-medium run from two-or-three to two, and a small run keeps its one, making total teams five or six, four, and three. In
-`iterative-plan-review`, two seats are filled first, plus a third whenever the plan under review makes claims about
-code, so a large run drops from two-or-three experts to two and a medium run from one-or-two to one. Where that third
-seat is filled, a medium team already carries no more than one expert, so on those runs the reduction binds on the large
-band alone. Its smallest size convenes no team at all
+`iterative-plan-review`. `plan-a-feature` keeps the team it convenes today and is cut for scope
+([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)).
+
+Every team fills some seats before any domain expert is chosen, so the reduction is counted in experts rather than in
+total seats ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).
+In `plan-implementation`, two seats are filled first. A large run then drops from four-to-six experts to three or four,
+a medium run from two-or-three to two, and a small run keeps its one. That makes the total team five or six for large,
+four for medium, and three for small.
+
+In `iterative-plan-review`, two seats are filled first, plus a third whenever the plan under review makes claims about
+code. A large run drops from two-or-three experts to two, and a medium run drops from one-or-two to one. Where that
+third seat is filled, a medium team already carries no more than one expert, so on those runs the reduction binds on the
+large band alone. Its smallest size convenes no team at all
 ([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)).
 
 **What the trade is.** A smaller team covers fewer domains. Nothing in the research measured whether a smaller team
-produces a materially different plan, and the source report says plainly that this option "trades review breadth for cost
-directly." The operator still sees the chosen team and the reason for it before any expert is dispatched, and can name a
-different team, so the existing override is the control on coverage rather than anything new
+produces a materially different plan. The source report says plainly that this option "trades review breadth for cost
+directly."
+
+The operator still sees the chosen team and the reason for it before any expert is dispatched, and can name a different
+team. So the existing override is the control on coverage, not a new one
 ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).
 
 **Reviews will also repeat less often, as a side effect.** The ceiling on repeats is unchanged. The rule that ends a
-review early counts how many new findings the last pass produced, and fewer experts produce fewer findings, so the same
+review early counts how many new findings the last pass produced. Fewer experts produce fewer findings, so the same
 plan will often get one repeat where it used to get two. This is a second saving and a second reduction in scrutiny, and
 it happens without anyone choosing it per run
 ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).
@@ -38,25 +43,27 @@ it happens without anyone choosing it per run
 **Two checks get executed instead of described, one per skill.** Four skills confirm that the design images the boundary
 record lists are on disk. `iterative-plan-review` confirms that the cross-references inside a reviewed plan resolve. No
 single run gains both: each skill gains the one check it already carries as prose
-([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)). A check that runs either passes or
-fails; a check written as prose can be reported as done without being done. Because these checks take their input from a
-document, the values they read are treated as untrusted
+([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).
+
+A check that runs either passes or fails. A check written as prose, by contrast, can be reported as done without being
+done. Because these checks take their input from a document, the values they read are treated as untrusted
 ([D11](artifacts/decision-log.md#d11-treat-every-value-read-from-a-document-as-untrusted)).
 
 **No more proofreading the proofreader.** `plan-a-feature`, `plan-implementation`, and `plan-a-phased-build` each hand a
 finished draft to the readability editor and then walk a six-point checklist over the text the editor produced. That
 second pass stops running ([D6](artifacts/decision-log.md#d6-stop-running-the-six-point-check-where-an-editor-already-runs)).
 The editor's own fact-preservation report becomes the fidelity guard
-([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)). The checklist text
-stays in place for the case where no editor ran. `plan-work-items` and `iterative-plan-review` dispatch no editor and keep
-their checklist unchanged.
+([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).
+
+The checklist text stays in place for the case where no editor ran. `plan-work-items` and `iterative-plan-review`
+dispatch no editor and keep their checklist unchanged.
 
 ## Actors and Triggers
 
-- **Actors** — the operator who runs a planning skill, and the five planning skills themselves. No user of any other
+- **Actors**: the operator who runs a planning skill, and the five planning skills themselves. No user of any other
   product is affected.
-- **Triggers** — running a planning skill. Which change applies depends on the skill, per the table below.
-- **Preconditions** — all five skills gain permission to execute a check, which widens what each of them may do. That is
+- **Triggers**: running a planning skill. Which change applies depends on the skill, per the table below.
+- **Preconditions**: all five skills gain permission to execute a check, which widens what each of them may do. That is
   the one precondition an operator should know about
   ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).
   No operator configuration is required, and no existing plan folder needs migrating.
@@ -121,7 +128,7 @@ table above assigns them.
 
 - **Entry condition:** the editor cannot be reached, returns nothing, or returns a report the run cannot read as either a
   confirmation or a named kept-fact.
-- **Sequence:** the run walks the six-point checklist itself, because with no usable report the checklist is the only
+- **Sequence:** the run walks the six-point checklist itself. With no usable report, the checklist is the only
   fidelity guard left, and says in its summary that it did so and why
   ([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).
 - **Exit:** the run presents its output with the substitution named.
@@ -198,7 +205,7 @@ because the recorded boundary already settled it.
 
 - **Why cut:** the boundary's Stated Scope names two skills for the reduction, quoting the source option as "starting
   with `plan-implementation` ... and `iterative-plan-review` team mode." `plan-a-feature` convenes a review team at the
-  same total sizes as `iterative-plan-review` and fills only one seat before choosing experts, so it carries more domain
+  same total sizes as `iterative-plan-review` and fills only one seat before choosing experts. So it carries more domain
   experts than either reduced skill will. That is a real saving the boundary does not ask for. If the operator reinstates
   it, a specification run gets cheaper on the same terms as the other two
   ([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)).
@@ -207,7 +214,7 @@ because the recorded boundary already settled it.
 
 - **Why cut:** the boundary's Stated Scope names one instance of this check, quoting the source option as "the
   cross-reference verification in `iterative-plan-review` Step 6." Both other skills carry an equivalent check over their
-  own companion files, so converting only the named one leaves two hand-run instances of the same check in place, in the
+  own companion files. So converting only the named one leaves two hand-run instances of the same check in place, in the
   two skills that produce the artifacts every later skill reads. Reinstating either one extends the same executed check to
   that skill ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).
 
@@ -268,17 +275,17 @@ justify revisiting it.
 
 - **OI-1:** The expert counts for `iterative-plan-review` were derived from the counts agreed for `plan-implementation`,
   rather than agreed directly. That skill fills two seats before any expert is chosen, plus a third whenever the plan
-  under review makes claims about code, so its medium band lands at one expert and its large at two. On a plan that makes
+  under review makes claims about code. So its medium band lands at one expert and its large at two. On a plan that makes
   claims about code, the medium band already carries no more than one expert today, so the reduction changes nothing
   there.
   - **Resolves when:** the operator confirms the derived counts, or names different ones.
-  - **Blocks implementation:** No — the derived counts are stated in
+  - **Blocks implementation:** No. The derived counts are stated in
     [D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names) and can be adjusted before
     or during implementation.
 - **OI-2:** Whether a smaller team produces a materially different plan is unmeasured, and the source research says the
   honest sequencing is to measure before committing to a permanent count.
   - **Resolves when:** one real plan is run at the current counts and the reduced counts and the outputs compared.
-  - **Blocks implementation:** No — the operator chose the reduction knowing the trade, and the team override remains the
+  - **Blocks implementation:** No. The operator chose the reduction knowing the trade, and the team override remains the
     control. Recorded so the decision is not later read as evidence-backed on quality.
 
 ## Summary
@@ -286,14 +293,14 @@ justify revisiting it.
 - **Outcome delivered:** two of the five planning skills consult fewer domain experts, each of the five executes one of
   its routine checks instead of describing it, and three stop proofreading text an editor already rewrote.
 - **Primary actors:** the operator running a planning skill.
-- **Decisions settled by evidence:** 11 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 2 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Sub-agents consulted:** `junior-developer`, `edge-case-explorer`, `adversarial-security-analyst`, `test-engineer` —
-  see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Decisions settled by evidence:** 11. See [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 2. See [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Sub-agents consulted:** `junior-developer`, `edge-case-explorer`, `adversarial-security-analyst`, `test-engineer`.
+  See [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** the review found that three skills convene a team rather than two, that the reviewer
   counts hid two fixed seats and collapsed two size bands, that the claim of an unchanged plan contradicted the source
   research, and that values read from a document reach something that executes with no stated trust level. All four
-  reshaped the spec — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Cut for scope:** 6 entries, each reinstatable — see `## Cut for Scope`. Two of them are savings the review surfaced
+  reshaped the spec. See [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Cut for scope:** 6 entries, each reinstatable. See `## Cut for Scope`. Two of them are savings the review surfaced
   inside the change's own subject area.
 - **Remaining open items:** 2
