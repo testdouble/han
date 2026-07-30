@@ -194,29 +194,29 @@ parallel with the design-image chain, but it should not be squeezed into the sam
 
 ## Definition of Done
 
-- [ ] `plan-implementation` and `iterative-plan-review` state the reduced expert counts, and both still dispatch every
+- [x] `plan-implementation` and `iterative-plan-review` state the reduced expert counts, and both still dispatch every
       team member in one parallel wave.
-- [ ] `iterative-plan-review` states no repeat range that exceeds its own ceilings.
-- [ ] The three editor-running skills read the editor's fact-preservation report, and each still carries the checklist
+- [x] `iterative-plan-review` states no repeat range that exceeds its own ceilings.
+- [x] The three editor-running skills read the editor's fact-preservation report, and each still carries the checklist
       text as the fallback for an unusable report.
-- [ ] A record listing no visual material passes, and a record whose every row is refused fails, and the two outputs are
+- [x] A record listing no visual material passes, and a record whose every row is refused fails, and the two outputs are
       distinguishable ([D-5](artifacts/implementation-decision-log.md#d-5-row-oriented-per-row-accounting-never-extraction-by-pattern)).
-- [ ] A record listing five images with three on disk fails and names both missing items, not one
+- [x] A record listing five images with three on disk fails and names both missing items, not one
       ([D-19](artifacts/implementation-decision-log.md#d-19-consolidate-the-test-cases-by-behavior-not-one-per-specification-row)).
-- [ ] A row recording a hosted link is reported present with no fetch attempted, and the branch is entered only on the
+- [x] A row recording a hosted link is reported present with no fetch attempted, and the branch is entered only on the
       recorded marker ([D-7](artifacts/implementation-decision-log.md#d-7-the-link-branch-is-a-leading-anchored-literal-match)).
-- [ ] A refused value is refused, not resolved, and the run's report names its row without the sandbox being touched
+- [x] A refused value is refused, not resolved, and the run's report names its row without the sandbox being touched
       ([D-6](artifacts/implementation-decision-log.md#d-6-anchored-whole-string-allow-list-on-the-recorded-location)).
-- [ ] Each check returns a distinct exit status for passed, failed, and could-not-verify, and never reports
+- [x] Each check returns a distinct exit status for passed, failed, and could-not-verify, and never reports
       could-not-verify as a pass ([D-9](artifacts/implementation-decision-log.md#d-9-exit-status-carries-the-outcome-and-prose-never-does)).
-- [ ] A cross-reference inside an example block is ignored, and a resolved-but-empty target fails with a reason textually
+- [x] A cross-reference inside an example block is ignored, and a resolved-but-empty target fails with a reason textually
       distinct from a dangling one.
-- [ ] An unverified check appears in the plan folder's artifacts as a fenced excerpt, not only in the run's summary
+- [x] An unverified check appears in the plan folder's artifacts as a fenced excerpt, not only in the run's summary
       ([D-10](artifacts/implementation-decision-log.md#d-10-the-skill-writes-the-unverified-record-as-a-fenced-excerpt)).
-- [ ] The four copies of the design-image check are byte-identical except for their mutual note, and a test asserts it
+- [x] The four copies of the design-image check are byte-identical except for their mutual note, and a test asserts it
       ([D-3](artifacts/implementation-decision-log.md#d-3-one-test-file-plus-a-drift-assertion-not-four)).
-- [ ] `npm test` and `npm run lint` both pass.
-- [ ] No skill's `allowed-tools` frontmatter differs from what is on disk today
+- [x] `npm test` and `npm run lint` both pass.
+- [x] No skill's `allowed-tools` frontmatter differs from what is on disk today
       ([D-12](artifacts/implementation-decision-log.md#d-12-no-permission-frontmatter-edits-in-any-skill)).
 
 ## Testing Strategy

@@ -218,3 +218,21 @@ is the detail it referenced without stating.
 | `OI-2` | Does the unmeasured plan-quality trade stay open, or defer?                | "OI-2 requires this to be implemented before i can test it. note that and mark as deferred until after implementation. i'll open new work if needed, later" | Deferred in the plan's Open Items, the specification's Open Items, and assumption `A6`. The sequencing constraint is now stated: the comparison needs the reduced counts to exist first. The operator owns opening any follow-up work. |
 | `OI-3` | Does the unanswerable host-expansion question stay open?                   | "mark this as resolved by deferral"                                                                                                                         | Closed by deferral in the plan's Open Items and assumption `A3`. The question is recorded as still unanswered, with the reopen condition named: a proposal to replace the four per-skill copies with one shared copy.                  |
 | `OI-4` | Does the unobserved two-folder convention stay open?                       | "resolved as deferred until we see the problem"                                                                                                             | Closed by deferral in the plan's Open Items and assumption `A4`. Work unit 8 ships the convention unchanged, with the recognizable symptom named as the reopen condition.                                                              |
+
+## Implementation notes
+
+Built in the order the plan sequenced: the five prose-only units first, then the design-image chain, then the
+cross-reference check. Every Definition of Done line was verified rather than assumed. `npm test` runs 61 tests, all
+passing; `npm run lint` is clean.
+
+**One deviation from the plan, made simpler rather than larger.** The plan called for four copies "byte-identical except
+for a mutual comment naming the other three," following the precedent in `han-coding`. Naming the other copies makes each
+file differ from its siblings, so a drift test has to strip the note before comparing. The note is instead written
+generically, identical in all four, so the copies are byte-identical with no exclusions and the drift test is a plain
+`diff`. That is strictly stronger than what the plan asked for and satisfies the same Definition of Done line.
+
+**Two test-writing corrections caught by running them.** A first attempt to prove the link branch fetches nothing emptied
+`PATH`, which broke the script's own tools rather than proving anything; it was replaced with stub fetchers on `PATH`
+that leave a marker if called, so "nothing was fetched" is asserted rather than assumed. Shellcheck then flagged literal
+markdown backticks as command substitutions in both files, resolved with a scoped directive naming the reason rather than
+by rewording the fixtures away from the real record format.
