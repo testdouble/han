@@ -337,7 +337,7 @@ in these checks the untrusted values never reach the argument list at all.
 | A1  | The skill-directory variable expands to an absolute path at run time, so the invocation form resolves  | Every invocation in all five skills is wrong, and the checks never start                                             | Verified |
 | A2  | A permission prefix cannot match the expanded command, so a declaration would be inert                 | Five declarations would have been worth adding, and the operator would not approve once per run                      | Verified |
 | A3  | How this host expands a skill-directory variable inside a permission prefix and inside a Bash argument | Nothing in this plan; the plan uses per-skill paths and declares no permission, so both halves are already moot      | Deferred |
-| A4  | A two-folder `plan-work-items` run behaves as the boundary rule's text describes                       | The record beside the deliverable might not be self-consistent, and the whole-record check would need a second input | Open     |
+| A4  | A two-folder `plan-work-items` run behaves as the boundary rule's text describes                       | The record beside the deliverable might not be self-consistent, and the whole-record check would need a second input | Deferred |
 | A5  | Every new `.bats` file anywhere outside `node_modules` is collected by the test command                | The new tests exist and never run                                                                                    | Verified |
 | A6  | A smaller review team produces a materially equivalent plan                                            | The saving costs plan quality, and the expert counts would need revisiting                                           | Deferred |
 
@@ -345,7 +345,8 @@ in these checks the untrusted values never reach the argument list at all.
   `han-plugin-builder/skills/guidance/references/skill-building-guidance/script-execution-instructions.md`, lines 60 to
   75, plus a survey finding nine script-running skills in this repository and none declaring its own script.
 - A5 is settled by the root `package.json` test script, which collects by find across the repository.
-- A4 is the unobserved half of the two-record case.
+- A4 is the unobserved half of the two-record case, deferred by the operator until the symptom appears: a check failing
+  on material nobody lost.
   Unverified: could not inspect a real two-folder `plan-work-items` run, because no plan folder in this repository
   exercises the split-folder case.
 - A6 is inherited from the specification as OI-2 and is not this plan's to resolve. It is deferred rather than open,
@@ -476,11 +477,15 @@ justify revisiting it. Each of the eight was proposed and then declined by the s
     carries the same dependency.
   - **Blocks implementation:** No, and no longer open.
     Unverified: could not inspect the host runtime, because it lives outside this repository.
-- **OI-4:** No plan folder in this repository exercises the two-folder `plan-work-items` case, so the record convention
-  in work unit 8 rests on the boundary rule's text rather than an observed run.
-  - **Resolves when:** a real two-folder run is available to check the convention against.
-  - **Blocks implementation:** No. The rule's text is unambiguous about naming the inherited path in provenance, and the
-    convention adds one sentence. Carried as assumption A4.
+- **OI-4: Resolved by deferral, until the problem is seen.** No plan folder in this repository exercises the two-folder
+  `plan-work-items` case, so the record convention in work unit 8 rests on the boundary rule's text rather than an
+  observed run.
+  - **Resolved by:** the operator closed it by deferral, on the grounds that the convention is worth building as written
+    and worth revisiting only if it misbehaves. Work unit 8 ships the one sentence unchanged.
+  - **Reopens if:** a real two-folder run fails the design-image check on material nobody lost, which is the symptom this
+    would produce. That symptom is specific enough to recognize without watching for it.
+  - **Blocks implementation:** No, and no longer open. Carried as assumption A4.
+    Unverified: could not inspect a real two-folder run, because no plan folder in this repository exercises the case.
 
 ## Sources and Plan Records
 
