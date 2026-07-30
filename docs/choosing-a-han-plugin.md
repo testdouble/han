@@ -30,7 +30,8 @@ Han ships as a family of plugins in one marketplace. Each entry links to that pl
 description of what it does. The `han` meta-plugin is a convenience wrapper that bundles the first eight.
 
 - **[`han-communication`](../han-communication/README.md).** The foundational plugin beneath every other. Owns the
-  single canonical readability standard and the skills and agent that apply it. Bundled; depends on nothing.
+  canonical readability standard and the explanation standard for talking to someone who will not implement the work,
+  plus the skills and agent that apply them. Bundled; depends on nothing.
 - **[`han-core`](../han-core/README.md).** The shared foundation: the specialist agent roster the other plugins
   dispatch, the project-discovery skill, and the canonical rule files. Bundled; depends on no other Han plugin.
 - **[`han-documentation`](../han-documentation/README.md).** The documentation layer: feature and system docs,

@@ -14,7 +14,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **When to use it.** You have an implementation plan you trust and now you need to break it into work items, determine
   their dependencies, and hand them to implementers.
 - **What you get back.** A single `work-items.md` file in the plan's folder, one section per work item, in dependency
-  order.
+  order, plus a boundary record beside it naming the scope the run stayed inside.
 
 ## Key concepts
 
@@ -36,15 +36,22 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   what it is.
 - **Symbolic ID.** Each work item gets a stable identifier (`W-N`). IDs are for cross-referencing work items within the
   file and citing them in tickets, threads, and follow-up work. They are stable for the life of the file.
-- **One file, no repository awareness.** The output is exactly one `work-items.md`. The skill never splits work by
-  repository, counts repositories, or reasons about cross-repository integration. The breakdown is driven only by the
-  plan or context it is given.
+- **One work-items file, no repository awareness.** The breakdown is one `work-items.md`. Beside it the run also writes
+  the boundary record and persists any visual material you supply, as companion artifacts rather than a second breakdown.
+  The skill never splits work by repository, counts repositories, or reasons about cross-repository integration. The
+  breakdown is driven only by the plan or context it is given.
 - **Dependencies.** A work item's `Depends on` line names other work items in the same file that must complete first, or
   `None`. Work items are written in dependency order.
-- **Runs autonomously.** After you invoke it, the skill runs end to end without pausing for approval. It makes the
-  reasonable default decision (where the file goes, how the plan divides), states it, prints the breakdown for
-  visibility, and writes the file. It stops for you only when it genuinely cannot continue: there is no plan or context
-  to work from.
+- **The scope boundary.** Before drafting, the skill reads the boundary the work descends from. When an earlier planning
+  skill already recorded one at `artifacts/scope-boundary.md`, it reads that instead of asking you again. When there is
+  none, it establishes one and takes a single confirmation turn to check it with you. Every work item then names what it
+  descends from, and anything that cannot appears in a visible cut list you can reverse.
+- **Runs autonomously, with two named exceptions.** After you invoke it, the skill runs end to end without pausing for
+  approval. It makes the reasonable default decision (where the file goes, how the plan divides), states it, prints the
+  breakdown for visibility, and writes the file. Two turns are exceptions: the confirmation turn it takes when no boundary
+  record exists, and one stop when an input only you can supply is missing and its absence would degrade the work items.
+  Beyond those, it stops only when it genuinely cannot continue: there is no plan or context to work from. A missing
+  artifact nobody can produce right now is recorded and drafted around, not stopped for.
 
 ## When to use it
 
@@ -98,9 +105,15 @@ One file on disk plus an in-channel summary:
   reference artifact applies to more than one work item, a **Shared reference artifacts** preamble cites it once. Then
   one section per work item, in dependency order. Each work item carries: `Summary` (three to five very short plain
   sentences), `Work to be done` (plain-language bullets with technical detail nested beneath), optional
-  `Design references`, `References` (including plan decisions, each ID with a one-sentence description),
-  `Acceptance criteria` (at the bottom, test expectations included), and `Depends on`.
-- An **in-channel summary** with the file path, a count of work items by type (HITL / AFK), and the next concrete
+  `Design references`, `Justification` (what the item descends from), `References` (including plan decisions, each ID
+  with a one-sentence description), `Acceptance criteria` (at the bottom, test expectations included), and `Depends on`.
+  When anything was cut for scope, a `Cut for Scope` section closes the file.
+- **`artifacts/scope-boundary.md`** beside it. The boundary record: the work item, its stated scope and exclusions, any
+  scope you stated at invocation, the direction-of-travel answer, and the visual material the run received. A later skill
+  reads it instead of asking you again.
+- **`ui-designs/`**, when you supplied visual material. The files themselves, named for the state each one shows.
+- An **in-channel summary** with the file path, the boundary record's path, a count of work items by type (HITL / AFK),
+  the cut list when anything was cut, the escalation register when the run took its single stop, and the next concrete
   action.
 
 ## How to get the most out of it
@@ -157,15 +170,16 @@ is no plan file at all, it uses inline context instead. It reads the plan plus a
 specification, a contract file, an ADR). The plan content is the union of those sources. It never fetches a plan from a
 URL or an external issue tracker.
 
-**Resolving the output location.** The skill writes exactly one `work-items.md`. It goes in the user-specified folder,
+**Resolving the output location.** The skill writes one `work-items.md`, with the boundary record and any visual material
+beside it in the same folder. It goes in the user-specified folder,
 the plan file's folder, or next to the source context. When none of those exist, it goes in a best-guess folder of two
 to four kebab-case words under an existing documentation root. It states which folder it chose and proceeds without
 waiting for confirmation. If a `work-items.md` already exists in the chosen folder, the skill does not overwrite it and
 does not stop to ask. It writes to a timestamp-suffixed name instead, and states which file it wrote. The existing file
 is always preserved.
 
-**The breakdown.** `project-manager` receives the full plan content, the reference artifact inventory, and the skill's
-Rules verbatim. Its directive is to draft vertical slices: each work item a narrow but complete path through the
+**The breakdown.** `project-manager` receives the full plan content, the boundary record, the reference artifact
+inventory, and the skill's Rules verbatim. Its directive is to draft vertical slices: each work item a narrow but complete path through the
 appropriate layers, demoable or verifiable on its own, classified HITL or AFK. It prefers AFK, and prefers many thin
 work items over few thick ones. It returns a numbered list and writes no files. The skill returns that list verbatim,
 assigns `W-N` IDs, prints the breakdown for visibility, and writes the file without waiting for approval.

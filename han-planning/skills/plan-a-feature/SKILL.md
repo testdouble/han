@@ -9,7 +9,7 @@ description: >
   open-ended options before there is a feature to specify — use research.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature description, optional: output folder path]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *)
 ---
 
 ## Project Context
@@ -60,6 +60,19 @@ present and nothing changes.
   evidence test get demoted to a `## Deferred (YAGNI)` section in the spec with the trigger that would justify
   reopening, never silently dropped and never silently kept. Every spec section is ongoing maintenance and a pattern
   future agents will copy.
+- **The run stays inside the boundary it descends from.** Before the interview begins, the skill records the work item's
+  stated scope and exclusions, per
+  [../../references/planning-boundary-rule.md](../../references/planning-boundary-rule.md). Every commitment the spec
+  carries is then checked against that boundary, and anything the boundary excludes lands in a visible cut list rather
+  than in the spec. See [../../references/scope-justification-rule.md](../../references/scope-justification-rule.md).
+- **Visual material the user supplies is kept, and reaches every reviewer.** Persist it beside the spec as it arrives,
+  never at document-write time, and pass its paths in every dispatched reviewer's brief. The session context is the only
+  copy until it reaches disk, and a compaction inside the run destroys it. The boundary rule owns the convention.
+- **Questions to the user arrive one at a time, led by the consequence.** An escalation carries one question, opens with
+  what a person who will not read the code would describe, gives named candidate answers, and puts paths and identifiers
+  below the question or leaves them out. Per
+  [../../references/operator-escalation-rule.md](../../references/operator-escalation-rule.md). The opening confirmation
+  turn is the one exception, and the one turn that carries more than one ask.
 - **Evidence quality is a companion operating principle.** Apply the evidence rule from
   [../../references/evidence-rule.md](../../references/evidence-rule.md) alongside YAGNI. YAGNI gates inclusion (is
   there any evidence?); the evidence rule characterizes the quality of the evidence each spec commitment rests on. Name
@@ -94,6 +107,11 @@ Up to four files will be written. The primary spec lives at the root of `{folder
   to correctly specify a behavior. **Lazily created** — written only if at least one `T#` qualifies during the interview
   (Step 4) or finding resolution (Step 7). If no `T#` qualifies, the file is never created and the spec contains no `T#`
   links.
+- `{folder}/artifacts/scope-boundary.md` — the boundary record. Always written, by Step 1.5.
+
+One more folder appears when the user supplies visual material:
+
+- `{folder}/ui-designs/` — the visual material itself, one file per item, named for the state it depicts.
 
 Create the `artifacts/` subfolder before writing the companion files if it does not already exist.
 
@@ -103,6 +121,40 @@ inline parenthetical links like `([T3](artifacts/feature-technical-notes.md#t3-a
 findings log, and tech-notes file (all siblings inside `artifacts/`) cross-link through `Driven by findings:` /
 `Linked technical notes:` / `Affected decisions:` / `Affected tech-notes:` / `Supports decisions:` fields, and all
 reference back into the spec with `../feature-specification.md` paths.
+
+## Step 1.5: Read and Record the Scope Boundary
+
+Read [../../references/planning-boundary-rule.md](../../references/planning-boundary-rule.md) for the record's name, its
+sections, and the accepted visual-material file set. Establish the boundary before you discover anything or ask anything.
+
+**A record already exists** at `{folder}/artifacts/scope-boundary.md`. Read it and use it. Do not re-ask anything it
+answers, including the direction-of-travel question: a recorded answer of any kind is never re-asked.
+
+**No record exists.** Identify the work item this feature descends from, which is a ticket, an issue, a pull request, or a
+written request the user typed, and read it. Record its stated scope and its stated exclusions word for word. When no work
+item exists, record that explicitly along with the statement that the user's request is the only boundary this run has,
+because a run with no external boundary is a materially different situation from a run with one.
+
+The read does not traverse outward. A linked item, a sibling, or a closed item is not scope evidence for the item in hand.
+
+Then take one confirmation turn before Step 2 begins. It restates the recorded boundary in the user's own terms, names any
+visual material you kept, and asks the direction-of-travel question with its subjects named from the work item you have
+already read: are the specific things it named being deprecated, replaced, or migrated away from? This turn is a
+confirmation rather than an escalation, and the one turn that carries more than one ask.
+
+There is no tool here that reads a tracker, so what you record is often the user's own words rather than the work item's
+verbatim text. That is expected. Record which it was.
+
+When the user hands you a work item that conflicts with the recorded one, surface the conflict in the confirmation turn
+and ask which governs. Do not silently overwrite the record and do not silently trust it.
+
+Persist every piece of visual material the user supplies into `{folder}/ui-designs/` as it arrives, named for the state
+each one depicts, and note each item into the record's Visual Material Received section as you keep it. Copy destinations
+are always the resolved output folder's `ui-designs/`. When the host never made an item reachable as a file, name which
+items you could not keep and ask for them through the single stop, while they are still recoverable.
+
+Source the explanation standard by invoking `han-communication:explanation-guidance` before you write the confirmation
+turn, and again before any escalation or stop later in the run.
 
 ## Step 2: Discover Before Asking
 
@@ -225,6 +277,15 @@ Write the files. The primary spec goes at the root of `{folder}/`; the companion
    - **User interactions** — if applicable, affordances and feedback the user experiences.
    - **Coordinations** — inbound and outbound interactions with other subsystems.
    - **Out of scope** — what the feature deliberately does not do.
+   - **Visual Reference** — when the run received visual material, a table under the exact heading `Visual Reference`
+     listing each item and the state it shows, plus an inline embed of each item beside the prose describing that state.
+     `plan-work-items` reads this table and those placements as its mapping source, so the heading text and the embed
+     paths are a contract rather than a formatting choice. **Omit only when the run received no visual material.**
+   - **Cut for Scope** — commitments the recorded boundary excludes, cut by the scope gate. Each entry names what it would
+     have done in plain language and the boundary citation that supports the cut. It sits immediately before
+     `## Deferred (YAGNI)`, and each of the two opens with one line saying what it is not, because they are the same shape
+     and easily conflated. A cut carries no reopening trigger; a deferral does. **Lazily created — omit when nothing was
+     cut.**
    - **Deferred (YAGNI)** — items considered but deferred under
      [../../references/yagni-rule.md](../../references/yagni-rule.md). For each: the item, why it was deferred (which
      gate failed — evidence test or simpler-version test), and the reopening trigger that would justify revisiting.
@@ -249,17 +310,12 @@ Write the files. The primary spec goes at the root of `{folder}/`; the companion
    home per Step 4's routing rules.
 
 2. **`{folder}/artifacts/decision-log.md`** — use [decision-log-template.md](./references/decision-log-template.md).
-   Classify each decision as **full** or **trivial** before writing it. Full: has a rejected alternative a reasonable
-   engineer would plausibly have chosen (not an obvious or strawman one), evidence beyond the user's framing,
-   driven-by-findings, linked tech-notes, or dependent decisions. Trivial: settled directly by the user's framing or an
-   obvious convention with no alternative worth discussing. Full decisions go under `## Full decisions` with the
-   structured fields. Trivial decisions go under `## Trivial decisions` as a one-line bullet, with an optional
-   single-clause parenthetical when an obvious alternative was discarded
-   (`D#: {title} — {outcome} (considered {alternative}; rejected because {one clause}). — Referenced in spec: {sections}.`);
-   see the template for the exact format and the "if unsure, treat as full" backstop. The D# counter is shared across
-   both sections, and every spec inline link still resolves to a D# whether full or trivial. The `Driven by findings:`
-   field on full decisions is `—` in the initial draft; it is populated in Step 7 when review findings reshape
-   decisions.
+   **Do not classify decisions as full or trivial yet.** Write every decision with the full structured fields, under
+   `## Full decisions`, and classify the whole set once in Step 8 after the review round returns. Two of the promotion
+   signals, a driving finding and a linked technical note, cannot exist at draft time, so classifying now guarantees
+   re-classification later. The D# counter is assigned here and stays stable through classification, so every spec inline
+   link keeps resolving. The `Driven by findings:` field is `—` in this draft; it is populated in Step 7 when review
+   findings reshape decisions.
 
 3. **`{folder}/artifacts/team-findings.md`** — use [team-findings-template.md](./references/team-findings-template.md).
    Write the header block; leave the findings list empty. `F#` entries are added in Step 7 after the review team
@@ -368,10 +424,20 @@ mapping:
 | `han-core:junior-developer`             | Outcome + the first paragraph of every section (plain-language overview)                                                                                  |
 
 Always pass the file paths to all artifacts (`{folder}/feature-specification.md`, `{folder}/artifacts/decision-log.md`,
-`{folder}/artifacts/team-findings.md`, plus `{folder}/artifacts/feature-technical-notes.md` if it exists) so the agent
+`{folder}/artifacts/team-findings.md`, `{folder}/artifacts/scope-boundary.md`, plus
+`{folder}/artifacts/feature-technical-notes.md` if it exists) so the agent
 can read further on its own. Always pass the list of decisions already made (D# titles only — not the full entries) and
 a specific question framed for the agent's domain. Include the directive: **read additional sections only if your domain
 needs context not in the excerpts above. Cite what you read.**
+
+**Pass the visual material to every reviewer, not only the design specialist.** Alongside the artifact paths, give every
+dispatched agent the path to each item in `{folder}/ui-designs/` and the state each one shows, and tell it to read them.
+Which reviewer is most harmed by the omission varies by feature, so the material goes to all of them rather than to the
+one that seems most likely to need it. A design specialist reviewing a design-driven feature without the designs is
+reviewing a paraphrase.
+
+**When visual material arrives after dispatch**, persist it, re-brief the reviewers you can still reach, and record which
+reviewers never received it. Any finding of theirs that turns on that material is unverified in Step 7.
 
 **Every spec-stage specialist receives this narrowed brief, in addition to the domain-specific question:**
 
@@ -388,6 +454,18 @@ needs context not in the excerpts above. Cite what you read.**
 > named anti-patterns from the rule doc as auto-flags — "for future flexibility", symmetry/completeness, "when we
 > scale", speculative observability, runbooks for never-fired alerts, etc. When evidence does justify an item but a
 > strictly simpler version would satisfy the same evidence, recommend the simpler version.
+>
+> Scope your report to the size of the work being specified. This feature descends from the work item recorded in
+> `artifacts/scope-boundary.md`; read it. A report closer to {target} lines than {ten times target} is the right shape
+> here. That is a target rather than a cap: if you have more worth saying, say it, but do not pad to fill a section list.
+>
+> Where a finding of yours rests on an input you could not inspect, say so on the finding itself, in the form your own
+> definition specifies. A disclosure in an assumptions section below the finding does not travel with it, and this skill
+> reads each finding where it stands.
+
+Fill in `{target}` with a rough line count matched to the work item's size rather than a size word the reviewer has to
+interpret. For a one-card ticket, name a report closer to 150 lines than 750. The signal governs how much each reviewer
+writes and never how many reviewers you choose; the team cap in Step 5.5 owns that and is unaffected.
 
 Tell each agent to cite sections by filename and heading when raising findings — e.g.,
 `feature-specification.md#primary-flow`, `D4` in `artifacts/decision-log.md`, or `T3` in
@@ -396,7 +474,31 @@ single message so they run in parallel.
 
 ## Step 7: Resolve Findings with Evidence Before Surfacing to User
 
-After all review agents return, compile their findings. **Do not dump raw findings on the user.** For each finding:
+After all review agents return, compile their findings. **Do not dump raw findings on the user.**
+
+Three passes run before the per-finding work below, in this order. The order matters: merging first is what stops one
+finding from ending up unverified under one reviewer's identifier and blocking under another's.
+
+**Pass A: merge by substance.** Two reviewers often raise the same finding in different words. Merge those into one
+record, and carry every originating reviewer's own identifier on it (for example `UX-3, JD-7`). Do not reconcile the
+lists by hand later; that is what loses a finding.
+
+**Pass B: strip blocking severity from findings resting on an uninspected input.** A reviewer that could not inspect
+something says so on the finding itself, in the form its definition specifies (look for the `Unverified:` line). Every
+finding carrying such a disclosure, and every finding depending on that same input, is labeled unverified and **cannot
+carry build-blocking severity**. Keep the finding: it may still be real, and you can often verify it yourself. What it
+cannot do is reach the user looking like a blocker on the strength of something nobody read. Findings from a reviewer that
+never received visual material, per Step 6, are treated the same way when they turn on that material.
+
+**Pass C: check design-dependent findings against the designs.** For any finding that turns on visual material this run
+holds, open the material and check the finding against it before filing. A finding the material answers directly is closed
+with the citation rather than promoted to an open item. This is nearly free once the files are on disk, and it is the pass
+that catches the reported failure where all five frames answered the flagged question and nobody re-read them.
+
+Record any evidence class no reviewer could audit. When decisions rest on material no reviewer received, say so in
+`artifacts/team-findings.md`, so the coverage gap is visible rather than silent.
+
+Then, for each finding:
 
 1. **Classify the finding as major or minor** before recording. A finding is **major** when it changes a behavioral
    commitment, edge-case rule, alternate flow, or failure mode in the spec; touches
@@ -406,7 +508,8 @@ After all review agents return, compile their findings. **Do not dump raw findin
    ("auth", "PII", "race", "ordering", "coordination", "edge case", "T#"), force it to major. When in doubt, major.
 
 2. **Record it in `artifacts/team-findings.md`** using the
-   [team-findings-template.md](./references/team-findings-template.md) format. Major findings go under
+   [team-findings-template.md](./references/team-findings-template.md) format. Carry every originating reviewer's own
+   identifier on the record, and carry the unverified label from Pass B where it applies. Major findings go under
    `## Major findings` with the full structured fields. Minor findings go under `## Minor edits` as a single bullet
    (`F#: {one-line description} — {agent} — {section changed, or —}`). The F# counter is shared across both classes.
 3. **Attempt evidence-based resolution first.** Re-check the codebase, docs, standards, and settled decisions. If the
@@ -437,35 +540,88 @@ After all review agents return, compile their findings. **Do not dump raw findin
    sentence behaviorally and either extracting the mechanic to a `T#` note (if load-bearing) or removing it entirely (if
    pure implementation or discoverable from code). Do not escalate these to the user unless the rewrite would change the
    feature's meaning.
-6. **`YAGNI candidate` findings** — apply the YAGNI rule per
-   [../../references/yagni-rule.md](../../references/yagni-rule.md). For each finding, three resolution paths exist: (a)
-   cite the missing evidence (per the rule's evidence test) and keep the spec item — record the citation in the relevant
-   `D#`'s `Evidence:` field and close the finding; (b) replace with the strictly simpler version that satisfies the same
-   evidence — update the spec sentence and the related `D#`, list the larger version under that `D#`'s
-   `Rejected alternatives:` with the reason "simpler version satisfies the same evidence"; (c) demote to the spec's
-   `## Deferred (YAGNI)` section with the reopening trigger named, removing the inline behavior from the affected
-   sections. Surface YAGNI deferrals to the user in Step 7's escalation pass so the user can override consciously, but do
-   not require user input when evidence resolves the finding directly.
-7. **Escalate only what genuinely needs the user.** For findings that remain open, draft a recommended answer with
-   rationale and alternatives, the same way Step 4 surfaces questions. Present them to the user together, organized by
-   the decision they affect — not by which agent raised them.
-8. **Capture the user's answers** in the relevant `D#` entry in `artifacts/decision-log.md`, finish populating the `F#`
+
+5a. **`YAGNI candidate` findings** — apply the YAGNI rule per
+[../../references/yagni-rule.md](../../references/yagni-rule.md). For each finding, three resolution paths exist: (a)
+cite the missing evidence (per the rule's evidence test) and keep the spec item — record the citation in the relevant
+`D#`'s `Evidence:` field and close the finding; (b) replace with the strictly simpler version that satisfies the same
+evidence — update the spec sentence and the related `D#`, list the larger version under that `D#`'s
+`Rejected alternatives:` with the reason "simpler version satisfies the same evidence"; (c) demote to the spec's
+`## Deferred (YAGNI)` section with the reopening trigger named, removing the inline behavior from the affected sections.
+Surface YAGNI deferrals to the user in the escalation pass so the user can override consciously, but do not require
+user input when evidence resolves the finding directly.
+
+5b. **The scope gate runs in this same pass.** Per
+[../../references/scope-justification-rule.md](../../references/scope-justification-rule.md), check the spec's own
+commitments against the recorded boundary in `artifacts/scope-boundary.md`. This gate attaches here, to the YAGNI
+reasoning path 5a already performs; no sweep step is added to this skill. Because this skill drafts from an interview
+rather than from an upstream artifact, the gate reduces to a work-item check on the commitments this run authored, and
+there are no inherited commitments to sweep.
+
+Ask of each commitment: does the recorded boundary ask for this, or exclude it by statement or by silence?
+
+- A commitment the boundary never asks for is cut, with the citation, and lands in the spec's `## Cut for Scope` section.
+  It is not a YAGNI deferral and gets no reopening trigger; the boundary already settled it. Route the entry to the cut
+  list and nowhere else, so a reader never meets the same item in both sections.
+- A recorded deprecation in the boundary record's Direction of Travel section is treated the same way a stated exclusion
+  is treated.
+- **The floor holds.** Cut subsystems, integrations, and artifacts the boundary never asks for. Never cut behavior
+  required to deliver what the boundary does ask for. A short work item does not enumerate its own necessities, and that
+  silence is not exclusion. Validation, focus behavior, error copy, tests, and accessibility on a card the ticket did ask
+  for are not cuts.
+- A scope question the boundary answers is never escalated. Cut it and record why, rather than asking the user to choose
+  between options their own work item already decided between.
+
+Cut entries flow into Step 8's synthesis alongside everything else.
+
+6. **Escalate only what genuinely needs the user, one question at a time.** For findings that remain open, draft a
+   recommended answer with rationale and alternatives, the same way Step 4 surfaces questions. Then present them per
+   [../../references/operator-escalation-rule.md](../../references/operator-escalation-rule.md): one question per turn,
+   waiting for the answer before asking the next, leading with the consequence a person who will not read the code would
+   describe, carrying named candidate answers, and keeping paths, identifiers, and line numbers below the question or out
+   of it. State how many questions are pending on the first one. Present more than one in a turn only when the user asks
+   for that.
+
+   Source the explanation standard by invoking `han-communication:explanation-guidance` before writing the first one.
+
+   Grouping findings by the decision they affect stays: it is the order you work through them in, not a licence to put
+   four of them in one turn.
+
+   A finding labeled unverified in Pass B never leads an escalation as a blocker. Say what could not be inspected as part
+   of the question.
+
+7. **Capture the user's answers** in the relevant `D#` entry in `artifacts/decision-log.md`, finish populating the `F#`
    entry (`Resolved by: user input`), update any dependent decisions or tech-notes, and keep all files' cross-refs in
    sync.
+
+8. **Keep an escalation register.** Record every question you escalated, the answer that came back, and where that answer
+   landed in the artifacts. The register goes in `artifacts/team-findings.md` alongside the findings it came from.
 
 ## Step 8: Project Manager Synthesis
 
 Launch the `han-core:project-manager` agent in **synthesis mode**. Provide it with:
 
 - All output file paths: `{folder}/feature-specification.md`, `{folder}/artifacts/decision-log.md`,
-  `{folder}/artifacts/team-findings.md`, and `{folder}/artifacts/feature-technical-notes.md` if it exists.
+  `{folder}/artifacts/team-findings.md`, `{folder}/artifacts/scope-boundary.md`, and
+  `{folder}/artifacts/feature-technical-notes.md` if it exists.
 - The full verbatim output from every review agent in Step 6.
 - The resolutions made in Step 7 (which findings were resolved by evidence, which by the user, and what changed in each
-  file).
+  file), including everything the scope gate cut and the reason for each cut.
 
 Ask the han-core:project-manager to reconcile the specialist input against the files and apply any remaining corrections
 directly. It must:
 
+- **Classify every decision as full or trivial, once, now.** This is the only classification pass; Step 5 deliberately
+  wrote every decision in full form and deferred the split to here, because two of the promotion signals (a driving
+  finding, a linked technical note) do not exist until the review round returns. Full: has a rejected alternative a
+  reasonable engineer would plausibly have chosen (not an obvious or strawman one), evidence beyond the user's framing,
+  driven-by-findings, linked tech-notes, or dependent decisions. Trivial: settled directly by the user's framing or an
+  obvious convention with no alternative worth discussing. Full decisions stay under `## Full decisions` with the
+  structured fields. Trivial decisions move to `## Trivial decisions` as a one-line bullet, with an optional single-clause
+  parenthetical when an obvious alternative was discarded
+  (`D#: {title} — {outcome} (considered {alternative}; rejected because {one clause}). — Referenced in spec: {sections}.`);
+  see [decision-log-template.md](./references/decision-log-template.md) for the exact format and the "if unsure, treat as
+  full" backstop. D# numbers do not change during classification, so every spec inline link keeps resolving.
 - Record or update decisions in `artifacts/decision-log.md` with full rationale, evidence, and rejected alternatives.
 - Record or update findings in `artifacts/team-findings.md` with resolutions.
 - Record or update technical notes in `artifacts/feature-technical-notes.md` — creating the file lazily if it does not
@@ -485,6 +641,10 @@ directly. It must:
   - The spec itself continues to obey the operating-principles rule — no language primitives, file/line references,
     function/class names, library mechanics, implementation patterns, or internal flag names in behavioral sentences.
     Any leak the han-core:project-manager finds is rewritten in place during synthesis.
+  - The `## Cut for Scope` section carries every scope-gate cut with what it would have done and the boundary citation,
+    and no entry appears in both that section and `## Deferred (YAGNI)`.
+  - The `Visual Reference` table lists every item the boundary record records as received, under that exact heading, with
+    an inline embed beside the prose describing each state.
 
 The han-core:project-manager owns the final synthesis — its output is authoritative.
 
@@ -516,15 +676,26 @@ Fidelity wins: the standard governs how the content is said, never whether a req
 
 Summarize for the user:
 
+Before you summarize, run the completeness gate: every item the boundary record lists as received exists on disk in
+`{folder}/ui-designs/`. Read the record rather than your memory of the run, because a compaction leaves the memory empty
+and the gate would pass vacuously. This also catches partial loss, where five items arrived and three were saved.
+
 - Output file paths: `{folder}/feature-specification.md`, `{folder}/artifacts/decision-log.md`,
-  `{folder}/artifacts/team-findings.md`. Include `{folder}/artifacts/feature-technical-notes.md` in the list **only if**
-  it was created.
+  `{folder}/artifacts/team-findings.md`, `{folder}/artifacts/scope-boundary.md`. Include
+  `{folder}/artifacts/feature-technical-notes.md` in the list **only if** it was created, and `{folder}/ui-designs/` only
+  if visual material was kept.
 - The number of decisions settled by evidence vs. by user input (point to `artifacts/decision-log.md`).
+- **The cut list**, when anything was cut for scope: what each entry would have done, in plain language, and why. Say that
+  the user can reinstate any of it, and that their saying so is itself a valid justification the reinstated item records.
+  Show this in the message rather than only pointing at the section, because a cut the user never reads is a cut nobody
+  can reverse.
 - The number of YAGNI deferrals captured in `feature-specification.md`'s `## Deferred (YAGNI)` section (omit this line
-  if the section was not written because nothing qualified).
+  if the section was not written because nothing qualified). Keep it distinct from the cut list above.
 - The number of technical notes captured (point to `artifacts/feature-technical-notes.md`) — omit this line if the file
   was not created.
 - The sub-agents consulted and the key adjustments each drove (point to `artifacts/team-findings.md`).
+- Any finding that stayed unverified because a reviewer could not inspect its input, and any evidence class no reviewer
+  could audit. Neither is presented as build-blocking.
 - Any remaining open items the han-core:project-manager flagged for follow-up (in `feature-specification.md`).
 
 Ask whether the user wants to iterate on specific sections or consider the specification ready for implementation

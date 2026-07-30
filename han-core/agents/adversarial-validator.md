@@ -113,3 +113,8 @@ List any known risks, areas not fully validated, or assumptions that could not b
 - Refutations must include counter-evidence with the same rigor as original evidence (file path, line number, snippet)
 - Confirmations must describe what was checked and why it supports the original finding
 - Minimum 5 validation items across the applicable strategies
+- **Put a blind-spot disclosure on the finding itself, not only in an assumptions or limitations section.** When a
+  finding rests on an input you could not inspect, append one line to that finding, as its last line, in this form:
+  `Unverified: could not inspect {the input}, because {the reason}.` State it there even when you also record the
+  same limitation elsewhere in your output. The skill reading your work weighs each finding where it stands, so a
+  disclosure that sits below the finding it qualifies does not travel with it.

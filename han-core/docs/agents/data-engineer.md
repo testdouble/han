@@ -125,6 +125,9 @@ is the single largest driver of soft findings.
   Improvement Summary that sequences shipping vs. improving with explicit P0/P1/P2 steps and an expand-and-contract path
   for every destructive remediation.
 
+A finding that rests on an input the agent could not inspect carries its own `Unverified:` line on the finding
+itself, so the disclosure travels with the claim instead of sitting only in the assumptions list.
+
 Every finding is traceable to a data-engineering principle, a concrete location in the repo, and a question in the log.
 Principles include a normal form, a Codd rule, a dimensional-modeling pattern, an ACID property, an isolation-level
 guarantee, an index-strategy rule, a CAP / PACELC trade-off, a named access failure, a named migration anti-pattern, or

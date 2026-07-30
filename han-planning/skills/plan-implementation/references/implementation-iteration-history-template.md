@@ -33,7 +33,7 @@ files stay in sync.
 - **New input provided:**
   <!-- For re-engagement rounds: what new context, resolved questions, or user answers were handed back to the specialists. For R1, typically "initial feature specification and discovery notes." -->
 - **Claim ledger:**
-  <!-- From the project-manager's facilitation output. Each row is one claim with its state: Evidenced (citation that resolves), Anecdotal (no citation), or Disputed (specialists disagree). Use a compact table or bullet list. -->
+  <!-- Each row is one claim with its state: Evidenced (citation that resolves), Anecdotal (no citation), Disputed (specialists disagree), or Unverified (rests on an input its author could not inspect, so it cannot be build-blocking). A claim raised by two specialists is one row carrying every originating identifier. Note on any row that turns on visual material whether it was checked against that material. Use a compact table or bullet list. -->
 - **Open Questions raised:**
   <!-- OQ-N items the specialists or project-manager surfaced this round. Reference the decisions they ultimately became (D# IDs) if known at write time; otherwise leave the linkage to be filled during synthesis. -->
 - **Spec-maturity tags:**
@@ -58,3 +58,24 @@ files stay in sync.
 - **Project-manager next-step recommendation:** ...
 
 <!-- Add more rounds as needed (R3, R4). The iteration loop caps at four rounds. -->
+
+## Unaudited evidence classes
+
+<!-- Present only when decisions rest on material no specialist received. One bullet per class, naming the material and the
+     decisions that rest on it, so the coverage gap is visible rather than silent. Omit the section when every evidence
+     class reached a specialist. -->
+
+- {the material}, supporting {D-N IDs}. No specialist received it, because {reason}.
+
+## Escalation register
+
+<!-- Present only when the run escalated a question to the user. One entry per question, in the order asked, across every
+     round. Escalations go out one per turn, so this is also the record of how many turns the run spent and on what.
+
+     Omit the section entirely when nothing was escalated. -->
+
+### E1: {the question as it was asked, in plain language}
+
+- **Round:** {R# the question came from}
+- **Answer:** {what the user said}
+- **Landed in:** {the D-N entry or plan section the answer changed}

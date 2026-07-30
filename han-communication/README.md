@@ -1,15 +1,18 @@
 # han-communication
 
-The foundational communication plugin for the Han suite. It owns the single canonical readability standard and
-writing-voice profile, and the skills and agent that apply them, so every prose-producing plugin in the suite writes
-against one shared standard instead of its own copy. Reach for it whenever output has to read well for someone who did
-not write it.
+The foundational communication plugin for the Han suite. It owns the canonical readability standard, the writing-voice
+profile, and the standard for explaining technical work to a reader who will not implement it, along with the skills and
+agent that apply them, so every prose-producing plugin in the suite writes against one shared set of standards instead of
+its own copy. Reach for it whenever output has to read well for someone who did not write it.
 
 **Bundled.** Installed with the `han` meta-plugin. Depends on nothing: it is the foundational layer, and every plugin
 that produces prose output depends on it, so it comes along whenever you install one of them.
 
 ## Skills
 
+- [`/explanation-guidance`](docs/skills/explanation-guidance.md) — Surface the shared standard for explaining technical
+  work to a reader who will not implement it, so a skill's questions and stops name a concrete outcome instead of a
+  mechanism.
 - [`/readability-guidance`](docs/skills/readability-guidance.md) — Surface the shared readability standard into a calling
   skill's own context so it drafts in voice and runs its self-check against one canonical copy.
 - [`/edit-for-readability`](docs/skills/edit-for-readability.md) — Rewrite the prose of a target you already have (a

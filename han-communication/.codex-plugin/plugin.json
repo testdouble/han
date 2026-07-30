@@ -1,7 +1,7 @@
 {
   "name": "han-communication",
   "version": "1.0.0",
-  "description": "Foundational communication plugin for the Han suite: the shared readability standard, writing-voice profile, and the skills and agent that apply them.",
+  "description": "Foundational communication plugin for the Han suite: the shared readability standard, writing-voice profile, explanation standard, and the skills and agent that apply them.",
   "author": {
     "name": "Test Double",
     "url": "https://testdouble.com"
@@ -13,8 +13,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Han Communication",
-    "shortDescription": "The shared readability standard and the skills that apply it.",
-    "longDescription": "Foundational communication plugin for the Han suite. Owns the single canonical readability standard and writing-voice profile, the readability-guidance skill that surfaces them for in-voice drafting, and the edit-for-readability skill that rewrites a draft against the standard.",
+    "shortDescription": "The shared communication standards and the skills that apply them.",
+    "longDescription": "Foundational communication plugin for the Han suite. Owns the canonical readability standard, writing-voice profile, and explanation standard, the readability-guidance skill that surfaces the first two for in-voice drafting, the explanation-guidance skill that surfaces the third when a run talks to a person, and the edit-for-readability skill that rewrites a draft against the standard.",
     "developerName": "Test Double",
     "category": "Developer Tools",
     "capabilities": ["Skills"],

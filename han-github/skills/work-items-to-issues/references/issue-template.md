@@ -22,9 +22,9 @@ event payload, design frame, ADR, coding standard) — omit it only when no exte
 
 *(Optional `**Bold paragraph.**` blocks here — e.g., `**Note on scope boundary.**`, `**Note on cross-repo gate.**`.)*
 
-**Screenshots.** *(Required for UI-bearing slices when the plan folder contains a `ui-designs/` subfolder. Each screenshot is embedded inline using a same-target-repo raw URL of the form `https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png`, where `<feature-slug>` is the kebab-cased basename of the plan folder. The PNG is copied into the target repo by `scripts/upload-screenshots.sh` before the issue is created. Cross-repo URLs into the planning repo are forbidden — the automated implementation tooling cannot resolve them. Each embed is wrapped in a link to the same URL so readers can open the full-size image in a new tab. One image per bullet, with a short caption naming the depicted state. Omitted when the slice has no UI surface or no `ui-designs/` folder exists.)*
+**Screenshots.** *(Required for UI-bearing slices when the plan folder contains a `ui-designs/` subfolder. Each item is embedded inline using a same-target-repo raw URL of the form `https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.<ext>`, where `<feature-slug>` is the kebab-cased basename of the plan folder and `<ext>` is the source file's own extension, one of `png`, `jpg`, `jpeg`, `gif`, `webp`, `svg`, or `pdf` — the accepted set in [screenshot-embed-rules.md](./screenshot-embed-rules.md). Copy the source filename including its extension; never rewrite `.jpg` to `.png`, because the upload resolves the source file by the filename in the URL. The file is copied into the target repo by `scripts/upload-screenshots.sh` before the issue is created. Cross-repo URLs into the planning repo are forbidden — the automated implementation tooling cannot resolve them. Each embed is wrapped in a link to the same URL so readers can open the full-size image in a new tab. A `.pdf` is linked rather than embedded as an image, because GitHub does not render it inline. One item per bullet, with a short caption naming the depicted state. Omitted when the slice has no UI surface or no `ui-designs/` folder exists.)*
 
-- *<state-or-scenario name>* — `[![<alt text>](https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png)](https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png)`
+- *<state-or-scenario name>* — `[![<alt text>](https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.<ext>)](https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.<ext>)`
 
 **References.**
 - **Plan decisions** — every plan decision or work unit this slice satisfies, one bullet each: the ID as a link (e.g., `[D-6](feature-implementation-plan.md#d-6-...)`) followed by one short plain sentence saying what it is. Never a bare ID list. Replaces any inline `See plan: ...` reference and any standalone "Work items addressed" field.
@@ -53,9 +53,10 @@ checks each invariant before publishing and proposes evidence-based repairs.
   numbers, and how `create-issues.sh` knows to skip already-created slices on re-run. Both shapes — with and without
   `(#NNN)` — are valid input.
 - **Slice body** ends at the next `## ` heading or end of file.
-- **Screenshot URLs** use the exact path scheme `.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png`, where
-  `<feature-slug>` is the kebab-cased basename of the plan folder. The upload script extracts this path verbatim from
-  the per-repo file and reads the slug back out of it, so the slug written into the URL is authoritative.
+- **Screenshot URLs** use the exact path scheme `.github/issue-assets/<feature-slug>/<SYM-N>/<file>.<ext>`, where
+  `<feature-slug>` is the kebab-cased basename of the plan folder and `<ext>` is the source file's own extension from the
+  accepted set. The upload script extracts this path verbatim from the per-repo file and reads both the slug and the
+  filename back out of it, so what is written into the URL is authoritative for both.
 - **`Depends on` line** uses the literal bold marker `**Depends on.**`, comma-separates blockers, and ends with `.` (the
   trailing period is part of the format, not a sentence terminator).
 - **Within-repo blockers only.** Every SYM named in a `Depends on` line must resolve to a slice in the same per-repo

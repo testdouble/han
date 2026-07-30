@@ -14,7 +14,10 @@ and reveals detail in layers, instead of each skill restating the rule on its ow
   Output stays consistent because the rule lives in one place, not because each skill restates it.
 - **A different kind of standard.** Sizing, YAGNI, and evidence are near-universal decision mechanics. Readability is an
   output standard scoped to the skills whose deliverable is prose a non-author reads. It is its own category, not a
-  fourth universal mechanic.
+  fourth universal mechanic. It also has a sibling: the
+  [explanation standard](../han-communication/references/explanation-rule.md) governs what a run says to a person in a
+  turn, where readability governs the shape of a written deliverable. A skill that drafts a document and also stops to
+  ask a question sources both, at different moments.
 - **Applied in stages, never as one block.** The rule's structural rules shape each skill's output template; its
   testable criteria run as a discrete self-check after the draft exists. Stacking it all as one instruction would
   reproduce the failure it exists to dodge.

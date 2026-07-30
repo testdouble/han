@@ -3,9 +3,10 @@
 Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep
 code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist
 sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han-communication` (the foundational
-plugin beneath every other: it owns the single canonical readability standard and writing-voice profile, the inline
-`readability-guidance` skill that surfaces them, the `edit-for-readability` skill, and the `readability-editor` agent;
-it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
+plugin beneath every other: it owns the canonical readability standard, the writing-voice profile, and the explanation
+standard for talking to a reader who will not implement the work, plus the inline `readability-guidance` skill that
+surfaces the first two, the inline `explanation-guidance` skill that surfaces the third, the `edit-for-readability` skill,
+and the `readability-editor` agent; it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
 specialist agent roster the rest of the suite dispatches — every shared agent except the `readability-editor` and the
 `research-analyst` — plus the `project-discovery` skill and the canonical rule files; depends on no other Han plugin),
 `han-documentation` (the documentation skills: `project-documentation`, `architectural-decision-record`, and `runbook`;
@@ -63,16 +64,16 @@ han-plugin-builder skill:
 │   ├── README.md       # Light meta-plugin front door (no skills/agents sections)
 │   └── .claude-plugin/
 │       └── plugin.json
-├── han-communication/  # Foundational plugin: readability-guidance + edit-for-readability skills, readability-editor agent, and the canonical readability-rule.md + writing-voice.md (depends on nothing; every prose-producing plugin depends on it)
+├── han-communication/  # Foundational plugin: readability-guidance + explanation-guidance + edit-for-readability skills, readability-editor agent, and the canonical readability-rule.md + writing-voice.md + explanation-rule.md (depends on nothing; every prose-producing plugin depends on it)
 │   ├── README.md       # Light front door + scent-line skill and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── .codex-plugin/
 │   │   └── plugin.json    # Codex-format manifest; every plugin except han and han-linear carries one (omitted from the entries below)
 │   ├── agents/         # readability-editor agent definition
-│   ├── skills/         # readability-guidance (inline, surfaces the standard) + edit-for-readability
+│   ├── skills/         # readability-guidance + explanation-guidance (both inline, each surfaces one standard) + edit-for-readability
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md
-│   └── references/     # Canonical readability-rule.md + writing-voice.md (owned here; no vendored copies elsewhere)
+│   └── references/     # Canonical readability-rule.md + writing-voice.md + explanation-rule.md (owned here; no vendored copies elsewhere)
 ├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery (depends on no other Han plugin)
 │   ├── README.md       # Light front door; skills and agents grouped by purpose
 │   ├── .claude-plugin/
@@ -102,7 +103,7 @@ han-plugin-builder skill:
 │   │   └── plugin.json
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
-│   └── references/     # Cross-skill reference files vendored for han-planning skills (yagni-rule.md, evidence-rule.md)
+│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
 ├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
@@ -174,8 +175,9 @@ The plugins are shipped from `han-communication/`, `han-core/`, `han-documentati
 `han-planning/`, `han-coding/`, `han-github/`, `han-reporting/`, `han-feedback/`, `han-atlassian/`, `han-linear/`, and
 `han-plugin-builder/`; the `han/` meta-plugin pulls in `han-communication`, `han-core`, `han-documentation`,
 `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` through its `dependencies`.
-`han-communication` is the foundational layer beneath every other plugin: it depends on nothing and owns the single
-canonical readability standard, and every plugin that produces prose output (`han-documentation`, `han-research`,
+`han-communication` is the foundational layer beneath every other plugin: it depends on nothing and owns the canonical
+readability standard plus the explanation standard that governs what a run says to a person in a turn, and every plugin
+that produces prose output (`han-documentation`, `han-research`,
 `han-planning`, `han-coding`, `han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a direct
 dependency on it. `han-documentation`, `han-research`, `han-planning`, and `han-coding` depend on
 `han-communication` and `han-core` and are bundled by the meta-plugin, as are `han-github` and `han-reporting`
@@ -233,6 +235,24 @@ such as Claude, should be referenced here.
   every doc in the plugin follows. No em-dashes, direct second person, plainspoken mentor tone, named voice violations
   to avoid. Single canonical copy in the foundational `han-communication` plugin; no vendored copies. Consuming skills
   source it cross-plugin by invoking `han-communication:readability-guidance`.
+- **[han-communication/references/explanation-rule.md](./han-communication/references/explanation-rule.md).** The standard
+  for explaining technical work to a reader who will not implement it: give a concrete outcome they could observe rather
+  than a mechanism, and never use a term that appears in neither the work item nor the conversation. It governs what a run
+  says to a person in a turn, where the readability rule governs the shape of a written deliverable. Skills that escalate
+  source it by invoking `han-communication:explanation-guidance`. Guidance only, with no self-check.
+
+### Shared planning conventions (`han-planning/references/`)
+
+- **[han-planning/references/planning-boundary-rule.md](./han-planning/references/planning-boundary-rule.md).** The scope
+  boundary record (`artifacts/scope-boundary.md`, its named sections, the conflict rule) together with the visual-material
+  convention (the `ui-designs/` folder, the accepted file set, persist-on-arrival, the completeness gate, and the
+  `Visual Reference` heading and embed form the downstream inventory reads).
+- **[han-planning/references/scope-justification-rule.md](./han-planning/references/scope-justification-rule.md).** The
+  per-unit justification field, the cut list and how it differs from a YAGNI deferral, and the scope gate with its floor.
+- **[han-planning/references/operator-escalation-rule.md](./han-planning/references/operator-escalation-rule.md).** One
+  question per turn, the plain-language lead, named candidate answers, the single stop, and the escalation register.
+
+All three are owned by `han-planning`, not vendored. Each opens by saying so.
 
 ### Templates (`docs/templates/`)
 

@@ -82,8 +82,9 @@ Check the work-items file against the format invariants in
 - **Within-repo blockers.** Every SYM named in a `Depends on` line maps to the same target repo as the dependent slice
   (under the map from Step 2).
 - **Screenshot URLs.** When present, match
-  `https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png` against
-  the target repo's default branch and a real PNG file under `<plan-folder>/ui-designs/`. `<feature-slug>` is the
+  `https://github.com/<org>/<target-repo>/raw/<branch>/.github/issue-assets/<feature-slug>/<SYM-N>/<file>.<ext>` against
+  the target repo's default branch and a real file under `<plan-folder>/ui-designs/`, whose extension is one of the
+  accepted set (`png`, `jpg`, `jpeg`, `gif`, `webp`, `svg`, `pdf`) and is copied into the URL unchanged. `<feature-slug>` is the
   kebab-cased basename of the plan folder.
 - **References block.** Present whenever the slice consumes an HTTP endpoint, event payload, design frame, ADR, coding
   standard, or other named artifact.
@@ -161,12 +162,12 @@ when the user asked for a label or assignee (Step 1). Both flags are optional an
 
 The wrapper runs three idempotent scripts in order:
 
-1. **`scripts/upload-screenshots.sh`** — extracts every `.github/issue-assets/<feature-slug>/<SYM-N>/<file>.png` URL
-   from the per-repo file and copies the matching PNG from `<plan-folder>/ui-designs/` into the target repo, verifying
+1. **`scripts/upload-screenshots.sh`** — extracts every `.github/issue-assets/<feature-slug>/<SYM-N>/<file>.<ext>` URL
+   from the per-repo file and copies the matching file from `<plan-folder>/ui-designs/` into the target repo, verifying
    each upload. The `<feature-slug>` segment (the kebab-cased plan-folder basename) keeps assets from different features
-   that publish to the same repo from colliding. Upload is adaptive: by default each PNG is written directly to the
+   that publish to the same repo from colliding. Upload is adaptive: by default each file is written directly to the
    default branch via the GitHub Contents API, but if that branch is protected and rejects the direct write (HTTP 409),
-   the script falls back to committing the PNGs to an assets branch, opening a pull request, and printing the PR URL.
+   the script falls back to committing the assets to an assets branch, opening a pull request, and printing the PR URL.
    The embedded image URLs always name the default branch, so on the PR path the inline designs render once that assets
    PR merges — the issues are still created immediately. Overwrites existing files cleanly and, on re-run, reuses the
    assets branch and open PR — but only a branch it created for this feature (one already carrying the feature's

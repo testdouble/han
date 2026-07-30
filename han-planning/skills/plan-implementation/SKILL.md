@@ -7,7 +7,7 @@ description: >
   not refine or stress-test an already-written plan — use iterative-plan-review.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature specification path, optional: additional context]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *), Bash(cp *)
 ---
 
 ## Project Context
@@ -22,8 +22,24 @@ present and nothing changes.
 
 ## Operating Principles
 
-- **The feature specification is the ground truth for _what_.** This skill plans _how_. Do not re-open behavioral
-  decisions the specification already settled; flag contradictions as Open Questions for the user.
+- **The feature specification is the ground truth for _what_, but not for scope.** This skill plans _how_. Do not re-open
+  behavioral decisions the specification already settled; flag contradictions as Open Questions for the user. Scope is the
+  exception, and it is narrow: a specification is an artifact, not a scope authority, so a commitment it carries for a
+  subsystem, integration, or artifact the work item never asks for is cut with the citation rather than planned. The
+  license reaches unrequested subsystems and nothing else. See
+  [../../references/scope-justification-rule.md](../../references/scope-justification-rule.md).
+- **The run stays inside the boundary it descends from.** Before locating the specification, the skill records the work
+  item's stated scope and exclusions, per
+  [../../references/planning-boundary-rule.md](../../references/planning-boundary-rule.md). The scope gate at Step 7.5
+  then reads that record, including commitments the plan inherited from the specification.
+- **Visual material the user supplies is kept, and reaches every reviewer.** Persist it beside the plan as it arrives,
+  never at document-write time, and pass its paths in every dispatched specialist's brief. The boundary rule owns the
+  convention.
+- **Questions to the user arrive one at a time, led by the consequence.** An escalation carries one question, opens with
+  what a person who will not read the code would describe, gives named candidate answers, and puts paths and identifiers
+  below the question or leaves them out. Per
+  [../../references/operator-escalation-rule.md](../../references/operator-escalation-rule.md). The opening confirmation
+  turn is the one exception, and the one turn that carries more than one ask.
 - **The han-core:project-manager is the coordinator, not the author of every section.** It facilitates rounds of
   discussion among specialists, tracks claims and evidence, and decides when the plan is ready. Specialists own their
   domains.
@@ -97,6 +113,12 @@ artifacts live in `{same-folder-as-source}/artifacts/` (which may already exist 
 - `{same-folder-as-source}/artifacts/implementation-iteration-history.md` — round-by-round record of specialists
   engaged, questions raised, and how each was resolved.
 
+Two more artifacts are written by Step 1.5 rather than by this step:
+
+- `{same-folder-as-source}/artifacts/scope-boundary.md` — the boundary record. Always present, whether this run wrote it
+  or an earlier planning skill did.
+- `{same-folder-as-source}/ui-designs/` — visual material the user supplies, when they supply some.
+
 Create the `artifacts/` subfolder before writing the companion files if it does not already exist.
 
 The three files cross-reference each other. The main plan cites decisions with inline parenthetical links like
@@ -119,6 +141,44 @@ omit every T#-related sentence from agent briefs (Step 4), the spec-maturity tag
 (Step 8) — do not add boilerplate qualifiers like "if it exists" to those briefs. The `T#-contradiction` spec-maturity
 classification simply does not apply when there are no T# notes, so the spec-maturity gate reduces to the `spec-level`
 threshold alone.
+
+## Step 1.5: Read and Record the Scope Boundary
+
+Read [../../references/planning-boundary-rule.md](../../references/planning-boundary-rule.md) for the record's name, its
+sections, and the accepted visual-material file set. Establish the boundary before Step 2 discovery begins.
+
+**A record already exists** at `{same-folder-as-source}/artifacts/scope-boundary.md`, which is the common case when
+`plan-a-feature` produced the source specification. Read it and use it. Do not re-ask anything it answers, including the
+direction-of-travel question: a recorded answer of any kind is never re-asked.
+
+**No record exists.** Identify the work item this work descends from, which is a ticket, an issue, a pull request, or a
+written request the user typed, and read it. Record its stated scope and its stated exclusions word for word. When no work
+item exists, record that explicitly along with the statement that the user's request is the only boundary this run has.
+
+The read does not traverse outward. A linked item, a sibling, or a closed item is not scope evidence for the item in hand,
+and its description is not evidence about the current item's platform, status, or intent.
+
+Then take one confirmation turn before Step 2 begins. It restates the recorded boundary in the user's own terms, names any
+visual material you kept, and asks the direction-of-travel question with its subjects named from the work item you have
+already read. This turn is a confirmation rather than an escalation, and the one turn that carries more than one ask.
+
+There is no tool here that reads a tracker, so what you record is often the user's own words rather than the work item's
+verbatim text. That is expected. Record which it was.
+
+When the user hands you a work item that conflicts with the recorded one, surface the conflict in the confirmation turn
+and ask which governs. Do not silently overwrite the record and do not silently trust it.
+
+Persist every piece of visual material the user supplies into `{same-folder-as-source}/ui-designs/` as it arrives, named
+for the state each one depicts, and note each item into the record's Visual Material Received section as you keep it. Copy
+destinations are always the resolved plan folder's `ui-designs/`. When the host never made an item reachable as a file,
+name which items you could not keep and ask for them through the single stop, while they are still recoverable.
+
+The specification's `Visual Reference` table, when it has one, tells you which material the upstream run already
+persisted. That material is already on disk and is not this run's to re-copy; this step covers what the user supplies to
+**this** run.
+
+Source the explanation standard by invoking `han-communication:explanation-guidance` before you write the confirmation
+turn, and again before any escalation or stop later in the run.
 
 ## Step 2: Discover Implementation Context
 
@@ -241,6 +301,18 @@ Give each agent:
 - The path to `artifacts/.discovery-notes.md` from Step 2, with a directive: **read the discovery notes first; do not
   re-grep for what is already there. Search further only for what your domain specifically needs that the discovery
   notes do not cover.**
+- **The path to every item of visual material in `ui-designs/`, and the state each one shows, with a directive to read
+  them.** Every dispatched specialist gets this, not only the design specialist: which one is most harmed by the omission
+  varies by feature, and a specialist reviewing a design-driven feature without the designs is reviewing a paraphrase.
+  Pass the boundary record's path too, so the specialist can see the recorded scope its recommendations must fit inside.
+- A directive on report length: **scope your report to the size of the work being planned.** Name a rough target line
+  count matched to the work item recorded in `artifacts/scope-boundary.md` rather than a size word the specialist has to
+  interpret. For a one-card ticket, name a report closer to 150 lines than 750. It is a target and not a cap, so a
+  specialist with more worth saying still says it. This governs how much each specialist writes and never how many
+  specialists are chosen; the team caps in Step 3 own that and are unaffected.
+- A directive on blind spots: **where a finding of yours rests on an input you could not inspect, say so on the finding
+  itself, in the form your own definition specifies.** A disclosure in an assumptions section below the finding does not
+  travel with it, and this skill reads each finding where it stands.
 - A specific question framed for their domain — not "any concerns?" but "what does implementing this feature look like
   from your domain's vantage point, and what evidence grounds your recommendation?" Include the directive: **read
   additional spec sections only if your domain needs context not in the excerpts above. Cite what you read.**
@@ -260,10 +332,21 @@ Give each agent:
   `han-core:system-architect`, `han-core:devops-engineer`, `han-core:data-engineer`, `han-core:on-call-engineer` —
   already encode this rule in their definitions; honor it.
 - A directive to treat any `T#` entries in `feature-technical-notes.md` as **committed mechanics the plan must honor** —
-  not open questions to re-debate. If the specialist disagrees with a `T#` note, they must raise it as a **"`T#`
-  contradiction" finding** that cites the specific `T#` ID, describes the behavioral conflict, and names the alternative
-  mechanic they recommend. The plan will route such findings through the facilitation loop (Step 5) and, if necessary,
-  reopen the spec-stage decision — a specialist may not silently override a committed `T#`.
+  not open questions to re-debate. If the specialist disagrees with a `T#` note, they choose one of three verdicts, and the
+  third is what keeps a scope objection out of the escalation path:
+  - **Confirm** the mechanic.
+  - **Contradict** it, raising a **"`T#` contradiction" finding** that cites the specific `T#` ID, describes the behavioral
+    conflict, and names the alternative mechanic they recommend.
+  - **Declare it out of scope for this work item**, raising an **"out of scope" finding** that cites the recorded boundary
+    rather than naming an alternative mechanic. This verdict names no replacement, which is exactly why it needs its own
+    kind: the contradiction protocol detects a disagreement by whether an alternative was named, so an unnamed verdict
+    would otherwise fall through to the general path and reach the user as a question their own work item already answered.
+
+  The plan routes contradiction findings through the facilitation loop (Step 5) and, if necessary, reopens the spec-stage
+  decision. A specialist may not silently override a committed `T#`. An out-of-scope verdict resolves by citing the work
+  item, with no escalation, and **does not count toward the spec-maturity threshold** in Step 5: a specification that
+  committed to work outside its ticket has drifted, not failed to mature, and pausing spec-stage work is the wrong remedy.
+  The same third verdict applies to specification decisions, not only to `T#` notes.
 - A directive to cite sections by filename and heading when raising findings — e.g.,
   `feature-specification.md#primary-flow`, or a specific `D#` in the spec's `artifacts/decision-log.md`, or `T3` in the
   spec's `artifacts/feature-technical-notes.md` — so the han-core:project-manager can cross-reference them precisely
@@ -280,7 +363,28 @@ deterministically by this skill itself. PM is reserved for two specific calls on
 single facilitation pass when the spec-maturity gate trips (see below).
 
 Aggregate the verbatim specialist outputs from Step 4 into the round-1 entry of
-`artifacts/implementation-iteration-history.md` using these rules:
+`artifacts/implementation-iteration-history.md` using these rules.
+
+Three passes run first, in this order. The order matters: merging before the other two is what stops one finding from
+ending up unverified under one specialist's identifier and blocking under another's.
+
+**Pass A: merge by substance.** Two specialists often raise the same finding in different words. Merge those into one
+record carrying every originating specialist's own identifier (for example `SEC-2, OCE-5`). Do not reconcile the lists by
+hand during synthesis; that is what loses a finding.
+
+**Pass B: strip blocking severity from findings resting on an uninspected input.** A specialist that could not inspect
+something says so on the finding itself, in the form its definition specifies (look for the `Unverified:` line). Every
+finding carrying such a disclosure, and every finding depending on that same input, is labeled `Unverified` in the ledger
+and **cannot carry build-blocking severity**. Keep the finding: it may be real, and you can often verify it yourself. What
+it cannot do is reach the user looking like a blocker on the strength of something nobody read. Findings from a specialist
+that never received visual material are treated the same way when they turn on that material.
+
+**Pass C: check design-dependent findings against the designs.** For any finding that turns on visual material this run
+holds, open the material and check the finding against it before it becomes an Open Question. A finding the material
+answers directly is closed with the citation rather than promoted. This is nearly free once the files are on disk.
+
+Record any evidence class no specialist could audit. When decisions rest on material no specialist received, say so in the
+iteration history, so the coverage gap is visible rather than silent.
 
 **Build the claim ledger.** Group findings by category (assumption-refuted, overlap, ambiguity, edge-case, security,
 mechanic-leak, T#-contradiction, YAGNI-candidate). For each finding, mark its state:
@@ -289,8 +393,11 @@ mechanic-leak, T#-contradiction, YAGNI-candidate). For each finding, mark its st
   concrete artifact that resolves the claim.
 - `Anecdotal` — the finding asserts but does not cite an artifact.
 - `Disputed` — two or more specialists made conflicting claims on the same point.
+- `Unverified` — the finding rests on an input its author recorded it could not inspect. Carries the reason. Never
+  build-blocking, per Pass B.
 
-When two specialists raise the same claim, consolidate into a single ledger row that names every supporting specialist.
+When two specialists raise the same claim, consolidate into a single ledger row that names every supporting specialist and
+carries every originating identifier, per Pass A.
 
 **Tag spec-maturity.** Tag every finding as:
 
@@ -368,10 +475,21 @@ For each iteration:
      plain language and surface the clarifying questions a three-to-five-year generalist would ask. The reframing often
      exposes an unstated assumption or a simpler question the specialists can answer among themselves.
    - **If the reframing resolves it**, record the resolution and move on.
-   - **If the reframing does not resolve it**, escalate to the user. Present the question with: the specialist(s) who
-     raised it, the evidence considered, the han-core:junior-developer's reframing, a recommended answer with rationale,
-     and the alternatives considered. Capture the user's answer verbatim. Do not ask more than a focused batch of
-     questions at once — enough to unblock the next round, not a firehose.
+   - **If the reframing does not resolve it**, escalate to the user, one question per turn, per
+     [../../references/operator-escalation-rule.md](../../references/operator-escalation-rule.md). Ask one, wait for the
+     answer, then ask the next, and state how many are pending on the first. Lead with the consequence a person who will
+     not read the code would describe. Carry named candidate answers. Put the specialist identifiers, the evidence
+     considered, the reframing, and any paths or line numbers **below** the question, or leave them out. Capture the
+     user's answer verbatim.
+
+     Source the explanation standard by invoking `han-communication:explanation-guidance` before writing the first one.
+
+     Present more than one question in a turn only when the user asks for that. A finding labeled `Unverified` in the
+     ledger never leads an escalation as a blocker; say what could not be inspected as part of the question.
+
+     Never escalate a question the recorded boundary already answers. When the boundary places the question outside scope,
+     cut the item and record why, rather than asking the user to choose between options their own work item already decided
+     between.
 
 2. **Re-engage specialists as the aggregation directs.** If a specialist named in their Step 4 output called for another
    specialist to weigh in, or if a Step 5/6 aggregation flagged a handoff, launch the named specialists in parallel with
@@ -410,6 +528,18 @@ Before synthesis, ensure every Open Question that cannot be resolved by evidence
 has been surfaced to the user and answered. Do not guess the user's answers. If any are still pending and the user has
 indicated they want to defer, record them as open items the plan will ship with.
 
+Every question here goes out one per turn under the same rules Step 6 applies. There is no end-of-run batch: a queue of
+four questions is four turns, and the pending count on the first one is what tells the user how long the queue is.
+
+**Keep an escalation register.** Record every question escalated across the whole run, the answer that came back, and where
+that answer landed in the plan or the decision log. The register goes in `artifacts/implementation-iteration-history.md`
+alongside the rounds it came from.
+
+**The single stop for a missing input.** When an input only the user can supply is missing and its absence degrades the
+plan, take one stop for it. Gather every input meeting that test into that one stop rather than stopping twice: name what
+is missing, name in plain language what the plan will be missing without it, name the action that would supply it, and
+offer to continue anyway. The commonest case here is visual material the plan's work depends on that never reached disk.
+
 ## Step 7.5: YAGNI Sweep
 
 Before synthesis, walk every committed item the iterative loop has produced and run the YAGNI rule from
@@ -432,14 +562,38 @@ non-flowing telemetry, SLOs for absent traffic, single-implementation interfaces
 multi-region for unproven workloads, indexes for unrun queries, audit columns nobody reads, tests for code paths that
 don't exist yet.
 
+**The scope gate runs in the same sweep, as a third gate.** Per
+[../../references/scope-justification-rule.md](../../references/scope-justification-rule.md), and this is the one skill of
+the four with a discrete sweep step for it to attach to.
+
+3. **Scope test.** Does the recorded boundary in `artifacts/scope-boundary.md` ask for this, or exclude it by statement or
+   by silence? Widen the in-scope set for this gate: it walks every subsystem, integration, and artifact the plan touches,
+   **including everything inherited from the feature specification**, not only what the loop produced. Scope arriving
+   pre-committed from an upstream document is otherwise never swept, and that inheritance is exactly what needed a filter.
+
+   - A commitment no work item supports is cut, with the citation recorded, and lands in the plan's `## Cut for Scope`
+     section rather than in `## Deferred (YAGNI)`. A cut carries no reopening trigger; the boundary already settled it.
+     Route each entry to one section only, so a reader never meets the same item twice.
+   - A recorded deprecation in the boundary record's Direction of Travel section is treated the same way a stated exclusion
+     is treated.
+   - **The floor holds.** Cut subsystems, integrations, and artifacts the work item never asks for. Never cut behavior
+     required to deliver what the work item does ask for. A short work item does not enumerate its own necessities, and
+     that silence is not exclusion. An unmentioned image subsystem is a correct cut; validation, focus behavior, error
+     copy, tests, and accessibility on a card the ticket did ask for are not.
+   - Do not escalate a scope cut as a choice. The work item already settled it, so cut and record the citation.
+
+Note the asymmetry between the gates on purpose: the YAGNI gates walk what the loop produced, and the scope gate walks
+that plus everything inherited.
+
 For every item the sweep flags, record a YAGNI ledger entry that PM will absorb into synthesis:
 
 - **Item** — what is being demoted or replaced.
-- **Failure** — which gate failed, citing the named anti-pattern when applicable.
+- **Failure** — which gate failed (evidence, simpler-version, or scope), citing the named anti-pattern when applicable, or
+  the boundary citation when the scope gate is what failed.
 - **Resolution** — defer with reopening trigger | replace with simpler implementation: {one-line description} | escalate
   to user if the resolution would change a behavior the spec committed to.
 - **Source** — which specialist or round originally proposed the item, plus the corresponding `R#` and claim-ledger
-  entry.
+  entry. For a scope-gate cut on an inherited commitment, name the specification section it came from instead.
 
 If the sweep produces YAGNI items that would change a behavior the spec committed to, surface them to the user before
 synthesis with a recommended resolution and the option to override. The user always wins; the rule's job is to make the
@@ -533,6 +687,11 @@ Ask the han-core:project-manager to produce the final synthesis across all three
      a named reference plus only the decision-bearing values. This is a semantic audit on top of the
      structural-invariant preservation, not a replacement for it; LLM generation is probabilistic, so the audit lowers
      the odds of a copy-paste title or path mismatch rather than guaranteeing zero.
+   - **Every work unit's `Justification` cell is filled**, naming the work item's own language, the visual material the
+     user attached, or the asked-for work the unit is a necessity of. A unit that cannot fill it moves to
+     `## Cut for Scope`.
+   - **`## Cut for Scope` carries every scope-gate cut** from Step 7.5's ledger, with what each would have done in plain
+     language and the boundary citation, and no entry appears in both that section and `## Deferred (YAGNI)`.
 
 **The `Sources and Plan Records` section of `feature-implementation-plan.md` must be populated.** If a feature
 specification file was provided, the han-core:project-manager must include a relative markdown link to it (typically
@@ -571,17 +730,28 @@ Fidelity wins: the standard governs how the content is said, never whether a req
 
 ## Step 9: Present the Final Implementation Plan
 
+Before you summarize, run the completeness gate: every item the boundary record lists as received exists on disk in
+`ui-designs/`. Read the record rather than your memory of the run, because a compaction leaves the memory empty and the
+gate would pass vacuously. This also catches partial loss, where five items arrived and three were saved.
+
 Summarize for the user:
 
-- All three output file paths: `feature-implementation-plan.md`, `artifacts/implementation-decision-log.md`,
-  `artifacts/implementation-iteration-history.md`.
+- The output file paths: `feature-implementation-plan.md`, `artifacts/implementation-decision-log.md`,
+  `artifacts/implementation-iteration-history.md`, and `artifacts/scope-boundary.md`. Include `ui-designs/` only if visual
+  material was kept.
 - The team composition (each specialist and why they were included) — point to
   `artifacts/implementation-iteration-history.md` for per-round detail.
 - The number of iterations the loop ran before convergence — point to `artifacts/implementation-iteration-history.md`.
 - The number of decisions settled by evidence, by han-core:junior-developer reframing, and by user input — point to
   `artifacts/implementation-decision-log.md`.
+- **The cut list**, when the scope gate cut anything: what each entry would have done, in plain language, and why. Say
+  that the user can reinstate any of it, and that their saying so is itself a valid justification the reinstated unit
+  records. Show this in the message rather than only pointing at the section, because a cut the user never reads is a cut
+  nobody can reverse.
 - The number of YAGNI deferrals captured in `feature-implementation-plan.md`'s `## Deferred (YAGNI)` section (omit this
-  line if the section was not written because nothing qualified).
+  line if the section was not written because nothing qualified). Keep it distinct from the cut list above.
+- Any finding that stayed `Unverified` because a specialist could not inspect its input, and any evidence class no
+  specialist could audit. Neither is presented as build-blocking.
 - Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`.
 - The han-core:project-manager's recommendation (ship as planned, hold for specialist handoff, or blocked pending open
   item).

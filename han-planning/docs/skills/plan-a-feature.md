@@ -13,9 +13,9 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   reviewers to stress-test the draft.
 - **When to use it.** You have a feature idea and need a canonical spec for _what_ the feature does before planning
   _how_ to build it.
-- **What you get back.** Three to four cross-referenced files: `feature-specification.md`, `artifacts/decision-log.md`,
-  `artifacts/team-findings.md`, and `artifacts/feature-technical-notes.md` (lazily created only when the interview
-  captures load-bearing mechanics).
+- **What you get back.** Four to five cross-referenced files: `feature-specification.md`, `artifacts/decision-log.md`,
+  `artifacts/team-findings.md`, `artifacts/scope-boundary.md`, and `artifacts/feature-technical-notes.md` (lazily created
+  only when the interview captures load-bearing mechanics). Plus a `ui-designs/` folder when you supply visual material.
 - **Size-aware.** The skill classifies the feature as small / medium / large, defaults to small, and caps the
   review-team size proportional to scope. Pass the size as the first positional argument to override
   (`/plan-a-feature large "describe the feature"`). See [Sizing](#sizing).
@@ -33,6 +33,20 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   in the mix. `project-manager` reconciles their findings.
 - **Cross-referenced artifacts.** Every non-obvious behavior in the spec carries an inline `([D#](...))` marker linking
   to the decision that drove it. Every `F#` finding links to the `D#` it touched and the spec section it changed.
+- **The scope boundary.** Before the interview starts, the skill reads the work item this feature descends from and
+  records its stated scope and exclusions at `artifacts/scope-boundary.md`. It then opens with one confirmation turn to
+  check that boundary with you and ask whether the things the work item named are being deprecated or replaced. Every
+  commitment the spec carries is checked against that record, and anything the boundary excludes lands in a visible
+  `Cut for Scope` section you can reverse.
+- **Visual material is kept and shared.** Designs, mockups, and screenshots you supply are written to `ui-designs/` the
+  moment they arrive, listed in a `Visual Reference` table in the spec, embedded beside the prose describing each state,
+  and passed by path to every reviewer the skill dispatches. `plan-work-items` reads that table downstream.
+- **One question per turn.** Escalations arrive one at a time, each opening with the consequence a person who will not
+  read the code would describe, each carrying named candidate answers, with paths and line numbers below the question or
+  left out. The opening confirmation turn is the one exception.
+- **A finding on something nobody read cannot block.** When a reviewer says it could not inspect an input, every finding
+  resting on that input is labeled unverified and cannot reach you as build-blocking. Findings that turn on your designs
+  are checked against the designs before they are filed.
 
 ## When to use it
 
@@ -114,33 +128,46 @@ Up to four cross-referenced files on disk in the same folder, plus an in-channel
 
 - A **`feature-specification.md`** file at `{folder}/feature-specification.md`. The primary behavioral spec, structured
   as: Outcome, Actors and Triggers, Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, User
-  Interactions, Coordinations, Out of Scope, a `Deferred (YAGNI)` section (written only when at least one item was
-  deferred), Open Items, and a Summary with counts. Non-obvious behaviors carry inline parenthetical markers (for
+  Interactions (including a `Visual Reference` table when you supplied visual material), Coordinations, Out of Scope, a
+  `Cut for Scope` section (written only when the scope gate cut something), a `Deferred (YAGNI)` section (written only when
+  at least one item was deferred), Open Items, and a Summary with counts. The two same-shaped sections each open with a
+  line saying what they are not: a cut is work the work item excludes and carries no reopening trigger, while a deferral is
+  work no evidence supports yet and carries one. Non-obvious behaviors carry inline parenthetical markers (for
   example, `([D4](artifacts/decision-log.md#d4-invite-expiration-window))`) linking to the decision that drove them.
   Technical details (libraries, data shapes, specific file paths) do not appear here. They appear only as _Evidence_
   under the corresponding decision in the decision log, or as a `T#` technical note when the mechanic is load-bearing
   for the spec.
 - An **`artifacts/decision-log.md`** file at `{folder}/artifacts/decision-log.md`. One `D#` entry per decision the
   interview settled, with the question, the behavioral decision, the rationale, and the evidence or user input that
-  settled it. Each entry also records the rejected alternatives with reasons, the dependent decisions that rested on it
+  settled it. Decisions are split into full and trivial once, after the review round returns, rather than at draft time,
+  because two of the promotion signals do not exist until the reviewers have reported. Each entry also records the rejected alternatives with reasons, the dependent decisions that rested on it
   (`Dependent decisions:`), the review findings that reshaped it (`Driven by findings:`), and the spec sections that
   cite it (`Referenced in spec:`). Future readers can trace _why_ the spec says what it says, and reopen a decision
   cleanly if the evidence changes.
 - An **`artifacts/team-findings.md`** file at `{folder}/artifacts/team-findings.md`. One `F#` entry per finding the
   review team raised. Each entry records which specialist raised it (`Agent:`), the finding text, the evidence
   considered, and the resolution with what resolved it (`Resolved by:` evidence / user input / project-manager). It also
-  records the decisions it touched (`Affected decisions:`) and the spec sections it changed (`Changed in spec:`).
+  records the decisions it touched (`Affected decisions:`) and the spec sections it changed (`Changed in spec:`). A
+  finding raised by two reviewers is one record carrying both reviewers' identifiers. A finding resting on an input its
+  author could not inspect carries an `Unverified:` field and cannot be build-blocking. When decisions rest on material no
+  reviewer received, an `Unaudited evidence classes` section says so. When the run escalated anything, an
+  `Escalation register` records each question, its answer, and where the answer landed.
 - An optional **`artifacts/feature-technical-notes.md`** file at `{folder}/artifacts/feature-technical-notes.md`.
   **Lazily created**, written only when at least one load-bearing mechanic surfaces during the interview or review that
   the spec needs in order to describe a behavior correctly. Each entry is a `T#` note linked from the spec via
   `([T#](artifacts/feature-technical-notes.md#t#-slug))` and back to the decisions it supports (`Supports decisions:`)
   and the findings that drove it (`Driven by findings:`). If no `T#` qualifies, the file is never created and the spec
   contains no `T#` links.
+- An **`artifacts/scope-boundary.md`** file. The boundary record: the work item, its stated scope and exclusions
+  quoted, the direction-of-travel answer, and every piece of visual material the run received. A later skill in the chain
+  reads it instead of asking you again, and the completeness gate reads it to confirm nothing was lost.
+- A **`ui-designs/` folder**, when you supply visual material. The files themselves, named for the state each one shows.
 - An **open items list** inside the spec. Questions or concerns the project-manager flagged that could not be resolved
   during specification, each with what would resolve it and whether it blocks implementation.
-- A **summary** returned in-channel. All file paths (including `feature-technical-notes.md` only when it was created),
-  the number of decisions settled by evidence vs. by user input, the sub-agents consulted, key adjustments each drove,
-  and any remaining open items the project-manager flagged for follow-up.
+- A **summary** returned in-channel. All file paths (including `feature-technical-notes.md` and `ui-designs/` only when
+  they were created), the number of decisions settled by evidence vs. by user input, the cut list in full when anything was
+  cut for scope, the sub-agents consulted, key adjustments each drove, any finding that stayed unverified, and any
+  remaining open items the project-manager flagged for follow-up.
 
 The files interlock through shared IDs. Every `D#` lists its `F#` drivers and its referencing spec sections. Every `F#`
 lists its `D#` impacts and the spec sections it changed. When `T#` technical notes exist, they cross-link to their

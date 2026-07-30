@@ -163,7 +163,10 @@ Every phase is tagged with one of four kinds. The taxonomy is used in the Build 
   phases. Must still be demoable in its own right (e.g., "an admin can edit and persist a new setting").
 - **Feature slice** — A thin end-to-end strip of new behavior that a real user can experience.
 - **Polish** — Branding, refinement, observability, or quality-of-life work that enriches a working core.
-- **Deferred** — Listed for traceability; not built in the current plan. Slotted at the end of the index.
+- **Deferred** — Listed for traceability; not built in the current plan. Slotted at the end of the index. Two things land
+  here and they are not the same. A **YAGNI deferral** is work no evidence supports yet, and it carries a `Reopen when.`
+  trigger. A **scope cut** is work the recorded boundary excludes, and it carries no trigger, because the boundary already
+  settled it. Mark which one each entry is, and never give a scope cut a reopening trigger.
 
 ---
 
@@ -185,6 +188,9 @@ Every phase is tagged with one of four kinds. The taxonomy is used in the Build 
 
 **Why this is Phase 1.**
 {{rationale_for_why_this_phase_lands_at_position_1_two_to_four_sentences_typical_reasons_include_no_demoable_feature_can_run_until_this_exists_or_this_is_the_smallest_first_deliverable_that_surfaces_questions_later_phases_depend_on}}
+
+**Justification.**
+{{what_this_phase_descends_from_in_one_line_the_work_items_own_language_quoted_or_named_the_visual_material_the_user_attached_or_the_asked_for_work_this_is_a_necessity_of}}
 
 **Outcome to demonstrate.**
 
@@ -221,6 +227,8 @@ Every phase is tagged with one of four kinds. The taxonomy is used in the Build 
 **What we build.** {{description}}
 
 **Why this is Phase 2.** {{rationale}}
+
+**Justification.** {{what_this_phase_descends_from_in_one_line}}
 
 **Outcome to demonstrate.**
 
@@ -262,6 +270,12 @@ Every phase is tagged with one of four kinds. The taxonomy is used in the Build 
 
 **Reopen when.**
 {{the_concrete_trigger_that_would_justify_revisiting_e_g_a_measured_metric_a_real_customer_request_a_third_concurrent_use_a_compliance_audit_a_dependency_landing}}
+
+<!-- Omit the "Reopen when." block for a scope cut. Work the recorded boundary excludes has no reopening trigger; the
+     user reinstating it is the only route back, and their direction becomes the reinstated phase's justification. -->
+
+**Cut for scope, rather than deferred.**
+{{present_only_when_this_entry_is_a_scope_cut_name_the_boundary_citation_that_supports_the_cut_and_omit_the_reopen_when_block_above}}
 
 **Outcome to demonstrate (when or if built).**
 

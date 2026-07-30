@@ -1,8 +1,9 @@
 # Work-items file format
 
-The skill writes exactly one file, named `work-items.md`, in the folder resolved in Step 2 of the skill (the plan's
-folder, the context's location, or a confirmed best-guess folder). There is never more than one work-items file and the
-file is never split by repository.
+The breakdown is one file, named `work-items.md`, in the folder resolved in Step 2 of the skill (the plan's folder, the
+context's location, or a confirmed best-guess folder). There is never more than one work-items file and the file is never
+split by repository. The boundary record at `artifacts/scope-boundary.md` and any visual material in `ui-designs/` sit
+beside it as companion artifacts.
 
 ## Title and intro
 
@@ -34,3 +35,26 @@ Omit the preamble entirely when no artifact applies to more than one work item.
 
 Every work item uses the template at [work-item-template.md](./work-item-template.md). Work items appear in dependency
 order: a work item never appears before a work item it depends on.
+
+## Cut for scope (only when something was cut)
+
+When a candidate work item could not name what it descends from, it appears here rather than above. This section comes
+last, after the work items, under the heading `## Cut for Scope`.
+
+Open the section with one line saying what it is not:
+
+> This is work the work item excludes, not work deferred for lack of evidence. There is no trigger that reopens an entry
+> here; the recorded boundary already settled it.
+
+Then one bullet per cut entry, each naming two things:
+
+```
+- **<what it would have done, in plain language>.** <Why it was cut, with the citation that supports the cut.>
+```
+
+Name the consequence rather than only the mechanism. "The card cannot carry a picture" is something the user can weigh;
+"out of scope" is not, and weighing it is why the section exists.
+
+Omit the section entirely when nothing was cut. Every entry also appears in the closing summary the skill prints, because
+a cut the user never sees is a cut nobody can reverse. Any entry the user reinstates records their direction as its
+justification.

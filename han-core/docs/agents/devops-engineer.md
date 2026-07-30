@@ -108,6 +108,9 @@ Thin prompts (_"audit the infra"_) still work but produce more Open Questions an
   questions, numbered findings tied to operational principles and locations, and a DevOps Improvement Summary that
   sequences shipping vs. improving with explicit P0/P1/P2 steps.
 
+A finding that rests on an input the agent could not inspect carries its own `Unverified:` line on the finding
+itself, so the disclosure travels with the claim instead of sitting only in the assumptions list.
+
 Every finding is traceable to an operational principle, a concrete location in the repo, and a question in the log.
 Principles include a DORA key, a Twelve-Factor factor, a Four Golden Signal, an SLO policy, an AWS Well-Architected
 practice, an SLSA level, or a named failure mode. If something is not traceable, the agent is instructed to drop it.

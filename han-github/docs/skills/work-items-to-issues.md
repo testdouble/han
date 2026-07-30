@@ -33,7 +33,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   in
   [the reference artifact inventory](../../skills/work-items-to-issues/references/reference-artifact-inventory.md).
 - **Screenshots copied into the target repo.** When the plan folder has a `ui-designs/` subfolder, UI items embed their
-  screenshots inline. The skill copies each PNG into the target repo first, then embeds a same-repo raw URL. It does
+  designs inline. The skill copies each file into the target repo first, then embeds a same-repo raw URL. It accepts the
+  same visual-material file set the planning skills persist (`png`, `jpg`, `jpeg`, `gif`, `webp`, `svg`, `pdf`). It does
   this because the automated implementation tooling cannot resolve a URL that points into a different repository. See
   [the screenshot embed rules](../../skills/work-items-to-issues/references/screenshot-embed-rules.md).
 - **Evidence-based repair.** When a format check fails, the skill proposes a fix backed by a concrete source: a file
@@ -170,7 +171,7 @@ The skill walks a six-step process:
 
 The publish pipeline is three scripts behind one wrapper.
 
-`upload-screenshots.sh` copies each referenced PNG from the plan folder into the target repo and verifies it. It writes
+`upload-screenshots.sh` copies each referenced file from the plan folder into the target repo and verifies it. It writes
 directly to the default branch when that branch accepts the write, and falls back to an assets branch plus a pull
 request when the default branch is protected. The fallback runs entirely through the GitHub API, so your current branch
 is never touched (no local git is involved). On re-run, it reuses the assets branch only when that branch already
@@ -199,7 +200,7 @@ URL: https://docs.github.com/en/rest/issues
 
 ### GitHub REST API: Repository contents
 
-The screenshot upload step writes each PNG into the target repo through the repository Contents API, fetching the
+The screenshot upload step writes each file into the target repo through the repository Contents API, fetching the
 existing file sha to overwrite cleanly when one is already there. On a protected default branch it writes the same blobs
 to an assets branch instead of writing to the default branch directly.
 

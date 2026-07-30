@@ -91,10 +91,11 @@ Han ships as a family of plugins. Most carry components; the `han` meta-plugin b
 change goes before you scaffold anything. (For the user-facing version of this map, see
 [Choosing a Han plugin](./docs/choosing-a-han-plugin.md).)
 
-- **`han-communication`** is the foundational plugin beneath every other. It owns the single canonical readability
-  standard and writing-voice profile, the `readability-guidance` and `edit-for-readability` skills, and the
+- **`han-communication`** is the foundational plugin beneath every other. It owns the canonical readability standard, the
+  writing-voice profile, and the explanation standard for talking to a reader who will not implement the work, plus the
+  `readability-guidance` and `explanation-guidance` skills that surface them, the `edit-for-readability` skill, and the
   `readability-editor` agent. It depends on nothing; the plugins that produce prose output depend on it. A component
-  goes here only when it is part of the shared readability capability.
+  goes here only when it is part of a shared communication capability: how output reads, or how a run talks to a person.
 - **`han-core`** carries the shared specialist agent roster — **every agent in the suite except the
   `readability-editor`** (which lives in `han-communication`) **and the `research-analyst`** (which lives in
   `han-research`) — plus the `project-discovery` skill and the canonical evidence and YAGNI rule files. New agents go
@@ -197,6 +198,13 @@ description, it applies the shared [Readability](./docs/readability.md) standard
 phased build, work-item list, coding standard, or test plan counts too when a human reads it end to end. Skills whose
 output is code, or a structured artifact consumed only by downstream skills as machine input with no human reading it
 end to end, are out of scope and skip this section.
+
+There is a second, narrower standard beside it. The
+[explanation standard](./han-communication/references/explanation-rule.md) governs what a run says to a person in a turn:
+an escalation, a confirmation, a stop for a missing input. Readability governs the shape of a written deliverable. A skill
+that both drafts a document and stops to ask questions wires in both, sourcing readability at its drafting point and
+invoking `han-communication:explanation-guidance` at the point it talks to the operator. A skill that never asks a
+question needs only the readability wiring below.
 
 The inclusion test is the guide; the enumerated list in
 [Readability](./docs/readability.md#scope-which-skills-are-reader-facing) is authoritative. When a new skill passes the

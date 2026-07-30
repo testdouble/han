@@ -31,8 +31,10 @@ present and nothing changes.
   are still in scope; record which ones contributed so the feedback names where specialist value came from.
 - **Conservative defaults on posting.** The feedback directory is user-space. The posting target is a public GitHub
   repository. Ambiguous confirmation is treated as a stop, not a go.
-- **One file per day per run.** Do not overwrite existing feedback for today. If a skill or agent is already covered by
-  a file for today, skip it.
+- **One file per day, updated in place.** There is one feedback file per day per set of components. A file that already
+  exists for today is updatable, not closed: when the session continued past it, or the user asks for a compiled report,
+  read it and update it in place rather than skipping. Never overwrite what is there. Skip only when nothing new has
+  happened since that file was written.
 - **Compacted sessions limit visibility.** The skill can only see turns present in the context window. If the session
   was compacted before running this skill, earlier invocations may not be visible.
 
@@ -67,13 +69,28 @@ Check whether `~/.claude/han-feedback/` exists by running `ls ~/.claude/han-feed
 ## Step 3: Check for existing feedback today
 
 Run `ls ~/.claude/han-feedback/ 2>/dev/null` and identify any files whose name begins with today's date (from Project
-Context). A skill or agent that already has a feedback file for today is skipped in this run.
+Context). A file already covering a component used this session is the file this run updates, not a reason to skip.
 
-If everything used in this session already has a feedback file for today, report the existing file paths and stop.
+Read each matching file, then decide between two paths:
+
+**Nothing new has happened.** Every component in this session is already covered, and the session produced nothing the
+existing file does not record: no further runs of those components, no new problems, no correction you have not already
+written down. Report the existing file paths, say plainly that nothing new happened since they were written, and stop.
+
+**Something new has happened.** The session continued past that file, a covered component ran again, a new problem
+surfaced, or the user asked for a compiled report. Update the file in place. Add the new material and preserve
+everything already there; never overwrite it. Then state the update: name the file you updated and what you added to it,
+so the user is not left guessing whether their newer session was captured.
+
+A run that continued past an existing file and then skipped is the failure this step exists to prevent. The default is to
+update.
 
 ## Step 4: Determine the filename
 
-Compute the filename as `{TODAY}-{short-names}.md`, where:
+When Step 3 found a file to update, that file's name is the filename. Keep it as it is, even when this run covers a
+component the name does not mention; renaming it would break the path already reported to the user.
+
+Otherwise compute the filename as `{TODAY}-{short-names}.md`, where:
 
 - Each component's short name is its plugin namespace stripped (everything up to and including the colon). For example
   `han-planning:plan-a-feature` becomes `plan-a-feature`, `han-github:post-code-review-to-pr` becomes
@@ -119,9 +136,16 @@ only when the skill type clearly calls for it:
 
 For a session that used Han agents directly (no skill), assess the agents the same way.
 
-## Step 7: Write the feedback file
+## Step 7: Write or update the feedback file
 
-Write the file to `~/.claude/han-feedback/{filename}` using this structure:
+**When Step 3 found a file to update,** edit that file in place rather than rewriting it. Keep its existing structure and
+every point already recorded, and fold the new material into the sections it belongs in: new points onto the existing
+lists, any newly-used skill or agent onto the `**Skills used:**` and `**Agents used:**` lines, and a re-scored dimension
+only where this session's evidence actually changed it. Add an `## Update {TIME}` heading before the new material when
+the session's story changed rather than merely lengthened, so a reader can see what arrived later. Then continue to Step
+8.
+
+**Otherwise** write the file to `~/.claude/han-feedback/{filename}` using this structure:
 
 ```markdown
 # Han Feedback — {TODAY}
@@ -172,6 +196,10 @@ If the write fails, tell the user: "The write failed. The file was being written
 `$HOME/.claude/han-feedback/{filename}`. Run `ls ~/.claude/han-feedback/` and delete any file at that path before
 retrying." Do not proceed to the checklist or posting steps.
 
+When this run updated an existing file, say so in the same message that reports the path: name the file and name what you
+added to it. "Updated `2026-07-29-plan-a-feature.md` with the two escalation problems from this afternoon's run" tells
+the user their newer session was captured. Reporting only the path leaves them unable to tell an update from a skip.
+
 ## Step 8: Verify the file is non-empty
 
 Check that the written file contains content beyond whitespace. If the file is empty or whitespace-only, notify the user
@@ -219,6 +247,23 @@ Run:
 ```
 gh issue create --repo testdouble/han --title "Han Feedback: {skill-name} ({TODAY})" --body-file $HOME/.claude/han-feedback/{filename}
 ```
+
+**If the environment refuses to run the command** (the tool call is denied, a permission or sandbox layer blocks it, the
+command is not permitted in this environment, or the run has no network access): say plainly that the environment refused
+the publish. Do not describe it as the run declining, choosing not to post, or deciding to skip. Those are three
+different statements and only the environment's refusal is true, so a user told the run declined goes looking for a
+decision nobody made.
+
+Do not retry the identical command. A refusal that came from a permission or sandbox layer returns the same answer every
+time, and a second attempt spends a turn to learn nothing.
+
+Then hand over the command to run by hand, filled in rather than templated, so it can be pasted as it stands:
+
+```
+gh issue create --repo testdouble/han --title "Han Feedback: {skill-name} ({TODAY})" --body-file $HOME/.claude/han-feedback/{filename}
+```
+
+Confirm the file is saved at `~/.claude/han-feedback/{filename}` and stop.
 
 **If `gh` is not found** (command not found or not installed): Report that the `gh` CLI is not installed. To post
 manually, visit `https://github.com/testdouble/han/issues/new` and paste the file contents.

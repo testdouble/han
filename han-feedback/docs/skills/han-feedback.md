@@ -29,7 +29,9 @@ _when_ and _how_ to use the skill. For what the skill does internally, read the 
   the conversation at the time you run it. If the session was compacted before you run `/han-feedback`, earlier
   invocations may not appear. Run it before compaction to catch everything.
 - **Feedback file.** A plain markdown file written to `~/.claude/han-feedback/`. The filename encodes the date and the
-  skills covered. One file per day per run; existing files for today are not overwritten.
+  skills covered. One file per day, updated in place when you run the skill again the same day: nothing already recorded
+  is overwritten, the new material is folded in, and the skill tells you which file it updated and what it added. It
+  skips only when nothing new has happened since that file was written.
 - **Sensitive-content gate.** Before offering to post, the skill displays the full file and asks you to confirm it
   contains no personal identifiers, internal operational details, or client-specific information. An ambiguous response
   stops the posting flow. The posting target is a public GitHub repository.
@@ -90,7 +92,9 @@ One feedback file per run:
   worked well, What didn't work, Overall), and a rating table. The date is today in ISO format; the filename's skill
   names are the plugin namespace stripped and joined with hyphens.
 - **A GitHub issue URL** (conditional). If you confirm posting, the skill runs `gh issue create` against testdouble/han
-  and returns the issue URL.
+  and returns the issue URL. When the environment refuses to run that command, the skill says the environment refused
+  rather than that it declined to post, does not retry the identical command, and hands you the filled-in command to run
+  by hand.
 
 ## How to get the most out of it
 
@@ -105,6 +109,8 @@ One feedback file per run:
   is clean.
 - **Post when the feedback is ready.** The manual posting command is always provided if you decline. You can edit the
   file and post it yourself with `gh issue create --repo testdouble/han --body-file ~/.claude/han-feedback/{filename}`.
+- **Run it again later in the same day.** A second run does not start a second file and does not skip. It reads today's
+  file and updates it with whatever happened since, so a session that keeps going gets captured in full.
 
 ## Cost and latency
 
