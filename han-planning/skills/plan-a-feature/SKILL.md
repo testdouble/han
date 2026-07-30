@@ -657,9 +657,20 @@ reviewer who reads the spec for approval; the editor reads han-communication's o
 It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D#/T#/F#
 citation identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the spec file.
 
-Then run the standardized readability self-check (the shared standard is in your context from
-`han-communication:readability-guidance`) over the spec's prose regions only — never inside code fences, tables, or the
-D#/T#/F# citation identifiers. Confirm each criterion and fix any failure before presenting:
+Then read the editor's fact-preservation report. **Do not walk the six-point checklist over the text the editor
+produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
+stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
+self-review that corrupts a correct answer about as often as it fixes a wrong one.
+
+The editor's report has two shapes, and neither is a loss you have to repair:
+
+- It confirms every claim, quantity, named entity, and stated condition survives. Nothing further is needed.
+- It names a fact it kept in the original wording to satisfy fidelity. Leave that wording alone rather than re-editing
+  it.
+
+**When no usable report comes back** — the editor could not be reached, returned nothing, or returned something you
+cannot read as either of those two shapes — walk the checklist below yourself, and say in the Step 9 summary that you did
+so and why. With no report, the checklist is the only fidelity guard the output has.
 
 1. The opening line states the main point.
 2. Each heading names its content and is not a generic label.

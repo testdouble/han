@@ -227,9 +227,9 @@ review. Draw from:
 
 - Honor any agents the user named explicitly.
 - Extra agents named in the project config's `## Extra Agents` list join this specialist pool and compete under the
-  same what-the-plan-touches selection and size caps, per
+  same what-the-plan-touches selection and specialist caps, per
   [../../references/config-rule.md](../../references/config-rule.md): select one only when the plan touches its stated
-  specialty, count it against the size cap, and skip an entry that does not resolve to a dispatchable agent with a
+  specialty, count it against the specialist cap, and skip an entry that does not resolve to a dispatchable agent with a
   one-line note.
 - Justify each additional specialist in one line — what in the plan requires them.
 - `han-core:risk-analyst`, `han-core:software-architect`, and `han-core:system-architect` consume upstream findings;

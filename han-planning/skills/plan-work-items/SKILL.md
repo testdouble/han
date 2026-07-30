@@ -44,6 +44,7 @@ supply. Step 5 is where the judgement comes into play, in dividing up the plan.
 
   Beyond those two, stop only when the skill genuinely cannot continue: there is no plan or context to work from at all.
   An expected artifact nobody can produce right now is recorded as a gap and does not stop the run.
+
 - **One work-items file, no repository awareness.** This skill produces exactly one `work-items.md`. Beside it, the run
   also writes or updates the boundary record and persists any visual material it receives, per Step 0 and
   [planning-boundary-rule.md](../../references/planning-boundary-rule.md); those are companion artifacts, not a second
