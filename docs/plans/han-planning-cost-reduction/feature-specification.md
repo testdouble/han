@@ -1,154 +1,198 @@
 # Feature Specification: Cheaper, Faster Planning Runs
 
-A planning run costs less waiting time and less budget, because it consults fewer reviewers, executes three routine
-checks instead of performing them by hand, and stops proofreading text that an editor has already rewritten.
+A planning run costs less waiting time and less budget, because it consults fewer domain experts, executes two routine
+checks instead of describing them, and stops proofreading text an editor has already rewritten.
 
 ## Outcome
 
-An operator who runs any of the five planning skills gets the same plan or specification for less. Three things change
-what a run does.
+An operator running a planning skill gets a plan or specification produced by a smaller review team, for materially
+less. The saving is real and the trade is real, and this section states both.
 
-A run that convenes a review team convenes a smaller one. At the largest size, a run that used to send out six to eight
-reviewers sends out four to five, and the medium size drops from four or five reviewers to three
-([D1](artifacts/decision-log.md#d1-reduce-the-review-team-size-and-leave-the-repeat-ceiling-alone)). The first wave still
-goes out to every reviewer at once, so nothing gets slower. How many times a review can repeat does not change, because a
-repeat only happens when the previous pass found real problems.
+**Fewer domain experts, on every run.** Two skills convene a review team: `plan-implementation` and
+`iterative-plan-review`. Every team has seats that are filled before any domain expert is chosen, so the reduction is
+counted in experts rather than in total seats
+([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)). In
+`plan-implementation`, a large run drops from four-to-six experts to three or four, a medium run from two-or-three to
+two, and a small run keeps its one. Total team sizes become five or six, four, and three. In `iterative-plan-review`, a
+large run drops from two-or-three experts to two and a medium run from one-or-two to one; its smallest size convenes no
+team at all ([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)).
 
-Two checks a run currently walks through in prose become checks it runs. The run confirms that the design images the
-operator handed over are on disk, and confirms that the cross-references inside a reviewed plan point at something real
+**What the trade is.** A smaller team covers fewer domains. Nothing in the research measured whether a smaller team
+produces a materially different plan, and the source report says plainly that this option "trades review breadth for cost
+directly." The operator still sees the chosen team and the reason for it before any expert is dispatched, and can name a
+different team, so the existing override is the control on coverage rather than anything new
+([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).
+
+**Reviews will also repeat less often, as a side effect.** The ceiling on repeats is unchanged. The rule that ends a
+review early counts how many new findings the last pass produced, and fewer experts produce fewer findings, so the same
+plan will often get one repeat where it used to get two. This is a second saving and a second reduction in scrutiny, and
+it happens without anyone choosing it per run
+([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).
+
+**Two checks get executed instead of described.** A run confirms that the design images the boundary record lists are on
+disk, and confirms that the cross-references inside a reviewed plan resolve
 ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)). A check that runs either passes or
-fails; a check written as prose can be reported as done without being done.
+fails; a check written as prose can be reported as done without being done. Because these checks take their input from a
+document, the values they read are treated as untrusted
+([D11](artifacts/decision-log.md#d11-treat-every-value-read-from-a-document-as-untrusted)).
 
-A run stops proofreading its own output twice. Three of the five skills currently hand the finished draft to an editor
-and then walk a six-point checklist over the text the editor produced. The checklist goes away in those three, and the
-editor's own fact-preservation report becomes the guard that no fact was lost
-([D6](artifacts/decision-log.md#d6-remove-the-six-point-check-where-an-editor-already-runs),
-[D7](artifacts/decision-log.md#d7-name-the-editors-fact-preservation-report-as-the-fidelity-guard)). The two skills that
-have no editor keep their checklist.
+**No more proofreading the proofreader.** `plan-a-feature`, `plan-implementation`, and `plan-a-phased-build` each hand a
+finished draft to the readability editor and then walk a six-point checklist over the text the editor produced. That
+second pass stops running ([D6](artifacts/decision-log.md#d6-stop-running-the-six-point-check-where-an-editor-already-runs)).
+The editor's own fact-preservation report becomes the fidelity guard
+([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)). The checklist text
+stays in place for the case where no editor ran. `plan-work-items` and `iterative-plan-review` dispatch no editor and keep
+their checklist unchanged.
 
 ## Actors and Triggers
 
-- **Actors** — the operator who runs a planning skill, and the planning skills themselves, which are the surface that
-  changes. No end user of any other product is affected.
-- **Triggers** — running any of the five planning skills. The reviewer-count change applies only to the two skills that
-  convene a review team. The check changes apply to the skills that carry the affected checks. The proofreading change
-  applies to the three skills that dispatch an editor.
-- **Preconditions** — none beyond having the planning skills installed. No operator configuration is required, and no
-  existing plan folder needs migrating.
+- **Actors** — the operator who runs a planning skill, and the five planning skills themselves. No user of any other
+  product is affected.
+- **Triggers** — running a planning skill. Which change applies depends on the skill, per the table below.
+- **Preconditions** — two of the skills gain permission to execute a check, which widens what those skills may do. That
+  is the one precondition an operator should know about
+  ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).
+  No operator configuration is required, and no existing plan folder needs migrating.
+
+### Which skill gets which change
+
+| Skill                    | Fewer domain experts        | Executed design-image check | Executed cross-reference check | Six-point check removed          |
+| ------------------------ | --------------------------- | --------------------------- | ------------------------------ | -------------------------------- |
+| `plan-a-feature`         | No, cut for scope           | Yes                         | No                             | Yes                              |
+| `plan-implementation`    | Yes                         | Yes                         | No                             | Yes                              |
+| `plan-a-phased-build`    | No, convenes no team        | Yes                         | No                             | Yes                              |
+| `plan-work-items`        | No, convenes no team        | Yes                         | No                             | No, keeps it (no editor)         |
+| `iterative-plan-review`  | Yes                         | No, has no such check       | Yes                            | No, keeps it (no editor)         |
+
+`plan-a-feature` convenes a review team and is deliberately excluded from the reduction; see Cut for Scope. Four skills
+gain the design-image check, so four permission declarations are needed, plus one for `iterative-plan-review`.
 
 ## Primary Flow
 
-This is the flow of a single planning run under the changed behavior.
+The flow of a single `plan-implementation` run under the changed behavior. Other skills take the subset of steps the
+table above assigns them.
 
-1. The run establishes its scope boundary and interviews the operator, unchanged.
+1. The run establishes its scope boundary and gathers context, unchanged.
 2. The run classifies the work as small, medium, or large, unchanged.
-3. The run convenes a review team sized to the new, smaller caps, and dispatches every reviewer in one parallel wave
-   ([D1](artifacts/decision-log.md#d1-reduce-the-review-team-size-and-leave-the-repeat-ceiling-alone),
+3. The run announces the team it chose and why, unchanged, then dispatches every member in one parallel wave. The team
+   carries fewer domain experts than before
+   ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone),
    [D3](artifacts/decision-log.md#d3-preserve-the-single-parallel-first-wave)).
-4. The run consolidates what came back, and marks any finding that rests on something no reviewer could look at, so that
-   finding never reaches the operator as a blocker. This step stays a prose step
+4. The run consolidates what came back, and marks any finding resting on something no expert could inspect, so that
+   finding never reaches the operator as a blocker. This step stays described rather than executed
    ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).
-5. The run decides whether the review repeats, using the existing rule that ends the review as soon as it stops finding
-   things. The ceiling on repeats is unchanged.
-6. The run writes its plan or specification and hands the draft to the editor.
-7. The run reads the editor's report. If the report says a fact was lost, the run restores it before going further
-   ([D7](artifacts/decision-log.md#d7-name-the-editors-fact-preservation-report-as-the-fidelity-guard)). The run does not
-   walk the six-point checklist over the editor's text.
-8. The run executes the check that confirms every design image the boundary record lists is on disk
-   ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).
-9. The run presents its summary, unchanged.
-
-For a run that reviews an existing plan rather than authoring one, step 7 is replaced by executing the check that
-confirms the plan's cross-references resolve, and that skill keeps its six-point checklist because it has no editor.
+5. The run decides whether the review repeats, using the unchanged early-stop rule and the unchanged ceiling. With fewer
+   experts, the rule will more often end the review after one pass.
+6. The run writes its plan and hands the draft to the readability editor.
+7. The run reads the editor's fact-preservation report. Where the report names a fact the editor kept in its original
+   wording to avoid losing it, the run leaves that wording alone. The run does not walk the six-point checklist over the
+   editor's text ([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).
+8. The run executes the design-image check, which reads the boundary record beside the deliverable it is gating and
+   compares it to disk ([D13](artifacts/decision-log.md#d13-read-the-record-beside-the-deliverable-being-gated)).
+9. The run presents its summary. A check that did not verify is named there and recorded in the artifacts
+   ([D12](artifacts/decision-log.md#d12-record-an-unverified-check-in-the-artifacts-not-only-in-the-summary)).
 
 ## Alternate Flows and States
 
-### A check cannot run
+### A check does not verify
 
-- **Entry condition:** the operator declines the permission the check needs, or the check itself is missing or fails to
-  start.
-- **Sequence:** the run reports that the check could not run and names which one. It does not report the check as passed,
-  and it does not silently fall back to walking the check by hand
-  ([D9](artifacts/decision-log.md#d9-a-check-that-cannot-run-is-reported-not-assumed-passed)).
-- **Exit:** the operator decides whether to grant the permission and retry, or to accept the run's output with the gap
-  named in the summary.
+- **Entry condition:** the check does not start, or it starts and cannot finish, or it runs and refuses a value it was
+  given.
+- **Sequence:** the run reports which check did not verify and which of those three reasons applies. It does not report
+  the check as passed, and it does not fall back to describing the check instead
+  ([D9](artifacts/decision-log.md#d9-a-check-reports-one-of-three-outcomes-and-never-assumes-a-pass)). The run completes
+  the rest of its work rather than pausing, and records the unverified state in the artifacts as well as the summary
+  ([D12](artifacts/decision-log.md#d12-record-an-unverified-check-in-the-artifacts-not-only-in-the-summary)).
+- **Exit:** the operator acts on the named reason. A refused value means fixing the record; a check that did not start
+  means the permission or the check itself.
 
-### A review team is smaller than the work needs
+### The editor returns no usable report
 
-- **Entry condition:** the run reaches its new, smaller reviewer cap while a domain the work touches has no reviewer
-  covering it.
-- **Sequence:** the run names the uncovered domain in its summary rather than silently omitting it, so the operator can
-  re-run at a larger size or name the missing reviewer directly. The existing override that lets the operator specify the
-  team is unchanged.
-- **Exit:** the operator accepts the coverage or re-runs with an explicit team.
+- **Entry condition:** the editor cannot be reached, returns nothing, or returns a report the run cannot read as either a
+  confirmation or a named kept-fact.
+- **Sequence:** the run walks the six-point checklist itself, because with no usable report the checklist is the only
+  fidelity guard left, and says in its summary that it did so and why
+  ([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).
+- **Exit:** the run presents its output with the substitution named.
 
-### The operator overrides the size
+### The operator overrides the size or the team
 
-- **Entry condition:** the operator passes a size, or a project configuration file sets a default size.
-- **Sequence:** the new caps apply at whatever size is chosen. Overriding the size still selects a band; it does not
-  restore the old reviewer counts.
+- **Entry condition:** the operator passes a size, names a team, or a project configuration file sets a default size.
+- **Sequence:** the new expert counts apply at whatever size is chosen. A team the operator names wins outright, which is
+  how an operator who wants broader coverage gets it.
 - **Exit:** unchanged.
 
 ## Edge Cases and Failure Modes
 
-| Condition                                                                                  | Required Behavior                                                                                                                                              |
-| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The boundary record lists design images and none are on disk                                | The executed check fails and names every missing item. The run does not present its output as complete.                                                          |
-| The boundary record lists five images and three are on disk                                 | The executed check fails and names the two that are missing, rather than passing because some were found.                                                        |
-| The boundary record lists a hosted link rather than a file                                   | The check treats the link as present without trying to fetch it, because a link is not a file the run can keep.                                                  |
-| The boundary record lists no images at all                                                   | The check passes without complaint. An empty list is a valid state.                                                                                              |
-| A reviewed plan contains a cross-reference pointing at an identifier that does not exist      | The executed check fails and names the reference and where it sits.                                                                                             |
-| A cross-reference sits inside a code block or a fenced example                                | The check ignores it, because example text is not a live reference.                                                                                             |
-| The editor's report says a fact was lost                                                     | The run restores the fact before presenting, and says in the summary that it did.                                                                               |
-| The editor cannot be reached or returns nothing                                               | The run falls back to walking the six-point checklist itself, because with no editor the checklist is the only fidelity guard left.                              |
-| A run reaches the reduced cap and the operator disagrees                                      | The operator's named team wins. The cap is a default, not a limit on what the operator can ask for.                                                             |
-| An existing plan folder was written under the old behavior                                    | It is read and extended normally. Nothing about the change requires rewriting an existing folder.                                                               |
-| A skill file states a repeat count that disagrees with its own ceiling                        | The stated count is corrected to match the ceiling, so the two do not contradict each other ([D8](artifacts/decision-log.md#d8-correct-the-contradictory-repeat-count)). |
+| Condition                                                                            | Required Behavior                                                                                                                                     |
+| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The record lists design images and none are on disk                                    | The check fails and names every missing item.                                                                                                          |
+| The record lists five images and three are on disk                                     | The check fails and names the two missing, rather than passing because some were found.                                                                 |
+| The record lists an item whose location is not a plain relative name inside the design folder, or whose file type is outside the accepted set | The check refuses the value and names the offending row. It does not attempt to resolve the value, and it does not pass. |
+| The record marks an item as a hosted link rather than a kept file                       | The check treats it as present without trying to fetch it. The link branch is entered only on that recorded marker, never inferred from how a value looks. |
+| A row carries neither a recognized link marker nor a valid location                     | The check refuses the value and names the row.                                                                                                         |
+| The record lists no images at all                                                       | The check passes. An empty list is a valid state.                                                                                                      |
+| The record itself is missing, or its received-material section cannot be read as a list  | The check reports that it could not verify, naming the record, rather than passing on an absent list.                                                    |
+| A cross-reference names an identifier that has no entry in the file it points at         | The check fails and names the reference and where it sits.                                                                                              |
+| A cross-reference resolves, but the entry it reaches has a required field left empty      | The check fails and reports this as a different failure from a missing target, so the operator knows which to fix.                                       |
+| A cross-reference appears inside an example block                                        | The check ignores it, because example text is not a live reference.                                                                                     |
+| Text taken from a record or a plan appears in a check's result                            | It is reported as text and never interpreted as an instruction.                                                                                         |
+| An existing plan folder was written under the old behavior                                | It is read and extended normally. Nothing here requires rewriting an existing folder.                                                                   |
+| A run reaches the reduced expert count and the operator wanted broader coverage            | The operator's named team wins. The count is a default, not a limit on what the operator may ask for.                                                   |
 
 ## User Interactions
 
-The operator's experience of a planning run changes in four visible ways.
-
-- **Affordances:** unchanged. The operator runs the same skills with the same arguments, and the same size override and
-  team override still work.
-- **Feedback:** the line that announces the team before dispatch names fewer reviewers. When a check runs, its result
-  appears as a pass or a named failure rather than as prose describing what was checked. When a review team leaves a
-  domain uncovered, the summary says so.
-- **Error states:** a check that cannot run is reported by name, and the run says what was not verified. A permission
-  prompt may appear the first time a run executes a check, unless the skill has already declared that permission
-  ([D10](artifacts/decision-log.md#d10-declare-the-permission-the-checks-need-up-front)).
+- **Affordances:** unchanged. The same skills take the same arguments, and the size and team overrides still work.
+- **Feedback:** the line announcing the team names fewer domain experts. A check reports one of three outcomes: passed;
+  failed, with every offending item named; or could not verify, with the reason named. When the editor's report is
+  unusable and the checklist ran instead, the summary says so.
+- **Error states:** a check that did not verify is named, along with what went unverified. Because each skill declares
+  the permission its check needs before the run reaches it, the operator is not interrupted partway through
+  ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).
 
 ## Coordinations
 
-| Coordinating System                | Direction | Interaction                                                                                        | Ordering / Consistency Requirement                                                                                       |
-| ---------------------------------- | --------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| The specialist reviewer roster      | outbound  | The run dispatches a smaller set of reviewers, all in one wave.                                     | Every reviewer in the wave starts before any result is read, so the wave stays parallel.                                   |
-| The readability editor              | outbound  | The run hands over the finished draft and reads back a rewrite plus a fact-preservation report.      | The run reads the report before presenting. A lost fact is restored before the operator sees the output.                   |
-| The boundary record                 | inbound   | The executed check reads the record's list of received design material and compares it to disk.      | The check reads the record rather than what the run remembers, so it still works after the run's context is compacted.     |
-| The operator's permission surface   | outbound  | The skill declares the permission its checks need.                                                  | Declared before the run reaches the check, so the operator is not interrupted mid-run.                                    |
+| Coordinating System                     | Direction | Interaction                                                                                     | Ordering / Consistency Requirement                                                                                                    |
+| --------------------------------------- | --------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| The domain-expert roster                 | outbound  | The run dispatches fewer experts, all in one wave.                                               | Every member starts before any result is read, so the wave stays parallel.                                                             |
+| The readability editor                   | outbound  | The run hands over the draft and reads back a rewrite plus a fact-preservation report.            | The run reads the report before presenting. A report it cannot interpret is treated as absent, which triggers the retained checklist.    |
+| The boundary record                      | inbound   | The design-image check reads the record's received-material list and compares it to disk.         | The check reads the record beside the deliverable it gates, from disk rather than from the run's memory, so it survives a compaction.    |
+| The plan under review                    | inbound   | The cross-reference check reads the plan and its companion files.                                 | Read from disk rather than from the run's memory, on the same terms as the record.                                                     |
+| The operator's permission surface         | outbound  | Each skill declares the permission its check needs.                                              | Declared before the run reaches the check. The declaration prevents an interruption and is not what makes a value safe.                 |
+| The next planning skill in the chain      | outbound  | A later skill reads this run's artifacts as its input.                                           | A check that did not verify is recorded in the artifacts, so the next run does not read the folder as fully verified.                    |
 
 ## Out of Scope
 
-- **The question cadence.** Questions still reach the operator one at a time. The report found no evidence for batching
-  them, and the boundary records this explicitly as a thing not to change.
+- **Lowering the ceiling on review repeats.** The source option asked for this alongside the expert reduction, and it was
+  declined: the early-stop rule already ends a review as soon as it goes quiet, so the ceiling only binds on reviews that
+  are still finding problems. The operator chose this from named alternatives
+  ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).
+- **The question cadence.** Questions still reach the operator one at a time. The research found no evidence for
+  batching, and the boundary records this as a thing not to change.
 - **Which model each reviewer runs on.** Every reviewer already declares its own model, and the mechanical ones already
-  run on the cheapest one.
-- **The three finding-consolidation passes themselves.** Only the middle one was considered for conversion, and it stays
-  as it is. Nothing about merging duplicate findings or checking findings against the designs changes.
-- **Any skill outside the five planning skills.** The reviewers and the editor are defined elsewhere and are not edited
-  by this work.
-- **Measuring what the change saves.** See the deferred section.
+  run on the cheapest.
+- **The finding-consolidation passes.** Only the middle one was considered for conversion and it stays as it is. Merging
+  duplicate findings and checking findings against the designs are unchanged.
+- **Any skill outside the five planning skills.** The reviewers and the editor are defined elsewhere and are not edited.
+- **Measuring what the change saves.** See Deferred.
 
 ## Cut for Scope
 
 This is work the work item excludes, not work deferred for lack of evidence. Nothing here carries a reopening trigger,
 because the recorded boundary already settled it.
 
+### Reducing the review team in `plan-a-feature`, so a run that writes a specification keeps its current cost
+
+- **Why cut:** the boundary's Stated Scope names two skills for the reduction, quoting the source option as "starting
+  with `plan-implementation` ... and `iterative-plan-review` team mode." `plan-a-feature` convenes a review team of the
+  same size as `iterative-plan-review`, so this is a real saving the boundary does not ask for. Reinstating it is a
+  one-line change to the same table the other two skills change.
+
 ### Splitting the three oversized skill files so a run reads less of them
 
 - **Why cut:** the boundary scopes this to "a scoped follow-up that begins with an audit rather than an edit." The
-  research also found that the repeated content driving the file sizes runs on every pass, so moving it to another file
-  that every pass also reads would not reduce what a run consumes.
+  research also found the repeated content driving the file sizes runs on every pass, so moving it to another file that
+  every pass also reads would not reduce what a run consumes.
 
 ### Collapsing the wording that repeats across several skills into one shared place
 
@@ -158,8 +202,8 @@ because the recorded boundary already settled it.
 ### Tightening the wording throughout the skills to use fewer words
 
 - **Why cut:** the boundary lists this among the options to "treat as low-payoff or unsupported." The one independent
-  measurement of this technique found it saves roughly nine percent, because a run spends most of its budget reading
-  files and calling tools rather than on the wording of its instructions.
+  measurement of this technique found it saves roughly nine percent, because a run spends most of its budget reading files
+  and calling tools rather than on the wording of its instructions.
 
 ### Moving the judgment reviewers onto a cheaper model
 
@@ -173,38 +217,56 @@ justify revisiting it.
 
 ### Measuring what a planning run costs, before and after
 
-- **Why deferred:** failed the evidence test. Nothing in the research measured a planning run actually executing, and the
-  boundary does not ask for measurement. Building it now would be a second feature carried on the first one's evidence.
-- **Reopen when:** someone disputes whether the smaller review teams changed the cost or the quality of a plan, and the
-  argument cannot be settled without numbers.
-- **Source:** the research report's own closing note that a before-and-after measurement of one real run is what would
-  settle the recommendation.
+- **Why deferred:** failed the evidence test. Nothing in the research measured a planning run executing, and the boundary
+  does not ask for measurement. Building it now would be a second feature carried on the first one's evidence.
+- **Reopen when:** someone disputes whether the smaller teams changed the cost or the quality of a plan, and the argument
+  cannot be settled without numbers.
+- **Source:** the research report's closing note that a before-and-after measurement of one real run is what would settle
+  the recommendation.
+
+### Naming an uncovered domain in the run summary
+
+- **Why deferred:** replaced by the strictly simpler version that satisfies the same concern. Both team skills already
+  announce the chosen team and the reason before dispatching, so the operator already sees the composition and can
+  override it. A separate coverage warning would be new behavior with no evidence behind it.
+- **Reopen when:** a run is found to have omitted a domain the operator then had to discover on their own.
+- **Source:** `F6`, raised independently by three reviewers.
 
 ### A check that catches a false-alarm finding after the fact
 
-- **Why deferred:** failed the evidence test. The one paper supporting it could not be fully verified, and no run has
-  been caught shipping this mistake. The boundary asked for narrated checks to be converted, not for new checks to be
-  added.
+- **Why deferred:** failed the evidence test. The one paper supporting it could not be fully verified, and no run has been
+  caught shipping this mistake. The boundary asked for described checks to be converted, not for new checks to be added.
 - **Reopen when:** a run is caught presenting a finding as a blocker when the finding rested on something no reviewer
-  could look at.
-- **Source:** considered and set aside during the interview, in the same turn that settled
+  could inspect.
+- **Source:** considered and set aside in the turn that settled
   [D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated).
 
 ## Open Items
 
-- **OI-1:** The reduced reviewer counts for the plan-reviewing skill were derived from the counts agreed for the
-  plan-authoring skill, rather than agreed directly.
+- **OI-1:** The expert counts for `iterative-plan-review` were derived from the counts agreed for `plan-implementation`,
+  rather than agreed directly. That skill has different fixed seats, so its medium band lands at one expert and its large
+  at two.
   - **Resolves when:** the operator confirms the derived counts, or names different ones.
-  - **Blocks implementation:** No — the derived counts are stated in the decision record and can be adjusted before or
-    during implementation.
+  - **Blocks implementation:** No — the derived counts are stated in
+    [D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names) and can be adjusted before
+    or during implementation.
+- **OI-2:** Whether a smaller team produces a materially different plan is unmeasured, and the source research says the
+  honest sequencing is to measure before committing to a permanent count.
+  - **Resolves when:** one real plan is run at the current counts and the reduced counts and the outputs compared.
+  - **Blocks implementation:** No — the operator chose the reduction knowing the trade, and the team override remains the
+    control. Recorded so the decision is not later read as evidence-backed on quality.
 
 ## Summary
 
-- **Outcome delivered:** a planning run consults fewer reviewers, runs two of its routine checks instead of describing
-  them, and stops proofreading text an editor already rewrote.
+- **Outcome delivered:** a planning run consults fewer domain experts, executes two of its routine checks instead of
+  describing them, and stops proofreading text an editor already rewrote.
 - **Primary actors:** the operator running a planning skill.
-- **Decisions settled by evidence:** 8 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by evidence:** 11 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Decisions settled by user input:** 2 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Sub-agents consulted:** pending review — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** pending review — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 1
+- **Sub-agents consulted:** `junior-developer`, `edge-case-explorer`, `adversarial-security-analyst`, `test-engineer` —
+  see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** the review found that three skills convene a team rather than two, that the reviewer
+  counts hid two fixed seats and collapsed two size bands, that the claim of an unchanged plan contradicted the source
+  research, and that values read from a document reach something that executes with no stated trust level. All four
+  reshaped the spec — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Remaining open items:** 2

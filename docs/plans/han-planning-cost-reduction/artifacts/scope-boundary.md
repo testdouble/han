@@ -80,6 +80,16 @@ carries no deprecation risk on any of them.
 
 Established by `han-planning:plan-a-feature` in this run. Not inherited from another folder.
 
+**The source option was adopted in part.** The Stated Scope above quotes `O1` as reducing both the specialist count and
+the sequential round cap. The operator chose, from four named candidates, to reduce the count and leave the repeat
+ceiling alone. The declined half is recorded in the specification's Out of Scope section rather than in the cut list,
+because the boundary asks for it and the operator declined it on evidence; a cut-list entry would misreport it as
+something the boundary excluded.
+
+**One skill inside the reduction's subject area was cut.** `plan-a-feature` convenes a review team of the same size as
+`iterative-plan-review`, and the Stated Scope names only the other two skills. The scope gate cut it rather than
+escalating, and the cut is recorded in the specification's Cut for Scope section where the operator can reinstate it.
+
 Adjacent work noted, not treated as scope: `docs/plans/reduce-context-footprint/investigation.md` (issue #51) targets the
 always-loaded `description:` frontmatter of agents and skills, which is a different surface from the SKILL.md bodies,
 dispatch rosters, gates, and self-checks this run addresses. No conflict, and no overlap to resolve, but the two should
