@@ -106,12 +106,12 @@ and where the answer landed in the artifact.
 
 Where it lives depends on whether the skill has an escalation step to hang it on:
 
-| Skill | Where the register lives |
-| ----- | ------------------------ |
-| `plan-a-feature` | A register of its own, in the escalation step |
-| `plan-implementation` | A register of its own, in the escalation step |
+| Skill                 | Where the register lives                                       |
+| --------------------- | -------------------------------------------------------------- |
+| `plan-a-feature`      | A register of its own, in the escalation step                  |
+| `plan-implementation` | A register of its own, in the escalation step                  |
 | `plan-a-phased-build` | Attached to the single stop; this skill has no escalation step |
-| `plan-work-items` | Attached to the single stop; this skill has no escalation step |
+| `plan-work-items`     | Attached to the single stop; this skill has no escalation step |
 
 Do not invent an escalation pass in a skill that has none simply to have somewhere to put the register.
 

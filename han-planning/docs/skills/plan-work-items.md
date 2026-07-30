@@ -111,7 +111,11 @@ One file on disk plus an in-channel summary:
 - **`artifacts/scope-boundary.md`** beside it. The boundary record: the work item, its stated scope and exclusions, any
   scope you stated at invocation, the direction-of-travel answer, and the visual material the run received. A later skill
   reads it instead of asking you again.
-- **`ui-designs/`**, when you supplied visual material. The files themselves, named for the state each one shows.
+- **`ui-designs/`**, when you supplied visual material. The files themselves, named for the state each one shows. Before
+  the file is declared finished, an executed completeness check reads the boundary record against this folder and reports
+  one of three outcomes: passed, failed with each missing or malformed row named, or could not verify with the reason
+  named. A check that did not pass is recorded beside the work items as well as in the summary, so whoever picks the
+  items up does not read the folder as fully verified.
 - An **in-channel summary** with the file path, the boundary record's path, a count of work items by type (HITL / AFK),
   the cut list when anything was cut, the escalation register when the run took its single stop, and the next concrete
   action.

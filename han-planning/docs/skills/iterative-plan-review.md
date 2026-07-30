@@ -23,8 +23,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 
 - **Lightweight mode vs team mode.** Simple plans get a checklist-based iteration loop (no sub-agents). Complex or
   cross-cutting plans get a team of specialists (`junior-developer` and `adversarial-validator` always,
-  `evidence-based-investigator` whenever the plan contains codebase claims to verify, plus three to five more sized to
-  what the plan touches).
+  `evidence-based-investigator` whenever the plan contains codebase claims to verify, plus one chosen specialist at
+  medium or two at large, sized to what the plan touches).
 - **Iteration caps with early stopping.** Caps scale with plan size: small (1 iteration), medium (2 rounds), large (3
   rounds). Lightweight mode runs the iteration loop solo against the plan; team mode runs the same loop but every round
   is a multi-specialist parallel review. Both modes stop early when the most recent pass produced two or fewer new
@@ -96,8 +96,8 @@ Give it:
 3. **Team composition override, optional (team mode only).** The required specialists `junior-developer` and
    `adversarial-validator` are always included, plus `evidence-based-investigator` whenever the plan contains codebase
    claims to verify. If you already know which additional specialists should be in the team (for example, _"include
-   `adversarial-security-analyst` and `data-engineer`"_), name them. The skill picks three to five additional
-   specialists by default from the roster: `user-experience-designer`, `adversarial-security-analyst`,
+   `adversarial-security-analyst` and `data-engineer`"_), name them. The skill otherwise picks one chosen specialist at
+   medium, or two at large, from the roster: `user-experience-designer`, `adversarial-security-analyst`,
    `devops-engineer`, `on-call-engineer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`,
    `software-architect`, `system-architect`, `risk-analyst`, `test-engineer`, `edge-case-explorer`, `data-engineer`,
    `gap-analyzer`, `content-auditor`, `codebase-explorer`.
@@ -148,6 +148,11 @@ in-channel summary:
   and the plan sections changed that pass (`Changed in plan:`). It also records the stability assessment made each
   iteration or round, and the next-step recommendation. This captures how the review progressed without bloating the
   plan.
+- **A cross-reference check over both companion files**, executed before the review is presented. It reports one of
+  three outcomes: passed, failed with each dangling identifier and each blank required field named separately, or could
+  not verify with the reason named. Identifiers inside fenced example blocks are ignored, so a format example never reads
+  as a live citation. A check that did not pass is noted in the plan's `## Review History` section as well as the closing
+  summary.
 - An **`artifacts/feature-technical-notes.md`** companion file, in spec-aware mode only and created lazily. When you
   refine a `feature-specification.md` and the review surfaces a load-bearing mechanic (one that affects observable
   behavior), the skill extracts it to a `T#` entry in this file rather than leaking the mechanic into the spec. It then
@@ -199,10 +204,10 @@ specialist agent finding and its evidence in team mode. The skill does not make 
   `adversarial-security-analyst`, `data-engineer`, or `devops-engineer` explicitly ensures they are included regardless
   of what the skill's heuristic selection would have picked. `junior-developer` and `adversarial-validator` are always
   there, and `evidence-based-investigator` joins whenever the plan contains codebase claims to verify.
-- **Fewer additional specialists is usually better.** The team always has `junior-developer` and
-  `adversarial-validator`, plus `evidence-based-investigator` when the plan has codebase claims to verify. Adding three
-  more on top of those is usually enough. Going to five additional specialists is appropriate for cross-cutting plans
-  but produces more findings to reconcile per round.
+- **The chosen-specialist budget is deliberately small.** The team always has `junior-developer` and
+  `adversarial-validator`, plus `evidence-based-investigator` when the plan has codebase claims to verify. On top of
+  those, medium adds one chosen specialist and large adds two. Naming the specialist that matters most for the plan
+  spends that budget better than hoping the heuristic picks it.
 - **Let the iteration stop early.** The skill's stability assessment is designed to stop iterating when additional
   passes would only produce cosmetic changes. Trust the stop. If the plan isn't converging within the size-based cap (1
   iteration for small, 2 for medium, 3 for large), the real problem is scope or decomposition, not iteration count.
@@ -226,11 +231,11 @@ Size determines whether the skill runs lightweight (checklist-based, no sub-agen
 parallel review), and caps the iteration depth. The skill defaults to small (lightweight) and only escalates when
 concrete signals require it.
 
-| Size                  | Files             | Other signals                                                                                                                      | Mode                        | Team cap               | Round cap |
+| Size                  | Files             | Other signals                                                                                                                      | Mode                        | Chosen specialists     | Round cap |
 | --------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ---------------------- | --------- |
 | **Small** _(default)_ | 2–3 files         | Single system; no cross-cutting concerns.                                                                                          | Lightweight (no sub-agents) | n/a (self-review only) | 1         |
-| **Medium**            | 3–5 files         | One or two adjacent systems; may touch a single cross-cutting concern (for example, one API contract or one new permission check). | Team                        | 3–4                    | 2         |
-| **Large**             | More than 5 files | Multiple systems; architectural changes; security or data implications; or you explicitly request full agent review.               | Team                        | 4–5                    | 3         |
+| **Medium**            | 3–5 files         | One or two adjacent systems; may touch a single cross-cutting concern (for example, one API contract or one new permission check). | Team                        | 1                      | 2         |
+| **Large**             | More than 5 files | Multiple systems; architectural changes; security or data implications; or you explicitly request full agent review.               | Team                        | 2                      | 3         |
 
 How the size is chosen:
 
@@ -239,6 +244,9 @@ How the size is chosen:
 - **Required team roster.** When team mode is selected, `junior-developer` and `adversarial-validator` are always in the
   room, and `evidence-based-investigator` joins whenever the plan contains codebase claims to verify. The size cap sets
   the upper bound on additional specialists chosen by signal.
+- **The cap counts chosen specialists, not seats.** The always-present agents are seated before any specialist is
+  chosen, so counting total seats would hide how much domain coverage a band actually buys. A medium team is the
+  required roster plus one chosen specialist; a large team is the required roster plus two.
 - **Early stopping inside the cap.** The round cap is the upper bound, not a target. The skill stops earlier when
   stability assessment shows the next pass would only produce cosmetic changes.
 
@@ -263,14 +271,14 @@ size (small, the lightweight default, caps at 1 iteration), with early stopping 
 or fewer new findings and zero major findings.
 
 Team mode dispatches the required specialists `junior-developer` and `adversarial-validator` (plus
-`evidence-based-investigator` when the plan contains codebase claims to verify) alongside three to five additional
-specialists in parallel per round. Each round fans out to six to eight sub-agents concurrently, collects verbatim
-output, consolidates findings, and writes edits to the plan. Round 2+ feeds prior-round findings into agent prompts so
-agents do not re-raise resolved issues. Sub-agent model selection follows each agent's own default (most han analysis
-agents default to `sonnet`; exceptions follow their own definitions). For a medium-complexity plan in team mode, expect
-two rounds (roughly twelve to sixteen sub-agent dispatches plus consolidation and edit passes). The round cap follows
-the plan size (medium caps at 2 rounds, large at 3), with early stopping when a round produced two or fewer new findings
-and zero major findings.
+`evidence-based-investigator` when the plan contains codebase claims to verify) alongside one chosen specialist at
+medium and two at large, in parallel per round. Each round fans out to three to five sub-agents concurrently, collects
+verbatim output, consolidates findings, and writes edits to the plan. Round 2+ feeds prior-round findings into agent
+prompts so agents do not re-raise resolved issues. Sub-agent model selection follows each agent's own default (most han
+analysis agents default to `sonnet`; exceptions follow their own definitions). For a medium-complexity plan in team
+mode, expect two rounds (roughly six to eight sub-agent dispatches plus consolidation and edit passes). The round cap
+follows the plan size (medium caps at 2 rounds, large at 3), with early stopping when a round produced two or fewer new
+findings and zero major findings.
 
 The skill is designed for plan-hardening cadence (once per plan, occasionally re-run after major rewrites), not for
 tight-loop iteration on the same plan within a single session. If a plan is churning across many iterations, the issue
@@ -289,9 +297,9 @@ external to the codebase), Changes Made, Ambiguity Surfaced, and a Stability Ass
 
 **Team mode** runs parallel rounds of specialist review. `junior-developer` (generalist stress-testing) and
 `adversarial-validator` (counter-evidence) are always in the room, and `evidence-based-investigator` (codebase
-grounding) joins whenever the plan contains codebase claims to verify. Three to five additional specialists are chosen
-to match what the plan touches: security, data, UX, DevOps, architecture, concurrency, testing. Round 2+ feeds prior
-findings back into agent prompts so agents don't re-raise resolved issues.
+grounding) joins whenever the plan contains codebase claims to verify. One chosen specialist at medium, or two at large,
+is selected to match what the plan touches: security, data, UX, DevOps, architecture, concurrency, testing. Round 2+
+feeds prior findings back into agent prompts so agents don't re-raise resolved issues.
 
 Plan folders produced before the `artifacts/` layout was introduced may have these companions at the folder root
 instead. The skill detects that layout and continues appending to the existing files rather than migrating.

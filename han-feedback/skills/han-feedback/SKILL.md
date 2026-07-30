@@ -142,8 +142,7 @@ For a session that used Han agents directly (no skill), assess the agents the sa
 every point already recorded, and fold the new material into the sections it belongs in: new points onto the existing
 lists, any newly-used skill or agent onto the `**Skills used:**` and `**Agents used:**` lines, and a re-scored dimension
 only where this session's evidence actually changed it. Add an `## Update {TIME}` heading before the new material when
-the session's story changed rather than merely lengthened, so a reader can see what arrived later. Then continue to Step
-8.
+the session's story changed rather than merely lengthened, so a reader can see what arrived later. Then continue to Step 8.
 
 **Otherwise** write the file to `~/.claude/han-feedback/{filename}` using this structure:
 
