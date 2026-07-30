@@ -160,7 +160,10 @@ Up to four cross-referenced files on disk in the same folder, plus an in-channel
   contains no `T#` links.
 - An **`artifacts/scope-boundary.md`** file. The boundary record: the work item, its stated scope and exclusions
   quoted, the direction-of-travel answer, and every piece of visual material the run received. A later skill in the chain
-  reads it instead of asking you again, and the completeness gate reads it to confirm nothing was lost.
+  reads it instead of asking you again. Before the skill summarizes, an executed completeness check reads that record
+  against `ui-designs/` and reports one of three outcomes: passed, failed with each missing or malformed row named, or
+  could not verify with the reason named. A check that did not pass is written into the artifacts as well as the
+  summary, so the next skill in the chain does not read the folder as fully verified.
 - A **`ui-designs/` folder**, when you supply visual material. The files themselves, named for the state each one shows.
 - An **open items list** inside the spec. Questions or concerns the project-manager flagged that could not be resolved
   during specification, each with what would resolve it and whether it blocks implementation.
@@ -278,8 +281,10 @@ the folder root (the canonical behavioral artifact that `/plan-implementation` t
 `artifacts/decision-log.md` and `artifacts/team-findings.md` in a sibling `artifacts/` subfolder. This keeps the primary
 spec focused on behavior, while decision history and review findings sit alongside it, cross-referenced by `D#` / `F#`
 ID. After the final specification content exists, the skill dispatches `readability-editor` to rewrite the spec's prose
-for the stakeholder or reviewer who reads it, preserving every fact and every `D#` / `T#` cross-reference identifier,
-then runs a readability self-check over the prose before presenting.
+for the stakeholder or reviewer who reads it, preserving every fact and every `D#` / `T#` cross-reference identifier.
+The skill then reads the editor's fact-preservation report rather than re-running the readability checklist over the
+editor's own output. It falls back to walking the checklist itself only when no usable report comes back, and says so in
+the closing summary when it does.
 
 ## YAGNI
 

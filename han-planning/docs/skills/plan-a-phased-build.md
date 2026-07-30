@@ -175,7 +175,11 @@ overwrites. You get:
 - **`artifacts/scope-boundary.md`** beside it. The boundary record: the work item, its stated scope and exclusions, the
   scope you stated when invoking the skill, the direction-of-travel answer, and any visual material the run received. A
   later skill in the chain reads it instead of asking you again.
-- **`ui-designs/`**, when you supply visual material. The files themselves, named for the state each one shows.
+- **`ui-designs/`**, when you supply visual material. The files themselves, named for the state each one shows. Before
+  the outline is presented, an executed completeness check reads the boundary record against this folder and reports one
+  of three outcomes: passed, failed with each missing or malformed row named, or could not verify with the reason named.
+  A check that did not pass is recorded in the outline's Open Questions section as well as the summary, so the next skill
+  in the chain does not read the folder as fully verified.
 - An **in-channel summary** with the file path and the boundary record's path, a count of phases by kind (foundational /
   feature slice / polish / deferred), the cut list when anything was cut for scope, the escalation register when the run
   took its single stop, the open-question count and whether any block phase 1 from starting, the
@@ -303,7 +307,9 @@ into the body gets rewritten behaviorally. Structural findings are evaluated and
 contract. Polish findings are applied if they tighten the document. Findings you must judge (for example, _"the audience
 seems mixed; should this be split into two documents?"_) are escalated with a recommendation before finalizing. Once the
 outline is final, the skill dispatches `readability-editor` to rewrite the outline's prose for the reader of the phased
-build, preserving every fact and every `Phase N` identifier, then runs a readability self-check before presenting.
+build, preserving every fact and every `Phase N` identifier. The skill then reads the editor's fact-preservation report
+rather than re-running the readability checklist over the editor's own output. It falls back to walking the checklist
+itself only when no usable report comes back, and says so in the closing summary when it does.
 
 **Anchor stability is part of the contract.** Every phase heading carries an explicit `{#phase-N}` anchor. Every
 open-question heading carries an explicit `{#oq-N}` anchor. Renaming a phase or question never breaks inbound deep links

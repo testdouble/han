@@ -41,7 +41,11 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   mechanic, resolves without an escalation, and does not count toward the spec-maturity threshold, because a specification
   that drifted past its ticket is not an immature one.
 - **Visual material is kept and shared.** Designs and mockups you supply are written to `ui-designs/` as they arrive and
-  passed by path to every specialist the skill dispatches, not only the design specialist.
+  passed by path to every specialist the skill dispatches, not only the design specialist. Before the skill summarizes,
+  an executed completeness check reads the boundary record against that folder and reports one of three outcomes: passed,
+  failed with each missing or malformed row named, or could not verify with the reason named. A check that did not pass
+  is written into `artifacts/implementation-iteration-history.md` as well as the summary, so the next skill in the chain
+  does not read the folder as fully verified.
 - **One question per turn.** Escalations arrive one at a time, each opening with the consequence a person who will not read
   the code would describe, each carrying named candidate answers, with specialist identifiers and paths below the question
   or left out. The opening confirmation turn is the one exception.
@@ -128,7 +132,7 @@ Give it:
    devops-engineer and data-engineer"_), say so. The skill always includes `project-manager` and `junior-developer`.
    Other specialists are chosen to match what the feature touches unless you override.
 4. **A size, optional.** Pass `small`, `medium`, or `large` as the first argument to override the skill's automatic
-   sizing and set the team cap directly. Left off, the skill classifies the size from what the feature touches. See
+   sizing and set the specialist cap directly. Left off, the skill classifies the size from what the feature touches. See
    Sizing below.
 
 Example prompts that work well:
@@ -253,21 +257,22 @@ The skill surfaces it rather than inventing an answer.
 
 ## Sizing
 
-Size determines both the team cap (how many specialists join the project-manager-led conversation) and the round cap
-(how many iterations the loop runs). The skill defaults to small and only escalates when concrete signals require it.
+Size determines both the specialist cap (how many chosen specialists join the project-manager-led conversation) and the
+round cap (how many iterations the loop runs). The skill defaults to small and only escalates when concrete signals
+require it.
 
-| Size                  | Surface                             | Typical signals                                                                         | Team cap                                                          | Round cap |
-| --------------------- | ----------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------- |
-| **Small** _(default)_ | Single subsystem                    | No cross-service integration, no auth/PII/secrets, no data migration.                   | 3 (project-manager + junior-developer + 1 chosen specialist)      | 1         |
-| **Medium**            | Two to three subsystems             | Optional integration; may touch UX or rollout; may have a small auth surface.           | 4–5 (project-manager + junior-developer + 2–3 chosen specialists) | 2         |
-| **Large**             | Cross-service or security-sensitive | Data ownership shifts, multiple new coordinations, or you explicitly request full team. | 6–8 (project-manager + junior-developer + 4–6 chosen specialists) | 3         |
+| Size                  | Surface                             | Typical signals                                                                         | Chosen specialists   | Round cap |
+| --------------------- | ----------------------------------- | --------------------------------------------------------------------------------------- | -------------------- | --------- |
+| **Small** _(default)_ | Single subsystem                    | No cross-service integration, no auth/PII/secrets, no data migration.                   | 1 (team of 3)        | 1         |
+| **Medium**            | Two to three subsystems             | Optional integration; may touch UX or rollout; may have a small auth surface.           | 2 (team of 4)        | 2         |
+| **Large**             | Cross-service or security-sensitive | Data ownership shifts, multiple new coordinations, or you explicitly request full team. | 3–4 (team of 5 to 6) | 3         |
 
 How the size is chosen:
 
 - **Default to small.** Unless the spec's coordinations, T# notes, security/PII surface, integration boundaries, or your
   framing push it higher, the skill stays at small.
-- **`project-manager` and `junior-developer` always included.** Both are part of the team at every size. Size sets the
-  cap on additional specialists chosen by what the feature touches.
+- **`project-manager` and `junior-developer` always included.** Both are part of the team at every size, which is why
+  the cap counts chosen specialists rather than seats: counting seats would make medium indistinguishable from small.
 - **Round cap is the upper bound, not a target.** The loop exits when `project-manager` reports the plan is ready or
   only user-input items remain. The round cap prevents runaway cycles.
 
@@ -276,7 +281,7 @@ How to override the size:
 - Pass `small`, `medium`, or `large` as the first positional argument:
   `/plan-implementation medium docs/features/checkout/feature-specification.md`.
 - When the size is overridden via `$size`, the skill announces the override (`Medium: passed via $size`) and uses the
-  chosen band for both the team cap and the round cap.
+  chosen band for both the specialist cap and the round cap.
 - Conversational overrides (_"treat this as a large implementation, the rollout is sensitive"_) still work and are
   equivalent.
 
@@ -284,14 +289,14 @@ For the cross-skill sizing model and design principles, see [Sizing](../../../do
 
 ## Cost and latency
 
-The skill orchestrates a multi-round team conversation. Each round fans out to three to seven specialist sub-agents
+The skill orchestrates a multi-round team conversation. Each round fans out to one to four chosen specialist sub-agents
 (plus `junior-developer` and `project-manager`) in parallel and collects their verbatim output. It then runs
 `project-manager` in facilitation mode to reconcile that input and decide whether to loop again. The skill passes no
 model override; each sub-agent it dispatches in the iteration loop runs on its own frontmatter tier (synthesis-heavy
 agents on `opus`, structured-protocol specialists on `sonnet`). The final synthesis pass runs `project-manager` on its
 default model (`opus`). This is the most expensive single step, but also the step that produces the authoritative plan.
 For a medium-complexity feature, expect two iterations before the project-manager declares the plan ready, which means
-roughly ten to twenty sub-agent dispatches plus the `opus` synthesis. The size-based round cap (1 for small, 2 for
+roughly eight sub-agent dispatches plus the `opus` synthesis. The size-based round cap (1 for small, 2 for
 medium, 3 for large) prevents runaway cycles. After the final plan exists, the skill runs one
 `han-communication:readability-editor` rewrite of the plan's prose, so expect one additional readability pass among the
 sub-agent dispatches. The skill is designed for new-feature planning cadence (once per feature, occasionally re-run
@@ -320,7 +325,9 @@ live alongside it, in `artifacts/implementation-decision-log.md` and `artifacts/
 cross-referenced by `D-N` / `R#` ID. This keeps the primary plan focused on the implementation narrative, while
 rationale, rejected alternatives, and discussion history stay one hop away. Once the final plan content exists, the
 skill dispatches `readability-editor` to rewrite the plan's prose for the engineer who will build the feature,
-preserving every fact and every cross-reference identifier, then runs a readability self-check before presenting.
+preserving every fact and every cross-reference identifier. The skill then reads the editor's fact-preservation report
+rather than re-running the readability checklist over the editor's own output. It falls back to walking the checklist
+itself only when no usable report comes back, and says so in the closing summary when it does.
 
 ## YAGNI
 
