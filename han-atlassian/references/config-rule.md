@@ -3,20 +3,25 @@
 Han reads two optional configuration files, and either one may be absent. A person may carry a personal
 `.han/config.md` inside their Claude Code configuration directory, and a consuming project may carry its own
 `.han/config.md`. The personal file supplies defaults that follow the person into every project; the project file
-adjusts them for that project. Each participating skill reads both through the probes in its `## Project Context`
-block; this rule defines how every skill interprets what those probes return, so one pair of files resolves identically
-across the whole suite. Every vendored copy of this file is byte-identical to the canonical
-`han-core/references/config-rule.md`.
+adjusts them for that project. Each participating skill finds both through its `## Project Context` block; this rule
+defines how every skill interprets what that block yields, so one pair of files resolves identically across the whole
+suite. Every vendored copy of this file is byte-identical to the canonical `han-core/references/config-rule.md`.
 
-## The two files and the three probes
+## The two files, the two probes, and the personal read
 
-The `## Project Context` block carries three probe lines, and this rule refers to each by the label it injects under.
+The `## Project Context` block carries two probe lines and directs one Read-tool call. This rule refers to each by the
+label it injects under, or by the file it reads.
 
-- `personal config directory`: the Claude Code configuration directory, resolved for this run. Named by the
+- `personal config directory` (probe): the Claude Code configuration directory, resolved for this run. Named by the
   `CLAUDE_CONFIG_DIR` environment variable when that variable is set, and `~/.claude` when it is not. This value is not
   a setting. It is the folder a relative path in the personal file resolves against.
-- `personal .han/config.md`: the content of `.han/config.md` inside that directory, or nothing.
-- `project .han/config.md`: the content of `.han/config.md` in the directory the skill is running from, or nothing.
+- The personal `.han/config.md` (Read tool): the content of `.han/config.md` inside that directory, or nothing. The
+  skill reads this file itself as its first action rather than through a probe. A probe runs at skill load, where it
+  cannot prompt and cannot degrade, so a permission decision against it aborts the skill instead of falling back to
+  defaults. The personal file is the one lookup that reaches outside the project, so it is the one lookup a probe
+  cannot safely carry.
+- `project .han/config.md` (probe): the content of `.han/config.md` in the directory the skill is running from, or
+  nothing.
 
 The two directories can both exist on one machine and point at different places, so the variable wins whenever it is
 set. A personal file sitting in `~/.claude/.han/config.md` does not apply to a person who has pointed
@@ -24,7 +29,7 @@ set. A personal file sitting in `~/.claude/.han/config.md` does not apply to a p
 
 Neither lookup walks up the directory tree. The project file is found only in the directory the skill runs from, the
 same place the CLAUDE.md and project-discovery probes look. A config elsewhere in the repository does not apply. When
-both probes return nothing, no config is present: behave exactly as the skill does without this rule, with no note.
+neither lookup yields content, no config is present: behave exactly as the skill does without this rule, with no note.
 
 When both lookups resolve to the same file, because the skill is running inside the Claude Code configuration
 directory, read it once and treat it as the project configuration. Nothing is counted twice, and its `## Extra Agents`
@@ -123,6 +128,9 @@ name, so a message that omits which one leaves the reader opening both.
 - A file holding only prose the suite has no use for: behave as if the file were absent, with no note.
 - A personal configuration directory the run cannot reach: treat it as no personal configuration, with no note. A run
   cannot tell that apart from a person who never wrote the file, and the second group is far larger.
+- A personal `.han/config.md` the Read tool cannot return, whether it is absent, unreachable, or refused: treat it as
+  no personal configuration, with no note, for the same reason. This covers the read failing to produce a file at all.
+  A file that reads but cannot be used is a different case and keeps the note its own bullet above describes.
 
 One problem gets one note. Two separate problems, one in each file, get two notes, because each names a different thing
 to go and fix. The note is one line naming what was ignored, which file it came from, and why, shown on each run where
