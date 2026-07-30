@@ -280,10 +280,10 @@ justify revisiting it.
   under review makes claims about code. So its medium band lands at one expert and its large at two. On a plan that makes
   claims about code, the medium band already carries no more than one expert today, so the reduction changes nothing
   there.
-  - **Resolves when:** the operator confirms the derived counts, or names different ones.
-  - **Blocks implementation:** No. The derived counts are stated in
-    [D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names) and can be adjusted before
-    or during implementation.
+  - **Resolved.** The operator confirmed the derived counts as they stand, at plan stage. The counts in
+    [D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names) are the ones to build,
+    with no adjustment.
+  - **Blocks implementation:** No, and no longer open.
 - **OI-2:** Whether a smaller team produces a materially different plan is unmeasured, and the source research says the
   honest sequencing is to measure before committing to a permanent count.
   - **Resolves when:** one real plan is run at the current counts and the reduced counts and the outputs compared.

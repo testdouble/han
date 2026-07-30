@@ -209,3 +209,9 @@ carried the exit-status half of the contract into `D-9` and dropped the printed 
 Restored to the plan's Implementation Approach as a named convention with the key set spelled out, alongside the note
 that it is a convention rather than shared code. No decision changed; `D-9` already owned the outcome contract, and this
 is the detail it referenced without stating.
+
+## Open items closed after synthesis
+
+| Item   | Question put to the operator                                               | Answer                               | Where it landed                                                                                                                                |
+| ------ | -------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `OI-1` | Do the derived expert counts for `iterative-plan-review` stand, or change? | "OI-1 is fine as is. mark resolved." | Closed in the plan's Open Items, the specification's Open Items, and work unit 2's justification. `D2` is unchanged and is the count to build. |
