@@ -238,27 +238,37 @@ every `Linked technical notes:` field reads `—` and no `T#` is cited anywhere.
 - **Settled by:** evidence
 - **Referenced in spec:** Alternate Flows and States, Edge Cases and Failure Modes, User Interactions
 
-### D10: Declare the permission each check needs, and do not mistake it for argument safety
+### D10: Do not declare the script in the permission frontmatter
 
-- **Decision:** Each skill that executes a check declares the permission that check needs, scoped to that check. Four
-  skills gain the design-image check and one gains the cross-reference check, so five declarations are needed across the
-  five skills. The declaration exists to prevent an interruption partway through a run; it is not what makes a value safe
-  to use.
-- **Rationale:** The planning skills already declare narrow, specific permissions rather than a general one, and every
-  recent change that added a permission recorded it deliberately. Keeping that pattern avoids interrupting a run. The
-  second half of this decision is a correction: a permission that approves the front of a command says nothing about the
-  arguments that follow, so treating the declaration as a safety story would leave the actual input problem unowned.
-  [D11](#d11-treat-every-value-read-from-a-document-as-untrusted) owns it instead.
-- **Evidence:** Codebase. All five planning skills declare narrowly scoped permissions rather than a general execution
-  grant. Research artifact `A42`. The review also corrected a factual error in the first draft: execution is not a new
-  capability for these skills. All five already run a file-search command as they load, and one runs a search over the
-  plan while choosing its team. What is new is execution taking an argument out of a document.
-- **Unverified:** how this version of the host resolves a permission prefix against a command carrying metacharacters in
-  argument position could not be inspected, because that matching lives in the host runtime rather than in this
-  repository. This decision does not depend on the matcher being weak, and the finding carries no blocking severity.
-- **Rejected alternatives:** Grant broad execution permission to the affected skills. Rejected because it widens the
-  permission surface far past what the checks need, and the repository treats a permission change as a reviewed decision.
-- **Driven by findings:** F7, F11, F15
+- **Decision:** No skill declares its check in the permission frontmatter. The operator approves the check once per run,
+  the first time a run reaches it. No permission any skill holds is treated as making a value safe to use.
+- **Rationale:** A declaration of that shape cannot do what an earlier version of this decision claimed. Permission
+  patterns match the front of a command, and the command as it runs begins with an expanded absolute path the declaration
+  does not contain, so the pattern never matches. The repository's own authoring guidance reaches that conclusion and
+  states the remedy: omit the script and accept a single approval, because a script runs about once per skill invocation.
+  Every skill in the repository that runs a script already does exactly that. The second half of this decision survives
+  unchanged: a permission says nothing about the arguments that follow it, so
+  [D11](#d11-treat-every-value-read-from-a-document-as-untrusted) owns input safety, and nothing here does.
+- **Evidence:** `han-plugin-builder/skills/guidance/references/skill-building-guidance/script-execution-instructions.md`,
+  lines 67 to 75, which states that the patterns are prefix matches, that the runtime command starts with the expanded
+  absolute skill-directory path, that "the prefix won't match," and therefore "omit them from `allowed-tools`. Scripts
+  typically run once per skill invocation, so a single user approval is acceptable." A survey of the repository found nine
+  skills that invoke a script and none declaring its own script; one runs a script while declaring no shell permission at
+  all. Research artifact `A42` for the current narrow declarations, which stay as they are.
+- **Corrected at plan stage.** An earlier version of this decision committed to five declarations and claimed they would
+  prevent a mid-run interruption. `han-core:software-architect` found the guidance above during implementation planning,
+  and the operator chose to follow it. The specification's Preconditions, User Interactions, and Coordinations entries were
+  corrected with it. The behavioral commitment never at issue, and unchanged, is that broad execution permission is not
+  granted.
+- **Rejected alternatives:**
+  - Grant broad execution permission. Rejected because it widens the surface far past what the checks need. The security
+    review was specific that a wildcard on script names auto-approves arbitrary shell for the rest of a run, in skills that
+    also hold write access.
+  - Declare it anyway and verify against the host afterward. Rejected by the operator in favor of following the written
+    guidance, which reasons about this exact case. Declaring anyway would make these the only skills in the repository
+    doing something the repository's own rule says does not work, and would risk leaving five inert lines behind.
+- **Driven by findings:** F7, F11, F15, and `R1-C2` in
+  [implementation-iteration-history.md](implementation-iteration-history.md)
 - **Linked technical notes:** —
 - **Dependent decisions:** D11
 - **Settled by:** evidence
@@ -283,7 +293,7 @@ every `Linked technical notes:` field reads `—` and no `T#` is cited anywhere.
   meets. Its accepted-file-set section supplies the allowed file types. Its instruction not to fetch a supplied link is
   kept unchanged.
 - **Rejected alternatives:** Rely on the scoped permission declaration to confine what a check can do with a value.
-  Rejected per [D10](#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety): a
+  Rejected per [D10](#d10-do-not-declare-the-script-in-the-permission-frontmatter): a
   command-prefix approval constrains the command, not its arguments.
 - **Driven by findings:** F10, F19
 - **Linked technical notes:** —

@@ -63,10 +63,11 @@ dispatch no editor and keep their checklist unchanged.
 - **Actors**: the operator who runs a planning skill, and the five planning skills themselves. No user of any other
   product is affected.
 - **Triggers**: running a planning skill. Which change applies depends on the skill, per the table below.
-- **Preconditions**: all five skills gain permission to execute a check, which widens what each of them may do. That is
-  the one precondition an operator should know about
-  ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).
-  No operator configuration is required, and no existing plan folder needs migrating.
+- **Preconditions**: the operator approves the check once per run, the first time a run reaches it. The skills do not
+  declare that permission ahead of time, because a declaration of that shape cannot match the command as it actually runs
+  ([D10](artifacts/decision-log.md#d10-do-not-declare-the-script-in-the-permission-frontmatter)). That approval is the one
+  precondition an operator should know about. No operator configuration is required, and no existing plan folder needs
+  migrating.
 
 ### Which skill gets which change
 
@@ -82,7 +83,8 @@ dispatch no editor and keep their checklist unchanged.
 ([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)). `plan-a-feature` and
 `plan-implementation` both carry a cross-reference check the boundary does not ask to convert
 ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)). Both are recorded under Cut for
-Scope. Every skill gains exactly one executed check, so five permission declarations are needed.
+Scope. Every skill gains exactly one executed check, and each costs the operator one approval the first time a run reaches
+it ([D10](artifacts/decision-log.md#d10-do-not-declare-the-script-in-the-permission-frontmatter)).
 
 ## Primary Flow
 
@@ -166,9 +168,9 @@ table above assigns them.
   failed, with every offending item named; or could not verify, with the reason named
   ([D9](artifacts/decision-log.md#d9-a-check-reports-one-of-three-outcomes-and-never-assumes-a-pass)). When the editor's
   report is unusable and the checklist ran instead, the summary says so.
-- **Error states:** a check that did not verify is named, along with what went unverified. Because each skill declares
-  the permission its check needs before the run reaches it, the operator is not interrupted partway through
-  ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).
+- **Error states:** a check that did not verify is named, along with what went unverified. Declining the approval is one
+  of the ways a check does not verify, and it is reported the same way as any other
+  ([D10](artifacts/decision-log.md#d10-do-not-declare-the-script-in-the-permission-frontmatter)).
 
 ## Coordinations
 
@@ -178,7 +180,7 @@ table above assigns them.
 | The readability editor            | outbound  | The run hands over the draft and reads back a rewrite plus a fact-preservation report.   | The run reads the report before presenting. A report it cannot interpret is treated as absent, which triggers the retained checklist ([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).  |
 | The boundary record               | inbound    | The design-image check reads the record's received-material list and compares it to disk. | The check reads the record beside the deliverable it gates, from disk rather than from the run's memory, so it survives a compaction ([D13](artifacts/decision-log.md#d13-read-the-record-beside-the-deliverable-being-gated)).  |
 | The plan under review             | inbound    | The cross-reference check reads the plan and its companion files.                        | Read from disk rather than from the run's memory, on the same terms as the record ([D13](artifacts/decision-log.md#d13-read-the-record-beside-the-deliverable-being-gated)).                                                    |
-| The operator's permission surface | outbound  | Each skill declares the permission its check needs.                                     | Declared before the run reaches the check. The declaration prevents an interruption and is not what makes a value safe ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).                |
+| The operator's permission surface | outbound  | The run asks the operator to approve the check the first time it reaches it.             | One approval per run. No skill declares the check ahead of time, and no permission the skills hold is treated as making a value safe to use ([D10](artifacts/decision-log.md#d10-do-not-declare-the-script-in-the-permission-frontmatter)). |
 | The next planning skill in the chain | outbound | A later skill reads this run's artifacts as its input.                                | A check that did not verify is recorded in the artifacts, so the next run does not read the folder as fully verified ([D12](artifacts/decision-log.md#d12-record-an-unverified-check-in-the-artifacts-not-only-in-the-summary)).                  |
 
 ## Out of Scope

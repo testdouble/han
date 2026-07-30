@@ -394,3 +394,31 @@ six-point checklist is removed. The canonical readability rule answered it direc
 Two specialist handoffs the review named were not taken. `behavioral-analyst` was proposed for the stop-rule coupling in
 `F4`; the coupling was verifiable from the stop rule's own text, so it was resolved by evidence instead. `devops-engineer`
 was proposed for the permission-prompt question in `F7`; D10's own commitment settled it without a second opinion.
+
+## Findings found after this round closed
+
+These were not raised by the spec-stage review team. They are recorded here so the specification's provenance stays
+complete, because each one changed the specification after it was presented as finished.
+
+### S3: The permission declaration cannot work, and the specification promised what it buys
+
+- **Found by:** `han-core:software-architect`, during implementation planning, as finding `A4` and ledger entry `R1-C2` in
+  [implementation-iteration-history.md](implementation-iteration-history.md).
+- **Category:** behavioral commitment, coordination
+- **Evidence considered:**
+  `han-plugin-builder/skills/guidance/references/skill-building-guidance/script-execution-instructions.md:67-75` states
+  that permission patterns are prefix matches, that the command as it runs begins with an expanded absolute path the
+  pattern does not contain, that "the prefix won't match," and therefore "omit them from `allowed-tools`. Scripts typically
+  run once per skill invocation, so a single user approval is acceptable." A survey of the repository found nine skills
+  that invoke a script and none declaring its own; `han-reporting/skills/html-summary/SKILL.md` runs one while declaring no
+  shell permission at all. `han-core:adversarial-security-analyst` independently reported that no in-repo precedent exists
+  for such a declaration, which agrees with the rule while recommending the opposite action; the skill resolved the dispute
+  from the repository rather than from either specialist.
+- **Resolution:** Escalated, because it contradicted a commitment the specification had already made. The operator chose to
+  follow the repository's guidance. `D10` was rewritten and renamed, and the specification's Preconditions, the note under
+  the skill table, the User Interactions error-states entry, and the Coordinations permission row were all corrected to say
+  the operator approves the check once per run.
+- **Resolved by:** user input
+- **Affected decisions:** D10
+- **Affected tech-notes:** —
+- **Changed in spec:** Actors and Triggers, User Interactions, Coordinations
