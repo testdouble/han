@@ -177,10 +177,10 @@ because it is not a file the run can keep.
 Omit this section only when the run received no visual material at all.
 -->
 
-| Item | State it shows | Where it lives |
-| ---- | -------------- | -------------- |
+| Item                 | State it shows                   | Where it lives                    |
+| -------------------- | -------------------------------- | --------------------------------- |
 | card-empty-state.png | The card before any entry exists | `ui-designs/card-empty-state.png` |
-| Figma board | Every state of the card | https://figma.com/... |
+| Figma board          | Every state of the card          | https://figma.com/...             |
 
 <!--
 Also embed each item inline, next to the prose describing the state it depicts:

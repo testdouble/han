@@ -101,11 +101,11 @@ The line to calibrate against:
 
 The gate attaches to the YAGNI reasoning each skill already performs. No skill gains a sweep step it does not have.
 
-| Skill | Attach point |
-| ----- | ------------ |
-| `plan-implementation` | The existing YAGNI sweep step |
-| `plan-a-feature` | Finding-resolution path 5a, with cut entries flowing into the synthesis step |
-| `plan-a-phased-build` | Candidate evaluation, with cuts flowing to the deferred-phases list |
+| Skill                 | Attach point                                                                 |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `plan-implementation` | The existing YAGNI sweep step                                                |
+| `plan-a-feature`      | Finding-resolution path 5a, with cut entries flowing into the synthesis step |
+| `plan-a-phased-build` | Candidate evaluation, with cuts flowing to the deferred-phases list          |
 
 In `plan-a-feature` the gate reduces to a work-item check on the skill's own commitments, because that skill drafts from
 an interview rather than from an upstream artifact. It has no inherited commitments to sweep.
