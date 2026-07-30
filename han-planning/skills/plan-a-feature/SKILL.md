@@ -490,6 +490,11 @@ carry build-blocking severity**. Keep the finding: it may still be real, and you
 cannot do is reach the user looking like a blocker on the strength of something nobody read. Findings from a reviewer that
 never received visual material, per Step 6, are treated the same way when they turn on that material.
 
+This pass stays a step you perform rather than a check you run, and that is deliberate. It reads reviewer output while
+that output is still in the conversation, before any of it reaches a file, so an executed check would have nothing to
+read. Converting it would mean first writing every reviewer's raw output to disk. The other checks in this skill that
+read files already on disk are executed instead.
+
 **Pass C: check design-dependent findings against the designs.** For any finding that turns on visual material this run
 holds, open the material and check the finding against it before filing. A finding the material answers directly is closed
 with the citation rather than promoted to an open item. This is nearly free once the files are on disk, and it is the pass
