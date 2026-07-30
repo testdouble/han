@@ -15,11 +15,15 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
+that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
+under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
+per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
+the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
+When neither supplies content, no config is present and nothing changes.
 
 ## Review Approach
 
@@ -166,7 +170,7 @@ signal-based classification even when the project config sets a default band. If
 config supplies a band via `default-swarm-size` (per the config rule in
 [../../references/config-rule.md](../../references/config-rule.md)), use that band and skip the signal-based
 classification. State the chosen size and mode to the user in one line with the justification (e.g., "Medium: 4 files,
-one auth surface", "Medium: passed via `$size`", or "Medium: from `.han/config.md` `default-swarm-size`"). If the user
+one auth surface", "Medium: passed via `$size`", or "Medium: from the project `.han/config.md` `default-swarm-size`", naming whichever of the two files supplied it). If the user
 asked for team review on a plan that would otherwise be small, honor the request and treat it as medium-or-larger. If
 the user explicitly names a size in conversation, accept the override.
 

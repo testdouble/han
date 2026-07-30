@@ -17,11 +17,15 @@ allowed-tools:
 
 ## Project Context
 
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
+that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
+under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
+per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
+the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
+When neither supplies content, no config is present and nothing changes.
 
 # Project Documentation to Confluence
 
@@ -61,7 +65,7 @@ not summarize, trim, or reinterpret the user's context; pass it through so `han-
 as it would on its own — **except** add one explicit instruction: it must write the resulting documentation to a file
 under `/tmp/` (for example `/tmp/<feature-slug>.md`) rather than into the project's docs directory. This keeps the
 working draft out of the repo until the user decides to publish it, and because the path is explicit input it outranks
-any `output-directory` in the project's `.han/config.md` (see
+any `output-directory` the project or personal `.han/config.md` supplies (see
 [../../references/config-rule.md](../../references/config-rule.md)).
 
 Let `han-documentation:project-documentation` complete its full process (codebase exploration, writing the doc, content audit,

@@ -101,8 +101,8 @@ prose-producing skills source the shared readability standard from it).
 - [Skills index](./docs/skills/README.md). Every skill, alphabetized, with a scent line and a link to its long-form doc.
 - [Agents index](./docs/agents/README.md). Every agent, alphabetized, with a scent line and a link to its long-form doc.
 - [Workflows](./docs/workflows.md). The map of which skills chain together, with flow diagrams for the branching chains.
-- [Configuration](./docs/configuration.md). The optional `.han/config.md` file a project carries to set an output base
-  directory, a default swarm size, and extra agents for Han skills.
+- [Configuration](./docs/configuration.md). The optional `.han/config.md` files, one personal and one per project, that
+  set an output base directory, a default swarm size, a writing-voice profile, and extra agents for Han skills.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills
   dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture

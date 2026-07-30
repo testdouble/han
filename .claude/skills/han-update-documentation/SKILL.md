@@ -181,7 +181,8 @@ and Key concepts from the entity's frontmatter description and step body. Leave 
 only at sections that require operator judgment (Sources, In more detail, examples). Surface those markers in Step 6's
 report so the operator can finish them.
 
-**Apply the writing voice.** Every edit follows `han-communication/references/writing-voice.md`: no em-dashes, direct
+**Apply the writing voice.** Every edit follows `han-communication/references/writing-voice.md`: em-dashes only as a
+label-gloss or appositive separator, direct
 second person, no flattery or hype words, no `actually`, `just`, `leverage`, `utilize`, `showcase`, `robust` (as a vague
 positive), `It's worth noting`, or `Importantly`. When fixing a doc, do not introduce voice violations even if the
 surrounding doc has them.
@@ -205,7 +206,8 @@ Re-read every file that was edited or created. Confirm:
    resolved paths.
 3. **`README.md`, `CLAUDE.md`, and `docs/concepts.md` stay count-free** — no hardcoded entity total was introduced
    during the pass.
-4. **No em-dashes were introduced** in any edited file.
+4. **Any em-dash introduced sits in a legal position** (label-gloss separator or appositive aside), never standing in for
+   a sentence break.
 5. **No `{placeholder}` braces from templates remain** in any newly-created long-form doc.
 
 Then report to the operator:

@@ -82,6 +82,7 @@ flowchart TD
     arch["/architectural-analysis"] --> refactor
     review --> pr["/post-code-review-to-pr"]
     refactor --> tdd["/tdd"]
+    tdd --> prdesc["/update-pr-description"]
     investigate["/investigate"] --> iterate["/iterative-plan-review"]
 ```
 
@@ -97,6 +98,27 @@ flowchart TD
 - **[`/investigate`](../han-coding/docs/skills/investigate.md) →
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).** Root-cause the bug, then stress-test
   the proposed fix.
+- **[`/tdd`](../han-coding/docs/skills/tdd.md) →
+  [`/update-pr-description`](../han-github/docs/skills/update-pr-description.md).** Once the branch carries the change,
+  turn its commits into the PR body. This is the description half of the PR; `/post-code-review-to-pr` is the review half,
+  and the two are independent.
+
+## Planning the tests
+
+Two skills plan tests, and they split on who runs them. Both take the same kinds of input (a branch, a feature, a plan, a
+PR), so pick by the audience rather than by the stage.
+
+```mermaid
+flowchart TD
+    auto["/automated-test-planning"] --> tdd["/tdd"]
+    manual["/manual-test-planning"]
+```
+
+- **[`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md) →
+  [`/tdd`](../han-coding/docs/skills/tdd.md).** Find the coverage gaps and edge cases first, then implement the tests
+  test-first. The plan names what to write; `/tdd` writes it.
+- **[`/manual-test-planning`](../han-coding/docs/skills/manual-test-planning.md).** The sibling for steps a person runs by
+  hand, as an acceptance walkthrough or a QA pass. It ends at the document, because nothing downstream automates it.
 
 ## Understanding and documenting a codebase
 
@@ -109,6 +131,31 @@ These chains are linear, so they need no diagram.
 - **[`/code-overview`](../han-coding/docs/skills/code-overview.md) →
   [`/code-review`](../han-coding/docs/skills/code-review.md).** Get oriented in unfamiliar code or a PR first, then judge
   whether it is any good.
+- **[`/project-documentation`](../han-documentation/docs/skills/project-documentation.md) → the specialized documents.**
+  Feature and system docs live in `/project-documentation`, but three kinds of writing route elsewhere: a decision and its
+  rejected alternatives go to
+  [`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md), an operational
+  scenario someone gets paged for goes to [`/runbook`](../han-documentation/docs/skills/runbook.md), and an enforceable
+  convention goes to [`/coding-standard`](../han-coding/docs/skills/coding-standard.md).
+
+## Sharing the work with a non-technical reader
+
+A specification is written for the people who will build the thing. These two skills turn it into something for the
+people who are funding or approving it.
+
+```mermaid
+flowchart TD
+    feature["/plan-a-feature"] --> summary["/stakeholder-summary"]
+    summary --> html["/html-summary"]
+```
+
+- **[`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
+  [`/stakeholder-summary`](../han-reporting/docs/skills/stakeholder-summary.md) →
+  [`/html-summary`](../han-reporting/docs/skills/html-summary.md).** Specify the feature, restate it in plain language for
+  stakeholders, then render that summary as a single self-contained HTML file you can send to someone.
+- **[`/edit-for-readability`](../han-communication/docs/skills/edit-for-readability.md).** The polish pass for any of it.
+  Point it at a document any other skill produced, or at a draft in the conversation, and it rewrites the prose against the
+  shared readability standard without changing a fact.
 
 ## Related documentation
 

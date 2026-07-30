@@ -33,7 +33,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   Makefile was found), the skill surfaces the contradiction and asks which is correct.
 - **Multi-project aware.** Monorepos get repository-level bullets (default branch, docs, ADRs, coding standards, layout)
   plus one compact per-project block for each project's stack and commands.
-- **Keeps the `.han/config.md` pointer honest.** When the project carries a
+- **Keeps the project's `.han/config.md` pointer honest.** When the project carries a
   [`.han/config.md`](../../../docs/configuration.md), the skill offers to add a one-line pointer to it beside the
   Project Discovery section so the override file stays visible in the document every contributor reads. When the config
   is gone but a pointer remains, it offers to remove the stale line. Both only with your consent, and never as a

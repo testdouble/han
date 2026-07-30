@@ -12,11 +12,15 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), Bash(mkdir *)
 
 ## Project Context
 
-- .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-When the `.han/config.md` probe returns content, apply it per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md). When it returns nothing, no project config is
-present and nothing changes.
+As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
+that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
+under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
+per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
+the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
+When neither supplies content, no config is present and nothing changes.
 
 ## Guidance Location
 

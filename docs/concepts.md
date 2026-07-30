@@ -200,14 +200,15 @@ skills as machine input, are out of scope.
 Read the full [Readability](./readability.md) reference for the required properties, the staged application, the scope
 table, and the fidelity guard.
 
-## Project-local configuration
+## Configuration
 
-A project can carry one optional file, `.han/config.md`, that every Han skill reads on every run. It sets a base
-directory for the skills' markdown deliverables, a default swarm size for the sizing-aware skills, and extra agents
-for the dispatching skills to consider. A
-project without the file sees no change, and a broken file degrades quietly to defaults with a one-line note. Read the
-full [Configuration](./configuration.md) reference for the file's schema, the precedence chain, and the degradation
-contract.
+Han reads two optional `.han/config.md` files on every skill run: a personal one in your Claude Code configuration
+directory, and a project one at the project root. Either sets a base directory for the skills' markdown deliverables, a
+default swarm size for the sizing-aware skills, a writing-voice profile for the readability skills, and extra agents for
+the dispatching skills to consider. The personal file supplies defaults that follow you into every project, and the
+project file overrides them one setting at a time. Someone with neither file sees no change, and a broken file degrades
+quietly to defaults with a one-line note naming which file it came from. Read the full
+[Configuration](./configuration.md) reference for the schema, the precedence chain, and the degradation contract.
 
 ## When would you invoke an agent directly?
 

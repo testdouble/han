@@ -95,11 +95,29 @@ or emphasis, **voice takes precedence**.
 - Gratitude framing in short-form: "I'm very happy to announce", "I was lucky enough to", "I finally have".
 - Lists collaborators by name, with their handles/links, when crediting them.
 
+### Em-dash
+
+The em-dash, '—', is legal in exactly two positions:
+
+- **Separating a label from its gloss** in a scent line, an index entry, or a definition-style bullet, where the label
+  names a thing and the text after the dash says what it is:
+
+  ```markdown
+  - [`/tdd`](docs/skills/tdd.md) — Drive a feature through a red-green-refactor loop.
+  ```
+
+- **Setting off a parenthetical or appositive clarification** in a sentence, where the aside names or narrows what came
+  just before it: "the shared specialist roster — every agent except the readability-editor — plus the rule files".
+
+Everywhere else, prefer the punctuation that carries the break honestly. Do not reach for an em-dash where a period
+would end the sentence better, where a colon would introduce a list or a definition, or where a comma would join two
+clauses that belong together. An em-dash standing in for a sentence break is a rhythm problem, not a punctuation
+preference.
+
 ### Avoided words and phrases
 
 Based on what's conspicuously absent across the samples:
 
-- No em-dash, '—', anywhere, ever.
 - No "leverage" as a verb. Always "use".
 - No "utilize". Always "use".
 - No "empower", "unlock", "revolutionize", "game-changing", "transformative".

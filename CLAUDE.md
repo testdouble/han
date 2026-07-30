@@ -149,7 +149,7 @@ han-plugin-builder skill:
 │   └── references/     # Vendored config-rule.md
 ├── docs/               # Operator-facing documentation (cross-plugin surfaces; long-form docs now live in each plugin)
 │   ├── concepts.md
-│   ├── configuration.md   # The .han/config.md project-local configuration guide (canonical annotated example)
+│   ├── configuration.md   # The .han/config.md configuration guide, personal and project (canonical annotated example)
 │   ├── evidence.md     # What counts as evidence in Han and how skills characterize its strength
 │   ├── local-development.md   # Testing skill changes locally via a local marketplace source
 │   ├── plugin-readme.md   # What every plugin's front-door README.md carries
@@ -168,6 +168,7 @@ han-plugin-builder skill:
 │   ├── templates/      # Templates and coverage rule for long-form docs
 │   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
 │   └── research/       # Standalone research reports not tied to a specific plan
+├── test/               # Harness-level Bats checks (a script's own tests sit beside it)
 └── images/             # Banner and graphics for README
 ```
 
@@ -220,11 +221,12 @@ such as Claude, should be referenced here.
 - **[CHANGELOG.md](./CHANGELOG.md).** Version history. Check when a behavior or skill name in user-supplied context
   doesn't match what's on disk. May be a pre-2.0 rename or a removed feature.
 
-### Project-local configuration
+### Configuration
 
 - **[docs/configuration.md](./docs/configuration.md).** The operator guide for `.han/config.md`, the optional file a
-  consuming project carries to set an output base directory, a default swarm size, and extra agents for Han skills.
-  Holds the single canonical annotated schema example.
+  person carries in their Claude Code configuration directory and a consuming project carries at its root, to set an
+  output base directory, a default swarm size, a writing-voice profile, and extra agents for Han skills. The project
+  file overrides the personal one setting by setting. Holds the single canonical annotated schema example.
 - **[han-core/references/config-rule.md](./han-core/references/config-rule.md).** The canonical interpretation contract
   (schema tokens, precedence, containment, pool-join, degradation) every participating skill applies. Vendored
   byte-identical into every skill-carrying plugin's `references/`; edit the canonical copy and re-sync the others.
@@ -232,8 +234,8 @@ such as Claude, should be referenced here.
 ### Writing voice
 
 - **[han-communication/references/writing-voice.md](./han-communication/references/writing-voice.md).** Voice profile
-  every doc in the plugin follows. No em-dashes, direct second person, plainspoken mentor tone, named voice violations
-  to avoid. Single canonical copy in the foundational `han-communication` plugin; no vendored copies. Consuming skills
+  every doc in the plugin follows. Em-dashes only as a label-gloss or appositive separator, direct second person,
+  plainspoken mentor tone, named voice violations to avoid. Single canonical copy in the foundational `han-communication` plugin; no vendored copies. Consuming skills
   source it cross-plugin by invoking `han-communication:readability-guidance`.
 - **[han-communication/references/explanation-rule.md](./han-communication/references/explanation-rule.md).** The standard
   for explaining technical work to a reader who will not implement it: give a concrete outcome they could observe rather

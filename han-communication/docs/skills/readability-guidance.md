@@ -47,8 +47,9 @@ and _how_ the skill is used. For what the skill does internally, read the skill 
 
 ## How it works
 
-The skill first resolves which writing-voice profile the run uses: the project's own file when `.han/config.md` sets
-`writing-voice` and the file exists, otherwise the built-in profile. When the configured file is missing, it warns you
+The skill first resolves which writing-voice profile the run uses: the file either `.han/config.md` names when
+`writing-voice` is set and that file exists, otherwise the built-in profile. A relative value resolves against the
+folder holding the config that declared it, so a profile kept beside your personal config applies in every project. When the configured file is missing, it warns you
 and asks whether to fall back to the built-in Han voice or skip the writing voice entirely. It then reads the
 readability rule and the resolved voice profile so their content enters the caller's context, and instructs the caller
 to hold the audience frame, draft into its template, run the standardized self-check, and (for a synthesis skill)

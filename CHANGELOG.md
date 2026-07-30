@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+Configuration becomes two files instead of one. A person can now carry a personal `.han/config.md` inside their Claude
+Code configuration directory, holding the settings that should follow them into every project, and a project's own
+`.han/config.md` overrides it setting by setting. All 40 skills read both. Each resolves the configuration directory
+with a probe, then reads the personal file with the Read tool as its first action, while the project file stays a probe
+because it sits in the working directory. That split is deliberate: a probe runs at skill load, where it cannot prompt
+and cannot fall back, so a permission decision against one aborts the skill outright. The personal file is the one
+lookup that reaches outside the project, which makes it the one lookup a probe cannot safely carry. `config-rule.md`
+records the split and treats a personal read that returns no file the same way it treats an unreachable directory, with
+no note. The matching authoring rule now lives in `han-plugin-builder`: a context probe reads only inside the project
+working directory, and anything further out is gathered with the Read tool during the run.
+
 The readability capability moves into a new foundational plugin, `han-communication`, so the suite has one owner for its
 writing standard and no duplicated copies. `han-communication` depends on nothing and owns the single canonical
 `readability-rule.md` and `writing-voice.md`, the `readability-editor` agent, the `edit-for-readability` skill, and a

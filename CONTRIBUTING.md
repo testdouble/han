@@ -160,15 +160,17 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
 ## Adding a skill
 
 1. Decide the plugin using [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) above,
-   then scaffold the folder under that plugin's `skills/{name}/` directory (`han-core`, `han-documentation`,
-   `han-research`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, or
-   `han-linear`) and add a `SKILL.md`.
+   then scaffold the folder under that plugin's `skills/{name}/` directory (`han-communication`, `han-core`,
+   `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`,
+   `han-atlassian`, `han-linear`, or `han-plugin-builder`) and add a `SKILL.md`.
 2. Write the `SKILL.md`:
    - Frontmatter with `name`, `description`, `allowed-tools`. See
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `{plugin}/docs/skills/{name}.md` and
-   fill it in. Every skill gets a long-form doc.
+   fill it in. Every skill gets a long-form doc. If the skill runs inline in a calling skill's context and returns no
+   artifact, follow the inline-guidance variant in the
+   [coverage rule](./docs/templates/coverage-rule.md#the-inline-guidance-variant) instead.
 4. Add a scent line to the plugin's `README.md` and one alphabetized entry to the [skills index](./docs/skills/README.md),
    both reusing the long-form doc's own summary line as the canonical scent so the three do not drift.
 5. Add the skill to the catalog in [Root CLAUDE.md](./CLAUDE.md). The indexes and concept docs list skills without a
@@ -254,7 +256,8 @@ All han documentation follows the writing voice profile in
 [`han-communication/references/writing-voice.md`](./han-communication/references/writing-voice.md). The most
 load-bearing rules:
 
-- No em-dashes anywhere. Replace with periods, colons, commas, or parentheses.
+- Em-dashes only in two positions: separating a label from its gloss in a scent line or definition bullet, and setting
+  off a parenthetical or appositive aside. Anywhere else, use a period, colon, comma, or parentheses.
 - Direct second person (_"you"_), mentor-tone, plainspoken. No flattery, no hype words.
 - Avoid _"leverage," "utilize," "showcase," "robust" (as a vague positive), "actually," "just," "It's worth noting,"
   "Importantly,"_ and similar AI-slop tells.
@@ -288,7 +291,7 @@ Before opening the PR, run through this checklist:
 - [ ] Long-form doc follows the template.
 - [ ] The skill or agent appears in the right index, at the right group, with accurate scent.
 - [ ] Internal links resolve.
-- [ ] No em-dashes anywhere in the doc.
+- [ ] Em-dashes appear only as a label-gloss separator or an appositive aside, never standing in for a sentence break.
 - [ ] No _"actually," "just," "leverage," "utilize," "showcase," "robust" (vague), "It's worth noting," "Importantly,"_
       or other voice violations.
 - [ ] `npm run lint` passes.
