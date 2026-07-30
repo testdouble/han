@@ -331,14 +331,14 @@ in these checks the untrusted values never reach the argument list at all.
 
 ### Assumptions
 
-| ID  | Assumption                                                                                             | What Changes If Wrong                                                                                                | Status       |
-| --- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- | ------------ |
-| A1  | The skill-directory variable expands to an absolute path at run time, so the invocation form resolves  | Every invocation in all five skills is wrong, and the checks never start                                             | Verified     |
-| A2  | A permission prefix cannot match the expanded command, so a declaration would be inert                 | Five declarations would have been worth adding, and the operator would not approve once per run                      | Verified     |
-| A3  | How this host expands a skill-directory variable inside a permission prefix and inside a Bash argument | Nothing in this plan; the plan uses per-skill paths and declares no permission, so both halves are already moot      | Runtime-only |
-| A4  | A two-folder `plan-work-items` run behaves as the boundary rule's text describes                       | The record beside the deliverable might not be self-consistent, and the whole-record check would need a second input | Open         |
-| A5  | Every new `.bats` file anywhere outside `node_modules` is collected by the test command                | The new tests exist and never run                                                                                    | Verified     |
-| A6  | A smaller review team produces a materially equivalent plan                                            | The saving costs plan quality, and the expert counts would need revisiting                                           | Deferred     |
+| ID  | Assumption                                                                                             | What Changes If Wrong                                                                                                | Status   |
+| --- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- | -------- |
+| A1  | The skill-directory variable expands to an absolute path at run time, so the invocation form resolves  | Every invocation in all five skills is wrong, and the checks never start                                             | Verified |
+| A2  | A permission prefix cannot match the expanded command, so a declaration would be inert                 | Five declarations would have been worth adding, and the operator would not approve once per run                      | Verified |
+| A3  | How this host expands a skill-directory variable inside a permission prefix and inside a Bash argument | Nothing in this plan; the plan uses per-skill paths and declares no permission, so both halves are already moot      | Deferred |
+| A4  | A two-folder `plan-work-items` run behaves as the boundary rule's text describes                       | The record beside the deliverable might not be self-consistent, and the whole-record check would need a second input | Open     |
+| A5  | Every new `.bats` file anywhere outside `node_modules` is collected by the test command                | The new tests exist and never run                                                                                    | Verified |
+| A6  | A smaller review team produces a materially equivalent plan                                            | The saving costs plan quality, and the expert counts would need revisiting                                           | Deferred |
 
 - A1 and A2 are settled by
   `han-plugin-builder/skills/guidance/references/skill-building-guidance/script-execution-instructions.md`, lines 60 to
@@ -462,11 +462,18 @@ justify revisiting it. Each of the eight was proposed and then declined by the s
     `## Deferred (YAGNI)`, which carries the same trigger.
   - **Blocks implementation:** No, and it cannot be worked before implementation. Inherited from the specification and
     carried as assumption A6.
-- **OI-3:** How this host expands a skill-directory variable inside a permission prefix, and inside a Bash argument,
-  could not be inspected from this repository.
-  - **Resolves when:** someone observes a run on the host, or the host documents the expansion.
-  - **Blocks implementation:** No. It is now moot on both halves. The permission half is moot because this plan
-    declares no permission; the argument half is moot because every invocation uses the skill's own path.
+- **OI-3: Resolved by deferral.** How this host expands a skill-directory variable inside a permission prefix, and
+  inside a Bash argument, could not be inspected from this repository.
+  - **Resolved by:** the operator closed it by deferral. The underlying question is still unanswered, and this plan
+    stops carrying it because two decisions made it moot: the permission half by
+    [D-12](artifacts/implementation-decision-log.md#d-12-no-permission-frontmatter-edits-in-any-skill), which declares no
+    permission, and the argument half by
+    [D-1](artifacts/implementation-decision-log.md#d-1-four-per-skill-copies-of-the-design-image-check), which gives every
+    invocation the skill's own path.
+  - **Reopens if:** anyone proposes replacing the four per-skill copies with one shared copy. That proposal cannot be
+    evaluated without the answer, and the deferred entry for a shared scripts directory under `## Deferred (YAGNI)`
+    carries the same dependency.
+  - **Blocks implementation:** No, and no longer open.
     Unverified: could not inspect the host runtime, because it lives outside this repository.
 - **OI-4:** No plan folder in this repository exercises the two-folder `plan-work-items` case, so the record convention
   in work unit 8 rests on the boundary rule's text rather than an observed run.
