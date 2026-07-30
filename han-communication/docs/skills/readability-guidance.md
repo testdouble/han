@@ -41,6 +41,9 @@ and _how_ the skill is used. For what the skill does internally, read the skill 
   [`readability-editor`](../agents/readability-editor.md) agent after its full draft exists.
 - **Rewriting an existing target on demand.** Use [`/edit-for-readability`](./edit-for-readability.md), which dispatches
   the editor over a file, pasted text, or a conversation draft.
+- **Explaining technical work to a reader who will not implement it.** Use
+  [`/explanation-guidance`](./explanation-guidance.md), which surfaces the standard governing what a run says to a person
+  in a turn. This skill governs the shape of a written deliverable.
 
 ## How it works
 
@@ -77,5 +80,7 @@ drafting point.
   for the rewrite pass, separate from this sourcing step.
 - [`/edit-for-readability`](./edit-for-readability.md). The standalone skill that rewrites an existing target against
   the standard on demand.
+- [`/explanation-guidance`](./explanation-guidance.md). The skill that surfaces the sibling standard, governing what a
+  run says to a person in a turn rather than the shape of a written deliverable.
 - [`SKILL.md` for /readability-guidance](../../skills/readability-guidance/SKILL.md). The internal
   process definition.
