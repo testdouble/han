@@ -286,9 +286,13 @@ justify revisiting it.
   - **Blocks implementation:** No, and no longer open.
 - **OI-2:** Whether a smaller team produces a materially different plan is unmeasured, and the source research says the
   honest sequencing is to measure before committing to a permanent count.
-  - **Resolves when:** one real plan is run at the current counts and the reduced counts and the outputs compared.
-  - **Blocks implementation:** No. The operator chose the reduction knowing the trade, and the team override remains the
-    control. Recorded so the decision is not later read as evidence-backed on quality.
+  - **Deferred until after implementation**, at plan stage. The comparison needs the reduced counts to exist before it
+    can be run, so no planning work can close it. The operator will open separate work for the comparison if it turns
+    out to be worth running.
+  - **Resolves when:** after the change ships, one real plan is run at the old counts and the new counts and the outputs
+    compared.
+  - **Blocks implementation:** No, and it cannot be worked before implementation. Recorded so the decision is not later
+    read as evidence-backed on quality.
 
 ## Summary
 

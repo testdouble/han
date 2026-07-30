@@ -338,7 +338,7 @@ in these checks the untrusted values never reach the argument list at all.
 | A3  | How this host expands a skill-directory variable inside a permission prefix and inside a Bash argument | Nothing in this plan; the plan uses per-skill paths and declares no permission, so both halves are already moot      | Runtime-only |
 | A4  | A two-folder `plan-work-items` run behaves as the boundary rule's text describes                       | The record beside the deliverable might not be self-consistent, and the whole-record check would need a second input | Open         |
 | A5  | Every new `.bats` file anywhere outside `node_modules` is collected by the test command                | The new tests exist and never run                                                                                    | Verified     |
-| A6  | A smaller review team produces a materially equivalent plan                                            | The saving costs plan quality, and the expert counts would need revisiting                                           | Open         |
+| A6  | A smaller review team produces a materially equivalent plan                                            | The saving costs plan quality, and the expert counts would need revisiting                                           | Deferred     |
 
 - A1 and A2 are settled by
   `han-plugin-builder/skills/guidance/references/skill-building-guidance/script-execution-instructions.md`, lines 60 to
@@ -347,7 +347,8 @@ in these checks the untrusted values never reach the argument list at all.
 - A4 is the unobserved half of the two-record case.
   Unverified: could not inspect a real two-folder `plan-work-items` run, because no plan folder in this repository
   exercises the split-folder case.
-- A6 is inherited from the specification as OI-2 and is not this plan's to resolve.
+- A6 is inherited from the specification as OI-2 and is not this plan's to resolve. It is deferred rather than open,
+  because the comparison that would settle it needs the reduced counts to exist first.
 
 ## Cut for Scope
 
@@ -451,11 +452,16 @@ justify revisiting it. Each of the eight was proposed and then declined by the s
   - **Resolved by:** the operator confirmed the derived counts as they stand. Work unit 2 builds to the counts in
     [D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names) with no adjustment.
   - **Blocks implementation:** No, and no longer open. Inherited from the specification.
-- **OI-2:** Whether a smaller team produces a materially different plan is unmeasured, and the source research says the
-  honest sequencing is to measure before committing to a permanent count.
-  - **Resolves when:** one real plan is run at the current counts and the reduced counts and the outputs compared.
-  - **Blocks implementation:** No. The operator chose the reduction knowing the trade, and the team override remains the
-    control. Inherited from the specification and carried as assumption A6.
+- **OI-2: Deferred until after implementation.** Whether a smaller team produces a materially different plan is
+  unmeasured, and the source research says the honest sequencing is to measure before committing to a permanent count.
+  - **Why deferred rather than open:** the comparison cannot be run until the reduced counts exist to compare against, so
+    this plan has no way to close it. The operator deferred it on those grounds and will open separate work if the
+    comparison turns out to be worth running.
+  - **Resolves when:** after this plan ships, one real plan is run at the old counts and the new counts and the outputs
+    compared. Tracked as a deferral rather than a blocker, alongside the cost-measurement entry under
+    `## Deferred (YAGNI)`, which carries the same trigger.
+  - **Blocks implementation:** No, and it cannot be worked before implementation. Inherited from the specification and
+    carried as assumption A6.
 - **OI-3:** How this host expands a skill-directory variable inside a permission prefix, and inside a Bash argument,
   could not be inspected from this repository.
   - **Resolves when:** someone observes a run on the host, or the host documents the expansion.
@@ -475,7 +481,8 @@ justify revisiting it. Each of the eight was proposed and then declined by the s
   [scope boundary](artifacts/scope-boundary.md). No `feature-technical-notes.md` exists for this feature, so no `T#`
   mechanic constrains this plan and none is cited; that absence is a fact about the specification, not a gap in it.
 - **Specification decisions inherited:** D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13
-- **Specification open items respected:** OI-1, OI-2, carried above under the same identifiers
+- **Specification open items respected:** OI-1 (closed by the operator) and OI-2 (deferred until after implementation),
+  carried above under the same identifiers
 - **Decision rationale and rejected alternatives:**
   [artifacts/implementation-decision-log.md](artifacts/implementation-decision-log.md)
 - **Team composition and round-by-round history:**
