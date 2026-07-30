@@ -168,6 +168,7 @@ han-plugin-builder skill:
 │   ├── templates/      # Templates and coverage rule for long-form docs
 │   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
 │   └── research/       # Standalone research reports not tied to a specific plan
+├── test/               # Harness-level Bats checks (a script's own tests sit beside it)
 └── images/             # Banner and graphics for README
 ```
 
