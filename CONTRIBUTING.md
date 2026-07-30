@@ -160,9 +160,9 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
 ## Adding a skill
 
 1. Decide the plugin using [Which plugin does the change belong in?](#which-plugin-does-the-change-belong-in) above,
-   then scaffold the folder under that plugin's `skills/{name}/` directory (`han-core`, `han-documentation`,
-   `han-research`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, or
-   `han-linear`) and add a `SKILL.md`.
+   then scaffold the folder under that plugin's `skills/{name}/` directory (`han-communication`, `han-core`,
+   `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`,
+   `han-atlassian`, `han-linear`, or `han-plugin-builder`) and add a `SKILL.md`.
 2. Write the `SKILL.md`:
    - Frontmatter with `name`, `description`, `allowed-tools`. See
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
