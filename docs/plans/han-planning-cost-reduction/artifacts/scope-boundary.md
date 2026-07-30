@@ -60,7 +60,13 @@ merge target. No scope was added or removed beyond the report's own recommendati
 
 ## Direction of Travel
 
-Unanswered.
+Answered. Asked whether the review teams, the hand-run checks, or the readability self-check in the planning skills are
+being deprecated, replaced, or migrated away from in the v5 line. The operator answered:
+
+> no, they stay as-is in v5
+
+All three surfaces this run changes are staying in the v5 line, so the run specifies against the current structure and
+carries no deprecation risk on any of them.
 
 ## Visual Material Received
 
