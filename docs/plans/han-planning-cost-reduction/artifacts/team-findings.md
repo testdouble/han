@@ -379,11 +379,11 @@ rather than by a reviewer. They are recorded here rather than as review findings
 
 ## Escalation register
 
-| Question asked                                                        | Answer received             | Where it landed                                                                                                    |
-| --------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Confirmation turn: boundary restatement plus direction of travel      | "no, they stay as-is in v5" | `scope-boundary.md`, Direction of Travel                                                                            |
-| How far should the reviewer count come down?                          | "go with recommendation"    | [D1](decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)                      |
-| What should happen to the check that cannot become an executed check? | "go with recommendation"    | [D4](decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)                                            |
+| Question asked                                                                                | Answer received                                                  | Where it landed                                                                                                 |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Confirmation turn: boundary restatement plus direction of travel                              | "no, they stay as-is in v5"                                      | `scope-boundary.md`, Direction of Travel                                                                        |
+| How far should the reviewer count come down?                                                  | "go with recommendation"                                         | [D1](decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)                 |
+| What should happen to the check that cannot become an executed check?                         | "go with recommendation"                                         | [D4](decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)                                        |
 | Medium and small become the same team once the fixed seats are counted; which numbers govern? | "go with recommendation" (count domain experts, not total seats) | [D1](decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone), resolving `F5` |
 
 A third interview question was drafted and withdrawn. It would have asked what guards against losing a fact once the

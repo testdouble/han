@@ -198,3 +198,14 @@ shared check harness or output-formatting library across the two scripts; a shar
 a `--this-run-only` flag; a shared validation or sanitizing helper; JSON output; a configurable extension allow-list or
 strict mode; and an audit trail of refused rows beyond what `D12` already requires. Each carries a reopening trigger in the
 plan's deferred section.
+
+## Post-synthesis correction
+
+One specialist recommendation survived the loop and did not reach the plan. `han-core:software-architect` (`A6`) asked
+that the shared output shape be "stated once in the plan so both scripts and both test files use the same vocabulary,"
+and `han-core:test-engineer` needed that same shape to write assertions against the three-outcome contract. Synthesis
+carried the exit-status half of the contract into `D-9` and dropped the printed shape.
+
+Restored to the plan's Implementation Approach as a named convention with the key set spelled out, alongside the note
+that it is a convention rather than shared code. No decision changed; `D-9` already owned the outcome contract, and this
+is the detail it referenced without stating.
