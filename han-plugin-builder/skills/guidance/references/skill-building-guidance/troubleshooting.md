@@ -347,6 +347,46 @@ allowed-tools: Read, Grep, Glob
 
 See [AskUserQuestion Bug](./allowed-tools-AskUserQuestion.md) for details.
 
+## A Probe Reading Outside the Project Is Refused by the Classifier
+
+**Symptom:** A skill fails on load, naming one context injection command, with an error ending in
+`Permission for this action was denied by the Claude Code auto mode classifier. Reason: Blocked by classifier.` The
+command uses an allowlisted read-only tool such as `cat`, so the allowlist says it should have been fine. The observed
+case:
+
+```
+Error: Shell command permission check failed for pattern
+"!`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`":
+Permission for this action was denied by the Claude Code auto mode classifier.
+Reason: Blocked by classifier.
+```
+
+**Cause:** The command's target sits outside the project working directory, in this case the Claude Code configuration
+directory, which also holds credentials and settings. The allowlist covers the command, not what it is pointed at, and a
+permission layer this guidance does not otherwise describe declined the read. Because context injection never prompts,
+the refusal aborted the whole skill instead of degrading.
+
+Note the error text differs from the two failure modes below and above: it names an auto mode classifier rather than
+`This command requires approval`. Search on either phrase lands here.
+
+**Fix:** Resolve the path in the probe, and read the file with the Read tool during the run.
+
+**Before (broken — probe reads outside the project):**
+
+```markdown
+- personal config: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+```
+
+**After (correct — probe resolves the location only):**
+
+```markdown
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+
+As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above.
+```
+
+See [Context Injection Commands](./context-injection-commands.md) for the full rule.
+
 ## Context Injection Syntax in Prose Triggers Execution
 
 **Symptom:** Skill fails on load with

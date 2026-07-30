@@ -54,6 +54,11 @@ A command auto-approves only when every command in it, and every stage of a pipe
    `git diff`, `git rev-parse`, and `git config --get`. Commands on this list need no `allowed-tools` entry.
 2. Matched by an explicit `Bash()` rule in the skill's `allowed-tools`.
 
+Read the allowlist as a claim about the command, not about its arguments. A probe using an allowlisted command has
+still been refused in the field over what it was pointed at, with an error naming a permission classifier this guidance
+does not describe. Treat the two rules above as necessary rather than sufficient, and pair them with the path rule
+below.
+
 Pipes and `&&` / `;` / `||` chains are not forbidden. The loader splits them and checks each part against the two rules
 above, so `git log --oneline | head` and `git rev-parse HEAD && git branch --show-current` load fine because every part
 is an allowlisted read-only form. What breaks a skill is a part that is neither allowlisted nor declared, or one of the
@@ -118,6 +123,41 @@ the guarded form self-sufficient: `git config --get user.name || echo unset` loa
 This reflects the loader's current behavior. The exact allowlist can shift between Claude Code versions, so when a
 command is not clearly a plain read-only form, prefer the simplest single-command version or move the logic into a
 script (next rule).
+
+### Rule: Keep every probe reading inside the project working directory
+
+A probe reads files in the directory the skill runs from. When a step needs the content of a file somewhere else, gather
+it during the run with the Read tool instead.
+
+The reason is the no-prompt, no-fallback behavior from the rule above. A probe stakes the whole skill on a permission
+decision it cannot recover from, and a read reaching outside the project into a home directory, a configuration
+directory, or anywhere holding credentials is the read most likely to draw a refusal. A Read-tool call during the run
+carries no such risk to the skill: the step handles a read that returns nothing and carries on.
+
+Han shipped this mistake once. Forty skills read an optional personal config through a probe pointed at the Claude Code
+configuration directory, and the refusal that followed took whole skills down before they did any work:
+
+```
+Error: Shell command permission check failed for pattern
+"!`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`":
+Permission for this action was denied by the Claude Code auto mode classifier.
+Reason: Blocked by classifier.
+```
+
+Resolving a path in a probe stays fine, because `echo` opens no file. Reading through it does not.
+
+**Prefer (probe resolves the location, a step reads the file):**
+
+```
+- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+```
+
+**Avoid (probe reads outside the project):**
+
+```
+!`cat "$HOME/.someconfig" 2>/dev/null || echo ""`
+!`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+```
 
 ### Rule: Use shell scripts for complex operations
 
@@ -243,6 +283,7 @@ pattern for documentation purposes.
 | Dangerous tool flags                             | `find ... -exec`, `find ... -delete`, `sed -i`          | Refused even with a matching `Bash()` prefix rule                                                                                                              |
 | A stage that is neither allowlisted nor declared | `command \| custom-bin`                                 | Aborts the whole skill load; the error names only the offending stage                                                                                          |
 | Large injected output                            | full `git diff`, unbounded `git log`, whole-tree `find` | Bound at the source (`-n`, `--stat`, `--name-only`, `-maxdepth`); a big value persists in context for the whole run. `\| head -N` is a last resort, not broken |
+| A read reaching outside the project              | `cat "$HOME/.config/thing"`                             | Stakes the skill load on a permission decision with no fallback; resolve the path in a probe and read the file with the Read tool during the run               |
 | `ls` for detection                               | `ls filename`                                           | Use `find` instead; `ls` fails on missing files                                                                                                                |
 | Heredocs                                         | `<<'EOF' ... EOF`                                       | Extract to shell scripts                                                                                                                                       |
 | Literal bang-backtick syntax in prose            | Showing the pattern as an example                       | Loader parses raw text; use "bang-backtick syntax" instead                                                                                                     |
@@ -316,11 +357,13 @@ Examples organized by purpose:
 4. Guard any read that exits non-zero when its subject is absent (`git symbolic-ref … origin/HEAD`,
    `git log/diff origin/HEAD…`, `gh pr diff`, `git config user.name/email`) with a trailing
    `2>/dev/null || echo <sentinel>`, and gate its consumer on that sentinel
-5. Use `find` for file/directory detection, not `ls`
-6. Extract complex operations into shell scripts
-7. Handle empty output in step logic; keep injected values small by bounding at the source (`git log -n`, `--stat`,
+5. Keep every probe reading inside the project working directory; resolve an outside path with `echo` and read the file
+   with the Read tool during the run
+6. Use `find` for file/directory detection, not `ls`
+7. Extract complex operations into shell scripts
+8. Handle empty output in step logic; keep injected values small by bounding at the source (`git log -n`, `--stat`,
    `find -maxdepth`), and never trim a result you then check for completeness
-8. Do not duplicate commands across sections
-9. Use separate `Bash()` entries in `allowed-tools`
-10. Never use the literal bang-backtick pattern in SKILL.md prose — the loader parses raw text regardless of markdown
+9. Do not duplicate commands across sections
+10. Use separate `Bash()` entries in `allowed-tools`
+11. Never use the literal bang-backtick pattern in SKILL.md prose — the loader parses raw text regardless of markdown
     escaping
