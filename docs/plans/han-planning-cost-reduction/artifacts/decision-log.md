@@ -7,6 +7,19 @@ rejected alternatives.
 Source research: `docs/research/han-planning-cost-reduction.md`. Its artifact identifiers (`A#`) are cited where a
 decision rests on them. Findings from the review round live in [team-findings.md](team-findings.md).
 
+Every decision was classified full or trivial once, after the review round returned. Thirteen decisions were settled:
+eleven by evidence and two by user input (`D1` and `D4`). The trivial entry, `D5`, was settled by evidence and carries no
+`Settled by:` field, because the trivial format has none. No `feature-technical-notes.md` exists for this feature, so
+every `Linked technical notes:` field reads `—` and no `T#` is cited anywhere.
+
+## Trivial decisions
+
+- D5: Record why the third check cannot be executed, in the skill itself — the skills carrying that check state, at that
+  step, that it runs on returned reviewer output rather than on a file, and that this is why it is not executed
+  (considered leaving it undocumented and relying on this log; rejected because a reader of the skill file is not
+  necessarily a reader of this folder). — Referenced in spec: — (the behavior it annotates is stated at
+  [D4](#d4-convert-two-checks-and-leave-the-third-narrated)).
+
 ## Full decisions
 
 ### D1: Reduce the number of domain experts and leave the repeat ceiling alone
@@ -17,7 +30,8 @@ decision rests on them. Findings from the review round live in [team-findings.md
 - **Rationale:** The expert count costs the operator on every run. The repeat ceiling only costs them on a review that is
   still finding problems, because an early-stop rule already ends the review once the most recent pass produced two or
   fewer new findings and nothing major. Counting experts rather than seats keeps the three size bands distinct; counting
-  seats collapsed medium into small, because two seats on every team are filled before any expert is chosen.
+  seats collapsed medium into small, because two seats on every `plan-implementation` team are filled before any expert is
+  chosen.
 - **Evidence:** Codebase. The current caps state their own composition as a coordinator, a generalist, and N chosen
   specialists, which is how the seat-versus-expert distinction was found. The early-stop rule is stated in both team
   skills. Research artifacts `A6`, `A7`, `A20`, `A13`, `A19`, `A38`. `A20` is the strongest: a 14-mode failure taxonomy
@@ -47,27 +61,37 @@ decision rests on them. Findings from the review round live in [team-findings.md
 - **Linked technical notes:** —
 - **Dependent decisions:** D2, D3
 - **Settled by:** user input
-- **Referenced in spec:** Outcome, Primary Flow, Out of Scope
+- **Referenced in spec:** Outcome, Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, Out of Scope
 
 ### D2: Scope the reduction to the two skills the boundary names
 
 - **Decision:** The expert reduction applies to `plan-implementation` and `iterative-plan-review`. In
   `iterative-plan-review` the numbers are derived one band down: its medium goes from one-or-two experts to one and its
-  large from two-or-three to two, making total teams three and four; its smallest size convenes no team. `plan-a-feature`
-  also convenes a review team and is cut for scope rather than reduced.
+  large from two-or-three to two. That skill fills two seats before any expert is chosen, plus a third whenever the plan
+  under review makes claims about code, so the resulting total teams are three and four without that third seat and four
+  and five with it, all inside the existing total caps. Its smallest size convenes no team. `plan-a-feature` also convenes
+  a review team and is cut for scope rather than reduced.
 - **Rationale:** The boundary's Stated Scope names two skills. `plan-a-feature`'s team is a real saving the boundary does
   not ask for, so the scope gate cuts it rather than the run asking the operator to re-decide something the boundary
   settled. The derived numbers for `iterative-plan-review` follow the same principle rather than a separate agreement,
-  because that skill has different fixed seats, so they are recorded as derived and raised as `OI-1`.
+  because that skill has different fixed seats, so they are recorded as derived and raised as `OI-1`. The conditional
+  third seat is why the derivation is not a clean one-band shift: on a plan that makes claims about code, the medium band
+  already carries no more than one expert, so the reduction changes nothing at medium on those runs and binds on the large
+  band alone. The spec states that rather than implying a saving at both bands.
 - **Evidence:** Boundary record's Stated Scope, quoting the source option: "starting with `plan-implementation` ... and
   `iterative-plan-review` team mode." Codebase for the current caps in all three team-convening skills, including
-  `plan-a-feature`'s, which the first draft of this spec missed entirely.
+  `plan-a-feature`'s, which the first draft of this spec missed entirely. Codebase for the seat composition of each team:
+  `plan-implementation` fills two seats first, `iterative-plan-review` fills two plus a conditionally required third, and
+  `plan-a-feature` fills one. The conditional seat was found during synthesis, after the review round closed.
 - **Rejected alternatives:**
   - Include `plan-a-feature` on the reading that "starting with" implies a non-exhaustive list. Rejected because the scope
     gate cuts what the boundary does not ask for, and the cut list is where the operator reinstates it. Applying a
     reduction to a third skill on an inference would be the over-scoping the gate exists to catch.
   - Apply the reduction only to `plan-implementation`. Rejected because the boundary names both, and a reviewing run at
     large convenes a comparable team.
+  - Express `iterative-plan-review`'s reduction in total team seats, matching how that skill states its own caps today.
+    Rejected for the same reason `D1` rejected seat counting, and because the conditionally required third seat makes a
+    seat count mean two different compositions depending on the plan under review.
 - **Driven by findings:** F1, F16
 - **Linked technical notes:** —
 - **Dependent decisions:** —
@@ -94,44 +118,36 @@ decision rests on them. Findings from the review round live in [team-findings.md
 ### D4: Convert two checks and leave the third narrated
 
 - **Decision:** Two checks become checks the run executes: confirming every design image the boundary record lists is on
-  disk, and confirming a reviewed plan's cross-references resolve. The check that marks a finding resting on an
-  uninspected input stays a described step, and the reason it cannot convert is recorded in the skills that carry it.
+  disk, in the four skills that carry that check, and confirming a reviewed plan's cross-references resolve, in the one
+  skill the boundary names. No skill gains both. The check that marks a finding resting on an uninspected input stays a
+  described step, and the reason it cannot convert is recorded in the skills that carry it. The equivalent
+  cross-reference check in `plan-a-feature` and `plan-implementation` is cut for scope rather than converted.
 - **Rationale:** The two converted checks read files that already exist, which is the shape a check can execute. The third
   runs on reviewer output while that output is still in the conversation and before any of it reaches a file, so an
   executed check would have nothing to read. Converting it would require first writing every reviewer's raw output to
-  disk, a larger change than the boundary asks for.
+  disk, a larger change than the boundary asks for. The boundary names the cross-reference check by skill and step, so the
+  two equivalent instances elsewhere go to the cut list where the operator can reinstate them, on the same terms as
+  `plan-a-feature`'s team reduction.
 - **Evidence:** Codebase. The third check's own text places it in the pass that runs on returned reviewer output, before
-  findings are recorded. Research artifacts `A36` and `A34` for the benefit of executing rather than describing a
-  deterministic step: `A36` measured up to 20 percent higher task success and about 30 percent fewer steps across 17
-  models. Existing convention in the repository for how a skill invokes a check and where its tests live.
+  findings are recorded. The design-image check appears in four skills and not in `iterative-plan-review`; the
+  cross-reference invariant check appears in three skills, of which the boundary names one. Research artifacts `A36` and
+  `A34` for the benefit of executing rather than describing a deterministic step: `A36` measured up to 20 percent higher
+  task success and about 30 percent fewer steps across 17 models. Existing convention in the repository for how a skill
+  invokes a check and where its tests live.
 - **Rejected alternatives:**
   - Write every reviewer's raw output to a file first, then convert the third check. Rejected as a larger change than the
     boundary asks for, though it would also leave an audit trail of what each reviewer said.
   - Add a check that audits the finished findings file after the fact. Rejected under the evidence test and moved to the
     deferred section; the boundary asked for described checks to be converted rather than for new checks to be added, and
     the supporting research artifact (`A31`) could not be fully verified.
+  - Convert all three instances of the cross-reference check at once, on the reading that the same check should behave the
+    same way everywhere. Rejected because the boundary names one instance by skill and step, and the scope gate cuts what
+    the boundary does not ask for. Recorded in the cut list so the inconsistency is visible rather than silent.
 - **Driven by findings:** F10, F15, F18, F19, F20, F21, F22
 - **Linked technical notes:** —
 - **Dependent decisions:** D5, D9, D10, D11, D12, D13
 - **Settled by:** user input
-- **Referenced in spec:** Outcome, Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes
-
-### D5: Record why the third check cannot be executed, in the skill itself
-
-- **Decision:** The skills carrying the third check state, at that step, that it runs on returned reviewer output rather
-  than on a file, and that this is why it is not executed.
-- **Rationale:** Without the note, the next reader comparing the research report's recommendation against the skill sees
-  two of three checks converted and reads the third as an oversight. The note costs one sentence and prevents a repeat
-  investigation.
-- **Evidence:** The research report names all three checks as convertible, and this run found the third is not. That gap
-  between a written recommendation and the code is what a reader would try to close.
-- **Rejected alternatives:** Leave it undocumented and rely on this log. Rejected because a reader of the skill file is not
-  necessarily a reader of this folder.
-- **Driven by findings:** —
-- **Linked technical notes:** —
-- **Dependent decisions:** —
-- **Settled by:** evidence
-- **Referenced in spec:** — (the behavior is stated at [D4](#d4-convert-two-checks-and-leave-the-third-narrated))
+- **Referenced in spec:** Outcome, Actors and Triggers, Primary Flow, Edge Cases and Failure Modes, Cut for Scope, Deferred (YAGNI)
 
 ### D6: Stop running the six-point check where an editor already runs
 
@@ -225,8 +241,9 @@ decision rests on them. Findings from the review round live in [team-findings.md
 ### D10: Declare the permission each check needs, and do not mistake it for argument safety
 
 - **Decision:** Each skill that executes a check declares the permission that check needs, scoped to that check. Four
-  skills gain the design-image check and one gains the cross-reference check, so five declarations are needed. The
-  declaration exists to prevent an interruption partway through a run; it is not what makes a value safe to use.
+  skills gain the design-image check and one gains the cross-reference check, so five declarations are needed across the
+  five skills. The declaration exists to prevent an interruption partway through a run; it is not what makes a value safe
+  to use.
 - **Rationale:** The planning skills already declare narrow, specific permissions rather than a general one, and every
   recent change that added a permission recorded it deliberately. Keeping that pattern avoids interrupting a run. The
   second half of this decision is a correction: a permission that approves the front of a command says nothing about the
@@ -234,8 +251,8 @@ decision rests on them. Findings from the review round live in [team-findings.md
   [D11](#d11-treat-every-value-read-from-a-document-as-untrusted) owns it instead.
 - **Evidence:** Codebase. All five planning skills declare narrowly scoped permissions rather than a general execution
   grant. Research artifact `A42`. The review also corrected a factual error in the first draft: execution is not a new
-  capability for these skills, one of which already runs a search command as it loads. What is new is execution taking an
-  argument out of a document.
+  capability for these skills. All five already run a file-search command as they load, and one runs a search over the
+  plan while choosing its team. What is new is execution taking an argument out of a document.
 - **Unverified:** how this version of the host resolves a permission prefix against a command carrying metacharacters in
   argument position could not be inspected, because that matching lives in the host runtime rather than in this
   repository. This decision does not depend on the matcher being weak, and the finding carries no blocking severity.
@@ -272,7 +289,7 @@ decision rests on them. Findings from the review round live in [team-findings.md
 - **Linked technical notes:** —
 - **Dependent decisions:** —
 - **Settled by:** evidence
-- **Referenced in spec:** Outcome, Edge Cases and Failure Modes, Coordinations
+- **Referenced in spec:** Outcome, Edge Cases and Failure Modes
 
 ### D12: Record an unverified check in the artifacts, not only in the summary
 

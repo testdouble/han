@@ -1,21 +1,27 @@
 # Feature Specification: Cheaper, Faster Planning Runs
 
-A planning run costs less waiting time and less budget, because it consults fewer domain experts, executes two routine
-checks instead of describing them, and stops proofreading text an editor has already rewritten.
+A planning run costs less waiting time and less budget. Two of the five planning skills consult fewer domain experts,
+each of the five executes one routine check instead of describing it, and three stop proofreading text an editor has
+already rewritten.
 
 ## Outcome
 
 An operator running a planning skill gets a plan or specification produced by a smaller review team, for materially
 less. The saving is real and the trade is real, and this section states both.
 
-**Fewer domain experts, on every run.** Two skills convene a review team: `plan-implementation` and
-`iterative-plan-review`. Every team has seats that are filled before any domain expert is chosen, so the reduction is
-counted in experts rather than in total seats
+**Fewer domain experts, on the runs that convene a team.** Three skills convene a review team: `plan-a-feature`,
+`plan-implementation`, and `iterative-plan-review`. The reduction reaches two of them, `plan-implementation` and
+`iterative-plan-review`; `plan-a-feature` keeps the team it convenes today and is cut for scope
+([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)). Every team fills some
+seats before any domain expert is chosen, so the reduction is counted in experts rather than in total seats
 ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)). In
-`plan-implementation`, a large run drops from four-to-six experts to three or four, a medium run from two-or-three to
-two, and a small run keeps its one. Total team sizes become five or six, four, and three. In `iterative-plan-review`, a
-large run drops from two-or-three experts to two and a medium run from one-or-two to one; its smallest size convenes no
-team at all ([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)).
+`plan-implementation`, two seats are filled first, and a large run drops from four-to-six experts to three or four, a
+medium run from two-or-three to two, and a small run keeps its one, making total teams five or six, four, and three. In
+`iterative-plan-review`, two seats are filled first, plus a third whenever the plan under review makes claims about
+code, so a large run drops from two-or-three experts to two and a medium run from one-or-two to one. Where that third
+seat is filled, a medium team already carries no more than one expert, so on those runs the reduction binds on the large
+band alone. Its smallest size convenes no team at all
+([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)).
 
 **What the trade is.** A smaller team covers fewer domains. Nothing in the research measured whether a smaller team
 produces a materially different plan, and the source report says plainly that this option "trades review breadth for cost
@@ -29,8 +35,9 @@ plan will often get one repeat where it used to get two. This is a second saving
 it happens without anyone choosing it per run
 ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).
 
-**Two checks get executed instead of described.** A run confirms that the design images the boundary record lists are on
-disk, and confirms that the cross-references inside a reviewed plan resolve
+**Two checks get executed instead of described, one per skill.** Four skills confirm that the design images the boundary
+record lists are on disk. `iterative-plan-review` confirms that the cross-references inside a reviewed plan resolve. No
+single run gains both: each skill gains the one check it already carries as prose
 ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)). A check that runs either passes or
 fails; a check written as prose can be reported as done without being done. Because these checks take their input from a
 document, the values they read are treated as untrusted
@@ -49,23 +56,26 @@ their checklist unchanged.
 - **Actors** — the operator who runs a planning skill, and the five planning skills themselves. No user of any other
   product is affected.
 - **Triggers** — running a planning skill. Which change applies depends on the skill, per the table below.
-- **Preconditions** — two of the skills gain permission to execute a check, which widens what those skills may do. That
-  is the one precondition an operator should know about
+- **Preconditions** — all five skills gain permission to execute a check, which widens what each of them may do. That is
+  the one precondition an operator should know about
   ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).
   No operator configuration is required, and no existing plan folder needs migrating.
 
 ### Which skill gets which change
 
-| Skill                    | Fewer domain experts        | Executed design-image check | Executed cross-reference check | Six-point check removed          |
-| ------------------------ | --------------------------- | --------------------------- | ------------------------------ | -------------------------------- |
-| `plan-a-feature`         | No, cut for scope           | Yes                         | No                             | Yes                              |
-| `plan-implementation`    | Yes                         | Yes                         | No                             | Yes                              |
-| `plan-a-phased-build`    | No, convenes no team        | Yes                         | No                             | Yes                              |
-| `plan-work-items`        | No, convenes no team        | Yes                         | No                             | No, keeps it (no editor)         |
-| `iterative-plan-review`  | Yes                         | No, has no such check       | Yes                            | No, keeps it (no editor)         |
+| Skill                   | Fewer domain experts | Executed design-image check | Executed cross-reference check | Six-point check removed  |
+| ----------------------- | -------------------- | --------------------------- | ------------------------------ | ------------------------ |
+| `plan-a-feature`        | No, cut for scope    | Yes                         | No, cut for scope              | Yes                      |
+| `plan-implementation`   | Yes                  | Yes                         | No, cut for scope              | Yes                      |
+| `plan-a-phased-build`   | No, convenes no team | Yes                         | No, has no such check          | Yes                      |
+| `plan-work-items`       | No, convenes no team | Yes                         | No, has no such check          | No, keeps it (no editor) |
+| `iterative-plan-review` | Yes                  | No, has no such check       | Yes                            | No, keeps it (no editor) |
 
-`plan-a-feature` convenes a review team and is deliberately excluded from the reduction; see Cut for Scope. Four skills
-gain the design-image check, so four permission declarations are needed, plus one for `iterative-plan-review`.
+`plan-a-feature` convenes a review team and is deliberately excluded from the reduction
+([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)). `plan-a-feature` and
+`plan-implementation` both carry a cross-reference check the boundary does not ask to convert
+([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)). Both are recorded under Cut for
+Scope. Every skill gains exactly one executed check, so five permission declarations are needed.
 
 ## Primary Flow
 
@@ -88,7 +98,8 @@ table above assigns them.
    wording to avoid losing it, the run leaves that wording alone. The run does not walk the six-point checklist over the
    editor's text ([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).
 8. The run executes the design-image check, which reads the boundary record beside the deliverable it is gating and
-   compares it to disk ([D13](artifacts/decision-log.md#d13-read-the-record-beside-the-deliverable-being-gated)).
+   compares it to disk ([D13](artifacts/decision-log.md#d13-read-the-record-beside-the-deliverable-being-gated)). This is
+   the only executed check a `plan-implementation` run carries.
 9. The run presents its summary. A check that did not verify is named there and recorded in the artifacts
    ([D12](artifacts/decision-log.md#d12-record-an-unverified-check-in-the-artifacts-not-only-in-the-summary)).
 
@@ -118,48 +129,50 @@ table above assigns them.
 ### The operator overrides the size or the team
 
 - **Entry condition:** the operator passes a size, names a team, or a project configuration file sets a default size.
-- **Sequence:** the new expert counts apply at whatever size is chosen. A team the operator names wins outright, which is
-  how an operator who wants broader coverage gets it.
+- **Sequence:** the new expert counts apply at whatever size is chosen
+  ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)). A team the
+  operator names wins outright, which is how an operator who wants broader coverage gets it.
 - **Exit:** unchanged.
 
 ## Edge Cases and Failure Modes
 
-| Condition                                                                            | Required Behavior                                                                                                                                     |
-| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The record lists design images and none are on disk                                    | The check fails and names every missing item.                                                                                                          |
-| The record lists five images and three are on disk                                     | The check fails and names the two missing, rather than passing because some were found.                                                                 |
-| The record lists an item whose location is not a plain relative name inside the design folder, or whose file type is outside the accepted set | The check refuses the value and names the offending row. It does not attempt to resolve the value, and it does not pass. |
-| The record marks an item as a hosted link rather than a kept file                       | The check treats it as present without trying to fetch it. The link branch is entered only on that recorded marker, never inferred from how a value looks. |
-| A row carries neither a recognized link marker nor a valid location                     | The check refuses the value and names the row.                                                                                                         |
-| The record lists no images at all                                                       | The check passes. An empty list is a valid state.                                                                                                      |
-| The record itself is missing, or its received-material section cannot be read as a list  | The check reports that it could not verify, naming the record, rather than passing on an absent list.                                                    |
-| A cross-reference names an identifier that has no entry in the file it points at         | The check fails and names the reference and where it sits.                                                                                              |
-| A cross-reference resolves, but the entry it reaches has a required field left empty      | The check fails and reports this as a different failure from a missing target, so the operator knows which to fix.                                       |
-| A cross-reference appears inside an example block                                        | The check ignores it, because example text is not a live reference.                                                                                     |
-| Text taken from a record or a plan appears in a check's result                            | It is reported as text and never interpreted as an instruction.                                                                                         |
-| An existing plan folder was written under the old behavior                                | It is read and extended normally. Nothing here requires rewriting an existing folder.                                                                   |
-| A run reaches the reduced expert count and the operator wanted broader coverage            | The operator's named team wins. The count is a default, not a limit on what the operator may ask for.                                                   |
+| Condition                                                                                                                                     | Required Behavior                                                                                                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The record lists design images and none are on disk                                                                                           | The check fails and names every missing item ([D9](artifacts/decision-log.md#d9-a-check-reports-one-of-three-outcomes-and-never-assumes-a-pass)).                                                                                                              |
+| The record lists five images and three are on disk                                                                                            | The check fails and names the two missing, rather than passing because some were found ([D9](artifacts/decision-log.md#d9-a-check-reports-one-of-three-outcomes-and-never-assumes-a-pass)).                                                                     |
+| The record lists an item whose location is not a plain relative name inside the design folder, or whose file type is outside the accepted set   | The check refuses the value and names the offending row. It does not attempt to resolve the value, and it does not pass ([D11](artifacts/decision-log.md#d11-treat-every-value-read-from-a-document-as-untrusted)).                                     |
+| The record marks an item as a hosted link rather than a kept file                                                                              | The check treats it as present without trying to fetch it. The link branch is entered only on that recorded marker, never inferred from how a value looks ([D11](artifacts/decision-log.md#d11-treat-every-value-read-from-a-document-as-untrusted)).   |
+| A row carries neither a recognized link marker nor a valid location                                                                            | The check refuses the value and names the row ([D11](artifacts/decision-log.md#d11-treat-every-value-read-from-a-document-as-untrusted)).                                                                                                             |
+| The record lists no images at all                                                                                                             | The check passes. An empty list is a valid state ([D9](artifacts/decision-log.md#d9-a-check-reports-one-of-three-outcomes-and-never-assumes-a-pass)).                                                                                                          |
+| The record itself is missing, or its received-material section cannot be read as a list                                                        | The check reports that it could not verify, naming the record, rather than passing on an absent list ([D9](artifacts/decision-log.md#d9-a-check-reports-one-of-three-outcomes-and-never-assumes-a-pass)).                                                       |
+| A cross-reference names an identifier that has no entry in the file it points at                                                              | The check fails and names the reference and where it sits ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).                                                                                                 |
+| A cross-reference resolves, but the entry it reaches has a required field left empty                                                           | The check fails and reports this as a different failure from a missing target, so the operator knows which to fix ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).                                          |
+| A cross-reference appears inside an example block                                                                                             | The check ignores it, because example text is not a live reference ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).                                                                                        |
+| Text taken from a record or a plan appears in a check's result                                                                                 | It is reported as text and never interpreted as an instruction ([D11](artifacts/decision-log.md#d11-treat-every-value-read-from-a-document-as-untrusted)).                                                                                            |
+| An existing plan folder was written under the old behavior                                                                                     | It is read and extended normally. Nothing here requires rewriting an existing folder.                                                                      |
+| A run reaches the reduced expert count and the operator wanted broader coverage                                                                | The operator's named team wins. The count is a default, not a limit on what the operator may ask for ([D1](artifacts/decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)).                                                       |
 
 ## User Interactions
 
 - **Affordances:** unchanged. The same skills take the same arguments, and the size and team overrides still work.
 - **Feedback:** the line announcing the team names fewer domain experts. A check reports one of three outcomes: passed;
-  failed, with every offending item named; or could not verify, with the reason named. When the editor's report is
-  unusable and the checklist ran instead, the summary says so.
+  failed, with every offending item named; or could not verify, with the reason named
+  ([D9](artifacts/decision-log.md#d9-a-check-reports-one-of-three-outcomes-and-never-assumes-a-pass)). When the editor's
+  report is unusable and the checklist ran instead, the summary says so.
 - **Error states:** a check that did not verify is named, along with what went unverified. Because each skill declares
   the permission its check needs before the run reaches it, the operator is not interrupted partway through
   ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).
 
 ## Coordinations
 
-| Coordinating System                     | Direction | Interaction                                                                                     | Ordering / Consistency Requirement                                                                                                    |
-| --------------------------------------- | --------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| The domain-expert roster                 | outbound  | The run dispatches fewer experts, all in one wave.                                               | Every member starts before any result is read, so the wave stays parallel.                                                             |
-| The readability editor                   | outbound  | The run hands over the draft and reads back a rewrite plus a fact-preservation report.            | The run reads the report before presenting. A report it cannot interpret is treated as absent, which triggers the retained checklist.    |
-| The boundary record                      | inbound   | The design-image check reads the record's received-material list and compares it to disk.         | The check reads the record beside the deliverable it gates, from disk rather than from the run's memory, so it survives a compaction.    |
-| The plan under review                    | inbound   | The cross-reference check reads the plan and its companion files.                                 | Read from disk rather than from the run's memory, on the same terms as the record.                                                     |
-| The operator's permission surface         | outbound  | Each skill declares the permission its check needs.                                              | Declared before the run reaches the check. The declaration prevents an interruption and is not what makes a value safe.                 |
-| The next planning skill in the chain      | outbound  | A later skill reads this run's artifacts as its input.                                           | A check that did not verify is recorded in the artifacts, so the next run does not read the folder as fully verified.                    |
+| Coordinating System               | Direction | Interaction                                                                            | Ordering / Consistency Requirement                                                                                                   |
+| --------------------------------- | --------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| The domain-expert roster          | outbound  | The run dispatches fewer experts, all in one wave.                                      | Every member starts before any result is read, so the wave stays parallel ([D3](artifacts/decision-log.md#d3-preserve-the-single-parallel-first-wave)).                                                            |
+| The readability editor            | outbound  | The run hands over the draft and reads back a rewrite plus a fact-preservation report.   | The run reads the report before presenting. A report it cannot interpret is treated as absent, which triggers the retained checklist ([D7](artifacts/decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard)).  |
+| The boundary record               | inbound    | The design-image check reads the record's received-material list and compares it to disk. | The check reads the record beside the deliverable it gates, from disk rather than from the run's memory, so it survives a compaction ([D13](artifacts/decision-log.md#d13-read-the-record-beside-the-deliverable-being-gated)).  |
+| The plan under review             | inbound    | The cross-reference check reads the plan and its companion files.                        | Read from disk rather than from the run's memory, on the same terms as the record ([D13](artifacts/decision-log.md#d13-read-the-record-beside-the-deliverable-being-gated)).                                                    |
+| The operator's permission surface | outbound  | Each skill declares the permission its check needs.                                     | Declared before the run reaches the check. The declaration prevents an interruption and is not what makes a value safe ([D10](artifacts/decision-log.md#d10-declare-the-permission-each-check-needs-and-do-not-mistake-it-for-argument-safety)).                |
+| The next planning skill in the chain | outbound | A later skill reads this run's artifacts as its input.                                | A check that did not verify is recorded in the artifacts, so the next run does not read the folder as fully verified ([D12](artifacts/decision-log.md#d12-record-an-unverified-check-in-the-artifacts-not-only-in-the-summary)).                  |
 
 ## Out of Scope
 
@@ -184,9 +197,19 @@ because the recorded boundary already settled it.
 ### Reducing the review team in `plan-a-feature`, so a run that writes a specification keeps its current cost
 
 - **Why cut:** the boundary's Stated Scope names two skills for the reduction, quoting the source option as "starting
-  with `plan-implementation` ... and `iterative-plan-review` team mode." `plan-a-feature` convenes a review team of the
-  same size as `iterative-plan-review`, so this is a real saving the boundary does not ask for. Reinstating it is a
-  one-line change to the same table the other two skills change.
+  with `plan-implementation` ... and `iterative-plan-review` team mode." `plan-a-feature` convenes a review team at the
+  same total sizes as `iterative-plan-review` and fills only one seat before choosing experts, so it carries more domain
+  experts than either reduced skill will. That is a real saving the boundary does not ask for. If the operator reinstates
+  it, a specification run gets cheaper on the same terms as the other two
+  ([D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names)).
+
+### Converting the cross-reference check in `plan-a-feature` and `plan-implementation`, so those two runs keep checking their own cross-references by hand
+
+- **Why cut:** the boundary's Stated Scope names one instance of this check, quoting the source option as "the
+  cross-reference verification in `iterative-plan-review` Step 6." Both other skills carry an equivalent check over their
+  own companion files, so converting only the named one leaves two hand-run instances of the same check in place, in the
+  two skills that produce the artifacts every later skill reads. Reinstating either one extends the same executed check to
+  that skill ([D4](artifacts/decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)).
 
 ### Splitting the three oversized skill files so a run reads less of them
 
@@ -244,8 +267,10 @@ justify revisiting it.
 ## Open Items
 
 - **OI-1:** The expert counts for `iterative-plan-review` were derived from the counts agreed for `plan-implementation`,
-  rather than agreed directly. That skill has different fixed seats, so its medium band lands at one expert and its large
-  at two.
+  rather than agreed directly. That skill fills two seats before any expert is chosen, plus a third whenever the plan
+  under review makes claims about code, so its medium band lands at one expert and its large at two. On a plan that makes
+  claims about code, the medium band already carries no more than one expert today, so the reduction changes nothing
+  there.
   - **Resolves when:** the operator confirms the derived counts, or names different ones.
   - **Blocks implementation:** No — the derived counts are stated in
     [D2](artifacts/decision-log.md#d2-scope-the-reduction-to-the-two-skills-the-boundary-names) and can be adjusted before
@@ -258,8 +283,8 @@ justify revisiting it.
 
 ## Summary
 
-- **Outcome delivered:** a planning run consults fewer domain experts, executes two of its routine checks instead of
-  describing them, and stops proofreading text an editor already rewrote.
+- **Outcome delivered:** two of the five planning skills consult fewer domain experts, each of the five executes one of
+  its routine checks instead of describing it, and three stop proofreading text an editor already rewrote.
 - **Primary actors:** the operator running a planning skill.
 - **Decisions settled by evidence:** 11 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Decisions settled by user input:** 2 — see [artifacts/decision-log.md](artifacts/decision-log.md)
@@ -269,4 +294,6 @@ justify revisiting it.
   counts hid two fixed seats and collapsed two size bands, that the claim of an unchanged plan contradicted the source
   research, and that values read from a document reach something that executes with no stated trust level. All four
   reshaped the spec — see [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Cut for scope:** 6 entries, each reinstatable — see `## Cut for Scope`. Two of them are savings the review surfaced
+  inside the change's own subject area.
 - **Remaining open items:** 2

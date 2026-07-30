@@ -90,7 +90,8 @@ being weak.
   only specialists: small is 3 (coordinator, generalist, 1 specialist), medium 4 to 5 (2 to 3 specialists), large 6 to 8
   (4 to 6 specialists). Medium at 3 leaves 1 specialist, which is exactly small's composition.
 - **Resolution:** Escalated. The operator chose the numbers without the fixed seats being named, and the consequence is
-  that two bands become identical in composition.
+  that two bands become identical in composition. The operator chose to count domain experts instead of total seats.
+  Synthesis later found the same class of error in the second skill; see `S1` under Synthesis corrections.
 - **Resolved by:** user input
 - **Affected decisions:** D1
 - **Affected tech-notes:** —
@@ -173,8 +174,8 @@ being weak.
 
 - **Raised by:** SEC S-2
 - **Category:** security
-- **Evidence considered:** All five planning skills already declare command-prefix permissions, and one already runs a
-  search command at load time. What is new is not execution but execution taking an argument out of a document. A
+- **Evidence considered:** All five planning skills already declare command-prefix permissions, and each already runs a
+  file-search command at load time. What is new is not execution but execution taking an argument out of a document. A
   prefix approval constrains the front of a command and says nothing about its arguments.
 - **Unverified:** how this version of the host resolves a permission prefix against a command carrying metacharacters in
   argument position could not be inspected, because that matching lives in the host runtime rather than in this
@@ -234,14 +235,17 @@ being weak.
 
 - **Raised by:** JD-011, SEC S-2
 - **Category:** behavioral commitment
-- **Evidence considered:** The completeness check appears in four skills. The cross-reference check appears in one. Neither
-  set matches the two that convene teams or the three that dispatch an editor.
+- **Evidence considered:** The completeness check appears in four skills. The cross-reference invariant check appears in
+  three, and the boundary names only `iterative-plan-review`'s. Neither set matches the two that convene teams or the
+  three that dispatch an editor.
 - **Resolution:** The spec enumerates which skills gain which change, in a table. This also settles whether
-  `plan-a-phased-build` is touched, which no earlier draft answered.
+  `plan-a-phased-build` is touched, which no earlier draft answered. The two unnamed instances of the cross-reference
+  check are cut for scope with the boundary citation, on the same terms as `plan-a-feature`'s team reduction; see `S2`
+  under Synthesis corrections for how the count was corrected.
 - **Resolved by:** evidence
 - **Affected decisions:** D4, D10
 - **Affected tech-notes:** —
-- **Changed in spec:** Actors and Triggers
+- **Changed in spec:** Actors and Triggers, Cut for Scope
 
 ### F16: The spec named no skill, which is what let the other errors through
 
@@ -341,22 +345,51 @@ being weak.
   — JD-013 — Outcome.
 - **F24:** "fenced example" reached for a markup mechanic where "an example block" says the same thing behaviorally — SEC
   S-7 — Edge Cases and Failure Modes.
-- **F25:** The Summary read "pending review" while presenting as complete — JD-012 — Summary. Resolved by this round
-  returning.
+- **F25:** The Summary read "pending review" while presenting as complete — JD-012 — Summary.
+
+## Synthesis corrections
+
+Two factual errors survived the review round and were found during synthesis, both by re-reading the five skill files
+rather than by a reviewer. They are recorded here rather than as review findings, because no reviewer raised them.
+
+### S1: `iterative-plan-review` fills a third seat conditionally, so its derived counts do not shift cleanly
+
+- **Evidence considered:** That skill always includes two agents and conditionally requires a third whenever the plan
+  under review makes claims about code. Its total caps are three to four at medium and four to five at large. With the
+  third seat filled, the medium band already carries no more than one expert, so setting medium to one expert is not a
+  reduction on those runs.
+- **Resolution:** D2 now states the seat composition, and the spec's Outcome and `OI-1` say the medium-band reduction
+  binds only when the third seat is not filled. This is the same error class the review caught in `plan-implementation` as
+  `F5`, in the skill `F5` did not cover.
+- **Affected decisions:** D2
+- **Affected tech-notes:** —
+- **Changed in spec:** Outcome, Open Items
+
+### S2: The cross-reference invariant check appears in three skills, not one
+
+- **Evidence considered:** `plan-a-feature` and `plan-implementation` each carry an equivalent invariant check over their
+  own companion files, alongside the one in `iterative-plan-review` the boundary names by skill and step. `F15` recorded
+  the count as one.
+- **Resolution:** `F15`'s evidence line is corrected. The two unnamed instances go to the cut list with the boundary
+  citation rather than being converted, so the operator can reinstate either. The spec's skill table now reads "cut for
+  scope" in those two cells instead of implying the check does not exist there.
+- **Affected decisions:** D4
+- **Affected tech-notes:** —
+- **Changed in spec:** Actors and Triggers, Cut for Scope
 
 ## Escalation register
 
 | Question asked                                                        | Answer received             | Where it landed                                                                                                    |
 | --------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | Confirmation turn: boundary restatement plus direction of travel      | "no, they stay as-is in v5" | `scope-boundary.md`, Direction of Travel                                                                            |
-| How far should the reviewer count come down?                          | "go with recommendation"    | [D1](decision-log.md#d1-reduce-the-review-team-size-and-leave-the-repeat-ceiling-alone)                             |
+| How far should the reviewer count come down?                          | "go with recommendation"    | [D1](decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone)                      |
 | What should happen to the check that cannot become an executed check? | "go with recommendation"    | [D4](decision-log.md#d4-convert-two-checks-and-leave-the-third-narrated)                                            |
 | Medium and small become the same team once the fixed seats are counted; which numbers govern? | "go with recommendation" (count domain experts, not total seats) | [D1](decision-log.md#d1-reduce-the-number-of-domain-experts-and-leave-the-repeat-ceiling-alone), resolving `F5` |
 
 A third interview question was drafted and withdrawn. It would have asked what guards against losing a fact once the
 six-point checklist is removed. The canonical readability rule answered it directly, so it was resolved by evidence at
-[D6](decision-log.md#d6-remove-the-six-point-check-where-an-editor-already-runs) and
-[D7](decision-log.md#d7-name-the-editors-fact-preservation-report-as-the-fidelity-guard) rather than escalated.
+[D6](decision-log.md#d6-stop-running-the-six-point-check-where-an-editor-already-runs) and
+[D7](decision-log.md#d7-read-the-editors-fact-preservation-report-as-the-fidelity-guard) rather than escalated.
 
 Two specialist handoffs the review named were not taken. `behavioral-analyst` was proposed for the stop-rule coupling in
 `F4`; the coupling was verifiable from the stop rule's own text, so it was resolved by evidence instead. `devops-engineer`

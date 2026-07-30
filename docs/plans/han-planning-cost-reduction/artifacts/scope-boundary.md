@@ -90,6 +90,12 @@ something the boundary excluded.
 `iterative-plan-review`, and the Stated Scope names only the other two skills. The scope gate cut it rather than
 escalating, and the cut is recorded in the specification's Cut for Scope section where the operator can reinstate it.
 
+**A second check inside the conversion's subject area was cut.** The Stated Scope names the cross-reference check by
+skill and step, quoting the source option as "the cross-reference verification in `iterative-plan-review` Step 6."
+`plan-a-feature` and `plan-implementation` each carry an equivalent check over their own companion files. The scope gate
+cut those two rather than escalating, and the cut is recorded in the specification's Cut for Scope section where the
+operator can reinstate either. Found during synthesis, after the review round closed.
+
 Adjacent work noted, not treated as scope: `docs/plans/reduce-context-footprint/investigation.md` (issue #51) targets the
 always-loaded `description:` frontmatter of agents and skills, which is a different surface from the SKILL.md bodies,
 dispatch rosters, gates, and self-checks this run addresses. No conflict, and no overlap to resolve, but the two should
