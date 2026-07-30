@@ -234,8 +234,8 @@ such as Claude, should be referenced here.
 ### Writing voice
 
 - **[han-communication/references/writing-voice.md](./han-communication/references/writing-voice.md).** Voice profile
-  every doc in the plugin follows. No em-dashes, direct second person, plainspoken mentor tone, named voice violations
-  to avoid. Single canonical copy in the foundational `han-communication` plugin; no vendored copies. Consuming skills
+  every doc in the plugin follows. Em-dashes only as a label-gloss or appositive separator, direct second person,
+  plainspoken mentor tone, named voice violations to avoid. Single canonical copy in the foundational `han-communication` plugin; no vendored copies. Consuming skills
   source it cross-plugin by invoking `han-communication:readability-guidance`.
 - **[han-communication/references/explanation-rule.md](./han-communication/references/explanation-rule.md).** The standard
   for explaining technical work to a reader who will not implement it: give a concrete outcome they could observe rather

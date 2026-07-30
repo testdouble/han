@@ -163,7 +163,9 @@ Hard constraints from
 [`han-communication/references/writing-voice.md`](../../../../han-communication/references/writing-voice.md), applied
 verbatim to generated changelog prose:
 
-- No em-dash (`—`) anywhere, ever. Use a colon, comma, parentheses, or two sentences.
+- No em-dash (`—`) in changelog prose. Entry text is a sentence, not a label-gloss line, so use a colon, comma,
+  parentheses, or two sentences. (The voice profile permits the em-dash as a label-gloss or appositive separator; neither
+  position occurs in a changelog entry.)
 - `use`, never `leverage` or `utilize`.
 - No `just`, no `actually`.
 - None of: "It's worth noting", "Importantly", "delve", "foster", "synergy", "underscore", "pivotal", "showcase",

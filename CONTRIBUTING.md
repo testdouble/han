@@ -254,7 +254,8 @@ All han documentation follows the writing voice profile in
 [`han-communication/references/writing-voice.md`](./han-communication/references/writing-voice.md). The most
 load-bearing rules:
 
-- No em-dashes anywhere. Replace with periods, colons, commas, or parentheses.
+- Em-dashes only in two positions: separating a label from its gloss in a scent line or definition bullet, and setting
+  off a parenthetical or appositive aside. Anywhere else, use a period, colon, comma, or parentheses.
 - Direct second person (_"you"_), mentor-tone, plainspoken. No flattery, no hype words.
 - Avoid _"leverage," "utilize," "showcase," "robust" (as a vague positive), "actually," "just," "It's worth noting,"
   "Importantly,"_ and similar AI-slop tells.
@@ -288,7 +289,7 @@ Before opening the PR, run through this checklist:
 - [ ] Long-form doc follows the template.
 - [ ] The skill or agent appears in the right index, at the right group, with accurate scent.
 - [ ] Internal links resolve.
-- [ ] No em-dashes anywhere in the doc.
+- [ ] Em-dashes appear only as a label-gloss separator or an appositive aside, never standing in for a sentence break.
 - [ ] No _"actually," "just," "leverage," "utilize," "showcase," "robust" (vague), "It's worth noting," "Importantly,"_
       or other voice violations.
 - [ ] `npm run lint` passes.
