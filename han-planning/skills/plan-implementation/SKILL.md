@@ -212,21 +212,22 @@ is already there.
 clearly require it. When a signal is borderline, stay at the smaller band. Use the spec's coordinations, T# count,
 security/PII surface, integration boundaries, and the user's framing:
 
-- **Small** _(default)_ — single subsystem, no cross-service integration, no auth/PII/secrets, no data migration. Team
-  cap: **3** (han-core:project-manager + han-core:junior-developer + 1 chosen specialist). Round cap: **1.**
+The cap is counted in **chosen specialists**, not in total seats. Two seats are filled on every team before any
+specialist is chosen, so counting seats would make the medium band identical to the small one.
+
+- **Small** _(default)_ — single subsystem, no cross-service integration, no auth/PII/secrets, no data migration.
+  **1 chosen specialist** (team of 3: han-core:project-manager + han-core:junior-developer + 1). Round cap: **1.**
 - **Medium** — two to three subsystems, optional integration, may touch UX or rollout, may have a small auth surface.
-  Team cap: **4 to 5** (han-core:project-manager + han-core:junior-developer + 2–3 chosen specialists). Round cap:
-  **2.**
+  **2 chosen specialists** (team of 4). Round cap: **2.**
 - **Large** — cross-service, security-sensitive, data ownership shifts, multiple new coordinations, or the user
-  explicitly requests full team. Team cap: **6 to 8** (han-core:project-manager + han-core:junior-developer + 4–6 chosen
-  specialists). Round cap: **3.**
+  explicitly requests full team. **3 to 4 chosen specialists** (team of 5 to 6). Round cap: **3.**
 
 **Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
 signal-based classification even when the project config sets a default band. If `$size` is empty and the project
 config supplies a band via `default-swarm-size` (per the config rule in
 [../../references/config-rule.md](../../references/config-rule.md)), use that band and skip the signal-based
-classification. The team cap and round cap still scale to the chosen size. State the chosen size, the recommended team,
+classification. The specialist cap and round cap still scale to the chosen size. State the chosen size, the recommended team,
 and the reason for the size choice to the user in one short message before launching agents (e.g., "Medium: two
 subsystems, small auth surface", "Medium: passed via `$size`", or "Medium: from `.han/config.md`
 `default-swarm-size`"). If
@@ -237,7 +238,7 @@ The team **always includes**:
 - `han-core:project-manager` — coordinator and final synthesizer.
 - `han-core:junior-developer` — generalist stress-tester and reframer.
 
-Select additional specialists up to the team cap based on what the feature actually touches. Err toward including a
+Select additional specialists up to the specialist cap based on what the feature actually touches. Err toward including a
 specialist rather than discovering a gap late. Unless the user specified a team composition, draw from:
 
 - `han-core:user-experience-designer` — any user-facing flow, UI, or interaction model.
@@ -263,9 +264,9 @@ specialist rather than discovering a gap late. Unless the user specified a team 
 - `han-core:data-engineer` — schema changes, migrations, data movement, analytics implications.
 
 Extra agents named in the project config's `## Extra Agents` list join this specialist pool and compete under the same
-what-the-feature-touches selection and team caps, per
+what-the-feature-touches selection and specialist caps, per
 [../../references/config-rule.md](../../references/config-rule.md): select one only when the feature touches its
-stated specialty, count it against the team cap, and skip an entry that does not resolve to a dispatchable agent with
+stated specialty, count it against the specialist cap, and skip an entry that does not resolve to a dispatchable agent with
 a one-line note.
 
 If the user specified which agents to include, honor that. Otherwise, state the proposed team composition to the user
@@ -309,7 +310,7 @@ Give each agent:
   count matched to the work item recorded in `artifacts/scope-boundary.md` rather than a size word the specialist has to
   interpret. For a one-card ticket, name a report closer to 150 lines than 750. It is a target and not a cap, so a
   specialist with more worth saying still says it. This governs how much each specialist writes and never how many
-  specialists are chosen; the team caps in Step 3 own that and are unaffected.
+  specialists are chosen; the specialist caps in Step 3 own that and are unaffected.
 - A directive on blind spots: **where a finding of yours rests on an input you could not inspect, say so on the finding
   itself, in the form your own definition specifies.** A disclosure in an assumptions section below the finding does not
   travel with it, and this skill reads each finding where it stands.
@@ -347,6 +348,7 @@ Give each agent:
   item, with no escalation, and **does not count toward the spec-maturity threshold** in Step 5: a specification that
   committed to work outside its ticket has drifted, not failed to mature, and pausing spec-stage work is the wrong remedy.
   The same third verdict applies to specification decisions, not only to `T#` notes.
+
 - A directive to cite sections by filename and heading when raising findings — e.g.,
   `feature-specification.md#primary-flow`, or a specific `D#` in the spec's `artifacts/decision-log.md`, or `T3` in the
   spec's `artifacts/feature-technical-notes.md` — so the han-core:project-manager can cross-reference them precisely

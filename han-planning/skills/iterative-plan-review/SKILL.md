@@ -145,17 +145,20 @@ clearly require it. When a signal is borderline, stay at the smaller band. Use t
 - **Small** _(default)_ — 2–3 files affected, single system, no cross-cutting concerns. Defaults to **lightweight mode**
   (no team review). Iteration cap: **1 round.**
 - **Medium** — 3–5 files, one or two adjacent systems, may touch a single cross-cutting concern (e.g., one API contract
-  or one new permission check). Defaults to **team mode** with a 3–4 agent team. Round cap: **2.**
+  or one new permission check). Defaults to **team mode** with **1 chosen specialist**. Round cap: **2.**
 - **Large** — more than 5 files, multiple systems, architectural changes, security or data implications, or the user
-  explicitly requests full agent review. Defaults to **team mode** with a 4–5 agent team. Round cap: **3.**
+  explicitly requests full agent review. Defaults to **team mode** with **2 chosen specialists**. Round cap: **3.**
 
-The size determines:
+The cap is counted in **chosen specialists**, not in total seats. `han-core:junior-developer` and
+`han-core:adversarial-validator` are seated on every team before any specialist is chosen, and
+`han-core:evidence-based-investigator` joins them whenever the plan makes claims about code, so counting seats would hide
+how much domain coverage a band actually buys.
 
-| Size   | Mode        | Team cap               | Round cap |
+| Size   | Mode        | Chosen specialists     | Round cap |
 | ------ | ----------- | ---------------------- | --------- |
 | Small  | lightweight | n/a (self-review only) | 1         |
-| Medium | team        | 3–4                    | 2         |
-| Large  | team        | 4–5                    | 3         |
+| Medium | team        | 1                      | 2         |
+| Large  | team        | 2                      | 3         |
 
 **Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
@@ -195,7 +198,7 @@ When `han-core:evidence-based-investigator` is not included, state to the user i
 "han-core:evidence-based-investigator is not required because the plan has no codebase claims to verify." If the user
 explicitly names the agent, honor the request regardless of the heuristic.
 
-**Select additional specialists up to the size cap from Step 2** (medium: 3–4 total team, large: 4–5 total team) based
+**Select additional specialists up to the specialist cap from Step 2** (medium: 1 chosen specialist, large: 2) based
 on what the plan actually touches. Fewer is better — only add an agent if their absence would meaningfully weaken the
 review. Draw from:
 
@@ -322,7 +325,8 @@ Skip to Step 6.
 
 ## Step 5: Team Iteration Rounds (team mode only)
 
-Run 2 to 4 rounds. Each round:
+Run rounds up to the round cap from Step 2: two at medium, three at large. The deterministic stop rule below ends the
+loop earlier whenever a round goes quiet, so the cap is a ceiling rather than a target. Each round:
 
 1. **Parallel team review with domain-scoped briefs.** Launch every team agent in a single message so they run
    concurrently. Use domain-scoped briefs — do not hand every agent the full plan and every companion file. Pass each
