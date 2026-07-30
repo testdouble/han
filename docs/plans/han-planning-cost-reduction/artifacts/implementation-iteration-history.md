@@ -1,0 +1,126 @@
+# Implementation Iteration History: Cheaper, Faster Planning Runs
+
+Round-by-round record of the specialists engaged, the claims they made, how each was classified, and what resolved it.
+The plan itself is [../feature-implementation-plan.md](../feature-implementation-plan.md); committed decisions are in
+[implementation-decision-log.md](implementation-decision-log.md).
+
+Team size: **medium** (round cap 2, team cap 4 to 5). Team: `han-core:project-manager` (synthesis only),
+`han-core:junior-developer`, `han-core:adversarial-security-analyst`, `han-core:test-engineer`,
+`han-core:software-architect`.
+
+No `feature-technical-notes.md` exists for the source specification, so no `T#` mechanics constrain this plan and the
+`T#-contradiction` classification does not apply. The spec-maturity gate therefore reduces to the `spec-level` threshold
+alone.
+
+## Coverage note
+
+The run received no visual material, so Pass C had nothing to check against and no finding can rest on uninspected design
+material. The boundary record's Visual Material Received section reads `None received`.
+
+Two evidence classes no specialist could audit, both recorded rather than resolved:
+
+1. **How this host expands a skill-directory variable inside a permission prefix, and inside a Bash argument.** Raised
+   independently by `adversarial-security-analyst` and `software-architect`. It lives in the host runtime, not this
+   repository. Every finding resting on it is labeled `Unverified` and carries no blocking severity.
+2. **A real two-folder `plan-work-items` run's pair of boundary records.** No plan folder in this repository exercises the
+   split-folder case, so `R1-C7` rests on the rule's text rather than on an observed run.
+
+## R1: Round 1, parallel specialist review
+
+- **Specialists engaged:** `han-core:adversarial-security-analyst` (findings `S-8` to `S-14`),
+  `han-core:test-engineer` (findings `T1` to `T11`), `han-core:software-architect` (findings `A1` to `A7`).
+  `han-core:junior-developer` was not dispatched this round; see the note at the end of this entry.
+- **New input provided:** the source specification, its decision log and findings, the boundary record, and
+  `.discovery-notes.md`. Each brief carried its own domain sections inline plus paths for everything else.
+
+### Claim ledger
+
+| ID       | Claim                                                                                                                                    | Raised by  | State      | Spec-maturity |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------- | ------------- |
+| `R1-C1`  | The design-image check gets four per-skill copies, not one shared plugin-level copy                                                       | `A1`       | Evidenced  | plan-level    |
+| `R1-C2`  | Scripts must be omitted from the permission frontmatter, because a prefix cannot match the expanded absolute path                          | `A4`       | Evidenced  | spec-level    |
+| `R1-C3`  | The five permission declarations should be added, naming the script's invocation path                                                      | `S-13`     | Disputed   | spec-level    |
+| `R1-C4`  | The four prose instances are not the same check; the differences belong in arguments, not in four script bodies                            | `A2`       | Evidenced  | plan-level    |
+| `R1-C5`  | One test file covering the canonical copy plus a drift assertion over the other three, not four duplicated test files                      | `A5`       | Evidenced  | plan-level    |
+| `R1-C6`  | The cross-reference check is one copy in one skill, with no shared plumbing, and is materially larger work than its twin                   | `A6`       | Evidenced  | plan-level    |
+| `R1-C7`  | `plan-work-items`'s this-run-only gate has no representation in the record format, so its check has undefined behavior                     | `A3`, `S-12` | Evidenced, `Unverified` on the observed-run half | plan-level |
+| `R1-C8`  | A third encoding of the accepted file set is accepted; do not extract a shared constant here                                               | `A7`       | Evidenced  | plan-level    |
+| `R1-C9`  | Extraction-by-pattern satisfies the allow-list requirement while making every refusable row invisible, reintroducing the vacuous pass       | `S-8`      | Evidenced  | plan-level    |
+| `R1-C10` | The accepted shape must be pinned to the boundary rule's own example, which carries the folder prefix and backticks                        | `S-9`      | Evidenced  | plan-level    |
+| `R1-C11` | The hosted-link branch must be a leading-anchored literal match on the recorded marker                                                     | `S-10`     | Evidenced  | plan-level    |
+| `R1-C12` | The cross-reference check builds patterns from document text, which is its own injection surface                                            | `S-11`     | Evidenced  | plan-level    |
+| `R1-C13` | The sanitizing boundary lives in the script, and the artifact write the skill performs bypasses it                                          | `S-14`     | Evidenced  | plan-level    |
+| `R1-C14` | Exit status carries the outcome; prose never does                                                                                          | `S-14`     | Evidenced  | plan-level    |
+| `R1-C15` | Eleven of the spec's thirteen edge-case rows are check behavior; two are not testable at all                                               | `T1`-`T11` | Evidenced  | plan-level    |
+| `R1-C16` | The prose-edit majority (expert counts, checklist removal, repeat-count correction) is not observable by any test, and no test should pretend otherwise | `T` §3 | Evidenced | plan-level |
+| `R1-C17` | The permission-declaration line's presence and shape is the one prose edit worth a test, being a structured frontmatter field               | `T` §3     | Evidenced  | plan-level    |
+
+### Disputed claim, resolved by evidence
+
+`R1-C3` against `R1-C2`. `adversarial-security-analyst` recommended adding five permission entries naming each script's
+invocation path. `software-architect` found a written rule saying such an entry cannot match and must be omitted.
+
+Resolved in favor of `R1-C2`, by evidence the skill verified directly rather than taking on either specialist's word:
+
+- `han-plugin-builder/skills/guidance/references/skill-building-guidance/script-execution-instructions.md:67-75` states
+  that `Bash()` patterns are prefix matches, that the runtime command begins with the expanded absolute skill-directory
+  path, that "the prefix won't match," and therefore: "omit them from `allowed-tools`. Scripts typically run once per skill
+  invocation, so a single user approval is acceptable."
+- A survey of every skill in the repository that invokes a script found nine such skills and **none** declaring its own
+  script. `han-reporting/skills/html-summary/SKILL.md` runs a script while declaring `allowed-tools: Read, Write`, with no
+  Bash permission at all.
+
+`adversarial-security-analyst` did not find this file; its own finding records that no in-repo precedent exists for
+declaring a script permission, which is consistent with the rule rather than contradicting it. Its accompanying warning
+stands and is kept: whatever the plan does, it must not widen the prefix to `Bash(bash *)`, `Bash(sh *)`, or
+`Bash(*.sh *)`, because each auto-approves arbitrary shell for the rest of the run in skills that also hold write access.
+
+### Spec-maturity assessment
+
+- `spec-level` findings: **1** (`R1-C2`), raised by **1** specialist. `R1-C3` is the same subject from the opposite
+  direction and is resolved, not carried.
+- `T#-contradiction` findings: **0**, and the classification does not apply — no technical-notes file exists.
+- **The spec-maturity gate did not trip.** It requires either two `T#`-contradictions from two specialists, or five
+  `spec-level` findings from three specialists. Neither threshold is near. `han-core:project-manager` was therefore not
+  called in facilitation mode this round, per the skill's rule reserving that call for a gate trip.
+
+`R1-C2` is a genuine contradiction between the specification and the repository's own written guidance, so it routes
+through the normal Open Questions path and the operator decides. It is not evidence the specification is immature: the
+behavioral decision it rests on (declare narrowly, never grant broad execution) survives either resolution. What is
+contradicted is the claim about what the declaration buys.
+
+### Open Questions
+
+| ID     | Question                                                                                                          | Resolution source                     |
+| ------ | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `OQ-1` | The specification says declaring the permission prevents a mid-run interruption. The repository's guidance says such a declaration cannot match and must be omitted, accepting one approval per run. Which governs? | escalated to operator |
+| `OQ-2` | Does `plan-work-items` write inherited visual-material rows into the record beside its own deliverable, or only rows for material its own run received? | evidence (see below) |
+
+`OQ-2` was resolved without escalation. Both specialists that raised it proposed the same resolution independently, and it
+is the strictly simpler one: the skill writes only the rows for material its own run received, and names the inherited
+record's path in Record Provenance, which `planning-boundary-rule.md:36-37` already requires. That makes the record beside
+the deliverable self-consistent, so the whole-record check is correct with no script change and no new column or flag. The
+`Unverified` half of `R1-C7` stands: no repository plan folder exercises the split-folder case, so this rests on the rule's
+text rather than an observed run.
+
+### Next-step recommendation
+
+`continue iterating` — one Open Question (`OQ-1`) requires operator input. No specialist named another specialist as a
+needed handoff, and no plan-level question remains unresolved by evidence.
+
+### Note on the generalist
+
+`han-core:junior-developer` is on the team and was not dispatched in Round 1. The three specialists returned findings that
+were overwhelmingly `Evidenced` rather than `Anecdotal`, with one Disputed pair the skill settled from the repository
+itself. The generalist's value is reframing a question that evidence cannot settle, and Round 1 produced exactly one such
+question, which is a direct contradiction between two documents rather than an ambiguity a reframing would dissolve.
+Dispatching it is reserved for Round 2 if the operator's answer to `OQ-1` opens a question evidence cannot close.
+
+- **Decisions produced:** —
+- **Changed in plan:** —
+
+## Escalation register
+
+| Question asked                                                                     | Answer received | Where it landed |
+| ---------------------------------------------------------------------------------- | --------------- | --------------- |
+| `OQ-1`: does the permission declaration stand, or does the repository rule govern?  | pending         | pending         |
