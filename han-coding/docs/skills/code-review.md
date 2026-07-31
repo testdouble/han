@@ -132,7 +132,7 @@ Run `/code-review` in Claude Code. Pass an optional size override and/or context
 
 Give it:
 
-1. **A size override, optional.** Pass `small`, `medium`, or `large` as the first positional argument to override
+1. **A size override, optional.** Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument to override
    auto-classification. Without an override, the skill defaults to small and escalates only when signals clearly require
    it. See the [Sizing](#sizing) section.
 2. **A focus-area or context hint, optional.** _"Focus on the security implications of the new auth endpoints,"_ or
@@ -239,10 +239,12 @@ How the size is chosen:
 
 How to override the size:
 
-- Pass `small`, `medium`, or `large` as the first positional argument: `/code-review medium`,
+- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument: `/code-review medium`,
   `/code-review large "focus on the new auth endpoints"`.
 - When the size is overridden via `$size`, the skill announces the override (`Medium: passed via $size`) and uses the
   chosen band for the roster cap and the calibration directive.
+- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
+  the change's own signals instead.
 - Conversational overrides (_"treat this as a large review"_) work as well and are equivalent.
 
 For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md).

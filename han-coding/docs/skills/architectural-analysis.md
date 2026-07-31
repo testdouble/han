@@ -88,7 +88,7 @@ Give it:
 
 1. **A focus area (required).** A module directory, a specific subsystem, or a set of related files. If you run the
    skill without a focus area, it asks you to specify one before proceeding.
-2. **A size, optional.** Pass `small`, `medium`, or `large` as the first positional argument to override the
+2. **A size, optional.** Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument to override the
    auto-classification. The skill still selects specialists by signal, so a `large` override does not dispatch agents
    whose domain the code never touches.
 3. **A driving concern, optional.** _"I suspect the auth service's session handling has a race,"_ or _"we want to split
@@ -126,9 +126,11 @@ How the size is chosen:
 
 How to override the size:
 
-- Pass `small`, `medium`, or `large` as the first positional argument: `/architectural-analysis medium src/auth/`.
+- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument: `/architectural-analysis medium src/auth/`.
 - When the size is overridden, the skill announces the override and uses the chosen band for the roster cap and the
   calibration directive. Specialists are still selected by signal.
+- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
+  the focus area's own signals instead.
 - Conversational overrides (_"run this as a large analysis"_) work as well and are equivalent.
 
 For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md).

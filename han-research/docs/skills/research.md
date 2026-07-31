@@ -81,7 +81,7 @@ Give it:
 
 1. **The question.** Open-ended and answerable. "What are my options for rate limiting this API, and the trade-offs" is
    sharp. "Rate limiting" is too thin to research; you will be asked for the specific decision or unknown.
-2. **A size, optional.** `small`, `medium`, or `large` as the first word overrides the automatic sizing. Otherwise the
+2. **A size, optional.** `small`, `medium`, `large`, or `dynamic` as the first word overrides the automatic sizing. Otherwise the
    skill reads the question's scope and announces the size before dispatching.
 3. **An output path, optional.** The skill writes the report to a file. If a report already exists at the path you give,
    you are asked before anything is overwritten.
@@ -103,8 +103,9 @@ Example prompts:
 
 Size sets how many `research-analyst` angles run in parallel and how wide each one casts. The skill reads the question's
 conceptual scope, not its text length, and defaults to small, escalating only when a signal clearly requires it. Pass
-`small`, `medium`, or `large` as the first positional argument to override. See [Sizing](../../../docs/sizing.md) for the
-cross-skill model.
+`small`, `medium`, `large`, or `dynamic` as the first positional argument to override. Pass `dynamic` when a project or
+personal `.han/config.md` sets a default band and you want this one run sized from the question's own signals instead.
+See [Sizing](../../../docs/sizing.md) for the cross-skill model.
 
 | Size                  | Scope signals                                                                                                                 | Roster                                                                                                                                                               |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

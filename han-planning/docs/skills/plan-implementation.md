@@ -131,7 +131,7 @@ Give it:
 3. **Team composition, optional.** If you already know which specialists should be in the room (_"include
    devops-engineer and data-engineer"_), say so. The skill always includes `project-manager` and `junior-developer`.
    Other specialists are chosen to match what the feature touches unless you override.
-4. **A size, optional.** Pass `small`, `medium`, or `large` as the first argument to override the skill's automatic
+4. **A size, optional.** Pass `small`, `medium`, `large`, or `dynamic` as the first argument to override the skill's automatic
    sizing and set the specialist cap directly. Left off, the skill classifies the size from what the feature touches. See
    Sizing below.
 
@@ -278,10 +278,12 @@ How the size is chosen:
 
 How to override the size:
 
-- Pass `small`, `medium`, or `large` as the first positional argument:
+- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument:
   `/plan-implementation medium docs/features/checkout/feature-specification.md`.
 - When the size is overridden via `$size`, the skill announces the override (`Medium: passed via $size`) and uses the
   chosen band for both the specialist cap and the round cap.
+- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
+  the specification's own signals instead.
 - Conversational overrides (_"treat this as a large implementation, the rollout is sensitive"_) still work and are
   equivalent.
 
