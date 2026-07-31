@@ -427,8 +427,8 @@ from earlier steps):
     available, ODD-gate failures (no observable signal on the new path), schema migrations co-deployed with dependent
     code, eventual-consistency violations, data integrity hazards. Hard boundary: application source only — defer
     infrastructure, pipeline, IaC, observability platform, and alert configuration concerns to
-    `han-core:devops-engineer`. Apply the calibration directive. Run the four named tone anti-pattern sweeps against
-    your own findings before emitting (sugarcoated criticism, thin blame, tourist citation, bibliographic empathy).
+    `han-core:devops-engineer`. Apply the calibration directive. Write every finding clear of the four named tone
+    anti-patterns (sugarcoated criticism, thin blame, tourist citation, bibliographic empathy).
     Write your output to {output_directory}/on-call-analysis.md"
 
 Continue to Step 4 immediately. Results will be collected in Step 7.
