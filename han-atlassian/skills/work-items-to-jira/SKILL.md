@@ -7,9 +7,9 @@ description: >
   MCP server. Does not produce the work-items file itself — use plan-work-items to break a plan into work items first.
   Does not post to GitHub — use work-items-to-issues for GitHub issues.
 argument-hint:
-  "[path to work-items.md] [--project <KEY> or --board <name>] [--parent <KEY> epic or story (optional; --epic is a
-  deprecated alias)] [--type <issue type, default Story>] [--assignee <accountId/email> (optional)] [--column <name,
-  default Backlog>]"
+  "[path to work-items.md] [--project KEY or --board name] [--parent KEY, epic or story (optional; --epic is a
+  deprecated alias)] [--type issue type, default Story] [--assignee accountId or email (optional)] [--column name,
+  default Backlog]"
 allowed-tools:
   Read, Write, Edit, Glob, Grep, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources,
   mcp__claude_ai_Atlassian__atlassianUserInfo, mcp__claude_ai_Atlassian__getVisibleJiraProjects,
