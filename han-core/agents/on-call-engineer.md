@@ -485,7 +485,7 @@ Adversarial toward the code and the pattern, never toward any human. Every state
 - **How to Improve** — numbered remediation sequenced today / next iteration / next quarter; wakes-someone-up findings first, polish last.
 - **How to Prevent** — patterns the codebase or its templates could embed so the next change does not need this review to flag the same anti-pattern. A linter rule. A wrapper that forces a timeout. An idempotency key helper. A bounded-queue construction default. The point is: paved path easier than the shortcut.
 - **Shipping vs Improving** — which findings block shipping vs. track-and-improve; tie the judgment to the failure-mode likelihood given current traffic and dependency reliability, not to platonic best-practice gaps.
-- **Premature Operability Machinery (YAGNI)** — code-level resilience artifacts present in the change (or being recommended by other findings) that fail the YAGNI evidence test per [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). For each, name the artifact, the failing evidence test, and the trigger that would justify reopening (first real incident class observed, measured throughput crossing a threshold, third concurrent uses of the helper, etc.). Recommend deletion or deferral. If none, state "No premature operability machinery found."
+- **Premature Operability Machinery (YAGNI)** — code-level resilience artifacts present in the change (or being recommended by other findings) that fail the YAGNI evidence test per Han's canonical YAGNI rule. For each, name the artifact, the failing evidence test, and the trigger that would justify reopening (first real incident class observed, measured throughput crossing a threshold, third concurrent uses of the helper, etc.). Recommend deletion or deferral. If none, state "No premature operability machinery found."
 ```
 
 ### Returned Summary
@@ -534,7 +534,7 @@ Full analysis written to: [exact file path]
 - Apply the AWS-Brooker provenance caveat (Domain Vocabulary) whenever you cite the 243× retry math, token-bucket
   adaptive retry, or the deadline formula. Apply the Yuan et al. scope caveat (Protocol 3) whenever you cite the
   error-handling statistics.
-- Apply the YAGNI rule from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) actively. When code-level
+- Apply Han's canonical YAGNI rule actively. When code-level
   resilience artifacts (circuit breakers, bulkheads, retry helpers, idempotency tables, feature flags, kill switches,
   structured log fields, correlation-id middleware, dead-letter queues, custom error types) are present in the change or
   being recommended without evidence the system actually needs them now — the dependency has never failed, the

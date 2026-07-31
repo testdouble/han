@@ -258,18 +258,18 @@ touches to surface recent precedent and churn.
 
 ### Protocol 8: YAGNI Evidence Gate
 
-Apply the evidence-based YAGNI rule defined in [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) to
+Apply Han's canonical evidence-based YAGNI rule to
 every item the team is proposing to commit — every decision in the RAID log, every plan item, every recommendation a
 specialist has surfaced, every dependency, every operational machinery item (runbook, SLO, alert, dashboard, feature
 flag, infrastructure component), every test category, every abstraction, every configuration knob. Alongside the YAGNI
-gate, apply the companion evidence rule in [`han-core/references/evidence-rule.md`](../references/evidence-rule.md) to
+gate, apply Han's canonical evidence rule to
 characterize the quality of the evidence each surviving item rests on: name the trust class of the citation (codebase,
 web, provided), mark single-source web claims that cannot stand alone, and label claims with no evidence at any tier as
 a distinct deferred state rather than weak evidence.
 
 **Two gates apply:**
 
-1. **Evidence test.** The item must cite at least one piece of evidence per the rule doc — a user-described need, a
+1. **Evidence test.** The item must cite at least one piece of evidence per the YAGNI rule — a user-described need, a
    named direct dependency, an existing production code path that will break, an applicable regulation, or a documented
    incident / measured metric. "Best practice", "for future flexibility", "we might need it", "when we scale", and
    symmetry/completeness do not qualify as evidence and route the item to deferral.
@@ -277,7 +277,7 @@ a distinct deferred state rather than weak evidence.
    same evidence. If yes, the simpler version replaces the larger one; the larger version is deferred until the simpler
    one demonstrably falls short.
 
-**Named anti-patterns** from the rule doc are auto-flags — they do not get committed unless evidence affirmatively
+**Named YAGNI anti-patterns** are auto-flags — they do not get committed unless evidence affirmatively
 justifies them. The canonical examples that must never sneak through:
 
 - Runbooks for alerts that have never fired and have no signal data flowing.
@@ -300,7 +300,7 @@ under `Rejected alternatives:` and the reason "simpler version satisfies the sam
 
 **Seed questions:**
 
-- For every proposed decision: what evidence — citing the rule doc's accepted-evidence list — supports including this
+- For every proposed decision: what evidence — citing the accepted-evidence list above — supports including this
   _now_?
 - For every operational mechanic (runbook, alert, SLO, dashboard, flag, infrastructure component): has the failure mode
   it covers actually occurred, or is the data flowing that would let it occur visibly? If neither, why is this not
@@ -403,7 +403,7 @@ Both modes write a file to disk and return a summary to the caller.
 [Protocol 8. Items the team has been proposing that fail the evidence test or have a strictly simpler version available. Each:]
 
 - **Item:** [Brief description — the proposed feature, decision, runbook, abstraction, configuration, etc.]
-- **Failure:** Evidence test failed (no accepted evidence cited) | Simpler-version available | Named anti-pattern: {which one from the rule doc}
+- **Failure:** Evidence test failed (no accepted evidence cited) | Simpler-version available | Named anti-pattern: {which named YAGNI anti-pattern}
 - **Recommended resolution:** Cite missing evidence and keep | Replace with simpler version: {one-line description} | Defer with reopen trigger: {trigger that would justify revisiting}
 - **Specialist who proposed it:** [Name]
 
@@ -507,7 +507,7 @@ Facilitation summary written to: [exact file path]
 [Items considered but deferred under the YAGNI rule. Omit this section entirely if no items qualify. For each:]
 
 ### {item name}
-- **Why deferred:** {evidence-test failure, simpler-version replacement, or named anti-pattern from the rule doc}
+- **Why deferred:** {evidence-test failure, simpler-version replacement, or named YAGNI anti-pattern}
 - **Reopen when:** {concrete trigger — measured metric, incident class, customer commitment, dependency landing, regulation taking effect}
 - **Source:** {which specialist or discussion thread proposed the item, plus the larger version's rejected-alternative entry on the related D-N decision}
 
@@ -551,7 +551,7 @@ Synthesized plan written to: [exact file path]
   explicitly tell them so.
 - Every item in the output summary traces to a protocol output — no speculation.
 - Apply the YAGNI rule (Protocol 8) actively to every committed decision. Every committed item must cite evidence per
-  [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). Items that fail the evidence test get demoted to
+  Han's canonical YAGNI rule. Items that fail the evidence test get demoted to
   `## Deferred (YAGNI)` with a reopen trigger; items with a strictly simpler version available get the simpler version
   recorded as the decision and the larger version under `Rejected alternatives:`. YAGNI candidates are first-class
   output — surface them visibly so the user can override consciously, never silently drop them and never silently keep

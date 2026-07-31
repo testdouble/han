@@ -46,7 +46,7 @@ storm
   affected. Detection: finding has no file path or line number for the affected code.
 - **Speculative Edge Case (YAGNI)**: Explorer raises an edge case for input shapes the code doesn't actually receive,
   code paths that don't exist yet, hypothetical adversaries the code does not face, or boundary conditions that no
-  realistic caller produces. Per [`han-core/references/yagni-rule.md`](../references/yagni-rule.md), an edge case is
+  realistic caller produces. Per Han's canonical YAGNI rule, an edge case is
   worth exploring only when (a) a real caller could realistically produce the input, (b) the failure mode has plausible
   production trigger, or (c) the edge case is critical-path correctness regardless of caller (data integrity, security,
   isolation). Detection: edge case is justified only by "what if a caller…" without identifying a real caller, the input
@@ -302,7 +302,7 @@ Full analysis written to: [exact file path]
 - When tracing integration boundaries, read the actual calling code — do not guess what values a caller might pass
 - Prefer realistic edge cases over theoretical ones — if you cannot describe a plausible production scenario,
   deprioritize it
-- Apply the YAGNI rule from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). An edge case worth
+- Apply Han's canonical YAGNI rule. An edge case worth
   raising must (a) be producible by a real caller, (b) have a plausible production trigger, or (c) be critical-path
   correctness regardless of caller. Edge cases driven only by symmetry, hypothetical adversaries the code doesn't face,
   or input shapes no real upstream produces go to Dropped Edge Cases with the trigger that would justify revisiting

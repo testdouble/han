@@ -121,7 +121,7 @@ Rules for inquiry:
   at production cardinality, concurrency, or dependency latency; no load model, no failure-mode rehearsal, no runbook.
 - **Premature Operational Machinery (YAGNI)**: Operational artifacts shipped before the system they cover is actually
   producing the data, traffic, or failure events that would make them load-bearing. Per
-  [`han-core/references/yagni-rule.md`](../references/yagni-rule.md), each of the following is a YAGNI candidate by
+  Han's canonical YAGNI rule, each of the following is a YAGNI candidate by
   default and requires affirmative evidence to be retained:
   - **Runbook for an alert that has never fired** and where the upstream signal isn't even reaching the destination yet
     (the canonical project example: Sentry runbooks for staging-only Sentry where data isn't reaching production — the
@@ -458,7 +458,7 @@ Write the full analysis to the file using the output format below. Return only t
 - **Production Impact:** What breaks, when (traffic level, time of day, failover event), who is affected, blast radius
 - **Related questions:** Q-### (answered), Q-### (assumed), OQ-### (open — state how the answer changes severity or remediation)
 - **Severity:** Blocks rollout | Degrades reliability | Operational friction | Polish | YAGNI candidate
-- **YAGNI applicability (when severity is YAGNI candidate):** Which named anti-pattern from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) applies — runbook for never-fired alert, observability for non-flowing telemetry, SLO for absent traffic, multi-region for unproven workload, etc. State the trigger that would justify reopening (first real alert fires, measured baseline established, second region adds detectable latency, etc.).
+- **YAGNI applicability (when severity is YAGNI candidate):** Which named anti-pattern from Han's canonical YAGNI rule applies — runbook for never-fired alert, observability for non-flowing telemetry, SLO for absent traffic, multi-region for unproven workload, etc. State the trigger that would justify reopening (first real alert fires, measured baseline established, second region adds detectable latency, etc.).
 - **Remediation (P0 — today):** Smallest safe change that unblocks the rollout
 - **Remediation (P1 — next sprint):** Next incremental improvement
 - **Remediation (P2 — next quarter):** Longer-horizon strengthening
@@ -477,7 +477,7 @@ Adversarial toward the current readiness posture, never toward any human. Every 
 - **How to Improve** — numbered remediation sequenced P0 / P1 / P2; blocks-rollout first, polish last.
 - **How to Prevent** — practices or tooling: IaC policy-as-code, admission controllers, SLO gates in CI, secret scanning, progressive-delivery templates, production-readiness-review checklist in the PR template.
 - **Shipping vs Improving** — which findings block rollout vs. track-and-improve; tie the judgment to error-budget status where one exists.
-- **Premature Operational Machinery (YAGNI)** — operational artifacts present in the repo (or being recommended by other findings) that fail the YAGNI evidence test per [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). For each, name the artifact, the failing evidence test, and the trigger that would justify reopening. Recommend deletion or deferral. If none, state "No premature operational machinery found."
+- **Premature Operational Machinery (YAGNI)** — operational artifacts present in the repo (or being recommended by other findings) that fail the YAGNI evidence test per Han's canonical YAGNI rule. For each, name the artifact, the failing evidence test, and the trigger that would justify reopening. Recommend deletion or deferral. If none, state "No premature operational machinery found."
 ```
 
 ### Returned Summary
@@ -518,7 +518,7 @@ Full analysis written to: [exact file path]
   wholesale rewrite.
 - Honor vendor constraints; note where a vendor-neutral alternative (OTel, external-secrets, OpenFeature) would reduce
   future coupling.
-- Apply the YAGNI rule from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) actively. When
+- Apply Han's canonical YAGNI rule actively. When
   operational artifacts (runbooks, alerts, SLOs, dashboards, feature flags, multi-region setups, backup machinery,
   auto-scaling configurations, compliance pipelines) are present in the repo or being recommended without evidence the
   system actually needs them now — telemetry isn't flowing, alerts have never fired, traffic doesn't yet exist,

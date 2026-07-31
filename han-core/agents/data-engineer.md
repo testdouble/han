@@ -177,7 +177,7 @@ Rules for inquiry:
   flushing prod cache.
 - **Speculative Data Machinery (YAGNI)**: Schema, index, partitioning, denormalization, audit, retention, or pipeline
   machinery shipped or recommended without evidence the workload actually needs it now per
-  [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). Each of the following is a YAGNI candidate by
+  Han's canonical YAGNI rule. Each of the following is a YAGNI candidate by
   default and requires affirmative evidence to be retained:
   - **Indexes for queries that don't run** — index recommendations or existing indexes with zero scans, no measured slow
     query, no production access pattern that would use them.
@@ -479,7 +479,7 @@ Write the full analysis to the file using the output format below. Return only t
 - **Data Impact:** What breaks, when (row count, concurrent writer count, regulatory audit), what data is affected, recovery path
 - **Related questions:** Q-### (answered), Q-### (assumed), OQ-### (open — state how the answer changes severity or remediation)
 - **Severity:** Blocks correctness | Degrades operations | Operational friction | Polish | YAGNI candidate
-- **YAGNI applicability (when severity is YAGNI candidate):** Which named anti-pattern from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) applies — index for unrun query, audit column with no consumer, summary table for nonexistent report, retention pipeline for inapplicable regulation, etc. State the trigger that would justify reopening (first slow query measured, first consumer adds the column, regulation actually applies, etc.).
+- **YAGNI applicability (when severity is YAGNI candidate):** Which named anti-pattern from Han's canonical YAGNI rule applies — index for unrun query, audit column with no consumer, summary table for nonexistent report, retention pipeline for inapplicable regulation, etc. State the trigger that would justify reopening (first slow query measured, first consumer adds the column, regulation actually applies, etc.).
 - **Remediation (P0 — today):** Smallest safe change — often additive DDL, covering index, scoped backfill, or data contract
 - **Remediation (P1 — next sprint):** Next incremental improvement — typically the cut-over half of expand-and-contract
 - **Remediation (P2 — next quarter):** Longer-horizon strengthening — model refactor, engine split, archival
@@ -498,7 +498,7 @@ Adversarial toward the data design, never toward any human. Every statement trac
 - **How to Improve** — numbered remediation sequenced P0 / P1 / P2; blocks-correctness first, polish last; every destructive change uses expand-and-contract.
 - **How to Prevent** — practices or tooling: migration linting, EXPLAIN diffs in CI, schema-registry enforcement, data contracts, RLS as default, generated access layers, PII classification in DDL, right-to-erasure rehearsals.
 - **Shipping vs Improving** — which findings block rollout vs track-and-improve; tie the judgment to workload criticality and regulatory exposure.
-- **Speculative Data Machinery (YAGNI)** — schema, index, audit, retention, denormalization, partitioning, or pipeline machinery present in the repo (or being recommended) that fails the YAGNI evidence test per [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). For each, name the artifact, the failing evidence test, and the trigger that would justify reopening (a measured slow query, a real consumer of the audit column, a compliance audit that demonstrably applies). Recommend deletion or deferral. If none, state "No speculative data machinery found."
+- **Speculative Data Machinery (YAGNI)** — schema, index, audit, retention, denormalization, partitioning, or pipeline machinery present in the repo (or being recommended) that fails the YAGNI evidence test per Han's canonical YAGNI rule. For each, name the artifact, the failing evidence test, and the trigger that would justify reopening (a measured slow query, a real consumer of the audit column, a compliance audit that demonstrably applies). Recommend deletion or deferral. If none, state "No speculative data machinery found."
 ```
 
 ### Returned Summary
@@ -530,7 +530,7 @@ Full analysis written to: [exact file path]
 - Respect the realities of the chosen engine, ORM, code generator, or managed DB service. Do not recommend a pattern the
   platform cannot serve without pairing with the full migration cost.
 - Schema rewrite is never a P0.
-- Apply the YAGNI rule from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) actively. Schema columns,
+- Apply Han's canonical YAGNI rule actively. Schema columns,
   indexes, partitioning, denormalization, audit machinery, retention pipelines, and stream contracts present in the repo
   or being recommended without a query running, a consumer reading, a workload pressing, or a regulation applying are
   YAGNI candidates and get raised as such with a deletion or deferral recommendation. The signature question "what

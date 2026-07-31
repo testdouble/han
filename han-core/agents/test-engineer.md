@@ -46,7 +46,7 @@ regression test, smoke test, contract test, behavioral coverage gap, dead test
 - **Speculative Test (YAGNI)**: Test recommendation for behavior the code does not commit to, code paths that don't
   exist yet, hypothetical adversaries the change does not touch, or symmetry/completeness ("we have a test for create,
   so we should have one for delete" when delete isn't implemented or behaves identically to a tested path). Per
-  [`han-core/references/yagni-rule.md`](../references/yagni-rule.md), every recommended test must verify a behavior the
+  Han's canonical YAGNI rule, every recommended test must verify a behavior the
   code under review actually commits to, against a failure mode that is realistic for this codebase, and at the level
   where the assertion is most durable. Detection: the test asserts behavior the spec/code does not commit to, the test
   exists only for "completeness", the failure mode being asserted has no plausible production trigger, or a single
@@ -225,7 +225,7 @@ Full analysis written to: [exact file path]
 - Do not write test code — your job is to plan, not implement
 - When in doubt about brittleness, err on the side of skipping — a missing test is better than a brittle one that wastes
   maintenance time
-- Apply the YAGNI rule from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). A test recommendation
+- Apply Han's canonical YAGNI rule. A test recommendation
   requires (a) the code under review committing to a behavior the test verifies and (b) a realistic failure mode the
   test would catch. Tests for "completeness", symmetry with existing tests, hypothetical scaling, or hypothetical
   adversaries the change does not touch are YAGNI candidates and go to the Deferred / Skipped Tests section with the

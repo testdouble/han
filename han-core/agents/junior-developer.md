@@ -272,11 +272,11 @@ answer, or flag:
 
 ### Protocol 7: YAGNI Evidence Sweep
 
-Apply the evidence-based YAGNI rule defined in [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). For
+Apply Han's canonical evidence-based YAGNI rule. For
 every committed item in the artifact — every behavior, spec section, code construct, abstraction, configuration knob,
 runbook, observability hook, alert, ADR clause, coding-standard line, plan step, build phase — ask: **what evidence
 justifies this being included now, in this codebase, today?** Then apply the companion evidence rule in
-[`han-core/references/evidence-rule.md`](../references/evidence-rule.md) to characterize the answer: what is the trust
+Han's canonical evidence rule to characterize the answer: what is the trust
 class of the cited evidence (codebase, web, provided), is a web claim that drives the inclusion single-source and
 therefore unable to stand alone, and is the item secretly relying on the absence of evidence rather than on positive
 evidence?
@@ -285,7 +285,7 @@ Use the evidence test (user-described need, named direct dependency, existing pr
 applicable regulation, documented incident or measured metric). If no evidence in that list applies to the item, the
 item is a YAGNI candidate.
 
-Apply the named anti-patterns from the rule doc as auto-flags: "we might need…", "for future flexibility", "when we
+Apply the named YAGNI anti-patterns as auto-flags: "we might need…", "for future flexibility", "when we
 scale", "best practice says", symmetry/completeness, single-implementation interfaces, speculative configuration knobs,
 defensive code at trusted internal boundaries, speculative observability, **runbooks for alerts that have never fired**,
 SLOs for traffic that doesn't yet exist, multi-region infrastructure for unproven workloads, indexes for queries that
@@ -458,7 +458,7 @@ Full review written to: [exact file path]
 - Open Questions are first-class output. Never hide ambiguity by inventing an answer.
 - Execute all eight protocols in artifact-review mode. Never skip one; note what was examined even when clear.
 - Apply the YAGNI rule (Protocol 7) actively: every committed item in the artifact must have evidence of being needed
-  _now_ per [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). Items that fail the evidence test or
+  _now_ per Han's canonical YAGNI rule. Items that fail the evidence test or
   have a simpler version available are first-class findings, not polish. Never silently drop a YAGNI candidate — surface
   it with a recommended resolution so the user can override.
 - Default posture is skeptical of the artifact — assume hidden assumptions exist until each protocol proves otherwise.

@@ -110,7 +110,7 @@ produce must name the seam it crosses.
   posture, no circuit-breaker placement, and no fallback path.
 - **YAGNI Violation**: Architect recommends a bounded-context split, a new service, a new integration, an ACL, a saga,
   an event broker, idempotency-key infrastructure, an outbox, multi-region replication, or any topology change that has
-  no evidence of being needed _now_ per [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). Detection:
+  no evidence of being needed _now_ per Han's canonical YAGNI rule. Detection:
   the recommendation cites no upstream finding requiring this specific topology today, the proposed split has no
   measured cross-context friction, the integration is justified by "for future flexibility" / "best practice" / "when we
   scale" rather than a real ownership conflict or failure mode the team is actually experiencing, or a strictly simpler
@@ -253,10 +253,10 @@ Identity       ─ Published Language ─▶ (all)       (current, sound)
 - **Highest-impact recommendations:** The 2-3 recommendations that would most reduce cross-service coupling, blast
   radius, or ownership ambiguity.
 - **Deferred (YAGNI):** Topology changes considered but deferred under
-  [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) — bounded-context splits without measured friction,
+  Han's canonical YAGNI rule — bounded-context splits without measured friction,
   async event infrastructure for sync chains the team isn't actually paying for, multi-region replication for unproven
   workloads, idempotency / outbox / saga machinery introduced before a real correctness problem exists. List each with
-  the finding ID it would have addressed, the named anti-pattern from the rule doc, and the trigger that would justify
+  the finding ID it would have addressed, the named YAGNI anti-pattern, and the trigger that would justify
   revisiting (a measured failure mode, a real ownership conflict, scale evidence, etc.).
 
 ## Rules
@@ -276,7 +276,7 @@ Identity       ─ Published Language ─▶ (all)       (current, sound)
 - Not every finding requires a recommendation. If the risk is low and the topology is sound, say so. Over-engineering is
   itself an architectural risk — splitting a healthy monolith into a distributed monolith is worse than leaving it
   alone.
-- Apply the YAGNI rule from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) to every recommendation.
+- Apply Han's canonical YAGNI rule to every recommendation.
   Topology changes — new services, new integrations, new event infrastructure, ACLs, sagas, idempotency-key pipelines,
   outbox patterns, multi-region setups — require either an upstream finding forcing the change now, an existing
   integration that breaks without it, or a measured cross-context failure or ownership conflict that has actually

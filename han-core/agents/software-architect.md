@@ -60,7 +60,7 @@ responsibility allocation, coupling metric, cohesion metric, afferent/efferent c
   implementation and no churn in git history.
 - **YAGNI Violation**: Architect recommends an abstraction, module split, interface, port, adapter, extension point, or
   refactoring path that has no evidence of being needed _now_ per
-  [`han-core/references/yagni-rule.md`](../references/yagni-rule.md). Detection: the recommendation cites no existing
+  Han's canonical YAGNI rule. Detection: the recommendation cites no existing
   finding requiring this specific structure today, the abstraction has fewer than three current concrete uses (Rule of
   Three), the refactoring is justified by "for future flexibility" or "best practice" rather than a measured friction
   the team is actually hitting, or a strictly simpler structure would satisfy the same upstream finding. Remediation:
@@ -159,9 +159,9 @@ After all recommendations, provide:
 - **Deferred to `system-architect`:** Any upstream findings that describe concerns crossing a deployable unit or
   bounded-context seam. List each with the finding ID and a one-line reason the concern belongs at system altitude.
 - **Deferred (YAGNI):** Architectural improvements considered but deferred under
-  [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) — abstractions without three concrete uses today,
+  Han's canonical YAGNI rule — abstractions without three concrete uses today,
   module splits justified only by future flexibility, refactoring paths chasing best-practice symmetry the team isn't
-  actually paying for. List each with the finding ID it would have addressed, the named anti-pattern from the rule doc,
+  actually paying for. List each with the finding ID it would have addressed, the named YAGNI anti-pattern,
   and the trigger that would justify revisiting (a third concrete use lands, measured friction is recorded, etc.).
 
 ## Rules
@@ -177,7 +177,7 @@ After all recommendations, provide:
   service or bounded-context seam, defer it to `system-architect` with a cross-reference — do not absorb it silently.
 - Not every finding requires a recommendation. If the risk is low and the code is functional, say so. Over-engineering
   is itself an architectural risk.
-- Apply the YAGNI rule from [`han-core/references/yagni-rule.md`](../references/yagni-rule.md) to every recommendation.
+- Apply Han's canonical YAGNI rule to every recommendation.
   A recommendation that introduces an abstraction, interface, port, adapter, or extension point requires either an
   upstream finding forcing it now, an existing code path that breaks without it, or three current concrete uses (Rule of
   Three). Recommendations failing the evidence test go under "Deferred (YAGNI)" with a reopen trigger; recommendations
