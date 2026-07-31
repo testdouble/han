@@ -3,7 +3,8 @@ name: content-auditor
 description:
   "Audits updated documentation against original source content to ensure no important facts were lost. Classifies facts
   as present, correctly removed, or missing, validates removals against the codebase, and identifies content that must
-  be restored. Use for validating documentation updates preserve critical information."
+  be restored. Use for validating documentation updates preserve critical information. Does not audit documentation findability or
+  structure — use information-architect."
 tools: Read, Glob, Grep, Bash(git *), Bash(find *)
 model: haiku
 ---

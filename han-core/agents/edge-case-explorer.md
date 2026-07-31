@@ -4,8 +4,7 @@ description:
   "Systematically discovers and catalogs edge cases that should be covered by tests for a given piece of code. Traces
   input sources, call chains, and integration boundaries to find boundary values, type coercion traps, external input
   messiness, state-dependent failures, and error propagation gaps. Use when exploring how code can fail, identifying
-  untested edge cases, or preparing an edge case plan before writing tests. Does not write tests or plan overall test
-  coverage — produces an edge case discovery and prioritization plan only. Defaults to focused mode targeting crashes,
+  untested edge cases, or preparing an edge case plan before writing tests. Does not write tests or plan overall test coverage — use test-engineer; produces an edge case discovery and prioritization plan only. Defaults to focused mode targeting crashes,
   data corruption, and systemic failures; request 'exhaustive exploration' for comprehensive analysis."
 tools: Read, Glob, Grep, Bash(git *), Bash(find *), Write
 model: sonnet

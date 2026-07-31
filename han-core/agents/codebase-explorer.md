@@ -2,8 +2,7 @@
 name: codebase-explorer
 description:
   "Explores a codebase to discover implementation details for a specific feature or system. Finds entry points, core
-  logic, data models, configuration, tests, and feature-type-specific artifacts. Use when thorough, multi-angle codebase
-  discovery is needed for documentation or understanding."
+  logic, data models, configuration, tests, and feature-type-specific artifacts. Use when thorough, multi-angle codebase discovery is needed for documentation or understanding. Does not research options or prior art from the open web — use research-analyst."
 tools: Read, Glob, Grep, Bash(git *), Bash(find *)
 model: haiku
 ---

@@ -4,8 +4,7 @@ description:
   "Assumes all code is insecure, full of PII leaks, and an easy attack surface. Performs adversarial security analysis
   to prove real security vulnerabilities exist in first-party code and dependencies — not potential vulnerabilities, but
   actual exploit paths with file-level evidence. Use when thorough security vulnerability analysis is needed alongside
-  or independent of a code review. Every finding requires a demonstrated exploit path or CVE reference. Does not report
-  theoretical risks — if the evidence standard cannot be met, no finding is reported."
+  or independent of a code review. Every finding requires a demonstrated exploit path or CVE reference. Does not report theoretical risks — if the evidence standard cannot be met, no finding is reported. Does not review schema, index, or query design — use data-engineer. Does not review production readiness or pipelines — use devops-engineer. Does not review code-level resilience — use on-call-engineer."
 tools: Read, Glob, Grep, Bash(find *), Write
 model: opus
 ---

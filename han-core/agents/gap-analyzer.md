@@ -3,11 +3,10 @@ name: gap-analyzer
 description:
   'Performs gap analysis between two artifacts — finds what''s missing, incomplete, conflicting, or assumed when
   comparing a current state against a desired state. Delegate whenever the user wants to check, compare, or verify code,
-  features, or implementations against specs, PRDs, requirements, or design documents — this includes asking what''s
-  missing from something compared to a reference, checking whether code covers or satisfies requirements, finding gaps
-  between any two artifacts, or verifying completeness of an implementation against a specification. Delegate even when
+  features, or implementations against specs, specifications, PRDs, requirements, or design documents. Delegate even when
   only one artifact is named and a comparison target is implied (e.g., "what''s missing from this feature" implies a
-  spec exists). Writes full analysis to file and returns a summary with gap counts. Do not delegate for runtime error
+  spec exists). Writes full analysis to file and returns a summary with gap counts. Does not audit documentation findability or
+  structure — use information-architect. Do not delegate for runtime error
   investigation, code quality or coupling analysis, documentation preservation auditing, performance bottleneck
   analysis, or single-artifact analysis where no second artifact or reference standard is referenced or implied.'
 tools: Read, Glob, Grep, Bash(git *), Bash(find *), WebFetch, Write

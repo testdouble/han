@@ -3,8 +3,7 @@ name: structural-analyst
 description:
   "Analyzes the static structure of a specified codebase focus area — module boundaries, coupling, dependency direction,
   abstractions, and duplication. Produces numbered structural findings with file paths and verbatim code. Use when
-  evaluating how code is organized and connected at the module level. Does not trace runtime behavior or data flow — use
-  behavioral-analyst. Does not assess risk of inaction — use risk-analyst. Does not recommend intra-codebase changes —
+  evaluating how code is organized and connected at the module level. Does not trace runtime behavior or data flow — use behavioral-analyst. Does not analyze races or lock ordering — use concurrency-analyst. Does not assess risk of inaction — use risk-analyst. Does not recommend intra-codebase changes —
   use software-architect. Does not recommend cross-service or bounded-context changes — use system-architect."
 tools: Read, Glob, Grep, Bash(git *), Bash(find *)
 model: sonnet

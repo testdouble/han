@@ -2,8 +2,7 @@
 name: evidence-based-investigator
 description:
   "Investigates codebase issues by gathering concrete evidence — file paths, line numbers, code snippets, error
-  messages, git history, and test coverage. Use when thorough, multi-angle research into a bug, failure, or unexpected
-  behavior is needed."
+  messages, git history, and test coverage. Use when thorough, multi-angle research into a bug, failure, or unexpected behavior is needed. Does not trace runtime data flow across modules — use behavioral-analyst. Does not research open-ended options from the web — use research-analyst."
 tools: Read, Glob, Grep, Bash(git *), Bash(find *)
 model: sonnet
 ---
