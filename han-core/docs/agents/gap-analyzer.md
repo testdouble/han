@@ -54,6 +54,7 @@ to dispatch the agent. For what the agent does internally, read the agent defini
 - Bug investigation. Use `evidence-based-investigator`.
 - Code quality or correctness review. Use `/code-review`.
 - Architectural assessment. Use `/architectural-analysis`.
+- Documentation findability or structure audits. Use `information-architect`.
 - Single-artifact analysis with no comparison target, even implied.
 
 ## How to invoke it
