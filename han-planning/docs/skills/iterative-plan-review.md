@@ -252,9 +252,11 @@ How the size is chosen:
 
 How to override the size:
 
-- Pass `small`, `medium`, or `large` as the first positional argument:
+- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument:
   `/iterative-plan-review medium docs/plans/refactor-cache.md`.
 - Promoting from small to team mode pulls in the required team roster automatically.
+- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
+  the plan's own signals instead.
 - Conversational overrides (_"run team mode anyway, the plan touches auth"_) still work and are equivalent.
 
 For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md).
@@ -300,6 +302,10 @@ external to the codebase), Changes Made, Ambiguity Surfaced, and a Stability Ass
 grounding) joins whenever the plan contains codebase claims to verify. One chosen specialist at medium, or two at large,
 is selected to match what the plan touches: security, data, UX, DevOps, architecture, concurrency, testing. Round 2+
 feeds prior findings back into agent prompts so agents don't re-raise resolved issues.
+
+**Before the review reaches you**, the skill runs a readability self-check over the plan prose this review authored or
+changed, then executes its cross-reference validation script to confirm every `F#` finding and every `R#` round entry
+carries its required citations and that each cited identifier resolves. Both must pass before presentation.
 
 Plan folders produced before the `artifacts/` layout was introduced may have these companions at the folder root
 instead. The skill detects that layout and continues appending to the existing files rather than migrating.

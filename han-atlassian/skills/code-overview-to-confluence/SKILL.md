@@ -21,11 +21,9 @@ allowed-tools: Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atla
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
-under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
-per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
-the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
-When neither supplies content, no config is present and nothing changes.
+that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
+probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
+between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
 
 # Code Overview to Confluence
 
@@ -71,7 +69,7 @@ Invoke the `han-coding:code-overview` skill with the **Skill** tool, **forwardin
 target (file, directory, symbol, or PR reference, or none for the current branch's changes), any size the user gave, and
 the relevant conversation context. Do not summarize, trim, or reinterpret the user's context; pass it through so
 `han-coding:code-overview` runs exactly as it would on its own (target resolution, mode and size selection, parallel
-`codebase-explorer` exploration, synthesis, and the readability-review pass).
+`han-core:codebase-explorer` exploration, synthesis, and the readability-review pass).
 
 `han-coding:code-overview` already writes its overview to a scratch file outside the repository and changes no code —
 **except** add one explicit instruction: it must write the overview to an explicit scratch path this skill names (for

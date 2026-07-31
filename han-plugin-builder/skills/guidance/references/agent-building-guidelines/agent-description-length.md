@@ -98,30 +98,10 @@ When a description is over the target, cut in the same fixed order skills use. T
 
 ## How to measure a description
 
-Count the rendered description string, resolving a folded (`>`) or quoted scalar:
-
-```bash
-python3 - "path/to/agent.md" <<'EOF'
-import re, sys
-txt = open(sys.argv[1]).read()
-fm = re.search(r'^---\n(.*?)\n---', txt, re.S).group(1)
-m = re.search(r'^description:\s*(.*)$', fm, re.M)
-rest = m.group(1).strip()
-if rest in ('>', '|', '>-', '|-'):
-    start = m.end()
-    block = []
-    for ln in fm[start:].split('\n')[1:]:
-        if re.match(r'^\S', ln):
-            break
-        block.append(ln.strip())
-    desc = ' '.join(x for x in block if x)
-else:
-    desc = rest.strip('"\'')
-print(f"{len(desc)} chars")
-EOF
-```
-
-If the count is well over 1024, find the vocabulary or anti-pattern content and move it to the body.
+Count the rendered description string, resolving a folded (`>`) or quoted scalar. The measuring snippet is in
+[Skill Description Length](../skill-building-guidance/skill-description-length.md#how-to-measure-a-description);
+point it at the agent file instead of a `SKILL.md`. If the count is well over 1024, find the vocabulary or
+anti-pattern content and move it to the body.
 
 ## Common Pitfalls
 

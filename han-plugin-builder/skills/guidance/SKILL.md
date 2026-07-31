@@ -17,11 +17,9 @@ allowed-tools: Read, Glob, Grep, Bash(find *)
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
-under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
-per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
-the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
-When neither supplies content, no config is present and nothing changes.
+that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
+probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
+between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
 
 This skill has three modes. Pick the mode from how it was invoked, then follow only that mode's steps.
 
@@ -47,8 +45,9 @@ specific file(s) you need:
   under `${CLAUDE_SKILL_DIR}/references/claude-marketplace-and-plugin-configuration/`.
 - Versioning, README structure, local development, the iterative development process, and
   specialization-versus-model-tier reasoning → the top-level files in `${CLAUDE_SKILL_DIR}/references/`.
-- Writing the instructions for a target model (how Sonnet 5, Opus 4.8, and Fable 5 differ in following instructions,
-  and how that changes what you write) → `${CLAUDE_SKILL_DIR}/references/per-model-authoring.md`.
+- Writing the instructions for a target model (how Sonnet 5, Opus 5, and Fable 5 differ in following instructions, which
+  instructions to leave out, and how to calibrate length, narration, and scope) →
+  `${CLAUDE_SKILL_DIR}/references/per-model-authoring.md`.
 - Copyable starter files → `${CLAUDE_SKILL_DIR}/references/templates/`.
 
 Steps:

@@ -88,7 +88,7 @@ Give it:
 
 1. **A focus area (required).** A module directory, a specific subsystem, or a set of related files. If you run the
    skill without a focus area, it asks you to specify one before proceeding.
-2. **A size, optional.** Pass `small`, `medium`, or `large` as the first positional argument to override the
+2. **A size, optional.** Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument to override the
    auto-classification. The skill still selects specialists by signal, so a `large` override does not dispatch agents
    whose domain the code never touches.
 3. **A driving concern, optional.** _"I suspect the auth service's session handling has a race,"_ or _"we want to split
@@ -126,9 +126,11 @@ How the size is chosen:
 
 How to override the size:
 
-- Pass `small`, `medium`, or `large` as the first positional argument: `/architectural-analysis medium src/auth/`.
+- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument: `/architectural-analysis medium src/auth/`.
 - When the size is overridden, the skill announces the override and uses the chosen band for the roster cap and the
   calibration directive. Specialists are still selected by signal.
+- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
+  the focus area's own signals instead.
 - Conversational overrides (_"run this as a large analysis"_) work as well and are equivalent.
 
 For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md).
@@ -210,7 +212,7 @@ single fan-out / fan-in pass with no iteration round. If a band proves too small
 
 ## In more detail
 
-The skill walks an eight-step process:
+The skill walks an eleven-step process:
 
 1. **Validate the focus area and resolve project context.** Bind `$size` if it was passed. Confirm the focus area
    resolves to real files and identify its boundary. Read CLAUDE.md / project-discovery.md for conventions. Note git
@@ -231,9 +233,13 @@ The skill walks an eight-step process:
 7. **Dispatch the synthesis architects.** `software-architect` always runs, consuming all discovery output plus the `R#`
    items. `system-architect` runs only when it is on the roster, consuming the same plus the DevOps and data findings as
    its documented optional inputs.
-8. **Render and present the report.** Read the template, fill it, and drop the sections whose agent was not dispatched.
-   Write the Executive Summary last. Present the report in-channel with a short closing summary of size, roster, finding
-   counts, and open items.
+8. **Render the report.** Read the template, fill it, and drop the sections whose agent was not dispatched. Write the
+   Executive Summary last.
+9. **Rewrite the report for readability.** Dispatch `readability-editor` over the finished draft so the prose meets the
+   shared readability standard, with every finding, cross-reference, and code excerpt preserved.
+10. **Run the readability self-check.** Confirm the rewritten report satisfies each criterion before it reaches you.
+11. **Present the report.** Share it in-channel with a short closing summary of size, roster, finding counts, and open
+    items.
 
 ## Sources
 

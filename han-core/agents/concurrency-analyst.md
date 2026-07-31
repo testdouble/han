@@ -3,12 +3,11 @@ name: concurrency-analyst
 description:
   "Analyzes concurrency and async patterns in a specified codebase focus area — race conditions, shared resource
   contention, deadlock potential, lock ordering, and async error handling. Produces numbered concurrency findings with
-  file paths and verbatim code. Use when evaluating thread safety, async correctness, or parallel execution risks. Does
-  not analyze static structure — use structural-analyst. Does not trace general data flow — use behavioral-analyst. Does
+  file paths and verbatim code. Use when evaluating thread safety, async correctness, or parallel execution risks. Does not analyze static structure — use structural-analyst. Does not review code-level production resilience — use on-call-engineer. Does not trace general data flow — use behavioral-analyst. Does
   not assess risk of inaction — use risk-analyst. Does not recommend intra-codebase changes — use software-architect.
   Does not recommend cross-service or bounded-context changes (sagas, distributed coordination, idempotency at the wire)
   — use system-architect."
-tools: Read, Glob, Grep, Bash(git *), Bash(find *)
+tools: Read, Glob, Grep, Bash(find *)
 model: sonnet
 ---
 

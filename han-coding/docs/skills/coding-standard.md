@@ -9,7 +9,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 
 ## TL;DR
 
-- **What it does.** Creates and updates coding standards for the current project. From scratch, by converting an
+- **What it does.** Creates and updates coding standards for the current project, whether from scratch, by converting an
   existing document, or by updating an existing standard.
 - **When to use it.** You want to formalize a convention the team already follows, or establish a new one grounded in
   codebase evidence, with real code examples from the codebase.
@@ -173,7 +173,7 @@ runs are a few minutes.
 
 ## In more detail
 
-The skill walks a ten-step process:
+The skill walks an eleven-step process:
 
 1. **Determine mode.** Creating new / Converting existing / Updating existing.
 2. **Evaluate appropriateness.** Should this be tooling instead? If yes, warn and ask.
@@ -211,8 +211,8 @@ The skill walks a ten-step process:
     file paths in examples, distinct Correct-vs-Avoid examples, that no enumerated entry was added to the memory file,
     and that Step 8 and Step 9 edits were applied.
 
-Once the standard is final, the skill dispatches `readability-editor` to rewrite the standard's prose for the engineer
-who must follow it, preserving every fact, rule, and example, then runs a readability self-check before presenting.
+11. **Readability pass.** Dispatch `readability-editor` to rewrite the standard's prose for the engineer who must follow
+    it, preserving every fact, rule, and example, then run a readability self-check before presenting.
 
 ## YAGNI
 

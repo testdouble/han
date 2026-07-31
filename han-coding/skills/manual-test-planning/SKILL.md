@@ -20,11 +20,9 @@ allowed-tools: Bash(git *), Read, Grep, Glob, Write, Agent
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
-under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
-per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
-the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
-When neither supplies content, no config is present and nothing changes.
+that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
+probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
+between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
 
 ## Operating Principles
 
@@ -159,15 +157,15 @@ every fact — every step, expected outcome, test name, and category name must s
 Then run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the document. Confirm each criterion and fix any failure:
 
-1. The opening line states the main point.
-2. Each heading names its content and is not a generic label.
-3. Each paragraph carries one idea and leads with it.
-4. No sentence runs past the soft length flag (about thirty words) without reason.
-5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to
-   avoid" lists) is present.
-6. Every test still has its steps and expected outcomes, and no technical detail has crept in.
-7. When the plan uses categories, Tests at a Glance and Test Details still carry the same category names in the same
-   order, with every test under its category in both sections.
+Run the readability rule's standardized six-point self-check, which is already in your context from the
+`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
+optional: the standard governs how the content is said, never whether a required fact appears.
+
+Two checks are this skill's own, layered on top:
+
+- Every test still has its steps and expected outcomes, and no technical detail has crept in.
+- When the plan uses categories, Tests at a Glance and Test Details carry the same category names in the same
+  order, with every test under its category in both sections.
 
 Finish by presenting a short in-channel summary: the file path, the number of tests, and the test names. Do not
 repeat the full document in the channel.

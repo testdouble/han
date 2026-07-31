@@ -28,11 +28,9 @@ be installed. In either case, immediately stop.
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
-under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
-per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
-the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
-When neither supplies content, no config is present and nothing changes.
+that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
+probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
+between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
 
 ## Step 1: Validate PR State
 
@@ -64,6 +62,11 @@ If the user accepts:
 ## Step 4: Pre-Post Clarity Check
 
 Because the review body will be publicly visible on the PR, run a clarity pass on the draft before posting.
+
+Match the body's length to what the review found. Every finding earns its place by naming a specific problem at a
+specific location. Skip filler sections, a restated summary of the diff, and boilerplate the reader can see for
+themselves on the PR. Stay inside what the review covered: this step edits wording and severity, and never adds a
+finding `/code-review` did not raise.
 
 1. Write the draft review body to a temporary file (e.g., `/tmp/post-code-review-to-pr-draft.md`) using the Write tool.
 2. Launch a single `han-core:junior-developer` agent in artifact-review mode with the prompt: "You are reviewing the

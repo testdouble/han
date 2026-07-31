@@ -267,26 +267,8 @@ failure but is actually a documentation failure.
 **Fix:** Audit SKILL.md and `references/` against the current state of what they describe. Treat doc-code contradictions
 as functional bugs — they actively poison output rather than passively going unnoticed.
 
-**Before (stale reference):**
-
-```markdown
-## Step 5: Post Review
-
-Run `scripts/post-review.sh {owner/repo} {pr_number}` to post the review.
-```
-
-The script was renamed to `scripts/submit-review.sh` two months ago. The model tries to run the old name, fails, and
-either halts or invents a workaround.
-
-**After (updated reference):**
-
-```markdown
-## Step 5: Post Review
-
-Run `scripts/submit-review.sh {owner/repo} {pr_number}` to post the review.
-```
-
-See [Documentation Maintenance](./documentation-maintenance.md) for when and how to audit skills for staleness.
+See [Documentation Maintenance](./documentation-maintenance.md) for the audit triggers, the worked before-and-after on a
+renamed script, and the co-versioning rule that prevents the drift in the first place.
 
 ### Advanced: Use scripts for critical validation
 

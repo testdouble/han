@@ -7,7 +7,7 @@ description: >
   work-items file itself — use plan-work-items to break a plan into work items first. Does not review code or post pull
   request comments — use post-code-review-to-pr for that.
 argument-hint:
-  "[path to work-items.md] [target repo(s), e.g. org/repo] [--label <name> (optional)] [--assignee <user> (optional)]"
+  "[path to work-items.md] [target repo(s), e.g. org/repo] [--label name (optional)] [--assignee user (optional)]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(gh *), Bash(git *), Bash(find *)
 ---
 
@@ -17,11 +17,9 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(gh *), Bash(git *), Bash(find
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
-under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
-per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
-the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
-When neither supplies content, no config is present and nothing changes.
+that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
+probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
+between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
 
 # Work Items to GitHub Issues
 

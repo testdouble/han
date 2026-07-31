@@ -27,8 +27,9 @@ the `han` meta-plugin),
 `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` via dependencies),
 `han-feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on no other Han plugin and is
 deliberately _not_ bundled by the `han` meta-plugin, so it is installed separately), `han-atlassian` (an opt-in plugin
-carrying the Atlassian skills — Confluence publishing and work-items-to-Jira — which depends on `han-core`,
-`han-documentation`, `han-planning`, and `han-coding` because its wrapper skills run skills from each, requires a
+carrying the Atlassian skills — Confluence publishing and work-items-to-Jira — which depends on `han-communication`,
+`han-core`, `han-documentation`, `han-planning`, and `han-coding` because its wrapper skills run skills from each,
+requires a
 configured Atlassian MCP server, and is likewise _not_ bundled by the `han` meta-plugin), `han-linear` (an opt-in
 plugin carrying the work-items-to-Linear skill, which depends on no other Han plugin, requires a configured Linear MCP
 server, and is likewise _not_ bundled by the `han` meta-plugin), and `han-plugin-builder` (an opt-in plugin carrying
@@ -132,7 +133,7 @@ han-plugin-builder skill:
 │   ├── skills/         # Feedback skill directory (han-feedback) with SKILL.md
 │   ├── docs/           # In-plugin long-form docs: docs/skills/han-feedback.md
 │   └── references/     # Vendored config-rule.md
-├── han-atlassian/      # Opt-in Atlassian plugin: markdown-to-confluence, project-documentation-to-confluence, investigate-to-confluence, code-overview-to-confluence, plan-a-feature-to-confluence, work-items-to-jira (depends on han-core, han-documentation, han-planning, han-coding; requires the Atlassian MCP server; NOT bundled by the han meta-plugin). Carries README.md + docs/skills/ like the other layers.
+├── han-atlassian/      # Opt-in Atlassian plugin: markdown-to-confluence, project-documentation-to-confluence, investigate-to-confluence, code-overview-to-confluence, plan-a-feature-to-confluence, work-items-to-jira (depends on han-communication, han-core, han-documentation, han-planning, han-coding; requires the Atlassian MCP server; NOT bundled by the han meta-plugin). Carries README.md + docs/skills/ like the other layers.
 ├── han-linear/         # Opt-in Linear plugin: work-items-to-linear (depends on no other Han plugin; requires the Linear MCP server; NOT bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/

@@ -238,10 +238,12 @@ How the size is chosen:
 
 How to override the size:
 
-- Pass `small`, `medium`, or `large` as the first positional argument: `/plan-a-feature medium "describe the feature"`,
+- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument: `/plan-a-feature medium "describe the feature"`,
   `/plan-a-feature large docs/features/ "design the webhook retry feature"`.
 - When the size is overridden via `$size`, the skill announces the override (`Medium: passed via $size`) and uses the
   chosen band for the team cap.
+- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
+  the feature's own signals instead.
 - Conversational overrides (_"treat this as a large spec, it touches auth"_) still work and are equivalent.
 
 For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md).

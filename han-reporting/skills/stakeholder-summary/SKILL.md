@@ -18,11 +18,9 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. A file that reads but cannot be used degrades
-under the config rule's existing note. When that file or the `project .han/config.md` probe supplies content, apply it
-per the config rule in [../../references/config-rule.md](../../references/config-rule.md). The project file overrides
-the personal one setting by setting, and a relative path in either file resolves against that file's own directory.
-When neither supplies content, no config is present and nothing changes.
+that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
+probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
+between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
 
 ## Operating Principles
 
@@ -243,27 +241,27 @@ Step 5; this pass confirms the standardized self-check (the shared standard is i
 `han-communication:readability-guidance`) holds, over the document's prose regions only — never inside the Mermaid
 diagram bodies. Confirm each of the six criteria and fix any failure with Edit:
 
-1. The opening line states the main point (the customer problem, before any capability).
-2. Each heading names its content and is not a generic label.
-3. Each paragraph carries one idea and leads with it.
-4. No sentence runs past the soft length flag (about thirty words) without reason.
-5. No blocklisted word is present. The shared writing-voice blocklist ("Avoided words and phrases" and "AI slop to
-   avoid") is authoritative; layered on top of it, this skill's own domain-specific list for a non-technical
-   stakeholder:
-   - **No engineering artifacts.** No file paths, function names, class names, database tables or columns, API
-     endpoints, HTTP verbs, library or framework names, environment variables, queue or topic names, or language
-     primitives.
-   - **No engineering hedges.** No "eventually consistent", "idempotent", "race condition", "backfill", "migration",
-     "schema", "payload", "request/response", "stateless", "async", "webhook", "polling vs. push", or similar. If a
-     concept like this is load-bearing, restate it as a user-visible behavior or omit it.
-   - **No leftover scaffolding.** Template placeholders, TODOs, "TBD", or example text from the template that was not
-     replaced with real content.
-   - **Closing questions are stakeholder-answerable.** A non-technical reader can give a real answer without asking an
-     engineer what the question means.
-6. Every fact is preserved — every capability, exclusion, quantity, named entity, and stated condition or qualifier from
-   the source spec survives with its precision intact.
+Run the readability rule's standardized six-point self-check, which is already in your context from the
+`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
+optional: the standard governs how the content is said, never whether a required fact appears.
 
-Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
+Three things are this skill's own, layered on top of that check:
+
+- The opening line states the customer problem, before any capability.
+- The fidelity criterion covers every capability, exclusion, quantity, named entity, and stated condition or qualifier
+  carried over from the source spec.
+- The shared vocabulary blocklist is authoritative, and this domain-specific list sits on top of it for a
+  non-technical stakeholder:
+  - **No engineering artifacts.** No file paths, function names, class names, database tables or columns, API
+    endpoints, HTTP verbs, library or framework names, environment variables, queue or topic names, or language
+    primitives.
+  - **No engineering hedges.** No "eventually consistent", "idempotent", "race condition", "backfill", "migration",
+    "schema", "payload", "request/response", "stateless", "async", "webhook", "polling vs. push", or similar. If a
+    concept like this is load-bearing, restate it as a user-visible behavior or omit it.
+  - **No leftover scaffolding.** Template placeholders, TODOs, "TBD", or example text from the template that was not
+    replaced with real content.
+  - **Closing questions are stakeholder-answerable.** A non-technical reader can give a real answer without asking an
+    engineer what the question means.
 
 If Pass B required any edits, apply them with Edit, then **Read the file again from disk** before starting Pass C. The
 Pass C read-through must run against the post-fix contents, not your memory of what you intended to fix.
