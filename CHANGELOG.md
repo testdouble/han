@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+The plugin-building guidance catches up to Claude Opus 5. `per-model-authoring.md` named Opus 4.8 as the current Opus
+and told authors its thinking is off unless you turn it on, which is now backwards: Opus 5 has thinking on by default
+and can disable it only at effort `high` or below. The document now covers Sonnet 5, Opus 5, and Fable 5, and gains two
+sections the older guidance had no equivalent for. "Instructions to leave out on Opus 5" tells authors to cut the
+verification steps, re-check prompts, and double-check phrasing that the model already performs unprompted, where
+leaving them in compounds with the model's own behavior and spends tokens for nothing. "Calibrating length, narration,
+and scope" covers the four levers that need an explicit instruction because effort does not reach them: conversational
+length, written deliverable length, progress and correction narration, and scope creep on a narrow task. The
+instruction-style section adds the literalism trap that bites review skills, where "only report high-severity issues"
+is followed literally and the run reports less than it found, so the filtering belongs in a separate step.
+`multi-agent-economics.md` gains the delegation policy a skill should state outright, because the model's own default
+is eager: do not delegate work finishable in a handful of tool calls, never dispatch an agent to verify the dispatching
+skill's own work, and prefer one agent to several. The Level 1 worker-plus-reviewer cascade survives unchanged, since a
+specialist reviewing from a different perspective is a different mechanism than a self-check. The four other surfaces
+naming the model trio are swept to match, and `agent-model-selection.md` stops using a pinned `claude-opus-4-8` as its
+full-model-ID example.
+
 Configuration becomes two files instead of one. A person can now carry a personal `.han/config.md` inside their Claude
 Code configuration directory, holding the settings that should follow them into every project, and a project's own
 `.han/config.md` overrides it setting by setting. All 40 skills read both. Each resolves the configuration directory

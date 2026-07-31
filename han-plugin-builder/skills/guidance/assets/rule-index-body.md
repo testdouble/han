@@ -126,7 +126,8 @@ Guidance for authoring agent `.md` definitions. Agents are self-contained and ca
   explicitly not a factor. Read when setting or revisiting an agent's model.
 - [Multi-Agent Economics](.claude/skills/plugin-guidance/references/agent-building-guidelines/multi-agent-economics.md)
   — The escalation cascade for deciding whether adding more agents is justified, given that each agent multiplies
-  latency and token cost. Read when a skill is considering dispatching multiple or parallel agents.
+  latency and token cost, plus the delegation policy a skill should state because the model's own default is eager.
+  Read when a skill is considering dispatching multiple or parallel agents.
 - [Graceful Degradation (agents)](.claude/skills/plugin-guidance/references/agent-building-guidelines/graceful-degradation.md)
   — How a dispatched agent should check tool availability inline and skip gracefully, so the orchestrating skill needs
   no defensive guards around the dispatch. Read when an agent's steps depend on git or other tools that may be missing.
@@ -163,8 +164,9 @@ Process guidance for building and evolving a plugin over its lifetime.
   on narrow tasks, without raising the capability ceiling. Read when reasoning about the
   specialization-versus-model-tier trade-off across skills and agents.
 - [Per-Model Authoring Guidance](.claude/skills/plugin-guidance/references/per-model-authoring.md) — How Sonnet 5,
-  Opus 4.8, and Fable 5 differ in how they follow instructions, and how those differences change what you write: the
-  model-agnostic default for an unknown target, the opposite-direction instruction-style split, and the Fable 5
+  Opus 5, and Fable 5 differ in how they follow instructions, and how those differences change what you write: the
+  model-agnostic default for an unknown target, the opposite-direction instruction-style split, the verification and
+  re-check instructions to leave out, how to calibrate response length, narration, and scope, and the Fable 5
   reasoning-echo refusal to avoid. Read when writing or hardening a skill or agent and tuning the instructions to a
   target model, not when choosing which model tier to run (see Specialization and Model Selection).
 

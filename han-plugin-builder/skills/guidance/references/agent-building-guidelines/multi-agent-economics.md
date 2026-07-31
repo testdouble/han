@@ -20,6 +20,26 @@ with its own context window and teammates talk to each other. Agent teams cost s
 linearly per teammate) and are gated behind `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`. The economics below apply to
 parallel sub-agent dispatch; agent teams cost strictly more for the same head count.
 
+## Say what warrants delegation, because the model's default is eager
+
+Newer models reach for subagents readily. Anthropic's Opus 5 guidance is explicit that the model delegates more than
+earlier ones, and that delegation pays off on genuinely independent, sizeable tracks of work while multiplying cost and
+time on small ones. Left unstated, that eagerness pushes a skill up the cascade below without any of the measurement
+the cascade asks for.
+
+So a skill that dispatches agents should state its delegation policy rather than rely on the default. Three rules,
+which hold regardless of the model:
+
+- **Do not delegate work the skill can finish in a handful of tool calls.** The dispatch overhead exceeds the work.
+- **Do not dispatch an agent to verify or double-check the dispatching skill's own work.** This is a self-check, and
+  current models already perform it unprompted. It is distinct from Level 1 below, where a specialist reviewer
+  evaluates the output from a genuinely different perspective. That pattern still earns its cost; a self-check does
+  not.
+- **Prefer one agent to several.** If a single agent can complete the track, dispatch one and keep spawn counts low.
+
+Where the policy needs to be deterministic rather than advisory, cap the count in the skill body instead of describing
+when delegation is appropriate.
+
 ## The Escalation Cascade
 
 Start with the simplest architecture that could work. Advance only when measured quality justifies moving up.
@@ -117,11 +137,13 @@ When designing a skill that dispatches agents:
 ## Summary Checklist
 
 1. Start with one well-prompted agent. It handles most tasks.
-2. Add a reviewer only when a single agent consistently fails a specific quality dimension.
-3. Escalate to a team only when review is genuinely multi-dimensional.
-4. Cap teams at 5 agents. Beyond this, coordination costs exceed benefits.
-5. Apply the 45% threshold: optimize existing agents before adding new ones.
-6. Dispatch independent agents in parallel. Avoid long sequential chains.
+2. State the delegation policy in the skill body. The model's default eagerness is not the policy you want.
+3. Never dispatch an agent to verify the dispatching skill's own work.
+4. Add a reviewer only when a single agent consistently fails a specific quality dimension.
+5. Escalate to a team only when review is genuinely multi-dimensional.
+6. Cap teams at 5 agents. Beyond this, coordination costs exceed benefits.
+7. Apply the 45% threshold: optimize existing agents before adding new ones.
+8. Dispatch independent agents in parallel. Avoid long sequential chains.
 
 ## Sources
 
@@ -133,6 +155,9 @@ When designing a skill that dispatches agents:
   measurement justifies it.
 - [Agent Teams (Claude Code docs)](https://code.claude.com/docs/en/agent-teams). The experimental multi-session feature
   distinct from parallel `Agent`-tool dispatch; token cost scales linearly per teammate; recommends 3-5 teammates.
+- [Prompting Claude Opus 5 (Anthropic)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5).
+  Source for readier default delegation, the rule against delegating self-verification, and the advice to prefer one
+  agent over several and keep spawn counts low.
 
 Cross-references:
 
@@ -141,3 +166,5 @@ Cross-references:
 - [Domain Focus](./agent-domain-focus.md). Vocabulary routing, self-evaluation bias, and the generalist trap.
 - [Skill Decomposition](../skill-building-guidance/skill-decomposition.md). When to split skills vs. when to add agents
   within a skill.
+- [Per-Model Authoring Guidance](../per-model-authoring.md). The wider set of author-time adjustments the current models
+  call for, including the verification instructions to leave out.

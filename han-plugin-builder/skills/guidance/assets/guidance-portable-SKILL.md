@@ -24,8 +24,9 @@ specific file(s) you need:
   under `${CLAUDE_SKILL_DIR}/references/claude-marketplace-and-plugin-configuration/`.
 - Versioning, README structure, local development, the iterative development process, and
   specialization-versus-model-tier reasoning → the top-level files in `${CLAUDE_SKILL_DIR}/references/`.
-- Writing the instructions for a target model (how Sonnet 5, Opus 4.8, and Fable 5 differ in following instructions,
-  and how that changes what you write) → `${CLAUDE_SKILL_DIR}/references/per-model-authoring.md`.
+- Writing the instructions for a target model (how Sonnet 5, Opus 5, and Fable 5 differ in following instructions, which
+  instructions to leave out, and how to calibrate length, narration, and scope) →
+  `${CLAUDE_SKILL_DIR}/references/per-model-authoring.md`.
 - Copyable starter files → `${CLAUDE_SKILL_DIR}/references/templates/`.
 
 Steps:

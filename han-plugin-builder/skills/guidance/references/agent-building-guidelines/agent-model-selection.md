@@ -23,7 +23,8 @@ The `model` field in agent frontmatter controls which AI model the agent uses.
 | `inherit` | Uses the same model as the user's main session.  |
 
 **Default behavior:** If `model` is omitted, the agent defaults to `inherit`. A full model ID (for example
-`claude-opus-4-8`) is also accepted in place of an alias.
+`claude-opus-5`) is also accepted in place of an alias. Prefer the alias: it keeps tracking the current model in that
+tier, where a pinned ID goes stale as new models ship.
 
 **Syntax example:**
 
