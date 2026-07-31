@@ -71,7 +71,7 @@ Invoke the `han-coding:code-overview` skill with the **Skill** tool, **forwardin
 target (file, directory, symbol, or PR reference, or none for the current branch's changes), any size the user gave, and
 the relevant conversation context. Do not summarize, trim, or reinterpret the user's context; pass it through so
 `han-coding:code-overview` runs exactly as it would on its own (target resolution, mode and size selection, parallel
-`codebase-explorer` exploration, synthesis, and the readability-review pass).
+`han-core:codebase-explorer` exploration, synthesis, and the readability-review pass).
 
 `han-coding:code-overview` already writes its overview to a scratch file outside the repository and changes no code —
 **except** add one explicit instruction: it must write the overview to an explicit scratch path this skill names (for

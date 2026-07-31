@@ -65,6 +65,11 @@ If the user accepts:
 
 Because the review body will be publicly visible on the PR, run a clarity pass on the draft before posting.
 
+Match the body's length to what the review found. Every finding earns its place by naming a specific problem at a
+specific location. Skip filler sections, a restated summary of the diff, and boilerplate the reader can see for
+themselves on the PR. Stay inside what the review covered: this step edits wording and severity, and never adds a
+finding `/code-review` did not raise.
+
 1. Write the draft review body to a temporary file (e.g., `/tmp/post-code-review-to-pr-draft.md`) using the Write tool.
 2. Launch a single `han-core:junior-developer` agent in artifact-review mode with the prompt: "You are reviewing the
    text of a code review that is about to be posted publicly on a GitHub pull request. The review is at {draft_path}. Do
