@@ -8,7 +8,7 @@ description:
   interface changes — use software-architect. Does not own rollout or observability — use devops-engineer. Does not own
   schema or query design — use data-engineer. Does not discover findings — use structural-analyst, behavioral-analyst, or
   concurrency-analyst. Does not score risk — use risk-analyst."
-tools: Read, Glob, Grep, Bash(git *), Bash(find *)
+tools: Read, Glob, Grep, Bash(find *)
 model: opus
 ---
 

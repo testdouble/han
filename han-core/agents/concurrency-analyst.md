@@ -7,7 +7,7 @@ description:
   not assess risk of inaction — use risk-analyst. Does not recommend intra-codebase changes — use software-architect.
   Does not recommend cross-service or bounded-context changes (sagas, distributed coordination, idempotency at the wire)
   — use system-architect."
-tools: Read, Glob, Grep, Bash(git *), Bash(find *)
+tools: Read, Glob, Grep, Bash(find *)
 model: sonnet
 ---
 

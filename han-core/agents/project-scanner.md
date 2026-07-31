@@ -4,7 +4,7 @@ description:
   "Scans a code repository to discover project-level attributes: languages, frameworks, tooling, configuration,
   documentation structure, and infrastructure. Optimized for reading config files and directory structure rather than
   deep code tracing."
-tools: Read, Glob, Grep, Bash(git remote *), Bash(git config *), Bash(find *)
+tools: Read, Glob, Grep, Bash(find *)
 model: haiku
 ---
 
