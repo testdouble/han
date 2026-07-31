@@ -887,3 +887,26 @@ here; the recorded boundary already settled it.
   a skill cannot reliably detect which model is running it, so shipped skills stay model-agnostic.
 - **Rewriting the long-form documentation beyond the descriptions the sweep changed.** The request scopes to skill and
   agent definitions and their associated resources. `W-20` syncs only what the sweep moved.
+
+## Status as of 2026-07-31
+
+Thirteen of the 22 work items are complete. Nine remain, and they are the trims.
+
+**Complete:** `W-1` through `W-10`, plus `W-19`, `W-20`, and `W-21`. Every conformance conflict the sweep set out to
+find has been corrected, and the verification pass in
+[artifacts/conformance-verification.md](artifacts/conformance-verification.md) records 60 of 64 entities passing every
+mechanically checkable item.
+
+**Open:** `W-11` through `W-18`, the per-plugin trims, and `W-22`, the guidance-reference trim.
+
+**What the open items still owe.** Four skill bodies exceed the 500-line ceiling: `plan-implementation` at 801,
+`code-review` at 770, `plan-a-feature` at 746, and `iterative-plan-review` at 543. Those four are the only outstanding
+conformance failures in the repository. The rest of the trim work is the secondary goal, reducing what can be reduced
+without losing quality, and no part of it is a conflict with the guidance.
+
+**Why they were left rather than done quickly.** A trim to a planning skill means moving domain knowledge into a
+reference file and deleting content that restates a shared rule, both of which need the whole file in view to do
+without breaking a workflow. A shallow pass over four large skills would cost more than the overage it closes.
+
+**Where to start.** `W-11` is unblocked and owns the two largest bodies. The dependency lines on each item below are
+still accurate.
