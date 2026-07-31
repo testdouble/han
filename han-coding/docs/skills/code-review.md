@@ -268,7 +268,8 @@ skill is built for per-branch cadence, not tight-loop iteration over the same co
 
 ## In more detail
 
-The skill walks a ten-step process (Step 1.5 is a context loader inserted between Steps 1 and 2):
+The skill walks an eleven-step process (Step 1.5 is a context loader inserted between Steps 1 and 2, and Step 8.5 is a
+readability pass inserted between Steps 8 and 9):
 
 1. **Identify changes.** Detect git mode (A/B/C), resolve project config, enumerate changed files. Bind `$focus_areas`
    from the user's free-form argument. 1.5. **Load branch context.** Attempt PR description via
@@ -312,6 +313,9 @@ The skill walks a ten-step process (Step 1.5 is a context loader inserted betwee
    dispatched, and skips when the review is clean.
 8. **Generate review output.** Assemble the final review using the review template, rendering each section only when it
    has content and keeping the fixed section order.
+   8.5. **Rewrite the finding prose for readability.** Dispatch `readability-editor` over the assembled review so its prose
+   meets the shared readability standard, with every task ID, severity, `file_path:line_number` reference, and code excerpt
+   preserved.
 9. **Verify.** Step 9.0 runs the self-consistency check (extract
    `{task-id, file-path, line-range, recommended-action-summary}` tuples, then compare overlapping pairs and demote
    contradictory recommendations with a `Tension with {other-task-id}:` note). Step 9.1 then verifies task IDs are

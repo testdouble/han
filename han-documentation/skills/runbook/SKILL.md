@@ -9,7 +9,7 @@ description: >
   architectural-decision-record. Does not create coding standards — use coding-standard.
 argument-hint: "[topic or scenario, or path to existing runbook to update]"
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Bash(git config *), Bash(whoami), Bash(date *), Bash(mkdir *), Bash(find *)
+  Read, Write, Edit, Glob, Bash(git config *), Bash(whoami), Bash(date *), Bash(mkdir *), Bash(find *)
 ---
 
 # Create or Update Runbook

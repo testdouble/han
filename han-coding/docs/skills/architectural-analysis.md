@@ -210,7 +210,7 @@ single fan-out / fan-in pass with no iteration round. If a band proves too small
 
 ## In more detail
 
-The skill walks an eight-step process:
+The skill walks an eleven-step process:
 
 1. **Validate the focus area and resolve project context.** Bind `$size` if it was passed. Confirm the focus area
    resolves to real files and identify its boundary. Read CLAUDE.md / project-discovery.md for conventions. Note git
@@ -231,9 +231,13 @@ The skill walks an eight-step process:
 7. **Dispatch the synthesis architects.** `software-architect` always runs, consuming all discovery output plus the `R#`
    items. `system-architect` runs only when it is on the roster, consuming the same plus the DevOps and data findings as
    its documented optional inputs.
-8. **Render and present the report.** Read the template, fill it, and drop the sections whose agent was not dispatched.
-   Write the Executive Summary last. Present the report in-channel with a short closing summary of size, roster, finding
-   counts, and open items.
+8. **Render the report.** Read the template, fill it, and drop the sections whose agent was not dispatched. Write the
+   Executive Summary last.
+9. **Rewrite the report for readability.** Dispatch `readability-editor` over the finished draft so the prose meets the
+   shared readability standard, with every finding, cross-reference, and code excerpt preserved.
+10. **Run the readability self-check.** Confirm the rewritten report satisfies each criterion before it reaches you.
+11. **Present the report.** Share it in-channel with a short closing summary of size, roster, finding counts, and open
+    items.
 
 ## Sources
 
