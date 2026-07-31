@@ -234,13 +234,6 @@ Run the standardized readability self-check (the shared standard is in your cont
 blocks, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity
 guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
 
-1. The opening line states the main point.
-2. Each heading names its content and is not a generic label.
-3. Each paragraph carries one idea and leads with it.
-4. No sentence runs past the soft length flag (about thirty words) without reason.
-5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
-   lists) is present.
-6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
-   precision intact.
-
-Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized six-point self-check, which is already in your context from the
+`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
+optional: the standard governs how the content is said, never whether a required fact appears.

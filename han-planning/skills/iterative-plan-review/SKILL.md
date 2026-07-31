@@ -401,16 +401,9 @@ pre-existing plan, and never inside code fences, tables, the `F#`/`D#`/`T#`/`R#`
 History companion links, which must survive unchanged so they still resolve. Run it here on the converged plan, not
 inside either loop. Confirm each criterion and fix any failure before presenting:
 
-1. The opening line states the main point.
-2. Each heading names its content and is not a generic label.
-3. Each paragraph carries one idea and leads with it.
-4. No sentence runs past the soft length flag (about thirty words) without reason.
-5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
-   lists) is present.
-6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
-   precision intact.
-
-Fidelity wins: the standard governs how the content is said, never whether a required fact appears. This skill runs no
+Run the readability rule's standardized six-point self-check, which is already in your context from the
+`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
+optional: the standard governs how the content is said, never whether a required fact appears.
 separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
 
 **Preserve the cross-reference invariants across all files.** The two that a check can settle are executed rather than

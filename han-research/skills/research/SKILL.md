@@ -283,15 +283,11 @@ resolves to its registry entry) and to preserve every fact. Apply the returned r
 bodies, or citation identifiers (`A#`/`V#` survive unchanged). Confirm each criterion and fix any failure before
 presenting:
 
-1. The opening line states the main point.
-2. Each heading names its content and is not a generic label.
-3. Each paragraph carries one idea and leads with it.
-4. No sentence runs past the soft length flag (about thirty words) without reason.
-5. No word from the vocabulary blocklist (the writing-voice profile's "Avoided words and phrases" and "AI slop to avoid"
-   lists) is present.
-6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
-   precision intact, and every cited `A#` still resolves to its registry entry. Fidelity wins: the standard governs how
-   the content is said, never whether a required fact appears.
+Run the readability rule's standardized six-point self-check, which is already in your context from the
+`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
+optional: the standard governs how the content is said, never whether a required fact appears.
+
+On top of the fidelity criterion, confirm every cited `A#` still resolves to its registry entry.
 
 Present the report, then close with a short message: the size and roster used (and why), the evidence mode (strict or
 exploratory), the count of options and artifacts, the recommendation (or "no clear winner" with deciding criteria) and

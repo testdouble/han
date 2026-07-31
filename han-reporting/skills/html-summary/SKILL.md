@@ -171,16 +171,12 @@ class names, mermaid/diagram bodies, or code. The visual layout stays governed b
 skill runs no rewrite pass, so this self-check is the fidelity guard on the prose; criterion 6 is not optional. Confirm
 each criterion and fix any failure before finalizing:
 
-1. The opening line/prose states the main point (bottom line up front).
-2. Each heading names its content and is not a generic label.
-3. Each paragraph carries one idea and leads with it.
-4. No sentence runs past the soft length flag (about thirty words) without reason.
-5. No word from the vocabulary blocklist (the shared writing-voice profile's "Avoided words and phrases" and "AI slop to
-   avoid" lists, plus this skill's supplementary domain terms in `references/writing-conventions.md`) is present.
-6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its
-   precision intact.
+Run the readability rule's standardized six-point self-check, which is already in your context from the
+`readability-guidance` invocation above. Correct every failure before Step 6. Its fidelity criterion is not optional:
+the standard governs how the content is said, never whether a required fact appears.
 
-Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
+The vocabulary blocklist for this skill is the shared one plus its supplementary domain terms in
+[writing-conventions.md](./references/writing-conventions.md).
 
 If any check fails, fix it before Step 6.
 
