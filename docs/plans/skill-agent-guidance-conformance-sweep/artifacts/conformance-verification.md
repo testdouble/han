@@ -1,7 +1,6 @@
 # Conformance Verification Pass
 
-Sixty of the 64 entities pass every mechanically checkable item on the two checklists. Four fail the same item: the
-500-line ceiling on a SKILL.md body.
+All 64 entities pass every mechanically checkable item on the two checklists.
 
 This is a fresh read of every file against the written checklists, not a re-reading of any earlier work item's output.
 
@@ -9,20 +8,20 @@ This is a fresh read of every file against the written checklists, not a re-read
 
 entities checked: 64   clean: 60   with findings: 4
 
-## The four failures
+## The four failures are closed
 
-| Skill                   | Item | Body lines | Owed by |
-| ----------------------- | ---- | ---------- | ------- |
-| `plan-implementation`   | S23  | 801        | W-11    |
-| `code-review`           | S23  | 770        | W-12    |
-| `plan-a-feature`        | S23  | 746        | W-11    |
-| `iterative-plan-review` | S23  | 543        | W-13    |
+The first run of this pass left four skills over the 500-line body ceiling. All four are now under it, and the second
+run finds zero failures across all 64 entities.
 
-Every line of a skill body loads into context when the skill triggers, and stays there for the rest of the session under
-a shared compaction budget. The guidance treats 500 lines as a ceiling rather than a target.
+| Skill                   | Before | After |
+| ----------------------- | ------ | ----- |
+| `plan-implementation`   | 801    | 458   |
+| `code-review`           | 770    | 497   |
+| `plan-a-feature`        | 746    | 498   |
+| `iterative-plan-review` | 543    | 464   |
 
-**These four remain open.** The trim work items that own them were not completed in this pass. Nothing was trimmed
-badly to close the gap, because a shallow cut to a planning skill costs more than the overage does.
+Nothing was deleted to get there. Eleven new reference files carry the content that moved, and each step reads it where
+it now lives.
 
 ## What the pass covered
 

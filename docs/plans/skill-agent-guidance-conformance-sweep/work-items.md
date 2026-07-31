@@ -890,23 +890,21 @@ here; the recorded boundary already settled it.
 
 ## Status as of 2026-07-31
 
-Thirteen of the 22 work items are complete. Nine remain, and they are the trims.
+All 22 work items are complete. The verification pass in
+[artifacts/conformance-verification.md](artifacts/conformance-verification.md) records all 64 entities passing every
+mechanically checkable item on both checklists, with zero failures.
 
-**Complete:** `W-1` through `W-10`, plus `W-19`, `W-20`, and `W-21`. Every conformance conflict the sweep set out to
-find has been corrected, and the verification pass in
-[artifacts/conformance-verification.md](artifacts/conformance-verification.md) records 60 of 64 entities passing every
-mechanically checkable item.
+**What the sweep changed.** Skill bodies dropped by 1,125 net lines and no body exceeds the 500-line ceiling; the
+largest is now 498. Eleven new reference files carry the content that moved out of the four largest skills. Every agent
+is self-contained, every description is under 1024 characters, every role identity is under 50 tokens, and every
+one-way boundary pair is repaired.
 
-**Open:** `W-11` through `W-18`, the per-plugin trims, and `W-22`, the guidance-reference trim.
+**What was recorded rather than acted on**, each with its reasoning:
 
-**What the open items still owe.** Four skill bodies exceed the 500-line ceiling: `plan-implementation` at 801,
-`code-review` at 770, `plan-a-feature` at 746, and `iterative-plan-review` at 543. Those four are the only outstanding
-conformance failures in the repository. The rest of the trim work is the secondary goal, reducing what can be reduced
-without losing quality, and no part of it is a conflict with the guidance.
-
-**Why they were left rather than done quickly.** A trim to a planning skill means moving domain knowledge into a
-reference file and deleting content that restates a shared rule, both of which need the whole file in view to do
-without breaking a workflow. A shallow pass over four large skills would cost more than the overage it closes.
-
-**Where to start.** `W-11` is unblocked and owns the two largest bodies. The dependency lines on each item below are
-still accurate.
+- Six consolidation candidates, in [artifacts/consolidation-register.md](artifacts/consolidation-register.md). Skill and
+  agent counts are unchanged at 40 and 24.
+- Two model-tier mismatches, in [artifacts/agent-model-tier-audit.md](artifacts/agent-model-tier-audit.md). Tier governs
+  behavior on every future run, so it is the user's call.
+- Five agents carrying more than the 5-to-10 anti-pattern range, in
+  [artifacts/agent-body-section-audit.md](artifacts/agent-body-section-audit.md). Cutting them would remove detection
+  capability, which the secondary goal forbids.
