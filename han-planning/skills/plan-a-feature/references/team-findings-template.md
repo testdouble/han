@@ -57,7 +57,7 @@ decision-log.md, feature-technical-notes.md (when present), and
      the material showed. A finding the material answers directly is closed with this citation rather than promoted to an
      open item. Omit otherwise. -->
 - **Resolution:** ...
-- **Resolved by:** evidence / user input / project-manager synthesis
+- **Resolved by:** evidence / user input / plan-synthesizer synthesis
 - **Affected decisions:** <!-- D# IDs from decision-log.md, or — -->
 - **Affected tech-notes:** <!-- T# IDs from feature-technical-notes.md, or — (omit when the file does not exist) -->
 - **Changed in spec:** <!-- feature-specification.md sections, or — -->

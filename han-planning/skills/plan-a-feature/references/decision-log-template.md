@@ -8,7 +8,7 @@ captures the history, rationale, evidence, and rejected alternatives for each de
 ## Two-tier format: full vs. trivial decisions
 
 Every decision is classified as **full** or **trivial** exactly once, after the review round returns, during the
-project-manager synthesis step. It is not classified at draft time. Two of the promotion signals below, a driving finding
+plan-synthesizer step. It is not classified at draft time. Two of the promotion signals below, a driving finding
 and a linked technical note, cannot exist until the review round has run, so classifying earlier guarantees a second pass
 over the same decisions. Write every decision in full form during the initial draft and split the set once.
 

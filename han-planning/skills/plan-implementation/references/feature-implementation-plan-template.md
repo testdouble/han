@@ -133,7 +133,7 @@ revisiting it.
 
 ## Open Items
 
-<!-- Questions the project-manager could not resolve through evidence, reframing, or user input. -->
+<!-- Questions the plan-synthesizer could not resolve through evidence, reframing, or user input. -->
 
 - **OI-1:** <!-- question or concern -->
   - **Resolves when:** …

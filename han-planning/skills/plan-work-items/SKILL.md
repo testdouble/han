@@ -211,7 +211,7 @@ work-item prose. Hold the named audience: the engineer who grabs a work item and
 fact is said, never whether a required fact appears — keep the plan references, contract links, and dependencies each
 work item names.
 
-Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) with:
+Launch `han-core:plan-synthesizer` (`subagent_type: "han-core:plan-synthesizer"`) with:
 
 - The full plan or context content from Step 1.
 - The boundary record from Step 0: the recorded scope, the stated exclusions, any scope the user stated at invocation, and
@@ -244,7 +244,7 @@ Launch `han-core:project-manager` (`subagent_type: "han-core:project-manager"`) 
 - A directive to return the proposed breakdown as a numbered list, plus a separate list of anything cut for scope with the
   reason for each. Do not write any files.
 
-Return the han-core:project-manager's output verbatim. Proceed to Step 6.
+Return the han-core:plan-synthesizer's output verbatim. Proceed to Step 6.
 
 ### 6. Assign symbolic IDs and titles
 

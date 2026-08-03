@@ -32,7 +32,7 @@ Step 8's synthesis preserves these; it does not restate them.
     `([T#](artifacts/feature-technical-notes.md#...))` link.
   - The spec itself continues to obey the operating-principles rule — no language primitives, file/line references,
     function/class names, library mechanics, implementation patterns, or internal flag names in behavioral sentences.
-    Any leak the han-core:project-manager finds is rewritten in place during synthesis.
+    Any leak the han-core:plan-synthesizer finds is rewritten in place during synthesis.
   - The `## Cut for Scope` section carries every scope-gate cut with what it would have done and the boundary citation,
     and no entry appears in both that section and `## Deferred (YAGNI)`.
   - The `Visual Reference` table lists every item the boundary record records as received, under that exact heading, with

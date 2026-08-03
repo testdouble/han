@@ -11,7 +11,7 @@ The cap is counted in **chosen specialists**, not in total seats. Two seats are 
 specialist is chosen, so counting seats would make the medium band identical to the small one.
 
 - **Small** _(default)_ — single subsystem, no cross-service integration, no auth/PII/secrets, no data migration.
-  **1 chosen specialist** (team of 3: han-core:project-manager + han-core:junior-developer + 1). Round cap: **1.**
+  **1 chosen specialist** (team of 3: han-core:plan-synthesizer + han-core:junior-developer + 1). Round cap: **1.**
 - **Medium** — two to three subsystems, optional integration, may touch UX or rollout, may have a small auth surface.
   **2 chosen specialists** (team of 4). Round cap: **2.**
 - **Large** — cross-service, security-sensitive, data ownership shifts, multiple new coordinations, or the user
@@ -30,7 +30,7 @@ the user disagrees, accept the override (size, specific specialists, or both) an
 
 The team **always includes**:
 
-- `han-core:project-manager` — coordinator and final synthesizer.
+- `han-core:plan-synthesizer` — final synthesizer, dispatched once in Step 8 rather than per round.
 - `han-core:junior-developer` — generalist stress-tester and reframer.
 
 Select additional specialists up to the specialist cap based on what the feature actually touches. Err toward including a
@@ -144,7 +144,7 @@ Give each agent:
 
 - A directive to cite sections by filename and heading when raising findings — e.g.,
   `feature-specification.md#primary-flow`, or a specific `D#` in the spec's `artifacts/decision-log.md`, or `T3` in the
-  spec's `artifacts/feature-technical-notes.md` — so the han-core:project-manager can cross-reference them precisely
+  spec's `artifacts/feature-technical-notes.md` — so the han-core:plan-synthesizer can cross-reference them precisely
   during synthesis.
 
 Collect every agent's verbatim output. If an agent returns "no concerns from my side," that is a valid answer — record

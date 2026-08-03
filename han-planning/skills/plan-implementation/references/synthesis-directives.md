@@ -1,6 +1,6 @@
 # Synthesis Directives
 
-What the project-manager must do in synthesis mode, and the record invariants the plan folder holds.
+What the plan-synthesizer must do, and the record invariants the plan folder holds.
 Step 8 hands these to the agent; it does not restate them.
 
 instead), plus the spec's `artifacts/decision-log.md`, `artifacts/team-findings.md`, and
@@ -9,8 +9,8 @@ instead), plus the spec's `artifacts/decision-log.md`, `artifacts/team-findings.
 - The full verbatim output from every specialist engaged across all rounds.
 - The aggregated round entries from `artifacts/implementation-iteration-history.md` (claim ledger, Open Questions,
   spec-maturity tags, next-step recommendations). These are the deterministic-aggregation summaries that replaced
-  per-round PM facilitation; PM did not facilitate per round, so there are no separate facilitation summaries to read.
-- If the spec-maturity gate tripped at any point, the verbatim PM facilitation output for that single gate-trip pass.
+  per-round facilitation; no agent facilitated per round, so there are no separate facilitation summaries to read.
+- If the spec-maturity gate tripped at any point, the verbatim `han-planning:discussion-facilitator` output for that single gate-trip pass.
 - Every resolution from Step 6 (what evidence, reframing, or user input settled each question).
 - The YAGNI ledger from Step 7.5 (items demoted or replaced under the YAGNI rule, plus any user overrides made during
   the sweep).
@@ -24,7 +24,7 @@ instead), plus the spec's `artifacts/decision-log.md`, `artifacts/team-findings.
   [implementation-decision-log-template.md](./implementation-decision-log-template.md), and
   [implementation-iteration-history-template.md](./implementation-iteration-history-template.md).
 
-Ask the han-core:project-manager to produce the final synthesis across all three files:
+Ask the han-core:plan-synthesizer to produce the final synthesis across all three files:
 
 1. **Write `artifacts/implementation-decision-log.md`** — classify each decision as **full** or **trivial** before
    writing it. Full: has rejected alternatives, evidence beyond the user's framing or the source spec's commitments, was
@@ -64,12 +64,12 @@ Ask the han-core:project-manager to produce the final synthesis across all three
      `([D-N](artifacts/implementation-decision-log.md#...))` link.
    - When an Open Question was settled by your own re-reading of the spec during this synthesis pass (not in the Step 6
      loop), label its `Resolution source:` in `artifacts/implementation-iteration-history.md` as
-     **`PM synthesis (Step 8 evidence)`** — not bare `evidence` — so the audit record distinguishes a loop-stage
+     **`synthesis (Step 8 evidence)`** — not bare `evidence` — so the audit record distinguishes a loop-stage
      resolution from a synthesis-stage one.
 
 5. **Audit and correct, do not just populate.** Beyond preserving the structural invariants above, actively reconcile
    the artifacts against each other and rewrite any inconsistency in place — the same active-correction mandate
-   `plan-a-feature`'s synthesis carries ("any leak the han-core:project-manager finds is rewritten in place"). During
+   `plan-a-feature`'s synthesis carries ("any leak the han-core:plan-synthesizer finds is rewritten in place"). During
    synthesis, audit and fix:
    - **Every decision-log entry's title matches its body.** A title copied from another decision (a `D-3` carrying
      `D-1`'s title) is rewritten to describe its own decision.
@@ -86,7 +86,7 @@ Ask the han-core:project-manager to produce the final synthesis across all three
      language and the boundary citation, and no entry appears in both that section and `## Deferred (YAGNI)`.
 
 **The `Sources and Plan Records` section of `feature-implementation-plan.md` must be populated.** If a feature
-specification file was provided, the han-core:project-manager must include a relative markdown link to it (typically
+specification file was provided, the han-core:plan-synthesizer must include a relative markdown link to it (typically
 `[feature-specification.md](feature-specification.md)` since both files live in the same folder). If the spec's
 `decision-log.md`, `team-findings.md`, and/or `feature-technical-notes.md` also exist (in `artifacts/` for the current
 layout, or at the folder root for legacy layouts), list them there with the correct relative path. The
@@ -94,4 +94,4 @@ layout, or at the folder root for legacy layouts), list them there with the corr
 provided and the plan was built from conversational context only, the section must state that explicitly and summarize
 what context was used.
 
-The han-core:project-manager's synthesis is authoritative.
+The han-core:plan-synthesizer's synthesis is authoritative.

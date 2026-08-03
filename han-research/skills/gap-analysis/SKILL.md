@@ -53,10 +53,10 @@ between the two files, relative-path resolution, and what to do with a file that
   agent), API callers, AI agents, integration partners, batch processes, internal services. The
   han-core:junior-developer's job in the swarm is to check that each gap holds for every actor type the desired state
   addresses or implies, and to surface gaps the analyzer missed because it only considered one actor type.
-- **`han-core:project-manager` coordinates Section 4 synthesis at medium and large only.** When the swarm reaches four
-  or more agents, PM consolidates the swarm's confirmations, contradictions, augmentations, and per-gap confidence
+- **`han-core:plan-synthesizer` coordinates Section 4 synthesis at medium and large only.** When the swarm reaches four
+  or more agents, the synthesizer consolidates the swarm's confirmations, contradictions, augmentations, and per-gap confidence
   values for the skill to render. At small swarm size (two or three agents), the skill consolidates deterministically
-  without PM.
+  without the synthesizer.
 - **Optional sections must not be load-bearing.** A report with only Sections 1 and 2 must stand on its own. Sections 3
   and 4 are additive — never required for Sections 1 and 2 to make sense.
 - **Purpose-conditioned prioritization is a labeled skill judgment, never the analyzer's.** The `han-core:gap-analyzer`
@@ -139,10 +139,10 @@ clearly require it. When a signal is borderline, stay at the smaller band. Use t
   han-core:junior-developer, plus investigator when the current state is concrete).
 - **Medium** — 4–10 total gaps, two or three adjacent domains, may touch one cross-cutting concern (a single auth
   surface, a single integration boundary, a single data-contract change). Swarm: **4–6 agents** (validator +
-  han-core:junior-developer + investigator + 1–2 domain specialists + han-core:project-manager).
+  han-core:junior-developer + investigator + 1–2 domain specialists + han-core:plan-synthesizer).
 - **Large** — 11+ gaps, OR cross-cutting concerns across multiple domains (security + data + architecture, or
   cross-service integration), OR the user explicitly requested a full swarm. Swarm: **6–8 agents** (validator +
-  han-core:junior-developer + investigator + 2–4 domain specialists + han-core:project-manager).
+  han-core:junior-developer + investigator + 2–4 domain specialists + han-core:plan-synthesizer).
 
 **Always required, at every size:**
 
@@ -162,7 +162,7 @@ comparison):
 
 **Required at medium and large:**
 
-- `han-core:project-manager` — consolidates swarm output into Section 4 of the report during synthesis (Step 5.6). Not
+- `han-core:plan-synthesizer` — consolidates swarm output into Section 4 of the report during synthesis (Step 5.6). Not
   called per-round.
 
 Add domain specialists up to the size cap based on what the gaps actually touch. Read the gap entries to decide. Draw
@@ -201,7 +201,7 @@ example:
 >   internal service callers).
 > - `han-core:evidence-based-investigator` — required; verifies the auth-surface gaps against `src/auth/`.
 > - `han-core:adversarial-security-analyst` — three gaps touch session-token handling.
-> - `han-core:project-manager` — required at medium; consolidates swarm output into Section 4.
+> - `han-core:plan-synthesizer` — required at medium; consolidates swarm output into Section 4.
 
 **Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
@@ -233,7 +233,7 @@ Record the chosen modes — they determine which sections appear in the final re
 If the user passed `no swarm`, skip to Step 6.
 
 Launch every selected swarm agent in parallel — a single Agent-tool message with one tool call per agent so they run
-concurrently — except `han-core:project-manager`, which is held for synthesis after the other agents return (see Step
+concurrently — except `han-core:plan-synthesizer`, which is held for synthesis after the other agents return (see Step
 5.6). Use domain-scoped briefs:
 
 - Pass each agent the path to the `han-core:gap-analyzer`'s full analysis file plus the gap entries relevant to its
@@ -300,21 +300,21 @@ If a trigger fires, run one additional pass — bounded to one extra round, neve
 
 Record in the in-channel summary that a second round ran and why (which trigger, what changed).
 
-## Step 5.6: Project-Manager Synthesis (medium and large only)
+## Step 5.6: Plan-Synthesizer Consolidation (medium and large only)
 
-If `han-core:project-manager` is not on the team, skip to Step 6.
+If `han-core:plan-synthesizer` is not on the team, skip to Step 6.
 
-Launch `han-core:project-manager` in synthesis mode with:
+Launch `han-core:plan-synthesizer` with:
 
 - The full `han-core:gap-analyzer` source file (including any second-round delta).
 - The verbatim output from every other swarm agent.
 - The four-section template at [gap-analysis-report-template.md](./references/gap-analysis-report-template.md).
 - The chosen modes (swarm: yes, technical details: yes/no).
 
-Ask the han-core:project-manager to produce **only Section 4 content** — Confirmations, Contradictions, Augmentations,
+Ask the han-core:plan-synthesizer to produce **only Section 4 content** — Confirmations, Contradictions, Augmentations,
 any artifact-level Analysis caveats the validator returned, and the Confidence summary table — plus per-gap confidence
-values for the skill to fold into Section 2. Direct PM to keep analysis caveats out of the per-gap confidence values
-(they apply to the whole report, not to any one gap). PM does not write the report file directly; it returns the
+values for the skill to fold into Section 2. Direct the synthesizer to keep analysis caveats out of the per-gap confidence values
+(they apply to the whole report, not to any one gap). The synthesizer does not write the report file directly; it returns the
 consolidated Section 4 content and confidence values to the skill, which renders them into the template in Step 6.
 
 ## Step 6: Synthesize the Report
@@ -333,7 +333,7 @@ placeholders and removing optional sections that do not apply.
    behavior descriptions ("the part of the system that authenticates users" rather than `auth/middleware.ts:42`).
 3. **Set confidence per gap.** If the swarm ran, derive confidence from swarm verdicts: `High` when ≥ 2 swarm agents
    confirmed the gap with evidence; `Medium` when one agent confirmed or augmenters added context without contradiction;
-   `Low` when at least one agent contradicted it. If PM was on the team, use the per-gap confidence values PM returned
+   `Low` when at least one agent contradicted it. If the synthesizer was on the team, use the per-gap confidence values it returned
    in Step 5.6. If no swarm ran (`no swarm` path), mark every gap `Medium` — confidence rests on the analyzer alone —
    and state this in the executive summary.
 4. **Inline swarm augmentations into Section 2.** For each gap that received augmenter context (added risks, secondary
@@ -351,8 +351,8 @@ placeholders and removing optional sections that do not apply.
    entry and note it in the section-3 preface as expected.
 7. **Render Section 4 (Swarm Findings) by default.** Section 4 is omitted only when the user passed `no swarm`. Group
    entries into Confirmations, Contradictions, and Augmentations using the swarm agents' verbatim verdicts. Build the
-   Confidence summary table from the per-gap confidence values set in step 3. If PM was on the team, use the
-   consolidated Section 4 content PM returned in Step 5.6.
+   Confidence summary table from the per-gap confidence values set in step 3. If the synthesizer was on the team, use the
+   consolidated Section 4 content it returned in Step 5.6.
 8. **Render artifact-level analysis caveats once.** Collect every `analysis_caveat` the validator returned (Step 5) into
    Section 4's **Analysis caveats** subsection, rendered once as a plain reminder that applies to the whole report —
    explicitly not a gap finding. Do not let any caveat feed the per-gap confidence values set in step 3. If no
@@ -383,7 +383,7 @@ Write the rendered report to the path resolved in Step 1.
 ## Step 6.5: Readability Rewrite and Self-Check
 
 **Readability editor (consolidated reports only).** When the run produced a consolidated report — the medium and large
-sizes where `han-core:project-manager` consolidated Section 4 — dispatch the `han-communication:readability-editor`
+sizes where `han-core:plan-synthesizer` consolidated Section 4 — dispatch the `han-communication:readability-editor`
 agent in a single Agent call to audit and rewrite the report against the standard. Pass it the report file path and the
 default audience frame (a capable reader who did not do this work and lacks the author's context); the editor reads
 han-communication's own canonical rule, so pass no rule path. Direct it to preserve every fact and to rewrite prose
@@ -413,6 +413,6 @@ Tell the user, in a short summary:
 - If a purpose was captured, a one-line note that the report includes a "Where to start" view for that purpose.
 - Any open recommendations: a one-line note if the swarm contradicted any gaps (those need adjudication), if any
   `proposed_new_gap` was surfaced and added, if an artifact-level analysis caveat was raised (e.g., the desired state is
-  an uncommitted same-session source), or if PM flagged anything specific in the Section 4 consolidation.
+  an uncommitted same-session source), or if the synthesizer flagged anything specific in the Section 4 consolidation.
 
 Ask whether the user wants to add technical details (if Section 3 was omitted) or refine the scope and re-run.

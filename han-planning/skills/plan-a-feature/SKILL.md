@@ -401,9 +401,9 @@ same pass. Cut entries flow into Step 8's synthesis alongside everything else.
 3. **Keep an escalation register.** Record every question you escalated, the answer that came back, and where that answer
    landed in the artifacts. The register goes in `artifacts/team-findings.md` alongside the findings it came from.
 
-## Step 8: Project Manager Synthesis
+## Step 8: Plan Synthesis
 
-Launch the `han-core:project-manager` agent in **synthesis mode**. Provide it with:
+Launch the `han-core:plan-synthesizer` agent. Provide it with:
 
 - All output file paths: `{folder}/feature-specification.md`, `{folder}/artifacts/decision-log.md`,
   `{folder}/artifacts/team-findings.md`, `{folder}/artifacts/scope-boundary.md`, and
@@ -412,7 +412,7 @@ Launch the `han-core:project-manager` agent in **synthesis mode**. Provide it wi
 - The resolutions made in Step 7 (which findings were resolved by evidence, which by the user, and what changed in each
   file), including everything the scope gate cut and the reason for each cut.
 
-Ask the han-core:project-manager to reconcile the specialist input against the files and apply any remaining corrections
+Ask the han-core:plan-synthesizer to reconcile the specialist input against the files and apply any remaining corrections
 directly. It must:
 
 - Preserve the cross-reference invariants across all files, and classify every decision as full or trivial in
@@ -420,11 +420,11 @@ directly. It must:
   before synthesizing.
   an inline embed beside the prose describing each state.
 
-The han-core:project-manager owns the final synthesis — its output is authoritative.
+The han-core:plan-synthesizer owns the final synthesis — its output is authoritative.
 
 ## Step 8.5: Readability Pass
 
-Once the han-core:project-manager synthesis in Step 8 is complete and the spec is final, dispatch
+Once the han-core:plan-synthesizer synthesis in Step 8 is complete and the spec is final, dispatch
 `han-communication:readability-editor` (one Agent call) to audit and rewrite the spec's prose against the readability
 standard. Pass the editor the file path `{folder}/feature-specification.md` and the named audience: the stakeholder or
 reviewer who reads the spec for approval; the editor reads han-communication's own canonical rule, so pass no rule path.
@@ -487,7 +487,7 @@ meets it as data.
 - The sub-agents consulted and the key adjustments each drove (point to `artifacts/team-findings.md`).
 - Any finding that stayed unverified because a reviewer could not inspect its input, and any evidence class no reviewer
   could audit. Neither is presented as build-blocking.
-- Any remaining open items the han-core:project-manager flagged for follow-up (in `feature-specification.md`).
+- Any remaining open items the han-core:plan-synthesizer flagged for follow-up (in `feature-specification.md`).
 
 Ask whether the user wants to iterate on specific sections or consider the specification ready for implementation
 planning.
