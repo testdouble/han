@@ -58,7 +58,7 @@ but not the only one.
 
 An agent is a specialist teammate. A model with a persona, a narrow domain, and an explicit posture.
 
-- An agent has a name like `adversarial-security-analyst`, `project-manager`, or `junior-developer`.
+- An agent has a name like `adversarial-security-analyst`, `plan-synthesizer`, or `junior-developer`.
 - An agent applies contextual judgment. _Is this finding really a problem? Does the plan address the risk? Should we ask
   another specialist?_
 - An agent is documented by a single `.md` file inside its plugin's `agents/` directory (`han-core/agents/` for the
@@ -77,7 +77,7 @@ skill folds them into the final output.
 ```
 You → /plan-a-feature → (interview loop, codebase discovery)
                      → dispatches → junior-developer
-                                  → project-manager
+                                  → plan-synthesizer
                                   → 3-5 specialist agents
                      ← folds findings back in
       ←  feature-specification.md, decision-log.md, team-findings.md
@@ -85,7 +85,7 @@ You → /plan-a-feature → (interview loop, codebase discovery)
 
 A few concrete pairings from the han plugin:
 
-- **`/plan-a-feature` dispatches `junior-developer` and `project-manager` plus three to five specialists.** The
+- **`/plan-a-feature` dispatches `junior-developer` and `plan-synthesizer` plus three to five specialists.** The
   specialists are chosen based on what the feature touches. A data-heavy feature brings in `data-engineer`. A feature
   with a production surface brings in `devops-engineer`. A user-visible flow brings in `user-experience-designer`.
 - **`/code-review` always dispatches `junior-developer` and `adversarial-security-analyst`, plus the rest of the roster
@@ -109,7 +109,7 @@ A few concrete pairings from the han plugin:
 - **`/gap-analysis` dispatches `gap-analyzer` once for the primary analysis, then fans out a validator-and-augmenter
   swarm by default.** `adversarial-validator` and `junior-developer` (running an explicit actor-perspective sweep across
   human users, API callers, AI agents, and other actor types) are required at every size. `evidence-based-investigator`
-  is required when the current state is concrete. `project-manager` is required at medium and large to consolidate
+  is required when the current state is concrete. `plan-synthesizer` is required at medium and large to consolidate
   Section 4 of the report. Domain specialists (`adversarial-security-analyst`, `data-engineer`,
   `user-experience-designer`, and others) are added based on what the gaps touch. Reply `no swarm` to opt out and fall
   back to a lightweight gap-analyzer-only pass.
@@ -119,7 +119,7 @@ A few concrete pairings from the han plugin:
   they preserve the document's contract.
 
 You do not need to memorize these pairings to run a skill. You do need to know that they exist. That way, when the
-skill's output references "finding from `project-manager`" or "the architectural analysts flagged coupling," you know
+skill's output references "finding from `plan-synthesizer`" or "the architectural analysts flagged coupling," you know
 what that means.
 
 ## Sizing: the dispatch lever
@@ -151,7 +151,8 @@ a strictly simpler version that satisfies the same evidence?_). Items without ev
 
 YAGNI applies to the planning skills (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`,
 `/iterative-plan-review`). It applies to review and standards (`/code-review` advisory-only, `/coding-standard`,
-`/automated-test-planning`, `/architectural-decision-record`). It also applies to several agents (`project-manager`,
+`/automated-test-planning`, `/architectural-decision-record`). It also applies to several agents
+(`discussion-facilitator`, `plan-synthesizer`,
 `junior-developer`, `software-architect`, `system-architect`, `test-engineer`, `edge-case-explorer`, `data-engineer`,
 `devops-engineer`, `on-call-engineer`).
 
@@ -171,7 +172,8 @@ and agent reads at runtime.
 Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`) and the
 planning and review skills (`/plan-a-feature`, `/plan-implementation`, `/iterative-plan-review`). It also applies to the
 conventions skills (`/coding-standard`, `/architectural-decision-record`), the operational skills (`/runbook`), and the
-agents that review artifacts (`project-manager`, `junior-developer`, `evidence-based-investigator`, `gap-analyzer`).
+agents that review artifacts (`discussion-facilitator`, `junior-developer`, `evidence-based-investigator`,
+`gap-analyzer`).
 
 Read the full [Evidence](./evidence.md) reference for the three principles, the trust-class vocabulary, the
 corroboration gate, the no-evidence response, and the per-skill / per-agent application table.

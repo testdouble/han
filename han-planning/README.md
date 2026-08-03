@@ -18,7 +18,7 @@ with [`/plan-implementation`](docs/skills/plan-implementation.md), sequence it w
 - [`/plan-a-feature`](docs/skills/plan-a-feature.md) — Build a feature specification from scratch through an
   evidence-based interview that walks the design tree and dispatches specialist reviewers.
 - [`/plan-implementation`](docs/skills/plan-implementation.md) — Turn a feature specification into an implementation
-  plan through a project-manager-led team conversation.
+  plan through a facilitated team conversation.
 - [`/plan-a-phased-build`](docs/skills/plan-a-phased-build.md) — Split a body of context into a numbered sequence of
   vertical-slice build phases, each independently demoable to a real person and each building on the prior.
 - [`/plan-work-items`](docs/skills/plan-work-items.md) — Divide a trusted implementation plan into
@@ -26,7 +26,13 @@ with [`/plan-implementation`](docs/skills/plan-implementation.md), sequence it w
 - [`/iterative-plan-review`](docs/skills/iterative-plan-review.md) — Stress-test an already-written plan through
   multiple codebase-grounded review passes.
 
-Its skills dispatch shared agents that live in `han-core` (and, for the readability-editor, in `han-communication`).
+## Agents
+
+- [`discussion-facilitator`](docs/agents/discussion-facilitator.md) — Audit a planning discussion in progress: run the
+  round-robin, grade every claim against evidence, and log what the team has not answered yet.
+
+Its skills also dispatch shared agents that live in `han-core` (and, for the readability-editor, in
+`han-communication`).
 
 ## Installation
 

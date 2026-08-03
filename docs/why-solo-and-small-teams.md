@@ -40,7 +40,7 @@ When you run [`/code-review`](../han-coding/docs/skills/code-review.md), the ski
 and surfaces findings.
 
 When you run [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
-[`project-manager`](../han-core/docs/agents/project-manager.md) runs the discussion,
+[`plan-synthesizer`](../han-core/docs/agents/plan-synthesizer.md) reconciles what the team found,
 [`junior-developer`](../han-core/docs/agents/junior-developer.md) stress-tests the assumptions, and three to five specialists
 chosen by what the feature touches push back on the design.
 

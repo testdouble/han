@@ -98,7 +98,7 @@ The structured output is designed to be consumed by `/gap-analysis`, which trans
   degrades the agent's evidence pairs.
 - **Pair with a validator swarm (the default).** `/gap-analysis` runs `adversarial-validator` and `junior-developer`
   (actor-perspective sweep) against every gap by default, with `evidence-based-investigator` added when the current
-  state is concrete, plus domain specialists and `project-manager` at medium and large. Opt out with `no swarm` when you
+  state is concrete, plus domain specialists and `plan-synthesizer` at medium and large. Opt out with `no swarm` when you
   want a raw analyzer-only pass for rapid first-pass scoping.
 
 ## Cost and latency

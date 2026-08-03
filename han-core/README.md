@@ -20,8 +20,8 @@ Most agents are dispatched for you by skills; you rarely invoke them directly. G
 
 ### Planning and facilitation
 
-- [`project-manager`](docs/agents/project-manager.md) — Facilitate multi-specialist discussions, enforce evidence-based
-  claims, and synthesize final plans.
+- [`plan-synthesizer`](docs/agents/plan-synthesizer.md) — Reconcile the input from every specialist who contributed into
+  a final plan the team can commit to, with decisions, rejected alternatives, and evidence.
 - [`junior-developer`](docs/agents/junior-developer.md) — Stress-test an artifact or discussion as a generalist, asking
   the clarifying questions hidden assumptions and muddied scope beg for.
 

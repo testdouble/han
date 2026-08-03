@@ -317,7 +317,7 @@ URL: https://www.nngroup.com/articles/5-whys/
 - [Evidence](../../../docs/evidence.md). The companion rule the agent applies alongside YAGNI. Trust classes, the corroboration
   gate, and the no-evidence label.
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
-- [`project-manager`](./project-manager.md). The coordinator this agent pairs with in planning skill review rounds.
+- [`plan-synthesizer`](./plan-synthesizer.md). The synthesizer this agent pairs with in planning skill review rounds.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) and
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Skills that always include this agent in
   their review rounds.
