@@ -66,7 +66,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Thinking about a feature.** Use [`/plan-a-feature`](./plan-a-feature.md) to start a feature from scratch, developing
   specifications through asking questions.
 - **Turning feature specs into an implementation plan.** Use [`/plan-implementation`](./plan-implementation.md) to turn
-  a feature specification into an implementation plan through a project-manager-led team conversation.
+  a feature specification into an implementation plan through a facilitated team conversation.
 - **Reviewing or hardening a plan.** Use [`/iterative-plan-review`](./iterative-plan-review.md) to stress-test an
   existing plan through multiple codebase-grounded review passes before you trust it.
 - **Sequencing work into demoable delivery phases.** Use [`/plan-a-phased-build`](./plan-a-phased-build.md) when the
@@ -151,10 +151,10 @@ See [YAGNI](../../../docs/yagni.md) for the two gates, the acceptable-evidence l
 
 ## Cost and latency
 
-One sub-agent dispatch: `project-manager` for the work item breakdown (Step 5), on its own frontmatter tier (`opus`)
+One sub-agent dispatch: `plan-synthesizer` for the work item breakdown (Step 5), on its own frontmatter tier (`opus`)
 since the skill passes no model override. All other work runs in-process: locating and reading the plan, resolving the
 output location, inventorying reference artifacts, assigning symbolic IDs, printing the breakdown for visibility, and
-writing the work-items file. The project-manager dispatch is the most expensive step. For a typical feature plan, expect
+writing the work-items file. The plan-synthesizer dispatch is the most expensive step. For a typical feature plan, expect
 a single dispatch plus a few minutes of in-process work. The skill is designed for a once-per-plan cadence after
 planning is complete. Re-run it only after the plan has materially changed. For iterating on the plan itself, use
 `/iterative-plan-review`.
@@ -163,7 +163,7 @@ planning is complete. Re-run it only after the plan has materially changed. For 
 
 The skill's input is a trusted implementation plan, or whatever context describes the work when no plan file exists. Its
 output is a single decomposition file. The judgment-heavy work happens in one place: the work item breakdown (Step 5),
-dispatched to `project-manager`. Everything around it is coordination: locating the plan, resolving where the file goes,
+dispatched to `plan-synthesizer`. Everything around it is coordination: locating the plan, resolving where the file goes,
 inventorying the artifacts an implementer needs, printing the breakdown for visibility, and writing the file
 incrementally. The skill runs unattended from invocation to the finished file; it stops for you only when there is no
 plan or context to work from at all.
@@ -182,7 +182,7 @@ waiting for confirmation. If a `work-items.md` already exists in the chosen fold
 does not stop to ask. It writes to a timestamp-suffixed name instead, and states which file it wrote. The existing file
 is always preserved.
 
-**The breakdown.** `project-manager` receives the full plan content, the boundary record, the reference artifact
+**The breakdown.** `plan-synthesizer` receives the full plan content, the boundary record, the reference artifact
 inventory, and the skill's Rules verbatim. Its directive is to draft vertical slices: each work item a narrow but complete path through the
 appropriate layers, demoable or verifiable on its own, classified HITL or AFK. It prefers AFK, and prefers many thin
 work items over few thick ones. It returns a numbered list and writes no files. The skill returns that list verbatim,
@@ -230,7 +230,7 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule. This skill does not gate on it;
   enforcement belongs upstream.
-- [`project-manager`](../../../han-core/docs/agents/project-manager.md). Dispatched in Step 5 to draft the work item breakdown.
+- [`plan-synthesizer`](../../../han-core/docs/agents/plan-synthesizer.md). Dispatched in Step 5 to draft the work item breakdown.
 - [`/plan-implementation`](./plan-implementation.md). Pair upstream to produce the implementation plan this skill breaks
   down.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Pair upstream to harden a plan you do not yet trust before

@@ -62,8 +62,8 @@ An agent is a specialist teammate. A model with a persona, a narrow domain, and 
 - An agent applies contextual judgment. _Is this finding really a problem? Does the plan address the risk? Should we ask
   another specialist?_
 - An agent is documented by a single `.md` file inside its plugin's `agents/` directory (`han-core/agents/` for the
-  shared roster; the readability-editor lives in `han-communication/agents/` and the research-analyst in
-  `han-research/agents/`).
+  shared roster; the readability-editor lives in `han-communication/agents/`, the research-analyst in
+  `han-research/agents/`, and the discussion-facilitator in `han-planning/agents/`).
 - You can dispatch an agent directly with the `Agent` tool, but most agents get dispatched _for you_ when a skill needs
   their input.
 

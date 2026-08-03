@@ -195,8 +195,8 @@ Section 3 augments the report. It never changes the meaning of Sections 1 and 2.
 - **Use `lightweight` when you want some validation but not full coverage.** The `lightweight` mode keeps the two
   required roles (`adversarial-validator` and `junior-developer`) and drops everything else. You get adversarial
   counter-evidence and an actor sweep without paying for domain specialists when the gaps don't warrant them.
-- **Match swarm size to the analysis, not the calendar.** The skill recommends small (2–3 agents, no PM), medium (4–6
-  agents with PM), or large (6–8 agents with PM) based on gap count, distribution across categories, and the domains the
+- **Match swarm size to the analysis, not the calendar.** The skill recommends small (2–3 agents, no synthesizer), medium
+  (4–6 agents with it), or large (6–8 agents with it) based on gap count, distribution across categories, and the domains the
   gaps touch. Override the recommendation only when you have a specific reason (for example, the analysis touches auth
   even though only two gaps were found: promote to medium and include `adversarial-security-analyst`).
 - **Name specialists you know you want.** If gaps cluster in a single domain (auth, data, UX, deployment, resilience,
@@ -241,11 +241,11 @@ Section 3 augments the report. It never changes the meaning of Sections 1 and 2.
 Size determines the swarm composition. The skill defaults to small and only escalates when concrete signals require it.
 Every size ships with a swarm by default; opt out with `no swarm` if you want the lightweight gap-analyzer-only pass.
 
-| Size                  | Gap count       | Domain signals                                                                                                                                            | Swarm composition                                                                                                                                                                       |
-| --------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Small** _(default)_ | 0–3 total gaps  | Single domain (one feature, one module, one document section); no security / data / cross-service / architectural signals in any gap.                     | **2–3 agents.** `adversarial-validator` and `junior-developer` always, plus `evidence-based-investigator` when the current state is concrete. No PM.                                    |
-| **Medium**            | 4–10 total gaps | Two or three adjacent domains; may touch one cross-cutting concern (a single auth surface, a single integration boundary, a single data-contract change). | **4–6 agents.** Required three (`adversarial-validator`, `junior-developer`, `evidence-based-investigator`) plus 1–2 domain specialists plus `project-manager` for Section 4 synthesis. |
-| **Large**             | 11+ total gaps  | Cross-cutting concerns across multiple domains (security + data + architecture, or cross-service integration), or you explicitly requested a full swarm.  | **6–8 agents.** Required three plus 2–4 domain specialists plus `project-manager`.                                                                                                      |
+| Size                  | Gap count       | Domain signals                                                                                                                                            | Swarm composition                                                                                                                                                                        |
+| --------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Small** _(default)_ | 0–3 total gaps  | Single domain (one feature, one module, one document section); no security / data / cross-service / architectural signals in any gap.                     | **2–3 agents.** `adversarial-validator` and `junior-developer` always, plus `evidence-based-investigator` when the current state is concrete. No synthesizer.                            |
+| **Medium**            | 4–10 total gaps | Two or three adjacent domains; may touch one cross-cutting concern (a single auth surface, a single integration boundary, a single data-contract change). | **4–6 agents.** Required three (`adversarial-validator`, `junior-developer`, `evidence-based-investigator`) plus 1–2 domain specialists plus `plan-synthesizer` for Section 4 synthesis. |
+| **Large**             | 11+ total gaps  | Cross-cutting concerns across multiple domains (security + data + architecture, or cross-service integration), or you explicitly requested a full swarm.  | **6–8 agents.** Required three plus 2–4 domain specialists plus `plan-synthesizer`.                                                                                                      |
 
 How the size is chosen:
 
@@ -275,7 +275,7 @@ first-pass scoping where confidence signals are not yet needed.
 - **Default mode (swarm runs at the recommended size, plain language only).** One `gap-analyzer` dispatch plus the swarm
   fan-out (2–8 sub-agents in parallel depending on size). At small, that's 3–4 total dispatches (analyzer + 2–3 swarm
   agents). At medium, 5–7 (analyzer + 4–6 swarm agents). At large, 7–9 (analyzer + 6–8 swarm agents). The swarm runs in
-  a single parallel round; `project-manager` runs after at medium and large to consolidate Section 4 content, then
+  a single parallel round; `plan-synthesizer` runs after at medium and large to consolidate Section 4 content, then
   `han-communication:readability-editor` rewrites the consolidated report for readability, preserving every fact and
   `G-NNN` gap ID. The conditional second round (Step 5.5) fires when the swarm produces ≥ 3 new gaps or contradictions
   on ≥ 20% of original gaps. When it fires, add one more `gap-analyzer` dispatch, never more.
@@ -318,14 +318,14 @@ input.
 **Required swarm roles.** At every size, the swarm includes `adversarial-validator` (attacks gap-analyzer's findings
 with counter-evidence) and `junior-developer` (runs the actor-perspective sweep across human users, API callers, AI
 agents, integration partners, batch processes, and internal services). `evidence-based-investigator` is required when
-the current state is concrete enough to verify against, effectively always at medium and large. `project-manager` is
+the current state is concrete enough to verify against, effectively always at medium and large. `plan-synthesizer` is
 required at medium and large to consolidate Section 4 content from the four-or-more specialist outputs; at small (two or
-three agents) the skill consolidates deterministically without PM.
+three agents) the skill consolidates deterministically without it.
 
 **Sizing rule.** Small analyses (0-3 gaps, single domain, no security / data / cross-service signals) ship the minimum
-viable swarm (2–3 agents, no PM). Medium analyses (4-10 gaps, two or three adjacent domains, may touch one cross-cutting
-concern) ship a 4–6 agent swarm with PM. Large analyses (11+ gaps, multi-domain cross-cutting concerns, security or data
-implications, or explicit user request) ship a 6–8 agent swarm with PM. Augmenters are drawn from the standard han
+viable swarm (2–3 agents, no synthesizer). Medium analyses (4-10 gaps, two or three adjacent domains, may touch one cross-cutting
+concern) ship a 4–6 agent swarm with the synthesizer. Large analyses (11+ gaps, multi-domain cross-cutting concerns, security or data
+implications, or explicit user request) ship a 6–8 agent swarm with the synthesizer. Augmenters are drawn from the standard han
 specialist roster based on what the gaps touch.
 
 **Conditional second round.** Single-round parallel fan-out captures most of the value. The one failure mode it can miss
@@ -458,11 +458,11 @@ URLs: https://hbr.org/2007/09/performing-a-project-premortem and https://en.wiki
 - [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md). Required swarm role when the
   current state is concrete (codebase, document on disk, fetchable URL). Verifies each gap against the current state
   with file-level evidence.
-- [`project-manager`](../../../han-core/docs/agents/project-manager.md). Required swarm role at medium and large. Consolidates
+- [`plan-synthesizer`](../../../han-core/docs/agents/plan-synthesizer.md). Required swarm role at medium and large. Consolidates
   the four-or-more specialist outputs into Section 4 of the report and produces per-gap confidence values. Not called at
   small.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched on the consolidated reports
-  (medium and large, where `project-manager` ran) to rewrite the report against the shared readability standard,
+  (medium and large, where `plan-synthesizer` ran) to rewrite the report against the shared readability standard,
   preserving every fact and gap ID. Skipped at small and on the `no swarm` path.
 - [`information-architect`](../../../han-core/docs/agents/information-architect.md). The agent that designed the report
   template. The template is a one-time IA design output. The agent is not dispatched at runtime.
