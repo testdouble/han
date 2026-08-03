@@ -101,21 +101,21 @@ change goes before you scaffold anything. (For the user-facing version of this m
   `readability-editor`** (which lives in `han-communication`), **the `research-analyst`** (which lives in
   `han-research`), **and the `discussion-facilitator`** (which lives in `han-planning`) — plus the `project-discovery` skill and the canonical evidence and YAGNI rule files. New agents go
   here by default. A skill goes here only when it is shared infrastructure the whole suite leans on, like project
-  discovery. `han-core` depends on `han-communication` for the readability standard.
+  discovery. `han-core` depends on no other Han plugin.
 - **`han-documentation`** carries the documentation skills (`project-documentation`, `architectural-decision-record`,
   `runbook`). A skill goes here when its job is writing down what the team built and decided: feature and system docs,
-  decision records, or operational knowledge. It depends on `han-core` and is bundled by the `han` meta-plugin.
+  decision records, or operational knowledge. It depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin.
 - **`han-research`** carries the pre-planning knowledge-work skills (`research`, `gap-analysis`, `issue-triage`) plus
   the `research-analyst` agent. A skill goes here when its job is understanding a problem before anyone commits to a
-  plan. It depends on `han-core` and is bundled by the `han` meta-plugin.
+  plan. It depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin.
 - **`han-planning`** carries the planning skills (`plan-a-feature`, `plan-implementation`, `plan-a-phased-build`,
   `plan-work-items`, `iterative-plan-review`). A skill goes here when its job is specifying what a feature does,
   planning how to build it, sequencing the build, breaking it into work, or stress-testing a plan before implementation.
-  It depends on `han-core` and is bundled by the `han` meta-plugin.
+  It depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin.
 - **`han-coding`** carries the coding skills (`tdd`, `refactor`, `code-review`, `code-overview`,
   `architectural-analysis`, `automated-test-planning`, `manual-test-planning`, `investigate`, `coding-standard`). A skill goes here when its job is
   working directly in code: writing it, reviewing it, analyzing it, testing it, investigating it, or standardizing it.
-  It depends on `han-core` and is bundled by the `han` meta-plugin.
+  It depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin.
 - **`han-github`** carries the GitHub-facing skills (`post-code-review-to-pr`, `update-pr-description`,
   `work-items-to-issues`). A skill goes here when it reads from or writes to GitHub through the `gh` CLI.
 - **`han-reporting`** carries the stakeholder-reporting skills (`stakeholder-summary`, `html-summary`). A skill goes
@@ -151,9 +151,10 @@ Two rules keep the dependency direction clean:
   because only the `research` skill dispatches it; and the `discussion-facilitator`, which lives in `han-planning`
   because only `plan-implementation` dispatches it. `han-reporting`, `han-feedback`, and `han-linear` dispatch no shared
   agents and so carry no `han-core` dependency.
-- **`han-core` depends only on `han-communication`.** It reaches nothing in the plugins above it; a `han-core` skill
-  that needs a capability from one of those means the capability belongs in `han-core`. Its one outward edge is to
-  `han-communication`, the layer beneath it that owns the shared readability standard.
+- **`han-core` depends on no other Han plugin.** It reaches nothing in the plugins above it; a `han-core` skill that
+  needs a capability from one of those means the capability belongs in `han-core`. Nothing in `han-core` sources the
+  readability standard either, so it carries no edge to `han-communication`. Both plugins are foundations the layers
+  above them draw on independently.
 
 When a change adds, removes, or moves a skill between plugins, update the marketplace registry at
 [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) so the plugin's component set stays accurate.
