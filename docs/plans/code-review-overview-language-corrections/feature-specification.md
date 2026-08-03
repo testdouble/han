@@ -8,11 +8,11 @@ three questions people ask afterwards, so the answers arrive in the report inste
 Someone runs a code review or a code overview and gets everything they need from the run itself.
 
 Three questions account for the most-repeated follow-up turns people spend on these two skills today: where the file
-was written, what a finding actually means for someone who will not open the code, and whether the problem a finding
-describes can really happen. After this change:
+was written, what a finding means for someone who will not open the code, and whether the problem a finding describes
+can really happen. After this change:
 
-- Every finding the reader is expected to act on says what goes wrong, what has to be true for it to happen, and how
-  likely that is, in language a person who will not open the file can act on
+- Every finding the reader is expected to act on answers three questions: what goes wrong, what has to be true for it
+  to happen, and how likely that is. It answers them in language a person who will not open the file can act on
   ([D1](artifacts/decision-log.md#d1-who-the-second-explanation-on-a-finding-is-written-for)).
 - A finding the review believes may never fire says so on its opening line and in the table a person scans, not only
   inside its body ([D16](artifacts/decision-log.md#d16-the-likelihood-and-the-fix-route-reach-the-surface-a-person-scans)).
@@ -20,12 +20,12 @@ describes can really happen. After this change:
   ([D5](artifacts/decision-log.md#d5-where-the-report-and-the-overview-are-written)).
 - Both closing messages lead with the answer rather than with facts about the run
   ([D8](artifacts/decision-log.md#d8-what-leads-the-closing-message-in-both-skills)).
-- An overview's diagrams are legible, its invented and borrowed terms are explained, its starting points are in reading
-  order, and it ends with a paragraph a person can paste somewhere else.
+- An overview's diagrams are legible, and its invented and borrowed terms are explained. Its starting points are in
+  reading order, and it ends with a paragraph a person can paste somewhere else.
 
 One part of this reaches further than the two skills. The requirement to explain a term the reader cannot look up goes
-into the writing standard every Han document is written against, so documents this work item never examined gain the
-rule too, and the editor that rewrites finished drafts starts enforcing it there
+into the writing standard every Han document is written against. As a result, documents this work item never examined
+gain the rule too, and the editor that rewrites finished drafts starts enforcing it there
 ([D10](artifacts/decision-log.md#d10-where-the-extended-gloss-rule-lives)). That reach was chosen deliberately, because
 it is what gives the rule an enforcer rather than a self-check.
 
@@ -59,8 +59,8 @@ distinction exists here only so the rules below can be stated once
    the resulting findings against the code.
 3. Before drafting any finding, the review sources Han's standard for explaining technical work to someone who will not
    implement it ([D4](artifacts/decision-log.md#trivial-decisions)).
-4. Each finding the reader is expected to act on leads with a plain-language explanation answering three questions: what
-   goes wrong that someone could observe, what has to be true for it to happen, and how likely that is
+4. Each finding the reader is expected to act on leads with a plain-language explanation. It answers three questions:
+   what goes wrong that someone could observe, what has to be true for it to happen, and how likely that is
    ([D1](artifacts/decision-log.md#d1-who-the-second-explanation-on-a-finding-is-written-for)). The explanation answers
    all three; where an answer is not in doubt, it is a clause rather than a sentence. The existing register — what to
    do, where, and why, for the person who will open the file — follows it. Security findings carry the explanation and
@@ -69,21 +69,21 @@ distinction exists here only so the rules below can be stated once
    Advisory findings carry neither, because their stated reopen trigger already answers what the explanation would say
    ([D2](artifacts/decision-log.md#d2-which-findings-carry-the-second-explanation)).
 5. Where the review has already worked out that a failure mode cannot be reached, and used that to lower the finding's
-   severity, that reasoning is what the explanation states rather than being discarded. Where it has no such reasoning,
-   the answers are derived from the evidence the finding already carries. Deriving them never changes the finding's
+   severity, the explanation states that reasoning instead of discarding it. Where it has no such reasoning, the
+   answers are derived from the evidence the finding already carries. Deriving them never changes the finding's
    severity ([D3](artifacts/decision-log.md#d3-publishing-the-reachability-reasoning-instead-of-discarding-it)).
 6. Where the review has established that a finding may never fire, that fact appears on the finding's opening line and
-   in its row in the report's summary table, so a person triaging thirty findings sees it before reading any of them
-   ([D16](artifacts/decision-log.md#d16-the-likelihood-and-the-fix-route-reach-the-surface-a-person-scans)).
+   in its row in the report's summary table. That way, a person triaging thirty findings sees it before reading any of
+   them ([D16](artifacts/decision-log.md#d16-the-likelihood-and-the-fix-route-reach-the-surface-a-person-scans)).
 7. Each finding the reader is expected to act on names how it gets fixed: written test-first as a missing behavior,
    restructured as a design change, or edited by hand
    ([D12](artifacts/decision-log.md#d12-each-finding-names-how-it-gets-fixed)). That route also appears in the finding's
    summary row ([D16](artifacts/decision-log.md#d16-the-likelihood-and-the-fix-route-reach-the-surface-a-person-scans)).
 8. The report is written to a filename derived from the branch or ticket under review
    ([D6](artifacts/decision-log.md#d6-how-the-review-report-file-is-named)).
-9. Before presenting, the review checks its own output: that every finding the reader is expected to act on carries the
-   explanation and a fix route, and that the summary rows carry the route and any may-never-fire cue. A failed check is
-   fixed before presenting ([D17](artifacts/decision-log.md#d17-each-skill-checks-that-the-new-required-content-is-present-before-it-presents)).
+9. Before presenting, the review checks its own output. It confirms that every finding the reader is expected to act on
+   carries the explanation and a fix route, and that the summary rows carry the route and any may-never-fire cue. A
+   failed check is fixed before presenting ([D17](artifacts/decision-log.md#d17-each-skill-checks-that-the-new-required-content-is-present-before-it-presents)).
 10. The run closes with a short message that leads with the recommendation and the finding counts, then gives the path
     ([D7](artifacts/decision-log.md#d7-what-the-review-says-when-it-finishes),
     [D8](artifacts/decision-log.md#d8-what-leads-the-closing-message-in-both-skills)). The report itself is not repeated
@@ -107,9 +107,10 @@ distinction exists here only so the rules below can be stated once
    ([D13](artifacts/decision-log.md#d13-what-where-to-start-gives-the-reader)).
 6. The overview closes with three or four sentences a non-author could read aloud, carrying no file paths and no type
    names ([D11](artifacts/decision-log.md#d11-the-overviews-closing-restatement)).
-7. Before presenting, the overview checks its own output: the diagrams against the legibility rule, the starting points
-   for their order, the terms a reader cannot look up for their explanations, and the closing restatement for its
-   presence and for file paths or type names that should not be in it. A failed check is fixed before presenting
+7. Before presenting, the overview checks its own output. It checks the diagrams against the legibility rule, the
+   starting points for their order, the terms a reader cannot look up for their explanations, and the closing
+   restatement for its presence and for file paths or type names that should not be in it. A failed check is fixed
+   before presenting
    ([D17](artifacts/decision-log.md#d17-each-skill-checks-that-the-new-required-content-is-present-before-it-presents)).
 8. The run closes with a short message carrying the closing restatement itself, plus any divergence from the change's
    stated purpose, then the path ([D8](artifacts/decision-log.md#d8-what-leads-the-closing-message-in-both-skills),
@@ -119,7 +120,7 @@ distinction exists here only so the rules below can be stated once
 
 ### The code contradicts the stated reason for a change
 
-- **Entry condition:** An overview is explaining a set of changes, and the overview has checked the stated motivation
+- **Entry condition:** An overview is explaining a set of changes. The overview has checked the stated motivation
   against the code and found that the code already satisfies it, or does not support it.
 - **Sequence:** The overview says so in the section that states the reason, as a fact about that reason
   ([D14](artifacts/decision-log.md#d14-the-overview-may-report-that-a-changes-stated-reason-is-not-supported)). It
@@ -135,7 +136,7 @@ distinction exists here only so the rules below can be stated once
 
 - **Entry condition:** A finding survives to the report, but the conditions required for its failure mode may never hold
   in practice.
-- **Sequence:** The finding's opening line and its summary row both say so, and the explanation names the conditions and
+- **Sequence:** The finding's opening line and its summary row both say so. The explanation names the conditions and
   states that the finding is a no-op if they do not hold
   ([D3](artifacts/decision-log.md#d3-publishing-the-reachability-reasoning-instead-of-discarding-it),
   [D16](artifacts/decision-log.md#d16-the-likelihood-and-the-fix-route-reach-the-surface-a-person-scans)).
@@ -152,7 +153,7 @@ distinction exists here only so the rules below can be stated once
 | A review runs against the default branch, or against a scope with no branch at all | The report is named from what was reviewed: the single file, directory, or symbol when there is one, and the common parent of the reviewed files when there is not. A branch name that does not distinguish the run is not used ([D6](artifacts/decision-log.md#d6-how-the-review-report-file-is-named)). |
 | A report already exists at the derived name | The run replaces it and names the replaced report in its closing message ([D6](artifacts/decision-log.md#d6-how-the-review-report-file-is-named)). |
 | A review finds nothing at all | The closing message says the code can be approved and gives the path. No explanations are written, because there are no findings. |
-| A review's only findings are advisory | The recommendation is still that the code can be approved, because advisory findings never block a merge. The message says the count a person must act on is zero and names the advisory count separately, so nobody is told "no findings" about a report whose body lists items ([D7](artifacts/decision-log.md#d7-what-the-review-says-when-it-finishes)). |
+| A review's only findings are advisory | The recommendation is still that the code can be approved, because advisory findings never block a merge. The message says the count a person must act on is zero and names the advisory count separately. That way nobody is told "no findings" about a report whose body lists items ([D7](artifacts/decision-log.md#d7-what-the-review-says-when-it-finishes)). |
 | A finding's failure mode is reachable and its likelihood is not in doubt | The explanation still appears and still answers all three questions, answering the two that are not in doubt in a clause each ([D1](artifacts/decision-log.md#d1-who-the-second-explanation-on-a-finding-is-written-for)). |
 | An overview's diagram cannot be simplified without losing a step the flow needs | The step stays and the detail about it moves to the prose beneath. Legibility never removes a step from the flow ([D9](artifacts/decision-log.md#d9-who-owns-diagram-legibility)). |
 | An overview target contains both an interface and the flow behind it | Each starting point is judged on its own. The interface carries an example call; the flow entry points do not ([D13](artifacts/decision-log.md#d13-what-where-to-start-gives-the-reader)). |
@@ -206,8 +207,8 @@ because the recorded boundary already settled it.
 - **What it would have done:** Extended the destination resolution in this feature to every Han skill that writes a
   deliverable, rather than to the two named here.
 - **Why cut:** The recorded boundary in [scope-boundary.md](artifacts/scope-boundary.md) names two skills. Only the
-  Atlassian skills consume the configured output location today, so the same gap likely exists elsewhere, but the work
-  item is a retrospective on code review and code overview and its stated scope covers those two.
+  Atlassian skills consume the configured output location today, so the same gap likely exists elsewhere. But the work
+  item is a retrospective on code review and code overview, and its stated scope covers those two.
 
 ### Fixing the same plain-language gap in the skills the work item quotes as corroboration
 
@@ -215,8 +216,8 @@ because the recorded boundary already settled it.
   rather than to the two named here.
 - **Why cut:** The work item quotes people asking for plain-language summaries from other skills, and offers those
   quotes as evidence that the gap is shared rather than local. They are corroboration for the finding, not items in the
-  stated scope recorded in [scope-boundary.md](artifacts/scope-boundary.md), which names improvements to code review and
-  code overview only.
+  stated scope recorded in [scope-boundary.md](artifacts/scope-boundary.md). That scope names improvements to code
+  review and code overview only.
 
 ## Deferred (YAGNI)
 
@@ -226,8 +227,8 @@ justify revisiting it.
 ### A countable threshold for diagram legibility
 
 - **Why deferred:** Evidence-test failure. Both complaints in the corpus were about what the boxes contained, not about
-  how many there were or how long the labels ran, and both were fixed by taking the technical detail out. A counted
-  limit on box labels or box count is a rule nobody asked for, and a diagram can satisfy a count while still being
+  how many there were or how long the labels ran. Both were fixed by taking the technical detail out. A counted limit
+  on box labels or box count is a rule nobody asked for, and a diagram can satisfy a count while still being
   unreadable.
 - **Reopen when:** A diagram that satisfies the stated rule still draws a legibility complaint.
 - **Source:** Considered while settling
@@ -259,8 +260,8 @@ justify revisiting it.
 
 - **OI-1:** Whether the added length per finding is worth the follow-up turns it removes has not been measured. The work
   item's own length score is attributed to the review pasting itself into the conversation and to bookkeeping-led
-  closing messages, both of which this feature fixes, so the trade was accepted on that basis rather than on evidence
-  about finding bodies ([D1](artifacts/decision-log.md#d1-who-the-second-explanation-on-a-finding-is-written-for)).
+  closing messages, both of which this feature fixes. The trade was accepted on that basis, not on evidence about
+  finding bodies ([D1](artifacts/decision-log.md#d1-who-the-second-explanation-on-a-finding-is-written-for)).
   - **Resolves when:** A report with a substantial finding list has been produced under these rules and read.
   - **Blocks implementation:** No — the simpler-version bound on the explanation and the summary-row cues are the
     hedges, and both are specified.
@@ -274,9 +275,9 @@ justify revisiting it.
 - **Decisions settled by user input:** 1 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** `han-core:junior-developer`, `han-core:user-experience-designer`,
   `han-core:edge-case-explorer` — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Key adjustments from review:** The likelihood cue and the fix route now reach the summary table rather than only the
-  finding body, which is the comparative problem the originating complaint about visual weight describes; the
-  explanation is bounded to what is in doubt rather than three fixed slots; and security findings, advisory-only reviews, unwritable
-  destinations, replaced reports, and mixed interface-and-flow targets all gained stated behavior — see
-  [artifacts/team-findings.md](artifacts/team-findings.md)
+- **Key adjustments from review:** The likelihood cue and the fix route now reach the summary table rather than only
+  the finding body. This is the comparative problem the originating complaint about visual weight describes. The
+  explanation is bounded to what is in doubt rather than three fixed slots. And security findings, advisory-only
+  reviews, unwritable destinations, replaced reports, and mixed interface-and-flow targets all gained stated behavior
+  — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 1
