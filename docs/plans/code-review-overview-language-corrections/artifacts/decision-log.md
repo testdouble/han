@@ -14,8 +14,10 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Question:** A review finding today carries one prose slot, written for someone who will open the file. Who is the
   new required explanation written for?
 - **Decision:** The reader who will not open the file. Every corrective finding carries a plain-language explanation
-  giving the observable consequence, the preconditions that must all hold for it to happen, and an honest likelihood,
-  including saying outright when the finding may be a no-op.
+  answering three questions: what goes wrong that someone could observe, what has to be true for it to happen, and how
+  likely that is, including saying outright when the finding may be a no-op. The explanation answers all three; it does
+  not print three fixed slots. Where an answer is not in doubt, it is a clause rather than a sentence. The explanation
+  leads the finding, ahead of the register written for the person who will open the file.
 - **Rationale:** This is the most-repeated request in the reviewed corpus and it is a request for a register, not for
   more facts. One session spent four consecutive turns asking for exactly this, finding by finding. The capability is
   already demonstrated in those follow-up answers; it is simply not in the report.
@@ -28,11 +30,22 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   - Rewrite the existing prose slot to serve both readers — rejected because the two registers need different things:
     the author needs the location and the mechanism, the non-author needs the consequence and the likelihood. Collapsing
     them loses one.
-  - Produce the plain-language register on request rather than in the report — rejected because that is the current
+  - Produce the plain-language explanation on request rather than in the report — rejected because that is the current
     behavior and it is what the issue measures as the cost.
+  - Require all three answers at full length on every finding regardless of doubt — rejected on the simpler-version test
+    after review. On a finding whose failure is certain and unconditional, the preconditions and likelihood both collapse
+    to "always", and printing them at length is the symmetry pattern the YAGNI rule names. Requiring the questions to be
+    answered keeps the whole of the evidence; requiring three sentences does not.
+  - Let the two explanations appear in either order — rejected after review. The reader this one is written for would
+    otherwise have to read past prose addressed to someone else to reach their own, which is the same argument already
+    accepted for the closing message.
+- **A note on where the length went.** The work item scores the current output poorly on length, and its own stated
+  reason for that score is the review pasting itself into the conversation and both closing messages opening with
+  bookkeeping. Both are fixed here, by D7 and D8. Growing each finding was weighed against that score and accepted,
+  bounded by the simpler-version rewrite above and by D16, which keeps the growth out of the surface a person scans.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D2, D3, D4
+- **Driven by findings:** F1, F12, F13
+- **Dependent decisions:** D2, D3, D4, D15, D16
 - **Referenced in spec:** Outcome; Primary Flow; Edge Cases and Failure Modes
 
 ### D2: Which findings carry the second explanation
@@ -50,29 +63,47 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Rejected alternatives:**
   - Require it on every finding including advisory ones — rejected because it duplicates the reopen trigger and lengthens
     a section the issue already praises for being short.
+- **Naming, after review.** "Corrective" and "advisory" are the words this specification uses; they are not words a
+  reader of a report sees. In the report, corrective means the critical, warning, suggestion, and security findings, and
+  advisory means the findings the report already states will not be corrected unless asked for. Both skills state the
+  mapping in the reader's own vocabulary rather than adopting this specification's shorthand.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
+- **Driven by findings:** F3, F2
+- **Dependent decisions:** D15
 - **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
 
 ### D3: Publishing the reachability reasoning instead of discarding it
 
 - **Question:** The review already works out whether a finding's failure mode can be reached, uses that to set severity,
   and then throws the reasoning away. Where does that reasoning go?
-- **Decision:** Into the finding's plain-language explanation, as the preconditions and likelihood it already computed.
-  When the review demotes a finding for being unreachable, the reason it demoted is what the reader sees.
+- **Decision:** Into the finding's plain-language explanation, as the preconditions and likelihood. When the review has
+  already lowered a finding's severity for being unreachable, the reason it lowered is what the reader sees. Where the
+  review holds no such reasoning, the writer derives the answers from the finding's own evidence at drafting time.
+- **What that derivation is and is not.** It is writing work. The reasoning is read out of evidence the finding already
+  carries, and it never feeds back into the finding's severity, whether it is found or dropped. The severity was already
+  set by passes this feature leaves untouched, and a finding whose explanation turns out to read "this may be a no-op"
+  keeps the severity those passes gave it.
 - **Rationale:** The corpus contains the exact question this answers: a user asked whether a suggestion described a real
   error condition, and the honest answer was that three conditions had to hold at once and the population where all
-  three held was probably empty. Everything in that answer was available at review time. Reusing the reasoning costs
-  nothing and removes a question class.
+  three held was probably empty. Everything in that answer was available at review time.
+
+  Review corrected an earlier version of this rationale, which claimed the review already holds this reasoning for every
+  finding. It does not. The gate that lowers severity for an unreachable failure mode matches a fixed list of phrases in
+  the producing specialist's own words, and says of itself that the phrase list is its only signal. So it produces
+  reasoning worth publishing on the findings it matches and nothing at all on the rest. Publishing what it does produce
+  still removes a question class at no cost; the rest is derived at drafting time, from evidence the finding already
+  carries.
 - **Evidence:** Issue 170, improvement 1 and finding 4. Quoted user turn from session 2d405303: "i don't understand
   SUGG-001. is there an actual error condition that can be caused by this?" The demotion gate that computes and discards
   the reasoning is at `han-coding/skills/code-review/SKILL.md:355-381`.
 - **Rejected alternatives:**
   - Publish the reasoning as a separate audit section — rejected because it separates the reasoning from the finding it
     qualifies, and the reader's question is always about a specific finding.
+  - Require the explanation only on findings the gate matched — rejected. It would restrict the answer to the findings
+    whose specialist happened to use one of eight words, which is not the same population as the findings a reader
+    cannot judge.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F11
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
 
@@ -120,17 +151,31 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   - Have the review default outside the repository to match the overview — rejected because the review already resolves
     an in-repository directory for its specialists' reports, and splitting the report from those reports makes the run's
     output harder to find, not easier.
+- **A configured destination inside the repository, after review.** Configuration wins, and the run says nothing about
+  it. The person who configured a destination inside the repository chose it, which is the same treatment the canonical
+  configuration rule already gives a destination outside the working directory. The overview's commitment not to be
+  committed is a commitment the skill makes about its own default, not a veto over what a person configures.
+- **A destination that cannot be written, after review.** The run writes to the unconfigured default instead and says in
+  its closing message that it did, naming the destination it could not use. It does not fail the run: everything the run
+  produced is already finished by the time it writes, and losing all of it to a missing directory is the worse outcome.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D6
-- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes; Coordinations
+- **Driven by findings:** F7, F8
+- **Dependent decisions:** D6, D17
+- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes; Coordinations; User Interactions
 
 ### D6: How the review report file is named
 
 - **Question:** Consecutive reviews overwrite each other because the report carries a fixed name. What distinguishes one
   run's report from the next?
-- **Decision:** The report is named from the branch or ticket the review covers. When the run has neither, it is named
-  from the target that was reviewed.
+- **Decision:** The report is named from the branch or ticket the review covers. When the branch does not distinguish
+  the run, because the review is running against the default branch or against a scope with no branch at all, the report
+  is named from what was reviewed: the single file, directory, or symbol when there is one, and the common parent of the
+  reviewed files when there is not.
+- **When a report already exists at that name.** The run replaces it and says so in its closing message, naming the
+  report it replaced. Review raised this as the case D6's own quoted evidence describes: a person re-reviewing a branch
+  after acting on the first report. Keeping both would leave two reports for one branch with nothing in their names to
+  say which is current, which is the confusion the naming change exists to remove. Saying so is what protects a person
+  still working the earlier report as a queue.
 - **Rationale:** The fixed name is a real collision, visible in a session where the invocation itself had to work around
   it. Branch and ticket are the identifiers a person recognizes, and one of them is available in every mode that has
   git. The fallback matters because the review runs against a plain directory when git is absent, and a run with no
@@ -144,8 +189,10 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
     three files learns nothing from the names.
   - Change the overview's naming too — rejected because the overview's target slug already distinguishes its runs, so
     there is no collision to fix.
+  - Distinguish the second review of a branch rather than replacing the first — rejected as above: two reports for one
+    branch, neither named as current.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F5
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
 
@@ -155,6 +202,11 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   instead?
 - **Decision:** The review closes with a short message carrying the recommendation, the finding count by severity, and
   the path the report was written to. The full report is not pasted into the conversation.
+- **When the only findings are advisory.** The recommendation is still that the code can be approved, because the
+  advisory class is non-correcting by construction and never blocks a merge. The message says the corrective count is
+  zero and names the advisory count separately, so the person is not told "no findings" about a report whose body lists
+  items. Review raised this as an ordinary state rather than an exotic one: the advisory pass runs on every change
+  regardless of size.
 - **Rationale:** The overview already does this and the issue names it as the behavior the review is missing. The one
   fact a person needed after a review, the path, was absent from a message long enough to contain everything else.
 - **Evidence:** Issue 170, improvement 2 and finding 2. Quoted user turn from session 2c2aefa2 immediately after a
@@ -165,9 +217,9 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   - Keep pasting the review and add the path — rejected because the length is itself a defect: the path was already
     recoverable from a long message and the person still had to ask.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F6
 - **Dependent decisions:** D8
-- **Referenced in spec:** Primary Flow; User Interactions
+- **Referenced in spec:** Primary Flow; User Interactions; Edge Cases and Failure Modes
 
 ### D8: What leads the closing message in both skills
 
@@ -241,17 +293,24 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   - Split it, with coined terms in the shared standard and external technologies local to the overview — rejected by the
     operator. It splits one rule across two homes, and a reader meeting an unglossed runtime name in a specification has
     the same problem they had in an overview.
+- **The reach of this decision is stated, after review.** This is the one change in the feature that reaches past the
+  two skills the work item names. Every skill that sources the shared standard inherits the rule, and the agent that
+  rewrites finished drafts starts enforcing it on documents this work item never examined. That is the operator's
+  choice, made with the trade-off in front of them, and it belongs in the specification's own scope statements rather
+  than only in a coordination row.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F9
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; Coordinations
+- **Referenced in spec:** Outcome; Primary Flow; Coordinations; Out of Scope
 
 ### D11: The overview's closing restatement
 
 - **Question:** The reliable next action after an overview is to paste a plain-language paragraph somewhere else. Does
   the overview produce it?
 - **Decision:** Yes. The overview ends with three or four sentences a non-author could read aloud, carrying no file
-  paths and no type names.
+  paths and no type names. Those sentences are the canonical text, and the run's closing message carries them rather
+  than writing its own version. Review raised the risk that two independently written restatements of the same thing
+  drift apart, and that the person reads the shorter one in the terminal and never opens the document.
 - **Rationale:** The overview already holds every fact that paragraph needs. The corpus shows the person either
   paraphrasing it themselves and asking whether the paraphrase holds, or asking for it outright so they can put it in a
   pull request description or a comment to a reviewer.
@@ -262,8 +321,10 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   - Put the restatement at the top instead — rejected because the lead section already answers why the code exists for a
     reader of the document. The restatement is written to be lifted out and pasted elsewhere, which is a different
     artifact serving a different reader.
+  - Let the closing message write its own version — rejected after review. Two texts saying the same thing in different
+    words teach the reader to distrust the shorter one.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F14
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow; User Interactions
 
@@ -281,8 +342,8 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
     section by that name reserved for security findings, and a second one would collide with it. The route belongs on
     the finding a person is looking at.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
+- **Driven by findings:** F2, F4
+- **Dependent decisions:** D15, D16
 - **Referenced in spec:** Primary Flow; Coordinations
 
 ### D13: What "where to start" gives the reader
@@ -290,7 +351,13 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Question:** The overview lists the right entry points and the person still asks which file to open first. What is
   missing?
 - **Decision:** An order. The entry points are numbered in reading order, each with one line on what the reader learns
-  there. When the target is an interface other code calls, the section also carries one runnable example call.
+  there. When one of those entry points is an interface other code calls, that entry point carries one runnable example
+  call.
+- **Why the example call attaches to the entry point, not the target.** Review pointed out that the session this came
+  from is not a clean case of one or the other. The person asked which file to open first to start tracing a path, and
+  what an actual call would look like, about the same target: an interface with substantial flow behind it. Directory
+  and change-set targets are routinely both. Attaching the rule to the entry point covers the mixed case without a rule
+  for it.
 - **Rationale:** A set is not a sequence. The person asked which file to open first even though the right files were all
   listed, and then asked what an actual call would look like, which is the first useful artifact when the target is an
   interface rather than a flow.
@@ -300,13 +367,13 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   concrete entry points without an order, at
   `han-coding/skills/code-overview/references/overview-template.md:38-40` and lines 101-104.
 - **Rejected alternatives:**
-  - Include an example call for every target — rejected under the simpler-version test. The request came from an
-    interface target, where a call is the way in. For a flow target the entry point is a file, and an invented example
-    call would be noise.
+  - Include an example call for every entry point — rejected under the simpler-version test. Where the entry point is a
+    file in a flow, an invented example call would be noise.
+  - Decide it per target rather than per entry point — rejected after review, as above.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F15
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; User Interactions
+- **Referenced in spec:** Primary Flow; User Interactions; Edge Cases and Failure Modes
 
 ### D14: The overview may report that a change's stated reason is not supported
 
@@ -315,6 +382,11 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Decision:** Yes, in the section that states the reason, as a fact about the reason. It says the code already
   satisfies the stated motivation, or that the code does not support the reason given. It raises no finding, assigns no
   severity, and recommends no change.
+- **Only a checked contradiction qualifies.** Review separated two states this decision had collapsed. Saying the code
+  contradicts the stated reason is a claim the overview must have checked and found to be true. Finding no evidence
+  either way is a different state, and it already has its own handling: the overview marks the reason as inferred. An
+  overview that reports a contradiction it did not find would be making a stronger claim than its evidence supports,
+  which is the exact failure the skill's accuracy commitment exists to prevent.
 - **Rationale:** This is a fact about the stated reason, which the overview already owns and already validates for
   accuracy against the code. It is not a judgment about the code's quality, which stays out of the skill. The
   distinction holds because the claim under test is the document's own leading claim, not the code.
@@ -329,7 +401,84 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
     the change's stated purpose holds. Neither skill would say it, which is the current state.
   - Say it in the navigational section on where the change is hardest to follow — rejected because that section is
     navigational by construction, and an unsupported reason belongs beside the reason it qualifies.
+  - Treat a reason the code says nothing about as unsupported — rejected after review. It is a stronger claim than the
+    evidence carries, and the skill already has a weaker and more honest one.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F16
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow; Alternate Flows and States
+
+### D15: Security findings carry the plain-language explanation but not a separate fix route
+
+- **Question:** Security findings are corrective, sit in their own section with their own shape, and are deliberately
+  exempt from the pass that lowers severity for unreachable failure modes. Do they gain the new content?
+- **Decision:** They carry the plain-language explanation, on the same terms as every other corrective finding. They do
+  not gain a separately-labelled fix route, because their section already ends with a remediation note naming what to
+  do.
+- **Rationale:** Two reviewers raised this independently, and both observed that a security finding is the one a
+  non-implementer can least evaluate unaided, so it is the last finding that should silently skip the explanation. The
+  exemption from the severity gate is not a reason to skip it: the exemption exists because the security evidence bar is
+  already higher, not because the reader needs less. Adding a second route label beside the existing remediation note
+  would put two answers to the same question in one block.
+- **Evidence:** The security section, its shape, and its remediation note are at
+  `han-coding/skills/code-review/references/template.md:95-111`. The gate exemption and its stated reason are at
+  `han-coding/skills/code-review/SKILL.md:380-382`. D12's own rejected alternative already names the collision risk.
+- **Rejected alternatives:**
+  - Exclude security findings from the explanation — rejected because the exemption they carry is about evidence
+    standards, not about the reader.
+  - Add the fix route to security findings too — rejected as a duplicate of content the block already carries.
+- **Linked technical notes:** —
+- **Driven by findings:** F2
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
+
+### D16: The likelihood and the fix route reach the surface a person scans
+
+- **Question:** The report's index is a summary row per finding. Every corrective finding is about to grow. Does the
+  index grow with it?
+- **Decision:** Yes, in two specific ways. Where the review has established that a finding's failure mode may not be
+  reachable, that fact appears on the finding's own opening line and in its summary row. Each summary row also carries
+  the fix route beside the brief description.
+- **Rationale:** The complaint this feature descends from is comparative, not additive. The work item says a probable
+  no-op "read as a behavior change at the same visual weight as the two findings beside it". Answering that with a
+  longer finding body leaves the weight exactly where it was and adds reading load on top. Two reviewers converged on
+  this independently, and both proposed the same fix: put the cue in the surface the reader already scans, so triage
+  happens before the reading rather than after it.
+- **Evidence:** Issue 170, finding 4 and its accuracy rationale: "a finding can be accurate and still mislead by
+  weight". The summary table and its brief-description cell are at
+  `han-coding/skills/code-review/references/template.md:26-40`. The severity-ordered row order is specified there and is
+  unchanged by this decision.
+- **Rejected alternatives:**
+  - Add a separate section or a second table for conditional findings — rejected because it splits one finding list into
+    two and the reader would have to reconcile them.
+  - Reorder findings so probable no-ops sort last — rejected because the row order is severity-ordered by design and the
+    finding identifiers are worked as a queue; changing the order changes an artifact the work item praises.
+  - Leave the index unchanged — rejected because that is the state the complaint describes.
+- **Linked technical notes:** —
+- **Driven by findings:** F4
+- **Dependent decisions:** —
+- **Referenced in spec:** Outcome; Primary Flow; User Interactions
+
+### D17: Each skill checks that the new required content is present before it presents
+
+- **Question:** Almost everything this feature adds is content that must be there. What confirms it is?
+- **Decision:** Each skill checks its own output before presenting: the review that every corrective finding carries the
+  plain-language explanation and a fix route, and that the summary rows carry the route and any conditional cue; the
+  overview that its diagrams follow the legibility rule, that its starting points are ordered, that terms a reader
+  cannot look up are explained, and that the closing restatement is present and free of file paths and type names. A
+  check that fails is fixed before presenting.
+- **Rationale:** A requirement with nothing checking it is a preference, and the failure mode is silent: the run
+  produces the output it produces today and nobody notices. The overview already carries a check for one of these rules
+  and not the others, which is the inconsistency review found.
+- **Evidence:** Review finding. The overview's existing self-check and the review's verification step both already exist
+  as places for this to live, at `han-coding/skills/code-overview/SKILL.md:317-326` and
+  `han-coding/skills/code-review/SKILL.md:491-495`.
+- **Rejected alternatives:**
+  - Rely on the agent that rewrites drafts for readability to enforce it — rejected because that agent is barred from
+    changing facts and from touching diagram bodies, so most of this is outside what it may do.
+  - Add a separate verification pass — rejected under the simpler-version test. Both skills already have a place where a
+    check like this belongs.
+- **Linked technical notes:** —
+- **Driven by findings:** F10
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow
