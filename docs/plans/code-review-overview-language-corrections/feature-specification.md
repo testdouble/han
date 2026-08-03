@@ -7,8 +7,8 @@ three questions people ask afterwards, so the answers arrive in the report inste
 
 Someone runs a code review or a code overview and gets everything they need from the run itself.
 
-Three questions account for nearly every follow-up turn people spend on these two skills today: where the file was
-written, what a finding actually means for someone who will not open the code, and whether the problem a finding
+Three questions account for the most-repeated follow-up turns people spend on these two skills today: where the file
+was written, what a finding actually means for someone who will not open the code, and whether the problem a finding
 describes can really happen. After this change:
 
 - Every finding the reader is expected to act on says what goes wrong, what has to be true for it to happen, and how
@@ -58,7 +58,7 @@ distinction exists here only so the rules below can be stated once
 2. The review runs unchanged: it classifies the change, dispatches its specialists, works its checklist, and challenges
    the resulting findings against the code.
 3. Before drafting any finding, the review sources Han's standard for explaining technical work to someone who will not
-   implement it ([D4](artifacts/decision-log.md#d4-both-skills-source-the-explanation-standard-before-they-write-for-a-non-implementer)).
+   implement it ([D4](artifacts/decision-log.md#trivial-decisions)).
 4. Each finding the reader is expected to act on leads with a plain-language explanation answering three questions: what
    goes wrong that someone could observe, what has to be true for it to happen, and how likely that is
    ([D1](artifacts/decision-log.md#d1-who-the-second-explanation-on-a-finding-is-written-for)). The explanation answers
@@ -160,9 +160,9 @@ distinction exists here only so the rules below can be stated once
 
 ## User Interactions
 
-- **Affordances:** The review's closing message gives the recommendation, the counts, and the path. Its summary table
-  carries the fix route and any may-never-fire cue beside each finding's brief description, so triage happens before
-  reading ([D16](artifacts/decision-log.md#d16-the-likelihood-and-the-fix-route-reach-the-surface-a-person-scans)). The
+- **Affordances:** The review's closing message gives the recommendation, the counts, and the path
+  ([D7](artifacts/decision-log.md#d7-what-the-review-says-when-it-finishes)). Its summary table carries the fix route
+  and any may-never-fire cue beside each finding's brief description, so triage happens before reading ([D16](artifacts/decision-log.md#d16-the-likelihood-and-the-fix-route-reach-the-surface-a-person-scans)). The
   overview's closing message carries the document's own closing restatement, so a person can paste from the terminal
   without opening the file ([D11](artifacts/decision-log.md#d11-the-overviews-closing-restatement)).
 - **Feedback:** Each finding a reader is expected to act on tells them whether to care, in terms they can weigh, and
@@ -175,7 +175,7 @@ distinction exists here only so the rules below can be stated once
 | Coordinating System | Direction | Interaction | Ordering / Consistency Requirement |
 | ------------------- | --------- | ----------- | ---------------------------------- |
 | Han's configuration | inbound | Supplies the output location both skills resolve against | Read before either skill writes its deliverable ([D5](artifacts/decision-log.md#d5-where-the-report-and-the-overview-are-written)) |
-| Han's standard for explaining work to a non-implementer | inbound | Supplies the register for the finding explanations, the overview's closing restatement, and both closing messages | Sourced before that content is drafted, not after ([D4](artifacts/decision-log.md#d4-both-skills-source-the-explanation-standard-before-they-write-for-a-non-implementer)) |
+| Han's standard for explaining work to a non-implementer | inbound | Supplies the register for the finding explanations, the overview's closing restatement, and both closing messages | Sourced before that content is drafted, not after ([D4](artifacts/decision-log.md#trivial-decisions)) |
 | Han's shared writing standard | inbound and outbound | Gains the extended requirement to explain a term the reader cannot look up | Every skill that sources the standard inherits the requirement, and the agent that rewrites finished drafts enforces it ([D10](artifacts/decision-log.md#d10-where-the-extended-gloss-rule-lives)) |
 | The skills a finding points to as its fix route | outbound | Named by each finding a reader is expected to act on, as the way to address it | The route is named, never invoked ([D12](artifacts/decision-log.md#d12-each-finding-names-how-it-gets-fixed)) |
 
@@ -203,15 +203,20 @@ because the recorded boundary already settled it.
 
 ### Every other Han skill honoring the configured output location
 
-- **Why cut:** The recorded boundary names two skills. Only the Atlassian skills consume the configured output location
-  today, so the same gap almost certainly exists elsewhere, but the work item is a retrospective on code review and code
-  overview and its stated scope covers those two.
+- **What it would have done:** Extended the destination resolution in this feature to every Han skill that writes a
+  deliverable, rather than to the two named here.
+- **Why cut:** The recorded boundary in [scope-boundary.md](artifacts/scope-boundary.md) names two skills. Only the
+  Atlassian skills consume the configured output location today, so the same gap likely exists elsewhere, but the work
+  item is a retrospective on code review and code overview and its stated scope covers those two.
 
 ### Fixing the same plain-language gap in the skills the work item quotes as corroboration
 
-- **Why cut:** The work item quotes people asking for plain-language summaries from three other skills, and offers those
+- **What it would have done:** Applied the same plain-language requirement to the other skills the work item quotes,
+  rather than to the two named here.
+- **Why cut:** The work item quotes people asking for plain-language summaries from other skills, and offers those
   quotes as evidence that the gap is shared rather than local. They are corroboration for the finding, not items in the
-  stated scope, which names improvements to code review and code overview only.
+  stated scope recorded in [scope-boundary.md](artifacts/scope-boundary.md), which names improvements to code review and
+  code overview only.
 
 ## Deferred (YAGNI)
 
@@ -236,8 +241,8 @@ justify revisiting it.
   change plus the replace-and-say-so rule cover it.
 - **Reopen when:** Two runs are reported to have overwritten each other's output within one session, or the skills are
   adopted by a team sharing one checkout.
-- **Source:** Review finding [F20](artifacts/team-findings.md), raised by `han-core:edge-case-explorer`, which flagged
-  it for awareness rather than recommending new behavior.
+- **Source:** Review finding [F20](artifacts/team-findings.md#f20-concurrent-runs-writing-to-one-destination), raised
+  by `han-core:edge-case-explorer`, which flagged it for awareness rather than recommending new behavior.
 
 ### Counting conditional findings in the review's closing message
 
@@ -246,8 +251,9 @@ justify revisiting it.
   the fact where a person triages. Adding a count of it to the closing message as well is a second signal for the same
   fact, before anyone has seen whether the first one is enough.
 - **Reopen when:** Someone acts on a finding the report had already marked as possibly never firing.
-- **Source:** Review finding [F21](artifacts/team-findings.md), raised by `han-core:user-experience-designer`, which
-  recommended deferring it on the same grounds.
+- **Source:** Review finding
+  [F21](artifacts/team-findings.md#f21-counting-conditional-findings-in-the-reviews-closing-message), raised by
+  `han-core:user-experience-designer`, which recommended deferring it on the same grounds.
 
 ## Open Items
 
@@ -269,8 +275,8 @@ justify revisiting it.
 - **Sub-agents consulted:** `han-core:junior-developer`, `han-core:user-experience-designer`,
   `han-core:edge-case-explorer` — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** The likelihood cue and the fix route now reach the summary table rather than only the
-  finding body, which is what the originating complaint about visual weight actually asked for; the explanation is
-  bounded to what is in doubt rather than three fixed slots; and security findings, advisory-only reviews, unwritable
+  finding body, which is the comparative problem the originating complaint about visual weight describes; the
+  explanation is bounded to what is in doubt rather than three fixed slots; and security findings, advisory-only reviews, unwritable
   destinations, replaced reports, and mixed interface-and-flow targets all gained stated behavior — see
   [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 1

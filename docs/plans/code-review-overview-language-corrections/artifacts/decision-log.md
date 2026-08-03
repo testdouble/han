@@ -7,6 +7,17 @@ rejected alternatives.
 
 The boundary these decisions were settled inside is recorded in [scope-boundary.md](./scope-boundary.md).
 
+Every decision below was classified once, after the review round returned, as full or trivial. The D# numbers were
+assigned while drafting and did not change in that pass, so every inline link in the specification still resolves.
+
+## Trivial decisions
+
+- D4: Both skills source the explanation standard before they write for a non-implementer — each skill sources Han's
+  standard for explaining work to a non-implementer before drafting the content that reader sees: the review before its
+  finding explanations, the overview before its closing restatement, and both before their closing message (considered
+  restating the standard inline in each skill; rejected because the repository keeps one canonical copy of a shared
+  standard and sources it). — Referenced in spec: Primary Flow; Coordinations.
+
 ## Full decisions
 
 ### D1: Who the second explanation on a finding is written for
@@ -44,9 +55,9 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   bookkeeping. Both are fixed here, by D7 and D8. Growing each finding was weighed against that score and accepted,
   bounded by the simpler-version rewrite above and by D16, which keeps the growth out of the surface a person scans.
 - **Linked technical notes:** —
-- **Driven by findings:** F1, F12, F13
+- **Driven by findings:** F1, F4, F12, F13
 - **Dependent decisions:** D2, D3, D4, D15, D16
-- **Referenced in spec:** Outcome; Primary Flow; Edge Cases and Failure Modes
+- **Referenced in spec:** Outcome; Primary Flow; Edge Cases and Failure Modes; Open Items
 
 ### D2: Which findings carry the second explanation
 
@@ -70,7 +81,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** F3, F2
 - **Dependent decisions:** D15
-- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
+- **Referenced in spec:** Outcome; Primary Flow
 
 ### D3: Publishing the reachability reasoning instead of discarding it
 
@@ -105,28 +116,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** F11
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
-
-### D4: Both skills source the explanation standard before they write for a non-implementer
-
-- **Question:** What makes the new register consistent across runs rather than left to chance?
-- **Decision:** Each skill sources Han's explanation standard before drafting the content a non-implementer reads: the
-  review before it drafts finding explanations, the overview before it writes its closing restatement. Both also source
-  it before writing their closing message.
-- **Rationale:** The standard exists, defines this exact reader, and is sourced the same way the readability standard
-  already is. Neither skill invokes it today, which is the gap rather than a model shortcoming.
-- **Evidence:** Issue 170, improvement 1: "Invoke `han-communication:explanation-guidance` before drafting findings; the
-  standard for this reader already exists and neither skill uses it." The standard is at
-  `han-communication/references/explanation-rule.md`; its stated application point is "before writing an escalation, a
-  confirmation turn, a stop, or any summary a non-implementer reads" (lines 78-83). The parallel readability sourcing is
-  at `han-coding/skills/code-review/SKILL.md:457` and `han-coding/skills/code-overview/SKILL.md:211`.
-- **Rejected alternatives:**
-  - Restate the standard inline in each skill — rejected because the repository keeps one canonical copy of a shared
-    standard and sources it, per the conventions in `CLAUDE.md`.
-- **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; Coordinations
+- **Referenced in spec:** Primary Flow; Alternate Flows and States; Out of Scope
 
 ### D5: Where the report and the overview are written
 
@@ -140,8 +130,8 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   separate commitment: the overview is an orientation aid, not documentation, and must not be committed. Honoring
   configuration when it exists satisfies the evidence with the smaller change.
 - **Evidence:** Issue 170, improvement 2 and finding 1. The configured setting has existed in the operator's personal
-  configuration since 2026-07-30 and is a recognized key per `han-core/references/config-rule.md:44`. Only the three
-  Atlassian skills consume it today, confirmed by grep across every `SKILL.md`. The overview's out-of-repository
+  configuration since 2026-07-30 and is a recognized key per `han-core/references/config-rule.md:44`. Only the Atlassian
+  skills consume it today, confirmed by grep across every `SKILL.md`. The overview's out-of-repository
   prescription is at `han-coding/skills/code-overview/SKILL.md:265-269`; its ephemerality commitment is a separate
   operating principle at lines 82-84. The review has no output-location step at all.
 - **Rejected alternatives:**
@@ -159,9 +149,9 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   its closing message that it did, naming the destination it could not use. It does not fail the run: everything the run
   produced is already finished by the time it writes, and losing all of it to a missing directory is the worse outcome.
 - **Linked technical notes:** —
-- **Driven by findings:** F7, F8
-- **Dependent decisions:** D6, D17
-- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes; Coordinations; User Interactions
+- **Driven by findings:** F7, F8, F18
+- **Dependent decisions:** D6
+- **Referenced in spec:** Outcome; Primary Flow; Edge Cases and Failure Modes; Coordinations; User Interactions
 
 ### D6: How the review report file is named
 
@@ -219,7 +209,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** F6
 - **Dependent decisions:** D8
-- **Referenced in spec:** Primary Flow; User Interactions; Edge Cases and Failure Modes
+- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes; User Interactions
 
 ### D8: What leads the closing message in both skills
 
@@ -241,7 +231,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** —
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; User Interactions
+- **Referenced in spec:** Outcome; Primary Flow; Edge Cases and Failure Modes
 
 ### D9: Who owns diagram legibility
 
@@ -269,7 +259,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** —
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
+- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes; Out of Scope; Deferred (YAGNI)
 
 ### D10: Where the extended gloss rule lives
 
@@ -285,8 +275,8 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Evidence:** User input, this session. Corroborating detail from issue 170, improvement 4 and finding 6: four
   questions across two sessions, each quoting the overview's own words back at it, covering a language runtime, a
   statistical method, and two coined compound nouns. All four passed the current rule at
-  `han-communication/references/readability-rule.md:51`. Twenty-six skills source that rule, confirmed by grep across
-  every `SKILL.md`. The rewriting agent's rule source is `han-communication/agents/readability-editor.md`.
+  `han-communication/references/readability-rule.md:51`. Skills across the suite source that rule, confirmed by grep
+  across every `SKILL.md`. The rewriting agent's rule source is `han-communication/agents/readability-editor.md`.
 - **Rejected alternatives:**
   - Put the rule in the overview's template only — rejected by the operator. It matches where all four complaints came
     from, but leaves the rule with no enforcer.
@@ -299,7 +289,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   choice, made with the trade-off in front of them, and it belongs in the specification's own scope statements rather
   than only in a coordination row.
 - **Linked technical notes:** —
-- **Driven by findings:** F9
+- **Driven by findings:** F9, F18
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome; Primary Flow; Coordinations; Out of Scope
 
@@ -344,7 +334,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** F2, F4
 - **Dependent decisions:** D15, D16
-- **Referenced in spec:** Primary Flow; Coordinations
+- **Referenced in spec:** Primary Flow; User Interactions; Coordinations
 
 ### D13: What "where to start" gives the reader
 
@@ -373,7 +363,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** F15
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; User Interactions; Edge Cases and Failure Modes
+- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
 
 ### D14: The overview may report that a change's stated reason is not supported
 
@@ -406,7 +396,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** F16
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; Alternate Flows and States
+- **Referenced in spec:** Alternate Flows and States; Out of Scope
 
 ### D15: Security findings carry the plain-language explanation but not a separate fix route
 
@@ -430,7 +420,7 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Linked technical notes:** —
 - **Driven by findings:** F2
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow; Edge Cases and Failure Modes
+- **Referenced in spec:** Primary Flow
 
 ### D16: The likelihood and the fix route reach the surface a person scans
 
@@ -441,23 +431,35 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
   the fix route beside the brief description.
 - **Rationale:** The complaint this feature descends from is comparative, not additive. The work item says a probable
   no-op "read as a behavior change at the same visual weight as the two findings beside it". Answering that with a
-  longer finding body leaves the weight exactly where it was and adds reading load on top. Two reviewers converged on
-  this independently, and both proposed the same fix: put the cue in the surface the reader already scans, so triage
-  happens before the reading rather than after it.
+  longer finding body leaves the weight exactly where it was and adds reading load on top. The fix is to put the cue in
+  the surface the reader already scans, so triage happens before the reading rather than after it.
+
+  The two halves rest on different evidence, and the record supports them unequally. The may-never-fire cue answers the
+  originating complaint directly, which is quoted above. The fix route in the row rests on the same reviewer's second
+  observation, that the report's only index gains nothing while the body it indexes roughly doubles, plus improvement
+  5's evidence that the person asks which skill to reach for anyway. One reviewer raised both halves, in two findings;
+  an earlier version of this rationale credited two reviewers converging independently, which the merged record does not
+  support.
 - **Evidence:** Issue 170, finding 4 and its accuracy rationale: "a finding can be accurate and still mislead by
   weight". The summary table and its brief-description cell are at
   `han-coding/skills/code-review/references/template.md:26-40`. The severity-ordered row order is specified there and is
-  unchanged by this decision.
+  unchanged by this decision. This decision adds content inside existing rows: it changes no severity band, no row
+  order, and no finding identifier, which is what the Out of Scope statements protect.
 - **Rejected alternatives:**
   - Add a separate section or a second table for conditional findings — rejected because it splits one finding list into
     two and the reader would have to reconcile them.
   - Reorder findings so probable no-ops sort last — rejected because the row order is severity-ordered by design and the
     finding identifiers are worked as a queue; changing the order changes an artifact the work item praises.
   - Leave the index unchanged — rejected because that is the state the complaint describes.
+  - Put the may-never-fire cue in the row and leave the fix route in the finding body — considered at synthesis, because
+    the cue carries the stronger evidence of the two. Rejected because it makes the row answer one triage question and
+    not the other, so a person still opens each finding to learn how it gets fixed, which is the question improvement 5
+    records them asking after every review.
 - **Linked technical notes:** —
 - **Driven by findings:** F4
 - **Dependent decisions:** —
-- **Referenced in spec:** Outcome; Primary Flow; User Interactions
+- **Referenced in spec:** Outcome; Primary Flow; Alternate Flows and States; User Interactions; Out of Scope;
+  Deferred (YAGNI)
 
 ### D17: Each skill checks that the new required content is present before it presents
 
@@ -470,9 +472,10 @@ The boundary these decisions were settled inside is recorded in [scope-boundary.
 - **Rationale:** A requirement with nothing checking it is a preference, and the failure mode is silent: the run
   produces the output it produces today and nobody notices. The overview already carries a check for one of these rules
   and not the others, which is the inconsistency review found.
-- **Evidence:** Review finding. The overview's existing self-check and the review's verification step both already exist
-  as places for this to live, at `han-coding/skills/code-overview/SKILL.md:317-326` and
-  `han-coding/skills/code-review/SKILL.md:491-495`.
+- **Evidence:** Review finding F10, raised by `han-core:junior-developer` as JD-007: of everything this feature
+  requires, only the diagram rule carried a stated check. The overview's existing self-check and the review's
+  verification step both already exist as places for this to live, at
+  `han-coding/skills/code-overview/SKILL.md:317-326` and `han-coding/skills/code-review/SKILL.md:491-495`.
 - **Rejected alternatives:**
   - Rely on the agent that rewrites drafts for readability to enforce it — rejected because that agent is barred from
     changing facts and from touching diagram bodies, so most of this is outside what it may do.

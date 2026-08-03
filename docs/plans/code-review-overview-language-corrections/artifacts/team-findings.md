@@ -42,7 +42,7 @@ reviewer's own identifier.
   section already carries remediation content and a second answer to the same question would collide with it.
 - **Resolved by:** evidence
 - **Affected decisions:** D15 (new), D2, D12
-- **Changed in spec:** Primary Flow; Edge Cases and Failure Modes
+- **Changed in spec:** Primary Flow
 
 ### F3: The specification used vocabulary its own reader cannot resolve
 
@@ -70,10 +70,12 @@ reviewer's own identifier.
 - **Unverified:** rests in part on a density estimate the reviewer could not confirm against a rendered report, because
   no example output or visual material was supplied to this run. The structural half of the claim was verified directly:
   the draft did not mention the summary table anywhere.
-- **Resolution:** Accepted, in the form both reviewers proposed. A new decision puts the may-never-fire cue on the
-  finding's opening line and in its summary row, and the fix route in the summary row beside the brief description, so
-  triage happens before the reading rather than after it. The severity scheme, the row order, and the finding
-  identifiers are untouched, and are now named in Out of Scope.
+- **Resolution:** Accepted, in the form the reviewer proposed across its two findings. A new decision puts the
+  may-never-fire cue on the finding's opening line and in its summary row, and the fix route in the summary row beside
+  the brief description, so triage happens before the reading rather than after it. The two halves rest on different
+  evidence and D16 records which is which: the cue answers the originating complaint directly, and the route in the row
+  rests on the second finding plus the work item's record of the question being asked after every review. The severity
+  scheme, the row order, and the finding identifiers are untouched, and are now named in Out of Scope.
 - **Resolved by:** evidence
 - **Affected decisions:** D16 (new), D1, D12
 - **Changed in spec:** Outcome; Primary Flow; Alternate Flows and States; User Interactions; Out of Scope
@@ -163,9 +165,10 @@ reviewer's own identifier.
   output and nobody notices.
 - **Resolution:** Accepted as a new decision. Each skill checks its own output before presenting, in the place each
   already has for a check like this, and fixes a failure before presenting. A separate verification pass was rejected
-  under the simpler-version test.
+  under the simpler-version test. D9's existing diagram check was the model for where a check belongs; D9's own text was
+  not changed.
 - **Resolved by:** evidence
-- **Affected decisions:** D17 (new), D9
+- **Affected decisions:** D17 (new)
 - **Changed in spec:** Primary Flow
 
 ### F11: The explanation was specified as republished reasoning the review does not actually hold
@@ -296,8 +299,9 @@ reviewer's own identifier.
 - F17: The edge-case row for a configured location outside the working directory restated a rule the canonical
   configuration rule already owns, creating a second home that can drift — han-core:user-experience-designer — row
   removed from Edge Cases and Failure Modes.
-- F18: A hardcoded count of how many skills consume the configured output location, against the repository's
-  count-free convention — han-core:junior-developer — rephrased without the count in Cut for Scope.
+- F18: Hardcoded suite-wide skill counts, against the repository's count-free convention — han-core:junior-developer —
+  rephrased without the count in Cut for Scope, and in the evidence of D5 and D10, which counted the skills consuming
+  the configured output location and the skills sourcing the shared writing standard.
 
 ## Unaudited evidence classes
 
@@ -307,6 +311,10 @@ reviewer's own identifier.
   match the boundary record.
 - A rendered example report or overview under the new rules, bearing on F4. No reviewer received one, because none
   exists yet. This is what open item OI-1 exists to resolve.
+- The three reviewers' reports in their own words, bearing on every record above. Synthesis received them condensed
+  rather than verbatim, because the three together run several times the length of these artifacts. Attribution in this
+  record was therefore checked against the merged reviewer identifiers rather than against each reviewer's wording; a
+  claim that could only be settled by a reviewer's exact phrasing is not settled here.
 
 ## Escalation register
 
