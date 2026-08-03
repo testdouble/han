@@ -39,7 +39,8 @@ description of what it does. The `han` meta-plugin is a convenience wrapper that
 - **[`han-research`](../han-research/README.md).** The pre-planning knowledge-work layer: open-ended research, gap
   analysis, and issue triage, plus the research-analyst agent. Bundled; depends on `han-core`.
 - **[`han-planning`](../han-planning/README.md).** The planning layer: specifying, planning, sequencing, breaking down,
-  and stress-testing work before implementation. Bundled; depends on `han-core`.
+  and stress-testing work before implementation, plus the discussion-facilitator agent. Bundled; depends on
+  `han-core`.
 - **[`han-coding`](../han-coding/README.md).** The coding layer: writing, reviewing, analyzing, testing, investigating,
   and standardizing code. Bundled; depends on `han-core`.
 - **[`han-github`](../han-github/README.md).** The GitHub layer: posting reviews, writing PR descriptions, and

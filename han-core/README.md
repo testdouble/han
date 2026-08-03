@@ -18,7 +18,7 @@ and you have the specialists and project discovery, but no other skills.
 
 Most agents are dispatched for you by skills; you rarely invoke them directly. Grouped by role.
 
-### Planning and facilitation
+### Planning and synthesis
 
 - [`plan-synthesizer`](docs/agents/plan-synthesizer.md) — Reconcile the input from every specialist who contributed into
   a final plan the team can commit to, with decisions, rejected alternatives, and evidence.
