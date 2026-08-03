@@ -84,8 +84,11 @@ widening beyond the issue.
 
 ## Direction of Travel
 
-`Unanswered`. Asked in the opening confirmation turn: whether `code-review`, `code-overview`, their template files, or
-the Mermaid-body exemption in the readability rewrite are being deprecated, replaced, or migrated away from.
+Asked in the opening confirmation turn: whether `code-review`, `code-overview`, their template files, or the
+Mermaid-body exemption in the readability rewrite are being deprecated, replaced, or migrated away from. The operator
+answered: "all four stay. we're correcting the output so it's understandable and usable."
+
+Nothing in scope is on its way out. The work is corrective on the output of two skills that keep their current shape.
 
 ## Visual Material Received
 
