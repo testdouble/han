@@ -74,7 +74,7 @@ Invoke the `han-planning:plan-a-feature` skill with the **Skill** tool, **forwar
 the `size` argument (if the user passed `small`, `medium`, or `large`), the feature description, any known constraints
 or entry points, and the relevant conversation context. Do not summarize, trim, or reinterpret the user's context; pass
 it through so `han-planning:plan-a-feature` runs exactly as it would on its own — interview, review team, finding
-resolution, and project-manager synthesis included — **except** add one explicit instruction: it must write its output
+resolution, and plan-synthesizer synthesis included — **except** add one explicit instruction: it must write its output
 folder under `/tmp/` (for example `/tmp/<feature-slug>/`) rather than into the repo's docs directory, and it should not
 prompt the user to choose or confirm an output location, because this skill owns that decision. This keeps the working
 plan out of the repo until the user decides to publish it, and because the path is explicit input it outranks any

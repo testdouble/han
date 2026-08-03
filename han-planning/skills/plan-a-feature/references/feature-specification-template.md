@@ -276,7 +276,7 @@ justify revisiting it.
 
 ## Open Items
 
-<!-- Questions or concerns the project-manager flagged that could not be resolved during specification. Each entry names what is open, what would resolve it, and whether it blocks implementation. -->
+<!-- Questions or concerns the plan-synthesizer flagged that could not be resolved during specification. Each entry names what is open, what would resolve it, and whether it blocks implementation. -->
 
 - **OI-1:** ...
   - **Resolves when:** ...

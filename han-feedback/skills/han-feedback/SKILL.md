@@ -53,7 +53,7 @@ han-planning:plan-a-feature"), and any output that identifies a specific Han ski
 
 **Han agents.** Look for dispatches of agents from any `han-*` plugin. For example, an `Agent` tool call whose
 `subagent_type` is `han-core:adversarial-security-analyst`, or skill output naming a Han agent it launched
-(`evidence-based-investigator`, `project-manager`, `risk-analyst`, and so on). Record each distinct Han agent that ran,
+(`evidence-based-investigator`, `plan-synthesizer`, `risk-analyst`, and so on). Record each distinct Han agent that ran,
 whether a skill dispatched it or it was invoked directly.
 
 Build one list of the Han skills used and one list of the Han agents used. Deduplicate each.

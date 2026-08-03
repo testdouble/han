@@ -30,8 +30,8 @@ and bare names in one skill is the inconsistency that produces a dispatch bug.
 A meta-plugin is a plugin with no components of its own. Picture a plugin named `example` that has no agents, skills, or
 commands; it only declares `example.core` and `example.github` as dependencies so installing it pulls them in. A
 dependency is installed as its own plugin and keeps its own namespace. Depending on `example.core` does not re-export
-`example.core`'s agents under `example:`. So `example:project-manager` resolves to nothing, because the `example` plugin
-contains no `project-manager`.
+`example.core`'s agents under `example:`. So `example:plan-synthesizer` resolves to nothing, because the `example` plugin
+contains no `plan-synthesizer`.
 
 ### Rule: Qualify skill cross-references the same way
 

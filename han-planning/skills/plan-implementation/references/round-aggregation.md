@@ -56,12 +56,12 @@ specialists `Disputed`, or the finding is tagged `spec-level` / `T#-contradictio
 [implementation-iteration-history-template.md](./implementation-iteration-history-template.md). Populate the
 claim ledger, Open Questions, spec-maturity tags, and next-step recommendation fields directly from this aggregation.
 
-**If the spec-maturity gate tripped**, this skill makes the one and only PM facilitation call in the round: launch
-`han-core:project-manager` in **facilitation mode** with the verbatim specialist outputs, the deterministic aggregation,
+**If the spec-maturity gate tripped**, this skill makes the one and only facilitation call in the round: launch
+`han-planning:discussion-facilitator` with the verbatim specialist outputs, the deterministic aggregation,
 and a directive to confirm or refine the gate-trip assessment and surface anything the deterministic aggregator might
 have missed before the user is asked to pause spec-stage work. Pass the directive: **do NOT write a facilitation-summary
-file to disk.** Return the facilitation output verbatim. Append PM's verbatim output to the round entry under a
-`Project-manager review (gate-trip pass):` field.
+file to disk.** Return the facilitation output verbatim. Append the facilitator's verbatim output to the round entry
+under a `Facilitator review (gate-trip pass):` field.
 
 Then surface the tripping findings to the user with:
 

@@ -30,7 +30,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Decision tree walking.** Foundational decisions (what, who, outcome, trigger) settle before behavioral ones (flows,
   states); behavioral before boundary (edge cases); boundary before interaction (UI/API surface).
 - **Specialist review round.** Three to five sub-agents stress-test the draft in parallel. `junior-developer` is always
-  in the mix. `project-manager` reconciles their findings.
+  in the mix. `plan-synthesizer` reconciles their findings.
 - **Cross-referenced artifacts.** Every non-obvious behavior in the spec carries an inline `([D#](...))` marker linking
   to the decision that drove it. Every `F#` finding links to the `D#` it touched and the spec section it changed.
 - **The scope boundary.** Before the interview starts, the skill reads the work item this feature descends from and
@@ -146,7 +146,7 @@ Up to four cross-referenced files on disk in the same folder, plus an in-channel
   cleanly if the evidence changes.
 - An **`artifacts/team-findings.md`** file at `{folder}/artifacts/team-findings.md`. One `F#` entry per finding the
   review team raised. Each entry records which specialist raised it (`Agent:`), the finding text, the evidence
-  considered, and the resolution with what resolved it (`Resolved by:` evidence / user input / project-manager). It also
+  considered, and the resolution with what resolved it (`Resolved by:` evidence / user input / plan-synthesizer). It also
   records the decisions it touched (`Affected decisions:`) and the spec sections it changed (`Changed in spec:`). A
   finding raised by two reviewers is one record carrying both reviewers' identifiers. A finding resting on an input its
   author could not inspect carries an `Unverified:` field and cannot be build-blocking. When decisions rest on material no
@@ -165,12 +165,12 @@ Up to four cross-referenced files on disk in the same folder, plus an in-channel
   could not verify with the reason named. A check that did not pass is written into the artifacts as well as the
   summary, so the next skill in the chain does not read the folder as fully verified.
 - A **`ui-designs/` folder**, when you supply visual material. The files themselves, named for the state each one shows.
-- An **open items list** inside the spec. Questions or concerns the project-manager flagged that could not be resolved
+- An **open items list** inside the spec. Questions or concerns the plan-synthesizer flagged that could not be resolved
   during specification, each with what would resolve it and whether it blocks implementation.
 - A **summary** returned in-channel. All file paths (including `feature-technical-notes.md` and `ui-designs/` only when
   they were created), the number of decisions settled by evidence vs. by user input, the cut list in full when anything was
   cut for scope, the sub-agents consulted, key adjustments each drove, any finding that stayed unverified, and any
-  remaining open items the project-manager flagged for follow-up.
+  remaining open items the plan-synthesizer flagged for follow-up.
 
 The files interlock through shared IDs. Every `D#` lists its `F#` drivers and its referencing spec sections. Every `F#`
 lists its `D#` impacts and the spec sections it changed. When `T#` technical notes exist, they cross-link to their
@@ -250,12 +250,12 @@ For the cross-skill sizing model and design principles, see [Sizing](../../../do
 
 ## Cost and latency
 
-The skill orchestrates a multi-step interview plus a parallel sub-agent review round plus a project-manager synthesis
+The skill orchestrates a multi-step interview plus a parallel sub-agent review round plus a plan-synthesizer synthesis
 pass. The skill passes no model override. Each dispatched sub-agent runs on its own frontmatter tier (so
-`project-manager`, `junior-developer`, and the other synthesis-heavy agents run on `opus`, while the structured-protocol
+`plan-synthesizer`, `junior-developer`, and the other synthesis-heavy agents run on `opus`, while the structured-protocol
 specialists run on `sonnet`). The interview itself is inexpensive (a model loop with codebase reads). But the sub-agent
 review round fans out to three to five agents in parallel, each doing its own protocol-driven pass over the draft spec.
-The synthesis pass on `project-manager` is the most expensive single step. For a medium-complexity feature, expect one
+The synthesis pass on `plan-synthesizer` is the most expensive single step. For a medium-complexity feature, expect one
 interview loop, one parallel review round, and one synthesis pass: roughly equivalent to dispatching five to six
 sub-agents plus the interview loop itself. After the synthesis pass, the skill dispatches one
 `han-communication:readability-editor` rewrite of the spec's prose, so expect one additional readability pass among the
@@ -277,7 +277,7 @@ coordinations, edge cases, and user interactions. Technical artifacts (file path
 admissible only as **evidence** for behavioral decisions, never as the decision itself.
 
 Once a draft is in place, the skill dispatches three to five specialist sub-agents in parallel to stress-test the spec,
-always including `junior-developer` as generalist stress-tester. It then runs `project-manager` in synthesis mode to
+always including `junior-developer` as generalist stress-tester. It then runs `plan-synthesizer` to
 reconcile their input and apply corrections. The output is three cross-referenced files: `feature-specification.md` at
 the folder root (the canonical behavioral artifact that `/plan-implementation` turns into an implementation plan), plus
 `artifacts/decision-log.md` and `artifacts/team-findings.md` in a sibling `artifacts/` subfolder. This keeps the primary
@@ -295,7 +295,7 @@ acceptable evidence. Acceptable evidence includes a user-described need in the s
 dependency, an existing production code path that breaks without it, a regulatory rule that applies today, or a
 documented incident or measured metric. Behaviors that are interesting but unjustified land in a `## Deferred (YAGNI)`
 section in the spec with a named _reopen-when_ trigger. They are recorded, not silently dropped. The `junior-developer`
-and `project-manager` agents both apply YAGNI protocols (Evidence Sweep and Evidence Gate, respectively) during the
+and `plan-synthesizer` agents both apply YAGNI protocols (Evidence Sweep and Evidence Gate, respectively) during the
 review round, so uncited behaviors that survived the interview get challenged before the spec hardens.
 
 See [YAGNI](../../../docs/yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and the deferral
@@ -412,13 +412,13 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
   `T#` cross-reference identifier.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the
   `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative,
-  project-manager-led team conversation.
+  facilitated team conversation.
 - [`/stakeholder-summary`](../../../han-reporting/docs/skills/stakeholder-summary.md). The optional sibling for non-technical feedback.
   Takes the `feature-specification.md` produced here and turns it into a plain-language stakeholder summary with Mermaid
   diagrams, for sharing with leadership, product, or customer-facing reviewers before implementation kicks off.
 - [`/iterative-plan-review`](./iterative-plan-review.md). The complement for plans that already exist. Use this when an
   implementation plan or spec has been drafted and needs multiple review passes to challenge assumptions and refine.
-- [`project-manager`](../../../han-core/docs/agents/project-manager.md). The agent the skill dispatches for the final synthesis
+- [`plan-synthesizer`](../../../han-core/docs/agents/plan-synthesizer.md). The agent the skill dispatches for the final synthesis
   pass that reconciles sub-agent review output into the authoritative specification.
 - [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). The generalist stress-tester the skill always
   includes in the sub-agent review round. Surfaces hidden assumptions, muddied scope, and uncited claims before the spec

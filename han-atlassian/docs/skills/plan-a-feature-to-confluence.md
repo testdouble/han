@@ -21,7 +21,7 @@ helps you decide _when_ and _how_ to use the skill. For what the skill does inte
 
 ## Key concepts
 
-- **A thin orchestrator over two skills.** The interview, the design-tree walk, the review team, and the project-manager
+- **A thin orchestrator over two skills.** The interview, the design-tree walk, the review team, and the plan-synthesizer
   synthesis all belong to [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). The publishing, the location
   resolution, and the create-or-update calls all belong to [`/markdown-to-confluence`](./markdown-to-confluence.md).
   This skill only validates its inputs, runs the planning skill to a temporary folder, lets you review the files, takes
@@ -167,7 +167,7 @@ from that run; this skill neither adds nor relaxes it.
 ## Cost and latency
 
 The skill itself dispatches no agents. Its cost is whatever [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md)
-costs: its interview plus a review team of two to five `sonnet` sub-agents scaled by size, and a `project-manager`
+costs: its interview plus a review team of two to five `sonnet` sub-agents scaled by size, and a `plan-synthesizer`
 synthesis pass. On top of that, it costs the handful of fast Atlassian MCP calls
 [`/markdown-to-confluence`](./markdown-to-confluence.md) makes per page to resolve the location and publish. Because the
 cross-page links are rewritten into title macros before anything is created, each page is published with a single create

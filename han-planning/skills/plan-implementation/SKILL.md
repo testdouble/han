@@ -2,7 +2,7 @@
 name: "plan-implementation"
 description: >
   Builds a feature implementation plan from an existing feature specification (or equivalent context) through a
-  project-manager-led team conversation. Use when the user wants to plan how to implement, build, deliver, or ship a
+  facilitated team conversation. Use when the user wants to plan how to implement, build, deliver, or ship a
   feature that has already been specified. Does not specify what the feature should do — use plan-a-feature first. Does
   not refine or stress-test an already-written plan — use iterative-plan-review.
 arguments: size
@@ -42,15 +42,15 @@ between the two files, relative-path resolution, and what to do with a file that
   below the question or leaves them out. Per
   [../../references/operator-escalation-rule.md](../../references/operator-escalation-rule.md). The opening confirmation
   turn is the one exception, and the one turn that carries more than one ask.
-- **The han-core:project-manager is the coordinator, not the author of every section.** It facilitates rounds of
-  discussion among specialists, tracks claims and evidence, and decides when the plan is ready. Specialists own their
-  domains.
+- **The han-core:plan-synthesizer reconciles the specialists, it does not author every section.** It reads what every
+  specialist produced, tracks claims and evidence, and commits the decisions the plan records. Specialists own their
+  domains. This skill runs the rounds itself; the synthesizer is dispatched once, at the end.
 - **Always include `han-core:junior-developer` on the team.** When decisions lack strong evidence, the
   han-core:junior-developer reframes the issue in plain terms first — that frequently unlocks a resolution without
   needing the user.
 - **Escalate to the user only when evidence and reframing have both failed.** Every escalation surfaces with a full
   description, the evidence considered, and a recommended answer.
-- **Done is when the han-core:project-manager says so.** The loop exits when the han-core:project-manager reports the
+- **Done is when the han-core:plan-synthesizer says so.** The loop exits when the han-core:plan-synthesizer reports the
   plan is ready to commit, or that only user-input items remain. The user is not asked to keep iterating past that
   point.
 - **YAGNI is a first-class operating principle, applied to _implementation_ choices.** The implementation plan inherits
@@ -224,14 +224,14 @@ the specialists, or both.
 Step 2, the visual material, a report-length target matched to the size of the work, the blind-spot directive, and a
 question framed for its domain. Instruct each to read further on demand only if its domain needs it.
 
-Launch every non-`han-core:project-manager` specialist in parallel, in a single message.
+Launch every non-`han-core:plan-synthesizer` specialist in parallel, in a single message.
 
 ## Step 5: Round 1 — Deterministic Aggregation
 
-`han-core:project-manager` is **NOT** called per-round in facilitation mode. The mechanical work of consolidating
-specialist findings into a claim ledger, classifying spec-maturity, and choosing a next-step recommendation is performed
-deterministically by this skill itself. PM is reserved for two specific calls only: the final synthesis in Step 8, and a
-single facilitation pass when the spec-maturity gate trips (see below).
+No agent is dispatched to facilitate the round. The mechanical work of consolidating specialist findings into a claim
+ledger, classifying spec-maturity, and choosing a next-step recommendation is performed deterministically by this skill
+itself. Two agents cover the two exceptions: `han-core:plan-synthesizer` runs the final synthesis in Step 8, and
+`han-planning:discussion-facilitator` runs a single facilitation pass when the spec-maturity gate trips (see below).
 
 Aggregate the verbatim specialist outputs from Step 4 into the round-1 entry of
 `artifacts/implementation-iteration-history.md` using these rules.
@@ -264,7 +264,7 @@ iteration history, so the coverage gap is visible rather than silent.
 
 Then aggregate the round deterministically, in the order [round-aggregation.md](./references/round-aggregation.md)
 specifies: build the claim ledger, tag spec-maturity and compute the gate, build the Open Questions list, pick the
-next-step recommendation, and write the round entry. That reference also carries the one PM facilitation call this
+next-step recommendation, and write the round entry. That reference also carries the one facilitation call this
 skill makes, and when the gate trips it.
 
 ## Step 6: Iterative Resolution Loop
@@ -306,8 +306,8 @@ For each iteration:
 3. **Re-aggregate deterministically.** Apply the same Step 5 rules to the updated state: the prior round's
    iteration-history entry, the newly resolved Open Questions, the new specialist input from sub-step 2, and any user
    answers. Recompute the claim ledger, spec-maturity tags, Open Questions, and next-step recommendation. **Do not call
-   `han-core:project-manager` for this** unless the spec-maturity gate trips for the first time in this round (in which
-   case use the same single PM call described in Step 5).
+   any agent for this** unless the spec-maturity gate trips for the first time in this round (in which
+   case use the same single `han-planning:discussion-facilitator` call described in Step 5).
 
 4. **Append a round entry to `artifacts/implementation-iteration-history.md`.** Before deciding whether to loop again,
    write the round's record using the
@@ -315,7 +315,7 @@ For each iteration:
    entry consolidates the deterministic aggregation into the structured fields: `R#` ID, specialists engaged, new input
    provided, claim ledger, Open Questions raised, spec-maturity tags, resolution source per question, and the
    deterministic next-step recommendation. Leave `Decisions produced:` and `Changed in plan:` as `—` for now; both
-   fields are backfilled by the han-core:project-manager in Step 8 once decisions are committed and the plan is written.
+   fields are backfilled by the han-core:plan-synthesizer in Step 8 once decisions are committed and the plan is written.
 
 5. **Decide whether to continue looping (deterministic stop rule).** Exit the loop when ANY of the following holds:
    - The deterministic next-step recommendation is **"go to synthesis."**
@@ -355,24 +355,24 @@ plan: the evidence test, the simpler-version test, and the scope test. Items tha
 `## Deferred (YAGNI)` section with a reopening trigger, or in `## Cut for Scope` with the boundary citation, never in
 both and never silently dropped.
 
-## Step 8: Project Manager Synthesis
+## Step 8: Plan Synthesis
 
 Before synthesis, invoke `han-communication:readability-guidance` to source the shared readability standard into your
-context, then apply it to the plan's prose — both while directing the han-core:project-manager's synthesis and when you
+context, then apply it to the plan's prose — both while directing the han-core:plan-synthesizer's synthesis and when you
 run the Step 8.5 self-check. Hold the named audience: the engineer who will build the feature. The frame governs how a
 fact is said, never whether a required fact appears — keep the technical precision the plan depends on.
 
-Launch `han-core:project-manager` in **synthesis mode** — this is the one call in this skill that runs on the
-han-core:project-manager's default model; pass no `model` override. Provide it with:
+Launch `han-core:plan-synthesizer` — this is the one call in this skill that runs on the
+han-core:plan-synthesizer's default model; pass no `model` override. Provide it with:
 
 - The feature specification path (or a note that no source file was provided and what conversational context was used
-  Ask the han-core:project-manager to reconcile the specialist input against the files and apply any remaining
+  Ask the han-core:plan-synthesizer to reconcile the specialist input against the files and apply any remaining
   corrections directly. What it must do, and the record invariants it preserves, are specified in
   [synthesis-directives.md](./references/synthesis-directives.md). Its output is authoritative.
 
 ## Step 8.5: Readability Pass
 
-Once the han-core:project-manager synthesis in Step 8 is complete and the plan is final, dispatch
+Once the han-core:plan-synthesizer synthesis in Step 8 is complete and the plan is final, dispatch
 `han-communication:readability-editor` (one Agent call) to audit and rewrite the plan's prose against the readability
 standard. Pass the editor the file path `{same-folder-as-source}/feature-implementation-plan.md` and the named audience:
 the engineer who will build the feature; the editor reads han-communication's own canonical rule, so pass no rule path.
@@ -443,7 +443,7 @@ Summarize for the user:
 - Any finding that stayed `Unverified` because a specialist could not inspect its input, and any evidence class no
   specialist could audit. Neither is presented as build-blocking.
 - Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`.
-- The han-core:project-manager's recommendation (ship as planned, hold for specialist handoff, or blocked pending open
+- The han-core:plan-synthesizer's recommendation (ship as planned, hold for specialist handoff, or blocked pending open
   item).
 
 Ask whether the user wants to iterate on specific sections or consider the plan ready for implementation.

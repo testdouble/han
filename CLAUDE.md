@@ -7,8 +7,8 @@ plugin beneath every other: it owns the canonical readability standard, the writ
 standard for talking to a reader who will not implement the work, plus the inline `readability-guidance` skill that
 surfaces the first two, the inline `explanation-guidance` skill that surfaces the third, the `edit-for-readability` skill,
 and the `readability-editor` agent; it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
-specialist agent roster the rest of the suite dispatches — every shared agent except the `readability-editor` and the
-`research-analyst` — plus the `project-discovery` skill and the canonical rule files; depends on no other Han plugin),
+specialist agent roster the rest of the suite dispatches — every shared agent except the `readability-editor`, the
+`research-analyst`, and the `discussion-facilitator` — plus the `project-discovery` skill and the canonical rule files; depends on no other Han plugin),
 `han-documentation` (the documentation skills: `project-documentation`, `architectural-decision-record`, and `runbook`;
 depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin), `han-research` (the
 pre-planning knowledge-work skills — `research`, `gap-analysis`, and `issue-triage` — plus the `research-analyst`
@@ -16,7 +16,8 @@ agent; depends on `han-communication` and `han-core` and is bundled by the `han`
 planning skills you reach for before
 implementation: specifying with `plan-a-feature`, planning the build with `plan-implementation`, sequencing it with
 `plan-a-phased-build`, breaking it into work with `plan-work-items`, and stress-testing plans with
-`iterative-plan-review`; depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin),
+`iterative-plan-review`, plus the `discussion-facilitator` agent that audits a planning discussion in progress;
+depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin),
 `han-coding` (the coding skills
 you reach for while working in code: writing it with `tdd` and `refactor`, plus reviewing, overviewing, analyzing,
 testing, investigating, and standardizing it with `code-review`, `code-overview`, `architectural-analysis`,
@@ -98,12 +99,13 @@ han-plugin-builder skill:
 │   ├── skills/         # Research skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/research-analyst.md
 │   └── references/     # Cross-skill reference files vendored for han-research skills (yagni-rule.md, evidence-rule.md)
-├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation; depends on han-communication and han-core; bundled by the han meta-plugin)
-│   ├── README.md       # Light front door + scent-line skills list
+├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation) + the discussion-facilitator agent (depends on han-communication and han-core; bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
+│   ├── agents/         # discussion-facilitator agent definition
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
-│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/discussion-facilitator.md
 │   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
 ├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
@@ -197,7 +199,7 @@ The same plugin also ships those two interview-driven builder skills, `skill-bui
 design tree for a new skill or agent decision-by-decision and then review the finished artifact against that guidance.
 Documentation is plugin-first: each plugin carries a light front-door `README.md` and its own long-form docs. Long-form
 docs in `{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md` (agents only in `han-core`,
-`han-communication`, and `han-research`) are the canonical operator-facing source for every skill and every agent,
+`han-communication`, `han-research`, and `han-planning`) are the canonical operator-facing source for every skill and every agent,
 sitting beside that plugin's README. The cross-plugin surfaces stay under repo-root `docs/`: the alphabetized skills
 and agents indexes (`docs/skills/README.md`, `docs/agents/README.md`), the plugin index
 (`docs/choosing-a-han-plugin.md`), and the workflows composition map (`docs/workflows.md`). The underlying definition
@@ -205,8 +207,8 @@ and agents indexes (`docs/skills/README.md`, `docs/agents/README.md`), the plugi
 `han-documentation/skills/{name}/SKILL.md`, `han-research/skills/{name}/SKILL.md`,
 `han-planning/skills/{name}/SKILL.md`, `han-coding/skills/{name}/SKILL.md`, `han-github/skills/{name}/SKILL.md`,
 `han-reporting/skills/{name}/SKILL.md`, `han-feedback/skills/{name}/SKILL.md`, `han-atlassian/skills/{name}/SKILL.md`,
-`han-linear/skills/{name}/SKILL.md`, `han-core/agents/{name}.md`, `han-communication/agents/{name}.md`, or
-`han-research/agents/research-analyst.md`) is the implementation.
+`han-linear/skills/{name}/SKILL.md`, `han-core/agents/{name}.md`, `han-communication/agents/{name}.md`,
+`han-research/agents/research-analyst.md`, or `han-planning/agents/discussion-facilitator.md`) is the implementation.
 
 ## When to use which doc
 
@@ -284,7 +286,8 @@ All three are owned by `han-planning`, not vendored. Each opens by saying so.
   `han-github/skills/`, `han-reporting/skills/`, `han-feedback/skills/`, `han-atlassian/skills/`, `han-linear/skills/`,
   and `han-plugin-builder/skills/` has a long-form doc in its plugin's `docs/skills/`, a scent line in its plugin's
   `README.md`, and an entry in the skills index (`docs/skills/README.md`); same for agents in `han-core/agents/`,
-  `han-communication/agents/`, and `han-research/agents/` (long-form docs in `{plugin}/docs/agents/`, indexed in
+  `han-communication/agents/`, `han-research/agents/`, and `han-planning/agents/` (long-form docs in
+  `{plugin}/docs/agents/`, indexed in
   `docs/agents/README.md`). Verify the indexes list every entity when editing them, rather than tracking a running
   total.
 

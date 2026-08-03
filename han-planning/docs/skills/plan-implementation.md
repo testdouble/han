@@ -9,7 +9,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 
 ## TL;DR
 
-- **What it does.** Turns a feature specification into an implementation plan through an iterative, project-manager-led
+- **What it does.** Turns a feature specification into an implementation plan through an iterative, facilitated
   team conversation.
 - **When to use it.** You have a `feature-specification.md` (or equivalent design doc) and need a plan for _how_ to
   build it.
@@ -22,10 +22,10 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 
 ## Key concepts
 
-- **Facilitated loop.** Rounds of parallel specialist review plus project-manager reconciliation, capped by size: 1
-  round for small, 2 for medium, 3 for large. The loop converges when the PM declares the plan is ready or when only
-  user input remains.
-- **Team sized to the feature.** Always includes `project-manager` and `junior-developer`. Other specialists are chosen
+- **Facilitated loop.** Rounds of parallel specialist review plus deterministic reconciliation by the skill, capped by
+  size: 1 round for small, 2 for medium, 3 for large. The loop converges when the stop rule fires or when only user
+  input remains.
+- **Team sized to the feature.** Always includes `plan-synthesizer` and `junior-developer`. Other specialists are chosen
   by what the feature touches: DevOps for rollout, data-engineer for schema, UX for interactions, security for threat
   surface, `software-architect` for intra-codebase design, `system-architect` for cross-service topology.
 - **The scope boundary, and what it licenses.** Before discovery, the skill records the work item this work descends
@@ -55,10 +55,10 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Junior-developer reframing.** When a decision lacks evidence, the skill asks `junior-developer` to restate the
   question in plain language before escalating. Often a reframing exposes an unstated assumption and the specialists
   resolve it among themselves.
-- **Final synthesis by PM.** `project-manager` runs on `opus` for the final pass and produces the authoritative plan.
+- **Final synthesis.** `plan-synthesizer` runs on `opus` for the final pass and produces the authoritative plan.
   During the iteration loop, the skill passes no model override: each specialist runs on its own frontmatter tier
   (synthesis-heavy agents like `junior-developer` on `opus`, structured-protocol specialists on `sonnet`). The synthesis
-  pass audits and corrects the artifacts, not just writes and populates them: the PM reconciles the artifacts against
+  pass audits and corrects the artifacts, not just writes and populates them: the synthesizer reconciles them against
   each other and rewrites inconsistencies in place, such as a decision-log title copied from another entry, or a path
   one section assumes that another section's layout never places there.
 - **Planning altitude: intention over prescription.** The plan carries the intention and goals of the work, its touch
@@ -91,8 +91,8 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - A feature's implementation touches multiple specialist domains (auth, data migration, production rollout, UX changes)
   and the team wants those domains represented in the plan with evidence-backed recommendations rather than handwaved in
   a sentence each.
-- The team wants the facilitation loop to converge on its own. The project-manager decides when the plan is ready, not
-  you. Only genuine user-judgment questions surface.
+- The team wants the facilitation loop to converge on its own. A deterministic stop rule decides when the plan is
+  ready, not you. Only genuine user-judgment questions surface.
 
 **Do not invoke for:**
 
@@ -129,7 +129,7 @@ Give it:
    must address, a strategic bet driving the feature: any of this sharpens the facilitation. The skill reads the
    codebase, ADRs, and coding standards automatically.
 3. **Team composition, optional.** If you already know which specialists should be in the room (_"include
-   devops-engineer and data-engineer"_), say so. The skill always includes `project-manager` and `junior-developer`.
+   devops-engineer and data-engineer"_), say so. The skill always includes `plan-synthesizer` and `junior-developer`.
    Other specialists are chosen to match what the feature touches unless you override.
 4. **A size, optional.** Pass `small`, `medium`, `large`, or `dynamic` as the first argument to override the skill's automatic
    sizing and set the specialist cap directly. Left off, the skill classifies the size from what the feature touches. See
@@ -178,7 +178,7 @@ Four cross-referenced files in the same folder as the source specification, plus
     empty stub. `Cut for Scope` and `Deferred (YAGNI)` sit next to each other and each opens with a line saying what it is
     not: a cut is work the work item excludes and carries no reopening trigger, while a deferral is work no evidence
     supports yet and carries one.
-  - A **remaining open items** list. Questions the project-manager could not resolve through evidence, junior-developer
+  - A **remaining open items** list. Questions the plan-synthesizer could not resolve through evidence, junior-developer
     reframing, or user input. Each one names what would resolve it and whether it blocks implementation.
   - A **sources and plan records** section closing the file: links to the source `feature-specification.md` and its
     companions (whichever exist, in `artifacts/` or at the folder root for legacy layouts), the decisions the plan
@@ -197,18 +197,18 @@ Four cross-referenced files in the same folder as the source specification, plus
   `{same-folder-as-source}/artifacts/implementation-iteration-history.md`. One `R#` entry per facilitation round. Each
   entry records the specialists engaged, the new input provided that round, and the questions raised. For each question
   it records the resolution source (`evidence` found in the loop / `junior-developer reframing` / `user input` /
-  `PM synthesis (Step 8 evidence)` when the PM settled it by re-reading the spec during synthesis rather than in the
-  loop) and the project-manager's next-step recommendation. It also records the decisions the round produced
+  `synthesis (Step 8 evidence)` when the plan-synthesizer settled it by re-reading the spec during synthesis rather
+  than in the loop) and the round's next-step recommendation. It also records the decisions the round produced
   (`Decisions produced:`, backfilled during synthesis) and the plan sections the round changed (`Changed in plan:`, also
   backfilled). This captures how the plan evolved across rounds without bloating the primary plan file.
 - A **summary** returned in-channel. All three file paths, team composition, number of iterations the loop ran before
   convergence, decisions settled by evidence vs. junior-developer reframing vs. user input, remaining open items and
-  whether they block implementation, and the project-manager's recommendation (ship as planned, hold for specialist
+  whether they block implementation, and the plan-synthesizer's recommendation (ship as planned, hold for specialist
   handoff, or blocked pending open item).
 
 The three files interlock through shared IDs. Every `D-N` lists the `R#` rounds that drove it and the plan sections that
 cite it. Every `R#` lists the `D-N` decisions it produced and the plan sections it changed. Every non-obvious claim in
-the plan carries its inline `([D-N](...))` marker. The project-manager preserves these structural invariants during
+the plan carries its inline `([D-N](...))` marker. The plan-synthesizer preserves these structural invariants during
 synthesis, so cross-references stay consistent. On top of that, it runs a semantic audit. It checks that each
 decision-log title matches its body, that a path named in one section matches the file layout described in another, and
 that the plan stays at altitude (no full file blocks inlined). It rewrites any mismatch in place.
@@ -229,13 +229,13 @@ The skill surfaces it rather than inventing an answer.
 - **Point the skill at a path.** A concrete path to `feature-specification.md` is faster than letting the skill search
   and confirm. Use the path form in the command: `/plan-implementation docs/features/{name}/feature-specification.md`.
 - **Name the team if you know it.** If you already know the feature touches UX, security, and data, say so. The skill
-  always includes `project-manager` and `junior-developer`. Saying _"include these specialists"_ lets the skill scope
+  always includes `plan-synthesizer` and `junior-developer`. Saying _"include these specialists"_ lets the skill scope
   the round-robin tightly from the first iteration.
 - **Provide the driving constraint.** Why now: deadline, incident, customer commitment, compliance window? The skill's
-  facilitation is sharper when the project-manager can ground the "driving constraint" section in something concrete
+  facilitation is sharper when the plan-synthesizer can ground the "driving constraint" section in something concrete
   rather than inferring from code alone.
 - **Trust the loop.** The skill caps iteration by size (1 round small, 2 medium, 3 large) to prevent runaway cycles.
-  Each round is a full facilitation pass: specialists re-engaged as needed, project-manager reconciling,
+  Each round is a full facilitation pass: specialists re-engaged as needed, the skill reconciling their output,
   junior-developer reframing open questions. Let the loop run rather than jumping in mid-flight to answer questions that
   evidence or reframing would have resolved.
 - **Answer the escalations succinctly.** When the skill escalates a question, it does so with the specialist(s) who
@@ -257,7 +257,7 @@ The skill surfaces it rather than inventing an answer.
 
 ## Sizing
 
-Size determines both the specialist cap (how many chosen specialists join the project-manager-led conversation) and the
+Size determines both the specialist cap (how many chosen specialists join the facilitated conversation) and the
 round cap (how many iterations the loop runs). The skill defaults to small and only escalates when concrete signals
 require it.
 
@@ -271,10 +271,10 @@ How the size is chosen:
 
 - **Default to small.** Unless the spec's coordinations, T# notes, security/PII surface, integration boundaries, or your
   framing push it higher, the skill stays at small.
-- **`project-manager` and `junior-developer` always included.** Both are part of the team at every size, which is why
+- **`plan-synthesizer` and `junior-developer` always included.** Both are part of the team at every size, which is why
   the cap counts chosen specialists rather than seats: counting seats would make medium indistinguishable from small.
-- **Round cap is the upper bound, not a target.** The loop exits when `project-manager` reports the plan is ready or
-  only user-input items remain. The round cap prevents runaway cycles.
+- **Round cap is the upper bound, not a target.** The loop exits when the deterministic stop rule fires or only
+  user-input items remain. The round cap prevents runaway cycles.
 
 How to override the size:
 
@@ -292,12 +292,13 @@ For the cross-skill sizing model and design principles, see [Sizing](../../../do
 ## Cost and latency
 
 The skill orchestrates a multi-round team conversation. Each round fans out to one to four chosen specialist sub-agents
-(plus `junior-developer` and `project-manager`) in parallel and collects their verbatim output. It then runs
-`project-manager` in facilitation mode to reconcile that input and decide whether to loop again. The skill passes no
+(plus `junior-developer`) in parallel and collects their verbatim output. It then reconciles that input
+deterministically and decides whether to loop again, dispatching `han-planning:discussion-facilitator` only when the
+spec-maturity gate trips. The skill passes no
 model override; each sub-agent it dispatches in the iteration loop runs on its own frontmatter tier (synthesis-heavy
-agents on `opus`, structured-protocol specialists on `sonnet`). The final synthesis pass runs `project-manager` on its
+agents on `opus`, structured-protocol specialists on `sonnet`). The final synthesis pass runs `plan-synthesizer` on its
 default model (`opus`). This is the most expensive single step, but also the step that produces the authoritative plan.
-For a medium-complexity feature, expect two iterations before the project-manager declares the plan ready, which means
+For a medium-complexity feature, expect two iterations before the loop converges, which means
 roughly eight sub-agent dispatches plus the `opus` synthesis. The size-based round cap (1 for small, 2 for
 medium, 3 for large) prevents runaway cycles. After the final plan exists, the skill runs one
 `han-communication:readability-editor` rewrite of the plan's prose, so expect one additional readability pass among the
@@ -309,8 +310,8 @@ after spec changes), not for tight-loop iteration. Use `/iterative-plan-review` 
 The skill's input is the ground truth for _what_ the feature does: a `feature-specification.md` produced by
 `/plan-a-feature`, or an equivalent PRD, design doc, or product brief. Its output is four cross-referenced files,
 covering _how_ to build it, written to the same folder. The skill's defining behavior is the loop. It assembles a team
-of specialist sub-agents sized to what the feature touches, always including `project-manager` as coordinator and
-`junior-developer` as generalist stress-tester. It runs rounds of facilitated discussion until the project-manager
+of specialist sub-agents sized to what the feature touches, always including `plan-synthesizer` as final synthesizer
+and `junior-developer` as generalist stress-tester. It runs rounds of facilitated discussion until the stop rule
 confirms the plan is ready to commit, or until only user input remains.
 
 When a decision lacks strong evidence, the skill does not immediately escalate to you. It first asks `junior-developer`
@@ -318,7 +319,7 @@ to reframe the issue in plain language, because that reframing frequently expose
 question the specialists can answer among themselves. Only when evidence and reframing both fail does the skill surface
 the question to you, with the evidence considered, the reframing, a recommended answer, and the alternatives.
 
-The `project-manager` owns the final synthesis pass and writes the authoritative plan. The primary artifact
+The `plan-synthesizer` owns the final synthesis pass and writes the authoritative plan. The primary artifact
 (`feature-implementation-plan.md` at the folder root) covers work units and sequencing, testing strategy, definition of
 done, open items, and the lazily created specialist sections (security, operational readiness, resilience, risks and
 assumptions, handoffs). It links back to the upstream _what_ document in a closing Sources and Plan Records section.
@@ -336,7 +337,7 @@ itself only when no usable report comes back, and says so in the closing summary
 A YAGNI sweep runs before the implementation plan is committed. Every plan step, abstraction, infrastructure addition,
 observability hook, configuration knob, and rollout step must cite acceptable evidence that it is needed _now_.
 Speculative work moves to a `## Deferred (YAGNI)` section in the plan with a named _reopen-when_ trigger. The team
-agents that participate in the iterative discussion (`project-manager`, `junior-developer`, `software-architect`,
+agents that participate in the iterative discussion (`plan-synthesizer`, `junior-developer`, `software-architect`,
 `system-architect`, `data-engineer`, `devops-engineer`, `test-engineer`, `edge-case-explorer`) each enforce their own
 slice of the rule. Between them, that covers premature operational machinery, speculative data machinery,
 single-implementation interfaces, defensive code at trusted internal boundaries, observability for telemetry that isn't
@@ -354,9 +355,9 @@ and multi-specialist coordination. Each source below is cited because the skill 
 
 The Project Management Institute's guidance on facilitative project management frames the project manager as process
 expert. Their job is to enable effective decision-making by the group, not to make decisions alone. The skill's entire
-architecture is built on this: the project-manager sub-agent owns coordination and final synthesis, but the specialists
-own their domains. The skill's iteration loop (dispatch specialists, facilitate, reconcile, iterate) is facilitative PM
-applied to an AI-agent team.
+architecture is built on this: the skill facilitates and the `plan-synthesizer` sub-agent owns final synthesis, but the
+specialists own their domains. The skill's iteration loop (dispatch specialists, facilitate, reconcile, iterate) is
+facilitative project management applied to an AI-agent team.
 
 URL: https://www.pmi.org/learning/library/the-facilitative-project-manager-6970
 
@@ -406,7 +407,7 @@ https://www.amazon.jobs/content/en/our-workplace/leadership-principles
 
 Acceptance criteria and Definition of Done are the standard project-management artifacts for making "done" testable
 rather than subjective. The skill's output plan requires a testable definition of done, unambiguous acceptance criteria,
-and a rollback plan. Vague done-criteria are flagged as open items that block synthesis. The project-manager will not
+and a rollback plan. Vague done-criteria are flagged as open items that block synthesis. The plan-synthesizer will not
 declare the plan ready if "done" is still subjective.
 
 URLs: https://www.atlassian.com/work-management/project-management/acceptance-criteria and
@@ -457,9 +458,10 @@ URL: https://ieeexplore.ieee.org/document/1204375
   implementation plan starts from a shape stakeholders have already greenlit.
 - [`/iterative-plan-review`](./iterative-plan-review.md). The complement for stress-testing the plan after it lands.
   This skill produces the committable plan. `/iterative-plan-review` iterates on it.
-- [`project-manager`](../../../han-core/docs/agents/project-manager.md). The agent the skill uses as coordinator for every
-  facilitation round and as the author of the final synthesized plan. This document covers the PM's operating modes in
-  depth.
+- [`plan-synthesizer`](../../../han-core/docs/agents/plan-synthesizer.md). The agent the skill dispatches once, at the
+  end, to author the final synthesized plan.
+- [`discussion-facilitator`](../agents/discussion-facilitator.md). The agent the skill dispatches at most once per run,
+  on the spec-maturity gate-trip pass, to audit the round before a person is asked to pause spec-stage work.
 - [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). The generalist stress-tester the skill always
   includes. When a decision lacks strong evidence, the skill asks this agent to reframe the issue in plain language
   before escalating to you.
@@ -483,7 +485,7 @@ URL: https://ieeexplore.ieee.org/document/1204375
   introduces a new integration, changes a context-map relationship, or shifts data ownership. Both architects are
   engaged when the feature has both dimensions.
 - [multi-agent-economics.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md).
-  Why this skill uses a team of specialists coordinated by a PM rather than a single large agent trying to cover every
+  Why this skill uses a team of specialists rather than a single large agent trying to cover every
   domain.
 - [skill-decomposition.md](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-decomposition.md).
   Why this skill owns the "build the implementation plan" slice and hands off to sibling skills.

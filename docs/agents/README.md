@@ -2,7 +2,8 @@
 
 Every agent in the Han suite, alphabetized. Each entry is a short scent line and a link to the agent's canonical
 long-form doc, which now lives inside the plugin that owns it (`han-core`, except the readability-editor in
-`han-communication` and the research-analyst in `han-research`). Most agents are dispatched for you by skills; you
+`han-communication`, the research-analyst in `han-research`, and the discussion-facilitator in `han-planning`). Most
+agents are dispatched for you by skills; you
 rarely invoke them directly. For how the skills
 that dispatch them chain together, see [Workflows](../workflows.md).
 
@@ -13,7 +14,8 @@ that dispatch them chain together, see [Workflows](../workflows.md).
 
 Read [Concepts](../concepts.md) for the skill-and-agent model before browsing this list. To dispatch one directly, use
 the `Agent` tool with `subagent_type: {plugin}:{agent-name}` (the plugin is `han-core` for all but the readability-editor,
-which is `han-communication`, and the research-analyst, which is `han-research`).
+which is `han-communication`, the research-analyst, which is `han-research`, and the discussion-facilitator, which is
+`han-planning`).
 
 ## Agents
 
@@ -33,6 +35,8 @@ which is `han-communication`, and the research-analyst, which is `han-research`)
   under-normalized, and indexed for the wrong workload, and audit schemas, migrations, queries, and pipelines.
 - [`devops-engineer`](../../han-core/docs/agents/devops-engineer.md) — Assume the code will break in production and audit
   it against DORA, Twelve-Factor, the Four Golden Signals, SLO discipline, and named production failure modes.
+- [`discussion-facilitator`](../../han-planning/docs/agents/discussion-facilitator.md) — Audit a planning discussion in
+  progress: run the round-robin, grade every claim against evidence, and log what the team has not answered yet.
 - [`edge-case-explorer`](../../han-core/docs/agents/edge-case-explorer.md) — Systematically discover and catalog edge
   cases: boundary values, type-coercion traps, and state-dependent failures.
 - [`evidence-based-investigator`](../../han-core/docs/agents/evidence-based-investigator.md) — Gather concrete evidence
@@ -46,8 +50,8 @@ which is `han-communication`, and the research-analyst, which is `han-research`)
 - [`on-call-engineer`](../../han-core/docs/agents/on-call-engineer.md) — Read application source for the code-level
   resilience anti-patterns that wake on-call engineers at 3am; a hard boundary against `devops-engineer`, reading source
   only.
-- [`project-manager`](../../han-core/docs/agents/project-manager.md) — Facilitate multi-specialist discussions, enforce
-  evidence-based claims, and synthesize final plans.
+- [`plan-synthesizer`](../../han-core/docs/agents/plan-synthesizer.md) — Reconcile the input from every specialist who
+  contributed into a final plan the team can commit to, with decisions, rejected alternatives, and evidence.
 - [`project-scanner`](../../han-core/docs/agents/project-scanner.md) — Scan repository attributes (languages, frameworks,
   tooling, configuration), optimized for config and structure rather than deep code tracing.
 - [`readability-editor`](../../han-communication/docs/agents/readability-editor.md) — Rewrite a finished draft for a

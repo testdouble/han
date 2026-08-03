@@ -64,7 +64,7 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   numbered sequence of vertical-slice build phases, each independently demoable to a real person and each building on
   the prior.
 - [`/plan-implementation`](../../han-planning/docs/skills/plan-implementation.md) — Turn a feature specification into an
-  implementation plan through a project-manager-led team conversation.
+  implementation plan through a facilitated team conversation.
 - [`/plan-work-items`](../../han-planning/docs/skills/plan-work-items.md) — Divide a trusted implementation plan into
   independently-grabbable, atomic work items in a single work-items file.
 - [`/post-code-review-to-pr`](../../han-github/docs/skills/post-code-review-to-pr.md) — Run `/code-review` against a

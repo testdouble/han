@@ -26,7 +26,7 @@ skills cite codebase evidence.
 - A companion `artifacts/team-findings.md` with one `F#` entry per finding the review team raised. The `D#` and `F#` IDs
   cross-reference each other and the spec, so every commitment in the spec traces back to the evidence that drove it.
 - A `feature-implementation-plan.md` that describes how to build the feature, written through the same
-  project-manager-led team conversation.
+  facilitated team conversation.
 - A `work-items.md` with one entry per independently grabbable piece of work.
 
 **For larger features only:**
@@ -100,8 +100,8 @@ going or stop for the day.
 
    > `/plan-implementation {slice spec file}`
 
-   The skill runs a project-manager-led team conversation among specialist sub-agents to produce a
-   `feature-implementation-plan.md` next to the spec. Walk through any open items the project-manager surfaces and
+   The skill runs a facilitated team conversation among specialist sub-agents to produce a
+   `feature-implementation-plan.md` next to the spec. Walk through any open items the plan-synthesizer surfaces and
    decide.
 
 2. **Iterate on the implementation plan.** Run `/iterative-plan-review` again, this time against the implementation
