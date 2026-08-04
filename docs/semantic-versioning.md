@@ -100,8 +100,9 @@ installs its **bundled** children (`han-core`, `han-coding`, `han-github`, `han-
 Not every child is bundled. `han-feedback` ships in the same marketplace and depends on `han-core`, but the parent
 deliberately does not depend on it, so it is opt-in and installed on its own.
 
-Each plugin carries its own independent version line, and the git tag for a release tracks the **parent** version (the
-release `vX.Y.Z` is the parent `han` version).
+Each plugin carries its own independent version line, and each one gets its own git tag on every release, named
+`{plugin-name}--v{version}`. The GitHub release attaches to the parent's tag, so the release `han--vX.Y.Z` is the parent
+`han` version.
 
 Three rules govern how a release versions the suite:
 
@@ -142,18 +143,37 @@ A branch adds one new skill to `han-github` and fixes a typo in a `han-core` pro
 | `han-feedback`  | None              | **v1.0.0**  | Unchanged, no bump.                                                 |
 | `han` (parent)  | Suite release     | **v3.1.0**  | Always bumps; highest child level is minor, so the parent is minor. |
 
-The release is tagged `v3.1.0` (the parent version). The changelog records each changed plugin under its own sub-heading
-with its new version.
+The release tags every plugin at its own version, so this one creates `han--v3.1.0`, `han-github--v1.1.0`,
+`han-core--v1.0.1`, `han-reporting--v1.0.0`, and `han-feedback--v1.0.0`. The unchanged children are still tagged,
+because a version is installable only when a tag names it. The GitHub release attaches to `han--v3.1.0`. The changelog
+records each changed plugin under its own sub-heading with its new version, under a `## v3.1.0` heading that keeps the
+plain form.
 
-### A note on per-plugin tags and version constraints
+### Per-plugin tags and version constraints
 
 Claude Code resolves a _version-constrained_ dependency (a `dependencies` entry that pins a semver range, like
-`{ "name": "han-core", "version": "~2.1.0" }`) using per-plugin git tags. These tags are named
-`{plugin-name}--v{version}`, for example `han-core--v2.1.0`. The `claude plugin tag --push` command creates these. Han
-does **not** need them today. Every dependency in `han`'s and `han-feedback`'s `plugin.json` is a bare string with no
-version range, so dependencies float to whatever the marketplace serves. The single suite tag `vX.Y.Z` is sufficient. If
-a future `han-*` plugin ever pins a dependency to a version range, the matching `{plugin-name}--v{version}` tags become
-required for resolution. See the [Plugin Dependencies docs](https://code.claude.com/docs/en/plugin-dependencies).
+`{ "name": "han-core", "version": "~2.1.0" }`) using per-plugin git tags named `{plugin-name}--v{version}`, for example
+`han-core--v2.1.0`. The `claude plugin tag --push` command creates them, and `/han-release` runs it once per plugin.
+
+**Han uses this naming from `han--v5.0.0` onward.** Every release tags every plugin in the marketplace, including
+plugins whose version did not change, because a version is installable only while a tag names it. The GitHub release
+attaches to the parent's tag.
+
+No Han plugin pins a dependency to a version range today: every `dependencies` entry is a bare string, so dependencies
+still float to whatever the marketplace serves. The tags are what make pinning possible when a plugin wants it, and they
+have to exist before anything can resolve against them.
+
+Releases `v2.1.0` through `v4.6.0` predate this and keep their single-tag `vX.Y.Z` naming. Those tags are not renamed,
+duplicated, or removed; each one is what a published GitHub release attaches to. Only the naming for **new** releases
+changed.
+
+Two strings that look alike and are not the same thing:
+
+- The **tag** is `han--v5.0.0`. It is a git ref, and it is what a version constraint resolves against.
+- The **changelog heading** and the **release title** stay `v5.0.0`. They are labels a person reads, and the changelog
+  anchor is computed from the heading, so every link into a past release section keeps working.
+
+See the [Plugin Dependencies docs](https://code.claude.com/docs/en/plugin-dependencies).
 
 ## Summary Checklist
 

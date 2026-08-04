@@ -2,7 +2,11 @@
 
 `CHANGELOG.md` lives at the repository root. The title line is `# Han Release Notes`. Each version is a top-level
 section that starts with `## v{parent target}` (newest first, directly under the title), where `parent target` is the
-version of the parent `han` plugin (the version the git tag tracks).
+version of the parent `han` plugin.
+
+The heading keeps the plain `v{parent target}` form and always has. The release's git tag is
+`{parent plugin name}--v{parent target}`, which is a different string on purpose: the heading is a label a person reads
+and the anchor is computed from it, so changing it would break every link into every past release section.
 
 ## Per-plugin structure (from v3.0.0 onward)
 
@@ -72,8 +76,19 @@ under `## v{X.Y.Z}`). Leave those historical sections exactly as they are.
 Decide by whether a `## v{parent target}` section already exists:
 
 - **Section exists — augment, do not rewrite.** The curated prose is the source of truth. Leave every existing line of
-  that section untouched. Append a single new bookkeeping subsection (see "Generated bookkeeping subsection" below) as
-  the **last** `###` subsection of that version's section, immediately before the next `## v` heading (or end of file).
+  the narrative untouched. Append the generated bookkeeping subsections (see "Generated bookkeeping subsections" below)
+  as the **last** `###` subsections of that version's section, immediately before the next `## v` heading (or end of
+  file).
+
+  **A generated bookkeeping subsection that is already there is replaced, not appended beside.** If
+  `### Pull requests in this release`, `### Commits in this release`, or `### Issues closed in this release` already
+  exists under this version's heading, overwrite that subsection in place. Only the generated subsections are
+  replaceable; the narrative never is.
+
+  This matters because a re-run is ordinary rather than rare. The tag-approval gate sits after the release commit, so
+  declining it and running again later is a normal path, and the second run meets its own changelog section. Without
+  this rule that run appends a second copy of a subsection already present, and the release body assembled from the
+  section inherits the duplicate.
 
 - **Section missing — generate it, then append the subsection.** Dispatch one agent to write the narrative section
   (summary paragraph + per-plugin `### {plugin} v{version}` sub-headings + a release-level `### Deferred (YAGNI)`

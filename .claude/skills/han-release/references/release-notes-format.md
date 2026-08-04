@@ -2,8 +2,10 @@
 
 The release notes body is assembled deterministically: the release's summary paragraph leads (no heading), followed by a
 `## What's Changed` PR list, an `## Issues closed` section, the per-plugin `### {plugin} v{version}` narrative
-sub-headings, then the full-changelog links. The release is named for the parent `han` plugin's version, so the tag and
-the body title are both `v{parent target}`.
+sub-headings, then the full-changelog links. The release is named for the parent `han` plugin's version, so the body
+title is `v{parent target}`. The **tag** it attaches to is the parent's per-plugin tag,
+`{parent plugin name}--v{parent target}`. Those two are deliberately different: the title is display text a person
+reads, and the tag is a ref that has to match the naming Claude Code resolves plugin versions from.
 
 ## Body template
 
@@ -77,31 +79,45 @@ accounts. Mentions stay bare `@login` here, the same as the PR list.
 
 ## Full-changelog links
 
+Both links name a git ref, so both carry the parent's **tag**, not the plain version.
+
 **Blob link** points at the `CHANGELOG.md` section for this exact version, pinned to the tag:
 
 ```
-https://github.com/{owner}/{repo}/blob/v{parent target}/CHANGELOG.md#{anchor}
+https://github.com/{owner}/{repo}/blob/{parent plugin name}--v{parent target}/CHANGELOG.md#{anchor}
 ```
 
-Compute `{anchor}` from the heading text `v{parent target}`: lowercase it, then delete every character that is not
-`a-z`, `0-9`, or `-`. Dots are deleted. Examples: `v3.0.0` → `v300`; `v3.1.0` → `v310`; `v2.10.1` → `v2101`.
+Compute `{anchor}` from the changelog **heading** text, which stays `v{parent target}`: lowercase it, then delete every
+character that is not `a-z`, `0-9`, or `-`. Dots are deleted. Examples: `v3.0.0` → `v300`; `v3.1.0` → `v310`;
+`v2.10.1` → `v2101`. The anchor is computed from the heading and never from the tag, so every anchor in every
+already-published release stays valid.
 
 **Compare link** is GitHub's standard range link from the previous release tag to this one:
 
 ```
-https://github.com/{owner}/{repo}/compare/{prev tag}...v{parent target}
+https://github.com/{owner}/{repo}/compare/{prev}...{parent plugin name}--v{parent target}
 ```
 
-`{owner}/{repo}` comes from `gh repo view --json nameWithOwner`. `{prev tag}` is the previous released tag (for example
-`v2.7.0`). Omit the compare link entirely when there is no previous tag.
+`{owner}/{repo}` comes from `gh repo view --json nameWithOwner`. `{prev}` is the previous release's tag as Step 2
+resolved it, so on the transition release the two sides carry different namings (`v4.6.0...han--v5.0.0`). That is
+correct: a compare link takes any two refs. Omit the compare link entirely when there is no previous tag.
 
 ## Publish vs. draft, and idempotency
 
-- **Publish (default):** `gh release create v{parent target} --title "v{parent target}" --latest --notes-file {file}`.
-- **Draft (only when explicitly requested):** add `--draft`. Do not pass `--latest` with `--draft`.
+Every `gh release` call names the **tag**, `{parent plugin name}--v{parent target}`. Only `--title` carries the plain
+version.
+
+- **Publish (default):**
+  `gh release create {parent plugin name}--v{parent target} --verify-tag --title "v{parent target}" --latest --notes-file {file}`.
+- **Draft (only when explicitly requested):** add `--draft`. Do not pass `--latest` with `--draft`. The draft flag holds
+  back the release page only; the tags are already created and pushed by then, and none of them can be moved.
 - **Release already exists for the tag:** do not create a second one. Update it in place with
-  `gh release edit v{parent target} --notes-file {file}` (add `--draft=false` only if the operator asked to publish an
-  existing draft). Report that the release was updated rather than created.
+  `gh release edit {parent plugin name}--v{parent target} --notes-file {file}` (add `--draft=false` only if the operator
+  asked to publish an existing draft). Report that the release was updated rather than created.
+
+**`--verify-tag` is not optional.** Without it, `gh release create` silently creates a missing tag from the latest state
+of the default branch, minting a permanent tag at a commit nobody released. GitHub does not allow a published release's
+tag to be modified or deleted afterwards.
 
 Write the assembled body to a temp file with the Write tool and pass it via `--notes-file`. Do not build the body with
 shell `echo`/`printf`.
