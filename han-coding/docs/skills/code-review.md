@@ -154,7 +154,13 @@ Example prompts:
 
 ## What you get back
 
-A structured review in-channel. Each finding's prose appears exactly once (its finding block, or its full security
+A structured review written to a file, named `code-review-{slug}.md` for the branch, ticket, or scope it covers. It
+lands under the `output-directory` in your `.han/config.md` when you have set one, and beside the specialists' own
+reports when you have not. A report already sitting at that name is replaced, and the run tells you which one it
+replaced. When the resolved destination cannot be written, the run falls back and names the destination it could not
+use, rather than throwing away a finished review.
+
+Each finding's prose appears exactly once (its finding block, or its full security
 block; the summary-table row is an index, not a copy), and sections render only when they have content: a review of a
 small change produces a small document. The Review Summary table and the Review Recommendation are always present; every
 other section appears only when it has at least one item, and when several are present they keep a fixed order

@@ -8,7 +8,7 @@ description:
   code-overview for that. Does not capture feedback on Han''s own skills — use han-feedback for that.'
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [optional context about changes or areas to focus on]"
-allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Grep, Glob, Agent
+allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Agent
 ---
 
 When running a code review, follow the process outlined here.
@@ -425,6 +425,35 @@ intact. The descriptive-heading criterion does not apply to the report's prescri
 
 Apply the editor's rewrite to the review draft. If it reports it could not preserve a fact while satisfying a criterion,
 keep the fact.
+
+## Step 8.6: Write the Report File
+
+The review is a file, not a conversation message. Resolve where it goes, name it for what it covers, and write it.
+
+**Resolve the directory in this order:**
+
+1. **A configured `output-directory`.** When the config read at the top of this skill supplied one, write the report
+   beneath it. Relative-path resolution, `~` expansion, and precedence between the personal and project files are
+   governed by [config-rule.md](../../references/config-rule.md); do not re-derive them here.
+2. **No configured value.** Write it to the `{output_directory}` Step 3 already resolved for the specialists' reports,
+   BECAUSE splitting the report from the analysis it was built on makes a run's output harder to find, not easier.
+
+**Name the file `code-review-{slug}.md`**, where `{slug}` identifies what this run covered:
+
+- **The ticket**, when Step 1.5's branch context surfaced a ticket identifier the branch name does not already carry.
+- **The branch**, otherwise, in Mode A and Mode B.
+- **What was reviewed**, when the branch does not distinguish this run — a review against the default branch, or a Mode
+  C run with no branch at all. Use the single file, directory, or symbol when there is one, and the common parent of the
+  reviewed files when there is not. NEVER use a branch name that does not distinguish the run, BECAUSE a name that does
+  not say what a report covers is the collision this naming exists to remove.
+
+**When a report already exists at that name, replace it** and record that you did, plus the name you replaced, for Step
+10's message. Keeping both would leave two reports for one branch with nothing in their names to say which is current.
+Saying so is what protects someone still working the earlier report as a queue.
+
+**When the resolved directory cannot be written**, write to the fallback in 2 instead and record which destination you
+could not use, for the same message. NEVER abandon the run over this: the review is finished by the time it is written,
+and losing all of it to a missing directory is the worse outcome.
 
 ## Step 9: Verify Review Output
 

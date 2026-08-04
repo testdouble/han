@@ -49,8 +49,9 @@ Then verify:
    Critical-severity security finding yields a do-not-merge recommendation)
 10. Junior-developer findings that overlap with a specialist agent's finding reference the specialist finding instead of
     duplicating it
-11. The review output is the COMPLETE and FINAL response. Do not append a trailing summary, commentary, sign-off, or
-    follow-up message after the review. The structured review document IS the deliverable — nothing follows it.
+11. The report file is the COMPLETE deliverable. It carries no trailing commentary or sign-off, and no part of it is
+    pasted into the conversation. What the run says in the conversation is the short closing message Step 10 specifies,
+    and nothing else.
 12. The `### 🟡 YAGNI` section, when present, opens with the verbatim statement defined in Review Constraints, and YAGNI
     findings appear ONLY in this section — not duplicated under CRIT/WARN/SUGG and not in the Review Summary table.
 13. Any `Tension with {other-task-id}:` notes added by Step 9.0 appear on both members of each contradictory pair.
