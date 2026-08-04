@@ -40,6 +40,25 @@ exactly as written.
   concrete entry points (the specific files or components) the reader would open first, or it is not actionable.
 - **Chart scope labels.** Every flow chart carries a one-line label stating what it covers, and — when coverage is
   partial — what it leaves out. A chart must make sense to a reader who reads only the chart and its label.
+- **Diagram boxes name components and boundaries.** Each box names something the reader can point at: a component, a
+  system, a service, a boundary between two of them. Mobile, web, the GraphQL layer, the shared engine. Fields, types,
+  signatures, parameter lists, and technical annotations stay out of the boxes and go into the prose beneath the chart,
+  BECAUSE a chart is read at a glance and a box crowded with detail cannot be. Where a step the flow genuinely needs
+  cannot be named at that level, keep the step and move the detail about it to the prose. Legibility never removes a
+  step from the flow.
+
+  ```mermaid
+  %% not this — the boxes carry the detail
+  flowchart TD
+    A["RecalcJob.perform(account_id:, as_of: Date)"] --> B["PositionSnapshot#rebuild! (idempotent, upserts by account_id+date)"]
+  ```
+
+  ```mermaid
+  %% do this — the boxes name components, and the prose beneath carries the detail
+  flowchart TD
+    A[Recalculation job] --> B[Position snapshot store]
+  ```
+
 - **No quality judgment.** The document never raises findings, severities, or recommended changes. It explains; it does
   not review.
 - **Flow charts render as Mermaid** fenced code blocks (` ```mermaid `).

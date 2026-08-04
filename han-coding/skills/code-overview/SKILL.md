@@ -57,6 +57,11 @@ Read these before doing anything. They constrain every step below.
   required fact about the code appears. Its dedicated `han-communication:readability-editor` pass (Step 7) replaces the
   older information-architect / junior-developer readability review; the accuracy validator is a separate pass and
   stays.
+- **Diagram legibility is this skill's job, not the editor's.** The readability rewrite pass is barred from touching
+  diagram bodies, so nothing but this skill checks whether a chart can be read. Apply the template's diagram rule as
+  you draw each chart: boxes name components and boundaries, and fields, types, and technical annotations go into the
+  prose beneath. BECAUSE the exemption is right for accuracy — an editor free to reword a box could silently change
+  what the chart claims about the code — and the reading load it leaves behind has to land on someone.
 - **Read-only, always.** The skill explains; it never edits the target. It writes only its own scratch overview file.
   BECAUSE the job is understanding, not modification — this keeps the skill safe to point at unfamiliar code.
 - **Accurate to the code, always.** Every claim the overview makes — the why it states (grounded in commit and PR/issue
@@ -259,7 +264,8 @@ never invent or placeholder an image.
 
 Apply the per-section detail rule from the template: minimal technical detail in the why, flow, and context sections —
 the why told as a problem solved or goal met, not technical mechanics; concrete named entry points in the handoff
-section. Give every chart a scope label. When coverage is partial, place the coverage note immediately after the intro
+section. Give every chart a scope label, and apply the template's diagram rule to every chart you draw: each box names
+a component or a boundary, and the fields, types, and annotations go into the prose beneath the chart. When coverage is partial, place the coverage note immediately after the intro
 paragraph so the reader calibrates before investing in the charts.
 
 ## Step 6: Write the Scratch File

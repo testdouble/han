@@ -101,6 +101,11 @@ naming what is being examined (not a metadata block), then leads with the why an
   used_ → _Changes by intent_ (grouped by the outcome, the why, each group delivers) → _How the change flows_ (a Mermaid
   chart with a scope label) → _What to watch when reviewing_ (navigational only).
 
+Every chart is drawn to be read at a glance. Each box names a component or a boundary you can point at, and the fields,
+types, and technical annotations sit in the prose beneath the chart instead. A step the flow needs is never dropped to
+make the picture simpler; the step stays and its detail moves down. The skill owns this itself, because the readability
+pass described below is deliberately barred from editing chart bodies.
+
 The _Context used_ section, placed directly after the lead why section, lists every source the overview drew on. Each
 source with an address is a direct link (a repository file by path, a pull request, issue, or commit by URL), so you
 can walk the same evidence the overview was built from. A source with no address (an uncommitted diff, the branch's
