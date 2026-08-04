@@ -154,7 +154,13 @@ Example prompts:
 
 ## What you get back
 
-A structured review in-channel. Each finding's prose appears exactly once (its finding block, or its full security
+A structured review written to a file, named `code-review-{slug}.md` for the branch, ticket, or scope it covers. It
+lands under the `output-directory` in your `.han/config.md` when you have set one, and beside the specialists' own
+reports when you have not. A report already sitting at that name is replaced, and the run tells you which one it
+replaced. When the resolved destination cannot be written, the run falls back and names the destination it could not
+use, rather than throwing away a finished review.
+
+Each finding's prose appears exactly once (its finding block, or its full security
 block; the summary-table row is an index, not a copy), and sections render only when they have content: a review of a
 small change produces a small document. The Review Summary table and the Review Recommendation are always present; every
 other section appears only when it has at least one item, and when several are present they keep a fixed order
@@ -163,11 +169,20 @@ other section appears only when it has at least one item, and when several are p
 - **A Review Summary table** indexing every corrective finding and every security finding across categories (automated
   checks, correctness, testing, security, ADR/standard/docs compliance, documentation freshness), ordered by severity. A
   corrective finding's tier is carried by its task-ID prefix; a security finding shows its tier inline in the row (for
-  example, `SEC-001 (Critical)`) so the table stands alone as the complete severity index.
+  example, `SEC-001 (Critical)`) so the table stands alone as the complete severity index. Each row also carries the
+  finding's fix route, and a finding the review established may never fire says so in its row. Both cues are there so
+  you can triage a long list before opening any single finding. Row order, severities, and finding identifiers are
+  unchanged; the cues sit inside existing rows.
 - **Critical findings** (🔴). Each with task ID (`CRIT-001`, `CRIT-002`, …), `file_path:line_number`, the issue, and the
-  recommended fix. The `[Category]` label is kept on a block only when it names content a standalone reader needs (an
-  ADR violation naming the record, a standards violation naming the standard, or a security finding) and dropped for
-  generic categories the table already carries.
+  recommended fix. Each also opens with a plain-language explanation written for someone who will not open the file:
+  what they could observe going wrong, what has to be true for it to happen, and how likely that is, said outright when
+  the answer is that the finding may never fire. All three are answered, and an answer that is not in doubt takes a
+  clause rather than a sentence. The guidance for the person who will open the file follows it, unchanged. Each finding
+  then names how it gets fixed: test-first (`/tdd`) when a behavior is missing, restructure (`/refactor`) when the
+  behavior is right and the shape is wrong, or by hand when the edit is small. The route is named, never started. The
+  `[Category]` label is kept on a block only when it names content a standalone reader needs (an ADR violation naming
+  the record, a standards violation naming the standard, or a security finding) and dropped for generic categories the
+  table already carries.
 - **Warnings** (🟡). Same structure with task ID `WARN-NNN`.
 - **Suggestions** (🔵). Same structure with task ID `SUGG-NNN`.
 - **Agent findings.** Coverage gaps (`T#`), edge cases (`EC#`), security findings (`SEC-NNN`), structural findings
@@ -180,7 +195,8 @@ other section appears only when it has at least one item, and when several are p
   verbatim statement _"These findings will not be corrected unless explicitly requested. They are documented so the team
   can decide consciously whether to keep, simplify, or defer the items."_ Each finding is one line naming the failing
   evidence type, the matched anti-pattern, and a single reopen-trigger clause. YAGNI findings are advisory; they are not
-  counted under CRIT / WARN / SUGG, do not appear in the summary table, and do not block a clean review.
+  counted under CRIT / WARN / SUGG, do not appear in the summary table, and do not block a clean review. They carry no
+  plain-language explanation either, because that reopen trigger already answers what the explanation would say.
 - **Security vulnerabilities** (🔐). One full `SEC-NNN` block per proven vulnerability (OWASP category, location,
   evidence, `EXPLOIT:` path, and severity), followed by a single short **Remediation** note that references the
   `SEC-NNN` IDs and states the actionable fix in one or two sentences. Security findings are not cross-referenced into
@@ -318,13 +334,34 @@ readability pass inserted between Steps 8 and 9):
    8.5. **Rewrite the finding prose for readability.** Dispatch `readability-editor` over the assembled review so its prose
    meets the shared readability standard, with every task ID, severity, `file_path:line_number` reference, and code excerpt
    preserved.
+   8.6. **Write the report file.** Resolve the directory (a configured `output-directory`, else the specialists' report
+   directory) and the file name (the branch, the ticket, or what was reviewed), then write it. A report already at that
+   name is replaced and recorded; an unwritable destination falls back and is recorded.
 9. **Verify.** Step 9.0 runs the self-consistency check (extract
    `{task-id, file-path, line-range, recommended-action-summary}` tuples, then compare overlapping pairs and demote
    contradictory recommendations with a `Tension with {other-task-id}:` note). Step 9.1 then verifies task IDs are
    sequential, `file_path:line_number` references are valid, exploit fields are populated for security findings, the
    summary table indexes every corrective and security finding (with security tiers shown inline) and matches the
    sections present, no section is rendered empty, security findings carry no Critical cross-reference while the
-   recommendation still reflects their severity, and the YAGNI section's verbatim opening is preserved.
+   recommendation still reflects their severity, and the YAGNI section's verbatim opening is preserved. The same step
+   confirms the newer content arrived: every finding you are expected to act on carries its plain-language explanation,
+   every corrective one names a fix route, and a finding that may never fire says so both in its own explanation and in
+   its summary row. Anything missing is fixed before the review reaches you, not reported to you as a caveat.
+10. **Present.** A short message that leads with the recommendation and the counts by severity, then the path, then the
+    run's own facts. The review is never pasted into the conversation.
+
+## What the run says when it finishes
+
+A short message, in a fixed order, so the answer is the first thing you read:
+
+1. The recommendation, in the report's own words.
+2. The counts by severity, with any advisory count named separately rather than folded into the total.
+3. The path to the report, plus any report it replaced and any destination it could not write to.
+4. The run's own facts last: the size band and why, and the validator reconciliation.
+
+A clean review says the code can be approved and gives you the path. A review whose only findings are advisory still
+recommends approval, says the count needing action is zero, and names the advisory count beside it, so you are never
+told "no findings" about a report whose body lists items.
 
 ## YAGNI
 

@@ -48,8 +48,15 @@ bolted on afterward.
   "Analysis"), so a reader scanning headings can navigate.
 - **Short, active sentences.** Sentences are short (roughly fifteen to twenty words on average) and active by default.
   Few run past twenty-five to thirty words.
-- **Common words.** Prefer the common word over the technical synonym. Define a term on first use when it cannot be
-  replaced.
+- **Common words, and a half-sentence explanation for a term the reader cannot look up.** Prefer the common word over
+  the technical synonym. Where a term cannot be replaced, explain it in half a sentence at first use. Three kinds always
+  need it, BECAUSE the reader has nowhere to resolve them from the material the document describes:
+  - **Outside technologies and language runtimes** — a product, library, service, or runtime the document names but
+    never says what it is.
+  - **Named statistical or numerical methods** — a method carrying a person's name or a field's term of art.
+  - **Compound nouns the document coins for its own convenience** — a phrase this document invented to save itself
+    words. These matter most of the three: a reader can search for the other two and find an answer, and a coined term
+    exists nowhere but here.
 - **No blocklisted words.** Apply the vocabulary blocklist (below) for word-level rules.
 - **Numbered lists for steps, bullets for the rest.** Number anything sequential; bullet anything that is not.
 - **Progressive disclosure.** Reveal the core first and detail in layers. The reader meets the essential idea before the
@@ -115,7 +122,8 @@ presented.
 2. **Descriptive headings** — each heading names its content and is not a generic label.
 3. **One idea per paragraph** — each paragraph carries one idea and leads with it.
 4. **Sentence length** — no sentence runs past the soft length flag (about thirty words) without reason.
-5. **No blocklisted word** — no word from the vocabulary blocklist is present.
+5. **Common words, no blocklisted word** — no word from the vocabulary blocklist is present, and every term the reader
+   cannot look up carries its half-sentence explanation at first use.
 6. **Every fact preserved** — every claim, quantity, named entity, and stated condition or qualifier in the draft
    survives with its precision intact.
 

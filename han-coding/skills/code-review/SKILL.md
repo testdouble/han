@@ -8,7 +8,7 @@ description:
   code-overview for that. Does not capture feedback on Han''s own skills — use han-feedback for that.'
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [optional context about changes or areas to focus on]"
-allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Grep, Glob, Agent
+allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Agent
 ---
 
 When running a code review, follow the process outlined here.
@@ -354,31 +354,9 @@ Extract the items from the Findings sections of each file that was read.
 
 ### Step 7.2: Apply the reachability phrase-match demotion gate
 
-For each finding read at Step 7.1, scan the rationale text (the agent's own explanation of why the finding matters) for
-any of these reachability phrases:
-
-- `theoretical`
-- `hypothetical`
-- `defense-in-depth`
-- `effectively impossible`
-- `in case the upstream`
-- `could happen`
-- `should never happen`
-- `edge case that does not occur`
-
-When a finding's rationale contains any of these phrases, the agent itself signaled that the failure mode is not
-reachable in production. Demote the finding by one severity: CRIT becomes WARN, WARN becomes SUGG, SUGG is omitted
-entirely. Apply the demotion exactly once per finding regardless of how many phrases match.
-
-This gate is the merged form of the reachability and "directly introduced" filters; the size-aware rubric in Step 7.3 is
-the single later pass and does not re-demote on these phrases. The phrase list is the only signal the gate uses; do not
-infer reachability from other text. The gate is a cheap, deterministic first pass and is brittle to paraphrase by
-design: a finding that hedges its own reachability without using one of the literal phrases (for example, "unlikely in
-practice", "would need an unusual sequence") slips through here. That paraphrased hedging is caught semantically by the
-independent validation in Step 7.4, not by expanding this list.
-
-Security findings (SEC-series) are exempt from this gate because the security agent's evidence standard already requires
-a demonstrated exploit path or CVE reference before any finding is raised.
+Specified in [finding-filters.md](./references/finding-filters.md). It scans each finding's rationale for a fixed list of
+reachability phrases and demotes one severity on a match, exempting security findings. Keep the reasoning behind each
+demotion: Step 8 publishes it as that finding's preconditions and likelihood.
 
 ### Step 7.3: Classify with the size-aware rubric
 
@@ -397,65 +375,24 @@ counted toward the cap):
 
 ### Step 7.4: Validate the finding list (independent adversarial pass)
 
-The specialist agents and the manual passes each filter findings on the findings' own wording. This sub-step is
-different: it dispatches one critic that re-attacks the **consolidated finding list against the code itself**, in fresh
-context, the way `investigate` validates a root cause and fix. It is the only pass that judges a finding by re-reading
-the change rather than by trusting the producing agent's rationale.
-
-**Run condition.** Run this sub-step whenever at least one corrective finding (CRIT / WARN / SUGG, manual or agent, plus
-any SEC-### finding) has survived to this point. **Skip it when there are zero corrective findings** — a clean review
-needs no validation. YAGNI findings are out of scope here: they are advisory and are never validated, demoted, or
-dropped by this pass.
-
-**Dispatch one `han-core:adversarial-validator`** via the `Agent` tool. Give it, in this order:
-
-1. **The change under review as primary material** — the diff from Step 1 (Mode A), or the changed file list with a note
-   that the files were read in full (Mode B / Mode C). The validator must judge against the code, not against the
-   finding text, so it does not anchor on what the producing agents concluded.
-2. **The complete corrective finding list**, with each finding's task ID, current severity, `file_path:line_number`, the
-   finding's claim, and the producing agent's rationale **verbatim**.
-3. **The `{size}` from Step 3.1 and the calibration directive from Step 3.3**, so it judges severity on the same scale
-   the rest of the review used.
-
-Pass this brief verbatim:
-
-> Treat every finding as wrong until the code proves it right. For each finding, return exactly one verdict —
-> **Confirmed**, **Partially Refuted**, or **Refuted** — and for anything other than Confirmed, cite concrete
-> counter-evidence at `file_path:line_number`. Challenge specifically: (a) findings that misread the change's intent or
-> the surrounding code; (b) findings that target pre-existing code this change did not introduce or worsen, unless the
-> issue is critical irrespective of who introduced it; (c) findings whose rationale hedges its own reachability in
-> paraphrase ("unlikely in practice", "would need an unusual sequence", "only under a race we don't see") that the
-> literal-phrase gate did not catch; (d) severity that overstates impact, where the true worst case is "an operator sees
-> an error and retries". Do not invent new findings — you are validating the list, not extending it.
-
-**Reconcile the verdicts (orchestrator).** Apply each verdict to the finding:
-
-- **Confirmed** → keep the finding at its current severity.
-- **Partially Refuted** (real but mis-severitied or partly wrong) → demote one severity (CRIT → WARN → SUGG; a SUGG
-  stays SUGG). Append the validator's one-line counter-point to the finding body.
-- **Refuted** → drop the finding, **but only when the validator supplied concrete counter-evidence** (a
-  `file_path:line_number` showing the code does not do what the finding claims, or that the finding targets unchanged
-  pre-existing code). A refutation that asserts without counter-evidence does **not** drop the finding; demote it one
-  severity instead.
-- **Security findings (SEC-###)** → the validator may challenge the exploit path, but a SEC finding is dropped only when
-  the validator refutes the demonstrated exploit with concrete counter-evidence. Otherwise it stands at its original
-  severity; the security evidence bar is already higher.
-
-**Overcorrection guard.** This pass exists to remove findings the code disproves, not to quiet the review. Never drop a
-finding on assertion alone — counter-evidence at `file_path:line_number` is required for every drop. When the validator
-is uncertain, the finding stays. Suppressing a real finding is more costly here than carrying one the human will reject.
-
-**Record the reconciliation.** Keep a single orchestrator-log line: how many findings were Confirmed, demoted, and
-dropped, plus the dropped task IDs and the counter-evidence reference for each. This makes the pass auditable; it does
-not add a section to the review output.
-
-This pass is a finding **filter, not a finding source** — the validator never contributes findings of its own, so Step
-9's verification (which forbids findings from agents not dispatched in Step 3) is unaffected.
+Specified in [finding-filters.md](./references/finding-filters.md). It dispatches one `han-core:adversarial-validator`
+over the consolidated corrective finding list and the change itself, then reconciles the verdicts. It runs whenever at
+least one corrective finding survives and is skipped entirely when none does. It is a finding filter, never a finding
+source, so Step 9's rule against findings from undispatched agents is unaffected.
 
 ## Step 8: Generate Review Output
 
-Before writing the output, invoke `han-communication:readability-guidance` to surface the shared readability standard
-into your context, then draft the finding prose and narrative against it. Use the template at
+Before writing the output, invoke `han-communication:readability-guidance` to surface the shared readability standard,
+then invoke `han-communication:explanation-guidance` to surface Han's standard for explaining technical work to a reader
+who will not implement it. Both run inline and hand control straight back; continue with this step as soon as they
+return. Draft the finding prose and narrative against both.
+
+**Every CRIT, WARN, SUGG, and SEC finding opens with a plain-language explanation** written for the reader who will not
+open the file: what they could observe going wrong, what has to be true for it to happen, and how likely that is. Apply
+[finding-content.md](./references/finding-content.md) for which findings carry it, what it answers, where the answers
+come from, and why working them out NEVER changes a finding's severity, task ID, or position. **Every CRIT, WARN, and
+SUGG finding also names how it gets fixed** — test-first, restructure, or by hand — chosen by the rule in that same
+file. Name the route; never start it. Use the template at
 [template.md](./references/template.md) for the output structure. **Render a section only when it has content** — never
 emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are
 always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,
@@ -480,16 +417,74 @@ own canonical rule, so pass no rule path.
 Constrain the rewrite tightly. The editor rewrites **prose only** — the sentences inside finding bodies, the Remediation
 note, the narrative in the What's Good and Review Recommendation sections. It must leave every structural token
 byte-for-byte: task IDs (`CRIT-001`, `SEC-001`, and the rest), severity labels, `file_path:line_number` references,
-`EXPLOIT:` fields, category labels, the fixed section headings and their order, the Review Summary table structure and
-its cells, any `Tension with …` pointer, and every code snippet or fenced block. It preserves every fact: each finding's
+`EXPLOIT:` fields, category labels, the `**Fix:**` label and the route name that follows it, the fixed section headings
+and their order, the Review Summary table structure and its cells, any `Tension with …` pointer, and every code snippet
+or fenced block. It preserves every fact: each finding's
 recommended action, its severity, its location, its quantities, and its named entities survive with their precision
 intact. The descriptive-heading criterion does not apply to the report's prescribed section headings, which are fixed.
 
 Apply the editor's rewrite to the review draft. If it reports it could not preserve a fact while satisfying a criterion,
 keep the fact.
 
+## Step 8.6: Write the Report File
+
+The review is a file, not a conversation message. Resolve where it goes, name it for what it covers, and write it.
+
+**Resolve the directory in this order:**
+
+1. **A configured `output-directory`.** When the config read at the top of this skill supplied one, write the report
+   beneath it. Relative-path resolution, `~` expansion, and precedence between the personal and project files are
+   governed by [config-rule.md](../../references/config-rule.md); do not re-derive them here.
+2. **No configured value.** Write it to the `{output_directory}` Step 3 already resolved for the specialists' reports,
+   BECAUSE splitting the report from the analysis it was built on makes a run's output harder to find, not easier.
+
+**Name the file `code-review-{slug}.md`**, where `{slug}` identifies what this run covered:
+
+- **The ticket**, when Step 1.5's branch context surfaced a ticket identifier the branch name does not already carry.
+- **The branch**, otherwise, in Mode A and Mode B.
+- **What was reviewed**, when the branch does not distinguish this run — a review against the default branch, or a Mode
+  C run with no branch at all. Use the single file, directory, or symbol when there is one, and the common parent of the
+  reviewed files when there is not. NEVER use a branch name that does not distinguish the run, BECAUSE a name that does
+  not say what a report covers is the collision this naming exists to remove.
+
+**When a report already exists at that name, replace it** and record that you did, plus the name you replaced, for Step
+10's message. Keeping both would leave two reports for one branch with nothing in their names to say which is current.
+Saying so is what protects someone still working the earlier report as a queue.
+
+**When the resolved directory cannot be written**, write to the fallback in 2 instead and record which destination you
+could not use, for the same message. NEVER abandon the run over this: the review is finished by the time it is written,
+and losing all of it to a missing directory is the worse outcome.
+
 ## Step 9: Verify Review Output
 
 Run the checks in [output-verification.md](./references/output-verification.md) before presenting the review: the
 self-consistency pass that demotes and annotates contradictory recommendations on overlapping code, then the
-structural verification items over the finished document.
+structural verification items over the finished document. Fix every failure in the report file; a failed check is never
+reported alongside the review as a caveat.
+
+## Step 10: Present
+
+Close with a short message in this fixed order. The answer leads and the run's own bookkeeping comes last, BECAUSE this
+message is the first thing the person reads and how the run was conducted is the last thing they need from it. Write it
+in the register `han-communication:explanation-guidance` surfaced at Step 8; it goes to someone who has not opened the
+report yet.
+
+1. **The recommendation**, in the words the report's own Review Recommendation uses.
+2. **The counts by severity** — critical, warning, suggestion. Name any YAGNI count separately, never folded into the
+   total.
+3. **The path** to the report file. Name the report you replaced when Step 8.6 replaced one, and the destination you
+   could not use when it fell back.
+4. **The run's own facts, last:** the size band and why, and the validator reconciliation line. Or nothing at all.
+
+**NEVER paste the review into the conversation.** The report is the deliverable and it is a file. Pasting it is what
+made the one fact a person needed after a review, the path, unfindable inside a message long enough to hold everything
+else.
+
+Two states this message has to get right:
+
+- **Nothing found.** Say the code can be approved and give the path. No explanations were written, because there are no
+  findings to explain.
+- **Only advisory findings.** Still recommend approval, BECAUSE the YAGNI class is non-correcting by construction and
+  never blocks a merge. Say the count needing action is zero and name the advisory count beside it, so nobody is told
+  "no findings" about a report whose body lists items. The advisory pass runs on every change regardless of size, so
+  this is an ordinary state, not an exotic one.

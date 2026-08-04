@@ -38,7 +38,9 @@ Then verify:
 4. Deferred tests note is present if the han-core:test-engineer produced skipped items
 5. The Review Summary table includes every corrective finding (CRIT/WARN/SUGG) and every security finding, and matches
    the sections that are present. YAGNI findings are excluded from the table (see rule 12). For findings whose block
-   omits the category, the table is the only place that category appears.
+   omits the category, the table is the only place that category appears. Every CRIT/WARN/SUGG row carries its fix route
+   in the `Fix` column and every security row carries `—` there; any finding the review established may never fire opens
+   its Description cell with that cue.
 6. All `file_path:line_number` references point to real files from the file list determined in Step 1
 7. SEC-### IDs are sequential starting at SEC-001
 8. Every SEC-### finding has an `EXPLOIT:` field populated
@@ -47,8 +49,9 @@ Then verify:
    Critical-severity security finding yields a do-not-merge recommendation)
 10. Junior-developer findings that overlap with a specialist agent's finding reference the specialist finding instead of
     duplicating it
-11. The review output is the COMPLETE and FINAL response. Do not append a trailing summary, commentary, sign-off, or
-    follow-up message after the review. The structured review document IS the deliverable — nothing follows it.
+11. The report file is the COMPLETE deliverable. It carries no trailing commentary or sign-off, and no part of it is
+    pasted into the conversation. What the run says in the conversation is the short closing message Step 10 specifies,
+    and nothing else.
 12. The `### 🟡 YAGNI` section, when present, opens with the verbatim statement defined in Review Constraints, and YAGNI
     findings appear ONLY in this section — not duplicated under CRIT/WARN/SUGG and not in the Review Summary table.
 13. Any `Tension with {other-task-id}:` notes added by Step 9.0 appear on both members of each contradictory pair.
@@ -64,6 +67,15 @@ Then verify:
     Security Vulnerabilities section nor the Remediation note is rendered.
 18. The `### ✅ What's Good` section is rendered only when a specific, substantive positive exists; it is omitted
     entirely rather than filled with generic praise.
+19. Every CRIT / WARN / SUGG block opens with its plain-language explanation, and every SEC block carries its
+    `What this means` line. YAGNI findings carry neither, because their reopen trigger already answers it.
+20. Every CRIT / WARN / SUGG block names a fix route. SEC blocks name none, since the single Remediation note carries
+    it.
+21. A finding the review established may never fire carries that cue in two places and they agree: leading its own
+    explanation, and opening its summary row's Description cell.
+
+Every item in this list is fixed before the review is presented, never reported alongside it as a caveat. A required
+piece of content that is missing is missing; saying so in the message does not put it in the report.
 
 ### Step 9.2: Readability self-check
 

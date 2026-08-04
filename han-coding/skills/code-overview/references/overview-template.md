@@ -1,6 +1,6 @@
 # Overview Document Template
 
-The skill renders one of the two structures below into the scratch file. Both modes share the same grammar — a header,
+The skill renders one of the two structures below into the overview file. Both modes share the same grammar — a header,
 an optional coverage note, a content-bearing lead section, a grouped/flow body, and an actionable handoff — so a reader
 who learns one mode can scan the other. Fill the placeholders, remove the guidance comments, and keep the section order
 exactly as written.
@@ -40,6 +40,25 @@ exactly as written.
   concrete entry points (the specific files or components) the reader would open first, or it is not actionable.
 - **Chart scope labels.** Every flow chart carries a one-line label stating what it covers, and — when coverage is
   partial — what it leaves out. A chart must make sense to a reader who reads only the chart and its label.
+- **Diagram boxes name components and boundaries.** Each box names something the reader can point at: a component, a
+  system, a service, a boundary between two of them. Mobile, web, the GraphQL layer, the shared engine. Fields, types,
+  signatures, parameter lists, and technical annotations stay out of the boxes and go into the prose beneath the chart,
+  BECAUSE a chart is read at a glance and a box crowded with detail cannot be. Where a step the flow genuinely needs
+  cannot be named at that level, keep the step and move the detail about it to the prose. Legibility never removes a
+  step from the flow.
+
+  ```mermaid
+  %% not this — the boxes carry the detail
+  flowchart TD
+    A["RecalcJob.perform(account_id:, as_of: Date)"] --> B["PositionSnapshot#rebuild! (idempotent, upserts by account_id+date)"]
+  ```
+
+  ```mermaid
+  %% do this — the boxes name components, and the prose beneath carries the detail
+  flowchart TD
+    A[Recalculation job] --> B[Position snapshot store]
+  ```
+
 - **No quality judgment.** The document never raises findings, severities, or recommended changes. It explains; it does
   not review.
 - **Flow charts render as Mermaid** fenced code blocks (` ```mermaid `).
@@ -100,8 +119,31 @@ above.}
 
 ## Where to start
 
-{The concrete entry points — the specific files or components — the reader would open first to begin working, with one
-line each on what each is for.}
+<!-- Number the entry points in the order a reader should open them, first to last. Each carries one line on what the
+reader learns there — what they will understand after reading it, not what the file is. A set of the right files is not
+a path through them, and the reader asked for the path. Judge each entry point on its own: one that is an interface
+other code calls carries a single runnable example call, and one that is a step in a flow does not, BECAUSE an invented
+example call for a mid-flow file is noise. A target holding both an interface and the flow behind it gets the example
+on the interface entry only. -->
+
+1. **{file or component}** — {what the reader learns here}.
+2. **{file or component}** — {what the reader learns here}.
+
+<!-- Include this block only under an entry point that is an interface other code calls. One call, runnable as written,
+in the language or query syntax a caller would use. -->
+
+```{language}
+{one runnable example call against that interface}
+```
+
+## What this code does, in plain language
+
+<!-- Three or four sentences a person who did not do this work could read aloud. No file paths, no type names, no
+symbol names. Written to be lifted out of this document whole and pasted somewhere else — a pull request description,
+a message to a reviewer — BECAUSE that is reliably the reader's next move. These sentences are the canonical text: the
+run's closing message repeats them rather than writing a second version, so the two never drift apart. -->
+
+{Three or four plain sentences restating why this code exists and what it does.}
 
 ````
 
@@ -130,6 +172,25 @@ for the business or a user — the need that motivated it, as a solution to that
 need, not technical mechanics. Then, briefly, the bottom line of what it does. If
 the why can only be inferred from intent (commit messages, PR/issue text), say so
 rather than inventing one.}
+
+<!-- When you checked the stated reason against the code and found the code
+already satisfies it, or found the code does not support it, say so here, in one
+or two sentences, as a fact about the stated reason. Three states, and only the
+first one gets this sentence:
+
+1. Checked, and the code contradicts the stated reason → say so here.
+2. Checked, and the code supports the stated reason → say nothing extra.
+3. The code says nothing either way → this is the inferred-why case above. Mark
+   the reason as inferred and claim no discrepancy.
+
+This is a fact about the reason, never a finding about the code: raise no
+finding, assign no severity, recommend no change. NEVER report a contradiction
+you did not check and find, BECAUSE saying the code contradicts a reason is a
+stronger claim than saying the code is silent, and the weaker, honest claim
+already has a home in state 3. -->
+
+{One or two sentences on the stated reason the code does not support — only when
+state 1 above holds. Delete this block otherwise.}
 
 ## Context used
 
@@ -174,5 +235,14 @@ quality or risk judgment; that is code-review's job, not this skill's. -->
 
 {The concrete entry points — the specific files or components — where the change is densest or most interconnected, with
 one line each on why a reviewer should slow down there.}
+
+## What this change does, in plain language
+
+<!-- Three or four sentences a person who did not do this work could read aloud. No file paths, no type names, no
+symbol names. Written to be lifted out of this document whole and pasted somewhere else — a pull request description,
+a message to a reviewer — BECAUSE that is reliably the reader's next move. These sentences are the canonical text: the
+run's closing message repeats them rather than writing a second version, so the two never drift apart. -->
+
+{Three or four plain sentences restating why this change exists and what it does.}
 
 ````

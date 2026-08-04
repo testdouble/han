@@ -15,7 +15,8 @@ to use the skill. For what the skill does internally, read the skill definition 
   working on or reviewing it.
 - **When to use it.** You have landed in code you do not know, or a PR you are about to review, and you want a fast
   orientation before you start.
-- **What you get back.** A scratch overview file (written outside the repository) with a purpose statement, a linked
+- **What you get back.** An overview file (written where you configured Han's output to go, or outside the repository
+  when you configured nothing) with a purpose statement, a linked
   list of the context the overview drew on, Mermaid flow charts, the directly-related context, and where to start, all
   at minimal technical depth.
 
@@ -32,8 +33,10 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Two modes.** _Code mode_ explains a file, directory, or symbol as it is now: why it exists, then what it does. _PR
   mode_ explains a set of changes: why they exist, grouped by the intent each group serves, and how to look at the PR
   before reviewing it. The skill picks the mode from the target.
-- **Understand now, not document for later.** The overview is an ephemeral orientation aid written to a scratch file,
-  never committed into the repository's documentation tree. That is the line against `/project-documentation`.
+- **Understand now, not document for later.** The overview is an ephemeral orientation aid, and the skill never commits
+  it into the repository's documentation tree. That is the line against `/project-documentation`. It is why the file
+  lands outside the repository when you have configured nothing; a destination you configure yourself wins over that
+  default, wherever it points.
 - **No findings.** The overview raises no quality findings, severities, or recommended changes. Even the PR-mode "what
   to watch" section is navigational: it names where the change is hardest to follow, not whether it is any good. That is
   the line against `/code-review`.
@@ -87,19 +90,38 @@ Example prompts:
 
 ## What you get back
 
-A single Markdown overview file written to a scratch location **outside the repository** (for example under your system
-temp directory). The skill shows you the path; open it where the Mermaid charts render. The file is not committed and is
-not maintained; it is a point-in-time orientation aid.
+A single Markdown overview file. It lands under the `output-directory` in your `.han/config.md` when you have set one,
+and outside the repository (for example under your system temp directory) when you have not. A configured directory
+inside the repository is honored without comment, because you chose it. When the resolved destination cannot be written,
+the run falls back to the outside-the-repository default and tells you which destination it could not use, rather than
+throwing away work it has already finished.
+
+The skill shows you the path; open it where the Mermaid charts render. The file is not committed and is not maintained;
+it is a point-in-time orientation aid.
 
 The document follows one structure per mode, under a shared grammar. It opens with a title and a short intro paragraph
 naming what is being examined (not a metadata block), then leads with the why and lets every later section flow from it:
 
 - **Code mode:** _Why it exists_ (the problem solved or goal served, then briefly what it is) → _Context used_ (the
   sources the overview drew on) → _Main flow_ (a Mermaid chart with a scope label, read as how the code delivers on the
-  why) → _Context and uses_ → _Where to start_.
-- **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does) → _Context
+  why) → _Context and uses_ → _Where to start_ (the entry points numbered in the order to open them, each with what you
+  learn there, and a runnable example call on any entry point that is an interface other code calls) → _What this code
+  does, in plain language_.
+- **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does, plus a
+  sentence when the code turns out not to support that reason) → _Context
   used_ → _Changes by intent_ (grouped by the outcome, the why, each group delivers) → _How the change flows_ (a Mermaid
-  chart with a scope label) → _What to watch when reviewing_ (navigational only).
+  chart with a scope label) → _What to watch when reviewing_ (navigational only) → _What this change does, in plain
+  language_.
+
+Both modes end with three or four sentences you could read aloud, carrying no file paths and no type names. They are
+there to be lifted out and pasted into a pull request description or a message to a reviewer. The run's closing message
+repeats those exact sentences rather than writing its own version, so you can paste from the terminal without opening
+the file and never wonder which of two summaries is the real one.
+
+Every chart is drawn to be read at a glance. Each box names a component or a boundary you can point at, and the fields,
+types, and technical annotations sit in the prose beneath the chart instead. A step the flow needs is never dropped to
+make the picture simpler; the step stays and its detail moves down. The skill owns this itself, because the readability
+pass described below is deliberately barred from editing chart bodies.
 
 The _Context used_ section, placed directly after the lead why section, lists every source the overview drew on. Each
 source with an address is a direct link (a repository file by path, a pull request, issue, or commit by URL), so you
@@ -122,8 +144,18 @@ The readability pass runs next. `readability-editor` rewrites the corrected draf
 standard, preserving every fact, so the overview leads with its point and reads for someone who did not do the work.
 Accuracy settles first, so the editor never polishes a claim that is about to change.
 
+The skill then checks its own output before showing it to you: that every chart's boxes name components rather than
+carrying field and type detail, that the starting points are numbered in reading order with an example call where one is
+called for, that terms you could not look up carry their explanations, and that the closing restatement is there and free
+of file paths and type names. Anything that fails is fixed before you see it, not reported to you as a caveat.
+
 The validator checks the description against the code only to keep it truthful. It never judges the code's quality; the
 overview still raises no findings about the work itself.
+
+One thing a change overview will now tell you that it used to keep to itself: when the code shows that the stated reason
+for a change is already satisfied, or does not hold, the overview says so where it states that reason. It says it as a
+fact about the reason, with no finding, no severity, and no recommendation. It only says it when it checked and found
+that, so a reason the code is silent about is still marked as inferred rather than reported as contradicted.
 
 When the target is too large to cover fully at the chosen size, the overview adds a coverage note immediately after the
 header, naming what it did not cover and the next size up, so you know the picture is partial before you study the

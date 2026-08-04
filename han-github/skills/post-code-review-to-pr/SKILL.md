@@ -40,7 +40,11 @@ exists for the current branch and stop.
 ## Step 2: Run Code Review
 
 Invoke the `/code-review` skill to perform the full code review. Pass along any user-provided focus areas or context
-from the original arguments. After /code-review completes, proceed immediately to Step 3 — do not stop here.
+from the original arguments.
+
+`/code-review` writes its report to a file and names the path in its closing message; it does not print the review into
+the conversation. **Capture that path** — Step 3 reads the report from it. After /code-review completes, proceed
+immediately to Step 3 — do not stop here.
 
 ## Step 3: Offer to Post Review to GitHub
 
@@ -51,8 +55,8 @@ If the user accepts:
 
 1. Gather PR metadata by running `${CLAUDE_SKILL_DIR}/scripts/pr-metadata.sh`, which outputs JSON with `owner_repo`,
    `pr_number`, `head_sha`, `pr_author_login`, and `current_user_login`.
-2. Build the review body from: Review Summary table, Review Recommendation, and all findings organized by severity, plus
-   any optional sections that are present. Treat every section other than the Review Summary table and the Review
+2. Read the report file at the path captured in Step 2, then build the review body from it: Review Summary table, Review
+   Recommendation, and all findings organized by severity, plus any optional sections that are present. Treat every section other than the Review Summary table and the Review
    Recommendation as optional — the code-review skill renders a section only when it has content, so a section (the
    What's Good section, an absent severity section on a clean review, the Security Vulnerabilities section, the
    Remediation note) may simply not be there. Include each section when present and omit it without error or an empty

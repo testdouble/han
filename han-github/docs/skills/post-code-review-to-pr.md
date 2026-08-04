@@ -12,7 +12,7 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **What it does.** Runs [`/code-review`](../../../han-coding/docs/skills/code-review.md) against the current branch's GitHub PR and
   optionally posts the review to GitHub as a formal review or PR comment.
 - **When to use it.** You want the full code review _and_ you want it visible to the team on the PR.
-- **What you get back.** The full code-review output in-channel, posted to the PR when you confirm, plus an optional fix
+- **What you get back.** The full code-review report, posted to the PR when you confirm, plus an optional fix
   plan for Critical and Warning findings.
 
 ## Key concepts
@@ -71,10 +71,11 @@ Example prompts:
 
 A full review plus GitHub integration:
 
-- **The full `/code-review` output in-channel.** Review Summary table, Review Recommendation, and all findings organized
-  by severity, plus any optional sections (What's Good, Security Vulnerabilities, Remediation) that are present. The
-  code-review skill renders a section only when it has content, so the body builder treats every section other than the
-  table and the recommendation as optional. See the `/code-review` documentation for the detailed shape.
+- **The full `/code-review` report**, written to a file by that skill and read back from the path its closing message
+  names. Review Summary table, Review Recommendation, and all findings organized by severity, plus any optional sections
+  (What's Good, Security Vulnerabilities, Remediation) that are present. The code-review skill renders a section only
+  when it has content, so the body builder treats every section other than the table and the recommendation as optional.
+  See the `/code-review` documentation for the detailed shape.
 - **An offer to post to GitHub.** `AskUserQuestion` with "Yes, post to GitHub" / "No, just the local review."
 - **When accepted.** The skill gathers PR metadata (`owner/repo`, `pr_number`, `head_sha`, author login, current user
   login) and runs a `junior-developer` clarity pass on the draft review body. That pass flags unclear wording,
