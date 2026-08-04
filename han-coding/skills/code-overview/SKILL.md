@@ -74,7 +74,9 @@ Read these before doing anything. They constrain every step below.
 - **No quality judgment, ever.** The overview raises no findings, severities, or recommended changes — including in the
   PR-mode "what to watch" section, which is navigational only. BECAUSE reviewing a PR's quality is `code-review`'s job;
   this skill only helps the reader understand the PR before they review it. Crossing this line collapses the boundary
-  between the two skills.
+  between the two skills. Saying the code does not support a change's stated reason is not a crossing: the claim under
+  test there is the document's own leading claim about the reason, which this skill already owns and already validates,
+  not a judgment about the code's quality.
 - **No PR statistics, ever.** The overview never states lines changed, files changed, additions/deletions, commit
   counts, or any other diff-stat figure — not in the intro, not in a section, not anywhere. BECAUSE these numbers go
   stale the instant the PR is updated and add no understanding; describe what changed and why, never how big the diff
@@ -233,6 +235,21 @@ is not recoverable from the code and its intent (commit messages, PR/issue text,
 the code demonstrably does toward a goal and mark the inferred why as inferred — never invent a business rationale the
 evidence does not support.
 
+**Say when the code does not support the stated reason (PR mode).** You already read the code to ground the why. When
+that reading shows the code already satisfies the stated motivation, or shows the change is not needed for the reason
+given, say so in the why section itself, in one or two sentences, as a fact about the stated reason. Raise no finding,
+assign no severity, recommend no change; the rest of the overview proceeds as normal. Three states, and only the first
+gets the sentence:
+
+1. You checked and the code contradicts the stated reason. Say so.
+2. You checked and the code supports it. Say nothing extra.
+3. The code says nothing either way. That is the inferred-why case above: mark the reason as inferred and claim no
+   discrepancy.
+
+NEVER report a contradiction you did not check and find, BECAUSE that is a stronger claim than the evidence carries and
+the honest weaker claim already has a home in state 3. This is the highest-value sentence a change overview can carry,
+and it is also the easiest one to get wrong by reaching.
+
 **Code mode** renders, in order: the title and intro paragraph; a coverage note **only if** coverage was partial; **Why
 it exists** (the problem the code solves or goal it serves, then briefly what it is and why it works the way it does —
 all flowing from the why); **Context used** (the context ledger, rendered per the rules below); **Main flow** (a Mermaid
@@ -242,8 +259,9 @@ start** (the entry points numbered in the order a reader opens them, each with o
 and one runnable example call on any entry point that is an interface other code calls).
 
 **PR mode** renders, in order: the same title and intro paragraph; the same conditional coverage note; **Why this change
-exists** (the problem the change solves or goal it advances, then briefly the bottom line of what it does); **Context
-used** (the context ledger, rendered per the rules below); **Changes by intent** (grouped by the reader-visible outcome
+exists** (the problem the change solves or goal it advances, then briefly the bottom line of what it does, plus the
+unsupported-reason sentence when it applies — see below); **Context used** (the context ledger, rendered per the rules
+below); **Changes by intent** (grouped by the reader-visible outcome
 each group delivers — the why each group serves — not by file, layer, or author motivation; a single logical change is
 one narrative with no grouping header); **How the change flows** (a Mermaid chart with a scope label, placed after the
 grouped changes BECAUSE the reviewer must know what changed before that chart is meaningful); **What to watch when
@@ -288,7 +306,9 @@ and the resolved target (and, in PR mode, the changed-file set) so it knows what
   starting with the one the document leads on: is the stated **why** — the problem the code solves or the goal it serves
   — grounded in real evidence (commit messages, PR/issue intent, code comments, what the code visibly does toward that
   goal), or is it an invented business rationale, and where the why is inferred rather than stated, is it marked as
-  inferred; does the code actually do what _Why it exists_ / _Why this change exists_ says; does the **Main flow** /
+  inferred; does the code actually do what _Why it exists_ / _Why this change exists_ says; where the overview claims
+  the code already satisfies the stated reason or does not support it, does the code show that, or is the code merely
+  silent on the point — silence is not a contradiction, and a discrepancy claimed on silence is an inaccuracy to cut; does the **Main flow** /
   **How the change flows** chart match the real control flow, in the right order, with no invented or missing steps; do
   the named **Where to start** entry points exist and are they the right ones; does each **Changes by intent** grouping
   describe what that change actually does and the why it claims to serve; does every entry in **Context used** point at

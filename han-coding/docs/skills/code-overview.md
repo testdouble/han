@@ -98,7 +98,8 @@ naming what is being examined (not a metadata block), then leads with the why an
   sources the overview drew on) → _Main flow_ (a Mermaid chart with a scope label, read as how the code delivers on the
   why) → _Context and uses_ → _Where to start_ (the entry points numbered in the order to open them, each with what you
   learn there, and a runnable example call on any entry point that is an interface other code calls).
-- **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does) → _Context
+- **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does, plus a
+  sentence when the code turns out not to support that reason) → _Context
   used_ → _Changes by intent_ (grouped by the outcome, the why, each group delivers) → _How the change flows_ (a Mermaid
   chart with a scope label) → _What to watch when reviewing_ (navigational only).
 
@@ -130,6 +131,11 @@ Accuracy settles first, so the editor never polishes a claim that is about to ch
 
 The validator checks the description against the code only to keep it truthful. It never judges the code's quality; the
 overview still raises no findings about the work itself.
+
+One thing a change overview will now tell you that it used to keep to itself: when the code shows that the stated reason
+for a change is already satisfied, or does not hold, the overview says so where it states that reason. It says it as a
+fact about the reason, with no finding, no severity, and no recommendation. It only says it when it checked and found
+that, so a reason the code is silent about is still marked as inferred rather than reported as contradicted.
 
 When the target is too large to cover fully at the chosen size, the overview adds a coverage note immediately after the
 header, naming what it did not cover and the next size up, so you know the picture is partial before you study the

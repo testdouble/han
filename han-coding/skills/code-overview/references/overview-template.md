@@ -164,6 +164,25 @@ need, not technical mechanics. Then, briefly, the bottom line of what it does. I
 the why can only be inferred from intent (commit messages, PR/issue text), say so
 rather than inventing one.}
 
+<!-- When you checked the stated reason against the code and found the code
+already satisfies it, or found the code does not support it, say so here, in one
+or two sentences, as a fact about the stated reason. Three states, and only the
+first one gets this sentence:
+
+1. Checked, and the code contradicts the stated reason → say so here.
+2. Checked, and the code supports the stated reason → say nothing extra.
+3. The code says nothing either way → this is the inferred-why case above. Mark
+   the reason as inferred and claim no discrepancy.
+
+This is a fact about the reason, never a finding about the code: raise no
+finding, assign no severity, recommend no change. NEVER report a contradiction
+you did not check and find, BECAUSE saying the code contradicts a reason is a
+stronger claim than saying the code is silent, and the weaker, honest claim
+already has a home in state 3. -->
+
+{One or two sentences on the stated reason the code does not support — only when
+state 1 above holds. Delete this block otherwise.}
+
 ## Context used
 
 <!-- One line per source the overview drew on. Link directly when the source has
