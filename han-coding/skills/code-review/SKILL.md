@@ -370,6 +370,10 @@ When a finding's rationale contains any of these phrases, the agent itself signa
 reachable in production. Demote the finding by one severity: CRIT becomes WARN, WARN becomes SUGG, SUGG is omitted
 entirely. Apply the demotion exactly once per finding regardless of how many phrases match.
 
+**Keep the reasoning that drove each demotion.** Carry it to Step 8, where it becomes the preconditions and the
+likelihood in that finding's plain-language explanation. Discarding it here is what makes a reader ask whether a finding
+can happen at all, on a question this gate already answered.
+
 This gate is the merged form of the reachability and "directly introduced" filters; the size-aware rubric in Step 7.3 is
 the single later pass and does not re-demote on these phrases. The phrase list is the only signal the gate uses; do not
 infer reachability from other text. The gate is a cheap, deterministic first pass and is brittle to paraphrase by
@@ -454,8 +458,15 @@ This pass is a finding **filter, not a finding source** — the validator never 
 
 ## Step 8: Generate Review Output
 
-Before writing the output, invoke `han-communication:readability-guidance` to surface the shared readability standard
-into your context, then draft the finding prose and narrative against it. Use the template at
+Before writing the output, invoke `han-communication:readability-guidance` to surface the shared readability standard,
+then invoke `han-communication:explanation-guidance` to surface Han's standard for explaining technical work to a reader
+who will not implement it. Both run inline and hand control straight back; continue with this step as soon as they
+return. Draft the finding prose and narrative against both.
+
+**Every CRIT, WARN, SUGG, and SEC finding opens with a plain-language explanation** written for the reader who will not
+open the file: what they could observe going wrong, what has to be true for it to happen, and how likely that is. Apply
+[finding-content.md](./references/finding-content.md) for which findings carry it, what it answers, where the answers
+come from, and why working them out NEVER changes a finding's severity, task ID, or position. Use the template at
 [template.md](./references/template.md) for the output structure. **Render a section only when it has content** — never
 emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are
 always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,

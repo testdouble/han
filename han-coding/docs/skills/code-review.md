@@ -165,9 +165,13 @@ other section appears only when it has at least one item, and when several are p
   corrective finding's tier is carried by its task-ID prefix; a security finding shows its tier inline in the row (for
   example, `SEC-001 (Critical)`) so the table stands alone as the complete severity index.
 - **Critical findings** (🔴). Each with task ID (`CRIT-001`, `CRIT-002`, …), `file_path:line_number`, the issue, and the
-  recommended fix. The `[Category]` label is kept on a block only when it names content a standalone reader needs (an
-  ADR violation naming the record, a standards violation naming the standard, or a security finding) and dropped for
-  generic categories the table already carries.
+  recommended fix. Each also opens with a plain-language explanation written for someone who will not open the file:
+  what they could observe going wrong, what has to be true for it to happen, and how likely that is, said outright when
+  the answer is that the finding may never fire. All three are answered, and an answer that is not in doubt takes a
+  clause rather than a sentence. The guidance for the person who will open the file follows it, unchanged. The
+  `[Category]` label is kept on a block only when it names content a standalone reader needs (an ADR violation naming
+  the record, a standards violation naming the standard, or a security finding) and dropped for generic categories the
+  table already carries.
 - **Warnings** (🟡). Same structure with task ID `WARN-NNN`.
 - **Suggestions** (🔵). Same structure with task ID `SUGG-NNN`.
 - **Agent findings.** Coverage gaps (`T#`), edge cases (`EC#`), security findings (`SEC-NNN`), structural findings
@@ -180,7 +184,8 @@ other section appears only when it has at least one item, and when several are p
   verbatim statement _"These findings will not be corrected unless explicitly requested. They are documented so the team
   can decide consciously whether to keep, simplify, or defer the items."_ Each finding is one line naming the failing
   evidence type, the matched anti-pattern, and a single reopen-trigger clause. YAGNI findings are advisory; they are not
-  counted under CRIT / WARN / SUGG, do not appear in the summary table, and do not block a clean review.
+  counted under CRIT / WARN / SUGG, do not appear in the summary table, and do not block a clean review. They carry no
+  plain-language explanation either, because that reopen trigger already answers what the explanation would say.
 - **Security vulnerabilities** (🔐). One full `SEC-NNN` block per proven vulnerability (OWASP category, location,
   evidence, `EXPLOIT:` path, and severity), followed by a single short **Remediation** note that references the
   `SEC-NNN` IDs and states the actionable fix in one or two sentences. Security findings are not cross-referenced into

@@ -20,7 +20,8 @@ subject to the descriptive-heading rule.
 
 PROSE ONCE: each finding's prose lives in exactly one place — its finding block, or its
 full security block. The Review Summary table row is an index entry, not prose; a
-`Tension with …` pointer note is a pointer, not prose.
+`Tension with …` pointer note is a pointer, not prose. The plain-language explanation is
+part of that one place, not a second copy of it.
 -->
 
 ## 📋 Review Summary
@@ -57,9 +58,13 @@ full security block. The Review Summary table row is an index entry, not prose; 
 
 <!-- Finding block format. Keep `file:line` (the actionable anchor). Omit the [Category] label when the category is generic and already conveyed by the table and task-ID prefix (logic, performance, clarity, and similar). Keep a category cue only when it names content a standalone reader needs and the task ID does not supply — an ADR violation that names the record, a standards violation that names the standard, or a security finding. -->
 
+<!-- Every CRIT / WARN / SUGG block opens with the plain-language explanation, then the existing guidance for the person who will open the file. The rules for writing it — what it answers, where the answers come from, and why deriving them never changes severity — are in references/finding-content.md. YAGNI findings carry no explanation. -->
+
 <!-- Generic category (omit the label): -->
 
-**{TASK-ID}** `{file_path:line_number}` {Description of issue.}
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation: what someone could observe going wrong, what has to
+be true for it to happen, and how likely that is. All three answered; an answer not in doubt is a clause, not a
+sentence.} {Description of issue, for the person who will open the file.}
 
 ```suggestion
 {Suggested fix}
@@ -67,7 +72,8 @@ full security block. The Review Summary table row is an index entry, not prose; 
 
 <!-- Content-bearing category (keep the label): -->
 
-**{TASK-ID}** **[{ADR: record / Standard: name / Security}]** `{file_path:line_number}` {Description of issue.}
+**{TASK-ID}** **[{ADR: record / Standard: name / Security}]** `{file_path:line_number}` {Plain-language explanation.}
+{Description of issue.}
 
 ```suggestion
 {Suggested fix}
@@ -75,11 +81,11 @@ full security block. The Review Summary table row is an index entry, not prose; 
 
 ### 🟡 Warnings
 
-**{TASK-ID}** `{file_path:line_number}` {Description of concern.}
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Description of concern.}
 
 ### 🔵 Suggestions
 
-**{TASK-ID}** `{file_path:line_number}` {Optional improvement idea.}
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Optional improvement idea.}
 
 ### 🟡 YAGNI
 
@@ -98,6 +104,8 @@ version available}. Reopen / keep when: {the concrete trigger that would justify
 
 **SEC-001: [Brief descriptive title]**
 
+- **What this means:** {Plain-language explanation, same three questions and same terms as every other finding a reader
+  must act on. A security finding is the one a non-implementer can least judge unaided.}
 - **OWASP:** A0X — Category Name
 - **Location:** `file_path:line_number`
 - **Evidence:** {exact code snippet demonstrating the vulnerability}
