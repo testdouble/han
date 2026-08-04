@@ -38,7 +38,9 @@ Then verify:
 4. Deferred tests note is present if the han-core:test-engineer produced skipped items
 5. The Review Summary table includes every corrective finding (CRIT/WARN/SUGG) and every security finding, and matches
    the sections that are present. YAGNI findings are excluded from the table (see rule 12). For findings whose block
-   omits the category, the table is the only place that category appears.
+   omits the category, the table is the only place that category appears. Every CRIT/WARN/SUGG row carries its fix route
+   in the `Fix` column and every security row carries `—` there; any finding the review established may never fire opens
+   its Description cell with that cue.
 6. All `file_path:line_number` references point to real files from the file list determined in Step 1
 7. SEC-### IDs are sequential starting at SEC-001
 8. Every SEC-### finding has an `EXPLOIT:` field populated

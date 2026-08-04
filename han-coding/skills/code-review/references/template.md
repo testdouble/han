@@ -30,15 +30,21 @@ part of that one place, not a second copy of it.
 
 <!-- A corrective finding's severity is already carried by its task-ID prefix (CRIT-/WARN-/SUGG-). A security finding's task ID does not encode a tier, so show the tier inline in the Task ID cell — e.g. `SEC-001 (Critical)` — so the table stands alone as the complete severity-ordered index. -->
 
+<!-- The Description cell carries the fix route, and opens with `May never fire —` on any finding the review established
+may not be reachable. Both cues sit here so a person triaging thirty findings gets them before opening any one of them;
+a longer finding body would leave the triage exactly where it was. The cell stays an index entry, not a second copy of
+the finding's prose. Security findings show `—` for the route: their Remediation note carries it. -->
+
 <!-- If no issues were found, use the no-issues row instead. -->
 
-| Task ID                            | Category     | File        | Description                                   |
-| ---------------------------------- | ------------ | ----------- | --------------------------------------------- |
-| {TASK-ID}                          | {Category}   | {file:line} | {Brief description of finding}                |
-| SEC-### ({Critical\|High\|Medium}) | {OWASP: A0X} | {file:line} | {Brief description of security vulnerability} |
+| Task ID                            | Category     | File        | Fix                                    | Description                                   |
+| ---------------------------------- | ------------ | ----------- | -------------------------------------- | --------------------------------------------- |
+| {TASK-ID}                          | {Category}   | {file:line} | {test-first \| restructure \| by hand} | {Brief description of finding}                |
+| {TASK-ID}                          | {Category}   | {file:line} | {route}                                | May never fire — {brief description}          |
+| SEC-### ({Critical\|High\|Medium}) | {OWASP: A0X} | {file:line} | —                                      | {Brief description of security vulnerability} |
 
 <!-- No-issues row if applicable: -->
-<!-- | — | — | — | No issues found | -->
+<!-- | — | — | — | — | No issues found | -->
 
 ### Review Recommendation
 

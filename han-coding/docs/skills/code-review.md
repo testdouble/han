@@ -163,7 +163,10 @@ other section appears only when it has at least one item, and when several are p
 - **A Review Summary table** indexing every corrective finding and every security finding across categories (automated
   checks, correctness, testing, security, ADR/standard/docs compliance, documentation freshness), ordered by severity. A
   corrective finding's tier is carried by its task-ID prefix; a security finding shows its tier inline in the row (for
-  example, `SEC-001 (Critical)`) so the table stands alone as the complete severity index.
+  example, `SEC-001 (Critical)`) so the table stands alone as the complete severity index. Each row also carries the
+  finding's fix route, and a finding the review established may never fire says so in its row. Both cues are there so
+  you can triage a long list before opening any single finding. Row order, severities, and finding identifiers are
+  unchanged; the cues sit inside existing rows.
 - **Critical findings** (🔴). Each with task ID (`CRIT-001`, `CRIT-002`, …), `file_path:line_number`, the issue, and the
   recommended fix. Each also opens with a plain-language explanation written for someone who will not open the file:
   what they could observe going wrong, what has to be true for it to happen, and how likely that is, said outright when

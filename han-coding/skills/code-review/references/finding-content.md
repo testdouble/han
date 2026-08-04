@@ -76,6 +76,24 @@ starts fixing things stops being a review.
 **Security findings carry no route** — see below. **YAGNI findings carry no route**, on the same grounds as the
 explanation: they are not corrected unless somebody asks for them.
 
+## Both cues reach the summary table
+
+The report's only index is one summary row per finding, and every finding a reader must act on just got longer. Two
+things travel up into that row, BECAUSE the complaint this content answers is comparative: a finding that will probably
+never fire reads as a behavior change when it sits at the same visual weight as the two findings beside it, and a longer
+finding body leaves that weight exactly where it was while adding reading load on top.
+
+1. **The fix route**, in its own `Fix` column. Security rows show `—`.
+2. **The may-never-fire cue**, opening the row's Description cell, on any finding the review established may not be
+   reachable.
+
+The same cue opens the finding's own body. When the honest answer to question 3 is that the finding may never fire, that
+answer leads the explanation rather than trailing it, so a reader who opens the finding meets it first.
+
+This changes what sits inside existing rows and nothing else. **No severity band changes, no row order changes, and no
+finding identifier changes.** People work those identifiers as a queue across sessions, and the row order is
+severity-ordered by design.
+
 ## Security findings
 
 A SEC finding carries the explanation on the same terms as every other finding a reader must act on. Its exemption from
