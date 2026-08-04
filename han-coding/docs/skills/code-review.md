@@ -334,6 +334,9 @@ readability pass inserted between Steps 8 and 9):
    8.5. **Rewrite the finding prose for readability.** Dispatch `readability-editor` over the assembled review so its prose
    meets the shared readability standard, with every task ID, severity, `file_path:line_number` reference, and code excerpt
    preserved.
+   8.6. **Write the report file.** Resolve the directory (a configured `output-directory`, else the specialists' report
+   directory) and the file name (the branch, the ticket, or what was reviewed), then write it. A report already at that
+   name is replaced and recorded; an unwritable destination falls back and is recorded.
 9. **Verify.** Step 9.0 runs the self-consistency check (extract
    `{task-id, file-path, line-range, recommended-action-summary}` tuples, then compare overlapping pairs and demote
    contradictory recommendations with a `Tension with {other-task-id}:` note). Step 9.1 then verifies task IDs are
@@ -344,6 +347,21 @@ readability pass inserted between Steps 8 and 9):
    confirms the newer content arrived: every finding you are expected to act on carries its plain-language explanation,
    every corrective one names a fix route, and a finding that may never fire says so both in its own explanation and in
    its summary row. Anything missing is fixed before the review reaches you, not reported to you as a caveat.
+10. **Present.** A short message that leads with the recommendation and the counts by severity, then the path, then the
+    run's own facts. The review is never pasted into the conversation.
+
+## What the run says when it finishes
+
+A short message, in a fixed order, so the answer is the first thing you read:
+
+1. The recommendation, in the report's own words.
+2. The counts by severity, with any advisory count named separately rather than folded into the total.
+3. The path to the report, plus any report it replaced and any destination it could not write to.
+4. The run's own facts last: the size band and why, and the validator reconciliation.
+
+A clean review says the code can be approved and gives you the path. A review whose only findings are advisory still
+recommends approval, says the count needing action is zero, and names the advisory count beside it, so you are never
+told "no findings" about a report whose body lists items.
 
 ## YAGNI
 

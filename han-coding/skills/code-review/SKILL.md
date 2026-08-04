@@ -459,4 +459,32 @@ and losing all of it to a missing directory is the worse outcome.
 
 Run the checks in [output-verification.md](./references/output-verification.md) before presenting the review: the
 self-consistency pass that demotes and annotates contradictory recommendations on overlapping code, then the
-structural verification items over the finished document.
+structural verification items over the finished document. Fix every failure in the report file; a failed check is never
+reported alongside the review as a caveat.
+
+## Step 10: Present
+
+Close with a short message in this fixed order. The answer leads and the run's own bookkeeping comes last, BECAUSE this
+message is the first thing the person reads and how the run was conducted is the last thing they need from it. Write it
+in the register `han-communication:explanation-guidance` surfaced at Step 8; it goes to someone who has not opened the
+report yet.
+
+1. **The recommendation**, in the words the report's own Review Recommendation uses.
+2. **The counts by severity** — critical, warning, suggestion. Name any YAGNI count separately, never folded into the
+   total.
+3. **The path** to the report file. Name the report you replaced when Step 8.6 replaced one, and the destination you
+   could not use when it fell back.
+4. **The run's own facts, last:** the size band and why, and the validator reconciliation line. Or nothing at all.
+
+**NEVER paste the review into the conversation.** The report is the deliverable and it is a file. Pasting it is what
+made the one fact a person needed after a review, the path, unfindable inside a message long enough to hold everything
+else.
+
+Two states this message has to get right:
+
+- **Nothing found.** Say the code can be approved and give the path. No explanations were written, because there are no
+  findings to explain.
+- **Only advisory findings.** Still recommend approval, BECAUSE the YAGNI class is non-correcting by construction and
+  never blocks a merge. Say the count needing action is zero and name the advisory count beside it, so nobody is told
+  "no findings" about a report whose body lists items. The advisory pass runs on every change regardless of size, so
+  this is an ordinary state, not an exotic one.
