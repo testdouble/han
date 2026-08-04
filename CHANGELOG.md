@@ -1,29 +1,223 @@
 # Han Release Notes
 
-## Unreleased
+## v5.0.0
 
-Configuration becomes two files instead of one. A person can now carry a personal `.han/config.md` inside their Claude
-Code configuration directory, holding the settings that should follow them into every project, and a project's own
-`.han/config.md` overrides it setting by setting. All 40 skills read both. Each resolves the configuration directory
-with a probe, then reads the personal file with the Read tool as its first action, while the project file stays a probe
-because it sits in the working directory. That split is deliberate: a probe runs at skill load, where it cannot prompt
-and cannot fall back, so a permission decision against one aborts the skill outright. The personal file is the one
-lookup that reaches outside the project, which makes it the one lookup a probe cannot safely carry. `config-rule.md`
-records the split and treats a personal read that returns no file the same way it treats an unreachable directory, with
-no note. The matching authoring rule now lives in `han-plugin-builder`: a context probe reads only inside the project
-working directory, and anything further out is gathered with the Read tool during the run.
+han 5.0.0 restructures the suite. The readability capability becomes a new foundational plugin, `han-core` sheds its
+documentation and research skills into two more new plugins, configuration becomes two files instead of one, and
+documentation goes plugin-first with a front door and long-form docs inside every plugin. This release carries breaking
+changes; see the section below before upgrading. New this release: `han-communication` (1.0.0), `han-documentation`
+(1.0.0), and `han-research` (1.0.0). Changed: `han-core` (3.0.0), `han-coding` (3.0.0), `han-github` (2.3.0),
+`han-atlassian` (2.3.0), `han-reporting` (2.2.0), `han-planning` (2.1.0), `han-plugin-builder` (2.1.0), `han-linear`
+(1.1.0), and `han-feedback` (2.0.1).
 
-The readability capability moves into a new foundational plugin, `han-communication`, so the suite has one owner for its
-writing standard and no duplicated copies. `han-communication` depends on nothing and owns the single canonical
-`readability-rule.md` and `writing-voice.md`, the `readability-editor` agent, the `edit-for-readability` skill, and a
-new inline `readability-guidance` skill that surfaces the standard into a calling skill's own context. The three
-vendored reference copies in `han-coding`, `han-github`, and `han-reporting`, and the four `han-core` originals, are
-gone; `find` returns exactly one copy of each reference file. All 13 consumer skills now source the standard by invoking
-`han-communication:readability-guidance`; the 9 synthesis skills additionally dispatch
-`han-communication:readability-editor` with no rule-path argument. Six manifests declare the new dependency edge
-(`han-core` takes its first-ever dependency), both marketplaces list the plugin, and the docs, indexes, and dependency
-narration are swept to match. No version is bumped; the bumps are deferred to release, with `han-core` flagged as a
-MAJOR candidate because the `han-core:readability-editor` and `han-core:edit-for-readability` namespaces are removed.
+### Breaking changes
+
+- **`han-core` 3.0.0 sheds skills and agents to other plugins.** `project-documentation`,
+  `architectural-decision-record`, and `runbook` now live in `han-documentation`; `research`, `gap-analysis`,
+  `issue-triage`, and the `research-analyst` agent now live in `han-research`; `edit-for-readability` and the
+  `readability-editor` agent now live in `han-communication`. The `project-manager` agent is removed outright, split
+  into `plan-synthesizer` in `han-core` and `discussion-facilitator` in `han-planning`. Any `han-core:`-namespaced
+  reference to a moved or removed entity no longer resolves. Repoint each one at its new plugin, and replace
+  `han-core:project-manager` with `han-core:plan-synthesizer` or `han-planning:discussion-facilitator`.
+- **`han-coding` 3.0.0 renames `test-planning` to `automated-test-planning`.**
+  `han-coding/skills/test-planning/SKILL.md` is deleted and `han-coding/skills/automated-test-planning/SKILL.md` takes
+  its place, so the `/test-planning` invocation no longer exists. Call `/automated-test-planning` instead.
+- **`han` 5.0.0 changes what the meta-plugin installs.** Installing `han` now also pulls in `han-communication`,
+  `han-documentation`, and `han-research` alongside the existing children. If you installed the child plugins
+  individually rather than through the meta-plugin, add those three.
+
+### han v5.0.0
+
+The meta-plugin's `dependencies` grow to cover the three new plugins, and both marketplace manifests
+(`.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json`) list them.
+
+Documentation goes plugin-first, closing #115, opened by [@mxriverlynn](https://github.com/mxriverlynn) with a
+substantive design comment from [@taminomara](https://github.com/taminomara). Long-form docs move out of repo-root
+`docs/` into each plugin's own `docs/skills/` and `docs/agents/`, every plugin gains a light front-door `README.md`, the
+skills and agents indexes slim to alphabetized scent lists, `docs/choosing-a-han-plugin.md` becomes the plugin index,
+and the new `docs/workflows.md` maps which skills chain together. The new `docs/configuration.md` is the operator guide
+for the two-file configuration layer.
+
+That layer is the other suite-wide change, and it touches every plugin. Configuration becomes two files instead of one.
+A person can carry a personal `.han/config.md` inside their Claude Code configuration directory holding the settings
+that follow them into every project, and a project's own `.han/config.md` overrides it setting by setting. Every skill
+reads both: each resolves the configuration directory with a probe, then reads the personal file with the Read tool as
+its first action, while the project file stays a probe because it sits in the working directory. That split is
+deliberate, because a probe runs at skill load where it cannot prompt and cannot fall back, so a permission decision
+against one aborts the skill outright. New settings are `default-swarm-size`, honored by the sizing-aware skills, and a
+`writing-voice` override. Config-named extra agents join each dispatching skill's candidate pool.
+
+Repo tooling lands too: npm-managed lint and test tooling (prek, Prettier, and Bats), CI workflows, and Dependabot;
+Prettier made safe over Markdown and re-enabled; and Bats tests discovered repo-wide and relocated beside the scripts
+they cover. Contributed by [@taminomara](https://github.com/taminomara). Per-plugin release tags land as direct commits
+on the alpha branch, closing #162, opened by [@taminomara](https://github.com/taminomara).
+
+### han-communication v1.0.0 (new)
+
+The new foundational plugin owns the suite's writing standard and depends on nothing. It ships the canonical
+`readability-rule.md`, `writing-voice.md`, and `explanation-rule.md`; the `readability-editor` agent; the
+`edit-for-readability` skill; and two inline skills, `readability-guidance`, which surfaces the readability standard and
+the voice profile into a calling skill's context, and `explanation-guidance`, the standard for explaining work to a
+reader who will not implement it.
+
+The vendored duplicates in `han-coding`, `han-github`, and `han-reporting` and the `han-core` originals are deleted,
+leaving exactly one copy of each reference. Consumer skills source the standard by invoking
+`han-communication:readability-guidance`, and synthesis skills additionally dispatch
+`han-communication:readability-editor`. The readability standard also absorbs Orwell's six rules of writing. Contributed
+by [@mxriverlynn](https://github.com/mxriverlynn).
+
+### han-core v3.0.0
+
+Beyond the extraction described under breaking changes, `project-manager` splits into `plan-synthesizer`, which produces
+the final plan or decision record, and `discussion-facilitator` in `han-planning`, which audits a live discussion
+without deciding anything. The agent that audits a discussion is no longer the agent that writes the plan.
+
+An agent-conformance sweep runs across the roster: every agent is made self-contained, role identities and body sections
+are brought into conformance, model tiers are audited, dead tool grants are removed, every agent description is brought
+under the 1024-character target, and self-verification sweeps become authoring guidance. `han-core` now depends on no
+other Han plugin, owns the new canonical `config-rule.md`, and `project-discovery` offers to add and remove the
+`CLAUDE.md` pointer to `.han/config.md`.
+
+### han-documentation v1.0.0 (new)
+
+The documentation skills move here out of `han-core`: `project-documentation`, `architectural-decision-record`, and
+`runbook`. The plugin depends on `han-communication` and `han-core`, and the `han` meta-plugin bundles it.
+
+### han-research v1.0.0 (new)
+
+The pre-planning knowledge-work skills move here out of `han-core`: `research`, `gap-analysis`, and `issue-triage`,
+along with the `research-analyst` agent. The plugin depends on `han-communication` and `han-core`, and the `han`
+meta-plugin bundles it.
+
+### han-planning v2.1.0
+
+`han-planning` gains the `discussion-facilitator` agent from the `project-manager` split, plus three owned reference
+files: `planning-boundary-rule.md` (the scope boundary record and the visual-material convention),
+`scope-justification-rule.md` (the per-unit justification field, the cut list, and the scope gate), and
+`operator-escalation-rule.md` (one question per turn, named candidate answers, a single stop). Applying them,
+`plan-a-feature` bounds the run, keeps the designs, and asks one question at a time; `plan-implementation` sweeps
+inherited scope and bounds the plan; `plan-a-phased-build` phases inside the recorded boundary; and `plan-work-items`
+reads the scope boundary, justifies every work item, and leads with plain language, with acceptance criteria at the
+bottom. This closes #155, #156, #157, and #158, all opened by [@mxriverlynn](https://github.com/mxriverlynn).
+
+Planning runs also get cheaper and faster: review teams are smaller and sized in specialists, the design-image check is
+executed rather than described, and the skills stop proofreading text the readability editor already rewrote.
+`plan-a-feature`, `plan-implementation`, and `iterative-plan-review` are brought under the 500-line skill-body ceiling
+by extracting references.
+
+### han-coding v3.0.0
+
+Beyond the `test-planning` rename, the new `manual-test-planning` skill produces a plain-language test plan a person
+runs by hand, organizing plans that hold more than five tests into categories.
+
+`code-review` explains every actionable finding in plain language, names how each finding gets fixed, puts the route and
+the may-never-fire cue in the summary table, writes its report to a resolved run-specific path, and closes with the
+recommendation instead of the whole report. `code-overview` lists the context it used with direct links, gives
+where-to-start an order and an example call, gives diagram legibility an owner, reports a stated reason the code does
+not support, honors a configured output directory, and ends with a restatement a person can paste. Both close #170,
+opened by [@mxriverlynn](https://github.com/mxriverlynn). Diff-base detection in `code-review` and
+`automated-test-planning` now works across multiple remotes and git-flow layouts and covers second-parent base
+detection, contributed by [@taminomara](https://github.com/taminomara). `code-review` is brought under the 500-line
+skill-body ceiling.
+
+### han-github v2.3.0
+
+`han-github` declares its `han-coding` dependency. `post-code-review-to-pr` reads the review from the report file and
+states its deliverable scope. `work-items-to-issues` accepts the whole visual-material file set rather than PNG alone,
+and its issue template aligns with the new plain-language work items. Angle brackets are removed from `argument-hint`
+fields.
+
+### han-reporting v2.2.0
+
+`han-reporting` reads the two-file configuration and sources the readability standard cross-plugin from
+`han-communication` instead of a vendored copy. Its docs and manifest entries are synced with the restructure.
+
+### han-feedback v2.0.1
+
+`han-feedback` updates today's feedback file in place rather than creating a second one, and names a blocked publish
+instead of failing silently.
+
+### han-atlassian v2.3.0
+
+The Atlassian wrappers pass explicit output paths, so temp files outrank the configured output base, and the Jira ticket
+template aligns with the new plain-language work items. `markdown-to-confluence` gains the `plan-a-feature` boundary,
+and the dependency list is corrected.
+
+### han-linear v1.1.0
+
+The Linear issue template aligns with the new plain-language work items, with acceptance criteria at the bottom, and
+`work-items-to-linear` reads the two-file configuration.
+
+### han-plugin-builder v2.1.0
+
+A new per-model authoring guidance reference lands, updated for Claude Opus 5, along with a new rule that a context
+probe reads only inside the project working directory, with anything further out gathered using the Read tool during the
+run. The plugin-README standard and its templates are rewritten to the light front-door model, two verbatim
+duplications are removed from the reference set, and inline resource-surfacing is recorded as a data-fetch exception.
+Contributed by [@mxriverlynn](https://github.com/mxriverlynn).
+
+### Issues closed in this release
+
+- Reorganize documentation to be plugin-centric: a README per plugin, slimmer indexes, and a plugin index (#115) —
+  opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #137 by
+  [@mxriverlynn](https://github.com/mxriverlynn); thanks to [@taminomara](https://github.com/taminomara)
+- Han Feedback: plan-work-items (2026-07-28) (#158) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in
+  #160 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: plan-a-feature-readability-guidance (2026-07-28) (#155) — opened by
+  [@mxriverlynn](https://github.com/mxriverlynn); fixed in #160 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: plan-implementation (2026-07-28) (#156) — opened by [@mxriverlynn](https://github.com/mxriverlynn);
+  fixed in #160 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: plan-implementation (2026-07-28) (#157) — opened by [@mxriverlynn](https://github.com/mxriverlynn);
+  fixed in #160 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: code-review-code-overview (2026-08-03) (#170) — opened by
+  [@mxriverlynn](https://github.com/mxriverlynn); fixed in #171 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Use `claude plugin tag --push` to tag new releases (#162) — opened by [@taminomara](https://github.com/taminomara);
+  fixed in #130 by [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- chore(CI): lint, Bats tests, CI, and Dependabot (#120) — [@taminomara](https://github.com/taminomara)
+- fix(CI): add required patterns key to Dependabot ecosystem entries (#123) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(CI): repair shellcheck findings and stale rules symlink (#126) — [@mxriverlynn](https://github.com/mxriverlynn)
+- chore(CI): stop running Prettier over Markdown (#127) — [@mxriverlynn](https://github.com/mxriverlynn)
+- plugin: han-communication - extracting a new plugin from han-core, and consolidating guidance (#114) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- Model specific guidance (#134) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Integrate readability planning coding (#136) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Plan: plugin-centric documentation reorganization (#115) (#137) — [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(han-coding): add the manual-test-planning skill (#138) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Planning readability improvements (#139) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Apply Orwell's six rules of writing to the han-communication guidance (#140) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(han-coding): list the context used, with direct links, in code-overview output (#142) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- han-core restructure: split into han-documentation and han-research (#141) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- feature: han-config for project-specific configuration (#143) — [@mxriverlynn](https://github.com/mxriverlynn)
+- docs(plans): specify the default-swarm-size project-config setting (#144) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- feature(manual-test-planning): categorize plans with more than five tests (#145) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- feature(config): add writing-voice override to .han/config.md (#146) — [@mxriverlynn](https://github.com/mxriverlynn)
+- chore(lint): make Markdown Prettier-safe and re-enable it (stage one: no line wrapping) (#129) —
+  [@taminomara](https://github.com/taminomara)
+- chore(test): discover Bats tests repo-wide, not just test/ (#132) — [@taminomara](https://github.com/taminomara)
+- feat(code-review, test-planning): detect the diff base across multiple remotes and git-flow (#151) —
+  [@taminomara](https://github.com/taminomara)
+- chore(deps): bump the dev-tooling group with 4 updates (#154) — [@taminomara](https://github.com/taminomara)
+- chore(test): relocate Bats tests next to the scripts they cover (#161) — [@taminomara](https://github.com/taminomara)
+- han-planning: reducing scope creep, requiring justification, and other corrections (#160) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(han-planning): cheaper, faster planning runs (#163) — [@mxriverlynn](https://github.com/mxriverlynn)
+- feat: read a personal .han/config.md beneath the project one (#164) — [@mxriverlynn](https://github.com/mxriverlynn)
+- docs(guidance): update per-model authoring for Claude Opus 5 (#165) — [@mxriverlynn](https://github.com/mxriverlynn)
+- investigating agent producer vs reviewer split (#167) — [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(code-review, code-overview): answer the reader's questions inside the run (#171) —
+  [@mxriverlynn](https://github.com/mxriverlynn)
+- Han v5.0.0 alpha 1 (#130) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/han--v5.0.0/CHANGELOG.md#v500
 
 ## v4.6.0
 
