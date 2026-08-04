@@ -86,9 +86,11 @@ Read these before doing anything. They constrain every step below.
   issue / commit URL), stated in one plain sentence when it does not (an uncommitted diff, the branch's commit messages,
   context supplied in conversation). BECAUSE the reader should be able to walk the same evidence the overview was built
   from, and a fabricated or broken link poisons that trust — never invent a URL or link a path that does not exist.
-- **Ephemeral, not documentation.** The overview is written to a scratch file outside the repository and is never
-  committed into the repository's documentation tree. BECAUSE durable feature and system docs are
-  `project-documentation`'s job; this skill is an understand-now orientation aid.
+- **Ephemeral, not documentation.** The overview is an understand-now orientation aid, not durable documentation,
+  BECAUSE durable feature and system docs are `project-documentation`'s job. That is why the skill's own default
+  destination sits outside the repository, and why the skill never commits the file. This principle governs the
+  skill's default only, not what a person configures: a configured output directory wins wherever it points, and the
+  run says nothing about it (Step 6).
 - **Default to small.** Start size classification at small and escalate only when a higher-band signal is clearly
   present. BECAUSE under-dispatching is recoverable by re-running larger; over-dispatching burns tokens and dilutes the
   overview.
@@ -269,8 +271,8 @@ reviewing** (navigational only — where the change is hardest to follow and why
 
 **Render the `Context used` section from the context ledger** built in Steps 3 and 4, directly after the lead why
 section in both modes. One line per source, each with a short note on what it contributed. Link every source that has a
-direct address: a repository file or directory as a Markdown link whose target is its absolute path (the scratch file
-lives outside the repository, so a relative path would not resolve); a pull request, issue, or commit as its URL (in PR
+direct address: a repository file or directory as a Markdown link whose target is its absolute path (the overview file may
+sit outside the repository, so a relative path would not resolve); a pull request, issue, or commit as its URL (in PR
 mode with a remote, prefer the remote's file URLs at the PR's head so the links work for a reader outside this machine).
 A source with no address — the uncommitted diff, the branch's commit messages, context the user supplied in conversation
 — gets one plain sentence stating what the context was. Never fabricate a URL or link a path that does not exist;
@@ -287,19 +289,35 @@ section. Give every chart a scope label, and apply the template's diagram rule t
 a component or a boundary, and the fields, types, and annotations go into the prose beneath the chart. When coverage is partial, place the coverage note immediately after the intro
 paragraph so the reader calibrates before investing in the charts.
 
-## Step 6: Write the Scratch File
+## Step 6: Resolve the Destination and Write the File
 
-Write the rendered overview to a scratch file **outside the repository** — for example
-`${TMPDIR:-/tmp}/code-overview-{short-target-slug}.md`. Never write it into the repository's documentation tree; this
-overview is ephemeral. The next step reviews and rewrites this file in place.
+The file is named `code-overview-{short-target-slug}.md` wherever it lands. Only the directory is resolved here.
+
+**Resolve the directory in this order:**
+
+1. **A configured `output-directory`.** When the config read at the top of this skill supplied one, write the overview
+   beneath it. Honor it even when it points inside the repository, and say nothing about that, BECAUSE the person who
+   configured a destination chose it, and this skill's own default is not a veto over their choice. Relative-path
+   resolution, `~` expansion, and precedence between the personal and project files are governed by
+   [config-rule.md](../../references/config-rule.md); do not re-derive them here.
+2. **No configured value.** Write outside the repository — for example
+   `${TMPDIR:-/tmp}/code-overview-{short-target-slug}.md` — BECAUSE an unconfigured overview is an orientation aid
+   rather than documentation, and a default inside the repository would land it in a commit sooner or later.
+
+**When the resolved directory cannot be written**, write to the unconfigured default in 2 instead and record which
+destination you could not use, so Step 8's message can name it. NEVER abandon the run over this, BECAUSE everything the
+run produced is finished by the time it writes, and losing all of it to a directory that does not exist is the worse
+outcome by far.
+
+The next step reviews and rewrites this file in place.
 
 ## Step 7: Validate Accuracy, then Rewrite for Readability
 
 This step runs two distinct passes, in order: the accuracy validator first, then the readability rewrite. Accuracy is
 settled before readability so the editor never polishes a claim that is about to be cut.
 
-**Pass 1 — accuracy.** Dispatch `han-core:adversarial-validator` over the draft overview. Pass it the scratch-file path
-and the resolved target (and, in PR mode, the changed-file set) so it knows what to re-read.
+**Pass 1 — accuracy.** Dispatch `han-core:adversarial-validator` over the draft overview. Pass it the overview file's
+path from Step 6 and the resolved target (and, in PR mode, the changed-file set) so it knows what to re-read.
 
 - **`han-core:adversarial-validator`** — assume every claim the overview makes about the code is WRONG until the code
   and its intent prove it right. Re-read the target (and the diff, in PR mode) and challenge each material claim,
@@ -319,7 +337,7 @@ and the resolved target (and, in PR mode, the changed-file set) so it knows what
   the code's quality and do not raise findings about the code itself.** Return a list of inaccurate or unsupported
   claims, each with the corrected fact or a note that the claim should be cut.
 
-Apply the validator's corrections to the scratch file first: fix or cut every claim it disproved. A sentence that reads
+Apply the validator's corrections to the overview file first: fix or cut every claim it disproved. A sentence that reads
 beautifully but describes a flow the code does not follow must still be corrected or removed. If validation removed so
 much that coverage is now meaningfully partial, add or update the coverage note.
 
@@ -329,10 +347,10 @@ readability rewrite, not two overlapping reviews.
 
 - **`han-communication:readability-editor`** — rewrite the overview against the shared readability standard for the
   default reader (a capable reader who did not do this work and lacks the author's context), preserving every fact. Pass
-  it the scratch-file path; the editor reads han-communication's own canonical rule, so pass no rule path. It operates
+  it the overview file's path; the editor reads han-communication's own canonical rule, so pass no rule path. It operates
   on **prose regions only**: it does not touch the Mermaid chart bodies, code fences, or the embedded screenshot markup,
   and it leaves every named file, symbol, entry point, and `Context used` link target exact. It applies the rewrite to
-  the scratch file in place and returns a rubric verdict and a fact-preservation ledger. Tell it: **rewrite the
+  the overview file in place and returns a rubric verdict and a fact-preservation ledger. Tell it: **rewrite the
   overview document for readability only — do not review the underlying code, and do not raise findings about it.**
   This skill makes no quality judgment about the code; the validator guards truth, the editor guards clarity, and
   neither crosses into evaluating the work itself.

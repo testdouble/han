@@ -15,7 +15,8 @@ to use the skill. For what the skill does internally, read the skill definition 
   working on or reviewing it.
 - **When to use it.** You have landed in code you do not know, or a PR you are about to review, and you want a fast
   orientation before you start.
-- **What you get back.** A scratch overview file (written outside the repository) with a purpose statement, a linked
+- **What you get back.** An overview file (written where you configured Han's output to go, or outside the repository
+  when you configured nothing) with a purpose statement, a linked
   list of the context the overview drew on, Mermaid flow charts, the directly-related context, and where to start, all
   at minimal technical depth.
 
@@ -32,8 +33,10 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Two modes.** _Code mode_ explains a file, directory, or symbol as it is now: why it exists, then what it does. _PR
   mode_ explains a set of changes: why they exist, grouped by the intent each group serves, and how to look at the PR
   before reviewing it. The skill picks the mode from the target.
-- **Understand now, not document for later.** The overview is an ephemeral orientation aid written to a scratch file,
-  never committed into the repository's documentation tree. That is the line against `/project-documentation`.
+- **Understand now, not document for later.** The overview is an ephemeral orientation aid, and the skill never commits
+  it into the repository's documentation tree. That is the line against `/project-documentation`. It is why the file
+  lands outside the repository when you have configured nothing; a destination you configure yourself wins over that
+  default, wherever it points.
 - **No findings.** The overview raises no quality findings, severities, or recommended changes. Even the PR-mode "what
   to watch" section is navigational: it names where the change is hardest to follow, not whether it is any good. That is
   the line against `/code-review`.
@@ -87,9 +90,14 @@ Example prompts:
 
 ## What you get back
 
-A single Markdown overview file written to a scratch location **outside the repository** (for example under your system
-temp directory). The skill shows you the path; open it where the Mermaid charts render. The file is not committed and is
-not maintained; it is a point-in-time orientation aid.
+A single Markdown overview file. It lands under the `output-directory` in your `.han/config.md` when you have set one,
+and outside the repository (for example under your system temp directory) when you have not. A configured directory
+inside the repository is honored without comment, because you chose it. When the resolved destination cannot be written,
+the run falls back to the outside-the-repository default and tells you which destination it could not use, rather than
+throwing away work it has already finished.
+
+The skill shows you the path; open it where the Mermaid charts render. The file is not committed and is not maintained;
+it is a point-in-time orientation aid.
 
 The document follows one structure per mode, under a shared grammar. It opens with a title and a short intro paragraph
 naming what is being examined (not a metadata block), then leads with the why and lets every later section flow from it:

@@ -1,6 +1,6 @@
 # Overview Document Template
 
-The skill renders one of the two structures below into the scratch file. Both modes share the same grammar — a header,
+The skill renders one of the two structures below into the overview file. Both modes share the same grammar — a header,
 an optional coverage note, a content-bearing lead section, a grouped/flow body, and an actionable handoff — so a reader
 who learns one mode can scan the other. Fill the placeholders, remove the guidance comments, and keep the section order
 exactly as written.
