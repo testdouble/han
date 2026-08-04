@@ -238,7 +238,8 @@ it exists** (the problem the code solves or goal it serves, then briefly what it
 all flowing from the why); **Context used** (the context ledger, rendered per the rules below); **Main flow** (a Mermaid
 chart with a one-line scope label, read as how the code delivers on the why); **Context and uses** (context and uses
 kept distinguishable, framed as what it depends on to meet the need and where that need is served from); **Where to
-start** (the concrete entry points the reader opens first).
+start** (the entry points numbered in the order a reader opens them, each with one line on what the reader learns there,
+and one runnable example call on any entry point that is an interface other code calls).
 
 **PR mode** renders, in order: the same title and intro paragraph; the same conditional coverage note; **Why this change
 exists** (the problem the change solves or goal it advances, then briefly the bottom line of what it does); **Context

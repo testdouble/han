@@ -119,8 +119,22 @@ above.}
 
 ## Where to start
 
-{The concrete entry points — the specific files or components — the reader would open first to begin working, with one
-line each on what each is for.}
+<!-- Number the entry points in the order a reader should open them, first to last. Each carries one line on what the
+reader learns there — what they will understand after reading it, not what the file is. A set of the right files is not
+a path through them, and the reader asked for the path. Judge each entry point on its own: one that is an interface
+other code calls carries a single runnable example call, and one that is a step in a flow does not, BECAUSE an invented
+example call for a mid-flow file is noise. A target holding both an interface and the flow behind it gets the example
+on the interface entry only. -->
+
+1. **{file or component}** — {what the reader learns here}.
+2. **{file or component}** — {what the reader learns here}.
+
+<!-- Include this block only under an entry point that is an interface other code calls. One call, runnable as written,
+in the language or query syntax a caller would use. -->
+
+```{language}
+{one runnable example call against that interface}
+```
 
 ````
 

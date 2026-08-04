@@ -96,7 +96,8 @@ naming what is being examined (not a metadata block), then leads with the why an
 
 - **Code mode:** _Why it exists_ (the problem solved or goal served, then briefly what it is) → _Context used_ (the
   sources the overview drew on) → _Main flow_ (a Mermaid chart with a scope label, read as how the code delivers on the
-  why) → _Context and uses_ → _Where to start_.
+  why) → _Context and uses_ → _Where to start_ (the entry points numbered in the order to open them, each with what you
+  learn there, and a runnable example call on any entry point that is an interface other code calls).
 - **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does) → _Context
   used_ → _Changes by intent_ (grouped by the outcome, the why, each group delivers) → _How the change flows_ (a Mermaid
   chart with a scope label) → _What to watch when reviewing_ (navigational only).
