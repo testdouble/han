@@ -334,7 +334,10 @@ readability pass inserted between Steps 8 and 9):
    sequential, `file_path:line_number` references are valid, exploit fields are populated for security findings, the
    summary table indexes every corrective and security finding (with security tiers shown inline) and matches the
    sections present, no section is rendered empty, security findings carry no Critical cross-reference while the
-   recommendation still reflects their severity, and the YAGNI section's verbatim opening is preserved.
+   recommendation still reflects their severity, and the YAGNI section's verbatim opening is preserved. The same step
+   confirms the newer content arrived: every finding you are expected to act on carries its plain-language explanation,
+   every corrective one names a fix route, and a finding that may never fire says so both in its own explanation and in
+   its summary row. Anything missing is fixed before the review reaches you, not reported to you as a caveat.
 
 ## YAGNI
 

@@ -66,6 +66,15 @@ Then verify:
     Security Vulnerabilities section nor the Remediation note is rendered.
 18. The `### ✅ What's Good` section is rendered only when a specific, substantive positive exists; it is omitted
     entirely rather than filled with generic praise.
+19. Every CRIT / WARN / SUGG block opens with its plain-language explanation, and every SEC block carries its
+    `What this means` line. YAGNI findings carry neither, because their reopen trigger already answers it.
+20. Every CRIT / WARN / SUGG block names a fix route. SEC blocks name none, since the single Remediation note carries
+    it.
+21. A finding the review established may never fire carries that cue in two places and they agree: leading its own
+    explanation, and opening its summary row's Description cell.
+
+Every item in this list is fixed before the review is presented, never reported alongside it as a caveat. A required
+piece of content that is missing is missing; saying so in the message does not put it in the report.
 
 ### Step 9.2: Readability self-check
 
