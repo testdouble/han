@@ -56,8 +56,11 @@ The rule names the output properties, and they shape each skill's template so th
   ("Analysis").
 - **Short, active sentences.** Roughly fifteen to twenty words on average, active by default. The self-check flags any
   sentence past about thirty words as a candidate to split. That is a review trigger, not a hard cap.
-- **Common words.** Prefer the common word over the technical synonym; define a term on first use when it cannot be
-  replaced.
+- **Common words, and a half-sentence explanation for a term the reader cannot look up.** Prefer the common word over
+  the technical synonym. Where a term cannot be replaced, explain it in half a sentence at first use. Three kinds always
+  need it, because the reader has nowhere to resolve them from the material the document describes: outside
+  technologies and language runtimes, named statistical or numerical methods, and compound nouns the document coins for
+  its own convenience. The coined ones matter most, since a reader can search for the other two and find an answer.
 - **No blocklisted words.** The existing writing-voice blocklist is reused for word-level rules.
 - **Numbered lists for steps, bullets for the rest.**
 - **Progressive disclosure.** Reveal the core first and detail in layers.
@@ -82,8 +85,9 @@ at a time:
    [`readability-editor`](../han-communication/docs/agents/readability-editor.md) to audit and rewrite the draft against the
    rule, preserving every fact.
 4. **Self-check.** A discrete pass over the prose regions evaluates six behaviorally-anchored yes/no criteria: main
-   point first, descriptive headings, one idea per paragraph, sentence length, no blocklisted word, and every fact
-   preserved. Anything it fails is corrected before the deliverable is presented.
+   point first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted word
+   and an explanation for every term the reader cannot look up, and every fact preserved. Anything it fails is
+   corrected before the deliverable is presented.
 
 The self-check and any rewrite operate on **prose regions only**. Code fences, diagram bodies, rendered markup, and
 inline citation identifiers are neither evaluated nor altered, so they still compile, render, and resolve.
