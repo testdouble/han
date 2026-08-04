@@ -136,6 +136,15 @@ in the language or query syntax a caller would use. -->
 {one runnable example call against that interface}
 ```
 
+## What this code does, in plain language
+
+<!-- Three or four sentences a person who did not do this work could read aloud. No file paths, no type names, no
+symbol names. Written to be lifted out of this document whole and pasted somewhere else — a pull request description,
+a message to a reviewer — BECAUSE that is reliably the reader's next move. These sentences are the canonical text: the
+run's closing message repeats them rather than writing a second version, so the two never drift apart. -->
+
+{Three or four plain sentences restating why this code exists and what it does.}
+
 ````
 
 ---
@@ -226,5 +235,14 @@ quality or risk judgment; that is code-review's job, not this skill's. -->
 
 {The concrete entry points — the specific files or components — where the change is densest or most interconnected, with
 one line each on why a reviewer should slow down there.}
+
+## What this change does, in plain language
+
+<!-- Three or four sentences a person who did not do this work could read aloud. No file paths, no type names, no
+symbol names. Written to be lifted out of this document whole and pasted somewhere else — a pull request description,
+a message to a reviewer — BECAUSE that is reliably the reader's next move. These sentences are the canonical text: the
+run's closing message repeats them rather than writing a second version, so the two never drift apart. -->
+
+{Three or four plain sentences restating why this change exists and what it does.}
 
 ````

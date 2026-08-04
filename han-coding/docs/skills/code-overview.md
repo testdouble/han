@@ -105,11 +105,18 @@ naming what is being examined (not a metadata block), then leads with the why an
 - **Code mode:** _Why it exists_ (the problem solved or goal served, then briefly what it is) → _Context used_ (the
   sources the overview drew on) → _Main flow_ (a Mermaid chart with a scope label, read as how the code delivers on the
   why) → _Context and uses_ → _Where to start_ (the entry points numbered in the order to open them, each with what you
-  learn there, and a runnable example call on any entry point that is an interface other code calls).
+  learn there, and a runnable example call on any entry point that is an interface other code calls) → _What this code
+  does, in plain language_.
 - **PR mode:** _Why this change exists_ (the need that motivated it, then the bottom line of what it does, plus a
   sentence when the code turns out not to support that reason) → _Context
   used_ → _Changes by intent_ (grouped by the outcome, the why, each group delivers) → _How the change flows_ (a Mermaid
-  chart with a scope label) → _What to watch when reviewing_ (navigational only).
+  chart with a scope label) → _What to watch when reviewing_ (navigational only) → _What this change does, in plain
+  language_.
+
+Both modes end with three or four sentences you could read aloud, carrying no file paths and no type names. They are
+there to be lifted out and pasted into a pull request description or a message to a reviewer. The run's closing message
+repeats those exact sentences rather than writing its own version, so you can paste from the terminal without opening
+the file and never wonder which of two summaries is the real one.
 
 Every chart is drawn to be read at a glance. Each box names a component or a boundary you can point at, and the fields,
 types, and technical annotations sit in the prose beneath the chart instead. A step the flow needs is never dropped to

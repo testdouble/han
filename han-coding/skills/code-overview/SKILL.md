@@ -218,7 +218,10 @@ the explorers cover the highest-signal areas; carry that into the coverage note 
 ## Step 5: Synthesize the Overview
 
 Invoke `han-communication:readability-guidance` to surface the shared readability standard into your context before you
-write, then draft the overview against it. Read [references/overview-template.md](./references/overview-template.md) and
+write. Then invoke `han-communication:explanation-guidance`, which surfaces Han's standard for explaining technical work
+to a reader who will not implement it: that standard governs the closing restatement this step writes and the closing
+message Step 8 prints, BECAUSE both go to someone who will not open the code. Both run inline and hand control straight
+back; continue with this step as soon as they return. Then draft the overview against both. Read [references/overview-template.md](./references/overview-template.md) and
 render the structure for the resolved mode, drawing on the explorers' findings and the input from Step 3. The skill
 writes the overview; the explorers' raw findings are not pasted in.
 
@@ -258,7 +261,8 @@ all flowing from the why); **Context used** (the context ledger, rendered per th
 chart with a one-line scope label, read as how the code delivers on the why); **Context and uses** (context and uses
 kept distinguishable, framed as what it depends on to meet the need and where that need is served from); **Where to
 start** (the entry points numbered in the order a reader opens them, each with one line on what the reader learns there,
-and one runnable example call on any entry point that is an interface other code calls).
+and one runnable example call on any entry point that is an interface other code calls); **What this code does, in plain
+language** (the closing restatement).
 
 **PR mode** renders, in order: the same title and intro paragraph; the same conditional coverage note; **Why this change
 exists** (the problem the change solves or goal it advances, then briefly the bottom line of what it does, plus the
@@ -267,7 +271,8 @@ below); **Changes by intent** (grouped by the reader-visible outcome
 each group delivers — the why each group serves — not by file, layer, or author motivation; a single logical change is
 one narrative with no grouping header); **How the change flows** (a Mermaid chart with a scope label, placed after the
 grouped changes BECAUSE the reviewer must know what changed before that chart is meaningful); **What to watch when
-reviewing** (navigational only — where the change is hardest to follow and why; never a quality or risk judgment).
+reviewing** (navigational only — where the change is hardest to follow and why; never a quality or risk judgment);
+**What this change does, in plain language** (the closing restatement).
 
 **Render the `Context used` section from the context ledger** built in Steps 3 and 4, directly after the lead why
 section in both modes. One line per source, each with a short note on what it contributed. Link every source that has a
@@ -282,6 +287,13 @@ deduplicate the list and keep it a reference list, not prose.
 under the Changes-by-intent item or the flow step they depict, BECAUSE a visual next to its description spares the
 reader a trip back to the PR. Keep the image URL exactly as captured. Omit screenshots entirely when the PR had none;
 never invent or placeholder an image.
+
+**Close with a restatement a person can paste.** Both modes end with three or four plain sentences a reader who did not
+do this work could read aloud, carrying no file paths, no type names, and no symbol names. Write them under the
+explanation standard sourced above. These sentences are the canonical text: Step 8's message repeats them rather than
+composing its own version, BECAUSE the reader's next move after an overview is reliably to paste a plain summary into a
+pull request description or a message to a reviewer, and two texts saying the same thing in different words teach them
+to distrust the shorter one.
 
 Apply the per-section detail rule from the template: minimal technical detail in the why, flow, and context sections —
 the why told as a problem solved or goal met, not technical mechanics; concrete named entry points in the handoff
@@ -372,6 +384,14 @@ For this skill, the main point the opening line must state is what is being exam
 
 ## Step 8: Present
 
-Present to the user in a short message: the scratch-file path, the mode and size used (and why), and any coverage gap
-the overview noted. Do not paste the whole overview into the conversation; point the user at the file, where the Mermaid
-charts render.
+Present a short message in this fixed order. The answer leads and the run's own bookkeeping comes last, BECAUSE this
+message is the first thing the user reads and facts about how the run went are the last thing they need from it:
+
+1. **The closing restatement**, copied from the overview's own final section. Repeat those sentences; never compose a
+   second version of them.
+2. **Any divergence from the change's stated purpose**, when the overview reported one (PR mode only).
+3. **The path** to the overview file. When Step 6 fell back because the resolved destination could not be written, name
+   the destination it could not use.
+4. **The run's own facts, last:** the mode and size used and why, plus any coverage gap the overview noted.
+
+Do not paste the whole overview into the conversation; point the user at the file, where the Mermaid charts render.
