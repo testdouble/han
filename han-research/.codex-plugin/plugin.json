@@ -1,0 +1,28 @@
+{
+  "name": "han-research",
+  "version": "1.0.0",
+  "description": "Pre-planning knowledge-work skills: open-ended research, gap analysis, and issue triage.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "research", "gap-analysis", "issue-triage"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Research",
+    "shortDescription": "Open-ended research, gap analysis, and issue triage.",
+    "longDescription": "Pre-planning knowledge-work skills for understanding a problem before anyone commits to a plan: evidence-backed research, gap analysis between two artifacts, and issue triage.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Research an implementation approach with Han.",
+      "Analyze gaps between two artifacts.",
+      "Triage this bug report."
+    ]
+  }
+}

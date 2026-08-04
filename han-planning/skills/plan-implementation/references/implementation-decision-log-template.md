@@ -60,12 +60,14 @@ decision log and find the outcome.
 - **Question:** <!-- The implementation question this decision answers -->
 - **Decision:** <!-- What is being committed to, in outcome terms where possible -->
 - **Rationale:** <!-- Why this choice given outcome, constraints, and evidence -->
-- **Evidence:** <!-- File paths, ADR IDs, coding standards, metrics, specialist findings, or "user input" / "junior-developer reframing" -->
+- **Evidence:**
+  <!-- File paths, ADR IDs, coding standards, metrics, specialist findings, or "user input" / "junior-developer reframing" -->
 - **Rejected alternatives:**
   - Alternative A — rejected because <!-- reason with evidence -->
   - Alternative B — rejected because <!-- reason with evidence -->
 - **Specialist owner:** <!-- Who owns the decision going forward -->
-- **Revisit criterion:** <!-- What would cause the team to reopen (e.g., "if p99 above 150ms under production shape") -->
+- **Revisit criterion:**
+  <!-- What would cause the team to reopen (e.g., "if p99 above 150ms under production shape") -->
 - **Dissent (if any):** <!-- Dissenter, cited evidence, disagree-and-commit note -->
 - **Driven by rounds:** <!-- R# IDs from implementation-iteration-history.md -->
 - **Dependent decisions:** <!-- D# IDs of later decisions that rested on this one -->

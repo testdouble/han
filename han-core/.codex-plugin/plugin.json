@@ -1,7 +1,7 @@
 {
   "name": "han-core",
   "version": "1.2.0",
-  "description": "Evidence-based research, architecture, and documentation skills for software projects.",
+  "description": "The shared foundation of the Han suite: the specialist agent roster, project discovery, and the canonical rule files.",
   "author": {
     "name": "Test Double",
     "url": "https://testdouble.com"
@@ -9,20 +9,20 @@
   "homepage": "https://github.com/testdouble/han#readme",
   "repository": "https://github.com/testdouble/han",
   "license": "MIT",
-  "keywords": ["han", "research", "architecture", "documentation"],
+  "keywords": ["han", "agents", "project-discovery", "foundation"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Han Core",
-    "shortDescription": "Research, architecture, documentation, and core Han guidance.",
-    "longDescription": "Evidence-based research, architecture, and documentation skills for software projects, plus the specialist agent instructions the rest of Han uses.",
+    "shortDescription": "The shared specialist agents and project discovery at the base of Han.",
+    "longDescription": "The shared foundation of the Han suite: the specialist agent instructions the rest of Han dispatches, the project-discovery skill, and the canonical evidence and YAGNI rule files.",
     "developerName": "Test Double",
     "category": "Developer Tools",
     "capabilities": ["Skills"],
     "websiteURL": "https://github.com/testdouble/han",
     "defaultPrompt": [
-      "Research an implementation approach with Han.",
-      "Create project documentation with Han.",
-      "Analyze gaps between two artifacts."
+      "Discover this project's languages, frameworks, and tooling with Han.",
+      "Write a project reference section into AGENTS.md.",
+      "Scan this repository's structure with Han."
     ]
   }
 }

@@ -11,7 +11,7 @@ FIXED ORDER: when more than one section is present, render them in this order an
 vary it — Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,
 What's Good.
 
-READABILITY: the finding prose and narrative sections follow ../../references/readability-rule.md
+READABILITY: the finding prose and narrative sections follow the shared readability standard (sourced via han-communication:readability-guidance)
 — each finding leads with what to do and why, one idea per paragraph, short active sentences,
 plain words. The standard governs prose only; it never rewrites task IDs, severities,
 file_path:line_number references, EXPLOIT fields, the fixed section headings and their order,
@@ -20,7 +20,8 @@ subject to the descriptive-heading rule.
 
 PROSE ONCE: each finding's prose lives in exactly one place — its finding block, or its
 full security block. The Review Summary table row is an index entry, not prose; a
-`Tension with …` pointer note is a pointer, not prose.
+`Tension with …` pointer note is a pointer, not prose. The plain-language explanation is
+part of that one place, not a second copy of it.
 -->
 
 ## 📋 Review Summary
@@ -29,15 +30,21 @@ full security block. The Review Summary table row is an index entry, not prose; 
 
 <!-- A corrective finding's severity is already carried by its task-ID prefix (CRIT-/WARN-/SUGG-). A security finding's task ID does not encode a tier, so show the tier inline in the Task ID cell — e.g. `SEC-001 (Critical)` — so the table stands alone as the complete severity-ordered index. -->
 
+<!-- The Description cell carries the fix route, and opens with `May never fire —` on any finding the review established
+may not be reachable. Both cues sit here so a person triaging thirty findings gets them before opening any one of them;
+a longer finding body would leave the triage exactly where it was. The cell stays an index entry, not a second copy of
+the finding's prose. Security findings show `—` for the route: their Remediation note carries it. -->
+
 <!-- If no issues were found, use the no-issues row instead. -->
 
-| Task ID | Category | File | Description |
-|---------|----------|------|-------------|
-| {TASK-ID} | {Category} | {file:line} | {Brief description of finding} |
-| SEC-### ({Critical\|High\|Medium}) | {OWASP: A0X} | {file:line} | {Brief description of security vulnerability} |
+| Task ID                            | Category     | File        | Fix                                    | Description                                   |
+| ---------------------------------- | ------------ | ----------- | -------------------------------------- | --------------------------------------------- |
+| {TASK-ID}                          | {Category}   | {file:line} | {test-first \| restructure \| by hand} | {Brief description of finding}                |
+| {TASK-ID}                          | {Category}   | {file:line} | {route}                                | May never fire — {brief description}          |
+| SEC-### ({Critical\|High\|Medium}) | {OWASP: A0X} | {file:line} | —                                      | {Brief description of security vulnerability} |
 
 <!-- No-issues row if applicable: -->
-<!-- | — | — | — | No issues found | -->
+<!-- | — | — | — | — | No issues found | -->
 
 ### Review Recommendation
 
@@ -57,43 +64,55 @@ full security block. The Review Summary table row is an index entry, not prose; 
 
 <!-- Finding block format. Keep `file:line` (the actionable anchor). Omit the [Category] label when the category is generic and already conveyed by the table and task-ID prefix (logic, performance, clarity, and similar). Keep a category cue only when it names content a standalone reader needs and the task ID does not supply — an ADR violation that names the record, a standards violation that names the standard, or a security finding. -->
 
+<!-- Every CRIT / WARN / SUGG block opens with the plain-language explanation, then the existing guidance for the person who will open the file, then the fix route. The rules for both — what the explanation answers, where its answers come from, why deriving them never changes severity, and how to pick one of the three routes — are in references/finding-content.md. YAGNI findings carry neither. Security findings carry the explanation but no route: their section already ends with a Remediation note. -->
+
 <!-- Generic category (omit the label): -->
-**{TASK-ID}** `{file_path:line_number}`
-{Description of issue.}
+
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation: what someone could observe going wrong, what has to
+be true for it to happen, and how likely that is. All three answered; an answer not in doubt is a clause, not a
+sentence.} {Description of issue, for the person who will open the file.} **Fix:** {test-first (`/tdd`) | restructure
+(`/refactor`) | by hand}.
+
 ```suggestion
 {Suggested fix}
 ```
 
 <!-- Content-bearing category (keep the label): -->
-**{TASK-ID}** **[{ADR: record / Standard: name / Security}]** `{file_path:line_number}`
-{Description of issue.}
+
+**{TASK-ID}** **[{ADR: record / Standard: name / Security}]** `{file_path:line_number}` {Plain-language explanation.}
+{Description of issue.} **Fix:** {route}.
+
 ```suggestion
 {Suggested fix}
 ```
 
 ### 🟡 Warnings
 
-**{TASK-ID}** `{file_path:line_number}`
-{Description of concern.}
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Description of concern.} **Fix:** {route}.
 
 ### 🔵 Suggestions
 
-**{TASK-ID}** `{file_path:line_number}`
-{Optional improvement idea.}
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Optional improvement idea.} **Fix:** {route}.
 
 ### 🟡 YAGNI
 
-> These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items.
+> These findings will not be corrected unless explicitly requested. They are documented so the team can decide
+> consciously whether to keep, simplify, or defer the items.
 
 <!-- One line per finding plus a single reopen-trigger clause. -->
 
-**{YAGNI-###}** **[{Named anti-pattern from yagni-rule.md, or "Evidence-test failure" / "Simpler-version available"}]** `{file_path:line_number}` — {description of the code that fails the YAGNI evidence test or has a strictly simpler version available}. Reopen / keep when: {the concrete trigger that would justify keeping this code as written}.
+**{YAGNI-###}** **[{Named anti-pattern from yagni-rule.md, or "Evidence-test failure" / "Simpler-version available"}]**
+`{file_path:line_number}` — {description of the code that fails the YAGNI evidence test or has a strictly simpler
+version available}. Reopen / keep when: {the concrete trigger that would justify keeping this code as written}.
 
 ## 🔐 Security Vulnerabilities
 
 <!-- Render this whole section only when proven vulnerabilities exist. Each finding's full prose lives here and nowhere else — there is no cross-reference under Critical. -->
 
 **SEC-001: [Brief descriptive title]**
+
+- **What this means:** {Plain-language explanation, same three questions and same terms as every other finding a reader
+  must act on. A security finding is the one a non-implementer can least judge unaided.}
 - **OWASP:** A0X — Category Name
 - **Location:** `file_path:line_number`
 - **Evidence:** {exact code snippet demonstrating the vulnerability}

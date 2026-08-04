@@ -1,6 +1,7 @@
 # marketplace.json Schema Reference
 
-The `.claude-plugin/marketplace.json` file is the registry that Claude Code reads to discover and install plugins from a marketplace.
+The `.claude-plugin/marketplace.json` file is the registry that Claude Code reads to discover and install plugins from a
+marketplace.
 
 ## Root Object
 
@@ -26,28 +27,28 @@ The `.claude-plugin/marketplace.json` file is the registry that Claude Code read
 
 Each item in the `plugins` array:
 
-| Field         | Required | Type             | Description                                                              |
-| ------------- | -------- | ---------------- | ------------------------------------------------------------------------ |
-| `name`        | Yes      | string           | Plugin identifier in kebab-case. Never use a `.`; see [Plugin Naming](./plugin-naming.md). |
-| `source`      | Yes      | string \| object | Where to fetch the plugin (see Source Variants below)                    |
-| `displayName` | No       | string           | Human-readable name shown in the UI; falls back to `name`. Not used for namespacing. Requires Claude Code v2.1.143+. |
-| `description` | No       | string           | Plugin description                                                       |
-| `version`     | No       | string           | Plugin version (overridden by `plugin.json` if both specify)             |
-| `defaultEnabled` | No    | boolean          | Whether the plugin is enabled after install (default `true`). Takes precedence over the same field in `plugin.json`. Requires Claude Code v2.1.154+. |
-| `author`      | No       | object           | `name` (required if present) and `email` (optional)                      |
-| `homepage`    | No       | string           | Plugin documentation URL                                                 |
-| `repository`  | No       | string           | Source code URL                                                          |
-| `license`     | No       | string           | SPDX license identifier                                                  |
-| `keywords`    | No       | array            | Discovery tags (strings)                                                 |
-| `category`    | No       | string           | Plugin category                                                          |
-| `tags`        | No       | array            | Additional searchability tags (strings)                                  |
-| `strict`      | No       | boolean          | Default `true`. Controls `plugin.json` authority (see Strict Mode below) |
-| `skills`      | No       | string \| array  | Custom paths to skill directories                                        |
-| `commands`    | No       | string \| array  | Custom paths to flat skill files                                         |
-| `agents`      | No       | string \| array  | Custom paths to agent files                                              |
-| `hooks`       | No       | string \| object | Hooks config path or inline object                                       |
-| `mcpServers`  | No       | string \| object | MCP server config path or inline object                                  |
-| `lspServers`  | No       | string \| object | LSP server config path or inline object                                  |
+| Field            | Required | Type             | Description                                                                                                                                          |
+| ---------------- | -------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`           | Yes      | string           | Plugin identifier in kebab-case. Never use a `.`; see [Plugin Naming](./plugin-naming.md).                                                           |
+| `source`         | Yes      | string \| object | Where to fetch the plugin (see Source Variants below)                                                                                                |
+| `displayName`    | No       | string           | Human-readable name shown in the UI; falls back to `name`. Not used for namespacing. Requires Claude Code v2.1.143+.                                 |
+| `description`    | No       | string           | Plugin description                                                                                                                                   |
+| `version`        | No       | string           | Plugin version (overridden by `plugin.json` if both specify)                                                                                         |
+| `defaultEnabled` | No       | boolean          | Whether the plugin is enabled after install (default `true`). Takes precedence over the same field in `plugin.json`. Requires Claude Code v2.1.154+. |
+| `author`         | No       | object           | `name` (required if present) and `email` (optional)                                                                                                  |
+| `homepage`       | No       | string           | Plugin documentation URL                                                                                                                             |
+| `repository`     | No       | string           | Source code URL                                                                                                                                      |
+| `license`        | No       | string           | SPDX license identifier                                                                                                                              |
+| `keywords`       | No       | array            | Discovery tags (strings)                                                                                                                             |
+| `category`       | No       | string           | Plugin category                                                                                                                                      |
+| `tags`           | No       | array            | Additional searchability tags (strings)                                                                                                              |
+| `strict`         | No       | boolean          | Default `true`. Controls `plugin.json` authority (see Strict Mode below)                                                                             |
+| `skills`         | No       | string \| array  | Custom paths to skill directories                                                                                                                    |
+| `commands`       | No       | string \| array  | Custom paths to flat skill files                                                                                                                     |
+| `agents`         | No       | string \| array  | Custom paths to agent files                                                                                                                          |
+| `hooks`          | No       | string \| object | Hooks config path or inline object                                                                                                                   |
+| `mcpServers`     | No       | string \| object | MCP server config path or inline object                                                                                                              |
+| `lspServers`     | No       | string \| object | LSP server config path or inline object                                                                                                              |
 
 ## Source Variants
 
@@ -159,7 +160,8 @@ Versions resolve in this order:
 2. `version` in the marketplace plugin entry
 3. Git commit SHA of the plugin's source (for git-based sources)
 
-If both `plugin.json` and the marketplace entry specify a version, `plugin.json` silently wins. Omit version entirely to auto-update on every commit via the commit SHA.
+If both `plugin.json` and the marketplace entry specify a version, `plugin.json` silently wins. Omit version entirely to
+auto-update on every commit via the commit SHA.
 
 ## Reserved Marketplace Names
 

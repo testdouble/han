@@ -1,0 +1,24 @@
+{
+  "name": "han-communication",
+  "version": "1.0.0",
+  "description": "Foundational communication plugin for the Han suite: the shared readability standard, writing-voice profile, explanation standard, and the skills and agent that apply them.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "communication", "readability", "writing"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Communication",
+    "shortDescription": "The shared communication standards and the skills that apply them.",
+    "longDescription": "Foundational communication plugin for the Han suite. Owns the canonical readability standard, writing-voice profile, and explanation standard, the readability-guidance skill that surfaces the first two for in-voice drafting, the explanation-guidance skill that surfaces the third when a run talks to a person, and the edit-for-readability skill that rewrites a draft against the standard.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": ["Edit a draft for readability with Han.", "Apply the Han readability standard to this document."]
+  }
+}

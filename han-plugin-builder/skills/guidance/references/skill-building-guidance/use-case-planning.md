@@ -5,45 +5,55 @@ paths:
 
 # Use Case Planning
 
-Before writing a SKILL.md, define 2-3 concrete use cases the skill should handle. Use cases ground the skill in real user workflows rather than abstract capabilities, and they become the test cases you run after building.
+Before writing a SKILL.md, define 2-3 concrete use cases the skill should handle. Use cases ground the skill in real
+user workflows rather than abstract capabilities, and they become the test cases you run after building.
 
-Skipping this step leads to skills that sound good in their description but fail in practice — trigger phrases that don't match how users actually ask, missing tool permissions, or domain knowledge gaps that only surface during execution. Spending 10 minutes defining use cases before writing saves iterations later.
+Skipping this step leads to skills that sound good in their description but fail in practice — trigger phrases that
+don't match how users actually ask, missing tool permissions, or domain knowledge gaps that only surface during
+execution. Spending 10 minutes defining use cases before writing saves iterations later.
 
-This guide covers *pre-development* planning — what happens before iteration 1. For the iterative development process that follows, see [Iterative Plugin Development](../iterative-plugin-development.md).
+This guide covers _pre-development_ planning — what happens before iteration 1. For the iterative development process
+that follows, see [Iterative Plugin Development](../iterative-plugin-development.md).
 
 ## The Rules
 
 ### Rule: Define 2-3 concrete use cases before building
 
-Each use case should represent a distinct way a user would invoke the skill. Two use cases is the minimum to avoid building a one-trick skill. Three is usually enough to cover the primary workflows without over-engineering.
+Each use case should represent a distinct way a user would invoke the skill. Two use cases is the minimum to avoid
+building a one-trick skill. Three is usually enough to cover the primary workflows without over-engineering.
 
 **Before (no use cases — jumping straight to SKILL.md):**
+
 ```yaml
 ---
 name: "project-documentation"
 description: "Creates project documentation"
 ---
-
 ## Step 1: Find the project structure
 ## Step 2: Write documentation
 ```
-This skill was built without thinking about *who* would use it or *how*. The description is vague, the steps are generic, and there's no way to test whether it works.
+
+This skill was built without thinking about _who_ would use it or _how_. The description is vague, the steps are
+generic, and there's no way to test whether it works.
 
 **After (use cases defined first):**
 
 Use Case 1: Document an existing feature
+
 - **Trigger:** "Document how the authentication system works"
 - **Steps:** Discover project structure, trace the feature through code, write documentation
 - **Tools:** Read, Grep, Glob, Agent (a codebase-explorer agent)
 - **Domain knowledge:** Documentation templates, section structure conventions
 
 Use Case 2: Update outdated documentation
+
 - **Trigger:** "Update the API docs — the endpoints changed last sprint"
 - **Steps:** Find existing docs, compare against current code, update with changes
 - **Tools:** Read, Grep, Glob, Agent (a content-auditor agent)
 - **Domain knowledge:** How to identify stale sections, change detection patterns
 
 Use Case 3: Create documentation for a new component
+
 - **Trigger:** "Write docs for the new payment service"
 - **Steps:** Scan component structure, identify public interfaces, generate documentation
 - **Tools:** Read, Grep, Glob, Agent (a codebase-explorer agent)
@@ -51,23 +61,27 @@ Use Case 3: Create documentation for a new component
 
 ### Rule: Each use case answers four questions
 
-Every use case must answer these four questions. Missing any one creates a gap that surfaces during development or testing.
+Every use case must answer these four questions. Missing any one creates a gap that surfaces during development or
+testing.
 
-| Question | What It Reveals |
-|----------|----------------|
-| **What does the user want to accomplish?** | The trigger phrases for the description |
-| **What multi-step workflow does this require?** | The numbered steps in SKILL.md |
-| **What tools are needed?** | The `allowed-tools` frontmatter |
-| **What domain knowledge should be embedded?** | The `references/` content |
+| Question                                        | What It Reveals                         |
+| ----------------------------------------------- | --------------------------------------- |
+| **What does the user want to accomplish?**      | The trigger phrases for the description |
+| **What multi-step workflow does this require?** | The numbered steps in SKILL.md          |
+| **What tools are needed?**                      | The `allowed-tools` frontmatter         |
+| **What domain knowledge should be embedded?**   | The `references/` content               |
 
 **Before (incomplete use case):**
+
 ```
 Use Case: Code review
 Trigger: "Review my code"
 ```
+
 This tells you nothing about the workflow, tools, or knowledge needed.
 
 **After (complete use case):**
+
 ```
 Use Case: Review current branch for quality issues
 Trigger: "Review my code" / "Check this branch" / "Run a code review"
@@ -80,11 +94,14 @@ Tools: Read, Grep, Glob, Agent (for parallel file analysis)
 Domain knowledge: OWASP top 10, code review checklist, severity rating scale
 ```
 
-Now you know the description needs trigger phrases like "review," "check," and "code review." You know `allowed-tools` needs `Read, Grep, Glob, Agent`. You know `references/` needs a review checklist and OWASP guide.
+Now you know the description needs trigger phrases like "review," "check," and "code review." You know `allowed-tools`
+needs `Read, Grep, Glob, Agent`. You know `references/` needs a review checklist and OWASP guide.
 
 ### Rule: Use cases become your test cases
 
-Each use case is a test case you can run after building the skill. The trigger phrase tests whether the skill activates. The workflow tests whether the steps execute correctly. The expected result tests whether the output meets quality standards.
+Each use case is a test case you can run after building the skill. The trigger phrase tests whether the skill activates.
+The workflow tests whether the steps execute correctly. The expected result tests whether the output meets quality
+standards.
 
 **Use case as test case:**
 
@@ -100,7 +117,8 @@ Then:
   - No fabricated details (only documents what exists in code)
 ```
 
-If a use case can't be turned into a testable scenario, it's too vague. Rewrite it with specific triggers, steps, and expected results.
+If a use case can't be turned into a testable scenario, it's too vague. Rewrite it with specific triggers, steps, and
+expected results.
 
 ## Use Case Template
 
@@ -143,6 +161,9 @@ Domain Knowledge: PR description template (summary, changes, test plan sections)
 6. Use cases end where iteration 1 begins — hand off to the iterative development process
 
 Cross-references:
+
 - [Success Criteria and Testing](./success-criteria-and-testing.md) — How to turn use cases into structured test suites
-- [Iterative Plugin Development](../iterative-plugin-development.md) — The development process that follows use case planning
-- [Skill Description Frontmatter](./skill-description-frontmatter.md) — Use case trigger phrases inform the description field
+- [Iterative Plugin Development](../iterative-plugin-development.md) — The development process that follows use case
+  planning
+- [Skill Description Frontmatter](./skill-description-frontmatter.md) — Use case trigger phrases inform the description
+  field

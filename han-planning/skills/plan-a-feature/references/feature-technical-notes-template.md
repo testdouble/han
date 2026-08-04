@@ -51,8 +51,10 @@ four files stay in sync.
 
 ## T1: {Short mechanic title}
 
-- **Context:** <!-- One or two sentences naming the spec section and the behavioral question whose correct specification required this note. -->
-- **Technical detail:** <!-- The actual mechanic being captured — enough that a plan-implementation specialist can honor it, no more. -->
+- **Context:**
+  <!-- One or two sentences naming the spec section and the behavioral question whose correct specification required this note. -->
+- **Technical detail:**
+  <!-- The actual mechanic being captured — enough that a plan-implementation specialist can honor it, no more. -->
 - **Supports decisions:** <!-- D# IDs from decision-log.md, or — -->
 - **Driven by findings:** <!-- F# IDs from team-findings.md, or — -->
 - **Referenced in spec:** <!-- feature-specification.md section headings that cite this note -->

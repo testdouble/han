@@ -7,7 +7,13 @@ captures the history, rationale, evidence, and rejected alternatives for each de
 
 ## Two-tier format: full vs. trivial decisions
 
-Every decision is classified as **full** or **trivial** before it is recorded.
+Every decision is classified as **full** or **trivial** exactly once, after the review round returns, during the
+plan-synthesizer step. It is not classified at draft time. Two of the promotion signals below, a driving finding
+and a linked technical note, cannot exist until the review round has run, so classifying earlier guarantees a second pass
+over the same decisions. Write every decision in full form during the initial draft and split the set once.
+
+D# numbers are assigned at draft time and never change during classification, so the specification's inline links keep
+resolving whichever section a decision lands in.
 
 A decision is **full** when any of these signals is present:
 - it has at least one rejected alternative **a reasonable engineer would plausibly have chosen** (an obvious or strawman alternative does not by itself make a decision full);
@@ -68,7 +74,8 @@ the spec link populated so a reader can navigate from spec → decision log and
 find the outcome.
 -->
 
-- D{N}: {decision title} — {one-sentence outcome} (considered {alternative}; rejected because {one clause}). — Referenced in spec: {sections}.
+- D{N}: {decision title} — {one-sentence outcome} (considered {alternative}; rejected because {one clause}). —
+  Referenced in spec: {sections}.
 
 ## Full decisions
 
@@ -80,7 +87,8 @@ find the outcome.
 - **Evidence:** <!-- Codebase paths, ADR numbers, coding standards, or "user input" -->
 - **Rejected alternatives:**
   - ... — rejected because ...
-- **Linked technical notes:** <!-- T# IDs from feature-technical-notes.md whose mechanic enables this decision's behavior, or — -->
+- **Linked technical notes:**
+  <!-- T# IDs from feature-technical-notes.md whose mechanic enables this decision's behavior, or — -->
 - **Driven by findings:** <!-- F# IDs from team-findings.md, or — -->
 - **Dependent decisions:** <!-- D# IDs of later decisions that rested on this one -->
 - **Referenced in spec:** <!-- feature-specification.md sections that cite this decision -->

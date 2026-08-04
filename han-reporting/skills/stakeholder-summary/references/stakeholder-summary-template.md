@@ -31,7 +31,10 @@ flowchart TD
 
 ## How does the data flow today vs. after this change?
 
-**Diagram counts scale with the spec.** The example below shows one "Today" diagram and two "After this change" diagrams because that is the most common shape. Add or remove diagrams in each subsection to match the number of meaningfully distinct paths the spec describes. Single-path subsections do not get padded to two; multi-path subsections do not get collapsed into one.
+**Diagram counts scale with the spec.** The example below shows one "Today" diagram and two "After this change" diagrams
+because that is the most common shape. Add or remove diagrams in each subsection to match the number of meaningfully
+distinct paths the spec describes. Single-path subsections do not get padded to two; multi-path subsections do not get
+collapsed into one.
 
 **Today** — {{one-sentence description of the current state and the pain it causes}}:
 
@@ -85,8 +88,11 @@ flowchart LR
 
 ## What we are asking stakeholders
 
-Each item here must present a real trade-off, framing call, or unresolved question — not a yes/no confirmation of something already listed above. If the only thing you would ask is "is the exclusion of X acceptable?", drop it; the closing prompt in the previous section already covers that.
+Each item here must present a real trade-off, framing call, or unresolved question — not a yes/no confirmation of
+something already listed above. If the only thing you would ask is "is the exclusion of X acceptable?", drop it; the
+closing prompt in the previous section already covers that.
 
-- **{{Trade-off or framing call 1}}.** {{One sentence presenting the named alternatives or the framing the stakeholder must confirm.}}
+- **{{Trade-off or framing call 1}}.**
+  {{One sentence presenting the named alternatives or the framing the stakeholder must confirm.}}
 - **{{Trade-off or framing call 2}}.** {{One sentence.}}
 - **{{Trade-off or framing call 3}}.** {{One sentence.}}

@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Usage: upload-screenshots.sh <work-items-file> <target-repo> <plan-folder>
 #
-# Copies every PNG referenced in the work-items file's screenshot embeds from
-# <plan-folder>/ui-designs/<file>.png into <target-repo> at
-# .github/issue-assets/<feature-slug>/<SYM-N>/<file>.png. The <feature-slug>
+# Copies every visual-material file referenced in the work-items file's embeds
+# from <plan-folder>/ui-designs/<file> into <target-repo> at
+# .github/issue-assets/<feature-slug>/<SYM-N>/<file>. The accepted file types are
+# the set named in han-planning/references/planning-boundary-rule.md, kept in
+# ASSET_EXT_PATTERN below: png, jpg, jpeg, gif, webp, svg, pdf. The <feature-slug>
 # segment keeps assets from different features that publish to the same repo
 # from colliding — every feature restarts its work-item numbering at <PREFIX>-1,
 # so a flat <SYM-N> namespace would commingle (and risk overwriting) a prior
@@ -12,12 +14,12 @@
 # (see references/screenshot-embed-rules.md).
 #
 # The upload mechanism is adaptive:
-#   * By default each PNG is written directly to the repo's default branch via
+#   * By default each file is written directly to the repo's default branch via
 #     the GitHub Contents API. This is fast and fully autonomous — the common
 #     case for an unprotected repo.
 #   * If the default branch is protected and rejects the direct write (HTTP 409,
 #     "changes must be made through a pull request"), the script falls back to
-#     committing every PNG to an assets branch and opening a pull request, then
+#     committing every file to an assets branch and opening a pull request, then
 #     prints the PR URL. The embedded image URLs always point at the default
 #     branch, so the inline designs render once that PR merges.
 #
@@ -37,14 +39,22 @@ PLAN_FOLDER="${3:?plan folder required}"
 
 UI_DESIGNS="$PLAN_FOLDER/ui-designs"
 
+# The accepted visual-material file types, as an extended-regex alternation. This
+# is the set named in han-planning/references/planning-boundary-rule.md, which the
+# planning skills persist into ui-designs/. Widening that set means widening this
+# pattern, references/screenshot-embed-rules.md, and references/issue-template.md
+# together: an upload that accepts a file type the template still writes a .png
+# extension for succeeds and renders a broken image.
+ASSET_EXT_PATTERN='(png|jpg|jpeg|gif|webp|svg|pdf)'
+
 # Extract every embedded same-repo raw URL pointing at
-# .github/issue-assets/<feature-slug>/<SYM>/<file>.png.
+# .github/issue-assets/<feature-slug>/<SYM>/<file>.<ext>.
 # A single embed `[![alt](URL)](URL)` produces the URL twice; sort -u dedupes.
 # Portable across bash 3.2 (macOS default) and bash 4+ — no mapfile.
 URLS=()
 while IFS= read -r url; do
   [ -n "$url" ] && URLS+=("$url")
-done < <(grep -oE "https://github\.com/${TARGET_REPO//\//\\/}/raw/[^/]+/\.github/issue-assets/[^/]+/[^/]+/[^)]+\.png" "$WORK_ITEMS" | sort -u)
+done < <(grep -oE "https://github\.com/${TARGET_REPO//\//\\/}/raw/[^/]+/\.github/issue-assets/[^/]+/[^/]+/[^)]+\.${ASSET_EXT_PATTERN}" "$WORK_ITEMS" | sort -u)
 
 if [ ${#URLS[@]} -eq 0 ]; then
   echo "no screenshot URLs for $TARGET_REPO in $WORK_ITEMS — nothing to upload"
@@ -64,7 +74,7 @@ base64_encode() {
 }
 
 # Parse each URL into parallel arrays (bash 3.2 has no associative arrays we can
-# rely on). Path shape: .github/issue-assets/<feature-slug>/<SYM>/<file>.png
+# rely on). Path shape: .github/issue-assets/<feature-slug>/<SYM>/<file>.<ext>
 # field positions under awk -F/ are: $1=.github $2=issue-assets $3=slug
 # $4=sym $5=file.
 PATHS=(); SYMS=(); FILES=(); SRCS=()
@@ -84,13 +94,13 @@ for url in "${URLS[@]}"; do
     exit 1
   fi
 
-  [ -f "$src" ] || { echo "ERROR: source PNG not found: $src" >&2; exit 1; }
+  [ -f "$src" ] || { echo "ERROR: source file not found: $src" >&2; exit 1; }
 
   PATHS+=("$path"); SYMS+=("$sym"); FILES+=("$file"); SRCS+=("$src")
   FEATURE_SLUG="$slug"
 done
 
-# Write one PNG to <branch> at its Contents API path. Creates or overwrites,
+# Write one asset file to <branch> at its Contents API path. Creates or overwrites,
 # fetching the current sha on that branch first so the PUT is idempotent.
 # Prints "added"/"updated" on stdout; gh errors flow to stderr. Returns the
 # PUT's exit status so the caller can distinguish a branch-protection rejection

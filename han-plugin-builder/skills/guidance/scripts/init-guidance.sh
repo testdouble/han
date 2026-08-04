@@ -51,7 +51,10 @@ RULE=".claude/rules/plugin-building-guidance.md"
 rewrite_skill() {
   file="$1"
   tmp="$(mktemp)"
-  # shellcheck disable=SC2016  # ${CLAUDE_PLUGIN_ROOT} is matched literally, not expanded.
+  # SC2016 is disabled deliberately: the first expression matches the literal
+  # text "${CLAUDE_PLUGIN_ROOT}" as it appears in the vendored SKILL.md, so the
+  # single quotes are required. Expanding it here would match nothing.
+  # shellcheck disable=SC2016
   sed \
     -e 's|${CLAUDE_PLUGIN_ROOT}/skills/guidance/references/|.claude/skills/plugin-guidance/references/|g' \
     -e 's|^name: guidance$|name: plugin-guidance|' \
