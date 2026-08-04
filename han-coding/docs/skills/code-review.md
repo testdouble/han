@@ -168,7 +168,9 @@ other section appears only when it has at least one item, and when several are p
   recommended fix. Each also opens with a plain-language explanation written for someone who will not open the file:
   what they could observe going wrong, what has to be true for it to happen, and how likely that is, said outright when
   the answer is that the finding may never fire. All three are answered, and an answer that is not in doubt takes a
-  clause rather than a sentence. The guidance for the person who will open the file follows it, unchanged. The
+  clause rather than a sentence. The guidance for the person who will open the file follows it, unchanged. Each finding
+  then names how it gets fixed: test-first (`/tdd`) when a behavior is missing, restructure (`/refactor`) when the
+  behavior is right and the shape is wrong, or by hand when the edit is small. The route is named, never started. The
   `[Category]` label is kept on a block only when it names content a standalone reader needs (an ADR violation naming
   the record, a standards violation naming the standard, or a security finding) and dropped for generic categories the
   table already carries.

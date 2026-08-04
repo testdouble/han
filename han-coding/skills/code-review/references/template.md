@@ -58,13 +58,14 @@ part of that one place, not a second copy of it.
 
 <!-- Finding block format. Keep `file:line` (the actionable anchor). Omit the [Category] label when the category is generic and already conveyed by the table and task-ID prefix (logic, performance, clarity, and similar). Keep a category cue only when it names content a standalone reader needs and the task ID does not supply — an ADR violation that names the record, a standards violation that names the standard, or a security finding. -->
 
-<!-- Every CRIT / WARN / SUGG block opens with the plain-language explanation, then the existing guidance for the person who will open the file. The rules for writing it — what it answers, where the answers come from, and why deriving them never changes severity — are in references/finding-content.md. YAGNI findings carry no explanation. -->
+<!-- Every CRIT / WARN / SUGG block opens with the plain-language explanation, then the existing guidance for the person who will open the file, then the fix route. The rules for both — what the explanation answers, where its answers come from, why deriving them never changes severity, and how to pick one of the three routes — are in references/finding-content.md. YAGNI findings carry neither. Security findings carry the explanation but no route: their section already ends with a Remediation note. -->
 
 <!-- Generic category (omit the label): -->
 
 **{TASK-ID}** `{file_path:line_number}` {Plain-language explanation: what someone could observe going wrong, what has to
 be true for it to happen, and how likely that is. All three answered; an answer not in doubt is a clause, not a
-sentence.} {Description of issue, for the person who will open the file.}
+sentence.} {Description of issue, for the person who will open the file.} **Fix:** {test-first (`/tdd`) | restructure
+(`/refactor`) | by hand}.
 
 ```suggestion
 {Suggested fix}
@@ -73,7 +74,7 @@ sentence.} {Description of issue, for the person who will open the file.}
 <!-- Content-bearing category (keep the label): -->
 
 **{TASK-ID}** **[{ADR: record / Standard: name / Security}]** `{file_path:line_number}` {Plain-language explanation.}
-{Description of issue.}
+{Description of issue.} **Fix:** {route}.
 
 ```suggestion
 {Suggested fix}
@@ -81,11 +82,11 @@ sentence.} {Description of issue, for the person who will open the file.}
 
 ### 🟡 Warnings
 
-**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Description of concern.}
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Description of concern.} **Fix:** {route}.
 
 ### 🔵 Suggestions
 
-**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Optional improvement idea.}
+**{TASK-ID}** `{file_path:line_number}` {Plain-language explanation.} {Optional improvement idea.} **Fix:** {route}.
 
 ### 🟡 YAGNI
 

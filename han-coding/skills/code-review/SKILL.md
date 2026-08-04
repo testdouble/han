@@ -390,7 +390,9 @@ return. Draft the finding prose and narrative against both.
 **Every CRIT, WARN, SUGG, and SEC finding opens with a plain-language explanation** written for the reader who will not
 open the file: what they could observe going wrong, what has to be true for it to happen, and how likely that is. Apply
 [finding-content.md](./references/finding-content.md) for which findings carry it, what it answers, where the answers
-come from, and why working them out NEVER changes a finding's severity, task ID, or position. Use the template at
+come from, and why working them out NEVER changes a finding's severity, task ID, or position. **Every CRIT, WARN, and
+SUGG finding also names how it gets fixed** — test-first, restructure, or by hand — chosen by the rule in that same
+file. Name the route; never start it. Use the template at
 [template.md](./references/template.md) for the output structure. **Render a section only when it has content** — never
 emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are
 always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,
@@ -415,8 +417,9 @@ own canonical rule, so pass no rule path.
 Constrain the rewrite tightly. The editor rewrites **prose only** — the sentences inside finding bodies, the Remediation
 note, the narrative in the What's Good and Review Recommendation sections. It must leave every structural token
 byte-for-byte: task IDs (`CRIT-001`, `SEC-001`, and the rest), severity labels, `file_path:line_number` references,
-`EXPLOIT:` fields, category labels, the fixed section headings and their order, the Review Summary table structure and
-its cells, any `Tension with …` pointer, and every code snippet or fenced block. It preserves every fact: each finding's
+`EXPLOIT:` fields, category labels, the `**Fix:**` label and the route name that follows it, the fixed section headings
+and their order, the Review Summary table structure and its cells, any `Tension with …` pointer, and every code snippet
+or fenced block. It preserves every fact: each finding's
 recommended action, its severity, its location, its quantities, and its named entities survive with their precision
 intact. The descriptive-heading criterion does not apply to the report's prescribed section headings, which are fixed.
 

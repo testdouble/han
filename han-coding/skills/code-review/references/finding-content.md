@@ -56,6 +56,26 @@ reading "this may be a no-op if the upstream never returns nil" keeps the severi
 re-deciding severity here would silently reopen the discovery and validation passes this content is written on top of,
 and those passes see evidence this step does not.
 
+## The fix route
+
+Every CRIT, WARN, and SUGG finding also names how it gets fixed. The reader asks anyway, and the finding already carries
+what decides the answer, so naming it costs a clause.
+
+Pick exactly one of three:
+
+| Route           | Pick it when                                                                                      | Rendered as                   |
+| --------------- | ------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **test-first**  | A behavior is missing or wrong. The fix is new or corrected behavior, and a test should drive it. | `test-first (\`/tdd\`)`       |
+| **restructure** | The behavior is right and the shape is wrong. The fix changes design without changing behavior.   | `restructure (\`/refactor\`)` |
+| **by hand**     | The fix is a small local edit. No skill is worth spinning up for it.                              | `by hand`                     |
+
+**The route is named, never started.** The review points at the route and stops. It does not invoke `/tdd`, `/refactor`,
+or anything else on the reader's behalf, BECAUSE the reader decides what to act on and in what order, and a review that
+starts fixing things stops being a review.
+
+**Security findings carry no route** — see below. **YAGNI findings carry no route**, on the same grounds as the
+explanation: they are not corrected unless somebody asks for them.
+
 ## Security findings
 
 A SEC finding carries the explanation on the same terms as every other finding a reader must act on. Its exemption from
