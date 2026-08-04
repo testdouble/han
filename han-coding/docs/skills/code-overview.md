@@ -144,6 +144,11 @@ The readability pass runs next. `readability-editor` rewrites the corrected draf
 standard, preserving every fact, so the overview leads with its point and reads for someone who did not do the work.
 Accuracy settles first, so the editor never polishes a claim that is about to change.
 
+The skill then checks its own output before showing it to you: that every chart's boxes name components rather than
+carrying field and type detail, that the starting points are numbered in reading order with an example call where one is
+called for, that terms you could not look up carry their explanations, and that the closing restatement is there and free
+of file paths and type names. Anything that fails is fixed before you see it, not reported to you as a caveat.
+
 The validator checks the description against the code only to keep it truthful. It never judges the code's quality; the
 overview still raises no findings about the work itself.
 

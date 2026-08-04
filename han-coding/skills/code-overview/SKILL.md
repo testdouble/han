@@ -382,6 +382,21 @@ optional: the standard governs how the content is said, never whether a required
 
 For this skill, the main point the opening line must state is what is being examined and why it exists.
 
+**Required-content check.** Run this after the readability self-check, and after the accuracy pass, BECAUSE a check that
+runs before the accuracy pass can confirm content that is about to be corrected or cut. Each item is a yes/no question
+about the finished document. Fix every failure before presenting; never present a failure as a caveat.
+
+1. **Diagrams.** Every chart's boxes name components and boundaries, with fields, types, signatures, and annotations in
+   the prose beneath rather than inside a box. This is the one check that reads **inside** the chart bodies, which the
+   readability self-check leaves alone by design.
+2. **Starting points.** The entry points are numbered in reading order, each carries one line on what the reader learns
+   there, and every entry point that is an interface other code calls carries one runnable example call.
+3. **Terms the reader cannot look up.** Criterion 5 of the readability self-check above carries this one: every outside
+   technology, language runtime, named method, and coined compound noun has its half-sentence explanation at first use.
+   Confirm it passed rather than re-running it.
+4. **The closing restatement.** The final section is present, runs three or four sentences, and carries no file paths,
+   no type names, and no symbol names.
+
 ## Step 8: Present
 
 Present a short message in this fixed order. The answer leads and the run's own bookkeeping comes last, BECAUSE this
