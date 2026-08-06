@@ -72,7 +72,7 @@ def main() -> int:
         print("Docs host-wording advisory: found Claude-only phrasing in core docs:\n")
         print("\n".join(violations))
         print(
-            "\nUse host-neutral wording (for example, 'coding-agent host') unless the line is intentionally host-specific."
+            "\nUse harness-neutral wording (for example, 'agent harness') unless the line is intentionally harness-specific."
         )
         print("\nContinuing in advisory mode (exit 0).")
         return 0

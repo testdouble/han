@@ -7,8 +7,8 @@
     "lint": "prek run --all-files",
     "test": "find . -name node_modules -prune -o -name '*.bats' -print0 | xargs -0 bats",
     "check:pi-compat": "python3 scripts/check-pi-compat.py",
-    "check:docs-host-wording": "python3 scripts/check-docs-host-wording.py",
-    "check:compat": "npm run check:pi-compat && npm run check:docs-host-wording"
+    "check:docs-harness-wording": "python3 scripts/check-docs-harness-wording.py",
+    "check:compat": "npm run check:pi-compat && npm run check:docs-harness-wording"
   },
   "devDependencies": {
     "@j178/prek": "^0.4.9",

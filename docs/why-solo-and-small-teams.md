@@ -3,7 +3,7 @@
 _Audience: developers and engineering leaders evaluating Han for any team size. Time to read: about two minutes.
 Outcome: decide whether Han fits your situation, or stop here._
 
-> **Short answer.** Han is a coding-agent plugin suite that gives a single engineer the specialist coverage of a team. It does
+> **Short answer.** Han is an agentic plugin suite that gives a single engineer the specialist coverage of a team. It does
 > not give a team the shared lift of an enterprise AI platform. If you need centralized governance, shared prompts
 > across developers, indexed org knowledge, or audited AI usage at org scale, Han is not your tool. Bolting those things
 > on later will cost more than starting with a product that includes them. If you are a solo engineer or a small team

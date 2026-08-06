@@ -1,7 +1,7 @@
 # Configuration
 
 Han reads two optional configuration files, and you can use either one or both. A personal `.han/config.md` in your
-coding-agent configuration directory carries settings that follow you into every project. A project's own
+harness configuration directory carries settings that follow you into every project. A project's own
 `.han/config.md` adjusts those settings for that project. Both control where skills write their markdown deliverables,
 which extra agents dispatching skills consider, the default swarm size the sizing-aware skills start at, and the
 writing-voice profile the readability skills apply. Every Han skill reads both files on every run, so the overrides take
@@ -31,7 +31,7 @@ effect without depending on the model remembering to look. Someone with neither 
 
 ## Where each file goes
 
-- **Personal:** `.han/config.md` inside your coding-agent configuration directory. The resolver checks
+- **Personal:** `.han/config.md` inside your harness configuration directory. The resolver checks
   `AGENT_CONFIG_DIR` first, then `CLAUDE_CONFIG_DIR`, then falls back to `~/.claude`. If you have moved your configuration
   directory, a file left behind in `~/.claude/.han/` does not apply.
 - **Project:** `.han/config.md` in the directory you run Han skills from.
@@ -63,7 +63,7 @@ Every setting is optional, everything unrecognized is ignored, and both files ta
 # folder and file structure beneath it, and creates the directory on first
 # write. A relative path is read from the folder holding this file, so the
 # same line means "inside this project" in a project config and "inside my
-# coding-agent configuration directory" in a personal one. Full paths and a
+# harness configuration directory" in a personal one. Full paths and a
 # leading ~ are accepted, including paths outside the project.
 output-directory: docs/han
 
