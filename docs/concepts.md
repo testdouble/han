@@ -38,7 +38,7 @@ Those three are the whole decision model. Everything else is vocabulary.
 
 ## Skills: the process layer
 
-A skill is a fixed sequence of steps that Claude Code runs. Typing the slash command is the primary way to trigger it,
+A skill is a fixed sequence of steps that your coding-agent host runs. Typing the slash command is the primary way to trigger it,
 but not the only one.
 
 - You invoke it: `/code-review`, `/plan-a-feature`, `/investigate`. This is the deliberate, primary path.
@@ -204,7 +204,7 @@ table, and the fidelity guard.
 
 ## Configuration
 
-Han reads two optional `.han/config.md` files on every skill run: a personal one in your Claude Code configuration
+Han reads two optional `.han/config.md` files on every skill run: a personal one in your coding-agent configuration
 directory, and a project one at the project root. Either sets a base directory for the skills' markdown deliverables, a
 default swarm size for the sizing-aware skills, a writing-voice profile for the readability skills, and extra agents for
 the dispatching skills to consider. The personal file supplies defaults that follow you into every project, and the

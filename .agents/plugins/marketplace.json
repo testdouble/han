@@ -5,6 +5,18 @@
   },
   "plugins": [
     {
+      "name": "han",
+      "source": {
+        "source": "local",
+        "path": "./han"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
       "name": "han-communication",
       "source": {
         "source": "local",
@@ -21,6 +33,30 @@
       "source": {
         "source": "local",
         "path": "./han-core"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-documentation",
+      "source": {
+        "source": "local",
+        "path": "./han-documentation"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-research",
+      "source": {
+        "source": "local",
+        "path": "./han-research"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -93,6 +129,18 @@
       "source": {
         "source": "local",
         "path": "./han-atlassian"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "han-linear",
+      "source": {
+        "source": "local",
+        "path": "./han-linear"
       },
       "policy": {
         "installation": "AVAILABLE",

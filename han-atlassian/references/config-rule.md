@@ -1,7 +1,7 @@
 # Config Rule (`.han/config.md`)
 
 Han reads two optional configuration files, and either one may be absent. A person may carry a personal
-`.han/config.md` inside their Claude Code configuration directory, and a consuming project may carry its own
+`.han/config.md` inside their coding-agent configuration directory, and a consuming project may carry its own
 `.han/config.md`. The personal file supplies defaults that follow the person into every project; the project file
 adjusts them for that project. Each participating skill finds both through its `## Project Context` block; this rule
 defines how every skill interprets what that block yields, so one pair of files resolves identically across the whole
@@ -12,9 +12,10 @@ suite. Every vendored copy of this file is byte-identical to the canonical `han-
 The `## Project Context` block carries two probe lines and directs one Read-tool call. This rule refers to each by the
 label it injects under, or by the file it reads.
 
-- `personal config directory` (probe): the Claude Code configuration directory, resolved for this run. Named by the
-  `CLAUDE_CONFIG_DIR` environment variable when that variable is set, and `~/.claude` when it is not. This value is not
-  a setting. It is the folder a relative path in the personal file resolves against.
+- `personal config directory` (probe): the coding-agent configuration directory, resolved for this run. Named by the
+  `AGENT_CONFIG_DIR` environment variable when that variable is set, otherwise by `CLAUDE_CONFIG_DIR` when that variable
+  is set, and `~/.claude` when neither is set. This value is not a setting. It is the folder a relative path in the
+  personal file resolves against.
 - The personal `.han/config.md` (Read tool): the content of `.han/config.md` inside that directory, or nothing. The
   skill reads this file itself as its first action rather than through a probe. A probe runs at skill load, where it
   cannot prompt and cannot degrade, so a permission decision against it aborts the skill instead of falling back to
@@ -23,15 +24,15 @@ label it injects under, or by the file it reads.
 - `project .han/config.md` (probe): the content of `.han/config.md` in the directory the skill is running from, or
   nothing.
 
-The two directories can both exist on one machine and point at different places, so the variable wins whenever it is
-set. A personal file sitting in `~/.claude/.han/config.md` does not apply to a person who has pointed
-`CLAUDE_CONFIG_DIR` somewhere else.
+These directories can all exist on one machine and point at different places, so the first defined variable in the
+precedence order wins. A personal file sitting in `~/.claude/.han/config.md` does not apply to a person who has pointed
+`AGENT_CONFIG_DIR` or `CLAUDE_CONFIG_DIR` somewhere else.
 
 Neither lookup walks up the directory tree. The project file is found only in the directory the skill runs from, the
 same place the CLAUDE.md and project-discovery probes look. A config elsewhere in the repository does not apply. When
 neither lookup yields content, no config is present: behave exactly as the skill does without this rule, with no note.
 
-When both lookups resolve to the same file, because the skill is running inside the Claude Code configuration
+When both lookups resolve to the same file, because the skill is running inside the active coding-agent configuration
 directory, read it once and treat it as the project configuration. Nothing is counted twice, and its `## Extra Agents`
 list is one list.
 

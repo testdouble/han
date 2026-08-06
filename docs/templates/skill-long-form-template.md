@@ -34,7 +34,7 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 ## How to invoke it
 
-Run `/{skill-name}` in Claude Code.
+Run `/{skill-name}` in your coding-agent host (for example Claude Code or Pi).
 
 Give it:
 

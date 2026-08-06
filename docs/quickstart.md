@@ -126,7 +126,7 @@ need the real skill, spend it here.
    architectural decisions.
 5. **[`.han/config.md`](./configuration.md)** _(as needed)._ Carry an optional config file to set a base directory for
    Han's markdown outputs, a default swarm size for the sizing-aware skills, a writing-voice profile, and extra agents
-   for dispatching skills to consider. Put it in your Claude Code configuration directory for settings that follow you
+   for dispatching skills to consider. Put it in your coding-agent configuration directory for settings that follow you
    everywhere, or at the project root for that project alone.
 
 **You are done when:** you have a `## Project Discovery` section in your AGENTS.md or CLAUDE.md and the docs and
