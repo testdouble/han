@@ -5,10 +5,7 @@
   "description": "Dev tooling for the han plugin suite (lint, format, and shell tests).",
   "scripts": {
     "lint": "prek run --all-files",
-    "test": "find . -name node_modules -prune -o -name '*.bats' -print0 | xargs -0 bats",
-    "check:pi-compat": "python3 scripts/check-pi-compat.py",
-    "check:docs-harness-wording": "python3 scripts/check-docs-harness-wording.py",
-    "check:compat": "npm run check:pi-compat && npm run check:docs-harness-wording"
+    "test": "find . -name node_modules -prune -o -name '*.bats' -print0 | xargs -0 bats"
   },
   "devDependencies": {
     "@j178/prek": "^0.4.9",
