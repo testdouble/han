@@ -199,8 +199,8 @@ optional.
   the rewrite pass.
 - [`/edit-for-readability`](../han-communication/docs/skills/edit-for-readability.md). The standalone skill that applies this
   standard on demand to a file, pasted text, or a conversation draft.
-- [`han-communication/output-styles/han-readability.md`](../han-communication/output-styles/han-readability.md). The
-  output style that holds the standard across a whole session.
+- [`Han Readability`](../han-communication/docs/output-styles/han-readability.md). The output style that holds the
+  standard across a whole session, and the boundaries it does not reach.
 - [Concepts](./concepts.md). The skill / agent split, and where readability sits among the plugin's mechanics.
 - [YAGNI](./yagni.md) and [Evidence](./evidence.md). The other shared rules, summarized the same way (they remain
   vendored per-plugin; readability is now sourced cross-plugin from `han-communication`).

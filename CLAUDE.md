@@ -76,7 +76,7 @@ han-plugin-builder skill:
 │   ├── agents/         # readability-editor agent definition
 │   ├── skills/         # readability-guidance + explanation-guidance (both inline, each surfaces one standard) + edit-for-readability
 │   ├── output-styles/  # han-readability.md: the readability rule and writing voice distilled into a selectable output style (auto-discovered default location; no plugin.json field)
-│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md + docs/output-styles/han-readability.md
 │   └── references/     # Canonical readability-rule.md + writing-voice.md + explanation-rule.md (owned here; no vendored copies elsewhere)
 ├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery (depends on no other Han plugin)
 │   ├── README.md       # Light front door; skills and agents grouped by purpose
@@ -296,7 +296,9 @@ All three are owned by `han-planning`, not vendored. Each opens by saying so.
   `han-communication/agents/`, `han-research/agents/`, and `han-planning/agents/` (long-form docs in
   `{plugin}/docs/agents/`, indexed in
   `docs/agents/README.md`). Verify the indexes list every entity when editing them, rather than tracking a running
-  total.
+  total. An output style in `han-communication/output-styles/` gets a long-form doc in
+  `{plugin}/docs/output-styles/` and a plugin README scent line, with no repo-root index until a second plugin ships
+  one.
 
 ## Project Discovery
 

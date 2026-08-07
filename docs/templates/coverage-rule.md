@@ -1,6 +1,6 @@
 # Long-form Doc Coverage Rule
 
-Every skill and agent in the han plugin gets a long-form doc. No exceptions.
+Every skill, agent, and output style in the han plugin gets a long-form doc. No exceptions.
 
 ## The Rule
 
@@ -11,8 +11,12 @@ When you add a new agent, you create a long-form doc in `{plugin}/docs/agents/{n
 `han-core`, `han-communication`, `han-research`, or `han-planning`, the only agent-owning plugins) using
 [the agent template](./agent-long-form-template.md).
 
-The long-form doc lands in the same pull request as the skill or agent definition. Not as a follow-up. Not "when there's
-time."
+When you add a new output style, you create a long-form doc in `{plugin}/docs/output-styles/{name}.md` (today that
+plugin is `han-communication`, the only style-owning plugin) using
+[the output-style variant](#the-output-style-variant) of the skill template.
+
+The long-form doc lands in the same pull request as the skill, agent, or output-style definition. Not as a follow-up.
+Not "when there's time."
 
 ## Why this rule
 
@@ -85,6 +89,55 @@ output:
 
 Use this variant only for a skill that both runs inline in the caller's context and produces no deliverable. A skill an
 operator invokes directly follows the full template, even when its output is small.
+
+## The output-style variant
+
+An output style breaks the template for the opposite reason the inline-guidance skills do. Nobody runs it, and it
+produces nothing, because it is a block of text Claude Code appends to the system prompt at session start. You select it
+once and it shapes every turn until you change it. Today the only one is
+[`Han Readability`](../../han-communication/docs/output-styles/han-readability.md).
+
+An output-style doc carries this section list, in this order:
+
+```markdown
+## TL;DR
+
+## Key concepts
+
+## When to select it
+
+## How to select it
+
+## What it changes
+
+## What it does not reach
+
+## Cost and latency
+
+## Troubleshooting
+
+## Related documentation
+```
+
+Two headings are renamed, two are added, and three are dropped:
+
+- **`When to use it` becomes `When to select it`, and `How to invoke it` becomes `How to select it`.** A style is chosen
+  once in `/config`, not invoked per task, so both sections describe a standing choice rather than a call.
+- **`What it changes` replaces `What you get back`.** No artifact comes back. What a reader needs is the behavior
+  difference the style makes, stated so they can recognize it in the output.
+- **`What it does not reach` is new, and it is the section a reader most needs.** A style modifies the main
+  conversation's system prompt only. Name every boundary here: dispatched subagents that run their own prompt,
+  configuration a static prompt cannot probe, and any canonical file the style was derived from and can drift against.
+- **`How to get the most out of it`, `YAGNI`, and `Sources` are dropped.** There are no invocation levers on a standing
+  selection, a style gates no artifact, and a style distilled from a canonical rule inherits that rule's citations
+  instead of restating them.
+
+A style derived from a canonical reference file names that file as authoritative in `Related documentation` and says
+plainly that the style is a copy. That pointer is what stops the two drifting apart without anyone noticing.
+
+There is no separate template file for this variant, and no repo-root output-styles index. The plugin README's scent
+line and this long-form doc are the surfaces a new style needs. Add an index when a second plugin ships a style, not
+before.
 
 ## What is _not_ the long-form doc
 

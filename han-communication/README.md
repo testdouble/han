@@ -25,10 +25,9 @@ that produces prose output depends on it, so it comes along whenever you install
 
 ## Output styles
 
-- `Han Readability` ([`output-styles/han-readability.md`](output-styles/han-readability.md)) — Apply the readability
-  standard and the writing voice to every turn of a session, not only to the skills that source them. Select it under
-  **Output style** in `/config`; it takes effect on the next session or after `/clear`. It keeps Claude Code's built-in
-  software engineering instructions, so coding behavior is unchanged.
+- [`Han Readability`](docs/output-styles/han-readability.md) — Hold the readability standard and the writing voice
+  across every turn of a session, not only inside the skills that source them. Select it under **Output style** in
+  `/config`; it keeps Claude Code's built-in software engineering instructions, so coding behavior is unchanged.
 
 ## Installation
 
