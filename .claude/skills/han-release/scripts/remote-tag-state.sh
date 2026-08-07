@@ -23,7 +23,11 @@
 #
 #   absent                  neither on the remote nor local; create and push it
 #   remote-at-commit        on the remote at the release commit; skip it
-#   remote-at-other-commit  on the remote at a different commit; STOP, unrecoverable
+#   remote-at-other-commit  on the remote at a different commit; the CALLER decides what
+#                           that means, because this script cannot see the version plan.
+#                           An unchanged plugin keeps its version and so keeps the tag an
+#                           earlier release gave it, which is the normal resting state; a
+#                           tag being created right now is a collision and unrecoverable.
 #   local-only              on this machine only; push it, never treat it as a skip
 #
 # The sha column carries the commit the tag resolves to, or `-` when the tag is absent.

@@ -434,31 +434,52 @@ The operator's request to tag and publish authorizes the commit and push require
 
 The commit is on GitHub and no tag exists yet. Everything past this point is irreversible.
 
-1. **Compute each plugin's `tag name`** as `{name}--v{target}`, for every plugin in `plugins`.
+1. **Compute each plugin's `tag name`** as `{name}--v{target}`, for every plugin in `plugins`, then split them into two
+   sets using the Step 3 version plan:
+   - **Being tagged this release** — every plugin whose `target` differs from its `baseline` (the parent always, plus
+     each bumped child), and every **new** plugin from Step 3a, whose tag has never existed.
+   - **Carried forward** — every unchanged child, whose `target` equals its `baseline`. Its tag was created by the
+     release that shipped that version and points at that older release commit. This run does not re-tag it.
 
-2. **Classify them against the remote** in one call:
+   A release commonly bumps a handful of plugins and carries the rest forward, so the carried-forward set is routine
+   rather than exceptional. Treating it as an error blocks every release after the first.
+
+2. **Classify every tag against the remote** in one call:
 
    ```
    ${CLAUDE_SKILL_DIR}/scripts/remote-tag-state.sh {release commit} {tag name}...
    ```
 
    It prints `{tag}\t{state}\t{sha}` per tag. Exit 2 means the remote could not be read: stop, because a run that cannot
-   see the remote must not guess. The four states and what each one means for the walk:
+   see the remote must not guess. The script reports what the remote holds and nothing more; this step decides what each
+   state means, because one of the four means different things for the two sets:
 
-   | State                    | What Step 10 does with it                  |
-   | ------------------------ | ------------------------------------------ |
-   | `absent`                 | Create and push it.                        |
-   | `remote-at-commit`       | Skip it. Already published at this commit. |
-   | `remote-at-other-commit` | **Stop the run now** (see 3 below).        |
-   | `local-only`             | Push it. This is never a skip.             |
+   | State                    | What Step 10 does with it                      |
+   | ------------------------ | ---------------------------------------------- |
+   | `absent`                 | Create and push it.                            |
+   | `remote-at-commit`       | Skip it. Already published at this commit.     |
+   | `remote-at-other-commit` | Depends on which set the plugin is in (see 3). |
+   | `local-only`             | Push it. This is never a skip.                 |
 
-3. **Any `remote-at-other-commit` stops the run here**, before a single tag is created. Name the tag, the commit it
-   points at, and `{release commit}`. Say plainly that pushing is **not** the recovery: the push is rejected identically
-   every time, GitHub does not allow a published release's tag to be moved or deleted, and this skill never forces one.
-   The way out is a different version number, which is free right now and costs a burned version once the walk starts.
+3. **Read each `remote-at-other-commit` against the set its plugin is in.** A tag pointing somewhere other than
+   `{release commit}` is the normal resting state for a carried-forward plugin and an unrecoverable collision for one
+   being tagged now, so the two cannot share a rule.
+   - **Carried forward:** run `git merge-base --is-ancestor {sha} {release commit}`. When it succeeds, the tag points
+     into this release's own history, which is what an already-shipped version looks like. Record it as **already on
+     GitHub** and skip it; Step 10 never touches it. When the check fails, the tag sits on a commit this release does
+     not descend from, so treat it as the stop below.
+   - **Being tagged this release:** stop, always. No ancestor check applies, because the version this run is about to
+     publish is already taken.
+
+   **On a stop**, stop before a single tag is created. Name the tag, the commit it points at, and `{release commit}`.
+   Say plainly that pushing is **not** the recovery: the push is rejected identically every time, GitHub does not allow
+   a published release's tag to be moved or deleted, and this skill never forces one. The way out is a different version
+   number, which is free right now and costs a burned version once the walk starts.
 
 4. **Ask for approval** with `AskUserQuestion` (`header: "Tag plugins"`). Show:
-   - The tags to create, and separately the tags already on GitHub.
+   - The tags to create and push, named individually.
+   - Separately, the tags already on GitHub that this run leaves untouched, including every carried-forward plugin
+     resolved at 3. Say that none of them is moved or deleted.
    - `{release commit}` and the branch it is on, with the Step 1.3 note if it is not the default branch.
    - When `draft_release` is true, that the draft flag holds back the release page only. Every tag is still created and
      pushed, and none of them can be moved afterwards.
@@ -486,9 +507,11 @@ Walk `plugins`, taking the entry whose name equals `parent plugin name` **first*
 parent goes first so the tag the GitHub release attaches to is the one most likely to exist if the walk stops partway.
 Order by name, not by position in the file.
 
-For each plugin, act on its Step 9 state:
+For each plugin, act on the outcome Step 9 recorded for it:
 
 - **`remote-at-commit`** — skip. Record it as already on GitHub.
+- **Carried forward, resolved at Step 9.3** — skip. Record it as already on GitHub. Its tag belongs to the release that
+  shipped that version, and this run leaves it exactly where it is.
 - **`local-only`** — `git push origin refs/tags/{tag name}`. Record it as newly pushed.
 - **`absent`** — create and push it in one call:
 
@@ -516,9 +539,14 @@ machine, and for each of the latter the literal recovery command `git push origi
 
 ## Step 11: Publish the GitHub release
 
-1. **Re-run the classification** from Step 9 over every plugin's `tag name`. Every one must read `remote-at-commit`.
-   If any does not, **stop** and report as in Step 10. Publishing with a tag missing from GitHub is the failure this gate
-   exists to prevent.
+1. **Re-run the classification** from Step 9 over every plugin's `tag name`, holding each result to the rule for its
+   set. Every plugin **being tagged this release** must now read `remote-at-commit`. Every **carried-forward** plugin
+   must read either `remote-at-commit` or the same `remote-at-other-commit` sha that passed the ancestor check at Step
+   9.3. No plugin in either set may read `absent` or `local-only`.
+
+   If any result fails its rule, **stop** and report as in Step 10. Publishing with a tag missing from GitHub is the
+   failure this gate exists to prevent. Demanding that every tag sit on `{release commit}` is not that check: it would
+   stop every release that carries an unchanged plugin forward, which is nearly all of them.
 
 2. **Publish**, per [references/release-notes-format.md](./references/release-notes-format.md), using
    `/tmp/han-release-notes-v{parent target}.md` (the filename keeps the plain version; it is a local path, not a ref):
@@ -542,9 +570,10 @@ Report concisely:
 
 - The full version plan (parent and each child, and how the parent version was decided).
 - `{release commit}`, and whether it is on the default branch.
-- **One line per plugin naming its final tag state**: newly pushed, already on GitHub, or present only on this machine.
-  Those three are different, and "created" plus "skipped" cannot express the third, which is the state a partly-failed
-  release leaves behind.
+- **One line per plugin naming its final tag state**: newly pushed, already on GitHub (whether skipped at
+  `remote-at-commit` or carried forward from an earlier release), or present only on this machine. Those three are
+  different, and "created" plus "skipped" cannot express the third, which is the state a partly-failed release leaves
+  behind.
 - Any tag still local-only, with its literal `git push origin refs/tags/{tag name}` recovery line.
 - The files committed and the commit; the release URL (or draft URL); whether the CHANGELOG section was augmented or
   generated.
