@@ -23,6 +23,12 @@ that produces prose output depends on it, so it comes along whenever you install
 - [`readability-editor`](docs/agents/readability-editor.md) — Rewrite a finished draft for a non-author reader against
   the shared readability standard, preserving every fact and leaving code, diagrams, and citation identifiers untouched.
 
+## Output styles
+
+- [`Han Readability`](docs/output-styles/han-readability.md) — Hold the readability standard and the writing voice
+  across every turn of a session, not only inside the skills that source them. Select it under **Output style** in
+  `/config`; it keeps Claude Code's built-in software engineering instructions, so coding behavior is unchanged.
+
 ## Installation
 
 Add the marketplace to Claude Code, then install the plugin (or install `han` to get it as part of the bundled suite):
