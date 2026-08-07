@@ -12,6 +12,9 @@ specialist agents to cover each dimension in parallel. Reach for it once there i
   enforced observed-failure gate; it writes code, not a document.
 - [`/refactor`](docs/skills/refactor.md) — Restructure existing code without changing its behavior through a test-gated
   loop that re-runs the full suite after every small step.
+- [`/design-an-api`](docs/skills/design-an-api.md) — Design the contract for an API change inside one codebase, with
+  every element justified from one stated goal and the design run past a question round and an adversarial validation
+  round.
 - [`/code-review`](docs/skills/code-review.md) — Run a comprehensive code review on the current branch or specified
   files, with a size-scaled roster of specialist agents.
 - [`/code-overview`](docs/skills/code-overview.md) — Produce a human-readable, progressive-disclosure overview of

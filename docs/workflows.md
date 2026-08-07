@@ -80,8 +80,10 @@ prepare the ground for a test-first build.
 flowchart TD
     review["/code-review"] --> refactor["/refactor"]
     arch["/architectural-analysis"] --> refactor
+    arch --> design["/design-an-api"]
+    design --> tdd["/tdd"]
     review --> pr["/post-code-review-to-pr"]
-    refactor --> tdd["/tdd"]
+    refactor --> tdd
     tdd --> prdesc["/update-pr-description"]
     investigate["/investigate"] --> iterate["/iterative-plan-review"]
 ```
@@ -95,6 +97,10 @@ flowchart TD
   work orders.
 - **[`/refactor`](../han-coding/docs/skills/refactor.md) → [`/tdd`](../han-coding/docs/skills/tdd.md).** Preparatory
   refactoring makes the change easy, then `/tdd` makes the easy change.
+- **[`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
+  [`/design-an-api`](../han-coding/docs/skills/design-an-api.md) → [`/tdd`](../han-coding/docs/skills/tdd.md).** Judge
+  the structure you are designing into, shape the contract against one stated goal, then implement it test-first. The
+  analysis step is optional; `/design-an-api` runs its own discovery wave when you start there.
 - **[`/investigate`](../han-coding/docs/skills/investigate.md) →
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).** Root-cause the bug, then stress-test
   the proposed fix.

@@ -89,11 +89,12 @@ where it lives. Confirm it resolves to real files using `Glob` and `Read`. If th
 file yet, resolve instead the module or directory it will live in and the consumers that will call it. If neither
 resolves, ask the user to name the surface before going further.
 
-**Resolve the starting point.** Read the `current branch` value from Project Context. If the current branch already
-carries a partial or abandoned attempt at this change, ask the user in one short message whether to design from the
-branch as it stands or from the merge base with the default branch, ignoring the branch's changes. Use `git` to read the
-merge-base state when they choose the merge base. State the chosen starting point in one line. When git is unavailable
-or the branch carries nothing relevant, the working tree is the starting point and no question is asked.
+**Resolve the starting point.** Read the `current branch` value from Project Context. Run
+`git diff --name-only $(git merge-base HEAD origin/HEAD)...HEAD` and check whether any interface file resolved above
+appears in the output. Only when one does, ask the user in one short message whether to design from the branch as it
+stands or from the merge base, ignoring the branch's changes; read the merge-base state with `git show` when they
+choose the merge base. In every other case — no interface file changed on the branch, git unavailable, or the command
+fails — the working tree is the starting point and no question is asked. State the chosen starting point in one line.
 
 **Resolve project context.** If `CLAUDE.md` is present, read its `## Project Discovery` section for conventions. Fall
 back to `project-discovery.md`. These resolve language, framework, and convention questions so the agents infer less. If
@@ -127,18 +128,18 @@ touches. These signals drive both the band and the roster:
   or carries auth, tokens, secrets, or PII across the surface.
 - **Failure-path signal:** the contract has to state what happens on failure — outbound calls, timeouts, retries,
   idempotency, partial writes, or a failure that would page someone.
+- **Boundary-data signal:** the contract moves data across a module boundary, or how errors propagate across that
+  boundary is itself part of what the design has to decide.
 - **System-seam signal:** the interface crosses a deployable unit or bounded-context boundary — an RPC or HTTP contract
   with a sibling service, a message broker topic, or a shared store across services.
-- **Unfamiliar-area signal:** the interface's surrounding module is large or its structure is not legible from a first
-  read.
 
 **Classify the size.** Default to small. Escalate only when a band's signal is clearly present; when a signal is
 borderline, stay at the smaller band.
 
 - **Small** _(default)_ — one interface with a contained consumer set inside one module, and no data-contract,
-  trust-boundary, failure-path, or system-seam signal. The ordering signal may be present or absent.
-- **Medium** — a consumer-spread signal, OR exactly one of the ordering, data-contract, trust-boundary, or failure-path
-  signals.
+  trust-boundary, failure-path, boundary-data, or system-seam signal. The ordering signal may be present or absent.
+- **Medium** — a consumer-spread signal, OR exactly one of the ordering, data-contract, trust-boundary, failure-path,
+  or boundary-data signals.
 - **Large** — two or more of those cross-cutting signals together, OR a system-seam signal is present, OR `$size` is
   `large`.
 
@@ -164,7 +165,7 @@ whose domain the contract never touches. A conversational override ("design this
 | Specialist                              | Add when               | Min band |
 | --------------------------------------- | ---------------------- | -------- |
 | `han-core:structural-analyst`           | Consumer-spread signal | Medium   |
-| `han-core:behavioral-analyst`           | Unfamiliar-area signal | Medium   |
+| `han-core:behavioral-analyst`           | Boundary-data signal   | Medium   |
 | `han-core:concurrency-analyst`          | Ordering signal        | Medium   |
 | `han-core:data-engineer`                | Data-contract signal   | Medium   |
 | `han-core:on-call-engineer`             | Failure-path signal    | Medium   |
@@ -209,7 +210,13 @@ each carrying the finding, its provenance (a `file:line` citation, or the label 
 it. Merge duplicates and keep conflicting findings as separate numbered entries with both citations, rather than
 picking a winner. Apply the evidence rule from [../../references/evidence-rule.md](../../references/evidence-rule.md) to
 every finding. When a question the design depends on has no evidence at any tier, record it as an open item rather than
-guessing.
+guessing, and carry it into Step 8 alongside the open items the question round produces.
+
+If a specialist returns nothing usable or fails, record a one-line note in the context brief naming the agent and the
+domain left uncovered, and continue. A missing specialist narrows the design's evidence; it does not stop the run. If
+`han-core:codebase-explorer` returns nothing usable, relaunch it once with the interface's file paths spelled out. If
+the second attempt also returns nothing, stop and tell the user the interface could not be discovered, naming the paths
+that were searched.
 
 ## Step 5: Dispatch the Architect for Options
 
@@ -228,12 +235,20 @@ and the resolved project conventions. Its brief must ask for:
 
 Write the returned options to `{folder}/design-options.md`.
 
+If the architect returns one option, or returns options whose elements carry no justification, relaunch it once with the
+missing requirement restated. If the second attempt still returns one option, carry that option forward and record in
+the design document that only one viable option was produced, with the architect's stated reason.
+
 ## Step 6: Human Gate — The User Picks an Option
 
+Before writing the question, invoke `han-communication:explanation-guidance` to source the shared explanation standard
+into your context. After that skill returns, proceed immediately to the question below — do not stop there. The
+standard stays in context for Step 8, so do not invoke it a second time.
+
 Present the options to the user with `AskUserQuestion`: one option per choice, the recommendation named first and
-labelled as recommended, each with its one-line reasoning. Before writing the question, invoke
-`han-communication:explanation-guidance` and apply it, so each option reads as an outcome the user could observe rather
-than a mechanism. Include the cut list in the surrounding message so the user sees what the design is giving up.
+labelled as recommended, each with its one-line reasoning. Apply the explanation standard to the wording, so each option
+reads as an outcome the user could observe rather than a mechanism. Include the cut list in the surrounding message so
+the user sees what the design is giving up.
 
 Handle the response:
 
@@ -263,12 +278,13 @@ them.
 
 ## Step 8: Human Gate — Open Items, One at a Time
 
-Surface the open items from Step 7 **one at a time**, each as its own `AskUserQuestion` call. Never batch them BECAUSE
+Surface the open items — those the question round produced in Step 7, plus any no-evidence item recorded in Step 4 —
+**one at a time**, each as its own `AskUserQuestion` call. Never batch them BECAUSE
 each answer routinely settles or reshapes the ones behind it, and a batch asks the user to decide in an order the design
 does not follow.
 
-For each item, invoke `han-communication:explanation-guidance` and apply it to the wording. Each question leads with the
-plain-language consequence of the choice, names two to four candidate answers, and says what changes in the contract
+Apply the explanation standard already in your context from Step 6 to each question's wording. Each question leads with
+the plain-language consequence of the choice, names two to four candidate answers, and says what changes in the contract
 depending on the answer. After each answer, re-check the remaining open items: drop the ones the answer just settled,
 and re-word the ones it changed.
 
@@ -285,12 +301,12 @@ the consumer the design forgets, the input state it does not define behavior for
 the justification that does not actually follow from the goal, and the finding whose evidence does not support what the
 design built on it.
 
-Record its output as numbered validation findings (V1, V2, V3, …). For each finding, decide and record one of:
+Record its output as numbered validation findings (V1, V2, V3, …), and mark each one:
 
-- **Accepted** — relaunch `han-core:software-architect` once with every accepted finding to revise the design, and note
-  what changed.
-- **Rejected** — state why the finding does not hold, citing the goal, a context-brief finding, or a user decision from
-  Step 6 or Step 8.
+- **Rejected** — the finding does not hold. Record why, citing the goal, a context-brief finding, or a user decision
+  from Step 6 or Step 8.
+- **Accepted** — the finding holds. Once every finding is marked, relaunch `han-core:software-architect` a single time
+  carrying all accepted findings together, and record what changed for each.
 
 If the validator finds nothing, record what it checked and why that supports the design. A clean validation round is a
 result, not an empty section.
@@ -315,8 +331,9 @@ Read [references/api-design-template.md](./references/api-design-template.md) an
    chosen and what it was chosen over, the decisions the user made at the two gates, the validation outcome, and any
    signalled domain the band cap omitted.
 
-Then invoke `han-communication:readability-guidance` to source the shared readability standard into your context, and
-dispatch `han-communication:readability-editor` with one `Agent` call to audit and rewrite the document. Pass it the
+Then invoke `han-communication:readability-guidance` to source the shared readability standard into your context. After
+that skill returns, proceed immediately to the rewrite below — do not stop there. Dispatch
+`han-communication:readability-editor` with one `Agent` call to audit and rewrite the document. Pass it the
 file path and the named audience: the engineer who will implement this contract and the reviewer who will approve it.
 The editor reads han-communication's own canonical rule, so pass no rule path. It preserves every fact and edits prose
 regions only — never inside code fences, pseudocode sketches, type signatures in code blocks, or finding-ID and
