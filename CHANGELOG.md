@@ -1,5 +1,75 @@
 # Han Release Notes
 
+## v5.1.0
+
+han 5.1.0 adds a selectable output style that holds the readability standard across a whole session, not only inside the
+skills that source it. `han-communication` (1.1.0) ships the style and its long-form doc; the suite-level docs gain the
+coverage rule and the operator guidance that make an output style a first-class component of the repo. `han-core`
+(3.0.0), `han-documentation` (1.0.0), `han-research` (1.0.0), `han-planning` (2.1.0), `han-coding` (3.0.0), `han-github`
+(2.3.0), `han-reporting` (2.2.0), `han-feedback` (2.0.1), `han-atlassian` (2.3.0), `han-linear` (1.1.0), and
+`han-plugin-builder` (2.1.0) are unchanged.
+
+### han v5.1.0
+
+Output styles are a new component kind for this repo, so the shared surfaces that describe what a plugin ships had
+nowhere to name one. This release adds that place.
+
+#### Coverage rule extended to output styles
+
+`docs/templates/coverage-rule.md` now requires a long-form doc for every output style, in
+`{plugin}/docs/output-styles/{name}.md`, alongside the existing requirement for every skill and every agent. The rule
+gains an output-style variant section describing the heading deviations, following the precedent set by the
+inline-guidance variant: the deviations are described in the rule itself rather than in a fourth template file. The
+variant renames `When to use it` and `How to invoke it` to `When to select it` and `How to select it` (a style is
+selected once in `/config`, not called per task), replaces `What you get back` with `What it changes` (no artifact comes
+back), and adds `What it does not reach` for the boundaries that surprise people. It drops
+`How to get the most out of it`, `YAGNI`, and `Sources`. There is no repo-root output-styles index; add one when a second
+plugin ships a style.
+
+#### Operator docs name the style and its limits
+
+`docs/readability.md` gains a section on applying the standard to a whole session, naming the three limits: the style
+does not reach dispatched subagents, it carries the built-in voice only because a static system prompt cannot run the
+`.han/config.md` probe, and it is a derived copy that can drift from the canonical rule and voice files.
+`docs/choosing-a-han-plugin.md` and `CONTRIBUTING.md` name the style in the `han-communication` scent. `CLAUDE.md` gains
+the `output-styles/` layout line and a doc-map entry warning that the style is derived from
+`han-communication/references/readability-rule.md` and `han-communication/references/writing-voice.md`, so an edit to
+either one needs a matching check against the style.
+
+The new `docs/research/readability-guidance-in-output-styles.md` is the standalone research report behind the change. It
+is not tied to a plan and changes no skill behavior. Contributed by [@mxriverlynn](https://github.com/mxriverlynn).
+
+### han-communication v1.1.0
+
+The plugin ships a new component kind: the `Han Readability` output style, in
+`han-communication/output-styles/han-readability.md`. Select it under **Output style** in `/config` and every turn of the
+session is written to the readability standard, instead of only the turns inside a skill that invokes
+`readability-guidance`. It takes effect on the next session or after `/clear`, because Claude Code reads the output style
+once at session start. The style lives in the auto-discovered default `output-styles/` directory, so `plugin.json` needs
+no `outputStyles` field.
+
+The style distills the audience frame, output properties, fidelity guard, and six-criterion self-check from
+`han-communication/references/readability-rule.md` together with the blocklist from
+`han-communication/references/writing-voice.md`. It sets `keep-coding-instructions: true`, so Claude Code's software
+engineering behavior is unchanged: the style changes how work is written up, not how it is done.
+
+Three boundaries are stated in the style's long-form doc at
+`han-communication/docs/output-styles/han-readability.md`. The style does not reach a dispatched subagent, which runs its
+own system prompt, so skills remain the mechanism that brings the standard to agent output and the `readability-editor`
+remains the rewrite pass for synthesis skills. The configured `writing-voice` override does not port, because an output
+style is static system-prompt text loaded at session start and cannot probe `.han/config.md`; the built-in Han voice is
+hardcoded, and `/readability-guidance` remains the path that honors a configured profile. The style is a derived copy, so
+the canonical rule and voice files stay authoritative and nothing propagates an edit to the style for you.
+
+`han-communication/README.md` gains an Output styles section, and the scent line points at the long-form doc rather than
+at the style file, per the canonical-source convention. Contributed by [@mxriverlynn](https://github.com/mxriverlynn).
+
+### Pull requests in this release
+
+- feat(han-communication): add the han-readability output style (#174) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/han--v5.1.0/CHANGELOG.md#v510
+
 ## v5.0.0
 
 han 5.0.0 restructures the suite. The readability capability becomes a new foundational plugin, `han-core` sheds its
