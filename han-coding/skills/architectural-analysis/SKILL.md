@@ -6,8 +6,8 @@ description:
   review the architecture, design quality, dependency structure, coupling, cohesion, or technical debt of an existing
   part of the codebase. Not for investigating specific bugs, runtime errors, or failures — use investigate. Not for test
   planning — use automated-test-planning. Not for file-level code review — use code-review. Not for researching open-ended
-  options, prior art, or how something works — use research. Not for writing documentation or architectural decision
-  records."
+  options, prior art, or how something works — use research. Not for designing a new interface or contract — use
+  design-an-api. Not for writing documentation or architectural decision records."
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [focus area: module, directory, or feature to analyze]"
 allowed-tools: Read, Glob, Grep, Agent, Bash(find *)
