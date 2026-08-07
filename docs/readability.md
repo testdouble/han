@@ -26,6 +26,8 @@ and reveals detail in layers, instead of each skill restating the rule on its ow
   Every in-scope skill runs the standardized self-check.
 - **Fidelity wins.** No required fact is dropped to read more simply. Every claim, quantity, named entity, and stated
   condition survives with its precision intact.
+- **Session-wide is opt-in.** Selecting the `Han Readability` output style holds the standard across every turn, not
+  only inside a reader-facing skill. It reaches the main conversation, never a dispatched subagent.
 - **The canonical rule lives in
   [`han-communication/references/readability-rule.md`](../han-communication/references/readability-rule.md).** Every
   reader-facing skill sources it cross-plugin by invoking `han-communication:readability-guidance`. This page is the
@@ -91,6 +93,27 @@ at a time:
 
 The self-check and any rewrite operate on **prose regions only**. Code fences, diagram bodies, rendered markup, and
 inline citation identifiers are neither evaluated nor altered, so they still compile, render, and resolve.
+
+## Applying the standard to a whole session
+
+The path above covers a skill's deliverable. To hold the standard across every turn instead, including the conversation
+around a skill and the work no skill covers, select the `Han Readability` output style shipped in
+[`han-communication/output-styles/han-readability.md`](../han-communication/output-styles/han-readability.md). Choose it
+under **Output style** in `/config`. It takes effect on your next session or after `/clear`, because Claude Code reads
+the output style once at session start.
+
+The style distills the rule's audience frame, output properties, fidelity guard, and six-criterion self-check together
+with the writing-voice blocklist. It keeps Claude Code's built-in software engineering instructions, so it changes how
+work is written up, not how it is done.
+
+The style has three limits:
+
+- **It does not reach subagents.** A subagent runs its own system prompt, so the style leaves Han's dispatched
+  specialists unchanged. The skills stay the mechanism that brings the standard to agent output.
+- **It carries the built-in voice only.** A static system prompt cannot run the `.han/config.md` probe, so a configured
+  `writing-voice` profile does not override it the way it overrides `readability-guidance`.
+- **It is a derived copy.** The canonical rule and voice profile stay authoritative. When you edit either one, check
+  whether the style needs the same change.
 
 ## Scope: which skills are reader-facing
 
@@ -176,6 +199,8 @@ optional.
   the rewrite pass.
 - [`/edit-for-readability`](../han-communication/docs/skills/edit-for-readability.md). The standalone skill that applies this
   standard on demand to a file, pasted text, or a conversation draft.
+- [`han-communication/output-styles/han-readability.md`](../han-communication/output-styles/han-readability.md). The
+  output style that holds the standard across a whole session.
 - [Concepts](./concepts.md). The skill / agent split, and where readability sits among the plugin's mechanics.
 - [YAGNI](./yagni.md) and [Evidence](./evidence.md). The other shared rules, summarized the same way (they remain
   vendored per-plugin; readability is now sourced cross-plugin from `han-communication`).
