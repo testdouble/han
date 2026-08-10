@@ -1,8 +1,8 @@
 # han-coding
 
 The coding layer of the Han suite: the skills you reach for while working in code. It writes code test-first, refactors
-it under a green suite, and reviews, overviews, analyzes, tests, investigates, and standardizes it, dispatching
-specialist agents to cover each dimension in parallel. Reach for it once there is code to write, change, or judge.
+it under a green suite, and reviews, overviews, walks someone through, analyzes, tests, investigates, and standardizes
+it, dispatching specialist agents to cover each dimension in parallel. Reach for it once there is code to write, change, or judge.
 
 **Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication` and `han-core`.
 
