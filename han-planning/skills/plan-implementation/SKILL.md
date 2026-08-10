@@ -4,7 +4,8 @@ description: >
   Builds a feature implementation plan from an existing feature specification (or equivalent context) through a
   facilitated team conversation. Use when the user wants to plan how to implement, build, deliver, or ship a
   feature that has already been specified. Does not specify what the feature should do — use plan-a-feature first. Does
-  not refine or stress-test an already-written plan — use iterative-plan-review.
+  not design the contract for an interface — use design-an-api. Does not refine or stress-test an already-written plan —
+  use iterative-plan-review.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature specification path, optional: additional context]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *), Bash(cp *)

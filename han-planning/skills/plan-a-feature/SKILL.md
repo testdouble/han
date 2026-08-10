@@ -5,8 +5,9 @@ description: >
   decision-by-decision, resolving dependencies as it goes. Use when the user wants to plan, design, scope, specify, or
   flesh out a new feature, capability, or system behavior before implementation. Produces a feature specification
   focused on system behaviors, not implementation detail. Does not refine or stress-test an existing plan — use
-  iterative-plan-review. Does not document already-built features — use project-documentation. Does not research
-  open-ended options before there is a feature to specify — use research.
+  iterative-plan-review. Does not document already-built features — use project-documentation. Does not design the
+  contract for an interface — use design-an-api. Does not research open-ended options before there is a feature to
+  specify — use research.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature description, optional: output folder path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *)

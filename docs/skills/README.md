@@ -31,6 +31,9 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   or specified files, with a size-scaled roster of specialist agents.
 - [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md) — Create and update coding standards from
   existing patterns or evidence-based research.
+- [`/design-an-api`](../../han-coding/docs/skills/design-an-api.md) — Design the contract for an API change inside one
+  codebase, with every element justified from one stated goal and the design run past a question round and an
+  adversarial validation round.
 - [`/edit-for-readability`](../../han-communication/docs/skills/edit-for-readability.md) — Rewrite the prose of a target
   you already have against the shared readability standard, preserving every fact.
 - [`/explanation-guidance`](../../han-communication/docs/skills/explanation-guidance.md) — Surface the shared standard
