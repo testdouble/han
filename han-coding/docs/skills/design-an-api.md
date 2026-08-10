@@ -100,6 +100,20 @@ together, and tells you which names it wrote. It never overwrites.
   summary says which one.
 - **Pair with `/tdd` next.** The design document is written to be the input to a test-first implementation run.
 
+## Sizing
+
+| Size                  | Typical target                                                                                                          | Roster                                |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| **Small** _(default)_ | One interface with a contained consumer set inside one module, and none of the cross-cutting signals                    | Spine only (4 agents)                 |
+| **Medium**            | A consumer-spread signal, or exactly one ordering, data-contract, trust-boundary, failure-path, or boundary-data signal | Spine + up to 2 specialists (up to 6) |
+| **Large**             | Two or more of those cross-cutting signals together, or a system-seam signal                                            | Spine + up to 4 specialists (up to 8) |
+
+The four-agent spine runs at every size: `codebase-explorer`, `software-architect`, `junior-developer`, and
+`adversarial-validator`. Specialists join only when their signal is present, so a band you set by hand can sit well
+under its ceiling. When more specialists are signalled than the cap allows, the run keeps the band's count, prefers the
+strongest signals, and names the omitted domains in the design document's summary so you can re-run larger. See
+[Sizing](../../../docs/sizing.md) for the cross-skill model.
+
 ## YAGNI
 
 This skill is enforcing, not advisory. An element that cannot fill its justification field does not enter the design at

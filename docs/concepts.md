@@ -136,6 +136,7 @@ escalate.
 - **Sizing-aware skills.** [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
   [`/code-overview`](../han-coding/docs/skills/code-overview.md), [`/code-review`](../han-coding/docs/skills/code-review.md),
   [`/code-walkthrough`](../han-coding/docs/skills/code-walkthrough.md),
+  [`/design-an-api`](../han-coding/docs/skills/design-an-api.md),
   [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md),
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
