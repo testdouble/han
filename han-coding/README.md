@@ -19,6 +19,8 @@ specialist agents to cover each dimension in parallel. Reach for it once there i
   files, with a size-scaled roster of specialist agents.
 - [`/code-overview`](docs/skills/code-overview.md) — Produce a human-readable, progressive-disclosure overview of
   unfamiliar code or a PR's changes, leading with why the code exists; raises no findings.
+- [`/code-walkthrough`](docs/skills/code-walkthrough.md) — Walk someone through a branch's changes one step at a time in
+  conversation, from the entry point along the flow, stopping after every step so they set the pace.
 - [`/architectural-analysis`](docs/skills/architectural-analysis.md) — Assess a module's coupling, data flow,
   concurrency, risk, and SOLID alignment through a spine of structural, behavioral, risk, and architecture agents.
 - [`/automated-test-planning`](docs/skills/automated-test-planning.md) — Produce a prioritized test plan for a branch or directory.

@@ -22,7 +22,8 @@ depends on `han-communication` and `han-core` and is bundled by the `han` meta-p
 `han-coding` (the coding skills
 you reach for while working in code: writing it with `tdd` and `refactor`, designing an interface contract with
 `design-an-api`, plus reviewing, overviewing, analyzing,
-testing, investigating, and standardizing it with `code-review`, `code-overview`, `architectural-analysis`,
+testing, investigating, and standardizing it with `code-review`, `code-overview`, `code-walkthrough`,
+`architectural-analysis`,
 `automated-test-planning`, `manual-test-planning`, `investigate`, and `coding-standard`; depends on `han-communication` and `han-core` and is bundled by
 the `han` meta-plugin),
 `han-github` (GitHub-facing skills), `han-reporting` (reporting and summary skills; depends only on
