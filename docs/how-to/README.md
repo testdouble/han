@@ -27,7 +27,7 @@ doc tells you what the skill does; the how-to tells you how to run a workflow th
 - **[Accelerate your understanding of unfamiliar code](./accelerate-understanding-of-unfamiliar-code.md).** You have
   landed in code you do not know and want a fast mental model. Then you want a grounded, written artifact that you, your
   team, and Claude can all read again later, instead of re-deriving it every time. Covers `/code-overview`,
-  `/project-documentation`, and the Confluence wrappers that share the result.
+  `/code-walkthrough`, `/project-documentation`, and the Confluence wrappers that share the result.
 - **[Triage and investigate a bug](./triage-and-investigate-a-bug.md).** Something is broken or behaving oddly and you
   want a root cause backed by evidence, not a guess. Or the work is queued rather than immediate, and you want a
   structured triage document instead.
