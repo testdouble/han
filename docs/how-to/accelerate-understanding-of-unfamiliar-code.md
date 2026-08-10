@@ -1,8 +1,8 @@
 # How To: Accelerate Your Understanding of Unfamiliar Code
 
-A walkthrough for getting from "I have never seen this code before" to a mental model you can act on, fast. Then it
-turns that model into a grounded, written artifact that you, your teammates, and Claude can all read again later,
-instead of re-deriving it from scratch every time.
+A guide for getting from "I have never seen this code before" to a mental model you can act on, fast. Then it turns
+that model into a grounded, written artifact that you, your teammates, and Claude can all read again later, instead of
+re-deriving it from scratch every time.
 
 > See also: [How-to index](./README.md) · [Quickstart](../quickstart.md) · [Skills](../skills/README.md)
 
@@ -24,8 +24,8 @@ checked what the AI told them against the real source far more often. So the who
 orient you, then check it against the code," not "read the summary and move on."
 
 - You have a target you can name sharply. A file, a directory, a symbol, or a pull request. "The whole backend" is too
-  thin; `/code-overview` will ask you to narrow it. If you genuinely do not know where the feature lives yet, that is
-  fine: you start broad and drill in, but you still name the broad thing.
+  thin; both orientation skills will ask you to narrow it. If you genuinely do not know where the feature lives yet,
+  that is fine: you start broad and drill in, but you still name the broad thing.
 - You have the project checked out and, for the PR path, git available locally. The orientation step reads real source,
   so it needs the source.
 - You know roughly what you are trying to do with the code. Reviewing a PR, fixing a bug, extending a module, and
@@ -36,9 +36,12 @@ orient you, then check it against the code," not "read the summary and move on."
 
 ## What you'll end up with
 
-- A fast, throwaway orientation to the code, produced by [`/code-overview`](../../han-coding/docs/skills/code-overview.md): a
-  purpose statement, a Mermaid flow chart, the directly related context, and a where-to-start section, written to a
-  scratch file outside the repo. This is the "understand it now" artifact.
+- A fast, throwaway orientation to the code, in one of two shapes. Run
+  [`/code-overview`](../../han-coding/docs/skills/code-overview.md) for a map you can keep: a purpose statement, a
+  Mermaid flow chart, the directly related context, and a where-to-start section, written to a scratch file outside the
+  repo. Run [`/code-walkthrough`](../../han-coding/docs/skills/code-walkthrough.md) instead for a paced tour: the same
+  understanding delivered one step at a time in the conversation, stopping after each step so you can ask. Either way
+  this is the "understand it now" artifact.
 - Optionally, a deeper read of the part that matters: a structural and risk assessment from
   [`/architectural-analysis`](../../han-coding/docs/skills/architectural-analysis.md) when you are about to change the code, or
   a root-caused investigation from [`/investigate`](../../han-coding/docs/skills/investigate.md) when something is broken.
@@ -60,8 +63,14 @@ change the code or chase a bug.
 
 ### Phase 1: Get oriented fast
 
-1. **Run [`/code-overview`](../../han-coding/docs/skills/code-overview.md) on your target.** This is the first thing you reach
-   for in unfamiliar code. Point it at a file, a directory, a symbol, or a PR.
+Two skills orient you, and they differ in shape rather than depth. `/code-overview` hands you a finished map to read at
+your own speed. `/code-walkthrough` takes you through the code one step at a time and stops after each one. Pick by what
+you need next: a document you can keep and share, or a tour you can interrupt.
+
+Neither one raises findings about whether the code is any good. Both are orientation, not judgment.
+
+1. **Run [`/code-overview`](../../han-coding/docs/skills/code-overview.md) when you want a map you can keep.** Point it
+   at a file, a directory, a symbol, or a PR.
 
    > `/code-overview {path or symbol or PR}`
 
@@ -69,7 +78,7 @@ change the code or chase a bug.
 
    > `/code-overview src/auth/` for _"help me understand the auth module before I work on it."_
 
-   > `/code-overview #82` for _"walk me through pull request 82 so I know how to review it."_
+   > `/code-overview #82` for _"explain pull request 82 so I know how to review it."_
 
    > `/code-overview` with no argument on a feature branch, for _"explain what the changes on this branch do before I
    > review them."_
@@ -79,23 +88,49 @@ change the code or chase a bug.
    flow as a Mermaid chart, then the context and uses, then where to start. That ordering puts the most important
    understanding first, so if you stop reading after the purpose statement you are still oriented correctly.
 
-   The overview raises no findings about whether the code is any good; it is orientation, not judgment.
+   The skill writes the file to a scratch location outside the repo and shows you the path. Open it somewhere the
+   Mermaid charts render, or you lose the flow diagram to raw markup.
 
-2. **Open the overview where the charts render, and read it against the code.** The skill writes the file to a scratch
-   location outside the repo and shows you the path. Read it, but do not stop at reading. Open the entry points it names
-   in the where-to-start section and confirm they say what the overview says they say. This is the verification step the
-   research is emphatic about: the value comes from checking the explanation against the real source, not from consuming
-   it passively. The overview is grounded in actual files and real paths precisely so you can do this quickly.
+   Reach for this one when the understanding has an audience beyond you. The file is a thing you can paste into a PR
+   description or hand to a teammate.
 
-3. **Re-run larger, or drill in, when coverage is partial.** If the target was bigger than the chosen size could cover,
+2. **Run [`/code-walkthrough`](../../han-coding/docs/skills/code-walkthrough.md) when you want to be taught the flow.**
+   It defaults to the current branch's changes, so on a feature branch you can invoke it bare.
+
+   > `/code-walkthrough` for _"walk me through the changes on this branch, one step at a time."_
+
+   > `/code-walkthrough #82` for _"teach me what pull request 82 does before I review it."_
+
+   > `/code-walkthrough src/billing/` for _"show me around the billing module."_
+
+   The skill traces the flow with the same `codebase-explorer` agents, then walks it from the entry point. Each step
+   names one file by its full path from the repository root, shows a small excerpt, explains it in plain language, and
+   then stops. You say `next` to move on, ask a question to stay put, or say "go deeper" to expand where you are.
+   Changed files that sit off the execution path get named together at the end, so nothing goes missing quietly.
+
+   Reach for this one when the understanding is for you and you learn by asking. There is no file at the end; the
+   conversation is the whole thing.
+
+3. **Check what you were told against the code.** This is the verification step the research is emphatic about, and it
+   is the step that separates finishing fast from understanding. After an overview, open the entry points named in the
+   where-to-start section and confirm they say what the overview says they say. During a walkthrough, open the file
+   named in the current step before you say `next`.
+
+   The walkthrough is built to make this cheap. It gives you one full path and one small excerpt, then stops, which is
+   the shape of a verification prompt whether or not you treat it as one. Use the pause for that.
+
+4. **Re-run larger, or drill in, when coverage is partial.** If the target was bigger than the chosen size could cover,
    the overview adds a coverage note right after the header, naming what it skipped and the next size up. Re-run at the
    larger size for a fuller picture (`/code-overview large src/billing/`), or pick the one submodule that matters and
    run a focused small overview on that. Starting broad and narrowing is the normal motion when you did not know where
    the feature lived.
 
+   A walkthrough handles this differently. Rather than re-running it, say "go deeper" at the step that was too thin,
+   which expands that step and keeps your place in the walk.
+
 At the end of Phase 1 you have a working mental model and a sense of where the important code is. For a quick review or
-a small change, that may be all you need; skip to Phase 3 if you want to write it down, or stop here if the overview was
-a one-time orientation.
+a small change, that may be all you need; skip to Phase 3 if you want to write it down, or stop here if the orientation
+was a one-time job.
 
 ### Phase 2: Go deeper where it matters
 
@@ -175,6 +210,11 @@ can invent a different explanation each time. The defense is a grounded artifact
   `/code-review` to judge it. The overview orients you; the review evaluates the work. Do not use the overview as a
   review; it raises no findings on purpose.
 
+- **You want to be taught the change, not handed a summary of it.** Run `/code-walkthrough` on the branch or the PR.
+  You get the same orientation paced one step at a time, and you can stop and ask at any step without losing your
+  place. This is the better fit when the code is unfamiliar enough that a finished document would leave you with
+  questions you cannot ask it.
+
 - **The code is broken and that is why you are here.** Phase 1 still orients you fast, but the main event is
   `/investigate` from Phase 2, not `/project-documentation`. Document afterward only if the fix changed how the feature
   behaves.
@@ -200,6 +240,9 @@ can invent a different explanation each time. The defense is a grounded artifact
   never committed or maintained; it is a point-in-time map. `/project-documentation` writes a maintained doc into the
   repo tree. Reach for the first to understand now and the second to remember later. Mixing them up is the most common
   mistake.
+- **The walkthrough leaves nothing behind on purpose.** `/code-walkthrough` writes no file at all. That is the trade:
+  you get to ask questions as you go, and when the session ends the understanding lives only in your head. If you want
+  a record, run `/code-overview` on the same target afterward, or go to Phase 3 and write the durable doc.
 - **Everything is grounded in real source, so check it against real source.** Every skill in this guide reads actual
   files and cites real paths. That grounding exists so you can verify, which the research says is the step that turns
   reading into understanding. Open the files the artifacts name.
@@ -207,20 +250,22 @@ can invent a different explanation each time. The defense is a grounded artifact
   is not decoration. In later sessions, when Claude explores the codebase, it reads that doc as project context. So the
   understanding you captured flows into every future planning, review, and overview pass without you doing anything
   else.
-- **Sizing is read from the target, not the prompt length.** `/code-overview` and `/architectural-analysis` classify the
-  target and scale their agent rosters, defaulting to small and escalating only on a clear signal. Pass `small`,
-  `medium`, or `large` as the first argument when you already know the target is bigger than the default. See
+- **Sizing is read from the target, not the prompt length.** `/code-overview`, `/code-walkthrough`, and
+  `/architectural-analysis` classify the target and scale their agent rosters, defaulting to small and escalating only
+  on a clear signal. Pass `small`, `medium`, or `large` as the first argument when you already know the target is bigger
+  than the default. For a walkthrough, the size also sets roughly how many steps the walk runs. See
   [Sizing](../sizing.md).
 
 ## Where to go next
 
-- [`/code-review`](../../han-coding/docs/skills/code-review.md) is the judgment counterpart to `/code-overview`: orient with the
-  overview, then evaluate the change with the review.
+- [`/code-review`](../../han-coding/docs/skills/code-review.md) is the judgment counterpart to both orientation skills:
+  orient with the overview or the walkthrough, then evaluate the change with the review.
 - [Triage and investigate a bug](./triage-and-investigate-a-bug.md) is the matching how-to when the reason you are in
   unfamiliar code is that something is broken.
 - [Plan a feature, end to end](./plan-a-feature.md) is the right next step when understanding the code was the prelude
   to building on it.
 - The skill long-form docs cover each step in depth: [code-overview](../../han-coding/docs/skills/code-overview.md),
+[code-walkthrough](../../han-coding/docs/skills/code-walkthrough.md),
 [architectural-analysis](../../han-coding/docs/skills/architectural-analysis.md),
 [investigate](../../han-coding/docs/skills/investigate.md), [project-discovery](../../han-core/docs/skills/project-discovery.md),
 [project-documentation](../../han-documentation/docs/skills/project-documentation.md), and the Atlassian wrappers

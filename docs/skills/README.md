@@ -29,6 +29,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   (changing no code), show it for review, then publish it as one Confluence page after confirmation.
 - [`/code-review`](../../han-coding/docs/skills/code-review.md) — Run a comprehensive code review on the current branch
   or specified files, with a size-scaled roster of specialist agents.
+- [`/code-walkthrough`](../../han-coding/docs/skills/code-walkthrough.md) — Walk someone through a branch's changes one
+  step at a time in conversation, from the entry point along the flow, stopping after every step so they set the pace.
 - [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md) — Create and update coding standards from
   existing patterns or evidence-based research.
 - [`/design-an-api`](../../han-coding/docs/skills/design-an-api.md) — Design the contract for an API change inside one

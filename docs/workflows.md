@@ -137,6 +137,10 @@ These chains are linear, so they need no diagram.
 - **[`/code-overview`](../han-coding/docs/skills/code-overview.md) →
   [`/code-review`](../han-coding/docs/skills/code-review.md).** Get oriented in unfamiliar code or a PR first, then judge
   whether it is any good.
+- **[`/code-walkthrough`](../han-coding/docs/skills/code-walkthrough.md) →
+  [`/code-review`](../han-coding/docs/skills/code-review.md).** The same chain when you want to be taught rather than
+  handed a document: walk the change one step at a time, asking questions as you go, then review it. Reach for
+  `/code-overview` instead when you want one artifact you can keep, share, or paste into a PR description.
 - **[`/project-documentation`](../han-documentation/docs/skills/project-documentation.md) → the specialized documents.**
   Feature and system docs live in `/project-documentation`, but three kinds of writing route elsewhere: a decision and its
   rejected alternatives go to

@@ -135,6 +135,7 @@ escalate.
   positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
 - **Sizing-aware skills.** [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
   [`/code-overview`](../han-coding/docs/skills/code-overview.md), [`/code-review`](../han-coding/docs/skills/code-review.md),
+  [`/code-walkthrough`](../han-coding/docs/skills/code-walkthrough.md),
   [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md),
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
@@ -237,8 +238,8 @@ plugins dispatch, the project-discovery skill, and the canonical rule files.
 `/issue-triage`) plus the research-analyst agent. `han-planning` adds the planning skills you reach for before
 implementation (`/plan-a-feature`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, and
 `/iterative-plan-review`). `han-coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`,
-`/code-review`, `/code-overview`, `/architectural-analysis`, `/automated-test-planning`, `/manual-test-planning`,
-`/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
+`/design-an-api`, `/code-review`, `/code-overview`, `/code-walkthrough`, `/architectural-analysis`,
+`/automated-test-planning`, `/manual-test-planning`, `/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
 skills. All of these except `han-reporting` depend on `han-core`, so installing any of them brings the shared agents
 along; `han-reporting` depends only on `han-communication`.
 

@@ -22,7 +22,8 @@ depends on `han-communication` and `han-core` and is bundled by the `han` meta-p
 `han-coding` (the coding skills
 you reach for while working in code: writing it with `tdd` and `refactor`, designing an interface contract with
 `design-an-api`, plus reviewing, overviewing, analyzing,
-testing, investigating, and standardizing it with `code-review`, `code-overview`, `architectural-analysis`,
+testing, investigating, and standardizing it with `code-review`, `code-overview`, `code-walkthrough`,
+`architectural-analysis`,
 `automated-test-planning`, `manual-test-planning`, `investigate`, and `coding-standard`; depends on `han-communication` and `han-core` and is bundled by
 the `han` meta-plugin),
 `han-github` (GitHub-facing skills), `han-reporting` (reporting and summary skills; depends only on
@@ -110,7 +111,7 @@ han-plugin-builder skill:
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/discussion-facilitator.md
 │   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
-├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
+├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
