@@ -216,6 +216,8 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Pair when the fix plan needs further
   stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
+- [`/code-walkthrough`](./code-walkthrough.md). The learning-shaped sibling. Use it when nothing is broken and you want
+  to be paced through how a change works, rather than to diagnose why it fails.
 - [`/runbook`](../../../han-documentation/docs/skills/runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate
   captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
 - [`SKILL.md` for /investigate](../../skills/investigate/SKILL.md). The internal process definition.

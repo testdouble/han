@@ -253,6 +253,8 @@ URL: https://growing-object-oriented-software.com/
   enumerate behaviors, or instead of it when you want analysis rather than implementation.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Specify behavior first; the spec becomes the test list `/tdd`
   builds from.
+- [`/design-an-api`](./design-an-api.md). Settles the shape of an interface before you build it. Its design document is
+  written to be the input to a `/tdd` run.
 - [`/code-review`](./code-review.md). Run it on the branch once the list is empty. TDD produces self-testing
   code; it does not replace review.
 - [`/coding-standard`](./coding-standard.md) and

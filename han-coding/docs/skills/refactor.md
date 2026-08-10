@@ -223,6 +223,8 @@ URL: https://arxiv.org/abs/2411.04444
   findings are this skill's work orders.
 - [`/investigate`](./investigate.md). For when the "refactoring" you want is really a bug to diagnose and
   fix.
+- [`/design-an-api`](./design-an-api.md). For when the restructuring you want is really a new contract to design. It
+  settles the interface shape; this skill restructures existing code without changing its behavior.
 - [Research: refactor skill design](../../../docs/research/refactor-skill-research.md). The evidence-based, adversarially
   validated research behind this skill's design.
 - [Skill building guidance](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance). The

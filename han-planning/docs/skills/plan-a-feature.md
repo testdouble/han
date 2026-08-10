@@ -410,6 +410,9 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after the synthesis pass to
   rewrite the specification's prose for the stakeholder or reviewer who reads it, preserving every fact and every `D#` /
   `T#` cross-reference identifier.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). The next step when the specified behavior lands
+  on an interface whose shape is still open. This skill settles what the feature does; that one settles the contract
+  that delivers it.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the
   `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative,
   facilitated team conversation.

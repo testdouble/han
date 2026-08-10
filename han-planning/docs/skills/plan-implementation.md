@@ -457,6 +457,8 @@ URL: https://ieeexplore.ieee.org/document/1204375
   `feature-specification.md` into a plain-language summary for non-technical stakeholders before this skill runs, so the
   implementation plan starts from a shape stakeholders have already greenlit.
 - [`/iterative-plan-review`](./iterative-plan-review.md). The complement for stress-testing the plan after it lands.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). The narrower sibling for when the open question
+  is the shape of one interface rather than how to deliver the whole feature.
   This skill produces the committable plan. `/iterative-plan-review` iterates on it.
 - [`plan-synthesizer`](../../../han-core/docs/agents/plan-synthesizer.md). The agent the skill dispatches once, at the
   end, to author the final synthesized plan.

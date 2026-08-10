@@ -312,6 +312,8 @@ URL: https://www.domainlanguage.com/ddd/
 - [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). Record the architectural decisions
   the analysis motivates.
 - [`/investigate`](./investigate.md). Run when a finding reveals a concrete runtime bug.
+- [`/design-an-api`](./design-an-api.md). Run after this skill when the finding is a contract to redesign. This skill
+  judges the structure that exists; that one designs the interface that comes next.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Stress-test the refactoring plan that implements
   the recommendations.
 - [`SKILL.md` for /architectural-analysis](../../skills/architectural-analysis/SKILL.md). The internal
