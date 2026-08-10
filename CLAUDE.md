@@ -79,7 +79,7 @@ han-plugin-builder skill:
 │   ├── skills/         # readability-guidance + explanation-guidance (both inline, each surfaces one standard) + edit-for-readability
 │   ├── output-styles/  # han-readability.md: the readability rule and writing voice distilled into a selectable output style (auto-discovered default location; no plugin.json field)
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md + docs/output-styles/han-readability.md
-│   └── references/     # Canonical readability-rule.md + writing-voice.md + explanation-rule.md (owned here; no vendored copies elsewhere)
+│   └── references/     # Canonical readability-rule.md + writing-voice.md + explanation-rule.md (owned here; no vendored copies elsewhere), beside a vendored config-rule.md
 ├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery (depends on no other Han plugin)
 │   ├── README.md       # Light front door; skills and agents grouped by purpose
 │   ├── .claude-plugin/
@@ -87,14 +87,14 @@ han-plugin-builder skill:
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # project-discovery skill directory, with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/{name}.md
-│   └── references/     # Cross-skill reference files (e.g. yagni-rule.md, evidence-rule.md — canonical copies)
+│   └── references/     # Cross-skill reference files (yagni-rule.md, evidence-rule.md, config-rule.md — canonical copies)
 ├── han-documentation/  # Documentation plugin: project-documentation, architectural-decision-record, runbook (depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Documentation skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
-│   └── references/     # Cross-skill reference files vendored for han-documentation skills (yagni-rule.md, evidence-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-documentation skills (yagni-rule.md, evidence-rule.md, config-rule.md)
 ├── han-research/       # Research plugin: research, gap-analysis, issue-triage + the research-analyst agent (depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills and agent lists
 │   ├── .claude-plugin/
@@ -102,7 +102,7 @@ han-plugin-builder skill:
 │   ├── agents/         # research-analyst agent definition
 │   ├── skills/         # Research skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/research-analyst.md
-│   └── references/     # Cross-skill reference files vendored for han-research skills (yagni-rule.md, evidence-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-research skills (yagni-rule.md, evidence-rule.md, config-rule.md)
 ├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation) + the discussion-facilitator agent (depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills and agent lists
 │   ├── .claude-plugin/
@@ -117,7 +117,7 @@ han-plugin-builder skill:
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
-│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, config-rule.md)
 ├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues (depends on han-communication, han-core, and han-coding, whose code-review skill post-code-review-to-pr wraps)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
