@@ -180,7 +180,13 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
 5. Add the skill to the catalog in [Root CLAUDE.md](./CLAUDE.md). The indexes and concept docs list skills without a
    running total, so there is no count to bump. If the skill belongs to a new category, add it to the category lists
    too.
-6. Update the marketplace registry at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) if the new
+6. If the skill classifies its work as small / medium / large, add it to the sizing-aware list and the at-a-glance
+   table in [Sizing](./docs/sizing.md), to the sizing-aware list in [Concepts](./docs/concepts.md), and give its
+   long-form doc a `## Sizing` section. A sizing-aware skill that never lands in those catalogs is invisible to anyone
+   reading them to learn which skills scale.
+7. If the skill chains with others, add the chain to [Workflows](./docs/workflows.md), in both the prose and the
+   mermaid diagram for that workflow.
+8. Update the marketplace registry at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) if the new
    skill ships in a different plugin's component set.
 
 ## Adding an agent
@@ -295,9 +301,9 @@ use.
 
 - **One canonical source per concept.** The long-form doc is canonical. The Skills Index and Agents Index carry scent
   only. One sentence plus a link. The README never duplicates long-form content.
-- **Every long-form doc links up.** The Related Documentation section's first bullet points back to
-  [the plugin landing page](./README.md). A reader arriving cold via search must be able to get to the front door in one
-  click.
+- **Every long-form doc links up.** The Related Documentation section's first bullet points back to the doc's own
+  plugin README, and the second to [the repository root](./README.md). A reader arriving cold via search must be able
+  to get to the front door in one click.
 - **Orientation frame on top.** The first two lines of every long-form doc state what the page is, who it is for, and
   where the internal definition (`SKILL.md` or agent `.md`) lives.
 - **TL;DR before anything else.** Three lines: what / when / what-you-get-back. Scannable for readers doing reference
