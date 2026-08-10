@@ -177,6 +177,8 @@ URL: https://cwe.mitre.org/
   implementation team on a security signal.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent in team mode on
   a security signal.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
+  trust-boundary signal, at the medium band and above.
 - [`devops-engineer`](./devops-engineer.md). Pair on regulated changes. Security analyst covers exploit paths.
   `devops-engineer` covers operational posture.
 - [`data-engineer`](./data-engineer.md). Pair on regulated data. Security analyst covers exploit paths. `data-engineer`

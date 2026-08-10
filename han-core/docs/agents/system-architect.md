@@ -309,6 +309,8 @@ URL: https://www.melconway.com/Home/Committees_Paper.html
   [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). The other skills that conditionally
   dispatch this agent when the work crosses a service or bounded-context boundary. `/plan-a-feature` includes it only
   when you explicitly ask.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
+  system-seam signal, at the large band only.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

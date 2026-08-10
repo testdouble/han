@@ -146,9 +146,30 @@ oversized for shaping one contract.
 - [`/tdd`](./tdd.md). The implementation run this design document feeds.
 - [`/architectural-analysis`](./architectural-analysis.md). Assesses the module you are about to change, when you want
   the existing structure judged before designing into it.
+  The four spine agents run at every size:
+
+- [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). Discovers the current surface, its
+  consumers, and the constraints the design has to live inside.
 - [`software-architect`](../../../han-core/docs/agents/software-architect.md). Produces the options and every
   amendment.
 - [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). Questions the chosen option as a generalist
   who was not in the room.
 - [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). Attacks the amended design and the
   evidence under it.
+
+These specialists join the discovery wave when the interface shows their signal and the band allows:
+
+- [`structural-analyst`](../../../han-core/docs/agents/structural-analyst.md). Added on a consumer-spread signal.
+- [`behavioral-analyst`](../../../han-core/docs/agents/behavioral-analyst.md). Added on a boundary-data signal.
+- [`concurrency-analyst`](../../../han-core/docs/agents/concurrency-analyst.md). Added on an ordering signal.
+- [`data-engineer`](../../../han-core/docs/agents/data-engineer.md). Added on a data-contract signal.
+- [`on-call-engineer`](../../../han-core/docs/agents/on-call-engineer.md). Added on a failure-path signal.
+- [`adversarial-security-analyst`](../../../han-core/docs/agents/adversarial-security-analyst.md). Added on a
+  trust-boundary signal.
+- [`system-architect`](../../../han-core/docs/agents/system-architect.md). Added on a system-seam signal, at the large
+  band only.
+
+One more agent runs after the design document exists:
+
+- [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Audits and rewrites the
+  finished document for the engineer who will implement the contract and the reviewer who will approve it.

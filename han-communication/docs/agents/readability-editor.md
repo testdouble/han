@@ -132,6 +132,8 @@ command to act on. Its adversarial posture is aimed at the draft, never at the a
   [`/update-pr-description`](../../../han-github/docs/skills/update-pr-description.md), and
   [`/stakeholder-summary`](../../../han-reporting/docs/skills/stakeholder-summary.md). The [Readability](../../../docs/readability.md)
   per-skill table is authoritative.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent to audit and rewrite the
+  finished design document for the engineer who will implement the contract and the reviewer who will approve it.
 - [`/edit-for-readability`](../skills/edit-for-readability.md). The standalone skill that
   dispatches this agent to rewrite a file, pasted text, or a conversation draft on demand.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).

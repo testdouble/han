@@ -229,6 +229,8 @@ URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
   dispatch this agent when the work touches intra-codebase module boundaries or abstractions.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent only when the user asks for
   it by name; the mechanic-focused specialists are excluded from the default spec-stage roster.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent in its four-agent
+  spine, at every size, to produce the options document and every later amendment.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

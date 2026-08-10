@@ -139,3 +139,7 @@ URL: https://pragprog.com/titles/atevol/software-design-x-rays/
 - [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent to map an unfamiliar current state.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent for unfamiliar
   code regions.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent in its four-agent
+  spine, at every size, to discover the current surface, its consumers, and the constraints the design must live inside.
+- [`/code-walkthrough`](../../../han-coding/docs/skills/code-walkthrough.md). Dispatches this agent, scaled to the
+  band, to trace the flow and entry points the walkthrough itinerary is built from.

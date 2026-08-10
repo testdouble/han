@@ -331,6 +331,8 @@ URL: https://www.nngroup.com/articles/5-whys/
   [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md), and
   [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md). The other
   skills that dispatch this agent for generalist clarity and assumption checks.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent in its four-agent
+  spine, at every size, to question the chosen option as a generalist who was not in the room.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns even when the domain is "being a generalist."
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

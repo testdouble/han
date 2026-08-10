@@ -355,6 +355,8 @@ URL: https://danluu.com/postmortem-lessons/
   resilience signal.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Dispatches this agent into the
   implementation team on a resilience signal.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
+  failure-path signal, at the medium band and above.
 - [Research backing this agent](../../../docs/research/on-call-engineer-research.md). The evidence-based research informing the
   agent's vocabulary, scope boundary, and tone calibration.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).

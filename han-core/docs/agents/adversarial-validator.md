@@ -174,6 +174,8 @@ URL: https://en.wikipedia.org/wiki/Red_team
 - [`/manual-test-planning`](../../../han-coding/docs/skills/manual-test-planning.md). Dispatches this agent against the
   drafted manual test plan to disprove steps and expected outcomes the supplied context does not promise, before the
   file is written.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent in its four-agent
+  spine, at every size, to attack the amended design and the evidence under it.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise falsification vocabulary and named anti-patterns.
 - [multi-agent-economics.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md).

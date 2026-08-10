@@ -138,3 +138,5 @@ URL: https://martinfowler.com/bliki/TwoHardThings.html
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent only when the user asks for
   it by name; the mechanic-focused specialists are excluded from the default spec-stage roster, and implementation-level
   findings defer to `/plan-implementation`.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
+  boundary-data signal, at the medium band and above.

@@ -134,3 +134,5 @@ URL: https://martinfowler.com/books/refactoring.html
   when the review covers module boundaries, coupling, or dependency direction.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Conditionally dispatches this agent when
   the plan covers module boundaries, coupling, or dependency direction.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
+  consumer-spread signal, at the medium band and above.

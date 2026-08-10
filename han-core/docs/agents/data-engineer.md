@@ -381,6 +381,8 @@ URL: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Che
   team mode when the plan touches data design.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Dispatches this agent into the
   implementation team on a data-design signal.
+- [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
+  data-contract signal, at the medium band and above.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).
