@@ -8,7 +8,8 @@ description: >
   symbol, or a PR's changes. Writes the overview to a scratch file and changes no code. Does not review code quality or
   raise findings — use code-review for auditing changes or post-code-review-to-pr for posting them. Does not produce
   durable feature or system documentation — use project-documentation. Does not assess architecture or structural risk —
-  use architectural-analysis. Does not diagnose bugs or root-cause failures — use investigate.
+  use architectural-analysis. Does not diagnose bugs or root-cause failures — use investigate. Does not pace a person
+  through the code one step at a time in conversation — use code-walkthrough.
 arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [target: file, directory, symbol, or PR reference — defaults to the current branch's
