@@ -112,8 +112,9 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 - **Posting the review to a GitHub PR.** Use [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md). It
   delegates to this skill and then posts the review as PR comments.
-- **Explaining a change or getting oriented before reviewing.** Use [`/code-overview`](./code-overview.md). Run it to
-  understand what a change does, then run this skill to judge whether it is any good.
+- **Explaining a change or getting oriented before reviewing.** Use [`/code-overview`](./code-overview.md) for a written
+  overview, or [`/code-walkthrough`](./code-walkthrough.md) to be paced through the change one step at a time. Run
+  either to understand what a change does, then run this skill to judge whether it is any good.
 - **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling,
   data flow, concurrency, and SOLID assessment across a module.
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial
@@ -422,6 +423,8 @@ URL: https://itrevolution.com/product/accelerate/
   GitHub PR.
 - [`/code-overview`](./code-overview.md). The orientation counterpart: run it to understand a change before this skill
   judges its quality.
+- [`/code-walkthrough`](./code-walkthrough.md). The paced counterpart to `/code-overview`: run it when you want to be
+  taught the change step by step before this skill judges it.
 - [`/investigate`](./investigate.md). Next step when a CRIT finding hides a bug whose root cause needs deeper analysis.
 - [`/architectural-analysis`](./architectural-analysis.md). Run alongside when the change touches module
   boundaries.

@@ -68,6 +68,8 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Assessing architecture, coupling, or structural risk.** Use [`/architectural-analysis`](./architectural-analysis.md)
   instead.
 - **Diagnosing a bug or root-causing a failure.** Use [`/investigate`](./investigate.md) instead.
+- **Being paced through the code one step at a time.** Use [`/code-walkthrough`](./code-walkthrough.md) instead. It
+  produces a conversation you drive, not a document you read alone.
 
 ## How to invoke it
 
@@ -78,8 +80,8 @@ Give it:
 1. **A target (optional).** A file path, a directory, a symbol name, or a pull request reference / URL. With no target,
    the skill defaults to the current branch's changes in PR mode. A sharp target is a single file, symbol, directory, or
    PR; a thin one ("explain the backend") forces the skill to ask you to narrow it.
-2. **A size (optional).** `small`, `medium`, or `large` as the first positional argument, when you want to override the
-   skill's auto-classification.
+2. **A size (optional).** `small`, `medium`, `large`, or `dynamic` as the first positional argument, when you want to
+   override the skill's auto-classification.
 
 Example prompts:
 
@@ -262,6 +264,8 @@ URL: https://www.spinellis.gr/codereading/
   risk assessment rather than an orientation.
 - [`/investigate`](./investigate.md). Reach for this when something is broken and you need a root cause, not an
   overview.
+- [`/code-walkthrough`](./code-walkthrough.md). The paced counterpart: same understanding goal, delivered as a
+  step-by-step conversation you can interrupt rather than one document.
 - [Sizing](../../../docs/sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the
   default-to-small rule, and the `$size` override.
 - [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). The agent this skill dispatches, scaled to size, to
