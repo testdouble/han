@@ -85,8 +85,8 @@ under the project's documentation root:
   answer's source), the validation findings (`V1`, `V2`, … each accepted or rejected), the cut list, and the open
   risks.
 
-If `api-design.md` already exists in the folder, the run writes a date-suffixed file instead and tells you which. It
-never overwrites.
+If any of the three files already exists in the folder, the run date-suffixes all three so one run's files stay
+together, and tells you which names it wrote. It never overwrites.
 
 ## How to get the most out of it
 
@@ -115,9 +115,10 @@ simpler-version gates this sits beside.
 ## Cost and latency
 
 A small run dispatches four agents in sequence-with-one-parallel-wave: the discovery wave, then the architect, the
-junior developer, and the adversarial validator. A large run adds up to four signalled specialists to the discovery
-wave, for seven or eight agents total. The architect is the most expensive single participant, because it runs up to
-four times: once for options and once after each of the question round, the open items, and the validation round.
+junior developer, and the adversarial validator. A large run adds as many as four signalled specialists to the discovery
+wave, for up to eight agents total. Only signalled specialists are added, so a run at a size you set by hand can sit
+under its band's ceiling. The architect is the most expensive single participant, because it runs up to four times: once
+for options and once after each of the question round, the open items, and the validation round.
 
 This is an infrequent, high-signal run. It sits before implementation, not inside a tight loop.
 

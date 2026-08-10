@@ -19,6 +19,7 @@ allowed-tools: Read, Write, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(m
 
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - current branch: !`git branch --show-current 2>/dev/null || echo "no git branch"`
+- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 - personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
@@ -89,12 +90,14 @@ where it lives. Confirm it resolves to real files using `Glob` and `Read`. If th
 file yet, resolve instead the module or directory it will live in and the consumers that will call it. If neither
 resolves, ask the user to name the surface before going further.
 
-**Resolve the starting point.** Read the `current branch` value from Project Context. Run
-`git diff --name-only $(git merge-base HEAD origin/HEAD)...HEAD` and check whether any interface file resolved above
-appears in the output. Only when one does, ask the user in one short message whether to design from the branch as it
-stands or from the merge base, ignoring the branch's changes; read the merge-base state with `git show` when they
-choose the merge base. In every other case — no interface file changed on the branch, git unavailable, or the command
-fails — the working tree is the starting point and no question is asked. State the chosen starting point in one line.
+**Resolve the starting point.** Read the `current branch` and `default branch` values from Project Context. When
+`default branch` reads `unknown`, `origin/HEAD` is unset and there is no base to compare against: the working tree is
+the starting point, no question is asked, and the run continues. Otherwise run
+`git diff --name-only {default branch}...HEAD` and check whether any interface file resolved above appears in the
+output. Only when one does, ask the user in one short message whether to design from the branch as it stands or from
+the merge base, ignoring the branch's changes; read the merge-base state with `git show` when they choose the merge
+base. In every other case — no interface file changed on the branch, git unavailable, or the command fails — the
+working tree is the starting point and no question is asked. State the chosen starting point in one line.
 
 **Resolve project context.** If `CLAUDE.md` is present, read its `## Project Discovery` section for conventions. Fall
 back to `project-discovery.md`. These resolve language, framework, and convention questions so the agents infer less. If
@@ -109,9 +112,11 @@ and `{folder}/api-design.md`. Resolve `{folder}` in this order:
 3. Otherwise, choose a 2-to-4-word kebab-case folder named for the interface, under a documentation root surfaced via
    `CLAUDE.md`, `project-discovery.md`, or a Glob fallback (`docs/plans/`, `docs/`).
 
-Create the folder with `mkdir -p`. If `api-design.md` already exists there, write to a date-suffixed name (for example
-`api-design-2026-08-07.md`) and state which files were written; never silently overwrite. State the chosen folder in one
-short line and proceed without waiting for confirmation.
+Create the folder with `mkdir -p`. Check all three names with `Glob` before writing anything. If any of the three
+already exists there, write every file this run produces to a date-suffixed name (for example `api-design-2026-08-07.md`
+alongside `context-brief-2026-08-07.md` and `design-options-2026-08-07.md`) so one run's files stay together, and state
+which files were written; never silently overwrite. State the chosen folder in one short line and proceed without
+waiting for confirmation.
 
 ## Step 2: Detect Signals and Classify Size
 
@@ -136,8 +141,8 @@ touches. These signals drive both the band and the roster:
 **Classify the size.** Default to small. Escalate only when a band's signal is clearly present; when a signal is
 borderline, stay at the smaller band.
 
-- **Small** _(default)_ — one interface with a contained consumer set inside one module, and no data-contract,
-  trust-boundary, failure-path, boundary-data, or system-seam signal. The ordering signal may be present or absent.
+- **Small** _(default)_ — one interface with a contained consumer set inside one module, and none of the ordering,
+  data-contract, trust-boundary, failure-path, boundary-data, or system-seam signals.
 - **Medium** — a consumer-spread signal, OR exactly one of the ordering, data-contract, trust-boundary, failure-path,
   or boundary-data signals.
 - **Large** — two or more of those cross-cutting signals together, OR a system-seam signal is present, OR `$size` is
@@ -156,7 +161,7 @@ whose domain the contract never touches. A conversational override ("design this
 
 - `han-core:codebase-explorer` — discovers the current surface, its consumers, and the constraints the design has to
   live inside. Feeds the context brief. Runs in Step 4.
-- `han-core:software-architect` — produces the options document and every later amendment. Runs in Steps 5, 7, and 9.
+- `han-core:software-architect` — produces the options document and every later amendment. Runs in Steps 5, 7, 8, and 9.
 - `han-core:junior-developer` — questions the chosen option as a generalist who was not in the room. Runs in Step 7.
 - `han-core:adversarial-validator` — attacks the amended design and the evidence under it. Runs in Step 9.
 
@@ -172,10 +177,12 @@ whose domain the contract never touches. A conversational override ("design this
 | `han-core:system-architect`             | System-seam signal     | Large    |
 | `han-core:adversarial-security-analyst` | Trust-boundary signal  | Medium   |
 
-Roster caps by band: **small** runs the spine only (4 agents); **medium** adds one or two signalled specialists (5–6
-agents); **large** adds up to four, including `han-core:system-architect` when a system-seam signal is present (7–8
-agents). If more specialists are signalled than the cap allows, keep the band's count, prefer the specialists covering
-the strongest signals, and name the omitted domains in the design document's summary so the user can re-run larger.
+Roster caps by band are ceilings, not quotas: **small** runs the spine only (4 agents); **medium** adds at most two
+signalled specialists (up to 6 agents); **large** adds at most four, including `han-core:system-architect` when a
+system-seam signal is present (up to 8 agents). A band reached by override rather than by signal can sit well under its
+ceiling; add no specialist whose signal is absent just to fill the band. If more specialists are signalled than the cap
+allows, keep the band's count, prefer the specialists covering the strongest signals, and name the omitted domains in
+the design document's summary so the user can re-run larger.
 
 Extra agents named in the project config's `## Extra Agents` list join the signal-selected pool and compete under the
 same signals and band caps, per [config-rule.md](../../references/config-rule.md): add one only when a signal in the
@@ -237,7 +244,10 @@ Write the returned options to `{folder}/design-options.md`.
 
 If the architect returns one option, or returns options whose elements carry no justification, relaunch it once with the
 missing requirement restated. If the second attempt still returns one option, carry that option forward and record in
-the design document that only one viable option was produced, with the architect's stated reason.
+the design document that only one viable option was produced, with the architect's stated reason. If the second attempt
+still leaves elements unjustified, do not carry those elements: move each one to the cut list with what it would have
+done and the note that no justification was produced for it, so the gap reaches the user in Step 6 rather than passing
+as designed.
 
 ## Step 6: Human Gate — The User Picks an Option
 
@@ -278,8 +288,11 @@ them.
 
 ## Step 8: Human Gate — Open Items, One at a Time
 
-Surface the open items — those the question round produced in Step 7, plus any no-evidence item recorded in Step 4 —
-**one at a time**, each as its own `AskUserQuestion` call. Never batch them BECAUSE
+If Step 7 and Step 4 left no open item, say so in one line, skip this gate, and go straight to Step 9. The gate exists
+to settle open items; with none to settle it has nothing to ask and no answer to fold in.
+
+Otherwise surface the open items — those the question round produced in Step 7, plus any no-evidence item recorded in
+Step 4 — **one at a time**, each as its own `AskUserQuestion` call. Never batch them BECAUSE
 each answer routinely settles or reshapes the ones behind it, and a batch asks the user to decide in an order the design
 does not follow.
 
@@ -319,8 +332,8 @@ Risks section rather than starting another gate cycle.
 Read [references/api-design-template.md](./references/api-design-template.md) and render it into
 `{folder}/api-design.md`. Render rules:
 
-1. **Fill the front matter.** The goal, the interface, the chosen size and its one-line justification, the dispatched
-   roster, the starting point, and git availability.
+1. **Fill the front matter.** The goal and where it came from, the interface, the chosen size and its one-line
+   justification, the dispatched roster, the starting point, and git availability.
 2. **Carry the justification for every element.** The justification table is the section that makes the scope discipline
    auditable; an element with an empty justification is a rendering bug, not a formatting choice.
 3. **Keep the cut list.** Render it even when short. It is what tells the reader what the design deliberately does not
@@ -328,8 +341,8 @@ Read [references/api-design-template.md](./references/api-design-template.md) an
 4. **Omit sections that have no content**, keeping the remaining sections in the template's order. Never emit a heading
    with placeholder or "N/A" content. A clean validation round is content, not an empty section.
 5. **Write the Summary last**, after every other section is filled: the contract in two or three sentences, the option
-   chosen and what it was chosen over, the decisions the user made at the two gates, the validation outcome, and any
-   signalled domain the band cap omitted.
+   chosen and what it was chosen over, the decisions the user made at each gate that ran, the validation outcome, and
+   any signalled domain the band cap omitted.
 
 Then invoke `han-communication:readability-guidance` to source the shared readability standard into your context. After
 that skill returns, proceed immediately to the rewrite below — do not stop there. Dispatch

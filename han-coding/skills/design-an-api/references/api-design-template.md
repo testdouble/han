@@ -27,8 +27,8 @@ git_available: "{yes | no}"
 ## Summary
 
 _Two or three sentences stating the contract, then one line each for: the option chosen and what it was chosen over,
-the decisions the user made at the two gates, the validation outcome, and any signalled domain the band cap omitted.
-Written last, after every other section is filled._
+the decisions the user made at each gate that ran, the validation outcome, and any signalled domain the band cap
+omitted. Written last, after every other section is filled._
 
 ## The Goal This Serves
 
