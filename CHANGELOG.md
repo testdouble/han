@@ -1,5 +1,173 @@
 # Han Release Notes
 
+## v5.2.0
+
+han 5.2.0 adds two skills to the coding layer. `/design-an-api` designs the contract for an API change before anyone
+writes code, and `/code-walkthrough` paces you through a set of changes one step at a time in conversation.
+`han-coding` (3.1.0) ships both. `han-core` (3.0.1), `han-planning` (2.1.1), and `han-communication` (1.1.1) record the
+dispatch pairings and skill boundaries the two new skills create. The suite-level docs place both in the sizing,
+concepts, workflow, and how-to catalogs, and the repo's own `/han-release` skill gets the fix that unblocked this
+release. `han-documentation` (1.0.0), `han-research` (1.0.0), `han-github` (2.3.0), `han-reporting` (2.2.0),
+`han-feedback` (2.0.1), `han-atlassian` (2.3.0), `han-linear` (1.1.0), and `han-plugin-builder` (2.1.0) are unchanged.
+
+### han v5.2.0
+
+#### /han-release stops reading an unchanged plugin's tag as a collision
+
+Step 9 of `.claude/skills/han-release/SKILL.md` computed a tag name for every plugin in the marketplace and stopped the
+run on any `remote-at-other-commit` state. An unchanged child keeps its version, so it keeps the tag an earlier release
+gave it, and that tag points at that earlier release commit by design. Read literally, the gate stopped every release
+after the first: cutting v5.1.0 tripped it on 11 of 13 plugins.
+
+Step 9.1 now splits plugins into two sets from the version plan. Being tagged this release covers every plugin whose
+target differs from its baseline, plus every new plugin from Step 3a. Carried forward covers every unchanged child.
+Step 9.3 reads `remote-at-other-commit` against the set the plugin is in, since the state means opposite things for the
+two. A carried-forward tag passes when `git merge-base --is-ancestor` puts it inside this release's own history, and
+stops otherwise. A plugin being tagged now stops unconditionally with no ancestor check, which leaves the original
+collision protection intact.
+
+Step 11.1 carried the same rule at the publish gate and would have blocked the run after the tags were already pushed,
+so it now holds each set to its own rule and rejects `absent` or `local-only` in either. Step 10 gains the
+carried-forward skip, and Step 12 distinguishes it from a `remote-at-commit` skip when reporting.
+`.claude/skills/han-release/scripts/remote-tag-state.sh` is unchanged in behavior: its header comment no longer calls
+`remote-at-other-commit` unrecoverable, and says the caller decides, because the script cannot see the version plan.
+
+#### The cross-plugin catalogs list both new skills
+
+`docs/sizing.md` adds `/code-walkthrough` and `/design-an-api` to the sizing-aware list, to the at-a-glance table with
+each band's roster and output, and to the per-skill Sizing link list. `docs/concepts.md` adds both to the sizing-aware
+list and to the sentence describing what `han-coding` carries. `docs/quickstart.md` names `/code-walkthrough` in its
+sizing note. `docs/skills/README.md` gains a scent line for each. `CLAUDE.md` names both in the `han-coding` catalog and
+completes the vendored reference lists in the layout tree, which had omitted `config-rule.md` from the `han-core`,
+`han-documentation`, `han-research`, and `han-coding` entries.
+
+`docs/workflows.md` adds two chains. `/architectural-analysis` → `/design-an-api` → `/tdd` joins the code-quality
+diagram and its prose: judge the structure you are designing into, shape the contract against one stated goal, then
+implement it test-first, with the analysis step optional because `/design-an-api` runs its own discovery wave.
+`/code-walkthrough` → `/code-review` joins the linear chains as the taught-rather-than-handed-a-document
+counterpart to `/code-overview` → `/code-review`.
+
+`CONTRIBUTING.md` gains the two checklist steps whose absence let `/design-an-api` ship without reaching those catalogs:
+a sizing-aware skill must be added to the sizing and concepts lists and given a `## Sizing` section in its long-form
+doc, and a skill that chains with others must be added to `docs/workflows.md` in both the prose and the mermaid diagram.
+The same pass corrects the links-up rule to match the plugin-first layout: a long-form doc's first Related Documentation
+bullet points at its own plugin README, and the second at the repository root.
+
+#### The understanding how-to covers both orientation skills
+
+`docs/how-to/accelerate-understanding-of-unfamiliar-code.md` now runs Phase 1 on two skills instead of one, and frames
+them as differing in shape rather than depth: `/code-overview` hands you a finished map to keep and share, and
+`/code-walkthrough` takes you through the code one step at a time and stops after each. Neither raises findings. The
+verification step is rewritten to cover both paths, telling you to open the entry points an overview names and to open
+the file the current walkthrough step names before you say `next`. The partial-coverage step gains the walkthrough's
+"go deeper" alternative to re-running, and the pitfalls section records that `/code-walkthrough` writes no file at all,
+so the understanding lives only in your head once the session ends.
+
+### han-coding v3.1.0
+
+#### /design-an-api designs an interface contract against one stated goal
+
+`/design-an-api` designs the contract for an API change inside one codebase: a component's props, a function surface,
+URL or query parameters, an event payload, or a module boundary, sized for roughly one pull request. It runs on one
+stated goal, and will not start without one, because the goal is the only thing the design can be justified against.
+Every parameter, field, type, default, precedence rule, and failure behavior names either the goal language it descends
+from or the asked-for behavior it is a necessity of. Anything the interface could plausibly carry that the goal never
+asks for moves to a cut list, recorded with what it would have done, and the cut list appears in the closing message as
+well as in the document. One floor bounds that: silence never cuts a necessity, so a goal that says nothing about
+invalid input, error behavior, or types cuts none of them.
+
+A run writes three files to one folder under your configured `output-directory`: `context-brief.md` with numbered
+findings carrying `file:line` citations, `design-options.md` with the two or three options and one recommendation, and
+`api-design.md`, the deliverable that a `/tdd` run implements against. It never overwrites; when the names are taken it
+date-suffixes all three together. Two gates stop for you, choosing the design option and answering the open items one at
+a time, and everything else runs unattended.
+
+The skill is sizing-aware over a fixed four-agent spine that runs at every band: `codebase-explorer`,
+`software-architect`, `junior-developer`, and `adversarial-validator`. Specialists join the discovery wave only when the
+interface shows their signal and the band allows, up to two at medium and four at large, and the design document's
+summary names any domain the cap dropped so you can re-run larger. It closes with a `readability-editor` pass over the
+finished document.
+
+The skill packages an arrangement that was already working by hand. Issue
+[#173](https://github.com/testdouble/han/issues/173), opened by [@mxriverlynn](https://github.com/mxriverlynn), recorded
+a session that dispatched `software-architect`, `junior-developer`, and `adversarial-validator` directly against a
+hand-assembled brief to design a query-parameter prefill contract, and the designed API shipped essentially as
+specified. What the skill adds is the discovery step that session assembled ad hoc, the size band that scales the
+roster, and the two gates in fixed positions. Shipped in [#175](https://github.com/testdouble/han/pull/175) by
+[@mxriverlynn](https://github.com/mxriverlynn), which closed that issue.
+
+#### /code-walkthrough paces you through a change one step at a time
+
+`/code-walkthrough` walks you through a set of code changes in conversation, starting at the entry point and following
+the flow that changes. It writes no file and changes no code; the conversation is the whole deliverable. With no
+argument it walks the current branch against the default branch, and it also takes a file, a directory, a symbol, a pull
+request reference or URL, or a plan or ticket to walk the code from that context's perspective.
+
+Each step carries a heading with your position and the complete repository-root-relative path, two to four sentences
+leading with the problem being solved, an excerpt of up to roughly thirty lines (a diff for a change, a plain fence for
+existing code), and a one-line handoff naming what comes next. Then the turn ends. Say `next` to advance, ask a question
+to stay put and get an answer at the same plain-language level with the counter unmoved, say "go deeper" to expand the
+current step, name a file to jump there, or say "stop" to end the walk and be told where you left off. The itinerary
+runs in flow order rather than diff order, and the closing step names every changed file that sits off the execution
+path with one line each on why it changed, so nothing is dropped silently. The walkthrough raises no findings, no
+severities, and no recommended changes; judging the code is `/code-review`'s job.
+
+The skill classifies the target as small, medium, or large, defaulting to small, and scales both the parallel
+`han-core:codebase-explorer` wave that traces the flow and roughly how many steps the walk runs, from 3 to 5 at small up
+to 8 to 12 at large. Tracing is dispatched rather than done inline because the session runs across many turns, and a
+context exhausted at step 2 cannot finish the walk. There is no approval gate before it starts, because the skill is
+read-only and re-runnable. Shipped in [#176](https://github.com/testdouble/han/pull/176) by
+[@mxriverlynn](https://github.com/mxriverlynn).
+
+#### The existing coding skills name their new siblings
+
+The `description:` fields that route work now send it to the right new skill. `code-review` sends orientation to
+`/code-overview` for a written overview or `/code-walkthrough` to be paced through the change; `code-overview` sends
+step-by-step pacing to `/code-walkthrough`; `architectural-analysis` sends new interface or contract design to
+`/design-an-api`. The long-form docs carry the matching pairings: `architectural-analysis` points at `/design-an-api` as
+the next step when a finding is a contract to redesign, `refactor` points there when the restructuring you want is
+really a new contract, `tdd` points there as the run whose design document feeds it, `code-overview` and `code-review`
+point at `/code-walkthrough` as the paced counterpart, and `investigate` points at it as the learning-shaped sibling for
+when nothing is broken. `code-overview`'s long-form doc also corrects its size argument to include `dynamic`, which the
+skill already accepted.
+
+### han-core v3.0.1
+
+Eleven agent long-form docs under `han-core/docs/agents/` gain the dispatch pairing for the new skills in their Related
+documentation lists, so an agent's doc names every skill that dispatches it. `codebase-explorer` records both:
+`/design-an-api` dispatches it in the four-agent spine at every size to discover the current surface and its consumers,
+and `/code-walkthrough` dispatches it scaled to the band to trace the flow the itinerary is built from.
+`software-architect`, `junior-developer`, and `adversarial-validator` record their spine seats in `/design-an-api`, and
+`structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, `on-call-engineer`,
+`adversarial-security-analyst`, and `system-architect` each record the signal that adds them to its discovery wave. No
+agent definition changed.
+
+### han-planning v2.1.1
+
+`plan-a-feature` and `plan-implementation` gain a boundary against the new coding skill, in both their `SKILL.md`
+`description:` fields and their long-form docs: neither designs the contract for an interface, and both send that work
+to `/design-an-api`. The long-form docs say what the split is. `plan-a-feature` settles what the feature does and
+`/design-an-api` settles the contract that delivers it; `/design-an-api` is the narrower sibling of
+`plan-implementation` for when the open question is the shape of one interface rather than how to deliver the whole
+feature.
+
+### han-communication v1.1.1
+
+`han-communication/docs/agents/readability-editor.md` records one more skill that dispatches the agent: `/design-an-api`
+sends it the finished design document to audit and rewrite for the engineer who will implement the contract and the
+reviewer who will approve it.
+
+### Issues closed in this release
+
+- Han Feedback: software-architect-junior-developer-adversarial-validator (2026-08-06) (#173) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #175 by [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- add skill: /han-coding:design-an-api (#175) — [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(han-coding): add the code-walkthrough skill (#176) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/han--v5.2.0/CHANGELOG.md#v520
+
 ## v5.1.0
 
 han 5.1.0 adds a selectable output style that holds the readability standard across a whole session, not only inside the
