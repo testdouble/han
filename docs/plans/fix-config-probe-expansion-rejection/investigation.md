@@ -1,28 +1,33 @@
-# Investigation: personal-config probe rejected with "Contains expansion" (issue #178)
+# Investigation: personal-config probe aborts every skill (issue #178)
 
-Every Han skill resolves the personal config directory through a load-time shell probe that reads two environment
-variables, and Claude Code 2.1.228 now rejects any probe containing that kind of variable reference. The rejection
-aborts the skill before it runs. The fix deletes the probe from all 42 skills and resolves the directory during the run
-instead. Read the Summary, then approve the Planned Fix or push back.
+Claude Code's skill loader now refuses almost every environment-variable reference in a load-time probe, and all 42 Han
+skills read the personal config directory through one. I reproduced the abort locally and tested eleven probe forms
+across five permission modes to find which ones survive. Exactly one useful form does. The fix adopts it and gives up
+the `CLAUDE_CONFIG_DIR` override, which is no longer reachable from a probe at all. Read the Summary, then approve the
+Planned Fix or push back.
 
 ## Summary
 
-- **Root Cause:** All 42 Han skills carry the probe `` !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"` `` in their
-  `## Project Context` block, and Claude Code 2.1.228 hard-rejects any load-time probe whose text contains shell
-  variable expansion, so the skill aborts before its body loads (E1, E2, E9).
-- **Fix:** Delete the probe line from all 42 skills and move the directory resolution into the first-action step that
-  already reads the file, so the resolution happens during the run where a failure degrades silently instead of at load
-  where it cannot (E10, E16).
-- **Why Correct:** A skill with no probe has nothing for the loader to reject, and the repo's own probe-authoring rule
-  already says a lookup reaching outside the project belongs in a run step rather than a probe (E16). The earlier fix
-  moved the file read out for that exact reason and left the directory resolution behind (E4).
-- **Validation Outcome:** Pending. Adversarial validation has not run yet.
-- **Remaining Risks:** Pending validation. The known open risk is that a person who sets `CLAUDE_CONFIG_DIR` and runs a
-  skill with no Bash grant may no longer have their personal config found (E20).
+- **Root Cause:** All 42 skills carry the probe `` !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"` ``, and the loader
+  refuses it, aborting the skill before its body loads. The refusal is narrower than the issue reports: bare `$HOME` is
+  permitted, while `${...}` brace syntax, every other variable name, and `printenv` are all refused (E23).
+- **Fix:** Replace the probe with `` !`echo "$HOME/.claude"` `` in all 42 skills, which I verified loads in every
+  permission mode, and update the documentation that promises a `CLAUDE_CONFIG_DIR` override the loader can no longer
+  deliver (E23, E24).
+- **Why Correct:** I ran each candidate form through a fresh Claude Code session and recorded which loaded. The chosen
+  form loaded in all of `default`, `plan`, `acceptEdits`, `auto`, and `bypassPermissions`, and it injects the same kind
+  of absolute path the current probe does, so nothing downstream changes shape (E23, E24).
+- **Validation Outcome:** Adversarial validation refuted my first fix. That version deleted the probe and told the run
+  to resolve the directory itself, which no skill can do: zero of the 42 have a Bash grant that reads an environment
+  variable, and the Read tool expands `~` to the home directory rather than the configured one, so the run would have
+  silently applied the wrong profile's config (V8, V9).
+- **Remaining Risks:** The `CLAUDE_CONFIG_DIR` override stops working, which changes a published promise and needs an
+  operator decision. Anyone who has moved their configuration directory and left a stale file behind will have that
+  stale file applied (V9). See the Confidence Assessment.
 
 ## Problem Statement
 
-Running any Han skill on Claude Code 2.1.228 can fail immediately at skill load with this error:
+Running a Han skill can abort at load with this error:
 
 ```
 Shell command permission check failed for pattern "!`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`": Contains expansion
@@ -30,222 +35,226 @@ Shell command permission check failed for pattern "!`echo "${CLAUDE_CONFIG_DIR:-
 
 The reporter confirmed it on `han-planning:plan-implementation`, `han-communication:readability-guidance`,
 `han-communication:edit-for-readability`, and `han-feedback:han-feedback`. Because `han-feedback` is itself affected,
-they could not use Han's own feedback skill to report the problem and filed the issue through `gh` directly.
+they could not use Han's own feedback skill to report the problem and filed the issue through `gh` directly. A second
+member is working around it by rewriting the probe line to a hardcoded path inside the installed plugin cache, which
+every plugin update will overwrite (E25).
 
-The expected behavior is that a personal config problem never fails a run. Han's configuration contract states this
-plainly: "A bad config can never fail a skill run; the worst it can do is be ignored" (E10). A load-time probe cannot
-honor that promise, because it runs before the skill body exists and has no path to degrade.
+The expected behavior is that a personal config problem never fails a run. Han's configuration contract says so
+directly: "A bad config can never fail a skill run; the worst it can do is be ignored" (E10). A load-time probe cannot
+honor that promise, because it runs before the skill body exists and has no way to degrade.
 
-The blast radius is every skill in the suite, not a personal-config edge case. All 42 skills carry the identical probe
-line (E1), and the abort happens whether or not the person has ever written a `.han/config.md` file. One member has
-already worked around it by patching the installed plugin cache by hand, which plugin updates will overwrite.
+The blast radius is every skill in the suite. All 42 carry the identical probe line (E1), and the abort happens whether
+or not the person has ever written a `.han/config.md` file.
 
-The failure is not universal across machines running the same reported version. On the machine where this
-investigation ran, Claude Code reports version 2.1.228 and the probe still resolves correctly (E18). Section "Why the
-same version behaves differently" covers what that means for the fix.
+The abort is silent in non-interactive runs. A `claude -p` session invoking an affected skill exits successfully with
+`is_error: false`, an empty result, and zero model turns, printing no error at all (E23).
 
 ## Root Cause Analysis
 
 ### Root Cause
 
-Claude Code 2.1.228 rejects any load-time context-injection probe whose text contains shell variable expansion, and all
-42 Han skills resolve the personal config directory through exactly such a probe.
+Claude Code's skill loader permits only a bare `$HOME` reference inside a load-time probe and refuses every other
+environment-variable reference, including the `${CLAUDE_CONFIG_DIR:-$HOME/.claude}` form that all 42 Han skills use to
+locate the personal config directory.
 
-### Detailed Analysis
+### What the loader actually accepts
 
-The failing line is one bullet in a four-bullet block that every affected skill carries. Only the third bullet contains
-variable expansion; the other three are literal commands with literal arguments (E2):
+I tested eleven probe forms by writing each into a scratch skill and invoking it from a fresh Claude Code session,
+recording whether the session reached the model. A skill that loads reports one model turn; a skill that aborts reports
+zero turns and an empty result. Every row below is a measured result, not an inference (E23):
 
-```
-## Project Context
+| Probe form                                     | Result  |
+| ---------------------------------------------- | ------- |
+| `` !`echo hello` ``                             | loads   |
+| `` !`echo "$HOME"` ``                           | loads   |
+| `` !`echo "$HOME/.claude"` ``                   | loads   |
+| `` !`echo ~/.claude` ``                         | loads   |
+| `` !`echo "${HOME}"` ``                         | aborts  |
+| `` !`echo "${HOME:-/tmp}"` ``                   | aborts  |
+| `` !`echo "$CLAUDE_CONFIG_DIR"` ``              | aborts  |
+| `` !`echo "$FOOBAR_NOT_REAL"` ``                | aborts  |
+| `` !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"` `` | aborts  |
+| `` !`printenv HOME` ``                          | aborts  |
+| `` !`printenv CLAUDE_CONFIG_DIR \|\| echo "~/.claude"` `` | aborts  |
 
-- CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
-- project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-```
+Three rules explain every row. Bare `$HOME` is permitted. Brace syntax is refused even for `$HOME`, so the refusal is
+about the form as well as the name. Every variable other than `HOME` is refused, including one that does not exist, so
+the loader is not resolving values and reacting to them.
 
-That third bullet reads two environment variables. `${CLAUDE_CONFIG_DIR:-$HOME/.claude}` uses the shell's default-value
-operator: it yields `CLAUDE_CONFIG_DIR` when that variable is set and non-empty, and builds `$HOME/.claude` otherwise.
-Both halves are variable expansion, which is what the new check refuses.
+The failing probe breaks two of the three rules at once. It names `CLAUDE_CONFIG_DIR` and it wraps the reference in
+braces.
 
-A probe cannot recover from a refusal. Claude Code runs probes at skill load, before the body is read, and treats a
-failed permission check as a failure of the whole invocation. The official documentation states that injected commands
-never prompt, and that a check returning anything other than allow aborts the invocation (E9). This is why the symptom
-is a hard abort rather than a skill that runs with one value missing.
+The issue's own diagnosis was close but not exact. "Contains expansion" reads as a blanket ban on expansion, and it is
+not: `` !`echo "$HOME/.claude"` `` expands a variable and loads cleanly in every mode I tested.
+
+### Permission mode is not the discriminator
+
+I ran the failing probe in all five permission modes. `default`, `plan`, `acceptEdits`, and `auto` abort identically.
+Only `bypassPermissions`, which skips permission checks altogether, lets it through (E23).
+
+That answers the question of whether a mode difference explains why some people see the bug and others do not. Among
+the modes anyone would normally work in, it does not. The one mode that permits the probe is the one that permits
+everything.
+
+This also resolves why the probe kept resolving correctly during this investigation while the reporter's runs aborted.
+The interactive session running this work loads the probe, which matches `bypassPermissions` behavior and no other mode
+(E18). Earlier passes treated that as an unexplained version difference. It is a permission-check difference, and the
+fix should not depend on it.
+
+### How Han arrived here
 
 Han reached this line by fixing a neighboring bug and stopping one step short. Commit `e483783` removed a sibling probe
 that used the same expansion to `cat` the personal config file, after a permission classifier refused it. That commit
-deliberately kept the surviving `echo` probe, and its own message explains the reasoning: keep "the echo directory
-probe, which touches no file" (E4). Commit `e79299f` then copied the surviving line into every skill in the suite,
-which is why it is universal today. The prior investigation behind that fix recorded the same judgment, and its live
-check confirmed the `echo` form loading successfully at the time (E5, E19).
+deliberately kept the surviving `echo` probe, and its message explains why: keep "the echo directory probe, which
+touches no file" (E4). Commit `e79299f` then copied the surviving line into every skill, which is why it is universal
+today.
 
-The reasoning was sound against the classifier that existed then and wrong against the one that exists now. The old
-refusal keyed on what a probe opened, so an `echo` that opened no file passed. The new refusal keys on the probe's
-text, so an `echo` carrying expansion fails regardless of what it touches. The two errors are different strings from
-different checks: the old one named the auto mode classifier and said "Blocked by classifier," and the new one says
-"Contains expansion" (E5).
+The reasoning was sound against the check that existed then and wrong against the one that exists now. The old refusal
+keyed on what a probe opened, so an `echo` that opened no file passed. The new refusal keys on the probe's text, so an
+`echo` naming the wrong variable fails no matter what it touches. The two errors are different strings from different
+checks (E5).
 
-Han's own authoring guidance still teaches the failing form as the recommended pattern, in two places, under a heading
-that presents it as the fix for the earlier failure (E14). Any fix that leaves those examples in place will see the
-broken probe reintroduced into the next skill someone writes.
-
-### Why the same version behaves differently
-
-The probe still works on the machine where this investigation ran, which reports the same Claude Code version the issue
-names (E18). No settings file on this machine carries an allow rule that would explain it: neither the repository's
-`.claude/settings.local.json`, which holds only an output-style setting, nor either personal `settings.json`, whose
-allow lists name three unrelated entries (E21).
-
-This investigation could not resolve the difference, because the check lives in Claude Code rather than in this
-repository. Two explanations fit the evidence and neither was ruled out: builds differing behind one version string, or
-a check that varies per account or session. What matters for the fix is the direction of the risk. A machine where the
-probe currently works can start rejecting it at any time, so a fix that depends on predicting which probe text passes
-is a fix with an expiry date.
+Han's own authoring guidance still teaches the failing form as the recommended pattern, in two places, under headings
+that present it as the fix for the earlier failure (E14). Leaving those in place would put the broken probe into the
+next skill someone writes.
 
 ## Planned Fix
 
 ### Approach
 
-Delete the expansion-bearing probe from all 42 skills and resolve the configuration directory inside the run step that
-already reads the file, so no load-time probe carries the personal-config lookup at all.
+Replace the probe with `` !`echo "$HOME/.claude"` `` in all 42 skills, and correct the documentation that promises a
+`CLAUDE_CONFIG_DIR` override the loader can no longer deliver.
+
+### The decision this asks you to make
+
+The `CLAUDE_CONFIG_DIR` override cannot be preserved. Every form that reads that variable aborts, whether through
+`echo`, through braces, or through `printenv` (E23). No built-in skill substitution yields the configuration directory
+either (E8). This is measured, not assumed.
+
+That leaves a real choice about what the personal config directory means from now on. My recommendation is the first
+option, because it is the only one that both loads and needs no new tool grants.
+
+1. **Accept the default location.** The personal config is `~/.claude/.han/config.md`, always. Anyone who has moved
+   their configuration directory links the two with one command:
+   `ln -s "$CLAUDE_CONFIG_DIR/.han" ~/.claude/.han`. This ships now and needs nothing from anyone who has not moved
+   their directory.
+2. **Preserve the override with a new tool grant.** Delete the probe and add `Bash(printenv *)` to every skill so a run
+   step can read the variable. This keeps the override but adds a Bash grant to 42 skills, 13 of which deliberately
+   carry none today, and it rests on behavior I could not test, since a probe cannot stand in for a runtime tool call
+   (V8, V11).
+
+Option 1 is what the Changes section below implements. Say the word if you want option 2 instead.
 
 ### Why this approach and not the alternatives
 
-Three candidate fixes were weighed. The chosen one is the only one that cannot be broken again by a further tightening
-of the same check.
+**`` !`echo "$HOME/.claude"` `` (chosen).** It loads in every permission mode (E23). It injects an absolute path, which
+is exactly what the current probe injects, so the value's meaning and both of its downstream jobs survive untouched:
+the run reads `.han/config.md` inside it, and a relative path in the personal file resolves against it. The diff is one
+line in 42 files.
 
-**Delete the probe, resolve during the run (chosen).** A skill with no probe gives the loader nothing to reject. The
-resolution moves into the first-action step, where a failure is recoverable: the step reads a file, gets nothing, and
-continues silently, which is already the documented behavior for an absent personal config (E10). This also finishes a
-move the repository already committed to. Han's own probe-authoring rule says a lookup reaching outside the project
-belongs in a Read-tool call during the run, and gives this reason: "A probe stakes the whole skill on a permission
-decision it cannot recover from" (E16). The earlier fix applied that rule to the file read and left the directory
-resolution behind.
+**Delete the probe and resolve during the run (rejected after validation).** This was my first plan and validation
+broke it. No skill can execute it: zero of the 42 declare a Bash grant matching any environment-reading command (V8).
+Worse, the fallback is unsafe. The Read tool does expand a leading `~`, but to the home directory, never to the
+configured one. I confirmed this on the machine running this investigation, where `~/.claude/.han/config.md` holds a
+real 812-byte config while the active configuration directory holds none (V9). A run following that instruction would
+silently apply the wrong profile's settings, which is worse than the documented degradation of ignoring the file.
 
-**Swap `echo` for `printenv` (rejected).** A probe of `` !`printenv CLAUDE_CONFIG_DIR || echo "~/.claude"` `` contains
-no expansion and returns the right value in every state I tested (E20). It fails on a different axis. `printenv` is
-absent from the documented list of commands that run without a permission prompt, which names `ls`, `cat`, `echo`,
-`pwd`, `head`, `tail`, `grep`, `find`, `wc`, `which`, `diff`, `stat`, `du`, `cd`, and the read-only `git` forms (E7).
-Whether an `allowed-tools` grant rescues a probe the expansion check would otherwise touch is undocumented (E9). The
-repository already rejected a fix on this exact ground once: the `fix-config-probe-exit-code` plan discarded a `|| true`
-guard because `true` was not on the allowlist and the form had never been run against the loader. Proposing an unlisted
-command now would repeat that reasoning error. This option also keeps a load-time probe, so the next tightening of the
-check can break it again.
+**`printenv` in any position (rejected).** `` !`printenv HOME` `` aborts, so `printenv` is not permitted in a probe at
+all, independent of which variable it names (E23). This confirms, by measurement, the allowlist concern that earlier
+passes could only reason about.
 
-**Use a built-in substitution (rejected, not available).** Claude Code substitutes a fixed set of variables in skill
-text without any shell involvement: `$ARGUMENTS` and its indexed forms, `${CLAUDE_SESSION_ID}`, `${CLAUDE_EFFORT}`,
-`${CLAUDE_SKILL_DIR}`, `${CLAUDE_PROJECT_DIR}`, `${CLAUDE_PLUGIN_ROOT}`, and `${CLAUDE_PLUGIN_DATA}`. None of them
-yields the configuration directory or the home directory (E8). The mechanism that would have made this clean does not
-exist.
+**A built-in substitution (rejected, not available).** Claude Code substitutes a fixed set of variables in skill text
+with no shell involved: `$ARGUMENTS` and its indexed forms, `${CLAUDE_SESSION_ID}`, `${CLAUDE_EFFORT}`,
+`${CLAUDE_SKILL_DIR}`, `${CLAUDE_PROJECT_DIR}`, `${CLAUDE_PLUGIN_ROOT}`, and `${CLAUDE_PLUGIN_DATA}`. None yields the
+configuration directory or the home directory (E8).
 
 ### What the fix gives up
 
-A person who sets `CLAUDE_CONFIG_DIR` and runs a skill that has no Bash grant may no longer have their personal config
-found. The run step can name both candidate locations, but a skill with no shell available cannot read an environment
-variable to choose between them, and whether the Read tool accepts a `~`-prefixed path is undocumented (E9).
+Anyone who sets `CLAUDE_CONFIG_DIR` loses the automatic override, and a stale `~/.claude/.han/config.md` left behind
+from before the move will now be applied to every project. That reverses a rule the contract states today: "If you have
+moved your configuration directory, a file left behind in `~/.claude/.han/` does not apply" (E15).
 
-This is a real narrowing of a published promise. `docs/configuration.md` tells operators the personal file lives in
-"`~/.claude` unless you have set `CLAUDE_CONFIG_DIR`, in which case it is wherever that points" (E15). The fix must
-update that text rather than leave it overstating what the suite does.
-
-The loss degrades the way the contract already specifies: an unreachable personal configuration directory is treated as
-no personal configuration, with no note (E10). Nobody's run breaks. The narrowing is a feature reaching fewer people,
-traded for a suite that loads at all.
+The symlink in option 1 restores correct behavior for that group with one command, and it survives plugin updates,
+which the current cache-patching workaround does not (E25).
 
 ### Changes
 
 #### Spot-verify one skill against the live loader before the sweep
 
-- **Change:** Apply the new Project Context block and first-action paragraph to a single skill, then invoke that skill
-  and confirm it loads with no error and finds a personal config that exists.
-- **Evidence:** (E5), (E19). Both prior fixes to this probe were reasoned rather than run, and both shipped a form that
-  a later check rejected. The `fix-config-probe-exit-code` plan named this gate for the same reason.
+- **Change:** Apply the new probe line to a single skill, then invoke it and confirm it loads and finds a personal
+  config that exists.
+- **Evidence:** (E5), (E19). Both prior fixes to this probe were reasoned rather than run, and both shipped a form a
+  later check rejected.
 - **Standards:** The probe-authoring guidance's warning that the allowlist "can shift between Claude Code versions."
-- **Details:** Use `han-communication:readability-guidance`. It has no Bash grant in its `allowed-tools`, which makes it
-  the strictest permission case and the one most likely to expose a resolution the run cannot perform.
+- **Details:** Use `han-communication:readability-guidance`, which declares `allowed-tools: Read` and is the strictest
+  permission case in the set (V8). Run it in `default` mode, not the mode this session uses, because
+  `bypassPermissions` accepts probes every other mode rejects (E23). If the check fails, stop and reopen the choice in
+  "The decision this asks you to make" rather than continuing the sweep.
 
 #### All 42 `*/skills/*/SKILL.md` files
 
-- **Change:** Delete the `- personal config directory:` probe bullet. Rewrite the first-action paragraph so it names
-  the configuration directory itself instead of pointing at a probe value.
-- **Evidence:** (E1), (E2), (E9), (E12), (E16).
-- **Standards:** Probe-authoring guidance, "Keep every probe reading inside the project working directory."
+- **Change:** Replace the probe line. Nothing else in the block changes.
+- **Evidence:** (E1), (E12), (E23).
+- **Standards:** Probe-authoring guidance, "Keep every command an auto-approvable read-only form."
 - **Details:** All 42 blocks are byte-identical apart from the relative depth of the `config-rule.md` link (E12), so
-  this is one substitution applied 42 times, not 42 separate edits. The block becomes:
+  this is one substitution applied 42 times. The line becomes:
 
 ```
-## Project Context
-
-- CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
-- project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside your Claude Code configuration directory. That
-directory is the path in the `CLAUDE_CONFIG_DIR` environment variable when it is set, and `~/.claude` when it is not. A
-read that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+- personal config directory: !`echo "$HOME/.claude"`
 ```
 
-The complete file list is in E1. The list of 42 is confirmed by two independent passes.
-
-#### `han-communication/skills/readability-guidance/SKILL.md` and `han-communication/skills/edit-for-readability/SKILL.md`
-
-- **Change:** Reword the second reference to the probe value, deeper in each skill body, where a relative
-  `writing-voice` path resolves against the configuration directory.
-- **Evidence:** (E13).
-- **Standards:** Writing voice; the `config-rule.md` relative-path contract.
-- **Details:** Both currently say a relative value resolves against "the `personal config directory` the probe reported
-  for the personal file." With no probe, that phrase has no referent. Replace it with "the Claude Code configuration
-  directory you resolved for the personal file." No other skill references the value a second time.
+The surrounding first-action paragraph keeps its current wording, because the label still names a resolved absolute
+directory. The complete file list is in E1. Two repo-maintenance skills under `.claude/skills/` carry their own Project
+Context blocks and never carried this probe, so they are out of scope (V1).
 
 #### `han-core/references/config-rule.md` and its 11 vendored copies
 
-- **Change:** Rewrite the bullet that describes the value as a probe output so it describes a value the run resolves.
-  Add the empty case to the degradation list.
-- **Evidence:** (E10), (E11).
-- **Standards:** The one-canonical-source-per-concept convention in `CLAUDE.md`; the vendoring convention requiring
-  byte-identical copies.
-- **Details:** All 12 copies currently share md5 `0c591431ab7ccb0e92cce3fc5335d081` (E11). Edit the canonical
-  `han-core` copy, then re-sync the other 11 and confirm the checksums match again. The bullet keeps its meaning: the
-  configuration directory is named by `CLAUDE_CONFIG_DIR` when set and `~/.claude` when not, and it remains the folder a
-  relative path in the personal file resolves against. Only its source changes, from a probe to the run. The
-  degradation list already covers a directory the run cannot reach, so add only the case where the run cannot determine
-  the directory at all, resolving it the same silent way.
+- **Change:** Rewrite the bullet describing the value so it stops promising a `CLAUDE_CONFIG_DIR` override. Correct the
+  factual error about tilde handling. Record the same-file case.
+- **Evidence:** (E10), (E11), (V6), (V9), (V10).
+- **Standards:** One canonical source per concept; vendored copies stay byte-identical.
+- **Details:** All 12 copies share md5 `0c591431ab7ccb0e92cce3fc5335d081` (E11). Edit the canonical `han-core` copy,
+  re-sync the other 11, and confirm the checksums match again. Three edits:
+  - The bullet at lines 15 to 17 currently says the directory is "Named by the `CLAUDE_CONFIG_DIR` environment variable
+    when that variable is set, and `~/.claude` when it is not." It becomes the home-directory location only, with a
+    pointer to the symlink for anyone who has moved their directory.
+  - Lines 76 to 78 state that "a literal `~` handed to a file-reading tool does not resolve." That is wrong. The Read
+    tool resolves it to the home directory, which I confirmed directly (V10). Correct the sentence rather than leave a
+    canonical file stating a false fact about tool behavior.
+  - Lines 34 to 36 define what happens when both lookups resolve to the same file, which the run detects by comparing
+    the resolved directory against the working directory (V6). The probe still supplies an absolute path, so this rule
+    keeps working. Confirm it during the sweep rather than assume it.
 
 #### `han-plugin-builder/skills/guidance/references/skill-building-guidance/context-injection-commands.md`
 
-- **Change:** Replace the recommended example that carries the failing probe, and add shell variable expansion to the
-  list of constructs the loader refuses.
-- **Evidence:** (E14), (E9).
-- **Standards:** The guidance file's own path-scoped rule header, which applies it to every `SKILL.md` in the repo.
-- **Details:** Line 152 currently offers `` !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"` `` under "Prefer (probe
-  resolves the location, a step reads the file)". Both the heading and the example need to go, because resolving a
-  location in a probe is no longer safe when the location comes from an environment variable. The refused-constructs
-  list names four items (command substitution, process substitution, subshells and background, dangerous sub-forms).
-  Add a fifth for parameter expansion, with the verbatim `Contains expansion` error text.
+- **Change:** Replace the recommended example carrying the failing probe, and record what the loader accepts.
+- **Evidence:** (E14), (E23).
+- **Standards:** The file's own path-scoped rule header, which applies it to every `SKILL.md` in the repo.
+- **Details:** Line 152 offers the failing line under "Prefer (probe resolves the location, a step reads the file)".
+  Replace it with the `$HOME` form. The refused-constructs list names four items. Add a fifth covering
+  environment-variable references, and state the measured rule: bare `$HOME` is permitted, brace syntax is refused even
+  for `$HOME`, and every other variable name is refused. Add `printenv` to the commands the guidance says are not
+  permitted, and add the eleven-row results table from this investigation so the next author does not have to rerun it.
 
 #### `han-plugin-builder/skills/guidance/references/skill-building-guidance/troubleshooting.md`
 
-- **Change:** Update the worked "after" example, and add a section for the new refusal.
-- **Evidence:** (E14).
+- **Change:** Update the worked "after" example, and add a section for this refusal.
+- **Evidence:** (E14), (E23).
 - **Standards:** Same guidance conventions.
-- **Details:** Line 365 carries the failing form as the correct outcome of the existing section on a probe refused for
-  reading outside the project. Replace it with the run-step form. Add a section covering the "Contains expansion"
-  error, its cause, and the resolution, following the shape of the sections already there.
+- **Details:** Line 365 carries the failing form as the correct outcome. Replace it with the `$HOME` form. Add a section
+  covering the `Contains expansion` error, following the shape of the sections already there, and note the silent
+  non-interactive failure: a `claude -p` run aborts with no error text and an empty result, so a skill that appears to
+  do nothing is the symptom to recognize (E23).
 
 #### `docs/configuration.md`
 
-- **Change:** Keep the description of where the personal file lives, and state plainly when the `CLAUDE_CONFIG_DIR`
-  override is honored.
-- **Evidence:** (E15).
-- **Standards:** Writing voice; the YAGNI-applies-to-docs convention.
-- **Details:** Lines 34 to 36 are the only operator-facing text naming the variable. The file is still at `.han/config.md`
-  inside the configuration directory, so the location text stands. Add that a skill without a shell available to it
-  resolves the default location only. The existing degradation text at lines 183 and 184 already covers the outcome and
-  needs no change.
+- **Change:** Correct where the personal file lives, and document the symlink for anyone who has moved their
+  configuration directory.
+- **Evidence:** (E15), (E23).
+- **Standards:** Writing voice; YAGNI applies to docs.
+- **Details:** Lines 34 to 36 are the only operator-facing text naming the variable, and they currently promise the
+  override. Replace with the home-directory location plus the symlink command. The degradation text at lines 183 and
+  184 needs no change.
 
 ## Evidence Summary
 
@@ -270,101 +279,83 @@ The complete file list is in E1. The list of 42 is confirmed by two independent 
   `han-plugin-builder/skills/{agent-builder,guidance,skill-builder}`;
   `han-reporting/skills/{html-summary,stakeholder-summary}`;
   `han-research/skills/{gap-analysis,issue-triage,research}`.
-- **Relevance:** This is the exact line named in the issue's error text, and all four skills the reporter reproduced on
-  are in this set.
+- **Relevance:** The line named in the issue's error text, and all four skills the reporter reproduced on are in this
+  set.
 
 ### E2: It is the only expansion-bearing probe in the suite
 
-- **Source:** `grep -rn '!`[^`]*\$[^`]*`' --include='SKILL.md' .` across all 314 probe matches in the repo
-- **Finding:** Zero results outside the personal-config line. Every sibling probe uses literal arguments only:
-  ```
-  - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
-  - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-  - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-  ```
-- **Relevance:** The fix touches one bullet. The other three bullets in the same block are not implicated and stay as
-  they are.
+- **Source:** `grep -rn '!`[^`]*\$[^`]*`'` across all file types, covering all 314 probe matches
+- **Finding:** No live probe outside this line carries a variable reference. The only other match is a documented bad
+  example under an "Avoid" heading in the authoring guidance. No `@`-file reference syntax exists anywhere in the
+  suite, so the changelog's `@`-expansion hardening adds nothing to the scope.
+- **Relevance:** The fix touches one bullet. The three sibling probes in the same block are literal commands and stay
+  as they are.
 
 ### E3: The shipped form is single-level; the nested form never reached main
 
-- **Source:** `grep -rn 'AGENT_CONFIG_DIR'` over the working tree; `git branch -a --contains 0405583`
-- **Finding:** `AGENT_CONFIG_DIR` appears nowhere in the checked-out repository. Commit `0405583`, which the issue
-  cites as extending the probe, is contained only by `remotes/origin/kadams54/pi`. Its diff:
-  ```
-  -- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
-  ++ personal config directory: !`echo "${AGENT_CONFIG_DIR:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}"`
-  ```
-- **Relevance:** The issue's evidence chain is right about the commit and wrong about what shipped. The failing form is
-  the single-level one. The unmerged branch would add a second expansion layer, so it needs the same fix before merge.
+- **Source:** `grep -rn 'AGENT_CONFIG_DIR'`; `git branch -a --contains 0405583`
+- **Finding:** `AGENT_CONFIG_DIR` appears nowhere in the working tree. Commit `0405583` is contained only by
+  `remotes/origin/kadams54/pi`. Its diff changes the probe to
+  `` !`echo "${AGENT_CONFIG_DIR:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}"` ``.
+- **Relevance:** The issue is right about the commit and wrong about what shipped. That unmerged branch needs the same
+  fix before it merges, since its form breaks all three of the rules in E23.
 
 ### E4: The earlier fix kept this probe on purpose
 
-- **Source:** `git show e483783`, commit message and diff
-- **Finding:** The message reads: "Move the personal read into a Read-tool step during the run, so a permission
-  decision on it can no longer abort a skill. Keep the echo directory probe, which touches no file, and the project
-  probe, which is relative to the working directory." The diff removed only the `cat` probe. Commit `e79299f` then
-  copied the surviving line across the suite.
-- **Relevance:** The current bug is the unfixed half of a fix already made once, which is why the fix direction is to
-  finish that move rather than invent a new mechanism.
+- **Source:** `git show e483783`, message and diff
+- **Finding:** "Move the personal read into a Read-tool step during the run, so a permission decision on it can no
+  longer abort a skill. Keep the echo directory probe, which touches no file, and the project probe, which is relative
+  to the working directory." The diff removed only the `cat` probe. Commit `e79299f` copied the survivor across the
+  suite.
+- **Relevance:** The current bug is the unfixed half of a fix already made once.
 
 ### E5: The prior investigation blessed the surviving probe and shipped
 
 - **Source:** `docs/plans/fix-personal-config-probe-classifier-block/investigation.md:6-16, 84-129`
-- **Finding:** Its recorded error was a different check:
+- **Finding:** Its recorded error named a different check:
   ```
   Error: Shell command permission check failed for pattern
   "!`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`":
   Permission for this action was denied by the Claude Code auto mode classifier.
   Reason: Blocked by classifier.
   ```
-  Its fix dropped the `cat` probe, kept the `echo` probe, and moved the read into a step. That fix is `e483783` plus
-  the `e79299f` fan-out, and it matches current file content.
-- **Relevance:** Establishes that "Contains expansion" is a new, second check with different text, not a recurrence of
-  the one already fixed.
+- **Relevance:** Establishes that "Contains expansion" is a second, later check with different text.
 
 ### E6: A probe that exits non-zero aborts the skill load
 
-- **Source:** `docs/plans/fix-config-probe-exit-code/investigation.md:1-40`; Claude Code skills documentation,
-  "When an injected command fails"
-- **Finding:** The documentation states that a failed command "aborts the entire skill invocation, not just its own
-  placeholder," and that "With the default `bash` shell, any non-zero exit code counts as a failure." The prior plan
-  reproduced this against `cat .han/config.md 2>/dev/null`, which exits 1 on a missing file.
-- **Relevance:** Rules out any unguarded replacement probe and explains why the surviving probes all carry a
-  `|| echo <sentinel>` guard.
+- **Source:** `docs/plans/fix-config-probe-exit-code/investigation.md:1-40`; Claude Code skills documentation
+- **Finding:** A failed command "aborts the entire skill invocation, not just its own placeholder," and "any non-zero
+  exit code counts as a failure."
+- **Relevance:** Rules out any unguarded replacement. The chosen `` !`echo "$HOME/.claude"` `` exits 0 unconditionally,
+  so it needs no guard.
 
-### E7: `printenv` is absent from the documented no-prompt command list
+### E7: `printenv` is not permitted in a probe
 
-- **Source:** `han-plugin-builder/skills/guidance/references/skill-building-guidance/context-injection-commands.md:50-56`;
-  Claude Code permissions documentation
-- **Finding:** The repository's guidance names the allowlist as covering "`cat`, `ls`, `head`, `tail`, `wc`, `grep`,
-  `find` (without the dangerous predicates below), `which`, `echo`, `date`, and the read-only `git` and `gh`
-  subcommands." The official list names `ls`, `cat`, `echo`, `pwd`, `head`, `tail`, `grep`, `find`, `wc`, `which`,
-  `diff`, `stat`, `du`, `cd`, and read-only `git` forms. Neither includes `printenv` or `env`.
-- **Relevance:** The single most attractive drop-in replacement is not on the list, which is what pushes the fix toward
-  removing the probe rather than rewriting it.
+- **Source:** Direct experiment (E23); `han-plugin-builder/.../context-injection-commands.md:50-56`
+- **Finding:** `` !`printenv HOME` `` aborts. The repo's guidance lists the permitted commands as "`cat`, `ls`, `head`,
+  `tail`, `wc`, `grep`, `find` (without the dangerous predicates below), `which`, `echo`, `date`, and the read-only
+  `git` and `gh` subcommands," which omits `printenv`.
+- **Relevance:** Earlier passes inferred this from the documented list. It is now measured, which closes the
+  corroboration gap validation raised (V12).
 
 ### E8: No built-in substitution yields the configuration directory
 
 - **Source:** Claude Code skills documentation, "Available string substitutions"
 - **Finding:** The complete set is `$ARGUMENTS`, `$ARGUMENTS[N]`, `$N`, named arguments, `${CLAUDE_SESSION_ID}`,
   `${CLAUDE_EFFORT}`, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PROJECT_DIR}`, `${CLAUDE_PLUGIN_ROOT}`, and
-  `${CLAUDE_PLUGIN_DATA}`. There is no `${CLAUDE_CONFIG_DIR}` substitution and nothing yielding the home directory.
-- **Relevance:** Closes the option of replacing the shell expansion with a harness substitution, which would otherwise
-  have been the cleanest fix.
+  `${CLAUDE_PLUGIN_DATA}`. None yields the configuration directory or the home directory.
+- **Relevance:** Closes the option of replacing the shell expansion with a harness substitution.
 
-### E9: The rejection is documented as unrecoverable, and the override is not documented
+### E9: The rejection is documented as unrecoverable
 
-- **Source:** Claude Code skills documentation, "When an injected command fails"; changelog entry for 2.1.228
+- **Source:** Claude Code skills documentation, "When an injected command fails"; 2.1.228 changelog
 - **Finding:** "Injected commands never prompt for permission. When a command's permission check returns anything other
   than allow, Claude Code aborts the invocation." The 2.1.228 changelog records related hardening: "Hardened skills
   synced from claude.ai: they no longer shadow local commands or MCP prompts, their descriptions are sanitized and
-  labeled, and on your machine their bodies don't run `!` commands or expand `@` files." Whether an `allowed-tools`
-  grant can override the expansion rejection is not stated anywhere in the documentation.
-- **Relevance:** Confirms the symptom is a hard abort by design, and confirms that any fix relying on an
-  `allowed-tools` grant would rest on undocumented behavior.
+  labeled, and on your machine their bodies don't run `!` commands or expand `@` files."
+- **Relevance:** Confirms the abort is by design.
 - Unverified: the changelog text covers claude.ai-synced skills, a different provenance tier from Han's marketplace
-  install, so it is corroborating context for the direction of the hardening rather than proof of the rule that fires
-  here.
+  install, so it is context for the direction of the hardening rather than proof of the rule measured in E23.
 
 ### E10: The configuration contract the fix must preserve
 
@@ -379,49 +370,41 @@ The complete file list is in E1. The list of 42 is confirmed by two independent 
   A bad config can never fail a skill run; the worst it can do is be ignored.
   ```
   ```
-  A personal configuration directory the run cannot reach: treat it as no personal configuration, with no note. A run
-  cannot tell that apart from a person who never wrote the file, and the second group is far larger.
+  A personal configuration directory the run cannot reach: treat it as no personal configuration, with no note.
   ```
-  The same file states that the run expands a leading `~` itself "because most skills have no shell available to them."
-- **Relevance:** Two things the fix must keep: the value's meaning and its two jobs, and the silent-degradation
-  promise. The file also already concedes that most skills have no shell, which is the same constraint that limits what
-  the replacement can resolve.
+- **Relevance:** The chosen probe keeps the value's meaning and both of its jobs. Only the sentence naming
+  `CLAUDE_CONFIG_DIR` becomes false and needs rewriting.
 
 ### E11: All 12 config-rule copies are byte-identical
 
 - **Source:** `md5` over `{plugin}/references/config-rule.md` for all 12 plugins
 - **Finding:** Every copy reports `0c591431ab7ccb0e92cce3fc5335d081`.
-- **Relevance:** No drift to reconcile. The edit is made once in `han-core` and re-synced, and the checksums are the
-  verification that the sync is complete.
+- **Relevance:** No drift to reconcile. Edit once, re-sync, and verify by checksum.
 
 ### E12: The 42 probe blocks are byte-identical
 
 - **Source:** Hash comparison of the probe block across every matching `SKILL.md`, normalized only for the `../../`
-  relative-path depth of the `config-rule.md` link
+  depth of the `config-rule.md` link
 - **Finding:** One hash across all 42 files.
-- **Relevance:** The sweep is a single mechanical substitution, which makes a scripted edit plus a completeness grep a
-  sufficient method.
+- **Relevance:** The sweep is a single mechanical substitution.
 
 ### E13: Two skills reference the value a second time
 
 - **Source:** `han-communication/skills/readability-guidance/SKILL.md:46-49`;
   `han-communication/skills/edit-for-readability/SKILL.md:76-79`
-- **Finding:** Both carry this sentence, which resolves a relative `writing-voice` path:
-  ```
-  A relative value resolves against the folder holding the file that declared it: the working directory for the
-  project file, and the `personal config directory` the probe reported for the personal file.
-  ```
-- **Relevance:** Deleting the probe leaves this phrase pointing at nothing, so these two files need an edit beyond the
-  common block.
+- **Finding:** Both say a relative `writing-voice` value resolves against "the `personal config directory` the probe
+  reported for the personal file."
+- **Relevance:** Under the chosen fix a probe still reports the value, so both sentences stay true and neither file
+  needs an edit. This was a required change under the rejected first plan.
 
 ### E14: The authoring guidance teaches the failing form
 
-- **Source:** `han-plugin-builder/skills/guidance/references/skill-building-guidance/context-injection-commands.md:149-153`;
-  `han-plugin-builder/skills/guidance/references/skill-building-guidance/troubleshooting.md:362-368`
-- **Finding:** The guidance offers the failing line under the heading "Prefer (probe resolves the location, a step
-  reads the file)", and the troubleshooting doc offers it under "After (correct — probe resolves the location only)".
-  Neither file's refusal list mentions parameter expansion, and `Contains expansion` appears nowhere in the repository.
-- **Relevance:** Without updating these two files, the next skill written from the guidance reintroduces the bug.
+- **Source:** `han-plugin-builder/.../context-injection-commands.md:149-153`;
+  `han-plugin-builder/.../troubleshooting.md:362-368`
+- **Finding:** The guidance offers the failing line under "Prefer (probe resolves the location, a step reads the
+  file)", and the troubleshooting doc under "After (correct — probe resolves the location only)". Neither refusal list
+  mentions variable references, and `Contains expansion` appears nowhere in the repository.
+- **Relevance:** Without updating both, the next skill written from the guidance reintroduces the bug.
 
 ### E15: The published promise about `CLAUDE_CONFIG_DIR`
 
@@ -432,43 +415,36 @@ The complete file list is in E1. The list of 42 is confirmed by two independent 
   set `CLAUDE_CONFIG_DIR`, in which case it is wherever that points. If you have moved your configuration directory, a
   file left behind in `~/.claude/.han/` does not apply.
   ```
-- **Relevance:** This is the only operator-facing text naming the variable, so it is the one file that must change if
-  the fix narrows when the override is honored.
+- **Relevance:** The only operator-facing text naming the variable, and the sentence the fix reverses.
 
-### E16: The repo's own rule says this lookup belongs in a run step
+### E16: The repo's own rule on probes reaching outside the project
 
-- **Source:** `han-plugin-builder/skills/guidance/references/skill-building-guidance/context-injection-commands.md:127-135`
-- **Finding:**
-  ```
-  A probe reads files in the directory the skill runs from. When a step needs the content of a file somewhere else,
-  gather it during the run with the Read tool instead.
-
-  The reason is the no-prompt, no-fallback behavior from the rule above. A probe stakes the whole skill on a
-  permission decision it cannot recover from...
-  ```
-- **Relevance:** The chosen fix is this rule applied to the half of the lookup that was left behind, so it needs no new
-  convention.
+- **Source:** `han-plugin-builder/.../context-injection-commands.md:127-135`
+- **Finding:** "A probe reads files in the directory the skill runs from. When a step needs the content of a file
+  somewhere else, gather it during the run with the Read tool instead... A probe stakes the whole skill on a permission
+  decision it cannot recover from."
+- **Relevance:** The chosen probe opens no file, so it stays inside this rule. The rule drove the rejected first plan,
+  and validation showed the run cannot carry the resolution this rule would hand it (V8).
 
 ### E17: No test covers the probe
 
 - **Source:** All six `*.bats` files outside `node_modules`, grepped for `CLAUDE_CONFIG_DIR`, `personal config
   directory`, and `Project Context`
-- **Finding:** Zero matches. `test/sanity.bats` is an arithmetic check only.
-- **Relevance:** No test blocks the change and none guards against regression, which is why the spot-verification gate
-  carries the whole verification burden.
+- **Finding:** Zero matches.
+- **Relevance:** Nothing blocks the change and nothing guards against regression, so the spot-verification gate carries
+  the verification burden.
 
-### E18: The probe still works on this machine, at the same reported version
+### E18: The probe loads in this investigation's own session
 
-- **Source:** `command claude --version`; the Project Context block of this skill's own invocation
-- **Finding:** The binary reports `2.1.228 (Claude Code)`. This skill's own `personal config directory` resolved to
-  `/Users/riverbailey/.claude-testdouble`, set by a personal shell function outside this repository that exports
-  `CLAUDE_CONFIG_DIR` before launching the binary.
-- **Relevance:** The failure is not reproducible here, so the fix cannot be verified by reproducing the bug. It can
-  only be verified by confirming the replacement loads and resolves correctly.
-- Unverified: why one machine rejects the probe and another accepts it at the same reported version. The check is not
-  part of this repository and its build identity beyond the self-reported string was not inspectable.
+- **Source:** `command claude --version`; this skill's own Project Context block; a scratch skill carrying the failing
+  probe, invoked in this session
+- **Finding:** The binary reports `2.1.228 (Claude Code)`. This skill's `personal config directory` resolved to
+  `/Users/riverbailey/.claude-testdouble`, and a scratch skill carrying the identical failing probe also loaded and
+  resolved.
+- **Relevance:** Earlier passes could not explain this. E23 explains it: this session behaves like `bypassPermissions`,
+  the one mode that accepts the probe.
 
-### E19: The original validation recorded the probe working and flagged the unset branch
+### E19: The original validation recorded the probe working
 
 - **Source:** `docs/plans/user-level-han-config/artifacts/probe-check-result.md:1-6, 57-66`
 - **Finding:**
@@ -481,48 +457,258 @@ The complete file list is in E1. The list of 42 is confirmed by two independent 
   because that needs a session started with the variable unset.
   ```
   The artifact records no Claude Code version and never uses the phrase "Contains expansion".
-- **Relevance:** Confirms the issue's claim that the probe was validated rather than assumed, and shows the validation
-  was against a check that has since changed.
+- **Relevance:** Confirms the probe was validated rather than assumed, against a check that has since changed. E23
+  also closes its open question: the set-versus-unset distinction is irrelevant, because the loader refuses the pattern
+  text without resolving it.
 
-### E20: Measured shell behavior of the rejected `printenv` alternative
+### E20: Measured shell behavior of the rejected `printenv` form
 
-- **Source:** Direct shell runs in this repository
+- **Source:** Direct shell runs
 - **Finding:**
   ```
-  printenv CLAUDE_CONFIG_DIR                                  -> /Users/riverbailey/.claude-testdouble, exit 0
-  env -u CLAUDE_CONFIG_DIR sh -c 'printenv CLAUDE_CONFIG_DIR' -> (empty), exit 1
-  ... 'printenv CLAUDE_CONFIG_DIR || echo "~/.claude"'        -> ~/.claude, exit 0    (unset)
-  ... 'printenv CLAUDE_CONFIG_DIR || echo "~/.claude"'        -> /Users/riverbailey/.claude-testdouble, exit 0 (set)
+  printenv CLAUDE_CONFIG_DIR                                    -> /Users/riverbailey/.claude-testdouble, exit 0
+  env -u CLAUDE_CONFIG_DIR sh -c 'printenv CLAUDE_CONFIG_DIR'   -> (empty), exit 1
+  ... 'printenv CLAUDE_CONFIG_DIR || echo "~/.claude"'          -> ~/.claude, exit 0    (unset)
   CLAUDE_CONFIG_DIR="" sh -c 'printenv ... || echo "~/.claude"' -> (empty), exit 0
   ```
-- **Relevance:** The guarded form is correct in the two states that matter and diverges in one: with the variable set
-  to an empty string, `printenv` succeeds and the fallback never fires, where the current `:-` operator would fall back.
-  Recorded because it is the strongest rejected alternative, and because the divergence would have been easy to miss.
+- **Relevance:** The form is correct in a bare shell and still aborts at skill load (E23), which is why shell
+  correctness was never sufficient evidence for a probe.
 
 ### E21: No settings rule explains the working case
 
-- **Source:** `.claude/settings.local.json`; `~/.claude/settings.json:5-9`; `~/.claude-testdouble/settings.json:5-11`
+- **Source:** `.claude/settings.local.json`; `~/.claude/settings.json:5-9`;
+  `~/.claude-testdouble/settings.json:5-11`
 - **Finding:** The repository file holds only `{"outputStyle": "han-communication:Han Readability"}`, and no
-  `.claude/settings.json` exists at the repository root. The active personal allow list names three entries, all MCP
-  or Skill rules, none touching Bash, `echo`, or the probe. Both personal files set `"defaultMode": "auto"`.
-- **Relevance:** Rules out a local allow rule as the reason the probe works here, which leaves the difference
-  unexplained and keeps E18's risk direction intact.
+  `.claude/settings.json` exists at the repository root. The personal allow lists name three entries, all MCP or Skill
+  rules, none touching Bash or `echo`. Both personal files set `"defaultMode": "auto"`.
+- **Relevance:** Rules out a local allow rule. E23 shows `auto` aborts the probe, so the settings file is not what
+  makes this session permissive.
 
-### E22: The branch is clean with no work in progress
+### E22: The branch is clean
 
 - **Source:** `git branch --show-current`, `git log --oneline main..HEAD`, `git status`
-- **Finding:** The branch is `han-config-expansion-fix`, level with `main` at `beab327`, working tree clean.
-- **Relevance:** The fix starts from the released state with nothing to reconcile.
+- **Finding:** Branch `han-config-expansion-fix`, level with `main` at `beab327`, working tree clean at the start of
+  this work.
+- **Relevance:** The fix starts from the released state.
+
+### E23: Measured loader behavior across eleven probe forms and five permission modes
+
+- **Source:** Scratch skills written to `.claude/skills/`, each invoked through a fresh
+  `claude -p "/<skill>" --permission-mode <mode> --model haiku --output-format json` session. A loaded skill reports
+  `num_turns: 1` with real token usage; an aborted skill reports `num_turns: 0`, `input_tokens: 0`, and an empty
+  result. All runs used `CLAUDE_CONFIG_DIR=/Users/riverbailey/.claude-testdouble`.
+- **Finding:** Form results are in the table under "What the loader actually accepts". Mode results for the failing
+  probe and for `` !`printenv CLAUDE_CONFIG_DIR || echo "~/.claude"` ``:
+  ```
+  PROBE     MODE                 TURNS    VERDICT
+  probe-a   default              0        ABORTED
+  probe-a   plan                 0        ABORTED
+  probe-a   acceptEdits          0        ABORTED
+  probe-a   bypassPermissions    1        LOADED
+  probe-a   auto                 0        ABORTED
+  probe-b   default              0        ABORTED
+  probe-b   bypassPermissions    1        LOADED
+  probe-c   default              1        LOADED     (echo "$HOME")
+  probe-d   default              1        LOADED     (echo hello)
+  ```
+  The chosen replacement, verified separately:
+  ```
+  probe-m   !`echo "$HOME/.claude"`    default   LOADED    PROBEVALUE=/Users/riverbailey/.claude
+  probe-m   !`echo "$HOME/.claude"`    plan      LOADED    PROBEVALUE=/Users/riverbailey/.claude
+  probe-m   !`echo "$HOME/.claude"`    auto      LOADED    PROBEVALUE=/Users/riverbailey/.claude
+  ```
+  A non-interactive abort is silent: the JSON result carries `"is_error":false`, `"subtype":"success"`, and
+  `"result":""`.
+- **Relevance:** This is the direct reproduction the investigation previously lacked, and it is what turned a
+  single-sourced claim into a measured rule. It selects the fix, rules out `printenv`, rules out permission mode as the
+  explanation, and explains E18.
+- Unverified: I could not test with `CLAUDE_CONFIG_DIR` unset, because the home configuration directory on this machine
+  is not logged in for the command-line binary and every such run failed before loading a skill. The set-versus-unset
+  distinction does not affect the result, since the loader refuses the pattern text without resolving it.
+
+### E24: The chosen probe supplies the same shape of value as the current one
+
+- **Source:** E23's `probe-m` rows
+- **Finding:** The probe injects `/Users/riverbailey/.claude`, an absolute path with no tilde and no trailing slash,
+  matching the shape the current probe injects when it works.
+- **Relevance:** Nothing downstream changes. The first-action paragraph, the relative-path resolution rule, and the two
+  writing-voice passages all keep working against the same kind of value.
+
+### E25: The reported workaround confirms a probe-free bullet loads
+
+- **Source:** Issue #178, comment by VikiAnn, 2026-08-12
+- **Finding:** The workaround rewrites the line inside the installed plugin cache:
+  ```
+  OLD = '- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`'
+  NEW = '- personal config directory: /Users/viki/.claude'
+  ```
+  The comment adds: "That seems to be working fine, but obviously it'll get clobbered with plugin updates etc."
+- **Relevance:** Independent confirmation that the abort is caused by this one line and that the rest of the block is
+  unaffected. It also shows the value's consumers accept a plain absolute path, which is what the chosen probe injects.
+
+## Validation Results
+
+### Counter-Evidence Investigated
+
+#### V1: Is the 42-file scope complete and correctly bounded?
+
+- **Hypothesis:** The count or the boundary is wrong.
+- **Investigation:** Independent `grep -rl` and a full `find` for every `SKILL.md` in the repo, which returns 44.
+- **Result:** Partially Refuted. The 42 count is right for the shipped plugins. Two more skills exist under
+  `.claude/skills/`, `han-release` and `han-update-documentation`, which carry their own Project Context blocks and
+  never carried this probe.
+- **Impact:** The Changes section now names those two as out of scope, so a later completeness check does not read the
+  sweep as incomplete.
+
+#### V2: Are there other expansion-bearing probes, or `@`-file references, that the scope misses?
+
+- **Hypothesis:** The SKILL.md-only search was too narrow.
+- **Investigation:** Searched every file type for `!`...$...`` and for `@`-file syntax.
+- **Result:** Refuted. The only other match is a documented bad example under an "Avoid" heading. No `@`-file syntax
+  exists in the suite.
+- **Impact:** None. Scope confirmed.
+
+#### V3: Is the reporter running code that differs from HEAD?
+
+- **Hypothesis:** The installed ref carries a different probe, so the analysis targets the wrong code.
+- **Investigation:** `git show han-v5.0.0-alpha-1:han-planning/skills/plan-implementation/SKILL.md`, plus ancestry
+  checks on `5fac8e8`, `e483783`, and `e79299f`.
+- **Result:** Confirmed. The ref carries the identical single-level probe.
+- **Impact:** None.
+
+#### V4: Is the root cause single-sourced to the reporter?
+
+- **Hypothesis:** The mechanism rests on the reporter's own binary decompilation and no Anthropic-published source
+  corroborates it.
+- **Investigation:** Fetched the public changelog and the skills and permissions documentation. None contains the
+  string "Contains expansion". The permissions doc names only command and process substitution.
+- **Result:** Confirmed, and then superseded. The criticism was correct against the earlier draft.
+- **Impact:** I reproduced the abort directly and mapped the rule by experiment (E23), which replaced the borrowed
+  mechanism with a measured one. The measured rule is narrower than the issue's description, which changed the fix.
+
+#### V5: Does the rejection depend on whether `CLAUDE_CONFIG_DIR` is set?
+
+- **Hypothesis:** The check fires only on the `:-` default branch, which would explain both observations.
+- **Investigation:** The error names the raw, un-interpolated pattern text, so the check reads the string rather than a
+  resolved value. E23 then confirmed it directly: `` !`echo "$FOOBAR_NOT_REAL"` `` aborts for a variable that does not
+  exist anywhere.
+- **Result:** Refuted.
+- **Impact:** Removed this hypothesis. E23 supplies the real explanation, which is permission mode.
+
+#### V6: Does the fix break the same-file rule in `config-rule.md`?
+
+- **Hypothesis:** Lines 34 to 36 define behavior when both lookups resolve to the same file, and the fix ignores it.
+- **Investigation:** Read the rule in full against the planned change.
+- **Result:** Partially Refuted. The rule was genuinely unaddressed. It survives the chosen fix, because a probe still
+  supplies an absolute path to compare against the working directory.
+- **Impact:** Added to the `config-rule.md` change as an item to confirm during the sweep.
+
+#### V7: Does anything parse the Project Context block positionally?
+
+- **Hypothesis:** Changing a bullet shifts something that reads the block by position.
+- **Investigation:** Searched every `*.sh`, both repo-maintenance skills and their scripts, and all `*.bats` files.
+- **Result:** Refuted. Nothing parses the block positionally.
+- **Impact:** None. No extra files change.
+
+#### V8: Can any skill resolve the directory during the run?
+
+- **Hypothesis:** The first plan's replacement is executable, at least for skills holding a Bash grant.
+- **Investigation:** Read the `allowed-tools` line of all 42 skills. Thirteen carry no Bash pattern. The other 29 carry
+  only scoped patterns such as `Bash(find *)`, `Bash(git *)`, `Bash(gh *)`, `Bash(jq *)`, and `Bash(ls *)`. A grep for
+  any `printenv`, `env`, or bare `echo` grant returns zero across the repo.
+- **Result:** Confirmed, and worse than the draft stated. Zero of 42, not 13 of 42, can read an environment variable at
+  run time.
+- **Impact:** This killed the first plan. The fix changed from deleting the probe to replacing it.
+
+#### V9: What does the Read tool do with a `~` path?
+
+- **Hypothesis:** The first plan's fallback is safe.
+- **Investigation:** Called Read on `~/.claude/.han/config.md` and compared both directories on this machine.
+- **Result:** Confirmed as a correctness regression. Read resolves `~` to the home directory, never to the configured
+  one. Here `~/.claude/.han/config.md` exists with 812 bytes of real settings while
+  `/Users/riverbailey/.claude-testdouble/.han/` does not exist at all.
+- **Impact:** The first plan would have silently applied one profile's config inside another profile's session, which
+  breaks "the worst it can do is be ignored" (E10). The chosen fix inherits a narrower form of this risk, disclosed
+  under "What the fix gives up" and answered by the symlink.
+
+#### V10: Is `config-rule.md` accurate about tilde handling?
+
+- **Hypothesis:** The canonical file's statement about tilde resolution is correct.
+- **Investigation:** Lines 76 to 78 say "a literal `~` handed to a file-reading tool does not resolve." V9 shows it
+  does.
+- **Result:** Confirmed as a factual error in a canonical file.
+- **Impact:** Added as a correction to the `config-rule.md` change.
+
+#### V11: Is `printenv` as a runtime step a better option than any probe?
+
+- **Hypothesis:** Moving `printenv` out of the probe and into a run step, behind an explicit `Bash(printenv *)` grant,
+  would preserve the override and dodge the load-time check.
+- **Investigation:** The mechanism is sound in principle, since a run step's failure is recoverable where a probe's is
+  not. It requires adding a Bash grant to 42 skills, 13 of which deliberately carry none (V8), and I could not test
+  whether such a grant auto-approves, because a probe test cannot stand in for a runtime tool call.
+- **Result:** Partially Refuted as an immediate fix, and retained as the alternative.
+- **Impact:** Recorded as option 2 under "The decision this asks you to make", so the choice is yours rather than
+  silently made.
+
+#### V12: Is the `printenv` rejection properly evidenced?
+
+- **Hypothesis:** The draft rejected `printenv` by citing documentation it had not fully corroborated.
+- **Investigation:** The validator could not locate the published allowlist to re-verify it.
+- **Result:** Confirmed as an evidence gap in the draft, now closed. `` !`printenv HOME` `` aborts (E23), which
+  settles the question by measurement.
+- **Impact:** E7 now rests on an experiment rather than on a documentation claim.
+
+#### V13: Does permission mode explain who sees the bug?
+
+- **Hypothesis:** Different modes handle the probe differently, which would explain the reporter's failure and this
+  session's success.
+- **Investigation:** Ran the failing probe in `default`, `plan`, `acceptEdits`, `auto`, and `bypassPermissions`.
+- **Result:** Partially Confirmed. Mode does decide the outcome, but not in a way that separates ordinary working
+  modes. Four of the five abort identically, and only `bypassPermissions` permits the probe.
+- **Impact:** The spot-verification gate now specifies `default` mode, because verifying in this session's permissive
+  mode would prove nothing.
+
+### Adjustments Made
+
+- **The fix changed entirely.** V8 and V9 refuted the first plan, which deleted the probe and asked the run to resolve
+  the directory. The plan now replaces the probe with a form measured to load.
+- **The root cause was rewritten.** V4 showed the mechanism was borrowed from the issue and uncorroborated. E23
+  replaced it with a measured rule, which is narrower: bare `$HOME` is permitted, brace syntax is refused even for
+  `$HOME`, and every other variable name is refused.
+- **The mode question was answered and folded in.** V13 supplied the explanation for E18 that earlier passes left open.
+- **Two files left the change list.** E13's two skills need no edit under the chosen fix, because a probe still reports
+  the value their prose refers to.
+- **Three items joined the `config-rule.md` change.** The same-file rule (V6), the tilde correction (V10), and the
+  rewritten `CLAUDE_CONFIG_DIR` sentence.
+- **The scope boundary is now explicit.** V1 added the two repo-maintenance skills as named exclusions.
+- **The verification gate got a mode.** V13 made `default` mode a requirement of the spot check.
+
+### Confidence Assessment
+
+- **Confidence:** High on the root cause and the mechanism, Medium on the fix as a whole.
+- **Remaining Risks:**
+  - The `CLAUDE_CONFIG_DIR` override stops working. This is a deliberate, disclosed narrowing of a published promise
+    and needs your decision, not just your approval (see "The decision this asks you to make").
+  - Anyone who moved their configuration directory and left a stale `~/.claude/.han/config.md` behind will have that
+    stale file applied. The symlink fixes it, and nothing detects the situation automatically (V9).
+  - I could not test with `CLAUDE_CONFIG_DIR` unset, because the home configuration directory is not logged in for the
+    command-line binary. The measured rule makes the distinction irrelevant, since the loader refuses pattern text
+    without resolving it, but the unset path itself is untested end to end.
+  - The measured rule describes today's loader. The guidance's own warning that the allowlist "can shift between
+    Claude Code versions" applies to the replacement exactly as it applied to the original, and no test guards it
+    (E17).
+  - Option 2 in the decision section is untested. If you choose it, it needs its own verification before the sweep,
+    because a probe test cannot stand in for a runtime tool call (V11).
 
 ## Coding Standards Reference
 
-| Standard                                                                   | Source                                                                           | Applies To                                             |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Keep every probe reading inside the project working directory               | `han-plugin-builder/.../context-injection-commands.md:127-135`                     | The 42 SKILL.md edits                                   |
-| Keep every probe command an auto-approvable read-only form                  | `han-plugin-builder/.../context-injection-commands.md:44-123`                      | Rejecting the `printenv` alternative                    |
-| A bad config can never fail a skill run                                     | `han-core/references/config-rule.md:113`                                          | The whole fix direction                                 |
-| Vendored reference files stay byte-identical to the canonical copy          | `CLAUDE.md`, "Configuration"                                                     | The 12 `config-rule.md` copies                          |
-| One canonical source per concept; other surfaces carry a scent plus a link  | `CLAUDE.md`, "Conventions"                                                       | `docs/configuration.md` and the guidance docs           |
-| Writing voice: no em-dashes outside label-gloss and appositive, second person | `han-communication/references/writing-voice.md`                                  | Every prose edit in the fix                             |
-| Conventional Commits                                                        | `~/.claude/references/the-book/git/commits.md`                                    | Every commit in the fix                                 |
-| Never bump a plugin version unprompted                                      | Operator instruction                                                             | Excludes `plugin.json` and `CHANGELOG.md` from the fix  |
+| Standard                                                                      | Source                                                        | Applies To                                            |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------- |
+| Keep every probe command an auto-approvable read-only form                     | `han-plugin-builder/.../context-injection-commands.md:44-123`  | The replacement probe, and rejecting `printenv`        |
+| Keep every probe reading inside the project working directory                  | `han-plugin-builder/.../context-injection-commands.md:127-135` | Keeping the probe to a path, opening no file           |
+| A bad config can never fail a skill run                                        | `han-core/references/config-rule.md:113`                       | The whole fix direction                                |
+| Vendored reference files stay byte-identical to the canonical copy             | `CLAUDE.md`, "Configuration"                                   | The 12 `config-rule.md` copies                         |
+| One canonical source per concept; other surfaces carry a scent plus a link     | `CLAUDE.md`, "Conventions"                                     | `docs/configuration.md` and the guidance docs          |
+| Writing voice: em-dashes only as label-gloss or appositive, direct second person | `han-communication/references/writing-voice.md`               | Every prose edit in the fix                            |
+| Conventional Commits                                                           | `~/.claude/references/the-book/git/commits.md`                 | Every commit in the fix                                |
+| Never bump a plugin version unprompted                                         | Operator instruction                                           | Excludes `plugin.json` and `CHANGELOG.md` from the fix |
