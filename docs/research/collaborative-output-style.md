@@ -5,30 +5,31 @@ walks you through it, stops for your review, and folds your feedback into the ne
 
 ## Summary
 
-Build this as two pieces, not one. A short output style should carry the always-on stance: work in chunks, explain each
-one as you finish it, stop and hand control back, and treat what comes back as direction for the next chunk. A companion
-skill should carry the detailed procedure. A style file is fixed text: it cannot read your settings, pull in other
-files, or hand work to a helper. A skill can do all three.
+Build one skill and no output style. The skill carries the whole loop: work in chunks, explain each one as you finish
+it, stop and hand control back, and treat what comes back as direction for the next chunk. You start it when you want
+this working mode, and work you do not start through it behaves normally.
 
-The split only works if you wire the skill the way this project already wires its readability skill: 27 skills invoke
-that one automatically, so nobody has to remember it. Your implementation skills need to invoke the collaboration skill
-the same way. Without that wiring, the style gives you a general collaborative stance, but the substance stays behind
-a command you have to type each session. That is the thing you said you did not want.
+This answer changed partway through. The research first recommended a small output style plus a companion skill,
+because a style is the only thing that reaches ordinary requests where you never name a skill. Then you decided an
+opt-in workflow was fine, and that you did not want your existing skills forced into this mode. That removed the only
+job the output style was doing.
 
-One constraint shapes everything else: only one output style runs at a time. A collaboration style replaces the
-readability style rather than sitting alongside it. So you have to decide: fold a condensed readability layer into the
-new style, or move readability into a file that loads on its own.
+Dropping the style is a real simplification, not a consolation. Only one output style runs at a time, so a collaboration
+style would have displaced the readability standard and forced a second decision about where that standard lives. It
+also would have inherited an unresolved question: Anthropic's documentation says output styles set role, tone, and
+format, while Anthropic's own code repository shows the two styles closest to what you want were pulled out of that
+mechanism and rebuilt as startup hooks, meaning scripts that run when a session starts. Those two sources contradict
+each other and I could not settle which is current. With no style in the design, that question no longer matters.
 
-The biggest open question is whether an output style is a supported home for working-mode instructions at all.
-Anthropic's documentation says output styles set role, tone, and format. But Anthropic's own code repository tells a
-different story about the two styles closest to what you want, called Explanatory and Learning. It shows both were
-pulled out of the output-style mechanism and rebuilt as startup hooks, meaning scripts that run when a session starts.
-Those two sources contradict each other and I could not settle which one is current.
+The strongest reason to trust this shape is that you already run it. Your walkthrough skill carries the same
+stop-after-every-step loop from prose in one file, with no output style involved.
 
-No study anywhere measures how often stopping for review is worth the interruption. That part of the design rests on
-converging practitioner guidance, not on measurement.
+Three things still need care inside the skill. Feedback has to be written to a file rather than left in the
+conversation, because a correction given early gets buried in the middle of a long session where the model attends to it
+least. Chunks need to stay small enough to genuinely review. And no study anywhere measures how often stopping is worth
+the interruption, so the pacing rests on converging practitioner guidance rather than measurement.
 
-- **Confidence:** Medium
+- **Confidence:** High for the mechanism, Medium for the pacing details
 
 ## Research Results
 
@@ -234,9 +235,11 @@ AI pairing, so applying it here is inference, not measurement.
 
 - **What it is:** Encode the whole loop as a skill you invoke when you want this working mode.
 - **Trade-offs:** Skills are the mechanism the documentation names for a reusable workflow (A1, A3), and this is what
-  `code-walkthrough` already does successfully for pacing (A33). But it is opt-in per session, which is the opposite of
-  the always-on working mode you asked for. The documentation also warns a loaded skill's influence can quietly fade
-  over a long session (A3).
+  `code-walkthrough` already does successfully for pacing (A33). One artifact, one file to read, no output style to
+  swap and therefore no readability trade to make. Against it: the loop reaches only work you launch through the skill,
+  so an ordinary request gets none of it. The documentation also warns a loaded skill's influence can quietly fade over
+  a long session (A3), which the loop's own re-read step partly offsets by pulling the running feedback file back into
+  context each cycle.
 - **Rests on:** (A1, A3, A33)
 - **Evidence status:** corroborated
 
@@ -296,47 +299,40 @@ AI pairing, so applying it here is inference, not measurement.
 
 ## Recommendation
 
-- **Recommendation:** O2, with its wiring made mandatory rather than optional, and conditional on the unresolved
-  question of whether output styles are still a supported home for this behavior. Build a short collaboration output
-  style carrying the always-on stance, and a companion skill carrying the loop procedure and the runtime work a style
-  file cannot do. Wire the implementation skills to invoke that companion skill automatically, borrowing O8's approach
-  as the wiring rather than as a competing option. Then decide separately whether readability rides along in a condensed
-  form inside the new style, or moves into an imported memory file so it survives the style switch (O5).
+- **Recommendation:** O3. Build one skill that carries the whole loop, and build no output style at all.
 
-- **What each half delivers:** The two halves cover different ground. The style half gives you a general collaborative
-  stance on every turn, including ordinary requests where you never name a skill. The skill half gives you the
-  substance: the chunk procedure, the durable feedback file, and any configuration reads. That substance arrives
-  automatically only for work that runs through a skill you have wired. For an ordinary request that touches no skill,
-  you get the stance and not the machinery. That is a real gap, and it is the price of the one-style-at-a-time,
-  fixed-text nature of the mechanism rather than a flaw in the design.
+- **Why this changed:** The original recommendation was O2, a thin output style plus a companion skill wired to run
+  automatically. It rested on one premise: that the working mode had to reach ordinary requests, where you never name a
+  skill. The operator has since decided that an opt-in workflow is acceptable, and that forcing `tdd` or any other skill
+  into this mode is not wanted. That decision removes the only job the output style was doing. With the always-on
+  requirement withdrawn, the style half buys nothing that the skill does not already provide, and it costs the
+  readability standard, because only one output style runs at a time (A1).
 
-- **Evidence basis:** The split rests on corroborated evidence from three directions. The documentation separates output
-  styles (role, tone, format) from skills (reusable workflow) as different mechanisms (A1), and Anthropic's blog
-  independently describes styles as the highest-weight but judiciously-used global lever (A8). Han's own prior research
-  independently established the four things a style cannot do (A38). The instruction-stacking measurement that rules out
-  the one-big-style option is corroborated across Han's two prior research reports (A38, A39), with the extrapolation
-  caveat noted above.
+- **What the operator gives up, stated plainly:** Work you do not launch through the skill gets none of this behavior.
+  That is the whole cost, it is understood, and it is the operator's call.
 
-  The readability precedent supports this design only in its corrected form. Adversarial validation found that
-  `readability-guidance` is not a skill people invoke; 27 skills invoke it as an automatic sub-step, and it hands control
-  straight back to its caller (A42). A companion skill nobody invokes is not a precedent for a companion skill you have
-  to remember. The precedent holds once the automatic wiring is part of the recommendation, and not before.
+- **Evidence basis:** O3 rests on corroborated evidence. The documentation names skills as the mechanism for a reusable
+  workflow and separates them from output styles, which it scopes to role, tone, and format (A1). Han's `code-walkthrough`
+  skill is the working proof inside this repository: it runs the full turn-taking loop from prose in a single skill
+  file, with no output style and no companion, and it states its own reasoning for stopping after every step (A33). The
+  four limits on what a style can carry no longer bear on the design, because no style is being built (A38).
 
-  Two supporting design choices rest on weaker footing and should be treated that way. The chunk-size target of roughly
-  200 to 400 lines comes from a single study I could only read through a blog's paraphrase (A18) [single-source]. The
-  two-tier gate structure comes from one vendor's writing with no independent replication (A13) [single-source]. The
-  task-shaped chunk heuristic is convergent practitioner guidance with no outcome data behind it (A12, A13, A14, A15).
+  Three design parameters carry into the skill, at the strength the evidence supports. Writing feedback into a durable
+  file rather than trusting conversation history is the best-evidenced decision here, resting on peer-reviewed research
+  on long-context attention (A23) plus vendor documentation stating the same limit against its own product's convenience
+  (A5, A12). The chunk-size target of roughly 200 to 400 lines comes from a single study read through a blog's paraphrase
+  (A18) [single-source]. The task-shaped chunk heuristic is convergent practitioner guidance with no outcome data behind
+  it (A12, A13, A14, A15).
 
-  Writing feedback into a durable file rather than trusting conversation history is the best-evidenced single design
-  decision here. It rests on peer-reviewed research on long-context attention (A23), plus vendor documentation that
-  states the same limit against its own product's convenience (A5, A12).
+  Dropping the style also retires the report's largest open question. The contradiction between Anthropic's documentation
+  and Anthropic's own code repository over whether Explanatory and Learning were deprecated (A1 against A9, A10) decided
+  only whether the style half should have been a session-start hook instead. With no style and no hook in the design,
+  that conflict no longer touches the recommendation. It remains recorded above in case a later design revisits the
+  always-on question.
 
-  What the recommendation does not settle: whether an output style is a currently-supported home for this behavior at
-  all. Anthropic's documentation (A1) and Anthropic's code repository (A9, A10) contradict each other on whether the two
-  closest styles were deprecated. If A9 and A10 reflect current reality, O4's session-start hook is the pattern Anthropic
-  itself landed on, and O2's style half should become a hook instead. The skill half of the recommendation is unaffected
-  either way. The evidence that would settle it is a changelog entry, release note, or maintainer statement on the status
-  of the built-in Explanatory and Learning styles. Check that before you write the style file.
+  What this does not settle: nothing here can force a stop at a chunk boundary, and that was true of every option
+  considered (A2, A5, A7, A8). The skill relies on instruction-following for its stops, with `code-walkthrough` as local
+  evidence that prose instruction carries turn-taking acceptably in practice (A33).
 
 ## Validation
 
@@ -439,18 +435,39 @@ instruction-stacking number gained an extrapolation caveat (V6). The conditional
 The recommendation survived, but only after the correction in V3. Without automatic wiring, O2 does not answer the
 question that was asked.
 
+### Operator decision after validation
+
+The recommendation later moved from O2 to O3, and the validation findings above are the reason it moved cleanly. V3 and
+V5 together established that O2 delivered a thin always-on stance plus an opt-in mechanism, and that closing the gap
+meant editing every implementation skill. Presented with that cost, the operator chose the opt-in workflow and declined
+to force `tdd` or any other skill into this mode. Withdrawing the always-on requirement leaves the output style with no
+job, so the design collapses to a single skill. The findings above are preserved as written, because they document how
+the earlier recommendation was tested rather than the conclusion it reached.
+
 ### Confidence Assessment
 
-- **Confidence:** Medium
-- **Remaining Risks:** The validator rated its own assessment Low, on two grounds: the uncited single-style constraint
-  and the broken readability analogy. Both are corrected above, which is why this sits at Medium rather than Low. It
-  does not reach High for three reasons. First, two Anthropic-controlled sources contradict each other on whether output
-  styles are still a supported home for this behavior (A1 against A9 and A10). That conflict flips the style half of
-  the recommendation. Second, no study anywhere measures whether stopping for review at chunk boundaries is worth its
-  interruption cost, so the cadence design rests on converging practitioner guidance with no outcome data (A12, A13,
-  A14, A15). Third, the validator could not fetch web pages, so all 30 external artifacts rest on the research agents'
-  reporting rather than on independent confirmation. The codebase artifacts (A31 through A42) were checked directly
-  against the files and held up.
+- **Confidence:** High for the mechanism, Medium for the pacing details
+- **Remaining Risks:** The rating is split because the two halves rest on different evidence.
+
+  Choosing a skill over an output style is High. The documentation assigns workflows to skills (A1), a working example
+  of the same loop already runs in this repository (A33), and the operator's decision to accept an opt-in workflow
+  removed the one requirement that argued for a style. Dropping the style also retired the report's largest open
+  question, the contradiction between Anthropic's documentation and its own code repository over the Explanatory and
+  Learning styles (A1 against A9, A10). That conflict only ever decided whether the style should have been a hook.
+
+  The pacing details stay at Medium. No study anywhere measures whether stopping for review at a chunk boundary is worth
+  its interruption cost, so cadence rests on converging practitioner guidance with no outcome data (A12, A13, A14, A15).
+  The chunk-size target is single-sourced through a paraphrase (A18). The habituation risk, that frequent narrated
+  checkpoints train reflexive approval, rests on a mechanism two studies agree on while disputing its direction (A16,
+  A17).
+
+  One process caveat carries forward. The validator could not fetch web pages, so all 30 external artifacts rest on the
+  research agents' reporting rather than on independent confirmation. The codebase artifacts (A31 through A42) were
+  checked directly against the files and held up, and those are the artifacts the current recommendation leans on most.
+
+  For the record: the validator rated the original O2 recommendation Low, on the uncited single-style constraint (V1)
+  and the broken readability analogy (V3). Both were corrected, and the recommendation has since moved to O3 on the
+  operator's decision.
 
 ## Sources
 
