@@ -1,28 +1,29 @@
 # Research: A Collaborative "Human in the Lead" Output Style
 
-Can a custom output style carry a collaborative working mode where Claude builds one chunk of an implementation, walks
-you through it, stops for your review, and folds your feedback into the next chunk? Evidence mode: strict.
+Can a custom output style carry a collaborative working mode? In it, Claude builds one chunk of an implementation,
+walks you through it, stops for your review, and folds your feedback into the next chunk. Evidence mode: strict.
 
 ## Summary
 
 Build this as two pieces, not one. A short output style should carry the always-on stance: work in chunks, explain each
 one as you finish it, stop and hand control back, and treat what comes back as direction for the next chunk. A companion
-skill should carry the detailed procedure, because a style file is fixed text that cannot read your settings, pull in
-other files, or hand work to a helper, and a skill can do all three.
+skill should carry the detailed procedure. A style file is fixed text: it cannot read your settings, pull in other
+files, or hand work to a helper. A skill can do all three.
 
 The split only works if you wire the skill the way this project already wires its readability skill: 27 skills invoke
 that one automatically, so nobody has to remember it. Your implementation skills need to invoke the collaboration skill
-the same way. Without that wiring, the style gives you a general collaborative stance and the substance stays behind a
-command you have to type each session, which is the thing you said you did not want.
+the same way. Without that wiring, the style gives you a general collaborative stance, but the substance stays behind
+a command you have to type each session. That is the thing you said you did not want.
 
 One constraint shapes everything else: only one output style runs at a time. A collaboration style replaces the
-readability style rather than sitting alongside it, so you have to decide whether to fold a condensed readability layer
-into the new style or move readability into a file that loads on its own.
+readability style rather than sitting alongside it. So you have to decide: fold a condensed readability layer into the
+new style, or move readability into a file that loads on its own.
 
 The biggest open question is whether an output style is a supported home for working-mode instructions at all.
-Anthropic's documentation says output styles set role, tone, and format. But Anthropic's own code repository shows the
-two styles closest to what you want, called Explanatory and Learning, were pulled out of the output-style mechanism and
-rebuilt as startup hooks. Those two sources contradict each other and I could not settle which one is current.
+Anthropic's documentation says output styles set role, tone, and format. But Anthropic's own code repository tells a
+different story about the two styles closest to what you want, called Explanatory and Learning. It shows both were
+pulled out of the output-style mechanism and rebuilt as startup hooks, meaning scripts that run when a session starts.
+Those two sources contradict each other and I could not settle which one is current.
 
 No study anywhere measures how often stopping for review is worth the interruption. That part of the design rests on
 converging practitioner guidance, not on measurement.
@@ -33,9 +34,10 @@ converging practitioner guidance, not on measurement.
 
 ### What an output style is and what it is documented to do
 
-An output style is a markdown file whose text gets added to the end of the system prompt at session start (A1, A8).
-Anthropic's blog says output styles "carry the highest instruction-following weight of any method" for changing behavior
-globally, and warns they "should be used judiciously" (A8). That is a point in favor of using one here.
+An output style is a markdown file. Claude Code appends its text to the end of the system prompt at session start
+(A1, A8). Anthropic's blog says output styles "carry the highest instruction-following weight of any method" for
+changing behavior globally, and warns they "should be used judiciously" (A8). That is a point in favor of using one
+here.
 
 Three limits matter immediately. First, a custom style drops Claude Code's built-in software-engineering instructions
 (how to scope changes, comment conventions, security handling, verification habits) unless the file sets a flag to keep
@@ -43,7 +45,7 @@ them (A1, A8). Han's existing readability style already sets that flag (A31). Se
 conversation only, because a subagent runs its own system prompt (A1).
 
 Third, only one output style runs at a time. The documentation does not state this as a standalone rule. It follows
-from two things the documentation does state: the setting that selects a style holds a single text value, and when
+from two things the documentation does state. The setting that selects a style holds a single text value. And when
 several plugins each try to force their own style, "Claude Code uses the first one loaded" (A1) [inferred from the
 documented settings schema, not stated outright]. Treat it as very likely true and worth confirming before you commit
 to a design that depends on it.
@@ -93,21 +95,24 @@ directs one step per turn, then a stop, with the reasoning stated inline: "the p
 handles the case where you ask a question instead of moving on, holding position rather than advancing.
 
 This is local evidence that prose instruction can carry turn-taking in practice, which cuts against the pure
-documentation-scope argument. What `code-walkthrough` does not do is run while code is being written. It is read-only,
-retrospective, and walks through code that already exists (A33).
+documentation-scope argument.
+
+What `code-walkthrough` does not do is run while code is being written. It is read-only, retrospective, and walks
+through code that already exists (A33).
 
 ### Nothing in Han stops mid-implementation for collaborative review
 
 The `tdd` skill runs autonomously after the initial request and states plainly that it "does not stop for confirmation"
 (A34). It has two stopping points, neither of them collaborative. One is a gate before implementation starts, and only
 when you explicitly ask to review the plan first. The other is a hard dependency stop when it cannot find a command to
-run tests with (A34). Once the build loop starts, it "runs to completion without further human input" (A34). The
-`code-overview` skill is read-only and writes a file without an interactive loop (A35).
+run tests with (A34). Once the build loop starts, it "runs to completion without further human input" (A34).
+
+The `code-overview` skill is read-only and writes a file without an interactive loop (A35).
 
 The repository does have a rule for stopping, but it does not reach code. The operator-escalation rule allows exactly
 one stop per run, and only when a missing input is something only you can supply (A36). It names its consumers
-explicitly, and all four are planning skills. No coding skill is on that list, so the rule was never written to govern
-implementation work and a collaborative loop would need its own stopping convention rather than an exception to this
+explicitly, and all four are planning skills. No coding skill is on that list. The rule was never written to govern
+implementation work, so a collaborative loop would need its own stopping convention rather than an exception to this
 one.
 
 ### Nothing can force a stop at a chunk boundary
@@ -140,10 +145,10 @@ coarser human gate at milestone boundaries where you review design and configura
 
 This is the best-evidenced finding in the whole report, and it argues for writing feedback down. A peer-reviewed study
 found model accuracy drops by more than 30 percent when the relevant information sits in the middle of a long context
-rather than at either end, replicated across six model families (A23).
+rather than at either end. The finding was replicated across six model families (A23).
 
-Anthropic's own documentation says the same thing in practical terms: after two failed corrections on the same point,
-the context is "polluted with failed approaches," and a fresh session with a better opening prompt beats continuing to
+Anthropic's own documentation says the same thing in practical terms. After two failed corrections on the same point,
+the context is "polluted with failed approaches." A fresh session with a better opening prompt beats continuing to
 correct in place (A12). The same docs distinguish conversation memory from a written file that reloads fresh each
 session (A5).
 
@@ -155,31 +160,32 @@ directional hint only [single-source].
 
 Two recent studies measure how humans review AI-written code, and they disagree on direction. One found that among 400
 repeat reviewers over 207 days, approval rates rose from 30.1 to 36.8 percent while inline comment volume fell 22
-percent, which the authors read as habituation rather than earned trust (A16). A separate study using different data
-found the share of merged agent pull requests receiving no human review fell from over half in mid-2025 to about 13
-percent by February 2026, the opposite trend (A17).
+percent. The authors read that as habituation rather than earned trust (A16). A separate study using different data
+found the opposite trend: the share of merged agent pull requests receiving no human review fell from over half in
+mid-2025 to about 13 percent by February 2026 (A17).
 
 Both authors flag that the underlying data is unstable under different but defensible analysis choices. There is no
 settled answer on whether scrutiny is rising or falling.
 
 What both agree on is the mechanism. Review load pushes toward either shallower reading or reviewer burnout, and
-AI-written code's surface polish lowers your guard because it looks clean and idiomatic (A16, A17). Separately, frequent
-approval prompts train people to stop reading and approve reflexively (A25), and vendor telemetry claims users approve
-about 93 percent of permission prompts, with players in a threat-detection game missing one injected threat in three
-(A30) [single-source, vendor telemetry].
+AI-written code's surface polish lowers your guard because it looks clean and idiomatic (A16, A17).
+
+Separately, frequent approval prompts train people to stop reading and approve reflexively (A25). Vendor telemetry
+claims users approve about 93 percent of permission prompts, with players in a threat-detection game missing one
+injected threat in three (A30) [single-source, vendor telemetry].
 
 That risk lands squarely on this design. A loop that narrates every chunk and asks for approval could produce the same
 reflexive approval it was built to prevent.
 
 ### Narration might help you catch problems, or might not
 
-The one data point on whether explaining a change improves the reviewer's catch rate is the Cisco study's finding that
-author-annotated code showed lower defect density, never exceeding 30 defects per thousand lines (A18). The original
-researchers were themselves unsure whether annotation caught defects early or made reviewers less critical by walking
-them through a narrative (A18) [single-source].
+The one data point on whether explaining a change improves the reviewer's catch rate comes from the Cisco study.
+Author-annotated code showed lower defect density there, never exceeding 30 defects per thousand lines (A18). The
+original researchers were themselves unsure whether annotation caught defects early or made reviewers less critical by
+walking them through a narrative (A18) [single-source].
 
 Two collaboration models support narration on principle. Pair programming's driver and navigator split works because
-articulating reasoning out loud "pushes us to reflect if we really have the right understanding" (A19), and an empirical
+articulating reasoning out loud "pushes us to reflect if we really have the right understanding" (A19). An empirical
 study found paired code cost about 15 percent more time while passing a significantly higher share of acceptance tests
 (A22). Cognitive apprenticeship names articulation and reflection as two of six methods for making expert thinking
 visible to a learner (A21).
@@ -212,10 +218,10 @@ AI pairing, so applying it here is inference, not measurement.
 
 ### O2: A thin collaboration output style plus a companion skill invoked automatically
 
-- **What it is:** A short style file carrying only the always-on stance (chunk the work, explain each chunk as you
-  finish it, stop, absorb feedback), paired with a skill that owns the detailed procedure and does the runtime work a
-  style cannot. The implementation skills invoke that companion skill as an automatic sub-step, the way 27 skills
-  already invoke `readability-guidance` (A42).
+- **What it is:** A short style file carries only the always-on stance: chunk the work, explain each chunk as you
+  finish it, stop, and absorb feedback. It is paired with a skill that owns the detailed procedure and does the runtime
+  work a style cannot. The implementation skills invoke that companion skill as an automatic sub-step, the way 27
+  skills already invoke `readability-guidance` (A42).
 - **Trade-offs:** Mirrors the split this repository already uses for readability, and keeps the instruction count low
   enough to survive (A31, A38, A39). The automatic invocation is load-bearing rather than optional: `readability-guidance`
   works because callers invoke it, not because a person remembers to (A42). Without that wiring this option degrades
@@ -229,8 +235,8 @@ AI pairing, so applying it here is inference, not measurement.
 - **What it is:** Encode the whole loop as a skill you invoke when you want this working mode.
 - **Trade-offs:** Skills are the mechanism the documentation names for a reusable workflow (A1, A3), and this is what
   `code-walkthrough` already does successfully for pacing (A33). But it is opt-in per session, which is the opposite of
-  the always-on working mode you asked for, and the documentation warns a loaded skill's influence can quietly fade over
-  a long session (A3).
+  the always-on working mode you asked for. The documentation also warns a loaded skill's influence can quietly fade
+  over a long session (A3).
 - **Rests on:** (A1, A3, A33)
 - **Evidence status:** corroborated
 
@@ -251,7 +257,7 @@ AI pairing, so applying it here is inference, not measurement.
   import in your own memory file so both apply at once.
 - **Trade-offs:** Solves the one-style-at-a-time constraint directly, and Han's prior research already named this import
   route as a viable option (A38). The cost is real: memory content is documented as "context, not enforced
-  configuration," with no guarantee of strict compliance (A5), so readability would carry less weight than it does in
+  configuration," with no guarantee of strict compliance (A5). So readability would carry less weight than it does in
   the system prompt today.
 - **Rests on:** (A1, A5, A38)
 - **Evidence status:** corroborated
@@ -297,9 +303,9 @@ AI pairing, so applying it here is inference, not measurement.
   as the wiring rather than as a competing option. Then decide separately whether readability rides along in a condensed
   form inside the new style, or moves into an imported memory file so it survives the style switch (O5).
 
-- **What each half actually delivers:** Be clear-eyed about the division. The style half gives you a general
-  collaborative stance on every turn, including ordinary requests where you never name a skill. The skill half gives you
-  the substance: the chunk procedure, the durable feedback file, and any configuration reads. That substance arrives
+- **What each half delivers:** The two halves cover different ground. The style half gives you a general collaborative
+  stance on every turn, including ordinary requests where you never name a skill. The skill half gives you the
+  substance: the chunk procedure, the durable feedback file, and any configuration reads. That substance arrives
   automatically only for work that runs through a skill you have wired. For an ordinary request that touches no skill,
   you get the stance and not the machinery. That is a real gap, and it is the price of the one-style-at-a-time,
   fixed-text nature of the mechanism rather than a flaw in the design.
@@ -322,8 +328,8 @@ AI pairing, so applying it here is inference, not measurement.
   task-shaped chunk heuristic is convergent practitioner guidance with no outcome data behind it (A12, A13, A14, A15).
 
   Writing feedback into a durable file rather than trusting conversation history is the best-evidenced single design
-  decision here, resting on peer-reviewed research on long-context attention (A23) plus vendor documentation that states
-  the same limit against its own product's convenience (A5, A12).
+  decision here. It rests on peer-reviewed research on long-context attention (A23), plus vendor documentation that
+  states the same limit against its own product's convenience (A5, A12).
 
   What the recommendation does not settle: whether an output style is a currently-supported home for this behavior at
   all. Anthropic's documentation (A1) and Anthropic's code repository (A9, A10) contradict each other on whether the two
@@ -439,7 +445,7 @@ question that was asked.
 - **Remaining Risks:** The validator rated its own assessment Low, on two grounds: the uncited single-style constraint
   and the broken readability analogy. Both are corrected above, which is why this sits at Medium rather than Low. It
   does not reach High for three reasons. First, two Anthropic-controlled sources contradict each other on whether output
-  styles are still a supported home for this behavior (A1 against A9 and A10), and that conflict flips the style half of
+  styles are still a supported home for this behavior (A1 against A9 and A10). That conflict flips the style half of
   the recommendation. Second, no study anywhere measures whether stopping for review at chunk boundaries is worth its
   interruption cost, so the cadence design rests on converging practitioner guidance with no outcome data (A12, A13,
   A14, A15). Third, the validator could not fetch web pages, so all 30 external artifacts rest on the research agents'
@@ -514,9 +520,9 @@ question that was asked.
 - **Link / location:** https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more
 - **Retrieved:** 2026-08-13
 - **Trust class:** web (vendor writing, outside the trust boundary)
-- **Summary:** Describes output styles as files that "inject instructions into the system prompt," never get compacted,
-  and "carry the highest instruction-following weight of any method," with the caution that they "should be used
-  judiciously" and that a custom style "drops all of this" (the built-in engineering instructions) unless configured to
+- **Summary:** Describes output styles as files that "inject instructions into the system prompt" and never get
+  compacted. They "carry the highest instruction-following weight of any method," with the caution that they "should be
+  used judiciously." A custom style "drops all of this" (the built-in engineering instructions) unless configured to
   keep them. Directs hooks at "anything that should happen deterministically" and notes a pre-tool hook can inspect a
   call and block it. Describes CLAUDE.md as loading into context at session start and staying for the session, and
   subagents as returning only a final message to the main session.
@@ -531,8 +537,8 @@ question that was asked.
   SessionStart hook," authored by an Anthropic employee per the plugin manifest. It implements the behavior through a
   session-start hook rather than the `output-styles/` directory, and frames that pattern as "roughly equivalent to
   CLAUDE.md, but more flexible and allows for distribution through plugins." It adds that behavior involving tasks
-  besides software development is "better expressed as subagents, not as SessionStart hooks," because "Subagents change
-  the system prompt while SessionStart hooks add to the default system prompt."
+  besides software development is "better expressed as subagents, not as SessionStart hooks." That is because
+  "Subagents change the system prompt while SessionStart hooks add to the default system prompt."
 - **Evidence status:** contradicts A1's listing of Explanatory as a current built-in output style; corroborated by A10
 
 ### A10: Anthropic's learning-output-style plugin — recommendation-bearing
@@ -566,10 +572,11 @@ question that was asked.
 - **Retrieved:** n/a
 - **Trust class:** codebase (trusted current-state anchor)
 - **Summary:** A 98-line file with frontmatter carrying a name, a description, and the keep-coding-instructions flag,
-  followed by prose directives. It directs prose properties only, never behavior or working mode: main point first, one
-  idea per paragraph, descriptive headings, short active sentences, common words, numbered lists for steps, progressive
-  disclosure, and technical detail after the prose. Its closing section scopes everything to prose, excluding code
-  fences, diagram bodies, rendered markup, and citation identifiers. This is the working example of the thin-style
+  followed by prose directives. It directs prose properties only, never behavior or working mode. Those properties are
+  main point first, one idea per paragraph, descriptive headings, short active sentences, common words, numbered lists
+  for steps, progressive disclosure, and technical detail after the prose. Its closing section scopes everything to
+  prose, excluding code fences, diagram bodies, rendered markup, and citation identifiers. This is the working example
+  of the thin-style
   pattern the recommendation extends.
 - **Evidence status:** corroborated by A32 on how it is wired, and by A38 on the design reasoning behind its scope
 
@@ -606,8 +613,8 @@ question that was asked.
 - **Retrieved:** n/a
 - **Trust class:** codebase (trusted current-state anchor)
 - **Summary:** The skill that partners with the readability output style, and the precedent the recommendation leans on.
-  It states that it "runs in your context, not an isolated one," that it is "a means to writing your deliverable, not the
-  deliverable itself," and that the caller should "RETURN to the workflow that called you and finish it." A search of the
+  It states that it "runs in your context, not an isolated one." It is "a means to writing your deliverable, not the
+  deliverable itself." And the caller should "RETURN to the workflow that called you and finish it." A search of the
   repository found 27 skill files that invoke it. That matters for the design here: the skill works because its callers
   invoke it automatically, not because a person remembers to. Adversarial validation used this file to refute the draft's
   original claim that a user-invoked companion skill would mirror the readability split.
