@@ -49,7 +49,17 @@ behavior.
 
 ## Direction of Travel
 
-Unanswered. Asked in the confirmation turn; this record is updated when the operator answers.
+Answered. The operator stated:
+
+> All four stay, nothing is being replaced.
+
+The four are `tdd`, `refactor`, `code-walkthrough`, and the wider set of skills someone might pair on. None is being
+deprecated, replaced, or migrated away from. `pair-with-me` therefore borrows `code-walkthrough`'s pacing without
+changing it, and the flag added to `tdd` leaves every existing invocation behaving as it does today.
+
+The operator also asked, in the same turn, which other skills across the suite should gain a collaboration flag like
+`tdd`'s, ruling out `han-reporting`, `han-feedback`, and `han-plugin-builder` up front. That survey is a scope question
+for this run and its answer is recorded in the decision log.
 
 ## Visual Material Received
 
