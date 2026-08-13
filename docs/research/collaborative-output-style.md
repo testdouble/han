@@ -8,8 +8,12 @@ you through it, stops for your review, and folds your feedback into the next chu
 Build this as two pieces, not one. A short output style should carry the always-on stance: work in chunks, explain each
 one as you finish it, stop and hand control back, and treat what comes back as direction for the next chunk. A companion
 skill should carry the detailed procedure, because a style file is fixed text that cannot read your settings, pull in
-other files, or hand work to a helper, and a skill can do all three. This mirrors the split this project already uses
-for its readability standard.
+other files, or hand work to a helper, and a skill can do all three.
+
+The split only works if you wire the skill the way this project already wires its readability skill: 27 skills invoke
+that one automatically, so nobody has to remember it. Your implementation skills need to invoke the collaboration skill
+the same way. Without that wiring, the style gives you a general collaborative stance and the substance stays behind a
+command you have to type each session, which is the thing you said you did not want.
 
 One constraint shapes everything else: only one output style runs at a time. A collaboration style replaces the
 readability style rather than sitting alongside it, so you have to decide whether to fold a condensed readability layer
@@ -33,10 +37,16 @@ An output style is a markdown file whose text gets added to the end of the syste
 Anthropic's blog says output styles "carry the highest instruction-following weight of any method" for changing behavior
 globally, and warns they "should be used judiciously" (A8). That is a point in favor of using one here.
 
-Two limits matter immediately. First, a custom style drops Claude Code's built-in software-engineering instructions
+Three limits matter immediately. First, a custom style drops Claude Code's built-in software-engineering instructions
 (how to scope changes, comment conventions, security handling, verification habits) unless the file sets a flag to keep
 them (A1, A8). Han's existing readability style already sets that flag (A31). Second, output styles reach the main
 conversation only, because a subagent runs its own system prompt (A1).
+
+Third, only one output style runs at a time. The documentation does not state this as a standalone rule. It follows
+from two things the documentation does state: the setting that selects a style holds a single text value, and when
+several plugins each try to force their own style, "Claude Code uses the first one loaded" (A1) [inferred from the
+documented settings schema, not stated outright]. Treat it as very likely true and worth confirming before you commit
+to a design that depends on it.
 
 The documentation scopes output styles to "role, tone, and output format," and its own comparison table separates them
 from skills, which it describes as the mechanism for a reusable workflow (A1). Turn-taking and work sequencing sit on
@@ -71,6 +81,11 @@ That last point rests on a measured effect: instruction compliance falls from ro
 instruction to between 15 and 44 percent when many are stacked (A39). The readability style is already 98 lines (A31).
 A style that also carried a full collaborative procedure would roughly double that.
 
+One caution about that measurement. It covers compliance with content constraints such as tone, length, and format. It
+does not measure whether an agent correctly executes a workflow gate, like stopping mid-edit to hand control back.
+Applying it to a stopping instruction is an extrapolation, and I flag it as one rather than presenting it as a direct
+finding.
+
 ### Han's code-walkthrough skill already implements the pacing you want
 
 The `code-walkthrough` skill runs exactly the turn-taking loop you described, through prose instruction alone (A33). It
@@ -84,12 +99,16 @@ retrospective, and walks through code that already exists (A33).
 ### Nothing in Han stops mid-implementation for collaborative review
 
 The `tdd` skill runs autonomously after the initial request and states plainly that it "does not stop for confirmation"
-(A34). Its one gate fires before implementation starts, and only when you explicitly ask to review the plan first. The
+(A34). It has two stopping points, neither of them collaborative. One is a gate before implementation starts, and only
+when you explicitly ask to review the plan first. The other is a hard dependency stop when it cannot find a command to
+run tests with (A34). Once the build loop starts, it "runs to completion without further human input" (A34). The
 `code-overview` skill is read-only and writes a file without an interactive loop (A35).
 
-The repository has a rule for stopping, but it is scoped narrowly. The operator-escalation rule allows exactly one stop
-per run, and only when a missing input is something only you can supply (A36). A collaborative loop stops after every
-chunk, which is a different thing entirely, so that rule does not govern it and would need a stated exception.
+The repository does have a rule for stopping, but it does not reach code. The operator-escalation rule allows exactly
+one stop per run, and only when a missing input is something only you can supply (A36). It names its consumers
+explicitly, and all four are planning skills. No coding skill is on that list, so the rule was never written to govern
+implementation work and a collaborative loop would need its own stopping convention rather than an exception to this
+one.
 
 ### Nothing can force a stop at a chunk boundary
 
@@ -191,16 +210,18 @@ AI pairing, so applying it here is inference, not measurement.
 - **Rests on:** (A1, A8, A31, A38, A39)
 - **Evidence status:** corroborated
 
-### O2: A thin collaboration output style plus a companion skill
+### O2: A thin collaboration output style plus a companion skill invoked automatically
 
 - **What it is:** A short style file carrying only the always-on stance (chunk the work, explain each chunk as you
   finish it, stop, absorb feedback), paired with a skill that owns the detailed procedure and does the runtime work a
-  style cannot.
-- **Trade-offs:** Mirrors the split this repository already uses and validated for readability, where the style carries
-  the always-on layer and the guidance skill does the runtime work (A31, A38). Keeps the instruction count low enough to
-  survive. The cost is two artifacts to build and keep in sync, and the deep behavior only arrives when the skill is
-  invoked.
-- **Rests on:** (A1, A3, A8, A31, A33, A38, A39)
+  style cannot. The implementation skills invoke that companion skill as an automatic sub-step, the way 27 skills
+  already invoke `readability-guidance` (A42).
+- **Trade-offs:** Mirrors the split this repository already uses for readability, and keeps the instruction count low
+  enough to survive (A31, A38, A39). The automatic invocation is load-bearing rather than optional: `readability-guidance`
+  works because callers invoke it, not because a person remembers to (A42). Without that wiring this option degrades
+  into a thin stance plus an opt-in command, which is what the request rules out. The cost is two artifacts to build,
+  plus an edit to every implementation skill that should carry the loop.
+- **Rests on:** (A1, A3, A8, A31, A33, A38, A39, A42)
 - **Evidence status:** corroborated
 
 ### O3: A skill only, with no new output style
@@ -254,19 +275,46 @@ AI pairing, so applying it here is inference, not measurement.
 - **Rests on:** (A2, A5, A8)
 - **Evidence status:** corroborated
 
+### O8: Build the loop into the implementation skills directly, with no new output style
+
+- **What it is:** Add the chunk-explain-stop-review loop to `tdd` and its siblings as an operating principle inside each
+  skill file, exactly the way `code-walkthrough` carries its own pacing loop today.
+- **Trade-offs:** This has the closest working precedent in the repository. `code-walkthrough` runs the whole turn-taking
+  loop from prose inside one skill file, with no output style and no companion skill involved (A33). It is also the
+  cheapest option to verify, because you can read the result in one file. Against it: the loop reaches only work you
+  start by invoking a skill. Ordinary requests, where you ask for something without naming a skill, get none of it, and
+  that is where the request said the behavior matters. It also duplicates the loop into every skill that needs it rather
+  than stating it once.
+- **Rests on:** (A33, A34, A42)
+- **Evidence status:** corroborated
+
 ## Recommendation
 
-- **Recommendation:** O2, paired with the O5 decision on where readability lives. Build a short collaboration output
+- **Recommendation:** O2, with its wiring made mandatory rather than optional, and conditional on the unresolved
+  question of whether output styles are still a supported home for this behavior. Build a short collaboration output
   style carrying the always-on stance, and a companion skill carrying the loop procedure and the runtime work a style
-  file cannot do. Then decide separately whether readability rides along in a condensed form inside the new style, or
-  moves into an imported memory file so it survives the style switch.
+  file cannot do. Wire the implementation skills to invoke that companion skill automatically, borrowing O8's approach
+  as the wiring rather than as a competing option. Then decide separately whether readability rides along in a condensed
+  form inside the new style, or moves into an imported memory file so it survives the style switch (O5).
+
+- **What each half actually delivers:** Be clear-eyed about the division. The style half gives you a general
+  collaborative stance on every turn, including ordinary requests where you never name a skill. The skill half gives you
+  the substance: the chunk procedure, the durable feedback file, and any configuration reads. That substance arrives
+  automatically only for work that runs through a skill you have wired. For an ordinary request that touches no skill,
+  you get the stance and not the machinery. That is a real gap, and it is the price of the one-style-at-a-time,
+  fixed-text nature of the mechanism rather than a flaw in the design.
 
 - **Evidence basis:** The split rests on corroborated evidence from three directions. The documentation separates output
   styles (role, tone, format) from skills (reusable workflow) as different mechanisms (A1), and Anthropic's blog
   independently describes styles as the highest-weight but judiciously-used global lever (A8). Han's own prior research
-  independently established the four things a style cannot do, and its own readability implementation already proves the
-  thin-style-plus-skill pattern works in this repository (A31, A38). The instruction-stacking measurement that rules out
-  the one-big-style option is corroborated across Han's two prior research reports (A38, A39).
+  independently established the four things a style cannot do (A38). The instruction-stacking measurement that rules out
+  the one-big-style option is corroborated across Han's two prior research reports (A38, A39), with the extrapolation
+  caveat noted above.
+
+  The readability precedent supports this design only in its corrected form. Adversarial validation found that
+  `readability-guidance` is not a skill people invoke; 27 skills invoke it as an automatic sub-step, and it hands control
+  straight back to its caller (A42). A companion skill nobody invokes is not a precedent for a companion skill you have
+  to remember. The precedent holds once the automatic wiring is part of the recommendation, and not before.
 
   Two supporting design choices rest on weaker footing and should be treated that way. The chunk-size target of roughly
   200 to 400 lines comes from a single study I could only read through a blog's paraphrase (A18) [single-source]. The
@@ -282,16 +330,121 @@ AI pairing, so applying it here is inference, not measurement.
   closest styles were deprecated. If A9 and A10 reflect current reality, O4's session-start hook is the pattern Anthropic
   itself landed on, and O2's style half should become a hook instead. The skill half of the recommendation is unaffected
   either way. The evidence that would settle it is a changelog entry, release note, or maintainer statement on the status
-  of the built-in Explanatory and Learning styles.
+  of the built-in Explanatory and Learning styles. Check that before you write the style file.
 
 ## Validation
 
-<!-- adversarial-validator findings pending -->
+### V1: The single-style constraint was asserted without a source
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Searched the whole draft for the claim that only one output style runs at a time. It appeared twice
+  and carried no artifact ID, in a report that cites nearly every other sentence.
+- **Result:** Confirmed.
+- **Impact:** The claim now cites A1 and is labeled as inferred from the documented settings schema rather than stated
+  outright. The report tells you to confirm it before committing to a design that depends on it.
+
+### V2: The `tdd` skill has a second stopping point outside the cited line range
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Read `han-coding/skills/tdd/SKILL.md` past the cited range. Lines 89 to 91 describe a hard stop when
+  no test command can be resolved, which the draft's "one gate" framing omitted.
+- **Result:** Partially Refuted. The quote inside the cited range was accurate; the summary around it was incomplete.
+- **Impact:** The `tdd` description now names both stopping points. Neither is collaborative, so the underlying finding
+  stands.
+
+### V3: The readability precedent did not match what O2 proposed
+
+- **Strategy:** Challenge the Recommendation
+- **Investigation:** Read `han-communication/skills/readability-guidance/SKILL.md`. It runs inline in the caller's
+  context and hands control straight back, and 27 skill files invoke it (verified by search). Nobody invokes it by hand.
+  The draft's companion skill had no such host and would have been a top-level command.
+- **Result:** Refuted. The analogy did not hold as written.
+- **Impact:** The largest change in this report. O2 now requires wiring the companion skill as an automatic sub-step of
+  the implementation skills, and the Recommendation states that the precedent holds only in that corrected form.
+
+### V4: An option was missing, and it is the one with the closest local precedent
+
+- **Strategy:** Challenge the Options Framing
+- **Investigation:** Checked whether any option proposed adding the loop directly to an existing implementation skill,
+  the way `code-walkthrough` carries its own pacing loop with no style and no companion. None did.
+- **Result:** Confirmed.
+- **Impact:** Added as O8. It does not displace O2, because it reaches only skill-invoked work and misses the ordinary
+  requests the request centers on. Its approach is now folded into O2 as the wiring mechanism.
+
+### V5: The always-on claim overstated what the recommendation delivers
+
+- **Strategy:** Challenge the Recommendation
+- **Investigation:** Compared the request for an always-on working mode against O2's own trade-off line, which conceded
+  that the deep behavior arrives only when the skill is invoked.
+- **Result:** Confirmed.
+- **Impact:** The Recommendation now carries a section stating exactly what each half delivers, including the gap for
+  ordinary requests that touch no skill.
+
+### V6: The instruction-stacking number measures a different kind of compliance
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Read the cited lines in the prior research file. The measurement covers content constraints such as
+  tone, length, and format, not whether an agent executes a workflow gate while mid-task.
+- **Result:** Partially Refuted. The transfer is plausible but was presented as a direct finding.
+- **Impact:** The report now flags this as an extrapolation where it uses the number.
+
+### V7: The recommendation header hid its own conditionality
+
+- **Strategy:** Challenge the Evidence-Gathering Integrity
+- **Investigation:** The draft stated a flat recommendation of O2, then disclosed three paragraphs later that A9 and A10
+  could flip half of it.
+- **Result:** Partially Refuted. The disclosure was honest but badly placed.
+- **Impact:** The conditional now sits in the recommendation line itself.
+
+### V8: Single-sourced material stayed out of the core argument
+
+- **Strategy:** Challenge the Evidence-Gathering Integrity
+- **Investigation:** Counted single-sourced artifacts (21 of 41 at the time of the check) and traced whether any carried
+  weight in the recommendation's evidence basis. The load-bearing claims pin to A1, A8, A23, A38, and A39, none of them
+  single-sourced. The low-confidence preprint (A26) appears only as a labeled directional hint.
+- **Result:** Confirmed, in the report's favor.
+- **Impact:** No change. The single-sourced material stays confined to secondary design parameters such as chunk size.
+
+### V9: The operator-escalation rule does not reach coding skills at all
+
+- **Strategy:** Challenge the Evidence
+- **Investigation:** Read the rule's consumers line. It names four planning skills and no coding skill.
+- **Result:** Refuted on the reasoning. The draft's conclusion was right, its stated reason was not.
+- **Impact:** The report now says the rule is scoped to planning skills, rather than implying it is a general Han rule
+  the loop would need an exception from.
+
+### V10: The habituation conflict does not undermine the reflexive-approval warning
+
+- **Strategy:** Challenge the Recommendation
+- **Investigation:** Checked whether the warning rested on either study's disputed trend direction. It rests on the
+  mechanism both studies agree on: review load drives shallower reading, and surface polish lowers your guard.
+- **Result:** Refuted as a threat to the report.
+- **Impact:** No change needed.
+
+### Adjustments Made
+
+Validation changed the report substantially. The single-style constraint gained a citation and an inference label (V1).
+The `tdd` description gained its second stopping point (V2). O2 was rewritten to require automatic wiring, and the
+Recommendation now says its readability precedent holds only in that corrected form (V3). O8 was added (V4). The
+Recommendation gained an explicit statement of what each half delivers and where the gap is (V5). The
+instruction-stacking number gained an extrapolation caveat (V6). The conditional moved into the recommendation line
+(V7). The operator-escalation reasoning was corrected (V9).
+
+The recommendation survived, but only after the correction in V3. Without automatic wiring, O2 does not answer the
+question that was asked.
 
 ### Confidence Assessment
 
 - **Confidence:** Medium
-- **Remaining Risks:** Pending validation.
+- **Remaining Risks:** The validator rated its own assessment Low, on two grounds: the uncited single-style constraint
+  and the broken readability analogy. Both are corrected above, which is why this sits at Medium rather than Low. It
+  does not reach High for three reasons. First, two Anthropic-controlled sources contradict each other on whether output
+  styles are still a supported home for this behavior (A1 against A9 and A10), and that conflict flips the style half of
+  the recommendation. Second, no study anywhere measures whether stopping for review at chunk boundaries is worth its
+  interruption cost, so the cadence design rests on converging practitioner guidance with no outcome data (A12, A13,
+  A14, A15). Third, the validator could not fetch web pages, so all 30 external artifacts rest on the research agents'
+  reporting rather than on independent confirmation. The codebase artifacts (A31 through A42) were checked directly
+  against the files and held up.
 
 ## Sources
 
@@ -330,7 +483,7 @@ AI pairing, so applying it here is inference, not measurement.
 | A31 | Han readability output style                 | `han-communication/output-styles/han-readability.md:1-98`                                              | n/a        | codebase    | 98 lines directing prose properties only; sets the keep-coding-instructions flag; no behavioral direction.       | corroborated by A32, A38                           |
 | A32 | han-communication plugin manifests           | `han-communication/.claude-plugin/plugin.json`                                                          | n/a        | codebase    | Output styles are auto-discovered from `output-styles/`; no manifest field declares them.                       | corroborated by A31                                |
 | A33 | code-walkthrough skill                       | `han-coding/skills/code-walkthrough/SKILL.md:1-234`                                                     | n/a        | codebase    | One step per turn then stop; a question holds position; read-only and never edits the target.                    | corroborated by A34, A35                           |
-| A34 | tdd skill                                    | `han-coding/skills/tdd/SKILL.md:75-87`                                                                  | n/a        | codebase    | Runs autonomously and does not stop for confirmation; one gate, only before implementation, only on request.     | corroborated by A35                                |
+| A34 | tdd skill                                    | `han-coding/skills/tdd/SKILL.md:75-91`                                                                  | n/a        | codebase    | Runs autonomously; a plan-review gate only on request, plus a hard stop for a missing test command; then runs to completion. | corroborated by A35                                |
 | A35 | code-overview skill                          | `han-coding/skills/code-overview/SKILL.md:1-100`                                                        | n/a        | codebase    | Read-only, writes a scratch file, no interactive loop; defers pacing to code-walkthrough.                        | corroborated by A33                                |
 | A36 | operator-escalation rule                     | `han-planning/references/operator-escalation-rule.md:16-100`                                            | n/a        | codebase    | One question per turn; exactly one stop per run, only for input only the operator can supply.                    | corroborated by A37                                |
 | A37 | explanation rule                             | `han-communication/references/explanation-rule.md:1-89`                                                 | n/a        | codebase    | Concrete outcome over mechanism; no shorthand terms; consequence before detail; no self-check.                   | corroborated by A36                                |
@@ -338,6 +491,7 @@ AI pairing, so applying it here is inference, not measurement.
 | A39 | Prior research: human-readable standard      | `docs/research/human-readable-output-standard.md:37-41`                                                 | n/a        | codebase    | Compliance falls from 85-90% at one instruction to 15-44% when many are stacked; audience framing is strongest.  | corroborated by A38                                |
 | A40 | Prior research: LLM code understanding       | `docs/research/llm-accelerated-code-understanding.md:1-71`                                               | n/a        | codebase    | AI speeds tasks without improving comprehension; high-comprehension users verified output 4.7x more often.       | corroborated by A17                                |
 | A41 | Han documentation obligations                | `CLAUDE.md:80-81,301-302`                                                                               | n/a        | codebase    | A new output style needs the style file, a long-form doc, and a plugin README scent line; no repo-root index yet. | single source (project convention)                 |
+| A42 | readability-guidance skill                   | `han-communication/skills/readability-guidance/SKILL.md`                                                 | n/a        | codebase    | Runs inline in the caller's context and hands control back; 27 skill files invoke it automatically, not the user. | corroborated by A31, A38                           |
 
 ### A1: Claude Code documentation on output styles — recommendation-bearing
 
@@ -445,6 +599,19 @@ AI pairing, so applying it here is inference, not measurement.
   carrying the always-on layer only, leaving runtime work to the skill. It also names an import in the personal memory
   file as a route to reach subagents.
 - **Evidence status:** corroborated by A1 on style mechanics, and by A39 on the instruction-stacking measurement
+
+### A42: Han's readability-guidance skill — recommendation-bearing
+
+- **Link / location:** `han-communication/skills/readability-guidance/SKILL.md`
+- **Retrieved:** n/a
+- **Trust class:** codebase (trusted current-state anchor)
+- **Summary:** The skill that partners with the readability output style, and the precedent the recommendation leans on.
+  It states that it "runs in your context, not an isolated one," that it is "a means to writing your deliverable, not the
+  deliverable itself," and that the caller should "RETURN to the workflow that called you and finish it." A search of the
+  repository found 27 skill files that invoke it. That matters for the design here: the skill works because its callers
+  invoke it automatically, not because a person remembers to. Adversarial validation used this file to refute the draft's
+  original claim that a user-invoked companion skill would mirror the readability split.
+- **Evidence status:** corroborated by A31 on the style half of the pattern, and by A38 on why the split exists
 
 ### A39: Prior Han research on the human-readable output standard — recommendation-bearing
 
