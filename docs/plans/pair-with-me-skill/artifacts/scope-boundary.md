@@ -28,7 +28,7 @@ The decision on naming and handoff:
 > `/han-coding:pair-with-me` with the intent of a prompt like "pair with me on tdd for this", "pair with me on
 > refactoring", "pair with me on implementing", etc.
 
-The decision on which skills gain the flag, answering a survey of all 34 skills in the nine plugins not ruled out:
+The decision on which skills gain the flag, answering a survey of every skill in the plugins not ruled out:
 
 > Both, in this spec
 

@@ -46,26 +46,30 @@ cited below by their titles rather than repeated:
 - **Dependent decisions:** D10
 - **Referenced in spec:** Actors and Triggers, Out of Scope, Coordinations
 
-### D3: The mode sorts the work into four kinds before planning anything
+### D3: The mode sorts the work before planning anything, using a named test
 
-- **Question:** How does the mode know what shape the work has?
-- **Decision:** It sorts the request into work a Han skill already covers, work that produces a decision, work that
-  produces written prose, or open-ended work fitting none of the first three.
-- **Rationale:** The chunk-boundary report found a different established unit for each kind of work, and no single unit
-  that spans them. Sorting first is what lets one loop serve all four. The four kinds are exactly the cases the evidence
-  distinguishes: one where a backing skill already owns the boundary, two where an outside body of practice defines a
-  unit, and one where nothing does.
-- **Evidence:** The chunk-boundary report's recommendation, resting on the architectural-decision-record sources for the
-  decision unit and on professional editing practice plus two composition studies for the prose unit. D1 established that
-  more than one kind of work is in scope.
+- **Question:** How does the mode know what shape the work has, and what happens when a request fits more than one shape?
+- **Decision:** It applies a fixed ordered test and stops at the first match: skill-backed, then decision work, then prose
+  work, then a fall-through to open-ended. The order is the tie-break, so drafting a decision record sorts as decision work
+  rather than prose work. The sort result is named in the plan, so you can correct it.
+- **Rationale:** The chunk-boundary report found a different established unit for each kind of work and no single unit that
+  spans them, so sorting first is what lets one loop serve them all. Review found two problems with the first draft, both
+  now fixed. The kinds were not mutually exclusive and nothing broke a tie, which meant two runs on the same request could
+  sort differently and produce different loops; an ordered test with a first-match rule settles that the way this suite
+  already settles it elsewhere, by naming the test rather than saying the mode identifies the right answer. And the sort
+  was never disclosed, which made the single largest determinant of your experience the one thing you could not correct.
+- **Evidence:** The chunk-boundary report's recommendation for the per-kind units. D1 established that more than one kind of
+  work is in scope. The named-test form follows `code-walkthrough`, which does not ask for important steps but names what
+  earns one. Review findings F7 and F8 drove the ordered test and the disclosure.
 - **Rejected alternatives:**
-  - One universal unit across all work — rejected because no source defines one, and the report searched for one
-    specifically.
-  - Asking you which kind it is — rejected because the request usually says, and D4's reasoning applies: a proposal you
-    can correct beats a question you have to answer before seeing anything.
+  - One universal unit across all work — rejected because no source defines one, and the report searched for one.
+  - Asking you which kind it is — rejected because the request usually says, and D4's reasoning applies.
+  - Four kinds with open-ended as a peer category — rejected on review as a distinction that changed no behavior. The
+    open-ended branch produces whatever the plan named, which is what the plan does regardless, so it is a fall-through
+    rather than a kind. Keeping it as a fourth kind made the sort harder for no gain.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D5, D11
+- **Driven by findings:** F7, F8, F9
+- **Dependent decisions:** D5, D11, D13
 - **Referenced in spec:** Primary Flow
 
 ### D4: The mode proposes the plan of stopping points rather than asking you to supply one
@@ -149,29 +153,43 @@ cited below by their titles rather than repeated:
 ### D7: The mode asks for your read first only where a mistake is expensive to undo
 
 - **Question:** Should a stop require your own judgment before showing its work, and if so, how often?
-- **Decision:** Only at a stop containing a choice that is expensive to walk back. Every other stop hands you checkable
-  claims without demanding a judgment first.
+- **Decision:** Only for a piece the plan marked as containing a choice that is expensive to walk back. The ask comes
+  before the build. Declining to answer is a first-class response that advances the stop unchanged, and the reveal
+  afterward presents the work in the same form as any other stop, without restating your read, scoring it, or defending a
+  divergence from it.
 - **Rationale:** Asking the reviewer to commit to their own judgment before seeing the assistant's reasoning was the one
-  intervention that measurably reduced over-reliance, and the same study measured its cost in reduced satisfaction. Amazon's
-  reversibility framework says where to spend that cost: slow, deliberate review for irreversible choices and fast review
-  for ones you can walk back. Paying the friction on every stop of a long session is how a mode stops getting used.
+  intervention that measurably reduced over-reliance, and the same study measured its cost in reduced satisfaction.
+  Amazon's reversibility framework says where to spend that cost: slow, deliberate review for irreversible choices and
+  fast review for ones you can walk back. Paying the friction on every stop of a long session is how a mode stops getting
+  used.
+
+  Three details came out of review and matter as much as the frequency. The ask has to precede the build, because both
+  studies work by having the person commit before the answer exists; an ask arriving after the work is on disk buys the
+  cost and none of the benefit. A non-answer has to be accepted, because the study's benefit concentrated in people
+  already inclined toward effortful thinking, and a mandatory guess taxes the fatigued, the second-language, and the
+  newly-arrived reader hardest while returning them the least. And the reveal must not grade the guess, because a stop
+  that scores you teaches you to answer noncommittally, and a stop that defends itself leads with the fluent case D6
+  rules out on evidence.
 - **Evidence:** User input, choosing this option over never asking and over asking at every stop. The options presented
-  rested on the chunk-boundary report's options 5 and 6.
+  rested on the chunk-boundary report's options 5 and 6. The three refinements come from review findings F1, F2, and F3.
 - **Rejected alternatives:**
   - Never asking first — rejected because it drops the one intervention controlled studies found effective, leaving the
     expensive stops unguarded too.
   - Asking at every stop — rejected because the measured satisfaction cost applies at every stop, and the operator judged
     that too high a price for a mode meant to be lived in.
+  - Keeping the ask at the stop after the build, as first drafted — rejected because it inverts the mechanism its own
+    evidence depends on.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
+- **Driven by findings:** F1, F2, F3
+- **Dependent decisions:** D14
 - **Referenced in spec:** Primary Flow, User Interactions
 
-### D8: Your feedback goes into a written record rather than being carried in memory
+### D8: Your feedback goes into a readable written record rather than being carried in memory
 
 - **Question:** How does feedback given at an early stop still apply at a much later one?
 - **Decision:** Every piece of feedback is written into a running record before it is acted on, and the record is read
-  before each piece is planned.
+  before each piece is planned. You can read that record whenever you ask, and when the mode applies a recorded entry to a
+  later piece it names which entry it applied.
 - **Rationale:** Model accuracy drops substantially when relevant information sits in the middle of a long context, which
   is exactly where a correction given at the second stop sits by the seventh. A written record also survives a session
   compaction, which memory does not.
@@ -182,8 +200,14 @@ cited below by their titles rather than repeated:
 - **Rejected alternatives:**
   - Relying on the conversation itself to carry feedback forward — rejected because a compaction destroys it and because
     mid-context information is the least reliably retrieved.
+  - Keeping the record as the mode's private notes, as first drafted — rejected on review. A misrecorded correction would
+    then govern every later piece and surface only as work that feels subtly wrong, which is the failure this decision
+    exists to prevent, inverted onto the person.
+  - Detecting contradictions across the record automatically — rejected as the expensive way to reach the same place.
+    Naming which entry was applied lets you catch the conflict yourself, with the entry in front of you, and has no false
+    positives. The detection behavior moved to the deferred list.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F5, F6
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome, Primary Flow, Edge Cases and Failure Modes, Coordinations
 - **Known gap:** No study tests written-versus-remembered feedback for this kind of work. The surgical evidence is an
@@ -208,25 +232,35 @@ cited below by their titles rather than repeated:
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow, Alternate Flows and States
 
-### D10: Two skills gain an opt-in collaborative flag: tdd and refactor
+### D10: Three skills gain an opt-in collaborative flag: tdd, refactor, and design-an-api
 
 - **Question:** Which existing skills hand control back to the pairing loop at their own boundaries?
-- **Decision:** `tdd` and `refactor`. Both already have a unit and already close it explicitly. The flag changes only what
-  happens at that existing close, and neither skill gains a new boundary.
-- **Rationale:** A survey of every skill in the nine plugins the operator did not rule out applied one test: does this
-  skill change files on its own, across a sequence, where each step builds on the last. Only these two pass. `tdd` ends
-  each cycle by crossing one behavior off its list; `refactor` ends each step by crossing off one named refactoring. The
-  planning skills already interview, the publishing skills already stop before writing to shared systems, and the analysis
-  skills hand you one document.
-- **Evidence:** User input confirming both after the survey, together with the structure of the two skills themselves.
-  D2 constrains the flag to be opt-in.
+- **Decision:** `tdd`, `refactor`, and `design-an-api`. All three already have a unit and already close it explicitly. The
+  flag changes only what happens at that existing close, and none of them gains a new boundary.
+- **Rationale:** The first survey applied one test: does this skill change files on its own, across a sequence, where each
+  step builds on the last. Only `tdd` and `refactor` passed, and the operator confirmed both.
+
+  Review then found that the mode's own founding example, pairing on an API design, fell outside that answer. The skill
+  covering it runs discovery, an options document, a question round, and a validation round, and sorting past it would
+  have handed you a thinner hand-rolled loop instead, silently. The operator chose to give it the flag rather than accept
+  that trade.
+
+  That widens the test to: does the skill produce its result across a sequence of units, where each unit stands on its own
+  and later units build on earlier ones? `design-an-api` passes, because it already runs in distinct rounds and already
+  surfaces open items one at a time. The other skills have not been re-checked against the wider test, which is why the
+  specification carries that as an open item.
+- **Evidence:** User input at both points: confirming `tdd` and `refactor` after the first survey, then adding
+  `design-an-api` after review finding F10 surfaced the founding-example gap. D2 constrains every flag to be opt-in.
 - **Rejected alternatives:**
-  - `tdd` only — rejected because the operator confirmed both when asked.
-  - A flag on every file-changing skill — rejected because the survey found no others meeting the test.
+  - `tdd` only — rejected because the operator confirmed both after the first survey.
+  - Routing API-design work to `design-an-api` unpaired — rejected because it answers a founding example with "here is the
+    right skill, but you are not pairing on it."
+  - Letting the mode's own decision loop supersede that skill — rejected because it silently drops a discovery pass and an
+    adversarial validation round the person would otherwise have had.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F10
 - **Dependent decisions:** —
-- **Referenced in spec:** Alternate Flows and States, Coordinations
+- **Referenced in spec:** Alternate Flows and States, Coordinations, What Else Has To Change When This Ships
 
 ### D11: The front door never picks the discipline for you
 
@@ -248,22 +282,218 @@ cited below by their titles rather than repeated:
 - **Dependent decisions:** —
 - **Referenced in spec:** Alternate Flows and States, Out of Scope
 
-### D12: The skill lives in han-core
+### D12: The skill lives in han-core, and its backing skills are optional
 
-- **Question:** Which plugin carries a pairing mode that covers prose, decisions, and code alike?
-- **Decision:** `han-core`, invoked as `/han-core:pair-with-me`.
-- **Rationale:** D1 established that the mode covers any kind of work. `han-core` is the shared foundation every Han
-  install already carries, and it depends on no other Han plugin, so a mode spanning several kinds of work sits at the
-  right layer there. Reaching into the coding plugin to pair on a stakeholder email reads wrong.
-- **Evidence:** User input, choosing this over the two alternatives below. The operator had named `/han-coding:pair-with-me`
-  before widening the scope, and [scope-boundary.md](scope-boundary.md) records that the widening reopens inputs settled
-  under the narrower framing.
+- **Question:** Which plugin carries a pairing mode that covers prose, decisions, and code alike, given that the skills it
+  hands work to live in a different plugin?
+- **Decision:** `han-core`, invoked as `/han-core:pair-with-me`. The backing skills are an optional enhancement rather than
+  a requirement: the mode works on its own for prose, decisions, and open-ended work, and gains the skill-backed paths only
+  when `han-coding` is installed. When a backing skill is absent, the mode names it and offers you the choice rather than
+  substituting silently.
+- **Rationale:** D1 established that the mode covers any kind of work, and `han-core` is the shared foundation every Han
+  install already carries. Reaching into the coding plugin to pair on a stakeholder email reads wrong.
+
+  Review found the placement had a problem the original reasoning never checked. `han-coding` already depends on
+  `han-core`, so a `han-core` skill that requires `han-coding` would close a dependency cycle, and `han-core`'s stated
+  invariant is that it depends on no other Han plugin. Treating the backing skills as optional resolves it honestly rather
+  than by omission: nothing is undeclared, because nothing is required. The general path is the point of the mode, and the
+  skill-backed paths are the enhancement.
+
+  Two consequences follow and are part of the work. The plugin's own front door, index entry, and manifests describe it as
+  the agents, project discovery, and the rule files, and all of them must now say it carries a working mode. The plugin
+  index also offers an install described as having no other skills, which stops being true.
+- **Evidence:** User input at both points: choosing `han-core` on fit, then confirming it after review finding F11 named
+  the dependency cycle and the labeling mismatch. The cycle was verified directly against the plugin manifests.
 - **Rejected alternatives:**
-  - `han-coding`, as originally named — rejected because the mode covers work with no code in it, and the coding plugin's
-    front door groups it with `tdd`, `refactor`, and `code-review`.
-  - A new `han-collaboration` plugin — rejected as a whole plugin, marketplace entry, front-door document, and dependency
-    wiring for one skill, on no evidence a second working-mode skill is coming.
+  - `han-coding`, as originally named — rejected because the mode covers work with no code in it, and that plugin's front
+    door groups it with `tdd`, `refactor`, and `code-review`.
+  - A new `han-collaboration` plugin — rejected twice. First as a whole plugin for one skill on no evidence a second is
+    coming, then again after the cycle was found, because treating the backing skills as optional achieves the same
+    correctness without the new plugin.
+  - Requiring `han-coding` from `han-core` — rejected because it is a dependency cycle and breaks a stated invariant.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F11
+- **Dependent decisions:** D21
+- **Referenced in spec:** Actors and Triggers, Edge Cases and Failure Modes, What Else Has To Change When This Ships
+
+
+### D13: Three kinds of work plus a fall-through, not four kinds
+
+- **Question:** Is open-ended work a category the mode sorts into, or the place a request lands when nothing else matches?
+- **Decision:** A fall-through. The sort has three tests and anything failing all three is open-ended, where the plan
+  supplies the boundaries with no rule behind them.
+- **Rationale:** Naming it a fourth kind implied a rule existed. None does: the research searched for a unit for
+  open-ended work and found none, at Low confidence, which is the lowest rating in either report. Treating it as a
+  fall-through says the same thing honestly and makes the sort simpler at no cost, because the open-ended branch produces
+  whatever the plan named, which is what the plan does for every kind anyway.
+- **Evidence:** The chunk-boundary report's Low confidence rating and its explicit statement that no source defines a unit
+  for this case. Review finding F9 raised the no-op branch under the YAGNI rule.
+- **Rejected alternatives:**
+  - Four peer kinds — rejected because the fourth changed no behavior and made the sort harder.
+  - Dropping the loop entirely for open-ended work and simply conversing — rejected because it gives you nothing to
+    redirect before the work exists, which is the one thing a proposed plan buys.
+- **Linked technical notes:** —
+- **Driven by findings:** F9
 - **Dependent decisions:** —
-- **Referenced in spec:** Actors and Triggers
+- **Referenced in spec:** How Confident Each Part of This Design Is, Primary Flow
+
+### D14: The reversibility call is announced in the plan, and the ask precedes the build
+
+- **Question:** Who judges that a choice is expensive to walk back, when, and can you argue with the call?
+- **Decision:** The plan proposed before work starts names which pieces it expects to carry such a choice. That makes the
+  call visible and contestable at plan time, when contesting is cheap, and it means the ask in D7 can come before the
+  build rather than after.
+- **Rationale:** The framework this rests on treats reversibility as an explicit shared classification whose whole value is
+  in being visible and arguable. Left silent, the friction arrives unpredictably, you cannot budget attention around it,
+  and you can neither wave off a call that is wrong nor flag a piece the mode missed. The person who knows which choices
+  are expensive in their own codebase is you, and without this there is no channel for you to say so.
+- **Evidence:** The reversibility framework in the chunk-boundary report, which is the only source there marked corroborated
+  by an independent secondary source with no caveat. Review findings F1 and F4 established that the call was silent and
+  that the ask was ordered wrongly against its own evidence.
+- **Rejected alternatives:**
+  - Judging reversibility silently at each stop — rejected because it makes the promise that friction arrives only where
+    it is warranted unverifiable from your seat.
+- **Linked technical notes:** —
+- **Driven by findings:** F1, F4
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow
+
+### D15: For skill-backed work the pre-work plan names the unit, and the first stop carries the list
+
+- **Question:** How can the mode promise a plan of pieces before a backing skill has produced its own list?
+- **Decision:** It cannot, so the promise splits. For skill-backed work, the plan before any work starts names the backing
+  skill, the unit it will stop at, and the reason. That skill's own list of units is surfaced as the plan of pieces at the
+  first stop, where you can still redirect it.
+- **Rationale:** The backing skills build their lists partway into their own runs and report them without stopping. At the
+  moment the pre-work plan is made, the list does not exist. The original promise was therefore either unmet or a silent
+  change to a backing skill's gating, and D2 forbids the second. Splitting the promise keeps both intact.
+- **Evidence:** The structure of `tdd` and `refactor`, both of which report their plan and continue immediately rather than
+  gating on it. D2 forbids changing that. Review finding F12.
+- **Rejected alternatives:**
+  - Making the backing skills gate on their list so the plan can include it — rejected because it changes their default
+    behavior, which D2 excludes.
+  - Promising the full list up front anyway — rejected because it is a promise the mode cannot keep.
+- **Linked technical notes:** —
+- **Driven by findings:** F12
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow
+
+### D16: Every stop names your position in the plan, and the plan stays available
+
+- **Question:** How does the person know where they are, how much is left, and what the plan currently says?
+- **Decision:** Each stop names which piece this is against the plan and what remains. The current plan is available on
+  request, and a revised plan is named as revised. On resuming after a compaction or interruption, the mode restates the
+  piece in hand and its position before continuing.
+- **Rationale:** The person agreed at plan time to a queue depth they then could not see. Without it they cannot answer
+  "do I have the attention for two more, or should I stop cleanly here", which is the decision the faster gear in D19
+  exists to serve, and after a renegotiation they cannot answer "what did I agree to" at all. Two conventions already in
+  this suite carry exactly this and were dropped in translation: the walkthrough keeps a step counter, and the escalation
+  rule states how many questions are pending so the operator knows the queue depth they are agreeing to.
+- **Evidence:** The two in-repo conventions above. The measured cost of an interruption, at an average of 23 minutes and 15
+  seconds to return to full focus, is what makes the resume case worth specifying rather than assuming. Review findings
+  F13 and F14.
+- **Rejected alternatives:**
+  - Naming only what comes next, as first drafted — rejected because a one-step lookahead is not a position.
+- **Linked technical notes:** —
+- **Driven by findings:** F13, F14
+- **Dependent decisions:** D19
+- **Referenced in spec:** Primary Flow, User Interactions, Edge Cases and Failure Modes
+
+### D17: The stop is a directive the mode follows, not a guarantee
+
+- **Question:** Can the mode be prevented from building past a stop?
+- **Decision:** No, and the specification says so rather than claiming otherwise. When an overrun happens, the next thing
+  the mode says names it, states which pieces were built without review, and offers to walk back through them.
+- **Rationale:** The collaborative-mode research is explicit that nothing can force a stop at a chunk boundary; every
+  option it examined ultimately relies on the assistant following an instruction, and they differ in how much weight the
+  instruction carries rather than in whether it can be enforced. Claiming a guarantee the mechanism cannot provide is
+  worse than naming the limit, because it leaves the most likely real failure of this feature unspecified. The tendency is
+  real in exactly the skill being flagged: `tdd` today runs to completion without further human input.
+- **Evidence:** The collaborative-mode report's finding on enforceability. The structure of `tdd`. Review finding F15.
+- **Rejected alternatives:**
+  - Stating the stop as a hard guarantee, as first drafted — rejected because no mechanism backs it and no behavior was
+    specified for the case where it fails.
+- **Linked technical notes:** —
+- **Driven by findings:** F15
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow, Edge Cases and Failure Modes
+
+### D18: Ending the loop is the person's call, and nothing computes it
+
+- **Question:** What ends the loop, given that the plan can be reopened at any point?
+- **Decision:** You do. The mode reports when the plan is finished, but with the plan reopenable on any out-of-piece
+  feedback, "finished" is not a fixed target, and no rule computes a stopping point.
+- **Rationale:** Two skills in this suite end their review rounds on a rule computed from finding counts and severities,
+  which is the only pattern where "are we done" has an answer nobody argues about. It needs a countable signal to gate on,
+  and work being built produces none. Rather than invent one, the specification states that ending is deliberate rather
+  than an oversight.
+- **Evidence:** The chunk-boundary report's option 7 and its stated reason for not transferring. Review finding F16.
+- **Rejected alternatives:**
+  - A computed stop rule — rejected because there is nothing to compute over.
+  - Leaving it unstated — rejected because a reader would read it as a gap rather than a choice.
+- **Linked technical notes:** —
+- **Driven by findings:** F16
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow, Out of Scope
+
+### D19: You can ask for several pieces at once, and the loop returns to its normal pace after
+
+- **Question:** What can the person do when full ceremony on every piece is more than they want, but turning review off is
+  less than they want?
+- **Decision:** Ask for more than one piece, in whatever words. The mode honors it as asked and returns to its normal pace
+  at the following stop without being asked to.
+- **Rationale:** Without this, the only two gears are full ceremony and no review at all, and the person who is tired at
+  their eleventh stop has to choose between them. That is the failure the whole mode exists to prevent, reached through
+  the mode's own controls. The walkthrough convention this specification claims to inherit already carries the exception
+  and honors an explicit request for more than one step; it was dropped in translation.
+- **Evidence:** The walkthrough skill's stated exception. Two practitioner sources describing review quality decaying into
+  rubber-stamping past a volume threshold. Review finding F17.
+- **Rejected alternatives:**
+  - Only stop-or-finish-unattended, as first drafted — rejected because the middle case is the common one.
+  - Requiring the person to re-request normal pace afterward — rejected as friction on the person already economizing.
+- **Linked technical notes:** —
+- **Driven by findings:** F17
+- **Dependent decisions:** —
+- **Referenced in spec:** Alternate Flows and States, Edge Cases and Failure Modes, User Interactions
+
+### D20: Both entry paths are supported, and the phrase path has to win its collisions
+
+- **Question:** Does the mode start only when named outright, or also when described in the person's own words?
+- **Decision:** Both. Naming it outright bypasses competition entirely. Saying it in your own words competes against every
+  skill available in the session, and this mode's arrival therefore changes what several existing skills say about
+  themselves.
+- **Rationale:** Every phrasing the operator offered as a founding example contains another skill's strongest trigger word.
+  Left unmanaged, the person types their own sentence and gets the uninterrupted run this mode exists to replace, or gets
+  stopped at every step when they wanted a straight run.
+
+  The relationship needing description has no precedent here. Every existing boundary between two skills is exclusive: one
+  does the job and the other does not. This one is not, because the mode runs the very skills it competes with. Stating it
+  on one side only leaves a gap the request falls through, so both sides state it.
+- **Evidence:** The four phrasings quoted in the scope boundary record, each checked against the competing skill's own
+  routing text. The suite's own guidance that one-way disambiguation is a gap. Review findings F18, F19, and F20.
+- **Rejected alternatives:**
+  - Supporting only the named invocation — rejected because the operator's own examples are all phrase-shaped.
+  - Copying the existing exclusive boundary form — rejected because it cannot express a delegating relationship.
+- **Linked technical notes:** —
+- **Driven by findings:** F18, F19, F20
+- **Dependent decisions:** —
+- **Referenced in spec:** Actors and Triggers, Which Skill Answers When You Say It In Your Own Words, Coordinations
+
+### D21: The surfaces that stop being accurate are part of this work
+
+- **Question:** Is updating the documentation and manifests this mode invalidates part of shipping it, or a follow-up?
+- **Decision:** Part of it. The specification names the three groups: the plugin's own identity in its front door, index
+  entry, and manifests; the operator manuals and routing text of the three skills gaining the flag; and the usual surfaces
+  a new skill needs.
+- **Rationale:** The placement in D12 changes what `han-core` is, and the flag in D10 changes user-visible behavior of three
+  existing skills. Both make existing text false on the day this ships. This repository's own rule is that a skill's
+  long-form documentation lands in the same pull request as the skill, not as a follow-up. Naming the surfaces in the
+  specification is what stops them being discovered one review comment at a time.
+- **Evidence:** The repository's contribution guide and its documentation coverage rule. Review finding F21.
+- **Rejected alternatives:**
+  - Leaving the surface list to the implementation plan — rejected because two of the three groups exist only as
+    consequences of decisions made here, and would not be obvious to someone reading the implementation plan alone.
+- **Linked technical notes:** —
+- **Driven by findings:** F21
+- **Dependent decisions:** —
+- **Referenced in spec:** What Else Has To Change When This Ships
