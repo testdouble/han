@@ -17,10 +17,12 @@ use the skill. For what the skill does internally, read the skill definition at
 
 ## Key concepts
 
+- **A concern.** One thing you asked for, with its own deliverable. A request that asks for two things holds two
+  concerns, they run one after the other, and no piece spans both.
 - **A piece.** One unit of work you review on its own. What counts as one depends on the kind of work, and the skill
-  tells you which kind it picked before it starts.
-- **The plan.** A short list of the pieces, proposed before any work begins, that you accept or change. It also names
-  which pieces carry a choice that is expensive to walk back.
+  tells you which kind it picked for each concern before it starts.
+- **The plan.** A short list of the concerns and the pieces inside each, proposed before any work begins, that you
+  accept or change. It also names which pieces carry a choice that is expensive to walk back.
 - **A stop.** The end of a turn. You get your position in the plan, what was built, what you can check, and what
   changed. The reasoning does not lead.
 - **The pre-build ask.** For a piece the plan marked expensive to walk back, the skill asks what you expect before it
@@ -86,6 +88,8 @@ a later piece, it names which entry, so a misrecorded correction surfaces while 
 
 - **Redirect the plan before the work starts.** The plan is the cheapest thing to change, and the sort it names
   determines every boundary after it. If the kind of work looks wrong, say so at the first turn.
+- **Merge the concerns back when a split is not worth a stop.** The plan names how your request was split. If two of
+  them are small enough that you would rather see them together, say so and they run as one.
 - **Contest the reversibility markings.** The plan names which pieces it thinks are expensive to walk back. You know
   your codebase better than it does. Adding or removing a marking at plan time costs nothing.
 - **Ask for several pieces at once when you are moving fast.** "Show me the next three" is honored as asked, and the
@@ -118,10 +122,18 @@ single high-signal run.
 
 ## In more detail
 
-**How it decides what kind of work you brought.** An ordered test, first match wins. Does a flagged skill cover this?
-Then it is skill-backed. Does it produce a choice that commits you to something? Decision work. Does it produce prose
-someone will read? Prose work. Otherwise the plan supplies the boundaries with no rule behind them. The order is the
-tie-break, so drafting a decision record sorts as decision work rather than prose work.
+**How it splits a request that asks for more than one thing.** Splitting comes before anything else. Two asks joined by
+"and then" are two concerns whenever they produce two things you would check separately, and each concern gets its own
+pieces and its own stops. Changing code and answering a question about it are always separate, even in one sentence and
+even about the same lines, because checking an edit means reading a diff and checking an answer means reading the
+answer. When the split is genuinely unclear the skill splits anyway and names it in the plan, where merging the two back
+costs you nothing.
+
+**How it decides what kind of work you brought.** An ordered test per concern, first match wins. Does a flagged skill
+cover this? Then it is skill-backed. Does it produce a choice that commits you to something? Decision work. Does it
+produce prose someone will read? Prose work. Otherwise the plan supplies the boundaries with no rule behind them. The
+order is the tie-break, so drafting a decision record sorts as decision work rather than prose work. Concerns sort
+independently, so one request often yields a skill-backed concern and a prose concern side by side.
 
 **Why the reasoning does not lead at a stop.** Controlled studies found that reading an assistant's explanation does not
 reliably make a reviewer more careful, and can make them less so. An explanation reads as competence whether or not its
