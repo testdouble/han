@@ -1,6 +1,6 @@
-# Team Findings: pair-with-me
+# Team Findings: pairing
 
-This file records every finding raised by the review team for `pair-with-me`, and how each was resolved. Behavioral
+This file records every finding raised by the review team for `pairing`, and how each was resolved. Behavioral
 outcomes live in [../feature-specification.md](../feature-specification.md); the decisions those findings affected live in
 [decision-log.md](decision-log.md). No `feature-technical-notes.md` was created for this feature, because no mechanic
 qualified as load-bearing and not discoverable from the repository.
@@ -389,6 +389,22 @@ identifiers.
 - **Affected decisions:** D11
 - **Changed in spec:** Alternate Flows and States
 
+### F34: The name broke the suite's own naming convention and under-scented for non-code work
+
+- **Agent:** information-architect
+- **Reviewer identifiers:** IA-006
+- **Finding:** The name was an imperative sentence addressed to the assistant, where every other skill in the suite is
+  named for an activity or an artifact, and the plugin-building guidance asks for a gerund process name with a stated
+  heuristic the original name violated. Three costs followed: it set a precedent a future skill author would read as
+  sanctioned, it carried pair-programming associations the mode does not meet, and someone scanning the skills index for
+  help with prose would not stop at it.
+- **Resolution:** Escalated after the review round closed, and the operator renamed the skill to `pairing`. "Pair with me
+  on" stays as description wording, so nothing about how a person asks for the mode changed. The reviewer noted that
+  routing matches on description rather than name, which is what made the rename free.
+- **Resolved by:** user input
+- **Affected decisions:** D23
+- **Changed in spec:** the whole document, by rename; Open Items
+
 ## Minor edits
 
 - F28: The vague-request re-ask posed a blank question, which the same specification rejects elsewhere; it now names what
@@ -426,7 +442,7 @@ F27's blocking status is limited accordingly.
 
 ### E1: Which plugin should carry a pairing mode you would also use on a stakeholder email?
 
-- **Answer:** `han-core`, invoked as `/han-core:pair-with-me`. The operator chose it over keeping the originally-named
+- **Answer:** `han-core`, invoked as `/han-core:pairing`. The operator chose it over keeping the originally-named
   `han-coding` home and over creating a new `han-collaboration` plugin.
 - **Landed in:** [D12](decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional), and the Actors
   and Triggers section of the specification.
@@ -457,5 +473,35 @@ F27's blocking status is limited accordingly.
 
 - **Answer:** Give that skill the collaborative flag too. The operator chose this over routing to it unpaired and over
   letting the mode's own decision loop supersede it.
-- **Landed in:** [D10](decision-log.md#d10-three-skills-gain-an-opt-in-collaborative-flag-tdd-refactor-and-design-an-api),
+- **Landed in:** [D10](decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag),
   plus the Actors and Triggers, Alternate Flows, Coordinations, and Open Items sections of the specification.
+
+### E6: Where should the stopping and question-asking convention for this mode live?
+
+- **Answer:** A new canonical rule file owned by `han-core`. The operator chose it over carrying the convention inline
+  and over extending the existing escalation rule.
+- **Landed in:** [D22](decision-log.md#d22-the-stopping-convention-is-a-canonical-rule-file-owned-by-han-core), plus the
+  Open Items and What Else Has To Change sections of the specification.
+
+### E7: When should the widened flag test be run against the rest of the suite?
+
+- **Answer:** Now, before the implementation plan. The operator chose this over deferring it to the implementation plan
+  and over closing the question at three skills.
+- **Landed in:** the survey recorded in E8 below.
+
+### E8: Two more skills qualify under the widened test. Should they get the flag?
+
+- **Answer:** Flag both. The operator chose this over flagging `plan-implementation` alone and over keeping the mode at
+  three skills. The survey covered every skill in the plugins the operator did not rule out;
+  `iterative-plan-review` and `plan-implementation` were the only additions, and the reasons every other skill failed are
+  recorded in D10.
+- **Landed in:** [D10](decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag), plus the Alternate Flows,
+  Coordinations, and What Else Has To Change sections of the specification.
+
+### E9: Does the skill keep the name pair-with-me?
+
+- **Answer:** No. It is renamed to `pairing`, with "pair with me on" kept as description wording. The operator chose this
+  over keeping the original name with a recorded exception and over a name describing the loop. This overrode the
+  recommendation, which was to keep the original name.
+- **Landed in:** [D23](decision-log.md#d23-the-skill-is-named-pairing-and-the-phrase-people-type-lives-in-its-description),
+  the specification's Open Items section, and the name of this plan folder.

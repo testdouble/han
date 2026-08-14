@@ -1,4 +1,4 @@
-# Feature Specification: pair-with-me
+# Feature Specification: pairing
 
 A collaborative working mode where Claude builds your work in reviewable pieces and hands each one back to you before
 starting the next, so you stay in the lead rather than reviewing a finished result.
@@ -25,7 +25,7 @@ a written response, or a test-driven build are all the same loop with a differen
   targets solo and small-team engineers, and this mode assumes a single reviewer rather than a group.
 - **Triggers** — two entry paths, and the mode supports both
   ([D20](artifacts/decision-log.md#d20-both-entry-paths-are-supported-and-the-phrase-path-has-to-win-its-collisions)):
-  - **Naming the mode outright.** You invoke `/han-core:pair-with-me` and say what you want to pair on. Nothing competes
+  - **Naming the mode outright.** You invoke `/han-core:pairing` and say what you want to pair on. Nothing competes
     for the request.
   - **Saying it in your own words.** "Pair with me on tdd for this", "pair with me on refactoring", "pair with me on
     designing an API for the export flow", "pair with me on writing a response to this question." Here, the mode
@@ -155,15 +155,21 @@ an implementation should know about it.
 - **Entry condition:** The work sorted as skill-backed, meaning a Han skill covers it and carries the collaborative flag.
 - **Sequence:** The mode hands the work to that skill. The skill does its own job unchanged, and stops at the point it
   already treats as the end of a unit rather than looping onward on its own
-  ([D10](artifacts/decision-log.md#d10-three-skills-gain-an-opt-in-collaborative-flag-tdd-refactor-and-design-an-api)). Control returns to
+  ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)). Control returns to
   the pairing loop at step 5 of the primary flow.
 - **Exit:** The backing skill's own work is complete, or you end the loop.
 
-Three skills gain this flag, and none of them gains a new boundary. `tdd` already ends each cycle by crossing one
+Five skills gain this flag, and none of them gains a new boundary. `tdd` already ends each cycle by crossing one
 behavior off its list. `refactor` already ends each step by crossing off one named refactoring. `design-an-api` already
-runs in distinct rounds and already surfaces its open items one at a time. In every case the flag changes only what
-happens when that existing boundary is reached: control returns to you instead of the skill looping onward
-([D10](artifacts/decision-log.md#d10-three-skills-gain-an-opt-in-collaborative-flag-tdd-refactor-and-design-an-api)).
+runs in distinct rounds and already surfaces its open items one at a time. `iterative-plan-review` already runs review
+rounds with a stop rule computed from finding counts, and `plan-implementation` already runs resolution rounds. In every
+case the flag changes only what happens when that existing boundary is reached: control returns to you instead of the
+skill continuing on its own
+([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)).
+
+The last two are the ones most worth naming, because neither stops for you today. `iterative-plan-review` surfaces a
+disagreement between two reviewers and then keeps going without waiting for your answer. `plan-implementation` holds its
+only question until every round is already finished.
 
 ### You want to move faster without giving up review
 
@@ -252,15 +258,17 @@ are in the plan. Asking for more than one piece at a time is part of the pacing,
 
 | Coordinating System         | Direction | Interaction                                                                                 | Ordering / Consistency Requirement                                                                                                          |
 | --------------------------- | --------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tdd`                       | outbound  | Runs the test-driven loop; returns control at the end of each behavior rather than continuing | The collaborative behavior applies only to an invocation made through `pair-with-me`. An ordinary `tdd` invocation runs exactly as it does today. |
+| `tdd`                       | outbound  | Runs the test-driven loop; returns control at the end of each behavior rather than continuing | The collaborative behavior applies only to an invocation made through `pairing`. An ordinary `tdd` invocation runs exactly as it does today. |
 | `refactor`                  | outbound  | Runs the refactoring sequence; returns control at the end of each named refactoring           | Same condition. An ordinary `refactor` invocation runs exactly as it does today.                                                            |
 | `design-an-api`             | outbound  | Runs its design rounds; returns control at the end of each round                              | Same condition. An ordinary `design-an-api` invocation runs exactly as it does today.                                                       |
+| `iterative-plan-review`     | outbound  | Runs its review rounds; returns control at the end of each round                              | Same condition. An ordinary invocation runs its rounds to the computed stop rule exactly as it does today.                                  |
+| `plan-implementation`       | outbound  | Runs its resolution rounds; returns control at the end of each round                          | Same condition. An ordinary invocation holds its single question until after every round, exactly as it does today.                         |
 | The running feedback record | both      | Written after each stop, read before planning each piece, readable by you on request          | A stop's feedback is written before the next piece is planned, so no piece is built against feedback not yet recorded.                      |
 | `code-walkthrough`          | neither   | No handoff. The two share their whole pacing vocabulary, so each has to say which side of produced-versus-existing work it is on | Nothing runs. This is a routing relationship only, and it exists because the shared words would otherwise send a request to the wrong skill.  |
 | Han's configuration file    | inbound   | Supplies the output location the feedback record is written under                             | Read once at the start of the loop, so the record's location does not move mid-session.                                                     |
 
 The three skill rows are the opt-in flag and nothing more
-([D10](artifacts/decision-log.md#d10-three-skills-gain-an-opt-in-collaborative-flag-tdd-refactor-and-design-an-api)):
+([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)):
 the flag applies to an invocation made through this mode, and every ordinary invocation of those skills is untouched
 ([D2](artifacts/decision-log.md#d2-every-existing-skill-keeps-its-current-default-behavior)). The feedback-record row is
 what makes a correction given early still apply late
@@ -271,8 +279,8 @@ wrong skill
 
 ## What Else Has To Change When This Ships
 
-Shipping this mode is not only building the mode. Three groups of existing material stop being accurate the moment it
-lands, and all three are part of the work rather than follow-up
+Shipping this mode is not only building the mode. Four groups of material change the moment it lands, and all four are
+part of the work rather than follow-up
 ([D21](artifacts/decision-log.md#d21-the-surfaces-that-stop-being-accurate-are-part-of-this-work)).
 
 1. **`han-core` stops being what it says it is.** Its front door, the plugin index entry, and its manifests all describe
@@ -282,8 +290,8 @@ lands, and all three are part of the work rather than follow-up
    ([D12](artifacts/decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional)).
 2. **Three skills gain user-visible behavior.** `tdd`, `refactor`, and `design-an-api` each get a collaborative mode, so
    each one's own operator manual and its own routing text change alongside this mode's
-   ([D10](artifacts/decision-log.md#d10-three-skills-gain-an-opt-in-collaborative-flag-tdd-refactor-and-design-an-api)).
-3. **The usual surfaces a new skill needs.** The skill itself, its long-form documentation, a line on its plugin's front
+   ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)).
+4. **The usual surfaces a new skill needs.** The skill itself, its long-form documentation, a line on its plugin's front
    door, an entry in the skills index, the project map, the workflow chains, and the version history.
 
 Two things this mode does not need, stated so nobody adds them: it takes no size argument and dispatches no team, so the
@@ -358,41 +366,26 @@ justify revisiting it.
 
 ## Open Items
 
-- **OI-1:** Which stopping and question-asking convention governs this mode. Han's existing escalation rule names only
-  planning skills as its consumers, with no coding or core skill among them. The research concluded a collaborative
-  loop would need its own convention rather than an exception to that one. This specification borrows the one-question
-  shape without naming what owns it.
-  - **Resolves when:** The operator decides whether this mode adopts the existing rule, gets its own, or carries the
-    convention inline.
-  - **Blocks implementation:** No — the behavior is specified; only its home is open.
+None. All three items this specification opened were settled before it closed, and each is recorded as a decision with
+its rejected alternatives:
 
-- **OI-2:** Which other skills qualify for the collaborative flag under the widened test. Adding `design-an-api` replaced
-  the original test, which asked whether a skill changes files across a sequence. The broader test asks: does the skill
-  produce its result across a sequence of units, where each unit stands on its own and later units build on earlier
-  ones? Only the three named skills have been checked against the new test.
-  - **Resolves when:** Someone re-runs the survey against the widened test and the operator confirms the result.
-  - **Blocks implementation:** No — a fourth skill gaining the flag later is additive and breaks nothing already built.
-
-- **OI-3:** Whether the skill keeps the name `pair-with-me`. It is the operator's own name and it matches what a person
-  types, which helps it win the collisions where winning is right. Three costs run the other way. Every other skill in the
-  suite is named for an activity or an artifact, and this one is an imperative sentence addressed to the assistant. It
-  carries pair-programming expectations the mode does not meet, since it proposes, builds, stops, and shows rather than
-  trading the keyboard. And someone scanning the skills index for help drafting a stakeholder response will not stop at it.
-  - **Resolves when:** The operator either keeps the name and records why the suite's naming convention is set aside
-    here, so it does not read as precedent. Or the operator picks a name for the loop and keeps "pair with me on"
-    purely as trigger wording.
-  - **Blocks implementation:** No — what a person types is matched against the skill's description, not its name.
+- Which convention owns the stops, settled as a canonical rule file owned by `han-core`
+  ([D22](artifacts/decision-log.md#d22-the-stopping-convention-is-a-canonical-rule-file-owned-by-han-core)).
+- Which further skills qualify for the flag, settled by running the widened test across every skill in the plugins the
+  operator did not rule out ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)).
+- Whether the skill keeps its original name, settled by renaming it
+  ([D23](artifacts/decision-log.md#d23-the-skill-is-named-pairing-and-the-phrase-people-type-lives-in-its-description)).
 
 ## Summary
 
 - **Outcome delivered:** Work gets built in pieces you reviewed, with your feedback shaping every piece after it.
 - **Primary actors:** One person doing their own work, pairing with Claude on any kind of task.
 - **Decisions settled by evidence:** 14 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 7 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 9 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** `junior-developer`, `user-experience-designer`, `information-architect` — see
   [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** The guard against nodding through now asks before the build rather than after, which is
   what its evidence requires. The mode now tells you where you are in the plan, lets you read the feedback record, and
-  lets you ask for several pieces at once. The skill stays in `han-core` with its backing skills treated as optional, and
-  `design-an-api` joins the two skills that hand control back.
-- **Remaining open items:** 3
+  lets you ask for several pieces at once. The skill stays in `han-core` with its backing skills treated as optional, the
+  flag reaches five skills rather than two, and the skill is named `pairing` rather than for the phrase people type.
+- **Remaining open items:** 0

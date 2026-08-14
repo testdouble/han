@@ -1,4 +1,4 @@
-# Scope Boundary: pair-with-me collaborative working-mode skill
+# Scope Boundary: pairing collaborative working-mode skill
 
 ## Work Item
 
@@ -39,10 +39,11 @@ survey up front.
 above, and are recorded here so this record does not read as governing on its own. Both are in the escalation register in
 [team-findings.md](team-findings.md).
 
-- `design-an-api` also gains the collaborative flag (E5), so the survey answer above is no longer the whole set. Which
-  other skills qualify under the widened test is an open item in the specification.
-- The skill is invoked as `/han-core:pair-with-me` rather than the `/han-coding:` name quoted above (E1, reconfirmed at
-  E4), and the skills it hands work to are optional rather than required.
+- The survey answer above is no longer the whole set. `design-an-api` also gains the collaborative flag (E5), and
+  re-running the widened test across every skill in the plugins not ruled out added `iterative-plan-review` and
+  `plan-implementation` (E7, E8). Five skills carry the flag.
+- The skill is invoked as `/han-core:pairing` rather than the `/han-coding:pair-with-me` name quoted above (E1,
+  reconfirmed at E4 and renamed at E9), and the skills it hands work to are optional rather than required.
 
 **The widening.** At the fifth turn the operator established that the mode is not specific to writing code:
 
@@ -89,7 +90,7 @@ Answered. The operator stated:
 > All four stay, nothing is being replaced.
 
 The four are `tdd`, `refactor`, `code-walkthrough`, and the wider set of skills someone might pair on. None is being
-deprecated, replaced, or migrated away from. `pair-with-me` borrows `code-walkthrough`'s pacing without changing it, and
+deprecated, replaced, or migrated away from. `pairing` borrows `code-walkthrough`'s pacing without changing it, and
 every flag added leaves every existing invocation behaving as it does today.
 
 ## Visual Material Received
@@ -104,5 +105,6 @@ Rewritten once, at the fifth turn, when the operator widened the scope from a co
 collaborative working mode. The narrower first version is in this file's git history. No conflict was resolved between
 two work items, because only one exists: the operator's own request.
 
-Amended again during synthesis, to record the two operator answers the review round produced. No quoted material was
-changed; the amendment sits beside the quotes it qualifies.
+Amended again during synthesis, to record the two operator answers the review round produced, and once more when the
+specification's three open items were settled. No quoted material has been changed at any point. Every amendment sits
+beside the quote it qualifies, so the operator's original words still read as they were typed.

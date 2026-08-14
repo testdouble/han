@@ -1,6 +1,6 @@
-# Decision Log: pair-with-me
+# Decision Log: pairing
 
-This file records every decision settled while specifying `pair-with-me`. Behavioral statements live in
+This file records every decision settled while specifying `pairing`. Behavioral statements live in
 [../feature-specification.md](../feature-specification.md); this file carries the history, rationale, evidence, and
 rejected alternatives.
 
@@ -245,35 +245,52 @@ or was reshaped by review. No D# number moved, so every inline link in the speci
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow, Alternate Flows and States
 
-### D10: Three skills gain an opt-in collaborative flag: tdd, refactor, and design-an-api
+### D10: Five skills gain an opt-in collaborative flag
 
 - **Question:** Which existing skills hand control back to the pairing loop at their own boundaries?
-- **Decision:** `tdd`, `refactor`, and `design-an-api`. All three already have a unit and already close it explicitly. The
-  flag changes only what happens at that existing close, and none of them gains a new boundary.
-- **Rationale:** The first survey applied one test: does this skill change files on its own, across a sequence, where each
-  step builds on the last. Only `tdd` and `refactor` passed, and the operator confirmed both.
+- **Decision:** `tdd`, `refactor`, `design-an-api`, `iterative-plan-review`, and `plan-implementation`. All five already
+  have a unit and already close it explicitly. The flag changes only what happens at that existing close, and none of them
+  gains a new boundary.
+- **Rationale:** This was settled in three passes, and the test widened at each one.
 
-  Review then found that the mode's own founding example, pairing on an API design, fell outside that answer. The skill
-  covering it runs discovery, an options document, a question round, and a validation round, and sorting past it would
-  have handed you a thinner hand-rolled loop instead, silently. The operator chose to give it the flag rather than accept
-  that trade.
+  The first survey asked whether a skill changes files on its own, across a sequence, where each step builds on the last.
+  Only `tdd` and `refactor` passed, and the operator confirmed both.
 
-  That widens the test to: does the skill produce its result across a sequence of units, where each unit stands on its own
-  and later units build on earlier ones? `design-an-api` passes, because it already runs in distinct rounds and already
-  surfaces open items one at a time. The other skills have not been re-checked against the wider test, which is why the
-  specification carries that as an open item.
-- **Evidence:** User input at both points: confirming `tdd` and `refactor` after the first survey, then adding
-  `design-an-api` after review finding F10 surfaced the founding-example gap. D2 constrains every flag to be opt-in.
+  Review then found the mode's own founding example falling outside that answer. The skill covering an API design runs
+  discovery, an options document, a question round, and a validation round, and sorting past it would have handed you a
+  thinner hand-rolled loop instead, silently. The operator gave it the flag rather than accept that trade, which widened
+  the test to: does the skill produce its result across a sequence of units, where each unit stands on its own and later
+  units build on earlier ones?
+
+  Running the widened test across every skill in the plugins the operator did not rule out found two more. Both fail for
+  the same reason `tdd` did, which is that they have a real unit boundary and run straight past it.
+  `iterative-plan-review` runs review rounds against a stop rule computed from finding counts, and between rounds it
+  surfaces a disagreement between two reviewers and then continues without waiting for the answer.
+  `plan-implementation` runs resolution rounds and holds its only user escalation until after all of them are finished.
+
+  The rest fail in four groups. The inline guidance skills produce no result of their own. The publishing and export
+  skills push a finished artifact to a shared system and already gate before writing. The one-document skills hand you a
+  single synthesized artifact rather than a sequence of standalone units. And `plan-a-feature` and `code-walkthrough`
+  would gain nothing from the flag, because the first already interviews one question per turn through its design tree
+  and the second already stops after every step.
+- **Evidence:** User input at all three points, each time confirming a survey result. The two additions were verified
+  against the skills themselves: `iterative-plan-review`'s round loop states that it surfaces a finding and continues if
+  the user answers before the next round, and `plan-implementation` places its user escalation pass after its iterative
+  resolution loop. D2 constrains every flag to be opt-in.
 - **Rejected alternatives:**
   - `tdd` only — rejected because the operator confirmed both after the first survey.
   - Routing API-design work to `design-an-api` unpaired — rejected because it answers a founding example with "here is the
     right skill, but you are not pairing on it."
   - Letting the mode's own decision loop supersede that skill — rejected because it silently drops a discovery pass and an
     adversarial validation round the person would otherwise have had.
+  - Stopping at three skills — rejected because the original reason for ruling out planning skills was that they already
+    interview, and neither of these two stops between its rounds, so that reasoning does not reach them.
+  - Flagging `plan-implementation` alone — rejected because `iterative-plan-review` is the one that currently continues
+    past a disagreement it has already surfaced to you, which is the sharper of the two problems.
 - **Linked technical notes:** —
 - **Driven by findings:** F10
-- **Dependent decisions:** D21
-- **Referenced in spec:** Alternate Flows and States, Coordinations, What Else Has To Change When This Ships
+- **Dependent decisions:** D21, D22
+- **Referenced in spec:** Alternate Flows and States, Coordinations, Open Items, What Else Has To Change When This Ships
 
 ### D11: The front door never picks the discipline for you
 
@@ -302,7 +319,7 @@ or was reshaped by review. No D# number moved, so every inline link in the speci
 
 - **Question:** Which plugin carries a pairing mode that covers prose, decisions, and code alike, given that the skills it
   hands work to live in a different plugin?
-- **Decision:** `han-core`, invoked as `/han-core:pair-with-me`. The backing skills are an optional enhancement rather than
+- **Decision:** `han-core`, invoked as `/han-core:pairing`. The backing skills are an optional enhancement rather than
   a requirement: the mode works on its own for prose, decisions, and open-ended work, and gains the skill-backed paths only
   when `han-coding` is installed. When a backing skill is absent, the mode names it and offers you the choice rather than
   substituting silently.
@@ -522,3 +539,56 @@ or was reshaped by review. No D# number moved, so every inline link in the speci
 - **Driven by findings:** F11, F22
 - **Dependent decisions:** —
 - **Referenced in spec:** What Else Has To Change When This Ships
+
+### D22: The stopping convention is a canonical rule file owned by han-core
+
+- **Question:** What owns the convention for how this mode stops and asks questions?
+- **Decision:** A new canonical rule file owned by `han-core`, beside the YAGNI, evidence, and configuration rules that
+  plugin already owns.
+- **Rationale:** Han has an escalation rule already, and it does not fit. That rule assumes a single stop per run, because
+  it exists to minimize interruptions in work meant to run on its own. This mode treats stopping as the deliverable. The
+  research reached the same conclusion independently, saying a collaborative loop would need its own convention rather
+  than an exception to that one.
+
+  Owning it as a shared file rather than carrying it inline clears the evidence bar on a named direct dependency rather
+  than on speculation. Five skills consume the handoff contract, not one: this mode needs the whole convention, and each
+  flagged skill needs to know what returning control means at its own boundary. `han-core` is where the suite's canonical
+  rule files already live, so the file has a home that matches what it is.
+- **Evidence:** User input, choosing this over carrying the convention inline and over extending the existing escalation
+  rule. The mismatch with the existing rule is stated in the collaborative-mode report and confirmed against that rule,
+  whose named consumers are four planning skills and no coding or core skill.
+- **Rejected alternatives:**
+  - Carrying it inline in each skill — rejected because the handoff contract would then exist in five places with nothing
+    canonical, which is the drift problem in a different shape. Simpler on the day it ships and worse afterward.
+  - Extending the existing escalation rule to cover both — rejected because bending a rule built around a single stop to
+    also serve a loop that stops constantly weakens it for the four planning skills depending on it today.
+- **Linked technical notes:** —
+- **Driven by findings:** —
+- **Dependent decisions:** —
+- **Referenced in spec:** Open Items, What Else Has To Change When This Ships
+
+### D23: The skill is named pairing, and the phrase people type lives in its description
+
+- **Question:** Does the skill keep the name the operator first gave it?
+- **Decision:** No. It is `pairing`, invoked as `/han-core:pairing`. "Pair with me on" stays as wording in the skill's
+  description, so nothing about how a person asks for the mode changes.
+- **Rationale:** The original name was a sentence addressed to the assistant, where every other skill in the suite is
+  named for an activity or an artifact. The suite's own naming guidance asks for a gerund process name, which `pairing`
+  is. Nothing about routing depends on the change, because a request is matched against a skill's description rather than
+  its name, and the phrase that makes this mode easy to ask for stays exactly where it does its work.
+- **Evidence:** User input, choosing this over keeping the original name with a recorded exception and over a name
+  describing the loop. The naming convention is a checked-in rule in the plugin-building guidance, with a stated heuristic
+  the original name violated. Review finding F34.
+- **Rejected alternatives:**
+  - Keeping `pair-with-me` and recording why the convention was set aside — rejected in favor of following the convention
+    rather than carving an exception into it.
+  - A name describing the loop, such as `collaborative-build` — rejected because `build` pulls back toward code, which is
+    the framing this mode was deliberately widened away from.
+- **Known gap:** The rename fixes the convention complaint and does not fix the scent complaint. `pairing` carries the
+  same pair-programming associations the original name did, so someone scanning the skills index for help drafting a
+  stakeholder response is no likelier to stop at it. That load falls on the skill's description, which has to carry the
+  non-code triggers regardless of what the skill is called.
+- **Linked technical notes:** —
+- **Driven by findings:** F34
+- **Dependent decisions:** —
+- **Referenced in spec:** Open Items
