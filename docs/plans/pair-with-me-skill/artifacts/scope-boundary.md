@@ -35,6 +35,15 @@ The decision on which skills gain the flag, answering a survey of every skill in
 That is `tdd` and `refactor`. The operator ruled out `han-reporting`, `han-feedback`, and `han-plugin-builder` from the
 survey up front.
 
+**Amended during the review round.** Two operator answers given after this record was last rewritten change what it says
+above, and are recorded here so this record does not read as governing on its own. Both are in the escalation register in
+[team-findings.md](team-findings.md).
+
+- `design-an-api` also gains the collaborative flag (E5), so the survey answer above is no longer the whole set. Which
+  other skills qualify under the widened test is an open item in the specification.
+- The skill is invoked as `/han-core:pair-with-me` rather than the `/han-coding:` name quoted above (E1, reconfirmed at
+  E4), and the skills it hands work to are optional rather than required.
+
 **The widening.** At the fifth turn the operator established that the mode is not specific to writing code:
 
 > consider, for example, "pair with me on designing an API for {thing i'm working on}" - this isn't an implementation
@@ -81,7 +90,7 @@ Answered. The operator stated:
 
 The four are `tdd`, `refactor`, `code-walkthrough`, and the wider set of skills someone might pair on. None is being
 deprecated, replaced, or migrated away from. `pair-with-me` borrows `code-walkthrough`'s pacing without changing it, and
-the flags added to `tdd` and `refactor` leave every existing invocation behaving as it does today.
+every flag added leaves every existing invocation behaving as it does today.
 
 ## Visual Material Received
 
@@ -94,3 +103,6 @@ Established by `han-planning:plan-a-feature` in this run. Not inherited from ano
 Rewritten once, at the fifth turn, when the operator widened the scope from a code-only collaborative loop to a general
 collaborative working mode. The narrower first version is in this file's git history. No conflict was resolved between
 two work items, because only one exists: the operator's own request.
+
+Amended again during synthesis, to record the two operator answers the review round produced. No quoted material was
+changed; the amendment sits beside the quotes it qualifies.

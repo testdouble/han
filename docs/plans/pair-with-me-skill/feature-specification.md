@@ -11,7 +11,7 @@ prompted it.
 Today a Han skill either interviews you before it works or runs to completion and reports afterward. Neither lets you
 steer while the work is happening. This mode fills that gap: you see a piece, react to it, and your reaction changes what
 gets built next. Your feedback is written down as it arrives, so a correction you gave at the second stop still applies at
-the seventh.
+the seventh ([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory)).
 
 The mode works on any kind of work, not only code
 ([D1](artifacts/decision-log.md#d1-the-mode-covers-any-kind-of-work-not-only-code)). Pairing on a design decision,
@@ -27,10 +27,12 @@ a written response, or a test-driven build are all the same loop with a differen
     for the request.
   - **Saying it in your own words.** "Pair with me on tdd for this", "pair with me on refactoring", "pair with me on
     designing an API for the export flow", "pair with me on writing a response to this question." Here the request is
-    matched against every skill available in the session, and each of those four sentences also names another skill's
-    strongest trigger word.
-- **Precondition** — none beyond a task you can describe. When the work needs something the mode cannot supply on its
-  own, the backing skill's own preconditions apply.
+    matched against every skill available in the session, and the first three of those sentences each name another
+    skill's strongest trigger word. The fourth names no competing skill, so nothing contests it.
+- **Precondition** — none beyond a task you can describe. The mode works on its own for prose, decisions, and
+  open-ended work, and gains the skill-backed paths only when the skills behind them are installed
+  ([D12](artifacts/decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional)).
+  When the work needs something the mode cannot supply on its own, the backing skill's own preconditions apply.
 
 The mode is opt-in and changes nothing about how any skill behaves when you do not invoke it
 ([D2](artifacts/decision-log.md#d2-every-existing-skill-keeps-its-current-default-behavior)).
@@ -69,7 +71,9 @@ an implementation should know about it.
 ## Primary Flow
 
 1. **You say what you want to pair on, and the mode sorts the work.** It applies a fixed test, in this order, and stops
-   at the first match ([D13](artifacts/decision-log.md#d13-three-kinds-of-work-plus-a-fall-through-not-four-kinds)):
+   at the first match
+   ([D3](artifacts/decision-log.md#d3-the-mode-sorts-the-work-before-planning-anything-using-a-named-test),
+   [D13](artifacts/decision-log.md#d13-three-kinds-of-work-plus-a-fall-through-not-four-kinds)):
 
    1. Does a Han skill carrying the collaborative flag cover this work? Then the work is **skill-backed**.
    2. Does the work produce a choice among options that commits you to something? Then it is **decision work**.
@@ -94,8 +98,10 @@ an implementation should know about it.
    where you can still redirect it
    ([D15](artifacts/decision-log.md#d15-for-skill-backed-work-the-pre-work-plan-names-the-unit-and-the-first-stop-carries-the-list)).
 
-3. **For a piece the plan marked expensive to walk back, the mode asks for your read before it builds.** You say what you
-   expect, or you decline. Declining is a first-class answer and advances the stop exactly as a considered one does
+3. **For a piece the plan marked expensive to walk back, the mode asks for your read before it builds.** The ask names
+   the dimension the choice turns on and stops there, rather than posing a blank question or offering candidate answers
+   that would anchor your guess. You say what you expect, or you decline. Declining is a first-class answer and advances
+   the stop exactly as a considered one does
    ([D7](artifacts/decision-log.md#d7-the-mode-asks-for-your-read-first-only-where-a-mistake-is-expensive-to-undo)).
 
    The ask comes before the build, not after. The studies behind it work because you commit before the answer exists. An
@@ -172,7 +178,8 @@ remainder, and the second is what the mode exists to prevent.
   what is there, or sketch a shape first.
 - **Sequence:** The mode does not guess. Step 2's proposed plan names which approach it intends and why, and that
   proposal is the thing you accept or redirect
-  ([D11](artifacts/decision-log.md#d11-the-front-door-never-picks-the-discipline-for-you)). A single request may span more
+  ([D4](artifacts/decision-log.md#d4-the-mode-proposes-the-plan-of-stopping-points-rather-than-asking-you-to-supply-one),
+  [D11](artifacts/decision-log.md#d11-the-front-door-never-picks-the-discipline-for-you)). A single request may span more
   than one approach, such as sketching a shape and then building it test-first. When the plan sequences more than one
   backing skill, it orders them so each skill's own preconditions hold when its turn arrives.
 - **Exit:** You accept or replace the proposed approach, and the loop proceeds from step 3.
@@ -196,38 +203,46 @@ not silently replace a plan you agreed to.
   unreviewed. When you asked it to finish without stopping, it continues from the current plan and reports at the end
   rather than at each piece.
 - **Exit:** The loop is over. The mode reports the state of any work a backing skill left mid-cycle, and it names where
-  the feedback record was written, in terms you can act on. A record that survives a session but that you cannot find is
-  not a record.
+  the feedback record was written, in terms you can act on
+  ([D18](artifacts/decision-log.md#d18-ending-the-loop-is-the-persons-call-and-nothing-computes-it)).
+  A record that survives a session but that you cannot find is not a record.
 
 ## Edge Cases and Failure Modes
 
 | Condition                                                                     | Required Behavior                                                                                                                                                                                                                     |
 | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Your request is too vague to sort                                              | The mode asks once, naming what was ambiguous and offering candidate readings of your request rather than posing a blank question. If the answer is still not enough, it proposes a plan against the most likely reading and says so.  |
-| The work turns out to have no natural pieces                                   | The proposed plan says so and names a boundary it chose for a stated reason, so you have something concrete to redirect rather than a blank question.                                                                                 |
+| The work turns out to have no natural pieces                                   | The proposed plan says so and names a boundary it chose for a stated reason, so you have something concrete to redirect rather than a blank question ([D4](artifacts/decision-log.md#d4-the-mode-proposes-the-plan-of-stopping-points-rather-than-asking-you-to-supply-one)).                                                                                 |
 | You respond to a stop with a question rather than a direction                  | The mode answers the question and stops again at the same place. A question holds your place; it never advances the work.                                                                                                             |
-| You approve several pieces in a row without comment                            | The loop continues unchanged, and the mode adds no pressure to comment. Approval is a valid response. Because a run of silent approvals more likely signals a wish for a different pace than a lapse in care, the mode may offer the faster gear once, as an offer.                     |
+| You approve several pieces in a row without comment                            | The loop continues unchanged, and the mode adds no pressure to comment. Approval is a valid response, and a run of approvals is not read as a lapse in care. The mode may offer the faster gear once, and drops the offer if you do not take it ([D19](artifacts/decision-log.md#d19-you-can-ask-for-several-pieces-at-once-and-the-loop-returns-to-its-normal-pace-after)).                     |
 | A backing skill hits one of its own stop conditions                            | That skill's stop wins and is reported to you as-is. The pairing loop does not override or soften it.                                                                                                                                 |
-| The proposed plan turns out to be wrong once work starts                       | The mode says so at the next stop, names what it learned, and proposes a revised plan rather than silently working to a plan it no longer believes.                                                                                   |
-| The mode builds past a stop                                                    | The next thing it says names the overrun, states which pieces were built without review, and offers to walk back through them before continuing. It does not present the extra work as though you had approved it.                    |
-| The session is compacted or interrupted mid-loop                               | The running record of your feedback survives, because it is written down rather than remembered. On resuming, the mode restates the piece in hand and its position in the plan before continuing, so your continuity is restored alongside its own. |
+| The proposed plan turns out to be wrong once work starts                       | The mode says so at the next stop, names what it learned, and proposes a revised plan rather than silently working to a plan it no longer believes ([D4](artifacts/decision-log.md#d4-the-mode-proposes-the-plan-of-stopping-points-rather-than-asking-you-to-supply-one)).                                                                                   |
+| The mode builds past a stop                                                    | The next thing it says names the overrun, states which pieces were built without review, and offers to walk back through them before continuing. It does not present the extra work as though you had approved it ([D17](artifacts/decision-log.md#d17-the-stop-is-a-directive-the-mode-follows-not-a-guarantee)).                    |
+| The session is compacted or interrupted mid-loop                               | The running record of your feedback survives, because it is written down rather than remembered. On resuming, the mode restates the piece in hand and its position in the plan before continuing, so your continuity is restored alongside its own ([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory), [D16](artifacts/decision-log.md#d16-every-stop-names-your-position-in-the-plan-and-the-plan-stays-available)). |
 | You ask to understand something rather than produce something                  | The mode says this is not its work and names where it goes: paced explanation of code that already exists, a written overview, or an open research question. It does not sort the request as open-ended and propose a plan to build things. |
-| The work maps to a backing skill that is not installed                         | The mode names the missing skill and offers you the choice between the open-ended path and installing it. It never substitutes silently, because hand-rolling a refactoring skips the green-suite gate that skill exists to enforce. |
+| The work maps to a backing skill that is not installed                         | The mode names the missing skill and offers you the choice between the open-ended path and installing it. It never substitutes silently, because hand-rolling a refactoring skips the passing-test gate that skill exists to enforce ([D12](artifacts/decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional)). |
 
 ## User Interactions
 
 - **Affordances.** One invocation, in whatever words you prefer, naming what to pair on. At each stop, an ordinary
-  conversational turn: you say what you think, ask a question, redirect, approve, or ask for several pieces at once. You
-  can ask to read the feedback record or the current plan at any point.
+  conversational turn: you say what you think, ask a question, redirect, approve, or ask for several pieces at once
+  ([D19](artifacts/decision-log.md#d19-you-can-ask-for-several-pieces-at-once-and-the-loop-returns-to-its-normal-pace-after)).
+  You can ask to read the feedback record
+  ([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory))
+  or the current plan
+  ([D16](artifacts/decision-log.md#d16-every-stop-names-your-position-in-the-plan-and-the-plan-stays-available))
+  at any point.
 - **Feedback.** Each stop names which piece this is against the plan and what remains, what was built, what you can
-  check, and what changed. At a stop over a hard-to-reverse choice, the ask comes first, and declining it advances the
-  stop unchanged.
+  check, and what changed
+  ([D6](artifacts/decision-log.md#d6-a-stop-hands-you-checkable-claims-rather-than-a-case-for-the-work)). At a stop over
+  a hard-to-reverse choice, the ask comes first, and declining it advances the stop unchanged
+  ([D7](artifacts/decision-log.md#d7-the-mode-asks-for-your-read-first-only-where-a-mistake-is-expensive-to-undo)).
 - **Error states.** A request too vague to act on produces one question with candidate readings rather than a guess. A
   backing skill's own blocking condition is reported in that skill's own words. An overrun past a stop is named rather
   than absorbed.
 
-The pacing is the deliverable. The mode ends its turn at each stop rather than continuing, and it carries the position
-counter and the several-pieces-at-once exception that `code-walkthrough` already uses alongside that pacing.
+The pacing is the deliverable. The mode ends its turn at each stop rather than continuing, every stop says where you are
+in the plan, and asking for more than one piece at a time is part of the pacing rather than an escape from it.
 
 ## Coordinations
 
@@ -240,6 +255,16 @@ counter and the several-pieces-at-once exception that `code-walkthrough` already
 | `code-walkthrough`          | neither   | No handoff. The two share their whole pacing vocabulary, so each has to say which side of produced-versus-existing work it is on | Nothing runs. This is a routing relationship only, and it exists because the shared words would otherwise send a request to the wrong skill.  |
 | Han's configuration file    | inbound   | Supplies the output location the feedback record is written under                             | Read once at the start of the loop, so the record's location does not move mid-session.                                                     |
 
+The three skill rows are the opt-in flag and nothing more
+([D10](artifacts/decision-log.md#d10-three-skills-gain-an-opt-in-collaborative-flag-tdd-refactor-and-design-an-api)):
+the flag applies to an invocation made through this mode, and every ordinary invocation of those skills is untouched
+([D2](artifacts/decision-log.md#d2-every-existing-skill-keeps-its-current-default-behavior)). The feedback-record row is
+what makes a correction given early still apply late
+([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory)).
+The `code-walkthrough` row runs nothing, and exists because the shared vocabulary would otherwise send a request to the
+wrong skill
+([D20](artifacts/decision-log.md#d20-both-entry-paths-are-supported-and-the-phrase-path-has-to-win-its-collisions)).
+
 ## What Else Has To Change When This Ships
 
 Shipping this mode is not only building the mode. Three groups of existing material stop being accurate the moment it
@@ -249,9 +274,11 @@ lands, and all three are part of the work rather than follow-up
 1. **`han-core` stops being what it says it is.** Its front door, the plugin index entry, and its manifests all describe
    it as the specialist agents, project discovery, and the shared rule files. It now also carries a working mode a person
    invokes directly, and every one of those descriptions needs to say so. The plugin index goes further and offers an
-   install described as "only the shared agents and project discovery, with no other skills," which becomes untrue.
+   install described as "only the shared agents and project discovery, with no other skills," which becomes untrue
+   ([D12](artifacts/decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional)).
 2. **Three skills gain user-visible behavior.** `tdd`, `refactor`, and `design-an-api` each get a collaborative mode, so
-   each one's own operator manual and its own routing text change alongside this mode's.
+   each one's own operator manual and its own routing text change alongside this mode's
+   ([D10](artifacts/decision-log.md#d10-three-skills-gain-an-opt-in-collaborative-flag-tdd-refactor-and-design-an-api)).
 3. **The usual surfaces a new skill needs.** The skill itself, its long-form documentation, a line on its plugin's front
    door, an entry in the skills index, the project map, the workflow chains, and the version history.
 
@@ -261,14 +288,16 @@ sizing documentation does not apply to it.
 ## Out of Scope
 
 - **Choosing the discipline for you.** The mode proposes and you decide. It never silently picks test-driven development
-  over restructuring, or either over sketching a shape first.
-- **Changing how any skill behaves by default.** Every flag is opt-in. This is the operator's stated exclusion, quoted in
-  the scope boundary record.
+  over restructuring, or either over sketching a shape first
+  ([D11](artifacts/decision-log.md#d11-the-front-door-never-picks-the-discipline-for-you)).
+- **Changing how any skill behaves by default.** Every flag is opt-in
+  ([D2](artifacts/decision-log.md#d2-every-existing-skill-keeps-its-current-default-behavior)). This is the operator's
+  stated exclusion, quoted in the scope boundary record.
 - **Group review.** The mode assumes one reviewer. Nothing here coordinates several people reviewing the same piece.
 - **Automatic invocation.** The mode runs when you ask for it. Nothing triggers it on your behalf.
-- **A stop rule computed from counts.** Two Han skills decide when to stop reviewing by counting and grading findings.
-  Work being built produces no such countable signal, so this mode has nothing to compute over, and ending the loop stays
-  your call ([D18](artifacts/decision-log.md#d18-ending-the-loop-is-the-persons-call-and-nothing-computes-it)).
+- **A stop rule computed from counts.** The Han skills that run review rounds, `iterative-plan-review` and
+  `plan-implementation`, decide when to stop by counting and grading findings. Work being built produces no such
+  countable signal, so this mode has nothing to compute over, and ending the loop stays your call ([D18](artifacts/decision-log.md#d18-ending-the-loop-is-the-persons-call-and-nothing-computes-it)).
 
 ## Cut for Scope
 
@@ -308,22 +337,26 @@ justify revisiting it.
 - **Reopen when:** You give contradictory feedback in a run and the mode applies the wrong one.
 - **Source:** Review findings F5 and F6 in [artifacts/team-findings.md](artifacts/team-findings.md).
 
-### Giving the collaborative flag to skills beyond `tdd` and `refactor`
+### Giving the collaborative flag to any skill beyond the three that have it
 
-- **Why deferred:** A survey of every skill in every plugin the operator did not rule out found only these two that
-  change files on their own across a sequence where each step builds on the last. The operator confirmed both and named
-  no others. Planning skills already interview, publishing skills already stop before writing to shared systems, and
-  analysis skills hand you one document.
-- **Reopen when:** A new skill ships that changes files across a sequence, or you find yourself wanting to pair on a
-  skill that runs to completion today.
-- **Source:** Operator survey during specification.
+- **Why deferred:** A survey of every skill in every plugin the operator did not rule out asked one question: does this
+  skill change files on its own across a sequence where each step builds on the last. Only `tdd` and `refactor` passed,
+  and the operator confirmed both. Review widened the test and `design-an-api` was added by operator decision, but no
+  other skill has been checked against the wider test, so no fourth candidate has evidence behind it yet. Planning
+  skills already interview, publishing skills already stop before writing to shared systems, and analysis skills hand
+  you one document.
+- **Reopen when:** The re-survey in OI-2 names a skill that passes the widened test, a new skill ships that produces its
+  result across a sequence of units where each unit stands on its own, or you find yourself wanting to pair on a skill
+  that runs to completion today.
+- **Source:** Operator survey during specification, widened by review finding F10 in
+  [artifacts/team-findings.md](artifacts/team-findings.md).
 
 ## Open Items
 
-- **OI-1:** Which stopping and question-asking convention governs this mode. Han's existing escalation rule names four
-  planning skills as its consumers and no coding or core skill, and the research concluded a collaborative loop would
-  need its own convention rather than an exception to that one. This specification borrows the one-question shape without
-  naming what owns it.
+- **OI-1:** Which stopping and question-asking convention governs this mode. Han's existing escalation rule names only
+  planning skills as its consumers, with no coding or core skill among them, and the research concluded a collaborative
+  loop would need its own convention rather than an exception to that one. This specification borrows the one-question
+  shape without naming what owns it.
   - **Resolves when:** The operator decides whether this mode adopts the existing rule, gets its own, or carries the
     convention inline.
   - **Blocks implementation:** No — the behavior is specified; only its home is open.

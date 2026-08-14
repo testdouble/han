@@ -327,6 +327,10 @@ identifiers.
   without an objective gate.
 - **Resolution:** A confidence section in the specification naming which parts are High, Medium, and Low. The
   nodding-through row's rationale was corrected to say what the mode declines to do rather than claiming the guard works.
+  The corrected row initially replaced the unsupported claim with a second one, that a run of silent approvals more
+  likely signals a wish for a different pace than a lapse in care; synthesis removed it, because no evidence in either
+  report speaks to what a run of approvals signals. The row now states only that the mode does not read approvals as a
+  lapse in care and may offer the faster gear once.
 - **Resolved by:** evidence
 - **Affected decisions:** D13
 - **Changed in spec:** How Confident Each Part of This Design Is, Edge Cases and Failure Modes

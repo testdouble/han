@@ -13,6 +13,13 @@ cited below by their titles rather than repeated:
   where the kind of feedback changes, at High confidence for staging by concern, Medium for the per-kind units, and Low
   for open-ended work.
 
+## Trivial decisions
+
+None. Every decision was classified once, here, after the review round returned. Each one carries at least one promotion
+signal: a driving finding, a dependent decision that rests on it, or evidence beyond the operator's framing. The seven
+settled by operator input are not trivial for that reason alone, because each is either depended on by a later decision
+or was reshaped by review. No D# number moved, so every inline link in the specification still resolves.
+
 ## Full decisions
 
 ### D1: The mode covers any kind of work, not only code
@@ -43,7 +50,7 @@ cited below by their titles rather than repeated:
     the same sentence that accepted the opt-in shape.
 - **Linked technical notes:** —
 - **Driven by findings:** —
-- **Dependent decisions:** D10
+- **Dependent decisions:** D10, D15
 - **Referenced in spec:** Actors and Triggers, Out of Scope, Coordinations
 
 ### D3: The mode sorts the work before planning anything, using a named test
@@ -209,26 +216,32 @@ cited below by their titles rather than repeated:
 - **Linked technical notes:** —
 - **Driven by findings:** F5, F6
 - **Dependent decisions:** —
-- **Referenced in spec:** Outcome, Primary Flow, Edge Cases and Failure Modes, Coordinations
+- **Referenced in spec:** Outcome, Primary Flow, User Interactions, Edge Cases and Failure Modes, Coordinations
 - **Known gap:** No study tests written-versus-remembered feedback for this kind of work. The surgical evidence is an
   analogy from an adjacent domain, and is labeled as such.
 
 ### D9: Feedback condemning the piece in hand is fixed in place and re-shown
 
 - **Question:** When your feedback says the piece just built is wrong, does it get fixed now or become the next piece?
-- **Decision:** Fixed now, and shown to you again before anything new is built. When the feedback would change work
-  outside the piece in hand, it reopens the plan of stopping points instead of being patched in place.
+- **Decision:** Fixed now, and shown to you again before anything new is built, with the re-show naming the correction
+  it applied and what it touched before it restates the piece. When the feedback would change work outside the piece in
+  hand, the mode says it reads the feedback that way before acting on it, and you can accept the reopened plan, change
+  it, or decline the reopening and have the feedback recorded as scoped to later work.
 - **Rationale:** Nothing gets layered on top of work you already flagged. The reopening clause is what stops one piece
   from absorbing an unbounded fix loop: feedback that reaches outside the piece is a signal the plan was wrong, not that
-  the piece needs more patching.
+  the piece needs more patching. Review added the two halves that keep the person in the lead through it. A re-show that
+  only says "here it is again" makes you re-read reviewed material to confirm the fix landed, which raises the cost of
+  checking at the moment you are most invested, against the evidence behind D6. And a reopening the mode decided on its
+  own replaces a plan you agreed to, which is the wrong answer for someone thinking out loud.
 - **Evidence:** User input, choosing this over deferring the correction to the next piece and over asking each time.
+  Review findings F24 and F25 added the declined reopening and the named correction.
 - **Rejected alternatives:**
   - Recording the correction and fixing it as the next piece — rejected because the corrected version would not reach you
     until a full round later, and anything built in between would rest on work you had already called wrong.
   - Asking each time whether it is an in-place fix or the next piece — rejected because it adds a second question at
     exactly the stops that are already slowest.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F24, F25
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow, Alternate Flows and States
 
@@ -259,7 +272,7 @@ cited below by their titles rather than repeated:
     adversarial validation round the person would otherwise have had.
 - **Linked technical notes:** —
 - **Driven by findings:** F10
-- **Dependent decisions:** —
+- **Dependent decisions:** D21
 - **Referenced in spec:** Alternate Flows and States, Coordinations, What Else Has To Change When This Ships
 
 ### D11: The front door never picks the discipline for you
@@ -267,18 +280,21 @@ cited below by their titles rather than repeated:
 - **Question:** When you ask to pair on implementing something, does the mode decide whether to drive it from tests,
   restructure what is there, or sketch a shape first?
 - **Decision:** No. The proposed plan names which approach it intends and why, and that proposal is what you accept or
-  redirect. A single request may span more than one approach.
+  redirect. A single request may span more than one approach, and when the plan sequences more than one backing skill it
+  orders them so each skill's own preconditions hold when its turn arrives.
 - **Rationale:** The operator established this directly, correcting an earlier framing that treated the request as a
   routing problem to be solved by guessing. It also follows from D4: the mode proposes rather than decides, and the
   approach is one more thing the proposal names.
 - **Evidence:** User input. The operator's exact words are quoted in [scope-boundary.md](scope-boundary.md) under "The
-  widening."
+  widening." Review finding F27 added the ordering requirement: `refactor` refuses to run alongside an in-flight
+  test-driven loop, so a plan that sequences the two in the wrong order trips that skill's own precondition and reads as
+  the mode contradicting its own plan.
 - **Rejected alternatives:**
   - Inferring the discipline from the request's wording and proceeding silently — rejected because the operator named it
     as the thing not to do, and because sketching a shape before a full test-driven build is a legitimate answer no
     keyword match would find.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F27
 - **Dependent decisions:** —
 - **Referenced in spec:** Alternate Flows and States, Out of Scope
 
@@ -316,7 +332,6 @@ cited below by their titles rather than repeated:
 - **Dependent decisions:** D21
 - **Referenced in spec:** Actors and Triggers, Edge Cases and Failure Modes, What Else Has To Change When This Ships
 
-
 ### D13: Three kinds of work plus a fall-through, not four kinds
 
 - **Question:** Is open-ended work a category the mode sorts into, or the place a request lands when nothing else matches?
@@ -333,7 +348,7 @@ cited below by their titles rather than repeated:
   - Dropping the loop entirely for open-ended work and simply conversing — rejected because it gives you nothing to
     redirect before the work exists, which is the one thing a proposed plan buys.
 - **Linked technical notes:** —
-- **Driven by findings:** F9
+- **Driven by findings:** F9, F23
 - **Dependent decisions:** —
 - **Referenced in spec:** How Confident Each Part of This Design Is, Primary Flow
 
@@ -347,9 +362,9 @@ cited below by their titles rather than repeated:
   in being visible and arguable. Left silent, the friction arrives unpredictably, you cannot budget attention around it,
   and you can neither wave off a call that is wrong nor flag a piece the mode missed. The person who knows which choices
   are expensive in their own codebase is you, and without this there is no channel for you to say so.
-- **Evidence:** The reversibility framework in the chunk-boundary report, which is the only source there marked corroborated
-  by an independent secondary source with no caveat. Review findings F1 and F4 established that the call was silent and
-  that the ask was ordered wrongly against its own evidence.
+- **Evidence:** The reversibility framework in the chunk-boundary report, which that report records as corroborated by
+  an independent secondary source describing it identically. Review findings F1 and F4 established that the call was
+  silent and that the ask was ordered wrongly against its own evidence.
 - **Rejected alternatives:**
   - Judging reversibility silently at each stop — rejected because it makes the promise that friction arrives only where
     it is warranted unverifiable from your seat.
@@ -398,6 +413,9 @@ cited below by their titles rather than repeated:
 - **Driven by findings:** F13, F14
 - **Dependent decisions:** D19
 - **Referenced in spec:** Primary Flow, User Interactions, Edge Cases and Failure Modes
+- **Known gap:** The interruption figure is one study, which the research marks single-source and caveats for this
+  application. It is why the resume case was specified rather than assumed; no part of the behavior depends on the
+  number being exact.
 
 ### D17: The stop is a directive the mode follows, not a guarantee
 
@@ -422,19 +440,22 @@ cited below by their titles rather than repeated:
 
 - **Question:** What ends the loop, given that the plan can be reopened at any point?
 - **Decision:** You do. The mode reports when the plan is finished, but with the plan reopenable on any out-of-piece
-  feedback, "finished" is not a fixed target, and no rule computes a stopping point.
-- **Rationale:** Two skills in this suite end their review rounds on a rule computed from finding counts and severities,
-  which is the only pattern where "are we done" has an answer nobody argues about. It needs a countable signal to gate on,
-  and work being built produces none. Rather than invent one, the specification states that ending is deliberate rather
-  than an oversight.
-- **Evidence:** The chunk-boundary report's option 7 and its stated reason for not transferring. Review finding F16.
+  feedback, "finished" is not a fixed target, and no rule computes a stopping point. However the loop ends, the report
+  covers the state of any work a backing skill left mid-cycle and names where the feedback record was written.
+- **Rationale:** The suite's review-round skills, `iterative-plan-review` and `plan-implementation`, end their rounds on
+  a rule computed from finding counts and the number of specialists raising them, which is the only pattern where "are
+  we done" has an answer nobody argues about. It needs a countable signal to gate on, and work being built produces
+  none. Rather than invent one, the specification states that ending is deliberate rather than an oversight.
+- **Evidence:** The chunk-boundary report's option 7 and its stated reason for not transferring. Review findings F16 and
+  F26, the second of which found that a loop ended mid-cycle leaves edited and possibly failing files with nothing said
+  about them.
 - **Rejected alternatives:**
   - A computed stop rule — rejected because there is nothing to compute over.
   - Leaving it unstated — rejected because a reader would read it as a gap rather than a choice.
 - **Linked technical notes:** —
-- **Driven by findings:** F16
+- **Driven by findings:** F16, F26
 - **Dependent decisions:** —
-- **Referenced in spec:** Primary Flow, Out of Scope
+- **Referenced in spec:** Primary Flow, Alternate Flows and States, Out of Scope
 
 ### D19: You can ask for several pieces at once, and the loop returns to its normal pace after
 
@@ -462,15 +483,17 @@ cited below by their titles rather than repeated:
 - **Decision:** Both. Naming it outright bypasses competition entirely. Saying it in your own words competes against every
   skill available in the session, and this mode's arrival therefore changes what several existing skills say about
   themselves.
-- **Rationale:** Every phrasing the operator offered as a founding example contains another skill's strongest trigger word.
-  Left unmanaged, the person types their own sentence and gets the uninterrupted run this mode exists to replace, or gets
-  stopped at every step when they wanted a straight run.
+- **Rationale:** Three of the four phrasings the operator offered as founding examples name another skill's strongest
+  trigger word, and the fourth names no competing skill at all. For the three that collide, left unmanaged the person
+  types their own sentence and gets the uninterrupted run this mode exists to replace, or gets stopped at every step
+  when they wanted a straight run.
 
   The relationship needing description has no precedent here. Every existing boundary between two skills is exclusive: one
   does the job and the other does not. This one is not, because the mode runs the very skills it competes with. Stating it
   on one side only leaves a gap the request falls through, so both sides state it.
-- **Evidence:** The four phrasings quoted in the scope boundary record, each checked against the competing skill's own
-  routing text. The suite's own guidance that one-way disambiguation is a gap. Review findings F18, F19, and F20.
+- **Evidence:** The four phrasings quoted in the scope boundary record, each checked against the routing text of the
+  skill it names, which found a competing skill for three of them and none for the fourth. The suite's own guidance that
+  one-way disambiguation is a gap. Review findings F18, F19, and F20.
 - **Rejected alternatives:**
   - Supporting only the named invocation — rejected because the operator's own examples are all phrase-shaped.
   - Copying the existing exclusive boundary form — rejected because it cannot express a delegating relationship.
@@ -489,11 +512,13 @@ cited below by their titles rather than repeated:
   existing skills. Both make existing text false on the day this ships. This repository's own rule is that a skill's
   long-form documentation lands in the same pull request as the skill, not as a follow-up. Naming the surfaces in the
   specification is what stops them being discovered one review comment at a time.
-- **Evidence:** The repository's contribution guide and its documentation coverage rule. Review finding F21.
+- **Evidence:** The repository's contribution guide and its documentation coverage rule. Review findings F11 and F22:
+  F22 found the specification named no documentation surface at all, and F11 is where the plugin's own identity stopped
+  matching what it carries.
 - **Rejected alternatives:**
   - Leaving the surface list to the implementation plan — rejected because two of the three groups exist only as
     consequences of decisions made here, and would not be obvious to someone reading the implementation plan alone.
 - **Linked technical notes:** —
-- **Driven by findings:** F21
+- **Driven by findings:** F11, F22
 - **Dependent decisions:** —
 - **Referenced in spec:** What Else Has To Change When This Ships
