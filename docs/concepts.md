@@ -232,7 +232,7 @@ Direct invocation uses the `Agent` tool with `subagent_type: {plugin}:{agent-nam
 ## How Han is packaged
 
 Han ships as a family of plugins in one marketplace. `han-core` carries the shared specialist agent roster the other
-plugins dispatch, the project-discovery skill, and the canonical rule files.
+plugins dispatch, the project-discovery skill, the `/pairing` collaborative working mode, and the canonical rule files.
 
 `han-documentation` adds the documentation skills (`/project-documentation`, `/architectural-decision-record`, and
 `/runbook`). `han-research` adds the pre-planning knowledge-work skills (`/research`, `/gap-analysis`, and

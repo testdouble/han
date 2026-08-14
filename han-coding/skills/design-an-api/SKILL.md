@@ -8,7 +8,8 @@ description: >
   API change for a capability you can already describe, sized for roughly one pull request. Produces a design document
   and changes no code. Does not specify what a feature should do — use plan-a-feature. Does not plan delivery or
   sequencing — use plan-implementation. Does not assess the architecture of existing code — use
-  architectural-analysis. Does not write the code — use tdd. Does not restructure existing code — use refactor.
+  architectural-analysis. Does not write the code — use tdd. Does not restructure existing code — use refactor. Runs its rounds without
+  pausing for review; to review each round as it lands, use pairing.
 arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [the goal or ticket this serves, and the interface to design]"
@@ -199,6 +200,14 @@ dispatchable agent with a one-line note.
 State git availability in the same message if git is absent. Proceed without a blocking confirmation; discovery is
 read-only and re-runnable, so a gate here would gate a reversible operation. If the user objects to the roster, honor
 the adjustment.
+
+**Running collaboratively.** When the request asks to review each round as it closes as it lands, which is what
+`pairing` does when it hands work here, stop at this point and hand control back instead of continuing. Present the stop
+in the shape [collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies. Absent such a request,
+continue as below; an ordinary invocation is unchanged.
+
+For this skill a round is one dispatch step: the discovery wave, the options round, the question round, and the
+validation round. The two human gates below are unchanged and still fire regardless.
 
 ## Step 4: Dispatch the Discovery Wave and Write the Context Brief
 

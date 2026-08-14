@@ -34,7 +34,8 @@ description of what it does. The `han` meta-plugin is a convenience wrapper that
   plus the skills and agent that apply them and a `Han Readability` output style that applies the readability standard
   to a whole session. Bundled; depends on nothing.
 - **[`han-core`](../han-core/README.md).** The shared foundation: the specialist agent roster the other plugins
-  dispatch, the project-discovery skill, and the canonical rule files. Bundled; depends on no other Han plugin.
+  dispatch, the project-discovery skill, the canonical rule files, and the `/pairing` working mode that builds any kind
+  of work in reviewable pieces. Bundled; depends on no other Han plugin.
 - **[`han-documentation`](../han-documentation/README.md).** The documentation layer: feature and system docs,
   architectural decision records, and runbooks. Bundled; depends on `han-communication` and `han-core`.
 - **[`han-research`](../han-research/README.md).** The pre-planning knowledge-work layer: open-ended research, gap
@@ -73,13 +74,14 @@ So you might expect installing one to give you that slice of Han with nothing el
 their skills dispatch the shared specialist agents that live there, and on `han-communication`, because their skills
 produce prose and source the readability standard from it. When you install a plugin that declares a dependency, Claude
 Code resolves and installs the dependency for you automatically and tells you what it added. So installing any of them
-installs both alongside it, and you get the shared agent roster, project discovery, and the readability standard either
-way. (`han-reporting` is the exception: it depends on `han-communication` alone.)
+installs both alongside it, and you get the shared agent roster, project discovery, the pairing working mode, and the
+readability standard either way. (`han-reporting` is the exception: it depends on `han-communication` alone.)
 
 That means **every layer install comes with the shared agents.** The real choice comes down to:
 
 - **A layer plus the foundations** (for example `han-documentation` or `han-coding`): that layer's skills, plus the
-  shared agent roster and project discovery from `han-core` and the readability standard from `han-communication`.
+  shared agent roster, project discovery, and the pairing working mode from `han-core`, and the readability standard
+  from `han-communication`.
 - **The bundled suite** (`han`): every layer at once.
 
 The opt-in plugins (`han-feedback`, `han-atlassian`, `han-linear`, `han-plugin-builder`) sit outside that choice. The
@@ -98,7 +100,7 @@ to.
 | You work with GitHub from Claude Code (review PRs, write PR descriptions, publish work items as issues) | `han` (the bundled suite includes the GitHub skills)                                 | `/plugin install han@han`                |
 | You want only the documentation skills (project docs, ADRs, runbooks)                                   | `han-documentation` (brings the `han-core` agents along)                             | `/plugin install han-documentation@han`  |
 | You want only the pre-planning research skills (research, gap analysis, issue triage)                   | `han-research` (brings the `han-core` agents along)                                  | `/plugin install han-research@han`       |
-| You want only the shared agents and project discovery, with no other skills                             | `han-core`                                                                           | `/plugin install han-core@han`           |
+| You want the shared agents, project discovery, and the pairing working mode                             | `han-core`                                                                           | `/plugin install han-core@han`           |
 | You installed a single layer and now want the planning skills                                           | `han-planning` (alongside what you already have)                                     | `/plugin install han-planning@han`       |
 | You installed a single layer and now want the coding skills                                             | `han-coding` (alongside what you already have)                                       | `/plugin install han-coding@han`         |
 | You want to send post-session feedback on Han skills to the maintainers                                 | `han-feedback` (alongside whatever you already have)                                 | `/plugin install han-feedback@han`       |

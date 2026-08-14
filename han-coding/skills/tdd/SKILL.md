@@ -8,7 +8,8 @@ description: >
   leading. This skill writes and changes code; it does not produce a test plan document (use automated-test-planning, or manual-test-planning for a plan a person
   runs by hand), review or
   audit existing code (use code-review), restructure existing code outside a TDD loop (use refactor), specify what a
-  feature should do (use plan-a-feature), or find the root cause of a bug (use investigate).
+  feature should do (use plan-a-feature), or find the root cause of a bug (use investigate). Runs its loop to
+  completion without pausing for review; to review each behavior as it lands, use pairing.
 argument-hint: "[what to build, a behavior to drive, or a path to a spec/plan]"
 allowed-tools:
   Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *),
@@ -203,6 +204,11 @@ reopen trigger if speculative), but do not implement them now. If the open list 
 stop for input: flag it prominently as a scope warning, keep going, and record in the final summary that the work
 exceeded the recommended size and should be split next time. A runaway list is a scope signal, not a reason to pause for
 a human.
+
+**Running collaboratively.** When the request asks to review each behavior as it lands, which is what `pairing` does
+when it hands work here, stop at this point and hand control back instead of continuing. Present the stop in the shape
+[collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies. Absent such a request, continue as
+below; an ordinary invocation is unchanged.
 
 Return to the top of Step 3 with the next item. Continue until the list is empty.
 

@@ -7,7 +7,8 @@ description: >
   of existing code, or to apply refactoring recommendations from a code-review or architectural-analysis report. This
   skill changes code; it does not review code (use code-review), assess architecture (use architectural-analysis), or
   build new behavior test-first (use tdd). Do not use it on code inside an active tdd loop; the refactor step of tdd
-  owns that cleanup.
+  owns that cleanup. Runs its planned sequence to completion without pausing for review; to review each named
+  refactoring as it lands, use pairing.
 argument-hint: "[file, module, named smell, or a path to review findings]"
 allowed-tools:
   Read, Write, Edit, Glob, Grep, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *),
@@ -130,6 +131,12 @@ Take the plan items in order. For each:
 2. **Run the full suite** (and the type-check command where one was resolved). **Paste the runner's summary line.**
    Paste full output only when something fails or looks unexpected.
 3. **Green: cross the item off** and move to the next.
+
+   **Running collaboratively.** When the request asks to review each named refactoring as it lands, which is what
+   `pairing` does when it hands work here, stop at this point and hand control back instead of continuing. Present the
+   stop in the shape [collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies. Absent such a
+   request, continue as below; an ordinary invocation is unchanged.
+
 4. **Red: revert this step.** When git is available and the tree was clean at start, `git checkout`/`git restore` the
    touched files. When git is absent, or the tree was already dirty at start, undo the edits directly instead, so
    reverting this step does not discard the user's other work. Do not patch forward over a red suite; a failed step

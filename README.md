@@ -45,7 +45,7 @@ Han ships as multiple plugins:
 | -------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`han`**            | parent  | the parent plugin that brings in `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
 | `han-communication`  | bundled | the foundational plugin beneath every other: the shared readability standard and writing-voice profile, plus the skills and agent that apply them                      |
-| `han-core`           | bundled | the shared specialist agent roster, the project-discovery skill, and the canonical rule files                                                                          |
+| `han-core`           | bundled | the shared specialist agent roster, the project-discovery skill, the `/pairing` collaborative working mode, and the canonical rule files                               |
 | `han-documentation`  | bundled | documentation skills: project docs, architectural decision records, and runbooks                                                                                       |
 | `han-research`       | bundled | pre-planning knowledge-work skills: research, gap analysis, and issue triage, plus the research-analyst agent                                                          |
 | `han-planning`       | bundled | planning skills you reach for before implementation                                                                                                                    |
