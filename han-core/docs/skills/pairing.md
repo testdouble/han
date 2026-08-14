@@ -29,7 +29,8 @@ use the skill. For what the skill does internally, read the skill definition at
   builds. Declining is a complete answer.
 - **The feedback record.** A file holding everything you said, so a correction you gave at the second stop still applies
   at the seventh. You can read it whenever you ask.
-- **A backing skill.** An existing skill that does the work while this one handles the pacing. Five carry the flag.
+- **A backing skill.** An existing skill that does the work while this one handles the pacing. The skills that carry the
+  flag are named under "Do not invoke for" below.
 
 ## When to use it
 
@@ -162,7 +163,7 @@ Treat both as provisional.
   tree.
 - [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule.
 - [`collaborative-stop-rule.md`](../../references/collaborative-stop-rule.md). The shared contract this skill and its
-  five backing skills follow, defining what a stop presents and what returning control means.
+  backing skills follow, defining what a stop presents and what returning control means.
 - [`/tdd`](../../../han-coding/docs/skills/tdd.md), [`/refactor`](../../../han-coding/docs/skills/refactor.md), and
   [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). The coding skills this one can drive.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) and

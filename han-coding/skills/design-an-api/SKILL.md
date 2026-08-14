@@ -201,7 +201,7 @@ State git availability in the same message if git is absent. Proceed without a b
 read-only and re-runnable, so a gate here would gate a reversible operation. If the user objects to the roster, honor
 the adjustment.
 
-**Running collaboratively.** When the request asks to review each round as it closes as it lands, which is what
+**Running collaboratively.** When the request asks to review each round as it lands, which is what
 `pairing` does when it hands work here, stop at this point and hand control back instead of continuing. Present the stop
 in the shape [collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies. Absent such a request,
 continue as below; an ordinary invocation is unchanged.

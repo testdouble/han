@@ -154,16 +154,17 @@ oversized for shaping one contract.
 
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
+  tree.
 - [`/pairing`](../../../han-core/docs/skills/pairing.md). Drive these rounds collaboratively, stopping after each one so
   you review it as it lands. Invoking `/design-an-api` directly runs the rounds to completion without pausing between
   them.
-  tree.
 - [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule: the two gates, the
   acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [`/tdd`](./tdd.md). The implementation run this design document feeds.
 - [`/architectural-analysis`](./architectural-analysis.md). Assesses the module you are about to change, when you want
   the existing structure judged before designing into it.
-  The four spine agents run at every size:
+
+The four spine agents run at every size:
 
 - [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). Discovers the current surface, its
   consumers, and the constraints the design has to live inside.
