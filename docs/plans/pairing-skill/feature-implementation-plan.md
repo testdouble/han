@@ -21,7 +21,7 @@ because six places need to agree on the answer and five of them live in other pl
 **The flag.** An opt-in argument on five existing skills, so each returns control at the boundary it already has instead
 of continuing, with no backing skill — the existing skill doing the work while the mode watches — naming the mode in its
 own text
-([D-1](artifacts/implementation-decision-log.md#d-1-the-flag-travels-as-an-invocation-argument-not-as-a-named-caller)).
+([D-1](artifacts/implementation-decision-log.md#d-1-the-flag-travels-in-the-invocation-not-as-a-named-caller)).
 Three of those skills live in `han-coding` and two in `han-planning`.
 
 Then the tail: seven skill descriptions change, four manifests stop being accurate, and roughly a dozen documentation

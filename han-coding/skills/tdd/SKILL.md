@@ -205,6 +205,11 @@ stop for input: flag it prominently as a scope warning, keep going, and record i
 exceeded the recommended size and should be split next time. A runaway list is a scope signal, not a reason to pause for
 a human.
 
+**Running collaboratively.** When the request asks to review each behavior as it lands, which is what `pairing` does
+when it hands work here, stop at this point and hand control back instead of continuing. Present the stop in the shape
+[collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies. Absent such a request, continue as
+below; an ordinary invocation is unchanged.
+
 Return to the top of Step 3 with the next item. Continue until the list is empty.
 
 ## Step 4: Close the Outer Loop

@@ -7,7 +7,7 @@ done, not what it does.
 Round-by-round discussion is in
 [implementation-iteration-history.md](implementation-iteration-history.md).
 
-## D-1: The flag travels as an invocation argument, not as a named caller
+## D-1: The flag travels in the invocation, not as a named caller
 
 - **Question:** What carries "invoked through the pairing mode" into a backing skill?
 - **Decision:** An invocation-scoped argument, in the same shape three of the five skills already use for their size
@@ -31,10 +31,24 @@ Round-by-round discussion is in
   - A marker file on disk — rejected as invisible state in a working tree that two of the backing skills actively inspect.
   - A new frontmatter field or shared detection script — rejected under the YAGNI rule as inventing a mechanism where a
     proven one exists. Reopening trigger: the flag needs to carry more than a yes-or-no value.
-- **Known gap:** The frontmatter reference documents `arguments` as named positional arguments, plural, but every use in
-  this repository declares exactly one. The three skills that already carry `size` will be the first to declare two, so
-  that form is unexercised here. If it turns out not to work, the flag rides on the invocation text instead, which
-  changes one line in five files rather than the design.
+- **Corrected during implementation.** The argument form did not survive contact with the three skills that already
+  carry one. Each of them uses the second positional slot for free text — the goal and interface for `design-an-api`,
+  the plan path for `iterative-plan-review`, the specification path for `plan-implementation` — so a second named
+  positional argument would collide with the subject the person actually types. The known gap recorded here anticipated
+  the risk and named the fallback, which is what shipped: the flag rides in the invocation text, and each skill checks
+  whether the request asks to review each unit as it lands.
+
+  That turned out better than the argument form on two counts beyond avoiding the collision. It is what the composition
+  guidance prescribes, which is to state an override in the invocation rather than let the sub-skill infer it. And `tdd`
+  and `refactor` already carry an exception of exactly this shape, gating when the request explicitly asks to review
+  before implementation, so the flag extends a mechanism those skills have rather than adding a parallel one.
+
+  It also answers OI-1, which asked whether a pairing invocation trips that existing exception. It does, and that is the
+  intended behavior rather than a conflict. A person who types the same request directly gets the same collaborative
+  behavior, which is consistent with what those skills already promise rather than a violation of the opt-in rule.
+
+  No skill gained an `arguments` key. The five insertions are one short paragraph each, purely additive, totalling
+  thirty-three lines across five files.
 - **Referenced in plan:** What you are building
 - **Driven by rounds:** R1
 

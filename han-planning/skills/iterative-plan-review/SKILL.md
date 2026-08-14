@@ -350,6 +350,13 @@ loop earlier whenever a round goes quiet, so the cap is a ceiling rather than a 
    primary flow path). The size cap from Step 2 sets the upper bound: medium = 2 rounds, large = 3 rounds. Never exceed
    the size cap.
 
+**Running collaboratively.** When the request asks to review each round as it lands, which is what `pairing` does when
+it hands work here, stop at the end of each round and hand control back instead of starting the next. Present the stop
+in the shape [collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies: the round's findings
+are what the person can check, and the plan edits the round made are what changed. A redirect at such a stop does not
+consume a round against the cap, BECAUSE a round is a unit of review work and a redirect is not. Absent such a request,
+continue as below; an ordinary invocation is unchanged.
+
 Between rounds, surface to the user any finding where two agents disagree on substance, or where resolving the finding
 requires a judgment only the plan's author can make. Present each as a contextual question with impact, tradeoffs, and a
 recommended answer. Record the question on the corresponding `F#` entry and, if the user answers before the next round,
