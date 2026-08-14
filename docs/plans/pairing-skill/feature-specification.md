@@ -137,11 +137,15 @@ an implementation should know about it.
    names which entry it applied
    ([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory)).
 
-8. **The mode acts on your feedback, then continues.** The mode fixes feedback about the piece in hand within that same
-   piece, then shows it to you again. The re-show names the correction it applied and what it touched before restating
-   the piece
-   ([D9](artifacts/decision-log.md#d9-feedback-condemning-the-piece-in-hand-is-fixed-in-place-and-re-shown)). Feedback
-   about what comes next shapes the next piece. Either way, the mode returns to step 3.
+8. **The mode acts on your feedback.** The two kinds take different routes
+   ([D9](artifacts/decision-log.md#d9-feedback-condemning-the-piece-in-hand-is-fixed-in-place-and-re-shown)):
+   - **About the piece in hand.** The mode fixes it within that same piece and shows it again, naming the correction it
+     applied and what it touched before restating the piece. That re-show is a stop like any other, so the loop returns
+     to step 6 and waits. It does not return to step 3, because step 3 asks for your read before a build, and this piece
+     is already built.
+   - **About what comes next.** It shapes the next piece, and the loop returns to step 3 for that piece.
+
+   Accepting a re-shown piece with nothing further to say also moves to the next piece, at step 3.
 
 9. **The loop ends when the plan is finished or you end it.** Ending is your call by design; nothing computes a stopping
    point for you ([D18](artifacts/decision-log.md#d18-ending-the-loop-is-the-persons-call-and-nothing-computes-it)). The
@@ -224,7 +228,7 @@ not silently replace a plan you agreed to.
 | Your request is too vague to sort                                              | The mode asks once, naming what was ambiguous and offering candidate readings of your request rather than posing a blank question. If the answer is still not enough, it proposes a plan against the most likely reading and says so.  |
 | The work turns out to have no natural pieces                                   | The proposed plan says so and names a boundary it chose for a stated reason, so you have something concrete to redirect rather than a blank question ([D4](artifacts/decision-log.md#d4-the-mode-proposes-the-plan-of-stopping-points-rather-than-asking-you-to-supply-one)).                                                                                 |
 | You respond to a stop with a question rather than a direction                  | The mode answers the question and stops again at the same place. A question holds your place; it never advances the work.                                                                                                             |
-| You approve several pieces in a row without comment                            | The loop continues unchanged, and the mode adds no pressure to comment. Approval is a valid response, and a run of approvals is not read as a lapse in care. The mode may offer the faster gear once, and drops the offer if you do not take it ([D19](artifacts/decision-log.md#d19-you-can-ask-for-several-pieces-at-once-and-the-loop-returns-to-its-normal-pace-after)).                     |
+| You approve several pieces in a row without comment                            | The loop continues unchanged, and the mode adds no pressure to comment. Approval is a valid response, and a run of approvals is not read as a lapse in care. The mode does not volunteer anything in response to it ([D19](artifacts/decision-log.md#d19-you-can-ask-for-several-pieces-at-once-and-the-loop-returns-to-its-normal-pace-after)).                     |
 | A backing skill hits one of its own stop conditions                            | That skill's stop wins and is reported to you as-is. The pairing loop does not override or soften it.                                                                                                                                 |
 | The proposed plan turns out to be wrong once work starts                       | The mode says so at the next stop, names what it learned, and proposes a revised plan rather than silently working to a plan it no longer believes ([D4](artifacts/decision-log.md#d4-the-mode-proposes-the-plan-of-stopping-points-rather-than-asking-you-to-supply-one)).                                                                                   |
 | The mode builds past a stop                                                    | The next thing it says names the overrun, states which pieces were built without review, and offers to walk back through them before continuing. It does not present the extra work as though you had approved it ([D17](artifacts/decision-log.md#d17-the-stop-is-a-directive-the-mode-follows-not-a-guarantee)).                    |
@@ -290,8 +294,8 @@ part of the work rather than follow-up
    ([D12](artifacts/decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional)).
 2. **Five skills gain user-visible behavior.** `tdd`, `refactor`, `design-an-api`, `iterative-plan-review`, and
    `plan-implementation` each get a collaborative mode, so each one's own operator manual and its own routing text change
-   alongside this mode's ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)). The flag
-   reaches three plugins rather than one.
+   alongside this mode's ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)). Three of
+   the five live in `han-coding` and two in `han-planning`, so both plugins change, not only the one this mode ships in.
 3. **A new shared rule file.** The stopping convention this mode follows is owned by `han-core` as a canonical rule file,
    beside the YAGNI, evidence, and configuration rules it already owns, because five skills consume the handoff contract
    rather than one ([D22](artifacts/decision-log.md#d22-the-stopping-convention-is-a-canonical-rule-file-owned-by-han-core)).
@@ -352,6 +356,18 @@ justify revisiting it.
   the entry in front of you.
 - **Reopen when:** You give contradictory feedback in a run and the mode applies the wrong one.
 - **Source:** Review findings F5 and F6 in [artifacts/team-findings.md](artifacts/team-findings.md).
+
+### Offering the faster gear when you approve several pieces without comment
+
+- **Why deferred:** Evidence test failed, and the premise was already removed. Synthesis struck the claim that a run of
+  approvals signals a wish for a different pace, because no evidence in either research report speaks to what approvals
+  mean. The offer resting on that claim survived the claim's removal. Nothing else supports it: no stated need, no
+  incident, no measurement. It also costs a conditional and a once-per-session counter the mode would otherwise not need.
+  You can ask for several pieces at any time, which is the behavior the evidence does support.
+- **Reopen when:** You ask for several pieces at once more than once in a single run, or say you wished the faster pace
+  had been offered.
+- **Source:** Implementation review finding I3 in
+  [artifacts/implementation-iteration-history.md](artifacts/implementation-iteration-history.md).
 
 ### Giving the collaborative flag to any skill beyond the five that have it
 

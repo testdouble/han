@@ -321,7 +321,8 @@ or was reshaped by review. No D# number moved, so every inline link in the speci
   hands work to live in a different plugin?
 - **Decision:** `han-core`, invoked as `/han-core:pairing`. The backing skills are an optional enhancement rather than
   a requirement: the mode works on its own for prose, decisions, and open-ended work, and gains the skill-backed paths only
-  when `han-coding` is installed. When a backing skill is absent, the mode names it and offers you the choice rather than
+  when the plugin carrying that skill is installed. Three of the five live in `han-coding` and two in `han-planning`, so
+  the two plugins go missing independently. When a backing skill is absent, the mode names it and offers you the choice rather than
   substituting silently.
 - **Rationale:** D1 established that the mode covers any kind of work, and `han-core` is the shared foundation every Han
   install already carries. Reaching into the coding plugin to pair on a stakeholder email reads wrong.
@@ -523,7 +524,7 @@ or was reshaped by review. No D# number moved, so every inline link in the speci
 
 - **Question:** Is updating the documentation and manifests this mode invalidates part of shipping it, or a follow-up?
 - **Decision:** Part of it. The specification names the three groups: the plugin's own identity in its front door, index
-  entry, and manifests; the operator manuals and routing text of the three skills gaining the flag; and the usual surfaces
+  entry, and manifests; the operator manuals and routing text of the five skills gaining the flag; and the usual surfaces
   a new skill needs.
 - **Rationale:** The placement in D12 changes what `han-core` is, and the flag in D10 changes user-visible behavior of three
   existing skills. Both make existing text false on the day this ships. This repository's own rule is that a skill's
