@@ -5,12 +5,14 @@ starting the next, so you stay in the lead rather than reviewing a finished resu
 
 ## Outcome
 
-You get the work done, in pieces you actually reviewed, with your feedback shaping every piece after the one that
+You get the work done, in pieces you reviewed, with your feedback shaping every piece after the one that
 prompted it.
 
-Today a Han skill either interviews you before it works or runs to completion and reports afterward. Neither lets you
-steer while the work is happening. This mode fills that gap: you see a piece, react to it, and your reaction changes what
-gets built next. Your feedback is written down as it arrives, so a correction you gave at the second stop still applies at
+This mode fills a gap in how Han skills work today. A skill either interviews you before it starts or runs to
+completion and reports afterward, and neither lets you steer while the work is happening. Here, you see a piece,
+react to it, and your reaction changes what gets built next.
+
+Your feedback is written down as it arrives, so a correction you gave at the second stop still applies at
 the seventh ([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory)).
 
 The mode works on any kind of work, not only code
@@ -26,9 +28,9 @@ a written response, or a test-driven build are all the same loop with a differen
   - **Naming the mode outright.** You invoke `/han-core:pair-with-me` and say what you want to pair on. Nothing competes
     for the request.
   - **Saying it in your own words.** "Pair with me on tdd for this", "pair with me on refactoring", "pair with me on
-    designing an API for the export flow", "pair with me on writing a response to this question." Here the request is
-    matched against every skill available in the session, and the first three of those sentences each name another
-    skill's strongest trigger word. The fourth names no competing skill, so nothing contests it.
+    designing an API for the export flow", "pair with me on writing a response to this question." Here, the mode
+    matches your request against every skill available in the session, and the first three of those sentences each name
+    another skill's strongest trigger word. The fourth names no competing skill, so nothing contests it.
 - **Precondition** — none beyond a task you can describe. The mode works on its own for prose, decisions, and
   open-ended work, and gains the skill-backed paths only when the skills behind them are installed
   ([D12](artifacts/decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional)).
@@ -39,9 +41,10 @@ The mode is opt-in and changes nothing about how any skill behaves when you do n
 
 ### Which Skill Answers When You Say It In Your Own Words
 
-Because the second entry path competes, this mode's arrival changes what several existing skills have to say about
-themselves. The rule in every case: whichever skill answers, the person gets what they asked for
+The rule in every case: whichever skill answers, the person gets what they asked for
 ([D20](artifacts/decision-log.md#d20-both-entry-paths-are-supported-and-the-phrase-path-has-to-win-its-collisions)).
+Because the second entry path competes, this mode's arrival changes what several existing skills have to say about
+themselves.
 
 | You say something like                     | What should answer                    | What each side has to say about itself                                                                                                                                              |
 | ------------------------------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -83,9 +86,9 @@ an implementation should know about it.
    The order is the tie-break. A request that fits more than one kind sorts as the earliest match, so drafting a decision
    record sorts as decision work rather than prose work.
 
-2. **The mode proposes where it will stop, and why.** Before any work starts, you get a short plan naming which kind the
-   work sorted into, the pieces it intends to build, the reason for each boundary, and which of those pieces it expects to
-   contain a choice that is expensive to walk back
+2. **The mode proposes where it will stop, and why.** Before any work starts, you get a short plan. It names which kind
+   the work sorted into, the pieces it intends to build, the reason for each boundary, and which of those pieces it
+   expects to contain a choice that is expensive to walk back
    ([D4](artifacts/decision-log.md#d4-the-mode-proposes-the-plan-of-stopping-points-rather-than-asking-you-to-supply-one),
    [D14](artifacts/decision-log.md#d14-the-reversibility-call-is-announced-in-the-plan-and-the-ask-precedes-the-build)).
    You accept it, change it, or replace it. Either side can renegotiate later as the work reveals its actual shape.
@@ -94,8 +97,8 @@ an implementation should know about it.
    correct if you cannot see it.
 
    For skill-backed work the plan names the backing skill, the unit that skill stops at, and the reason. The backing
-   skill's own list of units does not exist yet at this point, so it is surfaced as the plan of pieces at the first stop,
-   where you can still redirect it
+   skill's own list of units does not exist yet at this point. Instead, the mode surfaces it as the plan of pieces at
+   the first stop, where you can still redirect it
    ([D15](artifacts/decision-log.md#d15-for-skill-backed-work-the-pre-work-plan-names-the-unit-and-the-first-stop-carries-the-list)).
 
 3. **For a piece the plan marked expensive to walk back, the mode asks for your read before it builds.** The ask names
@@ -134,8 +137,9 @@ an implementation should know about it.
    names which entry it applied
    ([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory)).
 
-8. **The mode acts on your feedback, then continues.** Feedback about the piece in hand gets fixed in that piece and shown
-   to you again, and the re-show names the correction it applied and what it touched before restating the piece
+8. **The mode acts on your feedback, then continues.** The mode fixes feedback about the piece in hand within that same
+   piece, then shows it to you again. The re-show names the correction it applied and what it touched before restating
+   the piece
    ([D9](artifacts/decision-log.md#d9-feedback-condemning-the-piece-in-hand-is-fixed-in-place-and-re-shown)). Feedback
    about what comes next shapes the next piece. Either way, the mode returns to step 3.
 
@@ -186,12 +190,12 @@ remainder, and the second is what the mode exists to prevent.
 
 ### Your feedback reaches outside the piece in hand
 
-- **Entry condition:** You ask for a change that would alter work outside the piece just built.
+- **Entry condition:** You ask for a change that would alter work outside the most recently built piece.
 - **Sequence:** The mode names its reading before acting on it: it says that your feedback looks like it reaches past this
   piece, and what it would change about the plan. You then have three ways out
   ([D9](artifacts/decision-log.md#d9-feedback-condemning-the-piece-in-hand-is-fixed-in-place-and-re-shown)).
-- **Exit:** You accept a revised plan, change it, or decline the reopening entirely, in which case your feedback is
-  recorded as scoped to later work and the plan you already agreed to continues.
+- **Exit:** You accept a revised plan, change it, or decline the reopening entirely. If you decline, your feedback is
+  recorded as scoped to later work, and the plan you already agreed to continues.
 
 The third exit exists because thinking out loud is the working style this mode is built for, and an offhand remark should
 not silently replace a plan you agreed to.
@@ -241,8 +245,8 @@ not silently replace a plan you agreed to.
   backing skill's own blocking condition is reported in that skill's own words. An overrun past a stop is named rather
   than absorbed.
 
-The pacing is the deliverable. The mode ends its turn at each stop rather than continuing, every stop says where you are
-in the plan, and asking for more than one piece at a time is part of the pacing rather than an escape from it.
+The pacing is the deliverable. The mode ends its turn at each stop rather than continuing, and every stop says where you
+are in the plan. Asking for more than one piece at a time is part of the pacing, not an escape from it.
 
 ## Coordinations
 
@@ -306,7 +310,7 @@ because the recorded boundary already settled it.
 
 ### Making the collaborative mode the default for a whole session, rather than something you invoke per task
 
-- **Why cut:** The scope boundary records the operator's acceptance of one skill and no output style, which excludes
+- **Why cut:** The scope boundary records the operator's acceptance of one skill and no output style. That excludes
   building an output style, a session-start hook, or a post-edit hook as part of this work. The record also notes that
   widening the mode beyond code reopens the input behind that choice, and that the decision stands until the operator
   revisits it.
@@ -318,8 +322,8 @@ justify revisiting it.
 
 ### Carrying the feedback record across separate sessions
 
-- **Why deferred:** No stated need. The evidence supporting a written record is about surviving within a working session,
-  where the measured comparison was six percent of critical steps missed with a written checklist against twenty-three
+- **Why deferred:** No stated need. The evidence supporting a written record is about surviving within a working session.
+  There, the measured comparison was six percent of critical steps missed with a written checklist against twenty-three
   percent from memory. Nothing establishes that feedback from a previous week should shape today's pieces, and doing so
   risks applying a correction whose reason has expired.
 - **Reopen when:** You describe re-giving the same feedback across sessions, or a session's record is lost and costs you
@@ -328,33 +332,34 @@ justify revisiting it.
 
 ### Detecting when your new feedback contradicts feedback you gave earlier
 
-- **Why deferred:** Evidence test failed. No user-described need, incident, or measurement supports it, and it is the most
-  expensive behavior anyone proposed for this mode: a comparison of every new remark against the whole record, at every
-  stop. Its failure modes cut both ways. A false positive costs you a turn defending feedback you never contradicted, and
-  a false negative protects nothing. A strictly simpler behavior satisfies the same concern and is in the spec instead:
-  when the mode applies a recorded entry, it names which one, so you catch the conflict yourself with the entry in front
-  of you.
+- **Why deferred:** Evidence test failed. No user-described need, incident, or measurement supports it. It is also the
+  most expensive behavior anyone proposed for this mode: a comparison of every new remark against the whole record, at
+  every stop. Its failure modes cut both ways. A false positive costs you a turn defending feedback you never
+  contradicted, and a false negative protects nothing. A strictly simpler behavior satisfies the same concern and is in
+  the spec instead. When the mode applies a recorded entry, it names which one, so you catch the conflict yourself with
+  the entry in front of you.
 - **Reopen when:** You give contradictory feedback in a run and the mode applies the wrong one.
 - **Source:** Review findings F5 and F6 in [artifacts/team-findings.md](artifacts/team-findings.md).
 
 ### Giving the collaborative flag to any skill beyond the three that have it
 
-- **Why deferred:** A survey of every skill in every plugin the operator did not rule out asked one question: does this
-  skill change files on its own across a sequence where each step builds on the last. Only `tdd` and `refactor` passed,
-  and the operator confirmed both. Review widened the test and `design-an-api` was added by operator decision, but no
-  other skill has been checked against the wider test, so no fourth candidate has evidence behind it yet. Planning
-  skills already interview, publishing skills already stop before writing to shared systems, and analysis skills hand
-  you one document.
-- **Reopen when:** The re-survey in OI-2 names a skill that passes the widened test, a new skill ships that produces its
-  result across a sequence of units where each unit stands on its own, or you find yourself wanting to pair on a skill
-  that runs to completion today.
+- **Why deferred:** A survey covered every skill in every plugin the operator did not rule out. It asked one question:
+  does this skill change files on its own, across a sequence where each step builds on the last? Only `tdd` and
+  `refactor` passed, and the operator confirmed both. Review widened the test, and `design-an-api` was added by
+  operator decision. No other skill has been checked against the wider test, so no fourth candidate has evidence
+  behind it yet. Planning skills already interview, publishing skills already stop before writing to shared systems,
+  and analysis skills hand you one document.
+- **Reopen when:** any of the following:
+  - The re-survey in OI-2 names a skill that passes the widened test.
+  - A new skill ships that produces its result across a sequence of units where each unit stands on its own.
+  - You find yourself wanting to pair on a skill that runs to completion today.
 - **Source:** Operator survey during specification, widened by review finding F10 in
   [artifacts/team-findings.md](artifacts/team-findings.md).
 
 ## Open Items
 
 - **OI-1:** Which stopping and question-asking convention governs this mode. Han's existing escalation rule names only
-  planning skills as its consumers, with no coding or core skill among them, and the research concluded a collaborative
+  planning skills as its consumers, with no coding or core skill among them. The research concluded a collaborative
   loop would need its own convention rather than an exception to that one. This specification borrows the one-question
   shape without naming what owns it.
   - **Resolves when:** The operator decides whether this mode adopts the existing rule, gets its own, or carries the
@@ -362,9 +367,9 @@ justify revisiting it.
   - **Blocks implementation:** No — the behavior is specified; only its home is open.
 
 - **OI-2:** Which other skills qualify for the collaborative flag under the widened test. Adding `design-an-api` replaced
-  the original test, which asked whether a skill changes files across a sequence, with a broader one: does the skill
-  produce its result across a sequence of units, where each unit stands on its own and later units build on earlier ones?
-  Only the three named skills have been checked against the new test.
+  the original test, which asked whether a skill changes files across a sequence. The broader test asks: does the skill
+  produce its result across a sequence of units, where each unit stands on its own and later units build on earlier
+  ones? Only the three named skills have been checked against the new test.
   - **Resolves when:** Someone re-runs the survey against the widened test and the operator confirms the result.
   - **Blocks implementation:** No — a fourth skill gaining the flag later is additive and breaks nothing already built.
 
@@ -373,8 +378,9 @@ justify revisiting it.
   suite is named for an activity or an artifact, and this one is an imperative sentence addressed to the assistant. It
   carries pair-programming expectations the mode does not meet, since it proposes, builds, stops, and shows rather than
   trading the keyboard. And someone scanning the skills index for help drafting a stakeholder response will not stop at it.
-  - **Resolves when:** The operator either keeps the name and records why the suite's naming convention is set aside here,
-    so it does not read as precedent, or picks a name for the loop and keeps "pair with me on" purely as trigger wording.
+  - **Resolves when:** The operator either keeps the name and records why the suite's naming convention is set aside
+    here, so it does not read as precedent. Or the operator picks a name for the loop and keeps "pair with me on"
+    purely as trigger wording.
   - **Blocks implementation:** No — what a person types is matched against the skill's description, not its name.
 
 ## Summary
