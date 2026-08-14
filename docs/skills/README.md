@@ -61,6 +61,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   test plan from supplied context: named tests with by-hand steps and expected outcomes for a person to run.
 - [`/markdown-to-confluence`](../../han-atlassian/docs/skills/markdown-to-confluence.md) — Publish one local Markdown
   file to a user-specified Confluence location; defaults to an unpublished draft.
+- [`/pairing`](../../han-core/docs/skills/pairing.md) — Build work collaboratively in reviewable pieces, handing each
+  one back before starting the next, so you steer while the work happens.
 - [`/plan-a-feature`](../../han-planning/docs/skills/plan-a-feature.md) — Build a feature specification from scratch
   through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
 - [`/plan-a-feature-to-confluence`](../../han-atlassian/docs/skills/plan-a-feature-to-confluence.md) — Run

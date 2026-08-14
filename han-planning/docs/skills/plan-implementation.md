@@ -446,6 +446,8 @@ URL: https://ieeexplore.ieee.org/document/1204375
 
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
+- [`/pairing`](../../../han-core/docs/skills/pairing.md). Drive these resolution rounds collaboratively, stopping after
+  each one so you see its findings as they land rather than only the finished plan.
 - [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing
   items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.

@@ -9,7 +9,7 @@ surfaces the first two, the inline `explanation-guidance` skill that surfaces th
 the `readability-editor` agent, and the `han-readability` output style that applies the first two to every turn of a
 session; it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
 specialist agent roster the rest of the suite dispatches — every shared agent except the `readability-editor`, the
-`research-analyst`, and the `discussion-facilitator` — plus the `project-discovery` skill and the canonical rule files; depends on no other Han plugin),
+`research-analyst`, and the `discussion-facilitator` — plus the `project-discovery` skill, the `pairing` collaborative working mode, and the canonical rule files; depends on no other Han plugin),
 `han-documentation` (the documentation skills: `project-documentation`, `architectural-decision-record`, and `runbook`;
 depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin), `han-research` (the
 pre-planning knowledge-work skills — `research`, `gap-analysis`, and `issue-triage` — plus the `research-analyst`
@@ -80,14 +80,14 @@ han-plugin-builder skill:
 │   ├── output-styles/  # han-readability.md: the readability rule and writing voice distilled into a selectable output style (auto-discovered default location; no plugin.json field)
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md + docs/output-styles/han-readability.md
 │   └── references/     # Canonical readability-rule.md + writing-voice.md + explanation-rule.md (owned here; no vendored copies elsewhere), beside a vendored config-rule.md
-├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery (depends on no other Han plugin)
+├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery + pairing (depends on no other Han plugin)
 │   ├── README.md       # Light front door; skills and agents grouped by purpose
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── agents/         # Agent definitions (.md with frontmatter)
-│   ├── skills/         # project-discovery skill directory, with SKILL.md + references/
+│   ├── skills/         # project-discovery and pairing skill directories, each with SKILL.md (+ references/ where used)
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/{name}.md
-│   └── references/     # Cross-skill reference files (yagni-rule.md, evidence-rule.md, config-rule.md — canonical copies)
+│   └── references/     # Cross-skill reference files (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md — canonical copies)
 ├── han-documentation/  # Documentation plugin: project-documentation, architectural-decision-record, runbook (depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
@@ -110,14 +110,14 @@ han-plugin-builder skill:
 │   ├── agents/         # discussion-facilitator agent definition
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/discussion-facilitator.md
-│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
+│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
 ├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
-│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, config-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md)
 ├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues (depends on han-communication, han-core, and han-coding, whose code-review skill post-code-review-to-pr wraps)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
@@ -237,6 +237,15 @@ such as Claude, should be referenced here.
 - **[han-core/references/config-rule.md](./han-core/references/config-rule.md).** The canonical interpretation contract
   (schema tokens, precedence, containment, pool-join, degradation) every participating skill applies. Vendored
   byte-identical into every skill-carrying plugin's `references/`; edit the canonical copy and re-sync the others.
+
+### Collaborative working mode
+
+- **[han-core/references/collaborative-stop-rule.md](./han-core/references/collaborative-stop-rule.md).** The shared
+  contract behind `/pairing`: how a skill detects the collaborative flag, what a stop presents and in what order, when
+  the pre-build ask fires and what makes a choice expensive to walk back, and what to do with the answer. Consumed by
+  `pairing` and by the skills that hand control back at their own boundaries — `tdd`, `refactor`, `design-an-api`,
+  `iterative-plan-review`, and `plan-implementation`. Vendored byte-identical into `han-coding/references/` and
+  `han-planning/references/`; edit the canonical copy and re-sync the others.
 
 ### Writing voice
 

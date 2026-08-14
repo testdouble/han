@@ -1,16 +1,28 @@
 # han-core
 
-The shared foundation of the Han suite. It carries the specialist agent roster the other plugins dispatch (every shared
-agent except the readability-editor, which lives in `han-communication`, and the research-analyst, which lives in
-`han-research`), the project-discovery skill with its project-scanner agent, and the canonical evidence and YAGNI rule
-files. The documentation skills live in `han-documentation`, the pre-planning research skills in `han-research`, the
-planning skills in `han-planning`, and the coding skills in `han-coding`; each depends on han-core. Install only this
-and you have the specialists and project discovery, but no other skills.
+The shared foundation of the Han suite, carrying two different kinds of thing.
+
+Most of it is material the other plugins consume: the specialist agent roster they dispatch (every shared agent except
+the readability-editor, which lives in `han-communication`, and the research-analyst, which lives in `han-research`),
+the project-discovery skill with its project-scanner agent, and the canonical evidence, YAGNI, and collaborative-stop
+rule files.
+
+It also carries one working mode you invoke directly. `/pairing` builds work in reviewable pieces and hands each one
+back before starting the next, across code, design decisions, and writing alike. It sits here because it spans every
+kind of work rather than belonging to any one plugin's subject matter.
+
+The documentation skills live in `han-documentation`, the pre-planning research skills in `han-research`, the planning
+skills in `han-planning`, and the coding skills in `han-coding`; each depends on han-core. Install only this and you
+have the specialists, project discovery, and the pairing mode. `/pairing` gains its test-driven, refactoring, interface,
+and plan-review paths when the plugins carrying those skills are installed alongside it, and names the missing skill
+rather than substituting when they are not.
 
 **Bundled.** Installed with the `han` meta-plugin. Depends on no other Han plugin.
 
 ## Skills
 
+- [`/pairing`](docs/skills/pairing.md) — Build work collaboratively in reviewable pieces, handing each one back before
+  starting the next, so you steer while the work happens instead of reviewing a finished result.
 - [`/project-discovery`](docs/skills/project-discovery.md) — Scan the repository for languages, frameworks, tooling, and
   structure, and write a concise reference section into AGENTS.md or CLAUDE.md for other skills.
 

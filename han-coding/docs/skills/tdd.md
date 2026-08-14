@@ -243,6 +243,8 @@ URL: https://growing-object-oriented-software.com/
 
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
+- [`/pairing`](../../../han-core/docs/skills/pairing.md). Drive this loop collaboratively, stopping after each behavior
+  so you review it as it lands. Invoking `/tdd` directly runs the loop to completion without pausing.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule the refactor step and test list apply. The
   two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.

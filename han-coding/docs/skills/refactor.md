@@ -213,6 +213,9 @@ URL: https://arxiv.org/abs/2411.04444
 
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
+- [`/pairing`](../../../han-core/docs/skills/pairing.md). Drive this sequence collaboratively, stopping after each named
+  refactoring so you review it as it lands. Invoking `/refactor` directly runs the sequence to completion without
+  pausing.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [YAGNI](../../../docs/yagni.md). The evidence gate every planned refactoring passes, with the named anti-patterns and the
   deferral format.

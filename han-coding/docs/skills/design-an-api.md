@@ -154,6 +154,9 @@ oversized for shaping one contract.
 
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
+- [`/pairing`](../../../han-core/docs/skills/pairing.md). Drive these rounds collaboratively, stopping after each one so
+  you review it as it lands. Invoking `/design-an-api` directly runs the rounds to completion without pausing between
+  them.
   tree.
 - [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule: the two gates, the
   acceptable-evidence list, the named anti-patterns, and the deferral format.

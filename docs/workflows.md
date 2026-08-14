@@ -34,6 +34,9 @@ flowchart TD
     gh --> build["/tdd"]
     jira --> build
     linear --> build
+    pairing["/pairing"] -.drives.-> impl
+    pairing -.drives.-> review
+    pairing -.drives.-> build
 ```
 
 - **[`/issue-triage`](../han-research/docs/skills/issue-triage.md) → [`/investigate`](../han-coding/docs/skills/investigate.md).**
@@ -50,6 +53,11 @@ flowchart TD
   where your team tracks them: [`/work-items-to-issues`](../han-github/docs/skills/work-items-to-issues.md) for GitHub,
   [`/work-items-to-jira`](../han-atlassian/docs/skills/work-items-to-jira.md) for Jira (opt-in `han-atlassian`), or
   [`/work-items-to-linear`](../han-linear/docs/skills/work-items-to-linear.md) for Linear (opt-in `han-linear`).
+- **[`/pairing`](../han-core/docs/skills/pairing.md) drives
+  [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) and
+  [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).** Both run their rounds without
+  pausing today, so this is where the wrapper changes the most: you see each round as it closes rather than only the
+  finished plan.
 
 ## From a gap to a plan
 
@@ -86,6 +94,9 @@ flowchart TD
     refactor --> tdd
     tdd --> prdesc["/update-pr-description"]
     investigate["/investigate"] --> iterate["/iterative-plan-review"]
+    pairing["/pairing"] -.drives.-> refactor
+    pairing -.drives.-> tdd
+    pairing -.drives.-> design
 ```
 
 - **[`/code-review`](../han-coding/docs/skills/code-review.md) →
@@ -108,6 +119,11 @@ flowchart TD
   [`/update-pr-description`](../han-github/docs/skills/update-pr-description.md).** Once the branch carries the change,
   turn its commits into the PR body. This is the description half of the PR; `/post-code-review-to-pr` is the review half,
   and the two are independent.
+- **[`/pairing`](../han-core/docs/skills/pairing.md) drives
+  [`/refactor`](../han-coding/docs/skills/refactor.md), [`/tdd`](../han-coding/docs/skills/tdd.md), and
+  [`/design-an-api`](../han-coding/docs/skills/design-an-api.md).** This is not a chain but a wrapper: `/pairing` runs one
+  of them and takes control back at each unit boundary, so you review as the work lands rather than at the end. Invoking
+  any of the three directly runs it straight through, unchanged.
 
 ## Planning the tests
 
