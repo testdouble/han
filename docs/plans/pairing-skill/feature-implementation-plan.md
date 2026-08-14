@@ -19,7 +19,8 @@ because six places need to agree on the answer and five of them live in other pl
 ([D22](artifacts/decision-log.md#d22-the-stopping-convention-is-a-canonical-rule-file-owned-by-han-core)).
 
 **The flag.** An opt-in argument on five existing skills, so each returns control at the boundary it already has instead
-of continuing, with no backing skill naming the mode in its own text
+of continuing, with no backing skill — the existing skill doing the work while the mode watches — naming the mode in its
+own text
 ([D-1](artifacts/implementation-decision-log.md#d-1-the-flag-travels-as-an-invocation-argument-not-as-a-named-caller)).
 Three of those skills live in `han-coding` and two in `han-planning`.
 
@@ -32,16 +33,20 @@ Everything else in this plan depends on how a backing skill hands control back, 
 written.
 
 The suite's authoring guidance documents the general shape, calling it orchestration composition: a calling skill
-invokes a sub-skill that owns a whole artifact, and the caller stays thin. It carries two warnings that shape the
-design. The moment after a sub-skill call is when the calling model is most likely to stop and treat the sub-skill's
-output as the final answer, so continuation has to be instructed rather than assumed. And the more the caller carries
-across that call, the more likely it loses its own thread.
+invokes a sub-skill that owns a whole artifact, and the caller stays thin.
+
+That guidance carries two warnings that shape this design. The first: the moment after a sub-skill call is when the
+calling model is most likely to stop and treat the sub-skill's output as the final answer, so continuation has to be
+instructed rather than assumed. The second: the more the caller carries across that call, the more likely it loses its
+own thread.
 
 The second warning cuts against this mode rather than for it, and that is worth saying plainly. Both working examples
 the guidance cites call a sub-skill once, let it run to completion, and carry almost nothing across the call. This mode
 carries a plan, a running feedback record, and the person's position in that plan across every stop, which is the
-opposite of thin. What makes that survivable is that the state is written down rather than remembered: the specification
-already commits the feedback record to a file
+opposite of thin.
+
+What makes that survivable is that the state is written down rather than remembered. The specification already commits
+the feedback record to a file
 ([D8](artifacts/decision-log.md#d8-your-feedback-goes-into-a-readable-written-record-rather-than-being-carried-in-memory)),
 so the thread the guidance warns about losing can be re-read rather than recalled.
 
@@ -52,8 +57,8 @@ shape a stop takes. That shape lives in the rule file, which is why the rule fil
 documentation.
 
 One part of this the guidance does not settle, and nothing in this repository can. Neither working example has a
-sub-skill that ends its turn partway through its own run and later resumes with its own instructions still governing,
-which is exactly what the flag asks the five skills to do. Unverified: could not inspect whether a skill can end its
+sub-skill that ends its turn partway through its own run and later resumes with its own instructions still governing.
+That is exactly what the flag asks the five skills to do. Unverified: could not inspect whether a skill can end its
 turn mid-run and resume under its own instructions, because no running session exists in this repository. Phase 3 is
 where that first gets observed, on the lowest-churn of the five.
 
@@ -81,9 +86,10 @@ the way to review as it goes. Neither half is accurate alone, so neither ships a
 behind one release.
 
 The risk is churn. Over ninety days `plan-implementation` changed twenty-two times and `iterative-plan-review` fifteen,
-which makes them the two most likely to collide with an in-flight edit. They are also the two whose stop contract is
-least obvious, because a review round produces findings rather than an artifact. They go last, so the contract is proven
-on easier skills first
+which makes them the two most likely to collide with an in-flight edit.
+
+They are also the two whose stop contract is least obvious, because a review round produces findings rather than an
+artifact. They go last, so the contract is proven on easier skills first
 ([D-3](artifacts/implementation-decision-log.md#d-3-flag-the-five-skills-lowest-churn-first)).
 
 ### Phase 1: The shared rule file
@@ -111,18 +117,21 @@ The skill, its detection-free degradation path, and its long-form documentation.
 Touch points: `han-core/skills/pairing/SKILL.md` and `han-core/docs/skills/pairing.md`.
 
 The skill declares the `Skill` tool in its allowed tools, because it invokes others. It must **not** declare
-`AskUserQuestion`: the authoring guidance bars that tool from every skill's allowed-tools list, and a parent's rules
-stack onto the skills it calls, so declaring it here would silence the questions `design-an-api` asks underneath as well
-([D-5](artifacts/implementation-decision-log.md#d-5-the-mode-does-not-declare-askuserquestion)). Each backing-skill
-invocation also needs an explicit instruction to return to the loop afterward, because the guidance names the moment
-after a sub-skill call as the most common place an orchestration ends early.
+`AskUserQuestion`. The authoring guidance bars that tool from every skill's allowed-tools list, and a parent's rules
+stack onto the skills it calls, so declaring `AskUserQuestion` here would silence the questions `design-an-api` asks
+underneath as well
+([D-5](artifacts/implementation-decision-log.md#d-5-the-mode-does-not-declare-askuserquestion)).
 
-Prose work needs one more thing settled here, and it was the round's only question to reach the operator. A fixed
-three-rung fidelity ladder does not scale: on a four-sentence reply it means three stops on four sentences, and on a long
-document the middle rung is one piece the size of the whole job. Short work climbs the ladder once, whole. Longer work
-agrees the shape for the whole artifact first, then climbs the remaining rungs section by section, with the plan naming
-the sections up front so they can be redirected
+Each backing-skill invocation also needs an explicit instruction to return to the loop afterward, because the guidance
+names the moment after a sub-skill call as the most common place an orchestration ends early.
+
+Prose work needs one more thing settled here, the round's only question to reach the operator: a fixed three-rung
+fidelity ladder does not scale. On a four-sentence reply it means three stops on four sentences; on a long document, the
+middle rung alone is the size of the whole job. Short work climbs the ladder once, whole. Longer work agrees the shape
+for the whole artifact first, then climbs the remaining rungs section by section, with the plan naming the sections up
+front so they can be redirected
 ([D-11](artifacts/implementation-decision-log.md#d-11-the-prose-ladder-climbs-per-section-once-the-work-is-long-enough)).
+
 The specification left this unanswered rather than answering it differently, and neither the section boundary nor the
 length threshold has evidence behind it, so both are provisional.
 
@@ -132,8 +141,8 @@ length threshold has evidence behind it, so both are provisional.
 
 Each gains an argument entry and one short paragraph at its existing close, pointing at the vendored rule file rather
 than restating the convention. Two reasons to keep that insertion small and referential. A future edit to the
-surrounding loop is less likely to absorb or orphan a short paragraph than a long one. And five near-identical
-paragraphs each restating the convention in their own words would drift apart edit by edit, which is the failure the
+surrounding loop is less likely to absorb or orphan a short paragraph than a long one. Five near-identical
+paragraphs each restating the convention in their own words would drift apart edit by edit. That is the failure the
 rule file exists to prevent, reintroduced one file at a time.
 
 `tdd` and `refactor` also gain an `arguments` key, which they lack today. The other three already have one.
@@ -160,14 +169,16 @@ Seven descriptions change: the mode's own, the five flagged skills, and `code-wa
 **`code-walkthrough` has a budget problem.** The authoring standard holds every description to 1024 characters, which is
 a hard cap on the surface where a skill is uploaded rather than listed. The current one runs 955, leaving 69. The clause
 it needs, saying it paces you through work that already exists while this mode builds work as it paces you, runs about
-twice that. Its description has to be tightened elsewhere to make room. The others have more headroom: 137 characters for
-`design-an-api`, 169 for `tdd`, 315 for `refactor`, 482 for `iterative-plan-review`, and 544 for `plan-implementation`
+twice that. Its description has to be tightened elsewhere to make room.
+
+The others have more headroom: 137 characters for `design-an-api`, 169 for `tdd`, 315 for `refactor`, 482 for
+`iterative-plan-review`, and 544 for `plan-implementation`
 ([D-7](artifacts/implementation-decision-log.md#d-7-code-walkthroughs-description-is-tightened-to-fit-its-boundary-clause)).
 
 ### Phase 6: The surfaces and the version bump
 
-Four manifests describe `han-core` and stop being accurate, alongside the plugin front door, the plugin index including
-its now-false install description, the skills index, the workflow chains, the project map, six existing long-form skill
+Four manifests describe `han-core` and stop being accurate. So do the plugin front door, the plugin index (including its
+now-false install description), the skills index, the workflow chains, the project map, six existing long-form skill
 docs, and the changelog.
 
 The version bump reaches further than those four. Three plugins gain user-visible behavior, and each one's version
@@ -182,24 +193,33 @@ That is not a gap in this plan; it is the state of the tooling, and pretending o
 
 So verification splits three ways.
 
-**Seven checks a script can run**, all mechanical and all able to genuinely fail: the foundation plugin still declares no
-dependency on the two plugins whose skills it calls; every changed description stays under its character budget; the rule
-file resolves from all five consumers; the vendored copies match the canonical file byte for byte; the four manifests
-mention the mode; the standard skill surfaces exist; and each colliding pair names the other in both directions
-([D-9](artifacts/implementation-decision-log.md#d-9-seven-mechanical-checks-and-no-prose-snapshot)).
+**Seven checks a script can run**, all mechanical and all able to genuinely fail
+([D-9](artifacts/implementation-decision-log.md#d-9-seven-mechanical-checks-and-no-prose-snapshot)):
 
-**Four procedures a person follows**, written down before the work starts rather than improvised at review: run the five
-routing phrasings verbatim and record which skill answers; run each flagged skill directly and confirm it still finishes
-unpaused; run the mode with a backing plugin absent; and walk one full session on skill-backed work and one on prose,
-through at least three stops each, checking each stop against the primary flow and the edge-case table in the
-[specification](./feature-specification.md), which are where the behaviors to walk against are written down. No separate
-checklist artifact exists, and none is needed while the specification carries them.
+- The foundation plugin still declares no dependency on the two plugins whose skills it calls.
+- Every changed description stays under its character budget.
+- The rule file resolves from all five consumers.
+- The vendored copies match the canonical file byte for byte.
+- The four manifests mention the mode.
+- The standard skill surfaces exist.
+- Each colliding pair names the other in both directions.
 
-**Two things nobody can check before someone uses it**, named rather than faked: whether the sorting test classifies real
-future requests the way a person would expect, and whether the reversibility call lands on the pieces people actually
-find expensive. The specification rates open-ended work, which is where the sorting test falls through, at Low
-confidence, and rates the per-kind units at Medium. The reversibility criterion carries no rating at all, because it has
-no source and Phase 1 authors it. No test should claim to settle what the research does not.
+**Four procedures a person follows**, written down before the work starts rather than improvised at review:
+
+- Run the five routing phrasings verbatim and record which skill answers.
+- Run each flagged skill directly and confirm it still finishes unpaused.
+- Run the mode with a backing plugin absent.
+- Walk one full session on skill-backed work and one on prose, through at least three stops each, checking each stop
+  against the primary flow and the edge-case table in the [specification](./feature-specification.md), which are where
+  the behaviors to walk against are written down.
+
+No separate checklist artifact exists, and none is needed while the specification carries them.
+
+**Two things nobody can check before someone uses it**, named rather than faked. The first: whether the sorting test
+classifies real future requests the way a person would expect. The second: whether the reversibility call lands on the
+pieces people find expensive. The specification rates open-ended work, which is where the sorting test falls through, at
+Low confidence, and rates the per-kind units at Medium. The reversibility criterion carries no rating at all, because it
+has no source and Phase 1 authors it. No test should claim to settle what the research does not.
 
 The routing procedure is the most consequential of the four. It is the only check on the collision the mode exists to
 resolve, and every one of the seven descriptions can steal routing from the others.
@@ -210,15 +230,15 @@ resolve, and every one of the seven descriptions can steal routing from the othe
 
 - **Why deferred:** It would catch a deleted sentence, but the four files it would guard are among the highest-churn in
   the repository, at twenty-two, fifteen, twelve, and eight commits in ninety days. It would fire on routine unrelated
-  edits far more often than on a real regression, and a check that cries wolf gets deleted or ignored. Running each skill
-  directly, plus ordinary diff review confirming the flag is additive, covers the same concern.
-- **Reopen when:** A flagged skill's default behavior actually regresses and reaches a release.
+  edits far more often than on a real regression, and a check that raises false alarms gets deleted or ignored. Running
+  each skill directly, plus ordinary diff review confirming the flag is additive, covers the same concern.
+- **Reopen when:** A flagged skill's default behavior regresses and reaches a release.
 - **Source:** R1, `structural-analyst` and `junior-developer` (claim I11).
 
 ### A script that detects whether a sibling plugin is installed
 
-- **Why deferred:** No precedent exists. Every availability check in the suite probes for an external command-line tool;
-  nothing anywhere detects another Han plugin, and the install path a probe would look at is not referenced anywhere in
+- **Why deferred:** No precedent exists. Every availability check in the suite probes for an external command-line tool.
+  Nothing anywhere detects another Han plugin, and the install path a probe would look at is not referenced anywhere in
   this repository. The manifest format cannot express the relationship either, since a declared dependency is always
   required and auto-installed. The mode does not need one: it names the backing skill it intends to use in the plan, and
   if the invocation does not resolve it reports that and offers the choice. Reacting is simpler than predicting and
@@ -246,8 +266,8 @@ resolve, and every one of the seven descriptions can steal routing from the othe
 ## Open Items
 
 - **OI-1:** Whether a pairing invocation trips the review-first exception `tdd` and `refactor` already carry. Both gate
-  on their plan when the request explicitly asks to review before implementation, and an invocation from a mode whose
-  whole purpose is reviewing before each unit reads like that trigger. If it fires, the test list exists at plan time for
+  on their plan when the request explicitly asks to review before implementation. An invocation from a mode whose whole
+  purpose is reviewing before each unit reads like that trigger. If it fires, the test list exists at plan time for
   those two, and the specification's arrangement for surfacing it at the first stop is unnecessary for them.
   - **Resolves when:** Phase 3 drafts the first flag insertion and the behavior is observed in a live session.
   - **Blocks implementation:** No. It is settled by building the first of the three, and the answer changes one paragraph
@@ -271,8 +291,8 @@ resolve, and every one of the seven descriptions can steal routing from the othe
 
 ## Recommendation
 
-Ship as planned. One round settled every question that evidence could settle, the one that could not was escalated and
-answered, and the single open item is non-blocking and resolves inside Phase 3. The one thing to watch is the mechanic
-named above as unverified: whether a backing skill can end its turn mid-run and resume under its own instructions. Phase
-3 is deliberately sequenced so that is observed on the lowest-churn skill before the contract reaches the two hardest
-ones.
+Ship as planned. One round settled every question that evidence could settle. The one it could not settle was escalated
+and answered, and the single open item is non-blocking and resolves inside Phase 3. The one thing to watch is the
+mechanic named above as unverified: whether a backing skill can end its turn mid-run and resume under its own
+instructions. Phase 3 is deliberately sequenced so that is observed on the lowest-churn skill before the contract
+reaches the two hardest ones.
