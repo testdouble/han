@@ -13,7 +13,7 @@ Round-by-round discussion is in
 - **Decision:** An invocation-scoped argument, in the same shape three of the five skills already use for their size
   argument. No backing skill names the mode in its own text.
 - **Rationale:** `design-an-api`, `iterative-plan-review`, and `plan-implementation` already declare an `arguments` key
-  and branch on a mode selector passed at invocation, without knowing who passed it. Reusing that shape means the
+  and branch on a selector passed at invocation, without knowing who passed it. Reusing that shape means the
   coupling is "this skill accepts an argument," which every reader of this suite recognizes, rather than "this skill
   knows a specific other skill can call it."
 
@@ -22,14 +22,19 @@ Round-by-round discussion is in
   each have needed editing again.
 - **Evidence:** Verified directly. `design-an-api`, `iterative-plan-review`, and `plan-implementation` carry
   `arguments: size`; `tdd` and `refactor` carry only `argument-hint` and gain an `arguments` key as part of this work.
-  The suite's composition guidance independently prescribes forwarding arguments through a sub-skill call rather than
-  letting the sub-skill infer intent.
+  The suite's composition guidance points the same way twice: it tells an orchestrator to forward the user's request and
+  the `size` argument through a sub-skill call unchanged, and it tells the orchestrator to state any behavior change as
+  an explicit instruction in the call rather than assuming the sub-skill will infer it.
 - **Rejected alternatives:**
   - Prose in each skill naming the mode — rejected as tighter coupling that breaks on a rename, which has already
     happened once here.
   - A marker file on disk — rejected as invisible state in a working tree that two of the backing skills actively inspect.
   - A new frontmatter field or shared detection script — rejected under the YAGNI rule as inventing a mechanism where a
     proven one exists. Reopening trigger: the flag needs to carry more than a yes-or-no value.
+- **Known gap:** The frontmatter reference documents `arguments` as named positional arguments, plural, but every use in
+  this repository declares exactly one. The three skills that already carry `size` will be the first to declare two, so
+  that form is unexercised here. If it turns out not to work, the flag rides on the invocation text instead, which
+  changes one line in five files rather than the design.
 - **Referenced in plan:** What you are building
 - **Driven by rounds:** R1
 
@@ -41,21 +46,33 @@ Round-by-round discussion is in
 - **Rationale:** The mode cannot detect when a behavior has been driven to green or a refactoring has completed; only the
   skill doing the work can. Having the mode reach back in would require it to track state inside another skill's loop.
 
-  The suite's composition guidance supports this and warns about the failure mode it creates. It documents orchestration
-  composition as supported, tells the caller to stay thin, and warns that the moment after a sub-skill call is when the
-  calling model is most likely to stop and treat the sub-skill's output as its own final answer. So continuation is
-  instructed explicitly rather than assumed, and the caller carries as little as possible across the call.
+  The suite's composition guidance names this general shape as supported, calling it orchestration composition, and
+  carries two warnings. The moment after a sub-skill call is when the calling model is most likely to stop and treat the
+  sub-skill's output as its own final answer, so continuation is instructed explicitly rather than assumed. And the more
+  the caller carries across the call, the more likely it loses its own workflow.
+
+  The second warning runs against this design rather than supporting it, and the plan says so rather than claiming the
+  guidance endorses what it does not. The guidance's discipline is a thin orchestrator with little state to lose; this
+  mode carries a plan, a running feedback record, and the person's position across every stop. What makes that
+  survivable is that the state is written to a file rather than held in the thread, which the specification already
+  commits to at D8. Treat the thin-orchestrator rule as a named risk with a named mitigation, not as evidence for the
+  design.
 
   This is what makes the rule file load-bearing rather than a convenience. If the five skills each performed a stop in
   their own words, a stop would mean five different things.
 - **Evidence:** The suite's skill-composition guidance, which names orchestration composition as supported with care and
   gives both the thin-orchestrator rule and the explicit-continuation rule. The structure of the five skills, each of
-  which already closes a unit explicitly.
+  which already closes a unit explicitly. Specification decision D8 for the written feedback record.
 - **Rejected alternatives:**
   - The mode performs every stop by inspecting the backing skill's progress — rejected because it requires tracking
     another skill's internal state, and the guidance says to keep the caller thin for exactly that reason.
   - Re-invoking the backing skill once per unit — rejected because none of the five accepts a resume-from-here input, so
     each invocation would rebuild its list from scratch.
+- **Known gap:** The specific mechanic this decision needs is outside what the guidance covers. Both of its working
+  examples call a sub-skill once and let it run to completion; neither has a sub-skill that ends its turn partway
+  through its own run and later resumes with its own instructions still governing. Unverified: could not inspect
+  whether a skill can end its turn mid-run and resume under its own instructions, because no running session exists in
+  this repository. Phase 3 observes it on the lowest-churn skill before the contract reaches the two hardest ones.
 - **Referenced in plan:** The one thing to get right first
 - **Driven by rounds:** R1
 
@@ -67,8 +84,9 @@ Round-by-round discussion is in
   work last, and the two highest-churn files are also the two whose stop contract is least obvious, because a review
   round produces findings rather than a built artifact. Proving the contract on three skills that build something real
   means the harder two are written against a pattern that already works.
-- **Evidence:** Ninety-day commit counts: `plan-implementation` 22, `iterative-plan-review` 15, `tdd` 12, `refactor` 8,
-  `design-an-api` absent from the churn table entirely.
+- **Evidence:** Ninety-day commit counts against each skill file, re-run at synthesis: `plan-implementation` 22,
+  `iterative-plan-review` 15, `tdd` 12, `refactor` 8, `design-an-api` 3. The discovery pass omitted `design-an-api` from
+  its churn table because it sat below the table's cutoff, not because it had no commits.
 - **Rejected alternatives:**
   - Highest-churn first, to get the risky edits over with — rejected because it writes the least-defined contract first.
   - All five together — rejected because a mistake in the shared paragraph then exists in five files before anyone sees
@@ -91,41 +109,54 @@ Round-by-round discussion is in
 
   Vendoring won on two grounds. It matches what the five consuming skills already do for every other shared rule, so a
   reader meets one pattern rather than two. And the invoke-by-name route would mean adding another skill purely to serve
-  five consumers, where the existing example serves twenty-nine.
-
-  The cost is real and named: nothing automated keeps vendored copies in sync, and the only trace of past sync effort is
-  a manual sweep. The plan's cross-reference check covers resolution, not content equality.
+  five consumers, where the existing example serves far more: the discovery pass counted twenty-nine invocations of the
+  readability-guidance skill alone.
 - **Evidence:** The root project map states the vendoring convention and the edit-canonical-then-re-sync obligation
   outright. Verified that the three existing shared rules are byte-identical across both consuming plugins. Verified the
   communication plugin has no vendored copies of its two canonical rules.
 - **Rejected alternatives:**
-  - An inline guidance skill invoked by name — rejected as adding a skill for five consumers when the proven analogue has
-    twenty-nine, though it is the better answer if the consumer count ever grows.
+  - An inline guidance skill invoked by name — rejected as adding a skill for five consumers when the proven analogue
+    serves an order of magnitude more, though it is the better answer if the consumer count ever grows.
   - One canonical file with no copies, read across plugin boundaries — rejected because no skill in this repository reads
-    a reference file from another plugin's installed tree, and whether that resolves at runtime is unverified.
+    a reference file from another plugin's installed tree, and the suite's own recorded finding on cross-plugin sourcing
+    is that `${CLAUDE_PLUGIN_ROOT}` and every relative path resolve inside the reading skill's own plugin, so a
+    cross-plugin path read would not resolve at all.
   - One canonical file consumed only by the mode, with each flagged skill carrying a single inline sentence — rejected
     once D-2 settled that the backing skill performs the stop, which means it needs the whole contract rather than one
     sentence.
-- **Known gap:** The rule file joins a directory in the planning plugin that already mixes owned and vendored files, and
-  the project map warns against overwriting an owned file during a re-sync sweep. The new file is vendored, not owned,
-  and should carry the same header the vendored copies carry so a future sweep can tell.
+- **Known gap:** Nothing in the repository re-syncs a vendored copy after its canonical file changes, and the only trace
+  of past sync effort is a manual sweep. D-9 commits a byte-equality check across the copies, which catches a divergence
+  once it lands but does not prevent one and does not perform the re-sync. Separately, the rule file joins a directory in
+  the planning plugin that already mixes owned and vendored files, and the project map warns against overwriting an owned
+  file during a re-sync sweep. The new file is vendored, not owned, and should carry the same header the vendored copies
+  carry so a future sweep can tell.
 - **Referenced in plan:** Build order, Phase 1
 - **Driven by rounds:** R1
 
 ## D-5: The mode does not declare AskUserQuestion
 
 - **Question:** Which tools does the mode declare?
-- **Decision:** It declares the `Skill` tool, because it invokes others. It deliberately does not declare
-  `AskUserQuestion`.
-- **Rationale:** A parent skill's always-allow rules stack onto the skills it calls. Granting the question tool at the
-  parent level would apply it to every backing skill invoked underneath, and a question asked under an always-allow rule
-  returns empty rather than reaching the person. The mode stops by ending its turn, which needs no tool at all, so
-  nothing is lost.
-- **Evidence:** The suite's authoring guidance on this tool documents the stacking behavior and its consequence for
-  child skills.
+- **Decision:** It declares the `Skill` tool, because it invokes others. It does not declare `AskUserQuestion`.
+- **Rationale:** The authoring guidance bars `AskUserQuestion` from every skill's `allowed-tools`, not only a parent's.
+  `allowed-tools` is an auto-approve list, and the permission evaluator returns early on a match, handing back empty
+  answers without ever rendering the question. Declaring it therefore breaks the tool for the declaring skill outright.
+
+  A parent's always-allow rules also stack onto the skills it calls, so declaring it here would break questions asked
+  underneath as well. That consequence is concrete rather than hypothetical: `design-an-api` surfaces its open items one
+  at a time through `AskUserQuestion`, and it works today precisely because no skill in the chain declares the tool.
+
+  Nothing is lost by leaving it out. The mode stops by ending its turn, which needs no tool. Where the specification does
+  call for candidate options, such as the one question it asks about a request too vague to sort, the tool still works
+  undeclared; the person sees a one-time permission prompt before the question renders.
+- **Evidence:** The suite's authoring guidance on this tool, which states the rule as universal, explains the early
+  return in the permission evaluator, records the stacking behavior for child skills, and notes that removing the tool
+  from `allowed-tools` does not break it. Verified that `design-an-api` calls `AskUserQuestion` and that the tool is
+  absent from its `allowed-tools`.
 - **Rejected alternatives:**
-  - Declaring it for the pre-build ask — rejected because that ask is an ordinary turn ending, and declaring the tool
-    would silently break every question the five backing skills ask.
+  - Declaring it for the pre-build ask — rejected because the guidance's rule is universal, that ask is an ordinary turn
+    ending anyway, and declaring the tool would silently break both the mode's own questions and `design-an-api`'s.
+- **Revisit criterion:** The upstream Claude Code bug the guidance cites ships a fix and the guidance is updated to allow
+  the declaration.
 - **Referenced in plan:** Build order, Phase 2
 - **Driven by rounds:** R1
 
@@ -156,14 +187,17 @@ Round-by-round discussion is in
 - **Question:** How do seven descriptions absorb new routing text under a hard character cap?
 - **Decision:** Four have room and take the clause as written. `code-walkthrough` does not, so its existing description
   is tightened to make room before the clause is added.
-- **Rationale:** Descriptions are capped at 1024 characters. Measured headroom: `code-walkthrough` 69,
-  `design-an-api` 137, `tdd` 169, `refactor` 315, `iterative-plan-review` 482, `plan-implementation` 544. The clause
-  `code-walkthrough` needs, distinguishing pacing through work that already exists from building work while pacing you
-  through it, runs roughly twice its remaining budget.
+- **Rationale:** The authoring standard holds every description to 1024 characters, which is the stricter of the two real
+  limits: a hard cap where a skill is uploaded rather than listed, against a looser per-entry cap in the listing path.
+  Measured headroom against that target: `code-walkthrough` 69, `design-an-api` 137, `tdd` 169, `refactor` 315,
+  `iterative-plan-review` 482, `plan-implementation` 544. The clause `code-walkthrough` needs, distinguishing pacing
+  through work that already exists from building work while pacing you through it, runs roughly twice its remaining
+  budget.
 
   This is worth settling in the plan rather than discovering mid-edit, because the obvious reaction to hitting the cap is
   to shorten the new clause, and the new clause is the entire point of the change.
-- **Evidence:** Measured directly against all six existing descriptions.
+- **Evidence:** Measured against all six existing descriptions with the measurement script the description-length
+  guidance ships, so the numbers are reproducible by the same method the standard prescribes.
 - **Rejected alternatives:**
   - Shortening the new boundary clause to fit — rejected because the clause is what prevents a request landing on the
     wrong skill, and it is already the shorter half of a bidirectional pair.
@@ -199,11 +233,11 @@ Round-by-round discussion is in
 - **Question:** What gets automated?
 - **Decision:** Seven checks: the foundation plugin still declares no dependency on the two plugins whose skills it
   calls; each changed description stays under its character budget; the rule file resolves from all five consumers; the
-  four manifests mention the mode; the standard skill surfaces exist; each colliding pair names the other in both
-  directions; and the vendored copies match the canonical file. No snapshot test pins existing prose.
+  vendored copies match the canonical file byte for byte; the four manifests mention the mode; the standard skill
+  surfaces exist; and each colliding pair names the other in both directions. No snapshot test pins existing prose.
 - **Rationale:** Each of the seven can genuinely fail and each failure would mean something real. The dependency check
   guards the invariant the whole placement decision rests on, and today that invariant is enforced only by the absence of
-  a key in a file.
+  a key in a file. The byte-equality check is the only automated guard on the drift D-4 accepts as its cost.
 
   The snapshot test is the tempting one to add and the right one to skip. It would pin the sentences in each flagged
   skill that promise an uninterrupted run, catching a deletion. But the four files it would guard changed twenty-two,
@@ -229,20 +263,29 @@ Round-by-round discussion is in
   external command-line tool; nothing anywhere detects another Han plugin, and the install path such a probe would
   inspect is not referenced anywhere in this repository.
 
+  The manifest format cannot express the relationship either. A plugin's `dependencies` entries carry a name, an
+  optional version range, and an optional marketplace, and every declared dependency is required and auto-installed on
+  install. There is no optional-dependency form, which is why the specification's "optional backing skills" has to be a
+  runtime posture rather than a declaration.
+
   The graceful-degradation guidance that would otherwise apply is about environment state, meaning a missing git history
   or configuration file, not about sibling plugins. Stretching it here would mean inventing a path probe on no evidence.
+  The composition guidance's preflight rule does not reach this either: it says to validate hard requirements before an
+  expensive sub-skill call, and the specification makes the backing skills explicitly not a requirement.
 
   Reacting satisfies the same commitment more simply. The specification requires that the mode never substitute
   silently, and a failed invocation reported plainly does that. The person also learns the same thing at the same
   moment, because the plan named the intended skill one step earlier.
 - **Evidence:** Verified that every availability check in the suite probes for an external binary. No plugin-detection
-  example exists in any plugin. The two plugins carrying flagged skills go missing independently, so a predictive check
-  would need to run twice.
+  example exists in any plugin. The plugin-manifest reference documents `dependencies` with no optional form. The two
+  plugins carrying flagged skills go missing independently, so a predictive check would need to run twice.
 - **Rejected alternatives:**
   - A detection script exiting zero on all paths, per the degradation guidance — rejected under the YAGNI rule as
     building a mechanism with no precedent to serve a case the reactive path already handles. It would also need a Bats
     test, making it two new artifacts. Reopening trigger: the reactive path proves confusing in real use, or a platform
     surface for querying installed plugins appears.
+  - Declaring the two plugins as manifest dependencies — rejected because the format has no optional form, so declaring
+    them would make them required and close the dependency cycle the specification's D12 exists to avoid.
   - Asking the person up front which plugins they have — rejected because it adds a question to the top of every run and
     breaks the specification's promise that the mode needs no precondition beyond a task you can describe.
 - **Referenced in plan:** Deferred (YAGNI)
@@ -268,6 +311,8 @@ Round-by-round discussion is in
 - **Known gap:** Neither the section boundary nor the length threshold has evidence behind it. The underlying prose unit
   is already the Medium-confidence part of this design, described in the research as a reconciliation rather than a
   documented practice, and this decision adds a second judgment on top of it. Both should be treated as provisional and
-  revisited after real use.
-- **Referenced in plan:** User stories
+  revisited after real use. This is also the one commitment in this file that is behavioral rather than procedural: it
+  answers a question the specification left open rather than deciding how to build something the specification already
+  settled, so it is written into the mode in Phase 2 and belongs upstream if the specification is ever reopened.
+- **Referenced in plan:** Build order, Phase 2
 - **Driven by rounds:** R1
