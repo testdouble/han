@@ -1,15 +1,14 @@
 ---
 name: code-walkthrough
 description: >
-  Walks a person through a set of code changes one step at a time in conversation, starting at the entry point and
-  following the flow that changes, showing a small chunk of code per step and explaining it in plain language so they
-  learn what it does and why. Defaults to the current branch's changes, and walks the code from the perspective of any
-  context provided instead — a file, directory, symbol, pull request, plan, or ticket. Use when someone wants to be
-  walked through, taught, paced through, or shown around code or a branch step by step, or to learn how a change works
-  before reviewing or extending it. Stops after every step and waits, so the learner sets the pace and can ask questions
-  as they go. Writes no files and changes no code. Does not produce a written overview document to read alone — use
-  code-overview. Does not review code quality or raise findings — use code-review. Does not diagnose bugs or root-cause
-  failures — use investigate.
+  Walks a person through code changes one step at a time in conversation, starting at the entry point and following the
+  flow that changes, showing a small chunk per step and explaining it in plain language. Defaults to the current
+  branch's changes, and walks the code from the perspective of any context provided instead — a file, directory,
+  symbol, pull request, plan, or ticket. Use when someone wants to be walked through, taught, paced through, or shown
+  around code or a branch step by step, or to learn how a change works before reviewing or extending it. Stops after
+  every step and waits, so the learner sets the pace. Paces through code that already exists and builds nothing — to
+  build new work while being paced through it, use pairing. Does not produce a written overview to read alone — use
+  code-overview. Does not review code quality — use code-review. Does not diagnose bugs — use investigate.
 arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [target: a file, directory, symbol, PR reference, or plan — defaults to the

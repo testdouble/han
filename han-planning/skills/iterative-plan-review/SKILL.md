@@ -5,7 +5,8 @@ description: >
   and recording every finding and iteration in cross-referenced companion files. Use this skill whenever the user wants
   to iterate on, refine, tighten, or improve a plan. Also use it when the user asks to verify, validate, or confirm
   feasibility of an approach. Does not implement plan steps, write test plans, review code, or investigate bugs, and
-  does not generate new plans from scratch — use plan-a-feature for a new plan.
+  does not generate new plans from scratch — use plan-a-feature for a new plan. Runs its review rounds to completion
+  without pausing between them; to review each round as it lands, use pairing.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [context or path to plan file]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)

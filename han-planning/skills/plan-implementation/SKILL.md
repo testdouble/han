@@ -5,7 +5,8 @@ description: >
   facilitated team conversation. Use when the user wants to plan how to implement, build, deliver, or ship a
   feature that has already been specified. Does not specify what the feature should do — use plan-a-feature first. Does
   not design the contract for an interface — use design-an-api. Does not refine or stress-test an already-written plan —
-  use iterative-plan-review.
+  use iterative-plan-review. Runs its resolution rounds to completion and holds its questions until after they finish;
+  to review each round as it lands, use pairing.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature specification path, optional: additional context]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *), Bash(cp *)

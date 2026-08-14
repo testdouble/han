@@ -8,7 +8,8 @@ description: >
   leading. This skill writes and changes code; it does not produce a test plan document (use automated-test-planning, or manual-test-planning for a plan a person
   runs by hand), review or
   audit existing code (use code-review), restructure existing code outside a TDD loop (use refactor), specify what a
-  feature should do (use plan-a-feature), or find the root cause of a bug (use investigate).
+  feature should do (use plan-a-feature), or find the root cause of a bug (use investigate). Runs its loop to
+  completion without pausing for review; to review each behavior as it lands, use pairing.
 argument-hint: "[what to build, a behavior to drive, or a path to a spec/plan]"
 allowed-tools:
   Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *),

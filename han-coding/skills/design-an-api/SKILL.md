@@ -8,7 +8,8 @@ description: >
   API change for a capability you can already describe, sized for roughly one pull request. Produces a design document
   and changes no code. Does not specify what a feature should do — use plan-a-feature. Does not plan delivery or
   sequencing — use plan-implementation. Does not assess the architecture of existing code — use
-  architectural-analysis. Does not write the code — use tdd. Does not restructure existing code — use refactor.
+  architectural-analysis. Does not write the code — use tdd. Does not restructure existing code — use refactor. Runs its rounds without
+  pausing for review; to review each round as it lands, use pairing.
 arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [the goal or ticket this serves, and the interface to design]"

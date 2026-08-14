@@ -7,7 +7,8 @@ description: >
   of existing code, or to apply refactoring recommendations from a code-review or architectural-analysis report. This
   skill changes code; it does not review code (use code-review), assess architecture (use architectural-analysis), or
   build new behavior test-first (use tdd). Do not use it on code inside an active tdd loop; the refactor step of tdd
-  owns that cleanup.
+  owns that cleanup. Runs its planned sequence to completion without pausing for review; to review each named
+  refactoring as it lands, use pairing.
 argument-hint: "[file, module, named smell, or a path to review findings]"
 allowed-tools:
   Read, Write, Edit, Glob, Grep, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *),
