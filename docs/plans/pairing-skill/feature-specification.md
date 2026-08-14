@@ -267,7 +267,7 @@ are in the plan. Asking for more than one piece at a time is part of the pacing,
 | `code-walkthrough`          | neither   | No handoff. The two share their whole pacing vocabulary, so each has to say which side of produced-versus-existing work it is on | Nothing runs. This is a routing relationship only, and it exists because the shared words would otherwise send a request to the wrong skill.  |
 | Han's configuration file    | inbound   | Supplies the output location the feedback record is written under                             | Read once at the start of the loop, so the record's location does not move mid-session.                                                     |
 
-The three skill rows are the opt-in flag and nothing more
+The five skill rows are the opt-in flag and nothing more
 ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)):
 the flag applies to an invocation made through this mode, and every ordinary invocation of those skills is untouched
 ([D2](artifacts/decision-log.md#d2-every-existing-skill-keeps-its-current-default-behavior)). The feedback-record row is
@@ -288,9 +288,13 @@ part of the work rather than follow-up
    invokes directly, and every one of those descriptions needs to say so. The plugin index goes further and offers an
    install described as "only the shared agents and project discovery, with no other skills," which becomes untrue
    ([D12](artifacts/decision-log.md#d12-the-skill-lives-in-han-core-and-its-backing-skills-are-optional)).
-2. **Three skills gain user-visible behavior.** `tdd`, `refactor`, and `design-an-api` each get a collaborative mode, so
-   each one's own operator manual and its own routing text change alongside this mode's
-   ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)).
+2. **Five skills gain user-visible behavior.** `tdd`, `refactor`, `design-an-api`, `iterative-plan-review`, and
+   `plan-implementation` each get a collaborative mode, so each one's own operator manual and its own routing text change
+   alongside this mode's ([D10](artifacts/decision-log.md#d10-five-skills-gain-an-opt-in-collaborative-flag)). The flag
+   reaches three plugins rather than one.
+3. **A new shared rule file.** The stopping convention this mode follows is owned by `han-core` as a canonical rule file,
+   beside the YAGNI, evidence, and configuration rules it already owns, because five skills consume the handoff contract
+   rather than one ([D22](artifacts/decision-log.md#d22-the-stopping-convention-is-a-canonical-rule-file-owned-by-han-core)).
 4. **The usual surfaces a new skill needs.** The skill itself, its long-form documentation, a line on its plugin's front
    door, an entry in the skills index, the project map, the workflow chains, and the version history.
 
@@ -349,20 +353,18 @@ justify revisiting it.
 - **Reopen when:** You give contradictory feedback in a run and the mode applies the wrong one.
 - **Source:** Review findings F5 and F6 in [artifacts/team-findings.md](artifacts/team-findings.md).
 
-### Giving the collaborative flag to any skill beyond the three that have it
+### Giving the collaborative flag to any skill beyond the five that have it
 
-- **Why deferred:** A survey covered every skill in every plugin the operator did not rule out. It asked one question:
-  does this skill change files on its own, across a sequence where each step builds on the last? Only `tdd` and
-  `refactor` passed, and the operator confirmed both. Review widened the test, and `design-an-api` was added by
-  operator decision. No other skill has been checked against the wider test, so no fourth candidate has evidence
-  behind it yet. Planning skills already interview, publishing skills already stop before writing to shared systems,
-  and analysis skills hand you one document.
-- **Reopen when:** any of the following:
-  - The re-survey in OI-2 names a skill that passes the widened test.
-  - A new skill ships that produces its result across a sequence of units where each unit stands on its own.
-  - You find yourself wanting to pair on a skill that runs to completion today.
-- **Source:** Operator survey during specification, widened by review finding F10 in
-  [artifacts/team-findings.md](artifacts/team-findings.md).
+- **Why deferred:** No candidate has evidence behind it. The widened test asks whether a skill produces its result across
+  a sequence of units, where each unit stands on its own and later units build on earlier ones. Running it across every
+  skill in every plugin the operator did not rule out found exactly the five that carry the flag. The rest fail in four
+  groups: the inline guidance skills produce no result of their own, the publishing and export skills already stop before
+  writing to a shared system, the one-document skills hand you a single synthesized artifact rather than a sequence, and
+  `plan-a-feature` and `code-walkthrough` already stop for you so the flag would be a no-op.
+- **Reopen when:** A new skill ships that produces its result across a sequence of units where each unit stands on its
+  own, or you find yourself wanting to pair on a skill that runs to completion today.
+- **Source:** Operator survey during specification, widened by review finding F10 and re-run across the suite at
+  escalations E7 and E8, both in [artifacts/team-findings.md](artifacts/team-findings.md).
 
 ## Open Items
 
