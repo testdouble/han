@@ -1,5 +1,129 @@
 # Han Release Notes
 
+## v5.3.0
+
+han 5.3.0 adds a collaborative working mode to the suite. `/pairing` builds work in reviewable pieces and hands each one
+back before starting the next, so you steer while the work happens instead of reviewing a finished result, and it covers
+code, design decisions, and writing alike. `han-core` (3.1.0) ships the skill and the shared stop contract behind it.
+`han-coding` (3.2.0) and `han-planning` (2.2.0) wire five existing skills to hand control back at boundaries they
+already had, so `/pairing` drives them without either side inventing a second mechanism. The suite-level docs thread the
+new mode through every catalog, and this release also repairs three defects the pairing branch left in its own
+documentation. `han-communication` (1.1.1), `han-documentation` (1.0.0), `han-research` (1.0.0), `han-github` (2.3.0),
+`han-reporting` (2.2.0), `han-feedback` (2.0.1), `han-atlassian` (2.3.0), `han-linear` (1.1.0), and `han-plugin-builder`
+(2.1.0) are unchanged.
+
+### han v5.3.0
+
+#### The cross-plugin catalogs carry the pairing mode
+
+`docs/skills/README.md` gains a scent line for `/pairing`. `docs/concepts.md` and `README.md` add it to the sentence
+describing what `han-core` carries, and `docs/choosing-a-han-plugin.md` adds it in four places, including the install
+table row for the shared agents and project discovery. That page also promised an install of `han-core` alone gave you
+"no other skills", which stopped being true the moment `/pairing` landed there.
+
+`docs/workflows.md` draws `/pairing` into both diagrams as a dotted `drives` edge rather than a solid arrow, because it
+wraps the skills it runs rather than chaining after them. The planning diagram draws it driving `/plan-implementation`,
+`/iterative-plan-review`, and `/tdd`; the code-quality diagram draws it driving `/refactor`, `/tdd`, and
+`/design-an-api`. The prose beside each says the same thing in words, and names the wrapper relationship explicitly so
+the dotted edge is not read as a chain.
+
+`CLAUDE.md` adds `/pairing` to the `han-core` catalog and gains a Collaborative working mode section pointing at the
+canonical stop rule and naming the skills that consume it.
+
+#### The planning and research artifacts behind the skill
+
+`docs/plans/pairing-skill/` records the specification, the implementation plan, and the decision, scope, and iteration
+artifacts, including the rename from `pair-with-me` and the boundary widening from code work to any kind of work.
+`docs/research/collaborative-output-style.md` and `docs/research/non-code-chunk-boundaries.md` carry the evidence the
+design rests on, both adversarially validated.
+
+### han-core v3.1.0
+
+#### /pairing builds work in reviewable pieces you steer
+
+`/pairing` splits a request into concerns, sorts each one, proposes a plan before any work starts, then builds one piece
+at a time and ends the turn after each. The pacing is the deliverable rather than an interruption in it, so the skill
+never continues past a stop to be helpful.
+
+Splitting comes before sorting. Two asks that produce two things you would check separately are two concerns, and
+changing code and answering a question about it are always separate however small either one is, because checking an
+edit means reading a diff and checking an answer means reading the answer. Bundled, the answer arrives before the edit
+it rests on has been verified. When the split is genuinely unclear the skill splits anyway and says so in the plan,
+where merging the two back costs you nothing.
+
+Each concern then sorts through an ordered test, first match winning: skill-backed when a flagged skill covers it,
+decision work when it produces a choice that commits you to something, prose work when it produces prose someone will
+read, and open-ended otherwise, where the plan supplies the boundaries with no rule behind them. Concerns sort
+independently, so one request routinely yields a skill-backed concern and a prose concern side by side. The skill never
+guesses the discipline for skill-backed work; it proposes an approach and waits.
+
+A stop leads with what you can check and keeps the reasoning below it, because a fluent explanation raises agreement
+without raising scrutiny, which is the failure the whole loop exists to prevent. For a piece the plan marked expensive
+to walk back, the skill asks what you expect before it builds, and declining is a complete answer. A running feedback
+record lands under your configured output directory, or beside the work under `.han/pairing/` when you have none, and
+the skill names which recorded entry shaped a later piece.
+
+#### The collaborative stop rule
+
+`han-core/references/collaborative-stop-rule.md` is the canonical contract behind the mode: how a skill detects the
+flag, what a stop presents and in what order, when the pre-build ask fires and what makes a choice expensive to walk
+back, how the response is recorded, and what to do with the answer. It is what makes a stop feel the same whichever
+skill performed it. `han-core/README.md` now separates the two kinds of thing the plugin carries, material other plugins
+consume and one working mode you invoke directly, and says that `/pairing` names a missing backing skill rather than
+substituting for it.
+
+### han-coding v3.2.0
+
+#### /tdd, /refactor, and /design-an-api hand control back when asked
+
+Each of the three gains one paragraph at a boundary it already had. `/tdd` stops after each behavior, `/refactor` after
+each named refactoring, and `/design-an-api` after each of its four dispatch rounds, with its two existing human gates
+untouched. Absent such a request an ordinary invocation is unchanged, so invoking any of them directly still runs
+straight through.
+
+The flag travels as a stated override in the invocation rather than as a named argument. All three skills carrying
+`arguments: size` already use the second positional slot for free text, so a second named positional would have collided
+with the subject you type. `/tdd` and `/refactor` already gated when a request asked to review before implementation,
+so the flag extends a mechanism they had rather than adding a parallel one.
+
+`/code-walkthrough` sharpens its boundary against the new mode: it paces through code that already exists and builds
+nothing, and its description now names `/pairing` for building new work while being paced through it. The two share
+their whole pacing vocabulary, which is what makes the boundary worth stating.
+
+`han-coding/references/collaborative-stop-rule.md` is vendored byte-identical from `han-core`.
+
+#### Three defects repaired in the documentation
+
+The reverse link threaded into `/design-an-api`'s long-form doc landed inside the "Repo root README" bullet rather than
+after it, splitting that sentence across two list items and orphaning the word "tree." below the pairing bullet. The
+spine-agent lead-in in the same file had been indented as a continuation of the preceding bullet since the dispatch
+pairings were recorded, so it rendered as part of the `/architectural-analysis` entry instead of introducing the list
+under it.
+
+`/design-an-api`'s collaborative paragraph carried both endings of a reworded sentence, reading "review each round as it
+closes as it lands". The other four flagged skills all read "as it lands", which is what it now says.
+
+### han-planning v2.2.0
+
+#### /iterative-plan-review and /plan-implementation stop between rounds
+
+Both skills run their rounds to completion today. Under the collaborative flag each stops at the end of a round and
+hands control back instead of starting the next, so you see each round's findings as they land rather than only the
+finished plan. The round's findings are what you can check and the plan edits it made are what changed. A redirect at
+such a stop does not consume a round against the cap, because a round is a unit of review work and a redirect is not.
+
+This is where the wrapper changes the most, since neither skill paused at all before. Both descriptions now say they run
+straight through when invoked directly and name `/pairing` for the round-by-round path.
+`han-planning/references/collaborative-stop-rule.md` is vendored byte-identical from `han-core`.
+
+### Pull requests in this release
+
+- feat(han-core): add the pairing collaborative working mode by
+  [@mxriverlynn](https://github.com/mxriverlynn) in https://github.com/testdouble/han/pull/179
+
+Full changelog:
+[CHANGELOG.md#v530](https://github.com/testdouble/han/blob/main/CHANGELOG.md#v530)
+
 ## v5.2.0
 
 han 5.2.0 adds two skills to the coding layer. `/design-an-api` designs the contract for an API change before anyone
