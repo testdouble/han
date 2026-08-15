@@ -338,7 +338,7 @@ case:
 
 ```
 Error: Shell command permission check failed for pattern
-"!`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`":
+"!`cat "${AGENT_CONFIG_DIR:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}/.han/config.md" 2>/dev/null || echo ""`":
 Permission for this action was denied by the Claude Code auto mode classifier.
 Reason: Blocked by classifier.
 ```
@@ -356,13 +356,13 @@ Note the error text differs from the two failure modes below and above: it names
 **Before (broken — probe reads outside the project):**
 
 ```markdown
-- personal config: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
+- personal config: !`cat "${AGENT_CONFIG_DIR:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}/.han/config.md" 2>/dev/null || echo ""`
 ```
 
 **After (correct — probe resolves the location only):**
 
 ```markdown
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`echo "${AGENT_CONFIG_DIR:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}"`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above.
 ```

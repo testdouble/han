@@ -4,12 +4,12 @@
 
 Han is a suite of AI skills and agents for solo (or small-team) product engineers. It combines evidence-based planning,
 test-driven implementation, full documentation maintenance, deep code review, and architectural analysis into a team of
-specialists you can dispatch from Claude Code.
+specialists you can dispatch from your agent harness, including Claude Code and Pi.
 
 ## What this plugin does
 
 Han turns planning, implementation, review, and documentation work that would normally take a team into a set of
-deterministic skills you run from Claude Code.
+deterministic skills you run from your agent harness.
 
 Each skill dispatches specialist agents, such as project managers, adversarial reviewers, investigators, architectural
 analysts, and testing and security specialists, to do the judgment-heavy work. It then folds their findings into an
@@ -91,6 +91,29 @@ codex plugin add han-reporting@han
 Install `han-feedback`, `han-atlassian`, `han-linear`, or `han-plugin-builder` separately when you want those opt-in
 packages. Because Codex resolves no dependencies, install `han-communication` alongside `han-atlassian` (its wrapped
 prose-producing skills source the shared readability standard from it).
+
+### Pi
+
+Han now ships a Pi marketplace manifest at `.agents/plugins/marketplace.json` with the same plugin set as the Claude
+marketplace, including `han`, `han-documentation`, `han-research`, and `han-linear`.
+
+If you are installing through Pi, use this repository's `.agents/plugins/marketplace.json` as the source of truth for
+available Han plugins.
+
+### Environment setup (optional)
+
+Han reads personal config from `{harness-config-root}/.han/config.md`. You can set `AGENT_CONFIG_DIR` to pick that
+harness config root explicitly, independent of which harness you are running under.
+
+```bash
+# one-off
+AGENT_CONFIG_DIR="$HOME/.config/agent" pi
+
+# persistent (zsh/bash profile)
+export AGENT_CONFIG_DIR="$HOME/.config/agent"
+```
+
+Without this variable, Han falls back to `CLAUDE_CONFIG_DIR` and then `~/.claude`.
 
 ## Documentation
 
