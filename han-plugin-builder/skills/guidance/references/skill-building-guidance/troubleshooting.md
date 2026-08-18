@@ -362,12 +362,66 @@ Note the error text differs from the two failure modes below and above: it names
 **After (correct — probe resolves the location only):**
 
 ```markdown
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above.
 ```
 
+The probe runs a script because naming an environment variable in probe text is refused outright. See the next section.
+
 See [Context Injection Commands](./context-injection-commands.md) for the full rule.
+
+## A Probe Naming an Environment Variable Is Refused
+
+**Symptom:** The skill aborts at load with
+
+```
+Shell command permission check failed for pattern "!`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`": Contains expansion
+```
+
+In a non-interactive run there is no symptom at all. A `claude -p` session exits successfully with `is_error: false`,
+an empty result, and zero model turns, and `--debug` prints nothing extra. A skill that appears to do nothing is the
+thing to recognize.
+
+**Cause:** The loader inspects the probe's text before running it. A bare `$HOME` is permitted; brace syntax is refused
+even for `$HOME`, and every other variable name is refused whether or not it exists. `printenv` is refused in any
+position. No `allowed-tools` grant changes this, because the refusal happens before any permission question is asked.
+
+Permission mode does not rescue it either. `default`, `plan`, `acceptEdits`, and `auto` all abort. Only
+`bypassPermissions` lets it through, which is why a probe can look fine in one session and break for everyone else.
+
+**Fix:** Move the variable into a script and run the script from the probe, behind a grant naming that exact command.
+
+```markdown
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
+```
+
+```yaml
+allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+```
+
+See [Context Injection Commands](./context-injection-commands.md) for the measured results table and the four
+conditions that form has to meet.
+
+## A Script Probe Aborts the Skill
+
+**Symptom:** The same silent abort as above, from a probe that runs a script and names no variable.
+
+**Cause:** One of two things, and both look identical from outside.
+
+1. **No matching grant.** A script probe is refused without one, even with no variable anywhere in the command.
+2. **The script is missing or failed.** An unguarded probe whose script does not exist, or exits non-zero, takes the
+   skill down exactly as a refused probe does.
+
+**Fix:** Grant the exact command in `allowed-tools`, and guard the invocation so a broken script degrades instead of
+aborting:
+
+```markdown
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
+```
+
+Verify a script probe as an installed plugin rather than as a local skill under `.claude/skills/`. `${CLAUDE_PLUGIN_ROOT}`
+is only defined inside a plugin, and the same line aborts outside one.
 
 ## Context Injection Syntax in Prose Triggers Execution
 
