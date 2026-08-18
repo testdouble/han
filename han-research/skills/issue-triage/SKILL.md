@@ -7,14 +7,14 @@ description: >
   paths — use investigate for debugging, diagnosis, and root cause analysis. Does not plan features or build solutions —
   use plan-a-feature or plan-implementation for that.
 argument-hint: "[issue text, bug report, or path to a report file; optional output path]"
-allowed-tools: Read, Write, Bash(find *), Bash(mkdir *)
+allowed-tools: Read, Write, Bash(find *), Bash(mkdir *), Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

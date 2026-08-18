@@ -9,7 +9,9 @@ description: >
   for full code review. Does not evaluate architectural testability or structural coupling — use architectural-analysis
   for architectural assessment.
 argument-hint: "[optional: file paths, directories, or description of what to test]"
-allowed-tools: Bash(git *), Bash(find *), Read, Grep, Glob, Agent
+allowed-tools:
+  Bash(git *), Bash(find *), Read, Grep, Glob, Agent,
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Operating Principles
@@ -38,7 +40,7 @@ allowed-tools: Bash(git *), Bash(find *), Read, Grep, Glob, Agent
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

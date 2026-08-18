@@ -7,12 +7,12 @@ description: >
   report, generate an HTML version of a summary doc, or produce a shareable HTML file from a summary markdown. Produces
   an HTML sibling file only; does not publish anything.
 argument-hint: "[path to stakeholder-summary.md]"
-allowed-tools: Read, Write
+allowed-tools: Read, Write, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

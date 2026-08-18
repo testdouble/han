@@ -8,14 +8,16 @@ description: >
   does not generate new plans from scratch — use plan-a-feature for a new plan.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [context or path to plan file]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
