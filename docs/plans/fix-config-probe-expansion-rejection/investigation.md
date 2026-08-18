@@ -26,7 +26,7 @@ then approve the Planned Fix or push back.
   to resolve the directory itself. No skill can do that: zero of the 42 have a Bash grant that reads an environment
   variable. The Read tool also expands `~` to the home directory rather than the configured one, so the run would have
   silently applied the wrong profile's config (V8, V9).
-- **Remaining Risks:** The fix adds a Bash grant to the 13 skills that carry none today, though the grant names one
+- **Remaining Risks:** The fix adds a Bash grant to the 5 skills that carry none today, though the grant names one
   exact command and does not widen what the run may execute (E30). It repeats that command text twice in every skill,
   so a later edit has 84 places to land. It also depends on `${CLAUDE_PLUGIN_ROOT}` being substituted before the
   permission check, which is loader behavior rather than a documented guarantee (E27). See the Confidence Assessment.
@@ -149,7 +149,7 @@ grants and repeated text rather than in lost behavior.
    `ln -s "$CLAUDE_CONFIG_DIR/.han" ~/.claude/.han`. This ships now and needs nothing from anyone who has not moved
    their directory.
 2. **Preserve the override with a new tool grant.** Delete the probe and add `Bash(printenv *)` to every skill so a run
-   step can read the variable. This keeps the override, but it adds a Bash grant to 42 skills, 13 of which deliberately
+   step can read the variable. This keeps the override, but it adds a Bash grant to 42 skills, 5 of which deliberately
    carry none today. It also rests on behavior I could not test, since a probe cannot stand in for a runtime tool call
    (V8, V11).
 3. **Run one shared script from the probe, under an explicit grant.** Keep a single script at the repository root,
@@ -245,7 +245,7 @@ No published behavior. The `CLAUDE_CONFIG_DIR` override keeps working, so the co
 configuration directory, a file left behind in `~/.claude/.han/` does not apply" stays true and `docs/configuration.md`
 needs no correction (E15).
 
-The cost is paid in the skill files instead. Thirteen skills that deliberately carry no Bash grant gain one, the probe
+The cost is paid in the skill files instead. Five skills that deliberately carry no Bash grant gain one, the probe
 line becomes harder to read than a bare `echo`, and the same command text lives in two places in each of 42 files.
 
 One degradation path is new. If the script is missing or fails, the guard falls back to `$HOME/.claude` even for someone
@@ -332,10 +332,11 @@ allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh"
   required, because a missing or failing script otherwise aborts the skill (E28). The grant needs to name only the
   `bash ...` half, because the `echo` half is separately auto-approvable (E28).
 
-  Thirteen of the 42 carry no Bash grant today and gain their first one: the three `han-communication` skills,
-  `han-coding` `tdd`, `refactor`, and `investigate`, four `han-atlassian` skills, `han-documentation` `runbook`,
-  `han-linear` `work-items-to-linear`, and `han-reporting` `html-summary`. The grant names one exact command and does
-  not widen what the run may execute (E30).
+  Five of the 42 carry no Bash grant today and gain their first one: `han-communication` `readability-guidance`,
+  `edit-for-readability`, and `explanation-guidance`, plus `han-coding` `investigate` and `han-reporting` `html-summary`.
+  The grant names one exact command and does not widen what the run may execute (E30). An earlier count put this at 13
+  by reading only the first line of each `allowed-tools` block; the eight skills that spell the value across
+  continuation lines already carry Bash grants (V16).
 
   The surrounding first-action paragraph keeps its current wording, because the label still names a resolved absolute
   directory. The complete file list is in E1. Two repo-maintenance skills under `.claude/skills/` carry their own
@@ -861,7 +862,8 @@ allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh"
 #### V8: Can any skill resolve the directory during the run?
 
 - **Hypothesis:** The first plan's replacement is executable, at least for skills holding a Bash grant.
-- **Investigation:** Read the `allowed-tools` line of all 42 skills. Thirteen carry no Bash pattern. The other 29 carry
+- **Investigation:** Read the `allowed-tools` line of all 42 skills. Thirteen appear to carry no Bash pattern, which
+  V16 later corrected to five. The other skills carry
   only scoped patterns such as `Bash(find *)`, `Bash(git *)`, `Bash(gh *)`, `Bash(jq *)`, and `Bash(ls *)`. A grep for
   any `printenv`, `env`, or bare `echo` grant returns zero across the repo.
 - **Result:** Confirmed, and worse than the draft stated. Zero of 42, not 13 of 42, can read an environment variable at
@@ -892,7 +894,7 @@ allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh"
 - **Hypothesis:** Moving `printenv` out of the probe and into a run step, behind an explicit `Bash(printenv *)` grant,
   would preserve the override and dodge the load-time check.
 - **Investigation:** The mechanism is sound in principle, since a run step's failure is recoverable where a probe's is
-  not. It requires adding a Bash grant to 42 skills, 13 of which deliberately carry none (V8). I could not test whether
+  not. It requires adding a Bash grant to 42 skills, 5 of which deliberately carry none (V8, corrected by V16). I could not test whether
   such a grant auto-approves, because a probe test cannot stand in for a runtime tool call.
 - **Result:** Partially Refuted as an immediate fix, and retained as the alternative.
 - **Impact:** Recorded as option 2 under "The decision this asks you to make", so the choice is yours rather than
@@ -919,7 +921,7 @@ allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh"
 #### V14: Does option 3's Bash grant hand the run general shell access?
 
 - **Hypothesis:** Adding `Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")` to a skill gives the model
-  broad Bash power during the run, which would be unacceptable in the 13 skills that carry no Bash grant today.
+  broad Bash power during the run, which would be unacceptable in the 5 skills that carry no Bash grant today.
 - **Investigation:** A skill holding the grant ran `whoami` with no permission denial, which supported the hypothesis.
   A control skill declaring only `allowed-tools: Read` ran `whoami` as well, so `whoami` was auto-approved regardless of
   the grant. A third skill holding the grant was denied `touch /tmp/<marker>`, recorded one permission denial, and
@@ -938,6 +940,18 @@ allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh"
 - **Result:** Partially Confirmed. The readback is unreliable; the load signal and the marker file are not.
 - **Impact:** Every option 3 claim now rests on the load signal (`num_turns`), on direct file-system inspection, or on
   the marker file (E29). The value readbacks are corroboration, not the evidence.
+
+#### V16: Is the count of skills carrying no Bash grant correct?
+
+- **Hypothesis:** The figure of 13 skills with no Bash grant, carried from V8 through every later pass, is right.
+- **Investigation:** V8 read the first line beginning `allowed-tools:` in each file. Eight of the 42 skills write that
+  value as a YAML plain scalar spread over continuation lines, so the first line is the bare key and the tools sit
+  underneath. Parsing the full value shows those eight all carry Bash grants already, among them `han-coding` `tdd` and
+  `refactor`, `han-documentation` `runbook`, and four `han-atlassian` skills.
+- **Result:** Refuted. Five skills carry no Bash grant, not 13: the three `han-communication` skills, `han-coding`
+  `investigate`, and `han-reporting` `html-summary`.
+- **Impact:** The main cost of options 2 and 3 is smaller than every earlier pass recorded. Corrected everywhere the
+  number appears.
 
 ### Adjustments Made
 
