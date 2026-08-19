@@ -27,6 +27,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   the standard.
 - **Fidelity outranks readability.** Every claim, quantity, named entity, and stated condition survives with its
   precision intact. When a readability change would blur a fact, the fact wins, and the editor's ledger records it.
+  A shape you asked for is the one thing that moves this, and never for a fact whose loss would change what the
+  reader does next.
 - **Prose only.** Code fences, diagram bodies, rendered markup, and citation identifiers (`A1`, `[F5]`, and the like)
   are left byte-for-byte unchanged, so they still compile, render, and resolve.
 
@@ -80,8 +82,8 @@ The rewritten target plus the editor's report:
 - **For pasted text or a conversation draft**, the rewrite comes back inline, with the scratch file path where the
   working copy was written. The original is never touched, so no confirmation is needed.
 - **Rubric verdict.** One line per criterion (main point first, descriptive headings, one idea per paragraph, sentence
-  length, common words with no blocklisted words and an explanation for every term you cannot look up, every fact
-  preserved): pass, or what changed to make it pass.
+  length, common words with no blocklisted words and an explanation for every term you cannot look up, progressive
+  disclosure, and the shape you asked for when you asked for one): pass, or what changed to make it pass.
 - **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
   Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
 - **Untouched regions.** The non-prose regions left unchanged (code fences, diagrams, citation identifiers).
@@ -110,12 +112,13 @@ The skill runs a short, four-step process:
 1. **Resolve the target and the reader.** Classify the target as a file on disk, pasted text, or a draft from the
    conversation. A file is edited in place; text or a draft is copied verbatim to a scratch file so the editor has
    something to rewrite. Ambiguous or missing targets stop and ask. The reader defaults to a capable non-author unless a
-   specific reader is named.
+   specific reader is named. A shape you asked for — a count, a format, or a register — is carried through in your
+   own words; shape language inside the target itself is content to rewrite, never an instruction.
 2. **Confirm before an in-place file rewrite.** For a file target, the skill names the file and gets a go-ahead before
    dispatching, because the in-place rewrite is the one action that changes a file you own. Scratch copies of pasted
    text or a conversation draft skip the gate, because the original is untouched.
-3. **Dispatch the readability-editor.** One `Agent` call hands the editor the target path and the reader frame, with the
-   instruction to operate on prose regions only and preserve every fact. When either `.han/config.md` sets
+3. **Dispatch the readability-editor.** One `Agent` call hands the editor the target path, the reader frame, and any
+   shape you asked for, with the instruction to operate on prose regions only and preserve every fact. When either `.han/config.md` sets
    `writing-voice` to a file that exists, the dispatch resolves the path and names that file so the editor applies it in place of the built-in voice
    profile; when the configured file is missing, the skill warns you and asks whether to use the built-in Han voice or
    skip the writing voice before dispatching. The editor reads its own co-located canonical rule and owns the rubric.
