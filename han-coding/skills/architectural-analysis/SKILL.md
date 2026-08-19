@@ -10,7 +10,7 @@ description:
   design-an-api. Not for writing documentation or architectural decision records."
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [focus area: module, directory, or feature to analyze]"
-allowed-tools: Read, Glob, Grep, Agent, Bash(find *)
+allowed-tools: Read, Glob, Grep, Agent, Bash(find *), Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
@@ -18,7 +18,7 @@ allowed-tools: Read, Glob, Grep, Agent, Bash(find *)
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

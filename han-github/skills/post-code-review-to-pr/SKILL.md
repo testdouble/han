@@ -6,7 +6,9 @@ description: >
   GitHub as PR comments. For local code review without posting to GitHub, use code-review instead. Does not write or
   update PR descriptions — use update-pr-description for that.
 argument-hint: "[optional context about the PR or areas to focus on]"
-allowed-tools: Bash(jq *), Bash(gh *), Bash(git *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Skill, Agent
+allowed-tools:
+  Bash(jq *), Bash(gh *), Bash(git *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Skill, Agent,
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 When running a PR code review, follow the process outlined here.
@@ -24,7 +26,7 @@ be installed. In either case, immediately stop.
 - current branch: !`git branch --show-current 2>/dev/null || echo unknown`
 - default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 - changed files: !`gh pr diff --name-only 2>/dev/null || echo "no pr"`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

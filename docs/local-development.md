@@ -5,19 +5,13 @@ your branch are immediately available in any Claude instance on your machine.
 
 ## Setup
 
-### 1. Install the git hook
+### 1. Set up the repo
 
-Run this once after cloning:
+If you have not already, follow [Setting up your environment](../CONTRIBUTING.md#setting-up-your-environment) in the
+contributor guide. One `npm install` pins the dev tools locally, and `npx prek install` wires up the pre-commit hooks.
 
-```bash
-./install-hooks.sh
-```
-
-This installs a pre-push hook that automatically rebuilds `dist/claude-marketplace/` and `marketplace.json` before each
-push.
-
-If the hook finds that those generated files changed, it commits them and asks you to push again, so the generated
-commit is included.
+There is no build step. The marketplace manifest at `.claude-plugin/marketplace.json` is checked in and read as it is,
+so nothing has to be generated before Claude Code can see your plugins.
 
 ### 2. Open Claude from the repo root
 
@@ -49,6 +43,21 @@ If you previously installed `testdouble/han` from GitHub, remove it so it doesn'
 2. Switch to the **Marketplace** tab (singular: this is the plugin browser, not the marketplace config tab)
 3. Find and select the plugin you want to test
 4. Install it in **user scope** so it's available across all your Claude instances, not only this project
+
+### Doing it from the command line
+
+The `/plugin` steps above have `claude plugin` equivalents, which are quicker when you already know what you want:
+
+```bash
+claude plugin marketplace add ./                     # step 4, from the repo root
+claude plugin install han-coding@han --scope user    # step 5, one plugin
+claude plugin list                                   # what is installed now
+claude plugin details han-coding@han                 # component inventory and token cost
+claude plugin uninstall han-coding@han               # remove it again
+claude plugin marketplace remove han                 # remove the local marketplace
+```
+
+`claude plugin validate <path>` checks a plugin or marketplace manifest without installing anything.
 
 ## Workflow
 

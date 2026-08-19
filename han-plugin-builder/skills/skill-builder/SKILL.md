@@ -7,12 +7,14 @@ description: >
   fix it finds. Use when creating, authoring, scaffolding, designing, or drafting a new skill or slash command. Does not
   build an agent or subagent — use agent-builder. Does not serve, vendor, or refresh the authoring guidance itself — use
   guidance.
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), Bash(mkdir *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Bash(find *), Bash(mkdir *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
