@@ -166,12 +166,13 @@ Open the file you just wrote and confirm:
 Then run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the report's PROSE content only — never inside HTML tags, attributes,
 class names, mermaid/diagram bodies, or code. The visual layout stays governed by the existing layout conventions. This
-skill runs no rewrite pass, so this self-check is the fidelity guard on the prose; criterion 6 is not optional. Confirm
-each criterion and fix any failure before finalizing:
+skill runs no rewrite pass, so this self-check is the fidelity guard on the prose; the fidelity criterion is not
+optional. Confirm each criterion and fix any failure before finalizing:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before Step 6. Its fidelity criterion is not optional:
-the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before Step 6. Its fidelity criterion is not optional: the standard governs how
+the content is said, and drops a required fact only when the reader asked for less and losing it would not change what
+they do next.
 
 The vocabulary blocklist for this skill is the shared one plus its supplementary domain terms in
 [writing-conventions.md](./references/writing-conventions.md).

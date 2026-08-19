@@ -291,10 +291,11 @@ W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (D
 Justification, References, Design references), which must survive unchanged so they still resolve. Confirm each criterion
 and fix any failure before writing:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
-separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next. This skill runs no separate editor pass, so the fidelity criterion is the only fact-preservation
+guard the output has, and it is not optional.
 
 Write incrementally per the operating principle: write the title and intro first, then append each work item as it is
 finalized. Save after each.

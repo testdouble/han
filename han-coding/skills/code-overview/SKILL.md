@@ -379,7 +379,7 @@ your context from `han-communication:readability-guidance`) over the overview's 
 Mermaid chart bodies, code fences, screenshot markup, or file/symbol references. Confirm each criterion and fix any
 failure before presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
+Run the readability rule's standardized self-check, which is already in your context from the
 `readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
 optional: the standard governs how the content is said, never whether a required fact about the code appears.
 

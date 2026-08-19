@@ -363,10 +363,10 @@ The editor reads han-communication's own canonical rule, so pass no rule path. I
 regions only — never inside code fences, pseudocode sketches, type signatures in code blocks, or finding-ID and
 `file:line` citation identifiers. Apply its rewrite to the file.
 
-Then run the readability rule's standardized six-point self-check, which is in your context from the
-`readability-guidance` invocation above, over the document's prose regions only. Correct every failure before
-presenting. Its fidelity criterion is not optional: the standard governs how the content is said, never whether a
-required fact appears.
+Then run the readability rule's standardized self-check, which is in your context from the `readability-guidance`
+invocation above, over the document's prose regions only. Correct every failure before presenting. Its fidelity
+criterion is not optional: the standard governs how the content is said, and drops a required fact only when the reader
+asked for less and losing it would not change what they do next.
 
 ## Step 11: Present the Design
 

@@ -231,8 +231,10 @@ Fix any issues found before presenting the runbook to the user.
 Run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the runbook's prose regions only — never inside code fences, command
 blocks, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity
-guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
+guard on the output; the fidelity criterion is not optional. Confirm each criterion and fix any failure before
+presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.

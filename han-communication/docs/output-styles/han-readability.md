@@ -69,7 +69,7 @@ Two guards outrank the rest. Fidelity wins, so no claim, quantity, named entity,
 blurred to read more simply. Prose is the only target, so code fences, diagram bodies, rendered markup, and citation
 identifiers pass through untouched and still compile, render, and resolve.
 
-The style closes with the same six-criterion self-check the rule carries, run over the draft before it is presented.
+The style closes with the same self-check the rule carries, run over the draft before it is presented.
 
 ## What it does not reach
 
