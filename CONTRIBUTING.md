@@ -171,6 +171,10 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
    - Frontmatter with `name`, `description`, `allowed-tools`. See
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
+   - If the skill reads `.han/config.md`, copy the `personal config directory` probe and its matching
+     `Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")` grant from any existing skill. The probe must
+     run that script rather than name an environment variable, or the loader refuses it and the skill never runs.
+     See [context-injection-commands.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/context-injection-commands.md).
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `{plugin}/docs/skills/{name}.md` and
    fill it in. Every skill gets a long-form doc. If the skill runs inline in a calling skill's context and returns no
    artifact, follow the inline-guidance variant in the

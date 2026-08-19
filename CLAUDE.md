@@ -75,6 +75,7 @@ han-plugin-builder skill:
 │   │   └── plugin.json
 │   ├── .codex-plugin/
 │   │   └── plugin.json    # Codex-format manifest; every plugin except han and han-linear carries one (omitted from the entries below)
+│   ├── scripts/        # han-config-dir.sh, a symlink to the repo-root script; every plugin except han carries one (omitted from the entries below), and each skill's `personal config directory` probe runs it
 │   ├── agents/         # readability-editor agent definition
 │   ├── skills/         # readability-guidance + explanation-guidance (both inline, each surfaces one standard) + edit-for-readability
 │   ├── output-styles/  # han-readability.md: the readability rule and writing voice distilled into a selectable output style (auto-discovered default location; no plugin.json field)
@@ -175,6 +176,7 @@ han-plugin-builder skill:
 │   ├── templates/      # Templates and coverage rule for long-form docs
 │   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
 │   └── research/       # Standalone research reports not tied to a specific plan
+├── scripts/            # Repo-root shared scripts every plugin symlinks to (han-config-dir.sh, with its Bats tests beside it)
 ├── test/               # Harness-level Bats checks (a script's own tests sit beside it)
 └── images/             # Banner and graphics for README
 ```
@@ -314,7 +316,7 @@ All three are owned by `han-planning`, not vendored. Each opens by saying so.
 ## Project Discovery
 
 - Default branch: `main`
-- Language: Markdown (skill, agent, and doc content) and Bash (skill `scripts/`)
+- Language: Markdown (skill, agent, and doc content) and Bash (skill `scripts/`, plus the shared repo-root `scripts/`)
 - Package manager: npm. The root `package.json` manages dev tooling only; there is no application build or dev server.
 - Install: `npm install` installs prek, Prettier, and Bats locally, with nothing on the global PATH.
 - Lint: `npm run lint` runs `prek run --all-files` (Prettier, ShellCheck, and file-hygiene hooks).
