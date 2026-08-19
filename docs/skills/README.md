@@ -33,6 +33,9 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   step at a time in conversation, from the entry point along the flow, stopping after every step so they set the pace.
 - [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md) — Create and update coding standards from
   existing patterns or evidence-based research.
+- [`/ddd-analysis`](../../han-ddd/docs/skills/ddd-analysis.md) — Analyze a codebase through a DDD lens and produce an
+  evidence-backed domain and context map that distinguishes strongly expressed boundaries from latent ones,
+  speculative hypotheses, and contested ownerships.
 - [`/design-an-api`](../../han-coding/docs/skills/design-an-api.md) — Design the contract for an API change inside one
   codebase, with every element justified from one stated goal and the design run past a question round and an
   adversarial validation round.
