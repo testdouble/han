@@ -6,8 +6,10 @@ Findings from the review team dispatched against
 - **Specification under review:** [../feature-specification.md](../feature-specification.md)
 - **Decision log:** [decision-log.md](decision-log.md)
 - **Scope boundary:** [scope-boundary.md](scope-boundary.md)
-- **Feature size:** pending
-- **Reviewers dispatched:** pending
+- **Feature size:** Medium. Escalated past the default small band because the change reaches 21 skills
+  across seven plugins and reopens a design closure the repository made on purpose.
+- **Reviewers dispatched:** `han-core:junior-developer`, `han-core:edge-case-explorer`,
+  `han-core:user-experience-designer`
 
 ## Findings
 
