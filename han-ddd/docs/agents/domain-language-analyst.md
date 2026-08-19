@@ -14,8 +14,8 @@ instructions and output format, read the agent definition at
   vocabulary clusters, semantic collisions (the same term with different meanings in different parts of the system),
   synonyms, technical obscuration, and invariant divergences. Each finding is independently traceable to repository
   evidence.
-- **When to use it.** Dispatched by `/ddd-analysis` in parallel with the other discovery agents. Invoke directly
-  only when you want to survey a codebase for DDD language signals without running a full domain map.
+- **When to use it.** Dispatched by `/ddd-analysis` in parallel with the four other discovery agents. Invoke
+  directly only when you want to survey a codebase for DDD language signals without running a full domain map.
 - **What you get back.** Numbered DL# findings, each with a signal type, verbatim term evidence, file paths, and a
   language observation; plus a Language Summary.
 
@@ -26,7 +26,7 @@ instructions and output format, read the agent definition at
   dimensions yielded evidence and which did not.
 - **Semantic collision is the highest-priority signal.** When the same term carries materially different meanings in
   different parts of the system, that divergence is a strong signal that two areas of the codebase model the concept
-  differently. These findings are the most useful input to the domain-map synthesizer.
+  differently. These findings are the most useful input to bounded-context-modeler.
 - **Verbatim vocabulary.** The agent quotes domain vocabulary exactly as it appears in the code. Renaming or
   normalizing terms would lose the evidence — the exact words are the finding.
 - **Language evidence only.** This agent does not propose bounded contexts, evaluate whether vocabulary clusters
@@ -43,10 +43,8 @@ instructions and output format, read the agent definition at
 
 **Do not dispatch for:**
 
-- **Classifying bounded context candidates.** Use [`bounded-context-analyst`](./bounded-context-analyst.md) to
-  produce BC# findings organized by classification tier.
-- **Synthesizing a domain map.** Use [`domain-map-synthesizer`](./domain-map-synthesizer.md) to turn BC# and DL#
-  findings into a structured context map.
+- **Constructing bounded context proposals.** Use [`bounded-context-modeler`](./bounded-context-modeler.md) after
+  all discovery agents have completed.
 - **Static coupling or SOLID analysis.** Use `han-core:structural-analyst` instead.
 - **Runtime data flow.** Use `han-core:behavioral-analyst` instead.
 
@@ -83,15 +81,18 @@ evidence gaps.
 ## Cost and latency
 
 Model tier: Sonnet. The agent reads across the full analysis scope, which makes it one of the more time-intensive
-steps in the `/ddd-analysis` run on large repositories. It runs in parallel with `bounded-context-analyst`, `business-capability-analyst`, and
-`domain-ownership-analyst` — all four complete before the `domain-map-synthesizer` begins.
+steps in the `/ddd-analysis` run on large repositories. It runs in parallel with `business-capability-analyst`,
+`domain-ownership-analyst`, `han-core:structural-analyst`, and `han-core:behavioral-analyst` — all five complete
+before `bounded-context-modeler` begins.
 
 ## Related documentation
 
 - [Plugin README](../../README.md). The han-ddd plugin front door.
 - [Repo root README](../../../README.md). The Han suite landing page.
 - [`/ddd-analysis`](../skills/ddd-analysis.md). The skill that dispatches this agent.
-- [`bounded-context-analyst`](./bounded-context-analyst.md). The companion discovery agent, run in parallel, that
-  classifies BC candidates from structural signals.
-- [`domain-map-synthesizer`](./domain-map-synthesizer.md). The synthesis agent that consumes BC#, DL#, CAP#, and OWN#
-  findings.
+- [`business-capability-analyst`](./business-capability-analyst.md). The companion discovery agent that surfaces
+  behavioral capabilities.
+- [`domain-ownership-analyst`](./domain-ownership-analyst.md). The companion discovery agent that surfaces ownership
+  evidence.
+- [`bounded-context-modeler`](./bounded-context-modeler.md). The synthesis agent that reads all discovery findings
+  and proposes bounded contexts.

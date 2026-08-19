@@ -37,8 +37,8 @@ requires a
 configured Atlassian MCP server, and is likewise _not_ bundled by the `han` meta-plugin), `han-linear` (an opt-in
 plugin carrying the work-items-to-Linear skill, which depends on no other Han plugin, requires a configured Linear MCP
 server, and is likewise _not_ bundled by the `han` meta-plugin), `han-ddd` (an opt-in plugin carrying the
-`ddd-analysis` skill plus the `bounded-context-analyst`, `bounded-context-critic`, `bounded-context-modeler`,
-`business-capability-analyst`, `domain-language-analyst`, `domain-map-synthesizer`, and
+`ddd-analysis` skill plus the `bounded-context-critic`, `bounded-context-modeler`,
+`business-capability-analyst`, `domain-language-analyst`, and
 `domain-ownership-analyst` agents — strategic Domain-Driven Design analysis for discovering bounded context
 candidates, business capabilities, domain language signals, and domain ownership patterns, constructing and
 evaluating semantic bounded context models, and producing a domain and context map; depends on
@@ -153,13 +153,13 @@ han-plugin-builder skill:
 │   ├── skills/         # Linear skill directory, with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/work-items-to-linear.md
 │   └── references/     # Vendored config-rule.md
-├── han-ddd/            # Opt-in DDD analysis plugin: ddd-analysis skill + bounded-context-analyst, bounded-context-critic, bounded-context-modeler, business-capability-analyst, domain-language-analyst, domain-map-synthesizer, and domain-ownership-analyst agents (depends on han-communication and han-core; NOT bundled by the han meta-plugin)
+├── han-ddd/            # Opt-in DDD analysis plugin: ddd-analysis skill + bounded-context-critic, bounded-context-modeler, business-capability-analyst, domain-language-analyst, and domain-ownership-analyst agents (depends on han-communication and han-core; NOT bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── .codex-plugin/
 │   │   └── plugin.json
-│   ├── agents/         # bounded-context-analyst and domain-map-synthesizer agent definitions
+│   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # ddd-analysis skill directory, with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/ddd-analysis.md + docs/agents/{name}.md
 │   └── references/     # Vendored config-rule.md, evidence-rule.md, yagni-rule.md

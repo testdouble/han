@@ -13,9 +13,8 @@ instructions and output format, read the agent definition at
 - **What it does.** Reads a codebase and surfaces cohesive business capabilities — what the business actually
   does — expressed as behavioral verb phrases. Explicitly distinguishes behavioral capabilities from CRUD groupings
   and entity decomposition, which it treats as discovery failure modes.
-- **When to use it.** Dispatched by `/ddd-analysis` in parallel with `bounded-context-analyst`,
-  `domain-language-analyst`, and `domain-ownership-analyst`. Invoke directly when you want raw capability evidence
-  without running a full domain map.
+- **When to use it.** Dispatched by `/ddd-analysis` in parallel with the four other discovery agents. Invoke
+  directly when you want raw capability evidence without running a full domain map.
 - **What you get back.** Numbered CAP# findings, each with a verb-phrase capability name, behavioral evidence,
   key responsibilities, important concepts, state or lifecycle signals, and adjacent capability relationships; plus
   a Capability Summary.
@@ -44,12 +43,10 @@ instructions and output format, read the agent definition at
 
 **Do not dispatch for:**
 
-- **Classifying bounded context candidates.** Use [`bounded-context-analyst`](./bounded-context-analyst.md) to
-  produce BC# findings organized by classification tier.
 - **Language signals and vocabulary.** Use [`domain-language-analyst`](./domain-language-analyst.md) to produce
   DL# findings.
-- **Synthesizing a domain map.** Use [`domain-map-synthesizer`](./domain-map-synthesizer.md) to turn discovery
-  findings into a structured context map.
+- **Constructing bounded context proposals.** Use [`bounded-context-modeler`](./bounded-context-modeler.md) after
+  all discovery agents have completed.
 - **Static coupling or SOLID analysis.** Use `han-core:structural-analyst` instead.
 - **Runtime data flow.** Use `han-core:behavioral-analyst` instead.
 
@@ -85,17 +82,18 @@ signals, any areas where CRUD structure was found but no behavioral capability w
 ## Cost and latency
 
 Model tier: Sonnet. The agent reads across the full analysis scope, which makes it one of the more time-intensive
-steps in the `/ddd-analysis` run on large repositories. It runs in parallel with `bounded-context-analyst`, `domain-language-analyst`, and `domain-ownership-analyst` —
-all four complete before the `domain-map-synthesizer` begins.
+steps in the `/ddd-analysis` run on large repositories. It runs in parallel with `domain-language-analyst`,
+`domain-ownership-analyst`, `han-core:structural-analyst`, and `han-core:behavioral-analyst` — all five complete
+before `bounded-context-modeler` begins.
 
 ## Related documentation
 
 - [Plugin README](../../README.md). The han-ddd plugin front door.
 - [Repo root README](../../../README.md). The Han suite landing page.
 - [`/ddd-analysis`](../skills/ddd-analysis.md). The skill that dispatches this agent.
-- [`bounded-context-analyst`](./bounded-context-analyst.md). The companion discovery agent that classifies BC
-  candidates from structural signals.
-- [`domain-language-analyst`](./domain-language-analyst.md). The companion discovery agent that surfaces
-  language signals.
-- [`domain-map-synthesizer`](./domain-map-synthesizer.md). The synthesis agent that consumes BC#, DL#, CAP#, and
-  OWN# findings into a domain and context map.
+- [`domain-language-analyst`](./domain-language-analyst.md). The companion discovery agent that surfaces language
+  signals.
+- [`domain-ownership-analyst`](./domain-ownership-analyst.md). The companion discovery agent that surfaces ownership
+  evidence.
+- [`bounded-context-modeler`](./bounded-context-modeler.md). The synthesis agent that reads all discovery findings
+  and proposes bounded contexts.
