@@ -46,7 +46,9 @@ presented as build-blocking on the strength of that input.
 - **Evidence:** Issue #177 records the failure as multi-turn: "four turns for a request fully specified in
   turn one." The specification's third alternate flow covers only "the reader stated nothing," never "the
   reader stated something five turns ago."
-- **Resolution:** Escalated to the user. See the escalation register.
+- **Resolution:** Escalated to the user, who chose the per-answer scope
+  ([D10](decision-log.md#d10-a-shape-request-governs-the-answer-it-came-with-and-nothing-after-it)). The
+  consequence is recorded in that decision: the reader restates the shape on each turn they want it.
 
 ### F2: The silent drop is bounded by logical consistency, not by consequence (major)
 
@@ -59,7 +61,9 @@ presented as build-blocking on the strength of that input.
   on to be true." Nothing addresses materiality. Issue #177 names the same undefined word as the original
   bug: "'required' is never defined against the reader's request, so every fact in the source reads as
   required."
-- **Resolution:** Escalated to the user. See the escalation register.
+- **Resolution:** Escalated to the user, who set a consequence floor
+  ([D11](decision-log.md#d11-a-fact-stays-when-losing-it-would-change-what-the-reader-does-next)). A fact stays
+  when losing it would change what the reader does next.
 
 ### F3: The override's reach into a committed file is undefined, and collides with a project convention (major)
 
@@ -72,7 +76,10 @@ presented as build-blocking on the strength of that input.
   No em-dashes, direct second person, no flattery or hype." The readability rule names specifications, plans,
   coding standards, and test plans as reader-facing. Both escalation questions that settled D2 and D4 were
   framed around a conversational answer, confirmed above.
-- **Resolution:** Escalated to the user. See the escalation register.
+- **Resolution:** Escalated to the user, who extended the override to committed files
+  ([D12](decision-log.md#d12-the-override-reaches-a-committed-file-not-only-a-conversational-answer)). The
+  collision with the project's uniform-voice convention is filed as OI-1 in the specification rather than
+  resolved here.
 
 ### F4: Shape language inside quoted material can be read as the reader's own request (major)
 
@@ -270,15 +277,38 @@ presented as build-blocking on the strength of that input.
   says what it covers, and narrows the source rather than the shape. An audience request names who is reading
   and already routes to the audience frame, where it stays. Written into Actors and Triggers.
 
+### F23: A literal reading of the silence would forbid answering a direct question (major)
+
+- **Raised by:** UX-002
+- **Substance:** A reader who suspects something is missing has one move in a conversation: ask. The draft
+  never said what happens then. Under "the run says nothing about the drop," a run reading its instruction
+  literally would decline to enumerate the omission even when asked point-blank, turning an undisclosed
+  omission into an unrecoverable one.
+- **Resolution:** Resolved from the escalation record rather than by asking again. Both escalation questions
+  that settled D4 were about the run volunteering a note; neither asked whether a direct question gets an
+  answer. The silence covers unprompted disclosure only. Written into the specification's User Interactions
+  section and its edge-case table.
+
+### F24: Three different phrasings for what the request outranks (minor)
+
+- **Raised by:** EC4
+- **Substance:** The draft said "every other rule in the standard" in one place, "the structural rules" in
+  another, and carved out a skill's required template in a third, without naming the carve-out as an
+  exception to the earlier blanket wording. A reader following the first two could conclude a shape request
+  may collapse a plan's required headings.
+- **Resolution:** Resolved by evidence. The specification now says "the structural criteria" consistently for
+  the standard's own listed checks, and states the template rule as its own edge-case row rather than as an
+  unmarked exception.
+
 ## Escalation Register
 
 | Question asked | Answer | Where it landed |
 | -------------- | ------ | --------------- |
 | When your stated shape collides with the standard's banned-word list, which wins? Three options offered: shape only, everything, or only when you name the word. | "Your request wins on everything" | [D2](decision-log.md#d2-an-explicit-reader-request-outranks-every-other-criterion) |
 | When a fact is dropped because you asked for less, are you told, and where does the note go? Three options offered: a note below the shape, a note counted against the shape, or no note. | "Drop it silently." | [D4](decision-log.md#d4-a-simplification-request-lets-facts-move-or-drop-and-the-drop-is-silent) |
-| F1: How long does a stated shape stay in force? | pending | pending |
-| F2: Is any class of fact never droppable, beyond one another sentence depends on? | pending | pending |
-| F3: Does the override reach a file that gets committed, or only a conversational answer? | pending | pending |
+| F1: How long does a stated shape stay in force? Three options offered: the rest of the session until superseded, the answer it came with only, or until the topic changes. | "It holds only for the answer it came with." | [D10](decision-log.md#d10-a-shape-request-governs-the-answer-it-came-with-and-nothing-after-it) |
+| F2: Is any class of fact never droppable, beyond one another sentence depends on? Three options offered: a consequence floor, the existing rule only, or a named category list. | "A fact stays when leaving it out would change what you'd do next." | [D11](decision-log.md#d11-a-fact-stays-when-losing-it-would-change-what-the-reader-does-next) |
+| F3: Does the override reach a file that gets committed, or only a conversational answer? Three options offered: conversational only, both, or prose but not facts. | "both" | [D12](decision-log.md#d12-the-override-reaches-a-committed-file-not-only-a-conversational-answer) |
 
 ## Resolved without escalation
 
