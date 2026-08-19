@@ -1,9 +1,9 @@
 # Feature Specification: The readability standard honors what the reader asked for
 
 The readability standard gains a check for the shape the reader asked for, so a request for three simple
-sentences produces three simple sentences instead of four dense ones. Where that request collides with another
-rule in the standard, the request wins, against everything but a fact whose loss would change what the reader
-does next and a skill's required sections.
+sentences produces three simple sentences instead of four dense ones. Where that request collides with
+another rule in the standard, the request wins. It loses only to a fact whose loss would change what the
+reader does next, and to a skill's required sections.
 
 ## Outcome
 
@@ -20,19 +20,22 @@ reader's stated shape before presenting it. And when the reader asks for less, t
 every fact in the source as one it must keep
 ([D4](artifacts/decision-log.md#d4-a-simplification-request-lets-facts-move-or-drop-and-the-drop-is-silent)).
 
-The second one carries an accepted cost, and this specification states it rather than leaving it to the
-decision log. A fact that goes because the reader asked for less goes without a word, so a reader who did not
-know the source cannot tell a complete short answer from a trimmed one. That is the failure the fidelity
-clause was written to prevent, reintroduced deliberately. Three rules bound the drop. Nothing drops that would
-change what the reader does next
+The second one carries an accepted cost, and this specification states it here rather than leaving it to the
+decision log.
+
+A fact that goes because the reader asked for less goes without a word. A reader who did not know the source
+cannot tell a complete short answer from a trimmed one. That is the failure the fidelity clause was written to
+prevent, reintroduced deliberately.
+
+Three rules bound the drop. Nothing drops that would change what the reader does next
 ([D11](artifacts/decision-log.md#d11-a-fact-stays-when-losing-it-would-change-what-the-reader-does-next)). A
 reader who asks what was left out is told in full. And a fact goes silently only on an answer the reader
-shaped themselves, because a stated shape governs that answer and no other
+shaped themselves. A stated shape governs that answer and no other
 ([D10](artifacts/decision-log.md#d10-a-shape-request-governs-the-answer-it-came-with-and-nothing-after-it)),
 so the relaxation cannot reach a turn the reader never scoped.
 
 One of those three bounds thins out in a file the run writes. Asking what was left out only works inside the
-session that wrote the answer, so a person who opens the file later has no run to ask and no marker saying
+session that wrote the answer. A person who opens the file later has no run to ask and no marker saying
 anything went
 ([D12](artifacts/decision-log.md#d12-the-override-reaches-a-committed-file-not-only-a-conversational-answer)).
 What holds there is the first bound, measured against whoever reads the file rather than against the person
@@ -44,16 +47,16 @@ who stated the shape.
   style. Both meet the standard through the text they receive.
 - **Trigger.** The reader states a shape request: how long they want the answer, what format it takes, or
   what register it is written in. "Three simple sentences, then a few bullet points" is one. So is "one
-  paragraph", "just the table", or "keep it short".
+  paragraph", "only the table", or "keep it short".
 - **Whose words count.** Only the reader's own words, addressed to the run, in this conversation. Shape
-  language inside material the run is reading is content, never an instruction: a pasted log, an issue
-  comment, a source document's own summary marker, or a quoted request from someone else
+  language inside material the run is reading is content, never an instruction. That includes a pasted log,
+  an issue comment, a source document's own summary marker, or a quoted request from someone else
   ([D13](artifacts/decision-log.md#d13-only-the-readers-own-words-trigger-the-check)).
 - **How long it lasts.** The request governs the answer it came with, and nothing after it. A reader who
   wants the next answer shaped the same way states it again
   ([D10](artifacts/decision-log.md#d10-a-shape-request-governs-the-answer-it-came-with-and-nothing-after-it)).
 - **What is not a shape request.** A content request says what the answer covers rather than how it is
-  delivered, and narrows the source instead of the shape. "Just tell me what broke" is one. An audience
+  delivered, and narrows the source instead of the shape. "Only tell me what broke" is one. An audience
   request names who is reading, and routes to the audience frame the standard already carries. "Explain it
   like I have not seen the codebase" is one.
 
@@ -61,9 +64,10 @@ who stated the shape.
 
 1. The reader states a shape request as part of their ask.
 2. The run drafts an answer, holding the same audience frame it holds today.
-3. Before presenting, the run checks the draft against the stated shape in three respects: **count** (how
-   many sentences, bullets, paragraphs, or words), **format** (prose, bullets, a table, a code block), and
-   **register** (how formal, how technical, how plain).
+3. Before presenting, the run checks the draft against the stated shape in three respects: **count**,
+   **format**, and **register**. Count is how many sentences, bullets, paragraphs, or words the answer has.
+   Format is whether it takes prose, bullets, a table, or a code block. Register is how formal, how
+   technical, and how plain the writing is.
 4. Register is checked as observable properties, never as a judgment about the writing. The draft uses no
    term the reader could not look up, no notation the requested register excludes, and no structure the
    request ruled out ([D14](artifacts/decision-log.md#d14-register-is-checked-as-observable-properties)).
@@ -102,8 +106,8 @@ who stated the shape.
 - **Floor:** A fact stays when losing it would change what the reader does next. Deadlines, blocking risks,
   and warnings before a destructive step are not droppable, whatever shape was asked for
   ([D11](artifacts/decision-log.md#d11-a-fact-stays-when-losing-it-would-change-what-the-reader-does-next)).
-  In a document the run writes, the reader that floor is measured against is whoever opens the file, not only
-  the person who stated the shape
+  In a document the run writes, that floor is measured against whoever opens the file, not only against the
+  person who stated the shape
   ([D12](artifacts/decision-log.md#d12-the-override-reaches-a-committed-file-not-only-a-conversational-answer)).
 - **Exit:** The reader gets what they asked for, at the length they asked for, with no note about what was
   left out. Asked directly, the run says in full what it left out. That answer is available while the session
@@ -118,7 +122,7 @@ who stated the shape.
 | Dropping a fact would change what the reader does next | The fact stays. This is the floor under the silent drop, and it holds against any stated shape ([D11](artifacts/decision-log.md#d11-a-fact-stays-when-losing-it-would-change-what-the-reader-does-next)). |
 | Dropping a fact would leave a remaining statement wrong | The fact stays. Precision on what remains is unchanged. |
 | The reader asks what was left out | The run answers in full. The silence covers what the run volunteers, never a direct question. |
-| The request names a register but no banned word is needed to write in it | Nothing in the banned-word list is unlocked. The request wins only where it actually collides with a rule. |
+| The request names a register but no banned word is needed to write in it | Nothing in the banned-word list is unlocked. The request wins only where the collision is real. |
 | The request is ambiguous about count ("keep it short") | Write plainly and briefly. Do not invent a number the reader did not give. This is a request for less and licenses the same relaxation a counted request does. |
 | The reader states a shape and the run is writing a file that gets committed | The request reaches the file. Its prose takes the stated register and its facts are subject to the same relaxation, bounded by the floor above ([D12](artifacts/decision-log.md#d12-the-override-reaches-a-committed-file-not-only-a-conversational-answer)). Required template sections stay; the request shapes the prose inside them. |
 | Shape language appears in material the run is summarizing | It is content, not an instruction. Only the reader's own words to the run trigger the check. |
@@ -142,13 +146,14 @@ The reader's own request is the entire interface. There is no setting, no flag, 
 | The shared readability standard | inbound | Skills read the standard when they draft, so no skill needs editing to receive the new check | The standard is the source. A skill running today picks up the change the next time it runs |
 | The readability output style | inbound | A session running the style carries a distilled copy of the standard, and gets the same new check | The style is loaded when a session starts. A reader in a session that began before the change states a shape, watches it be ignored, and has to restart the session to get the new behavior |
 | Every surface that names the check by a number | outbound | Skills, operator-facing documents, and one canonical reference file describe the check by its size, which this change makes wrong. Each stops naming a number | Some skills also name the fidelity criterion by its position in the list, and those stop too, so a future reordering breaks nothing ([D6](artifacts/decision-log.md#d6-references-to-the-checks-size-stop-naming-a-number)) |
-| Every surface restating the fidelity guarantee | outbound | The sentence saying a required fact always appears is copied out of the standard into the skills that load it, into the output style, and into an operator-facing document, and this change makes it conditionally untrue | The restatement is corrected wherever it appears, alongside the size references. It reaches fewer surfaces than the size reference does. What makes it the more serious of the two is that it states a guarantee rather than a number, so a reader who trusts it is told something untrue rather than something stale |
+| Every surface restating the fidelity guarantee | outbound | The sentence saying a required fact always appears is copied out of the standard into the skills that load it, into the output style, and into an operator-facing document. This change makes it conditionally untrue | The restatement is corrected wherever it appears, alongside the size references. It reaches fewer surfaces than the size reference does. What makes it the more serious of the two is that it states a guarantee rather than a number. A reader who trusts it is told something untrue rather than something stale |
 | The clause allowing a rule to be broken for better prose | outbound | That clause closes by naming the banned-word list and the fidelity guarantee as the two things it may never override, and both are now overridable by a reader's request | Corrected in the standard and in the output style, which each carry their own copy |
 | Dispatched sub-agents | none | A shape request governs what the reader is shown. It does not travel to an agent a skill dispatches, so no fact is shed at a hand-off ([D16](artifacts/decision-log.md#d16-a-shape-request-does-not-travel-to-a-dispatched-agent)) | Unchanged by this feature |
 | The readability editor | none | The editor runs its own separate rubric and no skill passes it the reader's request | Unchanged by this feature ([D7](artifacts/decision-log.md#d7-the-readability-editors-rubric-is-left-unchanged)) |
 
 The work item sized this change at two files. It is larger, because the two files it names are quoted across
-the repository, and both the quoted number and the quoted guarantee go wrong the moment the standard changes.
+the repository. Both the quoted number and the quoted guarantee go wrong the moment the standard changes.
+
 The verified inventory lives in the planning folder's discovery notes rather than here, so this specification
 does not plant the same stale count it exists to remove.
 
@@ -185,7 +190,7 @@ would justify revisiting it.
 
 - **Why deferred:** The evidence test fails. No session has produced a self-colliding request, and the one
   that motivated this work was internally consistent. The draft carried a rule saying the run explains in one
-  line which half gave way, which also sat oddly beside a fact drop that gets no explanation at all.
+  line which half gave way. That rule sat oddly beside a fact drop that gets no explanation at all.
 - **Reopen when:** A reader states a shape whose parts contradict each other.
 - **Source:** Review finding F14. One reviewer argued the explanation is defensible even so, because a reader
   can re-read their own request while a dropped fact is known only to the run. That reasoning is recorded
@@ -202,7 +207,7 @@ would justify revisiting it.
 ### A check that a fact sits under the heading it belongs to
 
 - **Why deferred:** The evidence test fails. The failing session put "nine plugins are unchanged" under a
-  heading for major changes, which is a real error, but the work item proposes no fix for it and no second
+  heading for major changes, which is a real error. But the work item proposes no fix for it, and no second
   occurrence is recorded. The standard already keeps its check small on purpose, and this would grow it for
   one observation.
 - **Reopen when:** A second session misfiles a fact under a heading that contradicts it.
@@ -239,7 +244,7 @@ would justify revisiting it.
 - **Sub-agents consulted:** `junior-developer`, `edge-case-explorer`, `user-experience-designer` — see
   [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** The shape request gained a lifetime, an attribution test, a floor under
-  what may drop silently, and a stated reach into files the run writes; the sweep grew to cover the fidelity
+  what may drop silently, and a stated reach into files the run writes. The sweep grew to cover the fidelity
   guarantee restated across the repository, not only the criterion count — see
   [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Remaining open items:** 1

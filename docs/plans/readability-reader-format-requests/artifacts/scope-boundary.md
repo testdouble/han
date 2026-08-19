@@ -53,11 +53,8 @@ this on 2026-08-19 and noted the issue was already clearly scoped.
 
 ## Visual Material Received
 
-`None received.`
-
-| Item | What state it depicts | Kept at |
-| ---- | --------------------- | ------- |
-| (none) | (none) | (none) |
+`None received.` The run was given no images, mockups, or design links, so no `ui-designs/` folder was
+created and this section lists no rows.
 
 ## Record Provenance
 
