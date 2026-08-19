@@ -188,7 +188,9 @@ bodies, or rendered markup. Confirm each criterion and fix any failure before fi
 Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
 invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
 how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
-what they do next. at generation time; a later manual edit of the committed file is not re-checked.
+what they do next.
+
+The standard applies at generation time; a later manual edit of the committed file is not re-checked.
 
 ## Step 10: Verification
 
