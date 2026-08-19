@@ -81,6 +81,15 @@ Example invocations:
 
 A domain map report in your conversation with these named sections:
 
+- **Executive Summary.** The domain shape — count of CURRENT, LATENT, and SPECULATIVE contexts and the overall
+  critic verdict distribution — with the most confident boundary, the most significant boundary problem, and the
+  key question a domain expert must answer before the team acts.
+- **Domain Landscape.** 2-4 sentences synthesizing the major business responsibilities the system performs,
+  derived from capability and ownership evidence.
+- **Ubiquitous Language.** Significant domain terms from the DL# findings, each with a one-line definition or,
+  for semantic collisions, a note on the different meanings and the areas where each applies.
+- **Business Capabilities.** Cohesive business behaviors from the CAP# findings, each named as a verb phrase
+  with a one-line description of what it does and for whom.
 - **Current Bounded Contexts.** Contexts where vocabulary and ownership cohere in the evidence today.
 - **Latent Bounded Contexts.** Domain concerns where capabilities cohere but ownership or vocabulary is dispersed
   across technical structures. Each entry names what single change would move it toward CURRENT.
@@ -92,8 +101,8 @@ A domain map report in your conversation with these named sections:
   relationship types where the evidence supports them.
 - **Context Details.** One subsection per CURRENT or LATENT context with its purpose, responsibilities,
   vocabulary, ownership, relationships, evidence, and confidence rating.
-- **Rejected or Weak Candidates.** Contexts the critic rated weak or reject, with the primary failure mode and
-  what would change the verdict.
+- **Rejected or Weak Context Candidates.** Contexts the critic rated weak or reject, with the primary failure
+  mode and what would change the verdict.
 - **Questions for Domain Experts.** Consolidated domain-expert questions from the critic, ordered by
   consequence.
 - **Evidence Index.** A traceable per-type index of all DL#, CAP#, OWN#, S#, and B# findings with file paths
