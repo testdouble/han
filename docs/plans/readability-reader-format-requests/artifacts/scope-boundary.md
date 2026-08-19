@@ -48,7 +48,8 @@ feature.
 
 ## Direction of Travel
 
-`Unanswered.` Pending the confirmation turn.
+Nothing named in the issue is being deprecated, replaced, or migrated away from. The operator confirmed
+this on 2026-08-19 and noted the issue was already clearly scoped.
 
 ## Visual Material Received
 
