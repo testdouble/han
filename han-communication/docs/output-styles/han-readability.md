@@ -66,8 +66,9 @@ a half-sentence explanation at first use, and the vocabulary blocklist applies, 
 phrases do not appear.
 
 Two guards outrank the rest. Fidelity wins, so no claim, quantity, named entity, or stated condition is dropped or
-blurred to read more simply. Prose is the only target, so code fences, diagram bodies, rendered markup, and citation
-identifiers pass through untouched and still compile, render, and resolve.
+blurred to read more simply, unless the reader asked for less and losing it would not change what they do next.
+Prose is the only target, so code fences, diagram bodies, rendered markup, and citation identifiers pass through
+untouched and still compile, render, and resolve.
 
 The style closes with the same self-check the rule carries, run over the draft before it is presented.
 

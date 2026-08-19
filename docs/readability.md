@@ -24,8 +24,9 @@ and reveals detail in layers, instead of each skill restating the rule on its ow
 - **Synthesis skills rewrite; the rest self-check.** A skill with a synthesis or editor step dispatches the
   [`readability-editor`](../han-communication/docs/agents/readability-editor.md) to rewrite the draft, preserving every fact.
   Every in-scope skill runs the standardized self-check.
-- **Fidelity wins.** No required fact is dropped to read more simply. Every claim, quantity, named entity, and stated
-  condition survives with its precision intact.
+- **Fidelity wins, unless the reader asked for less.** Every claim, quantity, named entity, and stated condition
+  survives with its precision intact. A reader who asked for less can lose a fact, unless losing it would change
+  what they do next.
 - **Session-wide is opt-in.** Selecting the `Han Readability` output style holds the standard across every turn, not
   only inside a reader-facing skill. It reaches the main conversation, never a dispatched subagent.
 - **The canonical rule lives in
@@ -45,7 +46,7 @@ Without a shared standard:
 - Dense, technical deliverables get either unreadable or, worse, simplified until a load-bearing fact is lost.
 
 The standard fixes the first two by naming the output properties once and applying them everywhere. It guards against
-the third by making fidelity outrank every readability move.
+the third by making fidelity outrank every readability move the reader did not ask for.
 
 ## What the standard requires
 
@@ -88,8 +89,10 @@ at a time:
    rule, preserving every fact.
 4. **Self-check.** A discrete pass over the prose regions evaluates behaviorally-anchored yes/no criteria: main
    point first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted word
-   and an explanation for every term the reader cannot look up, and every fact preserved. Anything it fails is
-   corrected before the deliverable is presented.
+   and an explanation for every term the reader cannot look up, every fact preserved, and the shape the reader asked
+   for in count, format, and register. Anything it fails is corrected before the deliverable is presented. The last
+   criterion wins a real collision with the others, except where a dropped fact would change what the reader does
+   next, or where a skill requires a section.
 
 The self-check and any rewrite operate on **prose regions only**. Code fences, diagram bodies, rendered markup, and
 inline citation identifiers are neither evaluated nor altered, so they still compile, render, and resolve.
