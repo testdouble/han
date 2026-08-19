@@ -27,7 +27,7 @@ presented as build-blocking on the strength of that input.
 - UX-007 could not read the escalation questions as they were put to the user. The run posed them and
   confirms the finding's premise: **both questions were framed around a conversational answer.** The first
   used a LinkedIn-style post, the second a three-sentence release summary. A committed file was not in view
-  when the user answered. This raises F6's standing rather than lowering it.
+  when the user answered. This raises F3's standing rather than lowering it.
 
 **Design-dependent findings.** None. This run received no visual material, so no finding turns on any.
 
