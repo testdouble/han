@@ -119,8 +119,12 @@ presented as build-blocking on the strength of that input.
   "the standard governs how the content is said, never whether a required fact appears" is copied from the
   rule into skill files that load the rule, and this change makes it conditionally untrue.
 - **Evidence:** The run verified the claim with a repository-wide search. The reviewer reported 21 skill
-  files; the verified figure is **18 skill files**, plus the readability rule itself, the output style, and
+  files; the verified figure is **20 skill files**, plus the readability rule itself, the output style, and
   `docs/readability.md`. Every one carries the sentence verbatim or in a near-identical form.
+  **Corrected during implementation planning.** This entry first recorded 18. Both that figure and the
+  reviewer's 21 came from line-oriented searches, and this repository wraps prose mid-sentence, so two files
+  were missed. The class also splits by role: eighteen sites change and eight stay. See D-4 and D-10 in
+  `implementation-decision-log.md`.
 - **Resolution:** Resolved by evidence. The sweep covers the fidelity restatement as a second class of
   affected surface, not only the criterion count. Recorded in the specification's Coordinations section and
   in D6. The restatement reaches 18 skill files against the size reference's 21, so it is the smaller of the two

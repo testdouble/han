@@ -173,6 +173,10 @@ the evidence-settled total in the specification's Summary.
      a required fact appears" is copied from the rule into **18 skill files**, plus the rule itself, the
      output style, and `docs/readability.md`. This change makes it conditionally untrue, and it sits closer
      to the drafting step than the count does (F5). The reviewer reported 21; the run verified 18.
+     **Corrected during implementation planning:** the verified figure is **20**, not 18. The line-oriented
+     search that produced 18 missed two files whose sentence wraps mid-phrase. Of the 20, eighteen carry the
+     self-check form that changes and eight carry an audience-frame form that stays; six carry both. See D-4
+     and D-10 in `implementation-decision-log.md`.
   3. **The positional reference.** Six skill files name the fidelity guard as "criterion 6":
      architectural-decision-record, runbook, issue-triage, html-summary, plan-work-items, and
      iterative-plan-review. The readability rule does the same at line 132. Adding a seventh criterion does
