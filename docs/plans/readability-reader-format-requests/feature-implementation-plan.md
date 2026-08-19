@@ -1,6 +1,6 @@
 # Feature Implementation Plan: The readability standard honors what the reader asked for
 
-Two files change, and sixty-three corrections land across twenty-eight files that quote them, so nothing left
+Two files change. Roughly sixty corrections land across the files that quote them, so nothing left
 in the repository instructs a run to apply a rule the standard no longer carries. The behavioral work is
 small. The care goes into the sweep, which has no test behind it and a set of neighbouring passages that must
 not be touched.
@@ -43,8 +43,8 @@ The work has three parts, and their order matters.
 Three inventories were built during planning and all three were wrong. Each time the cause was the same: a
 search pattern narrower than the corpus. Line-oriented searches missed sentences that wrap mid-phrase.
 Hyphenated patterns missed the spelled-out form. Patterns written for one phrasing missed three more that say
-the same thing in different words, including one that says "required technical fact" and one that says
-"fidelity outranks readability" without naming a fact at all.
+the same thing in different words. One says "required technical fact." Another says "fidelity outranks
+readability" without naming a fact at all.
 
 So this plan carries no site count. The first unit builds the inventory from a documented pattern set, records
 both, and every later unit works from that output
@@ -53,15 +53,15 @@ The known phrasings and the known exclusions are in the decision log as the star
 
 ### Draft the two replacement sentences before touching any file
 
-Sixty-three corrections land across twenty-eight files, and sixteen of those files carry a byte-identical
+The last inventory taken during planning found sixty-three corrections across twenty-eight files, and sixteen of those files carry a byte-identical
 block with four more carrying a near-identical variant of it. Drafting the replacements once and applying them
 is what separates a clean diff from a find-and-replace scar
 ([D-2](artifacts/implementation-decision-log.md#d-2-two-replacement-sentences-are-drafted-once-before-the-sweep)).
 
 Two sentences are needed. One replaces the size reference and is mechanical: the quoting block already names
 the fidelity criterion without a number, so at those sites one word comes out. The other replaces the fidelity
-guarantee and is not mechanical: it has to carry both the condition that relaxes it and the floor that bounds
-it, in one sentence, inside a three-sentence block.
+guarantee and is not mechanical. It has to carry both the condition that relaxes the guarantee and the floor
+that bounds it, in one sentence, inside a three-sentence block.
 
 ### Sweep the quoting files first, canonical files last
 
@@ -87,12 +87,12 @@ rather than a shared string.
 | 1 | Draft the two replacement sentences and record them | US-3 | A necessity of the sweep units below: most corrected files take the same text and it has to exist first ([D-2](artifacts/implementation-decision-log.md#d-2-two-replacement-sentences-are-drafted-once-before-the-sweep)) | 0 |
 | 2 | Correct the size reference at every site unit 0 found, including the ones outside the skill directories | US-3 | Work-item proposal 1 makes each of these statements wrong; the specification's Coordinations row names skills, operator-facing documents, and one canonical reference file ([D-11](artifacts/implementation-decision-log.md#d-11-the-sweep-covers-the-non-skill-quoting-surfaces-the-first-inventory-missed)) | 1 |
 | 3 | Correct every fidelity restatement whose subject is the standard, leaving every restatement whose subject is the audience frame alone | US-2 | Work-item proposal 2 makes the restatement conditionally untrue wherever it claims the standard never drops a fact ([D-4](artifacts/implementation-decision-log.md#d-4-the-fidelity-restatement-splits-by-grammatical-subject-not-by-block)) | 1 |
-| 4 | Replace the six positional references to criterion 6 with the criterion's name | US-3 | A necessity of unit 3: each of those six sentences says criterion 6 is not optional, which proposal 2 makes conditionally untrue, and the specification's Coordinations row commits to dropping the position with the number ([D-12](artifacts/implementation-decision-log.md#d-12-only-the-positional-references-that-proposal-2-falsifies-are-replaced)) | 1 |
+| 4 | Replace the six positional references to criterion 6 with the criterion's name | US-3 | A necessity of unit 3: each of those six sentences says criterion 6 is not optional, which proposal 2 makes conditionally untrue. The specification's Coordinations row commits to dropping the position with the number ([D-12](artifacts/implementation-decision-log.md#d-12-only-the-positional-references-that-proposal-2-falsifies-are-replaced)) | 1 |
 | 5 | Rewrite the paragraph in the one site where two corrected sentences would repeat each other | US-3 | A necessity of units 2 and 4, which both land in that paragraph ([D-5](artifacts/implementation-decision-log.md#d-5-one-site-takes-a-paragraph-rewrite-rather-than-a-sentence-swap)) | 2, 4 |
 | 6 | Add the seventh criterion to the one skill that enumerates the whole check in its own words | US-1 | A necessity of work-item proposal 1: that skill's self-check is a hardcoded list of six, so it would run a six-criterion check against a seven-criterion standard ([D-13](artifacts/implementation-decision-log.md#d-13-the-one-hardcoded-enumeration-of-the-check-gains-the-seventh-criterion)) | 1 |
 | 7 | Change the four passages in the readability standard | US-1, US-2 | Work-item proposals 1 and 2 | 2, 3, 4, 5, 6 |
-| 8 | Change the four passages in the readability output style | US-1, US-2 | Work-item proposals 1 and 2; the style is the surface the reported failure actually ran under | 7 |
-| 9 | Run the branch-scoped documentation check and the lint pass | US-3 | A necessity of units 2 through 8: the first inventory missed five quoting files, so a check that scopes itself to what the branch touched is the remedy that already caught this class once ([D-7](artifacts/implementation-decision-log.md#d-7-the-branch-scoped-documentation-check-is-kept-the-bats-script-is-not)) | 8 |
+| 8 | Change the four passages in the readability output style | US-1, US-2 | Work-item proposals 1 and 2; the style is the surface the reported failure ran under | 7 |
+| 9 | Run the branch-scoped documentation check and the lint pass | US-3 | A necessity of units 2 through 8: the first inventory missed five quoting files. A check that scopes itself to what the branch touched is the remedy that already caught this class once ([D-7](artifacts/implementation-decision-log.md#d-7-the-branch-scoped-documentation-check-is-kept-the-bats-script-is-not)) | 8 |
 
 ## Definition of Done
 
@@ -106,11 +106,11 @@ A reviewer confirms eight things, every one of them readable from the diff.
    clause no longer claims the banned-word list and the fidelity guarantee can never be overridden.
 2. The output style carries the same three changes in its own shorter wording, and its escape-clause limit
    matches the standard's meaning rather than its exact words.
-3. A scoped search for the size reference returns hits in exactly five classes, and nowhere else: the planning
-   folder, the research folder, the changelog, the three files describing the readability editor's own rubric,
-   and the two canonical files
+3. A scoped search for the size reference returns hits in exactly five classes, and nowhere else. Those classes
+   are the planning folder, the research folder, the changelog, the three files describing the readability
+   editor's own rubric, and the two canonical files
    ([D-1](artifacts/implementation-decision-log.md#d-1-the-exclusion-list-is-a-named-artifact-of-the-plan)).
-   The search has to be scoped to the phrase, not to the word "six": an unscoped word search returns a dozen
+   The search has to be scoped to the phrase, not to the word "six." An unscoped word search returns a dozen
    unrelated matches in this repository, so it cannot serve as the completeness check. The two canonical files
    keep their own count, because a count sitting directly above the list it counts cannot go stale unseen
    ([D-8](artifacts/implementation-decision-log.md#d-8-the-source-files-keep-their-own-count-every-quoting-site-drops-it)).
@@ -119,7 +119,7 @@ A reviewer confirms eight things, every one of them readable from the diff.
    ([D-4](artifacts/implementation-decision-log.md#d-4-the-fidelity-restatement-splits-by-grammatical-subject-not-by-block)),
    and each replaced line still reads as a sentence in its paragraph. That last part is a diff read, not a
    search.
-5. The six positional references name the criterion instead of its number, and the one positional reference to
+5. The six positional references name the criterion instead of its number. The one positional reference to
    criterion 5 is untouched, because criterion 5 does not move and nothing about it became untrue
    ([D-12](artifacts/implementation-decision-log.md#d-12-only-the-positional-references-that-proposal-2-falsifies-are-replaced)).
 6. The one skill that enumerates the check in its own words lists seven items
@@ -132,19 +132,23 @@ A reviewer confirms eight things, every one of them readable from the diff.
 **There is no automated test for any of this, and adding one is not recommended.** The full analysis is in
 [artifacts/test-plan.md](artifacts/test-plan.md); the shape of it is below.
 
-The sweep is verified by three cheap checks: a read-through of the two canonical files, a re-run of the
-inventory searches against the enumerated file set, and a diff confirming the three readability-editor files
-are untouched. Every one of those searches joins lines before matching, because a sentence in this repository
-routinely spans two lines and a line-oriented search silently misses it
+The sweep is verified by three cheap checks. They are a read-through of the two canonical files, a re-run of
+the inventory searches against the enumerated file set, and a diff confirming the three readability-editor
+files are untouched.
+
+Every one of those searches joins lines before matching, because a sentence in this repository routinely spans
+two lines and a line-oriented search silently misses it
 ([D-10](artifacts/implementation-decision-log.md#d-10-every-inventory-search-is-wrap-tolerant)). The searches
 need a person reading the hits, not a pass-or-fail assertion, because the patterns produce false positives
 that must stay unchanged
 ([D-4](artifacts/implementation-decision-log.md#d-4-the-fidelity-restatement-splits-by-grammatical-subject-not-by-block)).
 
 The behavior itself cannot be tested automatically. It lives in prose an assistant reads while drafting, so
-there is no function to call. What the team gets instead is one manual pass before merge, running three
-scenarios drawn from the specification: a stated count, a request for less that exercises the floor, and a
-register request that collides with the banned-word list. A person reads the results
+there is no function to call.
+
+What the team gets instead is one manual pass before merge. It runs three scenarios drawn from the
+specification: a stated count, a request for less that exercises the floor, and a register request that
+collides with the banned-word list. A person reads the results
 ([D-9](artifacts/implementation-decision-log.md#d-9-behavior-is-checked-by-a-manual-smoke-pass-not-a-recorded-transcript)).
 
 ## Security Posture
@@ -213,8 +217,8 @@ This is work no evidence supports yet. Every entry carries the trigger that woul
 ### Consolidating the fidelity sentence into one source instead of twenty-odd copies
 
 - **Why deferred:** The evidence test fails. The project's own convention asks for one canonical source per
-  concept, and twenty-odd copies of a rule sentence sit awkwardly against it, but the specification commits to
-  none of this and it would multiply the diff.
+  concept, and twenty-odd copies of a rule sentence sit awkwardly against it. But the specification commits to
+  none of this, and it would multiply the diff.
 - **Reopen when:** A third change has to sweep the same sites.
 - **Source:** Junior-developer YAGNI check.
 
@@ -259,7 +263,7 @@ Ship as planned, with the content-auditor handoff after unit 3. Two open items, 
 ## Summary
 
 The synthesis reconciled a one-round record from `han-core:test-engineer` and `han-core:junior-developer`
-against the plan, re-verified every count in the repository with wrap-tolerant searches, and found the sweep
+against the plan. It re-verified every count in the repository with wrap-tolerant searches and found the sweep
 larger than the plan recorded: sixty-three corrections across twenty-eight files rather than twenty-eight
 sites. The plan is committable today, with the `han-core:content-auditor` handoff after work unit 3; the
 post-ship owner is the author of the branch.

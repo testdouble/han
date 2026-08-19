@@ -354,7 +354,8 @@ later reader knows the classification was run rather than skipped.
 ### D-14: The inventory is built by the plan, not inherited from it
 
 - **Question:** How many sites does the sweep correct?
-- **Decision:** The plan does not say. Its first work unit builds the inventory from a documented pattern set
+- **Decision:** No count in this plan is the check. The figures it quotes are a planning-time snapshot, already
+  known to have been wrong three times. Its first work unit builds the inventory from a documented pattern set
   and records both the inventory and the patterns. Every later unit works from that output, and the completeness
   check re-runs the recorded patterns rather than comparing against a number.
 - **Rationale:** Three inventories were built during planning and every one was wrong. Freezing a fourth into
