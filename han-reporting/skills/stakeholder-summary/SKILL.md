@@ -241,11 +241,12 @@ run against the post-fix contents.
 **First, use the Read tool to load the output file from disk.** The readability-editor already rewrote the summary in
 Step 5; this pass confirms the standardized self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) holds, over the document's prose regions only — never inside the Mermaid
-diagram bodies. Confirm each of the six criteria and fix any failure with Edit:
+diagram bodies. Apply any fix with Edit.
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 Three things are this skill's own, layered on top of that check:
 

@@ -86,7 +86,7 @@ at a time:
 3. **Rewrite pass (synthesis skills only).** A skill with a synthesis or editor step dispatches the
    [`readability-editor`](../han-communication/docs/agents/readability-editor.md) to audit and rewrite the draft against the
    rule, preserving every fact.
-4. **Self-check.** A discrete pass over the prose regions evaluates six behaviorally-anchored yes/no criteria: main
+4. **Self-check.** A discrete pass over the prose regions evaluates behaviorally-anchored yes/no criteria: main
    point first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted word
    and an explanation for every term the reader cannot look up, and every fact preserved. Anything it fails is
    corrected before the deliverable is presented.
@@ -102,8 +102,8 @@ around a skill and the work no skill covers, select the `Han Readability` output
 under **Output style** in `/config`. It takes effect on your next session or after `/clear`, because Claude Code reads
 the output style once at session start.
 
-The style distills the rule's audience frame, output properties, fidelity guard, and six-criterion self-check together
-with the writing-voice blocklist. It keeps Claude Code's built-in software engineering instructions, so it changes how
+The style distills the rule's audience frame, output properties, fidelity guard, and self-check together with
+the writing-voice blocklist. It keeps Claude Code's built-in software engineering instructions, so it changes how
 work is written up, not how it is done.
 
 The style has three limits:
@@ -152,10 +152,11 @@ the standard in (see [Contributing](../CONTRIBUTING.md#wiring-the-readability-st
 
 ## Fidelity: the fact-preservation guard
 
-The standard governs _how_ content is said, never whether a required fact appears. When reading more simply would drop
-or blur a fact, fidelity wins. Every claim, quantity, named entity, and stated condition survives with its precision
-intact. Flattening "exceeded 340ms in three of ten windows" to "was sometimes slow," or "only when X and Y both hold" to
-"generally," is a fidelity failure, not a simplification.
+The standard governs _how_ content is said, and drops a required fact only when the reader asked for less and losing it
+would not change what they do next. When reading more simply would drop or blur a fact, fidelity wins. Every claim,
+quantity, named entity, and stated condition survives with its precision intact. Flattening "exceeded 340ms in three of
+ten windows" to "was sometimes slow," or "only when X and Y both hold" to "generally," is a fidelity failure, not a
+simplification.
 
 On a synthesis skill, the `readability-editor` preserves every fact as it rewrites. On a non-synthesis skill that runs
 no rewrite pass, the self-check's fact-preservation criterion is the only fidelity guard the output has, so it is not
@@ -184,8 +185,8 @@ optional.
   `han-communication:readability-guidance`, so a contributor changes the rule in one place.
 - **Applied in stages, not stacked.** The template, the audience frame, the rewrite pass, and the self-check each carry
   part of the rule, so no single step stacks enough instructions to decay.
-- **Fidelity outranks readability.** The one rule the standard never bends: a required fact is never dropped to read
-  more simply.
+- **Fidelity outranks readability, unless the reader asked for less.** A required fact is never dropped to read more
+  simply. When the reader asked for less, a fact may go, unless losing it would change what they do next.
 - **Loading is not compliance.** Loading the rule does not make output readable. The template, the audience frame, the
   rewrite pass, and the self-check are what make it take effect.
 

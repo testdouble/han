@@ -255,7 +255,7 @@ test, add it to that list and wire the standard in:
    skill's real reader is a specific expert (an engineer, a pull-request reviewer, a non-technical stakeholder), name
    that reader instead of defaulting. Scope the frame per section so technical specifics the reader needs are not
    simplified away.
-4. **Add the standardized self-check.** Before presenting, the skill runs six behaviorally-anchored yes/no criteria over
+4. **Add the standardized self-check.** Before presenting, the skill runs behaviorally-anchored yes/no criteria over
    the prose regions only: main point first, descriptive headings, one idea per paragraph, sentence length, common
    words with no blocklisted word and an explanation for every term the reader cannot look up, every fact preserved. It
    corrects any failure. Leave code fences, diagram bodies, rendered markup, and citation identifiers unevaluated and

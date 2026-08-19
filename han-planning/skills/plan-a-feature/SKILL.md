@@ -434,7 +434,7 @@ reviewer who reads the spec for approval; the editor reads han-communication's o
 It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D#/T#/F#
 citation identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the spec file.
 
-Then read the editor's fact-preservation report. **Do not walk the six-point checklist over the text the editor
+Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor
 produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
@@ -444,7 +444,7 @@ quantity, named entity, and stated condition survives, or it names a fact it kep
 fidelity. Leave that wording alone rather than re-editing it.
 
 **When no usable report comes back** — the editor could not be reached, returned nothing, or returned something you
-cannot read as either of those two shapes — run the readability rule's standardized six-point self-check yourself, over
+cannot read as either of those two shapes — run the readability rule's standardized self-check yourself, over
 prose regions only, and say in the Step 9 summary that you did so and why. The standard is already in your context from
 Step 5. With no report, that check is the only fidelity guard the output has, so its fidelity criterion is not
 optional.

@@ -185,10 +185,12 @@ Run the standardized readability self-check (the shared standard is in your cont
 `han-communication:readability-guidance`) over the document's prose regions only — never inside code fences, diagram
 bodies, or rendered markup. Confirm each criterion and fix any failure before finalizing:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
-at generation time; a later manual edit of the committed file is not re-checked.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
+
+The standard applies at generation time; a later manual edit of the committed file is not re-checked.
 
 ## Step 10: Verification
 

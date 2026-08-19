@@ -69,12 +69,12 @@ tools can't catch.
 **Readability standard:** The review report is a reader-facing deliverable. As it writes the finding prose and
 narrative, the skill sources the shared standard by invoking `han-communication:readability-guidance` (Step 8) and
 applies it, holding the named audience: the author and reviewers of the change under review. The standard governs how
-each finding reads (lead with what to do and why, one idea per paragraph, short active sentences, plain words), never
-whether a required technical fact appears. It applies to the prose in finding bodies and narrative sections only; it
-never rewrites task IDs, severities, `file_path:line_number` references, `EXPLOIT:` fields, category labels, the fixed
-section headings and their order, the Review Summary table structure, or any code snippet. The dedicated
-`han-communication:readability-editor` rewrite (Step 8.5) and the readability self-check (Step 9.2) carry the standard
-into the report.
+each finding reads (lead with what to do and why, one idea per paragraph, short active sentences, plain words), and
+drops a required technical fact only when the reader asked for less and losing it would not change what they do next. It
+applies to the prose in finding bodies and narrative sections only; it never rewrites task IDs, severities,
+`file_path:line_number` references, `EXPLOIT:` fields, category labels, the fixed section headings and their order, the
+Review Summary table structure, or any code snippet. The dedicated `han-communication:readability-editor` rewrite (Step
+8.5) and the readability self-check (Step 9.2) carry the standard into the report.
 
 ### Task ID Assignment
 

@@ -390,7 +390,7 @@ fact and operate on prose regions only — never inside code fences, tables, the
 anchors, or the source-citation links, which must survive unchanged so deep links still resolve. Apply its rewrite to the
 outline file.
 
-Then read the editor's fact-preservation report. **Do not walk the six-point checklist over the text the editor
+Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor
 produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
@@ -406,9 +406,10 @@ cannot read as either of those two shapes — walk the checklist below yourself 
 never inside code fences, tables, the `{#phase-N}` and `{#oq-N}` anchors, or the source-citation links. Say in the
 closing summary that you did so and why. With no report, the checklist is the only fidelity guard the output has.
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 ## Step 9: Present the Final Outline
 

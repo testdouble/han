@@ -283,9 +283,10 @@ resolves to its registry entry) and to preserve every fact. Apply the returned r
 bodies, or citation identifiers (`A#`/`V#` survive unchanged). Confirm each criterion and fix any failure before
 presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 On top of the fidelity criterion, confirm every cited `A#` still resolves to its registry entry.
 

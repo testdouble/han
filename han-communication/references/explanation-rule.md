@@ -14,7 +14,7 @@ This standard governs what a run says to a person in a turn. The
 
 They sit beside each other and neither replaces the other. A single run often needs both: the readability standard while
 it drafts a specification, and this standard when it stops mid-run to ask the operator a question. Where the readability
-rule gives you headings, paragraph structure, and a six-item self-check over a whole document, this one gives you the
+rule gives you headings, paragraph structure, and a self-check over a whole document, this one gives you the
 shape of one explanation inside one turn.
 
 Two practical differences follow. This standard has no self-check, because a conversational turn is not a document you

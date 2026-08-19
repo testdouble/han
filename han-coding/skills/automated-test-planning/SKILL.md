@@ -257,6 +257,7 @@ Then run the standardized readability self-check (the shared standard is in your
 `han-communication:readability-guidance`) over the plan's prose regions only — never inside code fences, tables, or the
 TP-NNN identifiers. Confirm each criterion and fix any failure before presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.

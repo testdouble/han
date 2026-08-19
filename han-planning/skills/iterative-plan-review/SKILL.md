@@ -409,10 +409,11 @@ pre-existing plan, and never inside code fences, tables, the `F#`/`D#`/`T#`/`R#`
 History companion links, which must survive unchanged so they still resolve. Run it here on the converged plan, not
 inside either loop. Confirm each criterion and fix any failure before presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
-separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next. This skill runs no separate editor pass, so the fidelity criterion is the only fact-preservation
+guard the output has, and it is not optional.
 
 **Preserve the cross-reference invariants across all files.** The two that a check can settle are executed rather than
 walked by hand:

@@ -398,9 +398,10 @@ shared standard is in your context from `han-communication:readability-guidance`
 never inside code fences, diagram bodies, or the `G-NNN` gap-ID citation identifiers. Confirm each criterion and fix any
 failure before presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 ## Step 7: Present the Report
 
