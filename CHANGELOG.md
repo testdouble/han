@@ -1,5 +1,183 @@
 # Han Release Notes
 
+## v5.4.0
+
+han 5.4.0 fixes the personal-config probe that broke in every skill at once, and adds a second output style to the
+communication layer. On Claude Code 2.1.228 the inline probe carried by every Project Context block stopped loading and
+reported a "Contains expansion" error, which [@VikiAnn](https://github.com/VikiAnn) reported in issue #178 and PR #184
+fixed by moving the probe into a shared `scripts/han-config-dir.sh` that every plugin symlinks to. That one change is
+why all twelve children move this release. `han-communication` (1.2.0) ships the `han-concise` output style and promotes
+technical-detail separation into the canonical readability rule. `han-coding` (3.3.0) gates out-of-scope production
+changes in `/tdd` and `/automated-test-planning`. `han-plugin-builder` (2.2.0) adds an authoring rule for reaching an
+environment variable, and gives the guidance corpus tables of contents. `han-core` (3.1.1), `han-documentation` (1.0.1),
+`han-research` (1.0.1), `han-planning` (2.2.1), `han-github` (2.3.1), `han-reporting` (2.2.1), `han-feedback` (2.0.2),
+`han-atlassian` (2.3.1), and `han-linear` (1.1.1) carry the config-script change, the re-synced rule files, and their own
+small fixes.
+
+### han v5.4.0
+
+#### One shared script replaces the inline config probe
+
+Every skill carrying a Project Context block read the personal configuration directory with an inline
+`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`. Claude Code 2.1.228 refused that form with a "Contains expansion" error,
+so the block failed to load and the skill lost its personal configuration.
+[@VikiAnn](https://github.com/VikiAnn) reported it in issue #178, and PR #184 replaced the inline probe with
+`scripts/han-config-dir.sh` at the repository root. Every plugin carries a symlink to that one script, and
+`scripts/han-config-dir.bats` tests it beside it.
+
+`CLAUDE.md` and `CONTRIBUTING.md` record the script, the symlink each plugin carries, and where its tests live.
+`CONTRIBUTING.md` also gains an "Adding an output style" checklist, so a second style cannot ship without a long-form
+doc and a plugin README scent line, and `docs/templates/coverage-rule.md` extends the coverage rule to output styles for
+the same reason.
+
+#### The readability docs describe the reworked standard
+
+`docs/readability.md` covers the reworked standard: the new technical-detail-separation property, the criterion for
+honoring a shape the reader asked for, and the `han-concise` output style beside `han-readability`.
+`docs/configuration.md`, `docs/concepts.md`, and `docs/choosing-a-han-plugin.md` thread the new style and the shared
+config script through the catalogs, and `docs/local-development.md` corrects the local setup steps.
+
+#### The planning artifacts behind the readability work
+
+`docs/plans/readability-reader-format-requests/` records the specification, the implementation plan, the decision logs,
+the team findings, the test plan, the scope boundary, and the discovery notes behind this release's readability changes.
+
+#### A closing sweep corrected documentation drift
+
+Commit `cf60c24` fixed drift across the long-form docs: the `han-atlassian` dependency list in six docs, the dispatch
+lists in four agent docs, the missing sibling boundaries in two more, and the plugin map in `CONTRIBUTING.md`.
+
+### han-communication v1.2.0
+
+#### han-concise is a second output style that rolls detail up
+
+`han-communication/output-styles/han-concise.md` carries the readability rule and the writing voice, plus two departures
+that belong to it alone. A turn drops preamble and recap and spends no sentence carrying neither a fact nor a needed
+transition. And in place of `Fidelity wins`, detail rolls up into the statement it supports, on the assumption that the
+reader wants less than the source holds.
+
+A floor bounds the roll-up. It keeps a fact whose loss would change what you do next, a number you will act on, and a
+stated condition that bounds a claim. The self-check keeps the readability rule's eight criteria with the seventh
+rewritten for the roll-up, so everything else stays in sync with `han-readability`. A long-form doc ships beside the
+style at `han-communication/docs/output-styles/han-concise.md`.
+
+#### Technical detail now sits after the prose, not inside it
+
+`references/readability-rule.md` gains technical-detail separation as a property of the canonical standard. Prose says
+what happens in plain sentences, and symbol names, file paths, flags, and snippets come after it rather than threaded
+through it. `han-readability` and the `readability-editor` agent gained the same property, so all three surfaces apply
+it the same way.
+
+#### The shape you asked for wins
+
+The self-check gained a criterion for matching a shape you stated: the count, the format, and the register you asked
+for. When it genuinely collides with another criterion, your stated shape wins.
+[@mxriverlynn](https://github.com/mxriverlynn) reported the gap in issue #177, and PR #186 fixed it. The self-check also
+stopped naming a fixed number of criteria, so the standard can grow without every consuming skill going stale.
+
+`references/writing-voice.md` adds stale figures of speech and foreign, Latinate, and archaic diction to the blocklist.
+The three skills (`edit-for-readability`, `explanation-guidance`, `readability-guidance`) and `references/config-rule.md`
+pick up the shared config-directory script.
+
+### han-coding v3.3.0
+
+#### /tdd and /automated-test-planning stop at the edge of their scope
+
+Both skills could change production code the request never asked about, on the way to making a test pass.
+[@mxriverlynn](https://github.com/mxriverlynn) reported it in issue #188, and PR #191 added a scope gate to `/tdd` and
+carried the supporting detail into `tdd/references/failure-modes.md`, `tdd/references/test-selection.md`, and
+`automated-test-planning/references/template.md`.
+
+`/code-review` gained material across five reference files: `agent-dispatch.md`, `agent-finding-classification.md`,
+`finding-content.md`, `output-verification.md`, and `review-checklist.md`. Every skill picked up the shared
+config-directory script, and the four vendored rule files (`collaborative-stop-rule.md`, `config-rule.md`,
+`evidence-rule.md`, `yagni-rule.md`) re-synced with their canonical copies.
+
+### han-plugin-builder v2.2.0
+
+#### Reach an environment variable through a script, not through probe text
+
+`skill-building-guidance/context-injection-commands.md` documents the new rule with a results table measured on Claude
+Code 2.1.234, showing which probe forms the loader accepts and which it refuses. That is the same failure Han's own
+skills hit in issue #178, written down so a new skill does not repeat it. `skill-reference-files.md` and
+`troubleshooting.md` both expand substantially.
+
+#### The guidance corpus carries tables of contents
+
+[@kasparovabi](https://github.com/kasparovabi) reported in issue #182 that 111 reference files had no table of contents
+and one description ran 411 characters over the 1024-character limit. PR #192 gave every reference file that lacked one
+a table of contents.
+
+### han-planning v2.2.1
+
+Two defects in the visual-material reference material are fixed. The truncated `Visual Reference` invariant is restored,
+and the empty visual table is now bounded. [@mxriverlynn](https://github.com/mxriverlynn) reported both in issue #187,
+and PR #190 fixed them.
+
+`references/operator-escalation-rule.md`, `references/planning-boundary-rule.md`, and
+`references/scope-justification-rule.md` gained small clarifications, the vendored rules re-synced, and all five skills
+picked up the shared config-directory script.
+
+### han-core v3.1.1
+
+`/pairing` resolves its config directory through the shared script instead of an inline probe, and both skills pick up
+that script. The four canonical rule files (`collaborative-stop-rule.md`, `config-rule.md`, `evidence-rule.md`,
+`yagni-rule.md`) gained the config-script contract and this release's readability changes, which is what the other
+plugins re-synced against.
+
+### han-documentation v1.0.1
+
+`project-documentation` had a generation-time sentence restored that an earlier edit dropped. Skills picked up the
+shared config-directory script, and the vendored rules re-synced.
+
+### han-research v1.0.1
+
+Every skill picked up the shared config-directory script, and the vendored rule files re-synced with their canonical
+copies.
+
+### han-github v2.3.1
+
+Every skill picked up the shared config-directory script, and the vendored rule files re-synced.
+`update-pr-description/references/screenshot-embed-rules.md` gained material.
+
+### han-reporting v2.2.1
+
+Every skill picked up the shared config-directory script, and the vendored rule files re-synced. The `html-summary`
+references `layout-principles.md` and `report-style.md` both gained material.
+
+### han-feedback v2.0.2
+
+The skill picked up the shared config-directory script, and the vendored rule files re-synced.
+
+### han-atlassian v2.3.1
+
+Every skill picked up the shared config-directory script, and the vendored rule files re-synced. The six long-form docs
+had their dependency list corrected to name all five dependencies.
+
+### han-linear v1.1.1
+
+The skill picked up the shared config-directory script, and the vendored rule files re-synced.
+
+### Issues closed in this release
+
+- Personal-config context probe fails to load on Claude Code 2.1.228, "Contains expansion", breaks every skill with a Project Context block (#178) — opened by [@VikiAnn](https://github.com/VikiAnn); fixed in #184 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: han-readability (2026-08-11) (#177) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #186 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Skill guidance check: one description 411 characters over the 1024 limit, 111 reference files without a table of contents (#182) — opened by [@kasparovabi](https://github.com/kasparovabi); fixed in #192 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: plan-a-feature-readability-guidance-explanation-guidance (2026-08-19) (#187) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #190 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: automated-test-planning-tdd (2026-08-19) (#188) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #191 by [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- Han config expansion fix (#184) — [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(han-communication): honor the shape the reader asked for (#186) — [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(han-communication): add the han-concise output style and tighten technical-detail separation (#189) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(han-planning): correct two defects in the visual-material reference material (#190) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(han-coding): gate out-of-scope production changes in tdd and automated-test-planning (#191) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(han): bring skills back under Anthropic's authoring limits (#192) — [@mxriverlynn](https://github.com/mxriverlynn)
+- V5.4.0 beta (#185) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/han--v5.4.0/CHANGELOG.md#v540
+
 ## v5.3.0
 
 han 5.3.0 adds a collaborative working mode to the suite. `/pairing` builds work in reviewable pieces and hands each one
