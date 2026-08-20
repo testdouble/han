@@ -23,6 +23,10 @@ and _how_ to select the style. For the instructions it adds to the system prompt
 - **The third delivery path for one standard.** The rule reaches output three ways: a skill sources it while drafting,
   the `readability-editor` rewrites a finished draft, and this style shapes every turn. All three trace to the same
   canonical files.
+- **The long-form sibling of `Han Concise`.** Both styles carry the same standard and voice.
+  [`Han Concise`](./han-concise.md) goes further: it adds a brevity property and rolls supporting detail up into the
+  statement it supports. This style does neither, so the connective prose and the full precision a cold reader needs
+  stay in.
 - **A derived copy.** The style distills
   [`readability-rule.md`](../../references/readability-rule.md) and the blocklist in
   [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative, and the style can drift
@@ -70,7 +74,10 @@ blurred to read more simply, unless the reader asked for less and losing it woul
 Prose is the only target, so code fences, diagram bodies, rendered markup, and citation identifiers pass through
 untouched and still compile, render, and resolve.
 
-The style closes with the same self-check the rule carries, run over the draft before it is presented.
+The style closes with the same eight-criterion self-check the rule carries, run over the draft before it is presented.
+One of the eight is **Technical detail separated**: no paragraph or list item threads several paths, signatures, or
+snippets through its sentences. Plain sentences say what happens and the detail comes after them, with inline reserved
+for the one identifier a sentence is genuinely about.
 
 ## What it does not reach
 
@@ -110,6 +117,8 @@ the standard rather than inflated by it, since the rule pushes toward shorter se
   together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
   tree.
+- [`Han Concise`](./han-concise.md). The sibling style with the same standard plus a brevity property, for a working
+  session you read in the terminal.
 - [Readability](../../../docs/readability.md). The shared standard, its required properties, its staged application, and
   the per-skill table.
 - [`readability-rule.md`](../../references/readability-rule.md) and

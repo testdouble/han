@@ -81,9 +81,10 @@ The rewritten target plus the editor's report:
   Overwriting a file you own is the one action the skill confirms first.
 - **For pasted text or a conversation draft**, the rewrite comes back inline, with the scratch file path where the
   working copy was written. The original is never touched, so no confirmation is needed.
-- **Rubric verdict.** One line per criterion (main point first, descriptive headings, one idea per paragraph, sentence
-  length, common words with no blocklisted words and an explanation for every term you cannot look up, progressive
-  disclosure, and the shape you asked for when you asked for one): pass, or what changed to make it pass.
+- **Rubric verdict.** One line per criterion (main point first, descriptive headings, one idea per paragraph, short and
+  active sentences, common words with no blocklisted words and an explanation for every term you cannot look up, progressive
+  disclosure, technical detail separated from the sentences, and the shape you asked for when you asked for one): pass,
+  or what changed to make it pass.
 - **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
   Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
 - **Untouched regions.** The non-prose regions left unchanged (code fences, diagrams, citation identifiers).
