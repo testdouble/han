@@ -95,8 +95,8 @@ change goes before you scaffold anything. (For the user-facing version of this m
 - **`han-communication`** is the foundational plugin beneath every other. It owns the canonical readability standard, the
   writing-voice profile, and the explanation standard for talking to a reader who will not implement the work, plus the
   `readability-guidance` and `explanation-guidance` skills that surface them, the `edit-for-readability` skill, and the
-  `readability-editor` agent, and the `Han Readability` output style in `han-communication/output-styles/`. It depends on
-  nothing; the plugins that produce prose output depend on it. A component goes here only when it is part of a shared
+  `readability-editor` agent, and the `Han Readability` and `Han Concise` output styles in
+  `han-communication/output-styles/`. It depends on nothing; the plugins that produce prose output depend on it. A component goes here only when it is part of a shared
   communication capability: how output reads, or how a run talks to a person.
 - **`han-core`** carries the shared specialist agent roster — **every agent in the suite except the
   `readability-editor`** (which lives in `han-communication`), **the `research-analyst`** (which lives in

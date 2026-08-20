@@ -23,6 +23,9 @@ and _how_ to select the style. For the instructions it adds to the system prompt
 - **The third delivery path for one standard.** The rule reaches output three ways: a skill sources it while drafting,
   the `readability-editor` rewrites a finished draft, and this style shapes every turn. All three trace to the same
   canonical files.
+- **The long-form sibling of `Han Concise`.** Both styles carry the same standard, voice, fidelity guard, and
+  seven-criterion self-check. [`Han Concise`](./han-concise.md) adds a brevity property that drops preamble and recap;
+  this style does not, so the connective prose a cold reader needs stays in.
 - **A derived copy.** The style distills
   [`readability-rule.md`](../../references/readability-rule.md) and the blocklist in
   [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative, and the style can drift
@@ -110,6 +113,8 @@ the standard rather than inflated by it, since the rule pushes toward shorter se
   together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
   tree.
+- [`Han Concise`](./han-concise.md). The sibling style with the same standard plus a brevity property, for a working
+  session you read in the terminal.
 - [Readability](../../../docs/readability.md). The shared standard, its required properties, its staged application, and
   the per-skill table.
 - [`readability-rule.md`](../../references/readability-rule.md) and

@@ -100,16 +100,22 @@ inline citation identifiers are neither evaluated nor altered, so they still com
 ## Applying the standard to a whole session
 
 The path above covers a skill's deliverable. To hold the standard across every turn instead, including the conversation
-around a skill and the work no skill covers, select the `Han Readability` output style shipped in
-[`han-communication/output-styles/han-readability.md`](../han-communication/output-styles/han-readability.md). Choose it
+around a skill and the work no skill covers, select one of the two output styles `han-communication` ships. Choose it
 under **Output style** in `/config`. It takes effect on your next session or after `/clear`, because Claude Code reads
 the output style once at session start.
 
-The style distills the rule's audience frame, output properties, fidelity guard, and self-check together with
-the writing-voice blocklist. It keeps Claude Code's built-in software engineering instructions, so it changes how
-work is written up, not how it is done.
+[`Han Readability`](../han-communication/output-styles/han-readability.md) distills the rule's audience frame, output
+properties, fidelity guard, and self-check together with the writing-voice blocklist. Pick it when the session's output
+is prose someone reads cold.
 
-The style has three limits:
+[`Han Concise`](../han-communication/output-styles/han-concise.md) carries all of that and adds a brevity property the
+rule does not: a turn drops preamble and recap and spends no sentence that carries neither a fact nor a needed
+transition. Pick it for a working session you read in the terminal. The brevity property is the style's own addition, so
+it reaches the conversation and not Han's skills.
+
+Neither style changes how work is done. Both keep Claude Code's built-in software engineering instructions.
+
+Both styles share the same three limits:
 
 - **It does not reach subagents.** A subagent runs its own system prompt, so the style leaves Han's dispatched
   specialists unchanged. The skills stay the mechanism that brings the standard to agent output.

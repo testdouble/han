@@ -28,6 +28,9 @@ that produces prose output depends on it, so it comes along whenever you install
 - [`Han Readability`](docs/output-styles/han-readability.md) — Hold the readability standard and the writing voice
   across every turn of a session, not only inside the skills that source them. Select it under **Output style** in
   `/config`; it keeps Claude Code's built-in software engineering instructions, so coding behavior is unchanged.
+- [`Han Concise`](docs/output-styles/han-concise.md) — The same standard and voice, plus a brevity property: no
+  preamble, no recap, and no sentence that carries neither a fact nor a needed transition. Select it for a working
+  session you read in the terminal, where you want the answer and not the narration.
 
 ## Installation
 
