@@ -9,14 +9,16 @@ description: >
   without pausing between them; to review each round as it lands, use pairing.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [context or path to plan file]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -407,10 +409,11 @@ pre-existing plan, and never inside code fences, tables, the `F#`/`D#`/`T#`/`R#`
 History companion links, which must survive unchanged so they still resolve. Run it here on the converged plan, not
 inside either loop. Confirm each criterion and fix any failure before presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
-separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next. This skill runs no separate editor pass, so the fidelity criterion is the only fact-preservation
+guard the output has, and it is not optional.
 
 **Preserve the cross-reference invariants across all files.** The two that a check can settle are executed rather than
 walked by hand:

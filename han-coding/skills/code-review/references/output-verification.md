@@ -93,5 +93,8 @@ Confirm each criterion and fix any failure before presenting:
    lists) is present.
 6. Every fact is preserved — every finding's recommended action, severity, location, quantity, and named entity survives
    with its precision intact.
+7. The report matches the shape the reader asked for, in count, format, and register. Where their stated shape collides
+   with a criterion above, their shape wins.
 
-Fidelity wins: the standard governs how each finding reads, never whether a required technical fact appears.
+Fidelity wins: the standard governs how each finding reads, and drops a required technical fact only when the reader
+asked for less and losing it would not change what they do next.

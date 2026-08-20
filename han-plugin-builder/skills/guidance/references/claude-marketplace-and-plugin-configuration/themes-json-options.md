@@ -1,5 +1,15 @@
 # Theme File Schema Reference
 
+## Contents
+
+- Fields
+- `base` Valid Values
+- Color Value Formats
+- Color Tokens
+- Behavior
+- Official Reference
+- JSON example
+
 Plugin theme files are JSON files placed in the `themes/` directory (or a custom path set via the `themes` field in
 `plugin.json`). The filename without `.json` becomes the theme's slug.
 

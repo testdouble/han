@@ -9,7 +9,9 @@ description:
   feedback on Han''s own skills — use han-feedback for that.'
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [optional context about changes or areas to focus on]"
-allowed-tools: Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Agent
+allowed-tools:
+  Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Agent,
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 When running a code review, follow the process outlined here.
@@ -19,7 +21,7 @@ When running a code review, follow the process outlined here.
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -67,12 +69,12 @@ tools can't catch.
 **Readability standard:** The review report is a reader-facing deliverable. As it writes the finding prose and
 narrative, the skill sources the shared standard by invoking `han-communication:readability-guidance` (Step 8) and
 applies it, holding the named audience: the author and reviewers of the change under review. The standard governs how
-each finding reads (lead with what to do and why, one idea per paragraph, short active sentences, plain words), never
-whether a required technical fact appears. It applies to the prose in finding bodies and narrative sections only; it
-never rewrites task IDs, severities, `file_path:line_number` references, `EXPLOIT:` fields, category labels, the fixed
-section headings and their order, the Review Summary table structure, or any code snippet. The dedicated
-`han-communication:readability-editor` rewrite (Step 8.5) and the readability self-check (Step 9.2) carry the standard
-into the report.
+each finding reads (lead with what to do and why, one idea per paragraph, short active sentences, plain words), and
+drops a required technical fact only when the reader asked for less and losing it would not change what they do next. It
+applies to the prose in finding bodies and narrative sections only; it never rewrites task IDs, severities,
+`file_path:line_number` references, `EXPLOIT:` fields, category labels, the fixed section headings and their order, the
+Review Summary table structure, or any code snippet. The dedicated `han-communication:readability-editor` rewrite (Step
+8.5) and the readability self-check (Step 9.2) carry the standard into the report.
 
 ### Task ID Assignment
 
@@ -248,7 +250,9 @@ Review each file from the Step 1 file list **in alphabetical order**. For each f
 4. **Examine the diff** to understand what changed. If no diff is available (Mode B uncommitted review or Mode C non-git
    review from Step 1), skip this sub-step — the full file read from sub-step 3 provides all necessary context. Apply
    the review checklist to the entire file content.
-5. **Apply the review checklist** at [review-checklist.md](./references/review-checklist.md)
+5. **Apply the review checklist** at [review-checklist.md](./references/review-checklist.md). Its YAGNI pass and its
+   Gate 1 evidence test are defined in [../../references/yagni-rule.md](../../references/yagni-rule.md); read that
+   file from here rather than following the checklist's own link to it.
 
 If the user provided focus areas in their arguments (the `$focus_areas` binding from Step 1), apply extra scrutiny to
 those areas and include additional detail in findings for matching categories.

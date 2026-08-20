@@ -5,6 +5,15 @@ paths:
 
 # Dynamic Project Discovery
 
+## Contents
+
+- The Rules
+- Rule: Never hardcode branch names
+- Rule: Use `which` (guarded) for tool availability, not `--version`
+- Rule: Discover project structure dynamically
+- Rule: Handle missing tools gracefully in Pre-requisites
+- Summary Checklist
+
 Skills run in whatever repository the user invokes them from. They must discover the project's structure, branch names,
 and tool availability dynamically rather than hardcoding assumptions.
 

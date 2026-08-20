@@ -5,6 +5,15 @@ paths:
 
 # Security Restrictions
 
+## Contents
+
+- The Rules
+- Rule: No XML angle brackets in frontmatter
+- Rule: No "claude" or "anthropic" in skill names
+- Rule: Description field max 1024 characters
+- Rule: Safe YAML parsing only
+- Summary Checklist
+
 Skill frontmatter appears in Claude's system prompt. This privileged position means malicious or malformed frontmatter
 could inject instructions into the system prompt, bypass skill boundaries, or cause silent failures. These restrictions
 prevent those risks.

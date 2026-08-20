@@ -1,5 +1,15 @@
 # Han Writing Voice Profile
 
+## Contents
+
+- Formatting standards
+- Voice profile
+- Vocabulary and phrasing
+- Structural tendencies
+- Content type variations
+- AI slop to avoid
+- Sample passages
+
 ## Formatting standards
 
 This profile governs voice and tone — not formatting mechanics. For formatting rules (paragraph length limits, header

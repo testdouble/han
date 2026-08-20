@@ -7,12 +7,14 @@ description: >
   fix it finds. Use when creating, authoring, scaffolding, designing, or drafting a new skill or slash command. Does not
   build an agent or subagent — use agent-builder. Does not serve, vendor, or refresh the authoring guidance itself — use
   guidance.
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), Bash(mkdir *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Bash(find *), Bash(mkdir *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -172,7 +174,9 @@ Cover at minimum:
    `SKILL.md` cased exactly.
 4. **Progressive disclosure** (`progressive-disclosure.md`, `skill-reference-files.md`) — body is process only and under
    500 lines; domain knowledge is in `references/`; scripts hold deterministic work; nothing the toolchain already
-   enforces is restated.
+   enforces is restated; every reference file is linked directly from SKILL.md rather than only through another
+   reference file, every reference link stays inside the plugin directory, and any reference file over roughly 100 lines
+   opens with a `## Contents` list unless it is a template copied whole into output.
 5. **Instruction quality** (`writing-effective-instructions.md`, `workflow-patterns.md`) — steps are specific and
    actionable; constraints embed reasoning; error handling is present; human gates sit only at irreversible actions; the
    most critical item in each list is placed last.

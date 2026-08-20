@@ -6,8 +6,8 @@ sub-agents to do the judgment-heavy work. The suite ships as a family of plugins
 plugin beneath every other: it owns the canonical readability standard, the writing-voice profile, and the explanation
 standard for talking to a reader who will not implement the work, plus the inline `readability-guidance` skill that
 surfaces the first two, the inline `explanation-guidance` skill that surfaces the third, the `edit-for-readability` skill,
-the `readability-editor` agent, and the `han-readability` output style that applies the first two to every turn of a
-session; it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
+the `readability-editor` agent, and the `han-readability` and `han-concise` output styles that apply the first two to
+every turn of a session; it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
 specialist agent roster the rest of the suite dispatches — every shared agent except the `readability-editor`, the
 `research-analyst`, and the `discussion-facilitator` — plus the `project-discovery` skill, the `pairing` collaborative working mode, and the canonical rule files; depends on no other Han plugin),
 `han-documentation` (the documentation skills: `project-documentation`, `architectural-decision-record`, and `runbook`;
@@ -69,16 +69,17 @@ han-plugin-builder skill:
 │   ├── README.md       # Light meta-plugin front door (no skills/agents sections)
 │   └── .claude-plugin/
 │       └── plugin.json
-├── han-communication/  # Foundational plugin: readability-guidance + explanation-guidance + edit-for-readability skills, readability-editor agent, han-readability output style, and the canonical readability-rule.md + writing-voice.md + explanation-rule.md (depends on nothing; every prose-producing plugin depends on it)
+├── han-communication/  # Foundational plugin: readability-guidance + explanation-guidance + edit-for-readability skills, readability-editor agent, han-readability + han-concise output styles, and the canonical readability-rule.md + writing-voice.md + explanation-rule.md (depends on nothing; every prose-producing plugin depends on it)
 │   ├── README.md       # Light front door + scent-line skill and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── .codex-plugin/
 │   │   └── plugin.json    # Codex-format manifest; every plugin except han and han-linear carries one (omitted from the entries below)
+│   ├── scripts/        # han-config-dir.sh, a symlink to the repo-root script; every plugin except han carries one (omitted from the entries below), and each skill's `personal config directory` probe runs it
 │   ├── agents/         # readability-editor agent definition
 │   ├── skills/         # readability-guidance + explanation-guidance (both inline, each surfaces one standard) + edit-for-readability
-│   ├── output-styles/  # han-readability.md: the readability rule and writing voice distilled into a selectable output style (auto-discovered default location; no plugin.json field)
-│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md + docs/output-styles/han-readability.md
+│   ├── output-styles/  # han-readability.md (the readability rule and writing voice distilled into a selectable output style) + han-concise.md (the same, plus a brevity property that is this style's own addition) (auto-discovered default location; no plugin.json field)
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/readability-editor.md + docs/output-styles/{han-readability,han-concise}.md
 │   └── references/     # Canonical readability-rule.md + writing-voice.md + explanation-rule.md (owned here; no vendored copies elsewhere), beside a vendored config-rule.md
 ├── han-core/           # Core plugin: the shared specialist agent roster (all agents except readability-editor and research-analyst) + project-discovery + pairing (depends on no other Han plugin)
 │   ├── README.md       # Light front door; skills and agents grouped by purpose
@@ -175,6 +176,7 @@ han-plugin-builder skill:
 │   ├── templates/      # Templates and coverage rule for long-form docs
 │   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
 │   └── research/       # Standalone research reports not tied to a specific plan
+├── scripts/            # Repo-root shared scripts every plugin symlinks to (han-config-dir.sh, with its Bats tests beside it)
 ├── test/               # Harness-level Bats checks (a script's own tests sit beside it)
 └── images/             # Banner and graphics for README
 ```
@@ -261,8 +263,14 @@ such as Claude, should be referenced here.
 - **[han-communication/output-styles/han-readability.md](./han-communication/output-styles/han-readability.md).** The
   readability rule and the writing-voice blocklist distilled into a selectable output style, so the standard shapes every
   turn of a session rather than only the skills that invoke `readability-guidance`. Derived from the two canonical files
-  above; when you edit either one, check whether the style needs the same change. It cannot read `.han/config.md`, so it
-  carries the built-in voice and no configured-profile override.
+  above; when you edit either one, check whether the style needs the same change. It cannot read `.han/config.md`, so it carries the built-in voice and no configured-profile override.
+- **[han-communication/output-styles/han-concise.md](./han-communication/output-styles/han-concise.md).** The same
+  distillation with two departures from the canonical rule. A turn drops preamble and recap and spends no sentence that
+  carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes the reader wants less than
+  the source carries, so detail rolls up into the statement it supports, with a floor holding a fact whose loss would
+  change what they do next, a number they will act on, and a stated condition that bounds a claim. Its self-check keeps
+  the rule's eight criteria with the fact criterion rewritten for the roll-up. Keep the two styles in sync on everything else, and keep both departures out of
+  `readability-rule.md` unless you intend every Han skill to adopt them.
 
 ### Shared planning conventions (`han-planning/references/`)
 
@@ -314,7 +322,7 @@ All three are owned by `han-planning`, not vendored. Each opens by saying so.
 ## Project Discovery
 
 - Default branch: `main`
-- Language: Markdown (skill, agent, and doc content) and Bash (skill `scripts/`)
+- Language: Markdown (skill, agent, and doc content) and Bash (skill `scripts/`, plus the shared repo-root `scripts/`)
 - Package manager: npm. The root `package.json` manages dev tooling only; there is no application build or dev server.
 - Install: `npm install` installs prek, Prettier, and Bats locally, with nothing on the global PATH.
 - Lint: `npm run lint` runs `prek run --all-files` (Prettier, ShellCheck, and file-hygiene hooks).

@@ -1,5 +1,12 @@
 # Iterative Plugin Development
 
+## Contents
+
+- The Rules
+- Testing Methodology
+- When to Stop Iterating
+- Summary Checklist
+
 Plugin development (skills, agents, and hooks) almost never produces solid, consistently working entities on the first
 try. LLM-driven plugins interact with model behavior unpredictably: assumptions encoded in a first draft only surface as
 problems on re-examination. This guide codifies an iterative development process that challenges assumptions, eliminates

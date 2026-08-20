@@ -5,6 +5,17 @@ paths:
 
 # External File References in Agent Definitions
 
+## Contents
+
+- The Rule
+- Why: Structural Evidence
+- Comparison: Skills vs. Agents
+- Agent Frontmatter Fields
+- The Pattern in Practice
+- What to Do Instead
+- Summary Checklist
+- Cross-References
+
 Agent definitions are self-contained markdown files. Unlike skills, agents do not support external file references. No
 `references/` folders, no `scripts/` folders, and no context injection commands. All content must be inlined directly in
 the agent `.md` file.

@@ -9,14 +9,16 @@ description: >
   to review each round as it lands, use pairing.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature specification path, optional: additional context]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *), Bash(cp *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *), Bash(cp *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -116,6 +118,12 @@ artifacts live in `{same-folder-as-source}/artifacts/` (which may already exist 
   rationale, evidence, and rejected alternatives.
 - `{same-folder-as-source}/artifacts/implementation-iteration-history.md` — round-by-round record of specialists
   engaged, questions raised, and how each was resolved.
+
+Each file follows its own template, copied whole:
+[feature-implementation-plan-template.md](./references/feature-implementation-plan-template.md),
+[implementation-decision-log-template.md](./references/implementation-decision-log-template.md), and
+[implementation-iteration-history-template.md](./references/implementation-iteration-history-template.md). Read a
+template in full from here rather than through the synthesis directives in Step 8.
 
 Two more artifacts are written by Step 1.5 rather than by this step:
 
@@ -388,7 +396,7 @@ the engineer who will build the feature; the editor reads han-communication's ow
 It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D-N citation
 identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the plan file.
 
-Then read the editor's fact-preservation report. **Do not walk the six-point checklist over the text the editor
+Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor
 produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
@@ -404,9 +412,10 @@ cannot read as either of those two shapes — walk the checklist below yourself 
 inside code fences, tables, or the D-N citation identifiers. Say in the Step 9 summary that you did so and why. With no
 report, the checklist is the only fidelity guard the output has.
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 ## Step 9: Present the Final Implementation Plan
 

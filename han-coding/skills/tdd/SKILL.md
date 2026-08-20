@@ -13,7 +13,8 @@ description: >
 argument-hint: "[what to build, a behavior to drive, or a path to a spec/plan]"
 allowed-tools:
   Read, Write, Edit, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(npm *), Bash(npx *), Bash(pnpm *), Bash(yarn *),
-  Bash(pytest *), Bash(python3 *), Bash(go *), Bash(cargo *), Bash(make *), Bash(bundle *), Bash(rake *)
+  Bash(pytest *), Bash(python3 *), Bash(go *), Bash(cargo *), Bash(make *), Bash(bundle *), Bash(rake *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
@@ -22,7 +23,7 @@ allowed-tools:
 - current branch: !`git branch --show-current 2>/dev/null || echo unknown`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -40,6 +41,10 @@ These constraints shape every step and override any instinct to move faster.
   progress. This single rule is what separates real TDD from TDD-flavored code. The verbatim Three Laws and Canon TDD
   steps it derives from are in [references/tdd-loop.md](./references/tdd-loop.md); pull that reference when a step needs
   the canon or the implementation gears.
+- **The scope gate is the observed-failure gate's companion.** The observed-failure gate proves a red is genuine. It
+  does not prove the test deserved to exist in this build. No production-code change outside the scope boundary recorded
+  in Step 1, and least of all in shared or cross-application code other consumers depend on. A list item whose green
+  requires an out-of-scope edit is a stop, never an implement; Step 2 carries the resolution ladder that Step 3 works.
 - **Two hats.** Never refactor while any test is red. See [references/tdd-loop.md](./references/tdd-loop.md) for the
   canonical statement.
 - **One behavior at a time.** Exactly one test list item becomes one runnable test per loop. Newly discovered scenarios
@@ -73,23 +78,33 @@ at five documents; if more than five look relevant, list them and read only the 
 relevance — defer the rest until refactor surfaces a need.** These govern the green and refactor steps. If none exist,
 state that plainly and plan to infer conventions from the surrounding code instead.
 
+**Resolve the scope boundary.** Name, in files and directories, what this work is allowed to change, because the scope
+gate tests every candidate edit against it. Inside the boundary: the files, directories, or module the request names,
+plus the tests that cover them. Outside it: everything the named code merely reaches, meaning shared libraries, engines,
+packages, and any code a second application or consumer also uses, plus code another team owns per `CODEOWNERS`. When
+the request names no files, take the application or package the requested behavior lives in as the boundary and treat
+its dependencies as outside it. Record the boundary; you will test list items and production edits against it.
+
 **Report scope, then proceed (no gate).** This skill runs autonomously after the initial request: it does not stop for
 confirmation. State to the user, in a few lines: the behavior or feature to be built, **whether this is net-new behavior
 or a fix to existing broken behavior** (a reported bug, a failing case, a fix being driven back in after `/investigate`,
 or code that already exhibits the error — recognize the fix case from those signals, not only from the word "bug"), the
-resolved test/lint/build commands, the standards and ADRs found (or that none were), the current branch, and that the
-skill will now write code in a red-green-refactor loop. If `current branch` from Project Context is the repository's
-default branch (`main` or `master`), recommend working on a branch, but do not wait for an answer. This is a report the
-user reads while the work runs, not a gate. Continue immediately to Step 2 without waiting for a response.
+scope boundary you just recorded, the resolved test/lint/build commands, the standards and ADRs found (or that none
+were), the current branch, and that the skill will now write code in a red-green-refactor loop. If `current branch` from
+Project Context is the repository's default branch (`main` or `master`), recommend working on a branch, but do not wait
+for an answer. This is a report the user reads while the work runs, not a gate. Continue immediately to Step 2 without
+waiting for a response.
 
 **The one exception.** If the initial request or the provided context explicitly states the human wants to review,
 verify, or approve the plan or test list before implementation, then this becomes a gate: build the test list in Step 2,
 present it together with this scope report, and wait for approval before starting the Step 3 loop. Absent an explicit
 request like that, the skill runs to completion without further human input.
 
-The one input that can still block is a missing test command: if it could not be resolved from CLAUDE.md,
-`project-discovery.md`, the discovery script, or manifest inference, ask the user for it, because TDD is impossible
-without a way to run tests. Exhaust inference before asking; this is a hard dependency, not a discretionary checkpoint.
+Two things can still block a run, both hard dependencies rather than discretionary checkpoints. A missing test command
+is the first: if it could not be resolved from CLAUDE.md, `project-discovery.md`, the discovery script, or manifest
+inference, ask the user for it, because TDD is impossible without a way to run tests. Exhaust inference before asking.
+The second is the top rung of the scope gate's resolution ladder in Step 2, reached only when the requested behavior
+cannot be delivered without an out-of-scope change.
 
 ## Step 2: Build the BDD Test List
 
@@ -120,9 +135,33 @@ Apply YAGNI to the list itself. A scenario earns a place only with evidence it i
 named dependency, an existing code path that breaks, a regulation, a real incident). Scenarios that fail the evidence
 test go to a deferred list with the trigger that would reopen them. Do not pad the list for symmetry or completeness.
 
-Report the test list to the user. Unless the verify-plan exception from Step 1 applies, continue to Step 3 immediately
-without waiting for approval. When that exception applies, present the test list together with the Step 1 scope report
-and wait for approval before entering the loop.
+**Then apply the scope gate to the list.** YAGNI asks whether a behavior has evidence it is needed. The scope gate asks
+a question no amount of evidence answers: would making this test pass require changing a file outside the Step 1
+boundary? Ask it of every item, and ask it hardest of items that arrived from a test plan, an analysis report, or an
+agent finding carrying a severity label. A CRIT or HIGH label is evidence the finding is real. It is never evidence the
+fix belongs to this ticket, and an item whose own text names a production change as a prerequisite ("this requires
+first adding an explicit `order`") is that production change wearing a test's clothes.
+
+**The resolution ladder.** Work it in order and stop at the first rung that resolves the item. Never skip to
+implementing the out-of-scope change.
+
+1. **Redesign the test.** Most items that trip the gate are asking production code to supply something the test could
+   arrange for itself. Rebuild the setup so the assertion holds without the out-of-scope behavior, and the item stays on
+   the list in its rewritten form. A test that needs the out-of-scope behavior only to make a fixture deterministic
+   always resolves here: that is a test-design problem, and leaning on a production change to make it disappear is the
+   wrong direction of dependence.
+2. **Defer the item as its own work.** When the test cannot be redesigned, move it off the list and write it up as a
+   ticket: the behavior, the file that would have to change, who else consumes that file, and the change it needs.
+   Report it in Step 5 as work this build did not own. The finding stays alive; it just stops being this build's job.
+3. **Escalate.** Only when the requested behavior cannot be delivered at all without the out-of-scope change, stop and
+   ask the user. Name the file, its other consumers, the change it needs, and the two ways forward: widen this build's
+   scope to include it, or split it into separate work and drop the dependent behavior from this build. This is the one
+   rung that pauses an otherwise autonomous run, and it is a hard dependency, not a review checkpoint.
+
+Report the test list to the user, along with any item the scope gate moved and which rung resolved it. Unless the
+verify-plan exception from Step 1 applies, continue to Step 3 immediately without waiting for approval. When that
+exception applies, present the test list together with the Step 1 scope report and wait for approval before entering the
+loop.
 
 ## Step 3: The Red-Green-Refactor Loop
 
@@ -163,6 +202,12 @@ the current broken behavior (the error the bug raises), which passes precisely b
 behavior already exists, cross the item off and pick the next one. If the test is asserting the bug, **do not cross the
 item off** — rewrite it to assert the desired correct behavior, so it goes red until the fix lands. Do not write
 production code off an unobserved red.
+
+**With the red observed, check where green would land.** Name the files you would edit to make this test pass, before
+you edit any of them. If one sits outside the Step 1 boundary, the scope gate has tripped: do not edit it, and work the
+resolution ladder from Step 2 instead. A genuine red says the behavior is missing. It does not say this build owns
+producing it, and this is the only check that asks. Shared or cross-application code is where the gate matters most,
+because the blast radius of an edit there reaches consumers nobody in this build is testing.
 
 ### Green
 
@@ -228,6 +273,8 @@ fix it (a lint or build break is not a "pre-existing error" to wave off) and re-
 Summarize for the user:
 
 - Behaviors implemented, and the state of the test list (done, and any deferred items with their reopen triggers).
+- Any item the scope gate moved, with the rung that resolved it: the redesign that kept it, or the ticket write-up for
+  the out-of-scope change this build declined to make.
 - Which coding standards and ADRs were applied, and where they shaped the code.
 - Any YAGNI deferrals from refactor, each with its reopen trigger.
 - A scope warning if the test list exceeded roughly ten open items, with a recommendation to split future work.

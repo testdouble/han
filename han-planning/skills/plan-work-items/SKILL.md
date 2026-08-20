@@ -8,7 +8,9 @@ description: >
   plan or iterative-plan-review to harden it first. Does not sequence work into demoable delivery phases — use
   plan-a-phased-build for that. Does not write code — use tdd to implement a work item.
 argument-hint: "[implementation plan path or feature name, optional; output folder, optional]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
@@ -16,7 +18,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 - feature-implementation-plan.md: !`find . -maxdepth 5 -name "feature-implementation-plan.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -289,10 +291,11 @@ W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (D
 Justification, References, Design references), which must survive unchanged so they still resolve. Confirm each criterion
 and fix any failure before writing:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
-separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next. This skill runs no separate editor pass, so the fidelity criterion is the only fact-preservation
+guard the output has, and it is not optional.
 
 Write incrementally per the operating principle: write the title and intro first, then append each work item as it is
 finalized. Save after each.

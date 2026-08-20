@@ -46,6 +46,13 @@ to use the skill. For what the skill does internally, read the skill definition 
   in parallel against it. The first confirms the plan leads with plain language and defers the implementation detail;
   the second confirms the plain-language layer is comprehensible on its own. Actionable edits are applied before the
   plan is finalized.
+- **A test that needs a code change first is not a test.** Before priorities are assigned, the skill sweeps every
+  recommendation for one that cannot be written until shipped code changes: an added `order` on a query, a new
+  validation, a changed return value. That item leaves the priority tiers for a Blocked by a Production Change section
+  recording the change, the file, and the file's other consumers. It exists because a CRIT label ranks how serious a
+  finding is and says nothing about whose ticket the fix belongs to, so an item carrying one can otherwise walk a
+  production change into the plan dressed as a test to write. The sweep applies to security items on the same terms as
+  every other.
 - **Plan, not test code.** The skill does not write tests. It produces a plan describing what to test, how, and at what
   level.
 
@@ -106,6 +113,9 @@ A structured test plan in-channel, leading with plain language and deferring the
     references, and risk assessment.
   - **Deferred Tests.** Items `test-engineer` excluded because brittleness risk outweighed value, with reasons.
   - **Dropped Edge Cases.** Items `edge-case-explorer` intentionally excluded, with reasons.
+  - **Blocked by a Production Change.** Items that cannot be tested until shipped code changes first, each with the
+    change it needs, the file that would carry it, and who else consumes that file. Separate work to ticket, not tests
+    to write. The Summary bullets carry the count so it does not sit unread beneath the priority tiers.
   - **Coverage Summary.** Counts by priority tier.
   - **Scope.** Scope type, file count, branch, language, test framework, file list.
 
@@ -142,8 +152,9 @@ The skill walks a five-step process:
    the file list touches async or shared state. Add `adversarial-security-analyst` when it touches auth, input handling,
    isolation, crypto, uploads, or SQL/ORM. All run in parallel in the background. The skill waits for every dispatched
    agent.
-3. **Merge and prioritize.** Classify findings into the four-tier priority scheme (security items auto-CRIT). Assign
-   unified IDs. Interleave by priority. Cap non-security items at 40.
+3. **Merge and prioritize.** Classify findings into the four-tier priority scheme (security items auto-CRIT). Sweep out
+   any item needing a production change before it can be tested, into Blocked by a Production Change. Assign unified
+   IDs. Interleave by priority. Cap non-security items at 40.
 4. **Generate output.** Fill the template at
    [`references/template.md`](../../skills/automated-test-planning/references/template.md), leading with plain
    language (Summary, What Needs Testing and Why, What Each Test Covers) before the Technical Reference region that

@@ -1,5 +1,14 @@
 # Config Rule (`.han/config.md`)
 
+## Contents
+
+- The two files, the two probes, and the personal read
+- Schema
+- How a configured path resolves
+- Precedence
+- Extra agents joining the pool
+- Degradation and the one-line note
+
 Han reads two optional configuration files, and either one may be absent. A person may carry a personal
 `.han/config.md` inside their Claude Code configuration directory, and a consuming project may carry its own
 `.han/config.md`. The personal file supplies defaults that follow the person into every project; the project file
@@ -73,9 +82,10 @@ Both `output-directory` and `writing-voice` name a path, and both resolve the sa
   `personal config directory` value the probe supplied. This is what lets one personal writing-voice profile, kept
   beside the personal config, apply in every project.
 - **A full path is used as it stands**, including one that points outside the project.
-- **A leading `~` expands to the home directory before the value is used.** The run performs this expansion itself
-  rather than leaving it to a shell, because most skills have no shell available to them and a literal `~` handed to a
-  file-reading tool does not resolve. `..` segments are likewise accepted and resolved.
+- **A leading `~` expands to the home directory before the value is used.** Resolve it in the run rather than leaving
+  it to a shell, because most skills have no shell available to them. The Read tool does expand a leading `~`, but
+  always to the home directory, never to a configured directory somewhere else, so a value meant to sit beside the
+  personal config must not rely on it. `..` segments are likewise accepted and resolved.
 
 No path is refused for pointing outside the project. A skill that writes deliverables to a configured
 `output-directory` outside the working directory does so without comment; the person who configured it chose that.
@@ -121,6 +131,10 @@ name, so a message that omits which one leaves the reader opening both.
 
 - Malformed frontmatter, or a file unreadable as text: ignore the unusable portion, resolve those settings from the
   rest of the precedence chain, and note what was ignored and which file held it.
+- The `personal config directory` probe reporting the home directory when `CLAUDE_CONFIG_DIR` names somewhere else:
+  the probe runs a resolver script, and its guard falls back to the home directory if that script is missing or fails.
+  Nothing detects this, and no note is shown, because the probe cannot tell a failed resolution from a person who never
+  set the variable. The personal file at the configured location stops applying until the script is restored.
 - A setting name the suite does not recognize: ignore it with a note; recognized settings in the same file still apply.
 - A recognized setting with a blank or unusable value: ignore it with a note and fall through the precedence chain.
 - A setting that does not apply to the running skill (it writes no markdown deliverable, or selects no agents): ignore

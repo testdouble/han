@@ -6,13 +6,15 @@ description: >
   run, log what worked and what didn't, or submit observations for maintainers. Does not review code, investigate bugs,
   or research options; use code-review, investigate, or research for those. Does not provide feedback on skills or
   agents from non-Han plugins.
-allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *)
+allowed-tools:
+  Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - Today's date: !`date +%Y-%m-%d`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

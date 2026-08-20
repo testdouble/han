@@ -95,8 +95,8 @@ change goes before you scaffold anything. (For the user-facing version of this m
 - **`han-communication`** is the foundational plugin beneath every other. It owns the canonical readability standard, the
   writing-voice profile, and the explanation standard for talking to a reader who will not implement the work, plus the
   `readability-guidance` and `explanation-guidance` skills that surface them, the `edit-for-readability` skill, and the
-  `readability-editor` agent, and the `Han Readability` output style in `han-communication/output-styles/`. It depends on
-  nothing; the plugins that produce prose output depend on it. A component goes here only when it is part of a shared
+  `readability-editor` agent, and the `Han Readability` and `Han Concise` output styles in
+  `han-communication/output-styles/`. It depends on nothing; the plugins that produce prose output depend on it. A component goes here only when it is part of a shared
   communication capability: how output reads, or how a run talks to a person.
 - **`han-core`** carries the shared specialist agent roster — **every agent in the suite except the
   `readability-editor`** (which lives in `han-communication`), **the `research-analyst`** (which lives in
@@ -171,6 +171,10 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
    - Frontmatter with `name`, `description`, `allowed-tools`. See
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
+   - If the skill reads `.han/config.md`, copy the `personal config directory` probe and its matching
+     `Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")` grant from any existing skill. The probe must
+     run that script rather than name an environment variable, or the loader refuses it and the skill never runs.
+     See [context-injection-commands.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/context-injection-commands.md).
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `{plugin}/docs/skills/{name}.md` and
    fill it in. Every skill gets a long-form doc. If the skill runs inline in a calling skill's context and returns no
    artifact, follow the inline-guidance variant in the
@@ -222,6 +226,21 @@ the reasoning that creates a blind spot also grades it as correct. When you find
 4. **Run the four-surface coverage rule for each resulting agent.** Agent definition, long-form doc, plugin README scent
    line, and agents-index entry, per the [coverage rule](./docs/templates/coverage-rule.md).
 
+## Adding an output style
+
+1. Create `han-communication/output-styles/{name}.md` with frontmatter (`name`, `description`,
+   `keep-coding-instructions`) and the instruction body. An output style is text Claude Code appends to the system
+   prompt at session start, so write it as instructions to follow, not as documentation about itself. The directory is
+   auto-discovered, so `plugin.json` needs no field for it.
+2. Copy [the output-style variant](./docs/templates/coverage-rule.md#the-output-style-variant) of the skill template
+   into `han-communication/docs/output-styles/{name}.md` and fill it in. Every output style gets a long-form doc.
+3. Add a scent line to the plugin's `README.md`, reusing the long-form doc's own summary line. There is no repo-root
+   output-styles index; add one when a second plugin ships a style.
+4. A style derived from [`readability-rule.md`](./han-communication/references/readability-rule.md) or
+   [`writing-voice.md`](./han-communication/references/writing-voice.md) says so in its long-form doc. Record any place
+   it departs from the canonical file as deliberate in the CLAUDE.md doc map, so a later sync pass does not read the
+   difference as drift.
+
 ## Wiring the readability standard into a skill
 
 A skill is **reader-facing** when its primary deliverable is human-facing prose that a non-author reads end to end to
@@ -255,7 +274,7 @@ test, add it to that list and wire the standard in:
    skill's real reader is a specific expert (an engineer, a pull-request reviewer, a non-technical stakeholder), name
    that reader instead of defaulting. Scope the frame per section so technical specifics the reader needs are not
    simplified away.
-4. **Add the standardized self-check.** Before presenting, the skill runs six behaviorally-anchored yes/no criteria over
+4. **Add the standardized self-check.** Before presenting, the skill runs behaviorally-anchored yes/no criteria over
    the prose regions only: main point first, descriptive headings, one idea per paragraph, sentence length, common
    words with no blocklisted word and an explanation for every term the reader cannot look up, every fact preserved. It
    corrects any failure. Leave code fences, diagram bodies, rendered markup, and citation identifiers unevaluated and
