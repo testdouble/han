@@ -263,15 +263,17 @@ such as Claude, should be referenced here.
 - **[han-communication/output-styles/han-readability.md](./han-communication/output-styles/han-readability.md).** The
   readability rule and the writing-voice blocklist distilled into a selectable output style, so the standard shapes every
   turn of a session rather than only the skills that invoke `readability-guidance`. Derived from the two canonical files
-  above; when you edit either one, check whether the style needs the same change. It cannot read `.han/config.md`, so it
-  carries the built-in voice and no configured-profile override.
+  above; when you edit either one, check whether the style needs the same change. It departs from the rule once, shared
+  with `han-concise`: technical-detail separation is the default rather than an option, enforced by an eighth self-check
+  criterion. It cannot read `.han/config.md`, so it carries the built-in voice and no configured-profile override.
 - **[han-communication/output-styles/han-concise.md](./han-communication/output-styles/han-concise.md).** The same
   distillation with two departures from the canonical rule. A turn drops preamble and recap and spends no sentence that
   carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes the reader wants less than
   the source carries, so detail rolls up into the statement it supports, with a floor holding a fact whose loss would
-  change what they do next, a number they will act on, and a stated condition that bounds a claim. Its self-check runs
-  eight criteria rather than seven: one rewritten for the roll-up, and one added for keeping technical detail after the
-  prose rather than threaded through it. Keep the two styles in sync on everything else, and keep both departures out of
+  change what they do next, a number they will act on, and a stated condition that bounds a claim. It also carries the
+  technical-detail departure `han-readability` carries. Its self-check runs eight criteria rather than seven: one
+  rewritten for the roll-up, and the shared one added for keeping technical detail after the prose rather than threaded
+  through it. Keep the two styles in sync on everything else, and keep both departures out of
   `readability-rule.md` unless you intend every Han skill to adopt them.
 
 ### Shared planning conventions (`han-planning/references/`)

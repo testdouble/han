@@ -20,7 +20,7 @@ _how_ to select the style. For the instructions it adds to the system prompt, re
 ## Key concepts
 
 - **The short-form sibling of `Han Readability`.** Both styles carry the same audience frame, output properties,
-  writing voice, blocklist, and prose-only scope.
+  writing voice, blocklist, and prose-only scope, and both separate technical detail from the prose.
   [`Han Readability`](./han-readability.md) preserves every fact at full precision.
   `Han Concise` adds the brevity property and rolls detail up instead.
 - **A standing selection, not a call.** The style is text Claude Code appends to the system prompt once, at session
@@ -32,11 +32,12 @@ _how_ to select the style. For the instructions it adds to the system prompt, re
 - **Three things stay at full precision.** A fact whose loss would change what you do next, a number you will act on,
   and a stated condition that bounds when a claim holds. Everything else is a candidate for the roll-up. Ask what was
   left out and you get it in full.
-- **A derived copy, with two deliberate departures.** The style distills
+- **A derived copy, with three deliberate departures.** The style distills
   [`readability-rule.md`](../../references/readability-rule.md) and the blocklist in
   [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative on everything else. The
-  brevity property and the roll-up rule that replaces the canonical `Fidelity wins` section are this style's own, and
-  are deliberately kept out of the rule, so Han's skills are unaffected by either.
+  brevity property and the roll-up rule that replaces the canonical `Fidelity wins` section are this style's own. The
+  third, making technical-detail separation the default and checking it, is shared with `Han Readability`. All three
+  are deliberately kept out of the rule, so Han's skills are unaffected by them.
 
 ## When to select it
 
@@ -90,9 +91,10 @@ One guard is untouched. Prose is the only target, so code fences, diagram bodies
 identifiers pass through unchanged and still compile, render, and resolve.
 
 The style closes with an eight-criterion self-check. Six criteria match the rule's. One is rewritten to check the
-roll-up rather than full fact preservation, and one is added: no paragraph or list item threads several paths,
-signatures, or snippets through its sentences. Technical detail is separated by default and comes after the prose that
-explains it, with inline reserved for the one identifier a sentence is genuinely about.
+roll-up rather than full fact preservation, and **Technical detail separated** is added at position 6, which
+`Han Readability` carries too: no paragraph or list item threads several paths, signatures, or snippets through its
+sentences. Plain sentences say what happens and the detail comes after them, with inline reserved for the one identifier
+a sentence is genuinely about.
 
 ## What it does not reach
 
@@ -139,8 +141,8 @@ brevity property removes preamble and recap from every turn.
   together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
   tree.
-- [`Han Readability`](./han-readability.md). The sibling style that preserves every fact at full precision, for
-  sessions whose output someone reads cold.
+- [`Han Readability`](./han-readability.md). The sibling style that preserves every fact at full precision and carries
+  no brevity property, for sessions whose output someone reads cold.
 - [Readability](../../../docs/readability.md). The shared standard, its required properties, its staged application, and
   the per-skill table.
 - [`readability-rule.md`](../../references/readability-rule.md) and

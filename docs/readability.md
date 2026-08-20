@@ -108,14 +108,19 @@ the output style once at session start.
 properties, fidelity guard, and self-check together with the writing-voice blocklist. Pick it when the session's output
 is prose someone reads cold.
 
-[`Han Concise`](../han-communication/output-styles/han-concise.md) carries the same properties and departs from the rule
-three times. A turn drops preamble and recap and spends no sentence that carries neither a fact nor a needed transition.
-In place of `Fidelity wins`, it assumes you want less than the source carries, so supporting detail rolls up into the
-statement it supports rather than waiting for you to ask; a roll-up has to be true of everything it covers, and three
-things stay at full precision: a fact whose loss would change what you do next, a number you will act on, and a stated
-condition that bounds when a claim holds. And technical detail is separated by default rather than threaded through the
-sentences, which its self-check adds an eighth criterion to enforce. Pick it for a working session you read in the
-terminal. All three departures are the style's own, so they reach the conversation and not Han's skills.
+Both styles depart from the rule on technical detail. The rule leaves inline detail an open option; the styles make
+separation the default, so plain sentences say what happens and the symbol names, paths, flags, and code come after
+them. Inline is reserved for the one identifier a sentence is genuinely about. Each style's self-check adds an eighth
+criterion to enforce it.
+
+[`Han Concise`](../han-communication/output-styles/han-concise.md) departs twice more. A turn drops preamble and recap
+and spends no sentence that carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes
+you want less than the source carries, so supporting detail rolls up into the statement it supports rather than waiting
+for you to ask; a roll-up has to be true of everything it covers, and three things stay at full precision: a fact whose
+loss would change what you do next, a number you will act on, and a stated condition that bounds when a claim holds.
+Pick it for a working session you read in the terminal.
+
+Every departure belongs to the styles, so all of them reach the conversation and none reach Han's skills.
 
 Neither style changes how work is done. Both keep Claude Code's built-in software engineering instructions.
 
@@ -125,8 +130,8 @@ Both styles share the same three limits:
   specialists unchanged. The skills stay the mechanism that brings the standard to agent output.
 - **It carries the built-in voice only.** A static system prompt cannot run the `.han/config.md` probe, so a configured
   `writing-voice` profile does not override it the way it overrides `readability-guidance`.
-- **It is a derived copy.** The canonical rule and voice profile stay authoritative. When you edit either one, check
-  whether the style needs the same change.
+- **It is a derived copy.** Outside the departures above, the canonical rule and voice profile stay authoritative. When
+  you edit either one, check whether the styles need the same change.
 
 ## Scope: which skills are reader-facing
 

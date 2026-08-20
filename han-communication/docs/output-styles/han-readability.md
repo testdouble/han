@@ -23,14 +23,15 @@ and _how_ to select the style. For the instructions it adds to the system prompt
 - **The third delivery path for one standard.** The rule reaches output three ways: a skill sources it while drafting,
   the `readability-editor` rewrites a finished draft, and this style shapes every turn. All three trace to the same
   canonical files.
-- **The long-form sibling of `Han Concise`.** Both styles carry the same standard and voice.
-  [`Han Concise`](./han-concise.md) adds a brevity property, rolls supporting detail up into the statement it supports,
-  and checks that technical detail stays out of the sentences. This style does none of that, so the connective prose and
-  the full precision a cold reader needs stay in.
-- **A derived copy.** The style distills
+- **The long-form sibling of `Han Concise`.** Both styles carry the same standard and voice, and both separate
+  technical detail from the prose. [`Han Concise`](./han-concise.md) goes further: it adds a brevity property and rolls
+  supporting detail up into the statement it supports. This style does neither, so the connective prose and the full
+  precision a cold reader needs stay in.
+- **A derived copy, with one deliberate departure.** The style distills
   [`readability-rule.md`](../../references/readability-rule.md) and the blocklist in
-  [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative, and the style can drift
-  from them.
+  [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative on everything else, and
+  the style can drift from them. The departure is the technical-detail property: the rule leaves inline detail an open
+  option, and both styles make separation the default and check it.
 
 ## When to select it
 
@@ -74,7 +75,10 @@ blurred to read more simply, unless the reader asked for less and losing it woul
 Prose is the only target, so code fences, diagram bodies, rendered markup, and citation identifiers pass through
 untouched and still compile, render, and resolve.
 
-The style closes with the same self-check the rule carries, run over the draft before it is presented.
+The style closes with an eight-criterion self-check, run over the draft before it is presented. Seven criteria are the
+rule's. **Technical detail separated** is added at position 6: no paragraph or list item threads several paths,
+signatures, or snippets through its sentences. Plain sentences say what happens and the detail comes after them, with
+inline reserved for the one identifier a sentence is genuinely about.
 
 ## What it does not reach
 
@@ -105,8 +109,9 @@ the standard rather than inflated by it, since the rule pushes toward shorter se
   [`/edit-for-readability`](../skills/edit-for-readability.md) over the report.
 - **Your configured writing voice is not being applied.** Also expected, and for the same reason. Invoke a skill that
   sources [`/readability-guidance`](../skills/readability-guidance.md), which resolves the configured profile.
-- **The style contradicts the canonical rule.** The rule wins. File the drift as a bug against the style and fix the
-  style to match [`readability-rule.md`](../../references/readability-rule.md).
+- **The style contradicts the canonical rule.** Outside the technical-detail property, the rule wins. File the drift as
+  a bug against the style and fix the style to match
+  [`readability-rule.md`](../../references/readability-rule.md).
 
 ## Related documentation
 
@@ -120,7 +125,7 @@ the standard rather than inflated by it, since the rule pushes toward shorter se
   the per-skill table.
 - [`readability-rule.md`](../../references/readability-rule.md) and
   [`writing-voice.md`](../../references/writing-voice.md). The canonical files this style is distilled from. They are
-  authoritative; the style is a copy.
+  authoritative on everything but the technical-detail property.
 - [`/readability-guidance`](../skills/readability-guidance.md). The skill that sources the same standard into a calling
   skill's context, and the one that honors a configured writing-voice profile.
 - [`readability-editor`](../agents/readability-editor.md). The agent the synthesis skills dispatch for the adversarial
