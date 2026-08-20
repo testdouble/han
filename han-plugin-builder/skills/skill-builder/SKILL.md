@@ -174,7 +174,9 @@ Cover at minimum:
    `SKILL.md` cased exactly.
 4. **Progressive disclosure** (`progressive-disclosure.md`, `skill-reference-files.md`) — body is process only and under
    500 lines; domain knowledge is in `references/`; scripts hold deterministic work; nothing the toolchain already
-   enforces is restated.
+   enforces is restated; every reference file is linked directly from SKILL.md rather than only through another
+   reference file, every reference link stays inside the plugin directory, and any reference file over roughly 100 lines
+   opens with a `## Contents` list unless it is a template copied whole into output.
 5. **Instruction quality** (`writing-effective-instructions.md`, `workflow-patterns.md`) — steps are specific and
    actionable; constraints embed reasoning; error handling is present; human gates sit only at irreversible actions; the
    most critical item in each list is placed last.

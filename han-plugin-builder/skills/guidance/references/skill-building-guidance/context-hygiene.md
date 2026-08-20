@@ -5,6 +5,12 @@ paths:
 
 # Context Hygiene
 
+## Contents
+
+- The Rules
+- Anti-Patterns
+- Summary Checklist
+
 Context hygiene is the discipline of keeping a skill's context footprint minimal, well-positioned, and free of stale or
 irrelevant tokens. Several other guidance docs contain rules that serve this goal — progressive disclosure, frontmatter
 conciseness, extracting to references/, position-aware ordering, stale-doc audits. This doc explains the mechanisms

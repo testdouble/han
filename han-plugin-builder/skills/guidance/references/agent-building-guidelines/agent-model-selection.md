@@ -5,6 +5,17 @@ paths:
 
 # Choosing the Right Model for Agent Definitions
 
+## Contents
+
+- The `model` Field
+- Model Characteristics
+- Decision Criteria
+- A Note on Cost
+- Evidence from Agent Archetypes
+- Summary Checklist
+- Cross-References
+- Sources
+
 Agents support a `model` frontmatter field that skills do not. Choosing the right model is about matching capability and
 speed to the task the agent performs. **Cost is not a factor in model selection.** Choose based on what the task
 demands, not price.

@@ -250,7 +250,9 @@ Review each file from the Step 1 file list **in alphabetical order**. For each f
 4. **Examine the diff** to understand what changed. If no diff is available (Mode B uncommitted review or Mode C non-git
    review from Step 1), skip this sub-step — the full file read from sub-step 3 provides all necessary context. Apply
    the review checklist to the entire file content.
-5. **Apply the review checklist** at [review-checklist.md](./references/review-checklist.md)
+5. **Apply the review checklist** at [review-checklist.md](./references/review-checklist.md). Its YAGNI pass and its
+   Gate 1 evidence test are defined in [../../references/yagni-rule.md](../../references/yagni-rule.md); read that
+   file from here rather than following the checklist's own link to it.
 
 If the user provided focus areas in their arguments (the `$focus_areas` binding from Step 1), apply extra scrutiny to
 those areas and include additional detail in findings for matching categories.

@@ -1,3 +1,16 @@
+## Contents
+
+- Processing test-engineer results
+- Processing edge-case-explorer results
+- Processing adversarial-security-analyst results
+- Processing structural-analyst results
+- Processing behavioral-analyst results
+- Processing concurrency-analyst results (only if dispatched)
+- Processing data-engineer results (only if dispatched)
+- Processing devops-engineer results (only if dispatched)
+- Processing on-call-engineer results (only if dispatched)
+- Processing junior-developer results
+
 **Size-based demotion (applies to every category below).** Size-based demotion is governed by [SKILL.md](../SKILL.md)
 Step 3.3, the authoritative home for size-based severity rules. The bands in each category define what each severity
 means; Step 3.3 governs which findings escalate to those bands at the change's size (read from Step 3.1). When

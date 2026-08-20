@@ -5,6 +5,12 @@ paths:
 
 # Skill Decomposition
 
+## Contents
+
+- The Rules
+- Composition Patterns
+- Summary Checklist
+
 A skill should do one thing well. When a skill handles too many responsibilities, it becomes fragile, hard to debug, and
 difficult for the LLM to follow consistently. Split monolithic skills into focused units and extract reusable agent
 definitions.

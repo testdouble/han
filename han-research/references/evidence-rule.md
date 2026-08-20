@@ -1,7 +1,15 @@
 # Evidence Rule (Evidence-Based)
 
+## Contents
+
+- Trust classes
+- The three principles
+- How to apply the rule
+- Escalation
+- What this rule is not
+
 This rule defines what evidence means in Han, how to characterize how strong it is, and what to do when no evidence
-exists at all. The rule supplements [`yagni-rule.md`](./yagni-rule.md). YAGNI's categories answer _is there any evidence
+exists at all. The rule supplements the companion `yagni-rule.md`, which a skill needing both loads directly. YAGNI's categories answer _is there any evidence
 to include this item?_ This rule answers _once an item passes that test, how confident should you be in the evidence,
 and what is the response when no evidence is available?_
 
@@ -32,8 +40,8 @@ The principle inverts in three contexts: formal-methods or specification-complia
 authoritative artifact); regulatory or contractual contexts (the regulation wins); and pre-incident observation of
 intended behavior (a passing test proves only that tested inputs behaved correctly for tested code paths; passing and
 failing tests are not symmetric evidence). See
-[`docs/evidence.md#principle-1-proximity-to-origin`](../../docs/evidence.md#principle-1-proximity-to-origin) for the
-inversion conditions.
+[`docs/evidence.md`](https://github.com/testdouble/han/blob/main/docs/evidence.md#principle-1-proximity-to-origin) in
+the Han repository for the inversion conditions in full.
 
 ### Principle 2: Independent corroboration (web-source scope)
 
@@ -57,7 +65,7 @@ When a claim has no evidence at any tier, label it. Defer the dependent decision
 justify revisiting.
 
 Do not collapse "no evidence" into "very weak evidence." They are different states. The response pattern is the same one
-[YAGNI](./yagni-rule.md) uses for deferred items: a labeled defer with a concrete reopen trigger (a measured metric, an
+`yagni-rule.md` uses for deferred items: a labeled defer with a concrete reopen trigger (a measured metric, an
 incident class, a customer commitment, a regulation taking effect, a dependency landing). Aspirational triggers do not
 qualify.
 

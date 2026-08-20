@@ -6,6 +6,13 @@ paths:
 
 # Graceful Degradation
 
+## Contents
+
+- The Rules
+- Rule: Detect environment state with a script, then branch to a named mode
+- Rule: Apply conventional defaults for directory keys when config is absent
+- Summary Checklist
+
 **Differentiation from `dynamic-project-discovery.md`:** That doc covers hard prerequisites — tools or capabilities the
 skill cannot function without at all; when they're missing, the skill stops with a message to the user. This doc covers
 _partial context_ — situations where the environment is usable but some data (a git history, project config, docs

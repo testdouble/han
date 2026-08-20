@@ -5,6 +5,20 @@ paths:
 
 # Troubleshooting
 
+## Contents
+
+- Skill Won't Upload
+- Skill Doesn't Trigger
+- Skill Triggers Too Often
+- Instructions Not Followed
+- Allowed-Tools Issues
+- A Probe Reading Outside the Project Is Refused by the Classifier
+- A Probe Naming an Environment Variable Is Refused
+- A Script Probe Aborts the Skill
+- Context Injection Syntax in Prose Triggers Execution
+- Sub-Skill Output Lost
+- Summary Checklist
+
 This guide covers common problems encountered when building and using skills, organized by symptom. Each section
 describes the symptom, explains the likely cause, and provides a concrete fix.
 

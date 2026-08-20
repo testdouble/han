@@ -1,5 +1,11 @@
 # Planning Boundary Rule (Scope Boundary and Visual Material)
 
+## Contents
+
+- The boundary record
+- Visual material
+- Related rules
+
 **Owned by `han-planning`.** This file is authored here and is not a vendored copy of a shared rule. Do not overwrite it
 from another plugin's `references/` folder during a re-sync sweep, and do not treat a difference between it and any
 similarly-named file elsewhere as drift to correct.
