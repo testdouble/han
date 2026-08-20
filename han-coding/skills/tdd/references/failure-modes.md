@@ -1,5 +1,19 @@
 # How an Agent Fakes TDD, and the Discipline That Catches It
 
+## Contents
+
+- 1. Writing the test and the production code together
+- 2. Never seeing red
+- 3. Whole-feature steps
+- 4. Skipping the refactor
+- 5. Asserting on implementation detail
+- 6. Applying standards while going green
+- 7. Keeping no test list
+- 8. Refactoring into speculative abstraction
+- 9. Asserting the bug instead of the fix
+- 10. Making a test pass by changing code the ticket does not own
+- The one check that catches most of these
+
 An unguided coding agent reliably fakes TDD. The failure is rarely malice — it is the model optimizing for "tests are
 green at the end" instead of "the tests drove the code". Each failure mode below has a symptom you can observe and a
 gate in the SKILL body that catches it. When you feel the pull toward any of these, that pull is the signal the

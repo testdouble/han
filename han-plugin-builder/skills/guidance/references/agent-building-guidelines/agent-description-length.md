@@ -5,6 +5,17 @@ paths:
 
 # Agent Description Length
 
+## Contents
+
+- The target: keep every agent description under 1024 characters
+- Why agents drifted long, and why it matters
+- What belongs in the description, and what moves to the body
+- The priority cutting ladder
+- How to measure a description
+- Common Pitfalls
+- Summary Checklist
+- Cross-References
+
 Every installed agent's frontmatter `description` is loaded into context in every conversation, the same way skill
 descriptions are. Claude reads the whole roster of agent descriptions to decide which agent to dispatch, so each one is
 paid for in every session whether or not the agent runs. Run `/context` in a session with agents installed and you will

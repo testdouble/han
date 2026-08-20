@@ -1,5 +1,12 @@
 # Review Team Roster and Briefs
 
+## Contents
+
+- The roster
+- Specialists deliberately excluded from the default roster
+- Domain-scoped briefs
+- The shared brief every specialist receives
+
 The specialist roster for the spec-stage review round, the domain-scoped brief each specialist receives, and the shared
 brief text every one of them gets. Step 6 of the skill selects from this file; it does not restate it.
 

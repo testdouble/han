@@ -119,6 +119,12 @@ artifacts live in `{same-folder-as-source}/artifacts/` (which may already exist 
 - `{same-folder-as-source}/artifacts/implementation-iteration-history.md` — round-by-round record of specialists
   engaged, questions raised, and how each was resolved.
 
+Each file follows its own template, copied whole:
+[feature-implementation-plan-template.md](./references/feature-implementation-plan-template.md),
+[implementation-decision-log-template.md](./references/implementation-decision-log-template.md), and
+[implementation-iteration-history-template.md](./references/implementation-iteration-history-template.md). Read a
+template in full from here rather than through the synthesis directives in Step 8.
+
 Two more artifacts are written by Step 1.5 rather than by this step:
 
 - `{same-folder-as-source}/artifacts/scope-boundary.md` — the boundary record. Always present, whether this run wrote it

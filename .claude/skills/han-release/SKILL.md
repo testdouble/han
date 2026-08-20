@@ -1,19 +1,13 @@
 ---
 name: han-release
 description: >
-  Cut a Han release: update CHANGELOG.md with the changes since the last release, bump every plugin that changed, tag
-  every plugin as {plugin-name}--v{version} so a version-constrained dependency can resolve, and publish a GitHub
-  release whose notes attribute every merged pull request to its author, credit every closed issue to the person who
-  opened it, the people who contributed to it, and the people who worked on the fix, and link back to the full changelog
-  for that version. Han ships as a parent meta-plugin (`han`) plus child plugins (`han-core`, `han-github`,
-  `han-reporting`, and any future `han-*` extension); the skill versions each plugin independently and tags each one
-  independently, with the release attaching to the parent's tag. Use when releasing, cutting a release, shipping a new
-  Han version, publishing release notes, or tagging a version. Reads each plugin's target version from its plugin.json;
-  when a plugin has not been bumped past the latest tag yet, it proposes a semantic-versioning bump and confirms the
-  whole plan before continuing. Always stops for approval before creating any tag, because a pushed tag is never moved.
-  Requires the gh CLI, jq, the claude CLI, and a clean git checkout. This is a repository-maintenance skill for the Han
-  repo itself, not a general review or PR skill — use code-review for local review, post-code-review-to-pr to post a PR
-  review, and update-pr-description for PR bodies.
+  Cut a Han release: update CHANGELOG.md with the changes since the last release, bump and tag every plugin that changed
+  as {plugin-name}--v{version} so a version-constrained dependency can resolve, and publish a GitHub release crediting
+  every merged pull request and closed issue to the people behind it. Use when releasing, cutting a release, shipping a
+  new Han version, publishing release notes, or tagging a version. Always stops for approval before creating any tag,
+  because a pushed tag is never moved. Requires the gh CLI, jq, the claude CLI, and a clean git checkout. This is a
+  repository-maintenance skill for the Han repo itself, not a general review or PR skill — use code-review for local
+  review, post-code-review-to-pr to post a PR review, and update-pr-description for PR bodies.
 argument-hint: "[pause before publishing] [draft] [optional release context]"
 allowed-tools:
   Read, Edit, Write, Glob, Grep, Agent, Bash(git *), Bash(gh *), Bash(jq *), Bash(which *), Bash(grep *), Bash(sed *),
@@ -92,7 +86,7 @@ first release and silently expand the changelog to the whole repository history.
   ```
 
   Do not read `prev#` as "the number without the leading `v`". That older rule returns the whole tag string for a
-  per-plugin tag, and `prev#` is the parent's baseline (see Step 3a), so a wrong value here silently corrupts the entire
+  per-plugin tag, and `prev#` is the parent's baseline (see 3a in `references/version-plan-rules.md`), so a wrong value here silently corrupts the entire
   version plan rather than failing.
 
 - Each plugin's source directory comes from the `source` field in `marketplace.json` (for example `./han-core`), so its
@@ -131,7 +125,7 @@ first release and silently expand the changelog to the whole repository history.
    yourself before applying the precedence above:
    `git tag -l '{parent plugin name}--v*' --sort=-v:refname | head -n1`.
 
-   `prev` feeds two different things: the commit range below, **and** the parent's baseline version in Step 3a via
+   `prev` feeds two different things: the commit range below, **and** the parent's baseline version at 3a in `references/version-plan-rules.md` via
    `prev#`. Parse `prev#` with the after-the-last-`v` rule in the vocabulary block, not by stripping a leading `v`.
 
 2. **Commit range.** With a previous tag: `${prev}..HEAD`. First release: the full history (`HEAD` with no range base).
@@ -154,42 +148,11 @@ first release and silently expand the changelog to the whole repository history.
 5. **No-PR fallback.** If `$pr_list` is empty (local-only or squash history with no PR refs), record the notable commit
    subjects from `git log {range} --oneline` instead, and use the commits form documented in both reference files.
 
-6. **Collect closed issues and their attribution.** For each merged PR `N` in `$pr_list`, find the issues that PR closed
-   and credit everyone involved. This relates each closed issue to the fix that resolved it.
-
-   - **Find the closed issues for the PR.** Take the issue numbers from
-     `gh pr view N --json closingIssuesReferences --jq '[.closingIssuesReferences[]?.number]'` (the GitHub-tracked
-     closing links). As a fallback for older PRs that linked via text, also scan the PR body and commit messages for
-     GitHub closing keywords: `gh pr view N --json body,commits --jq '[.body, (.commits[].messageBody)] | join("\n")'`
-     and extract `#<num>` that follow `close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, or
-     `resolved` (case-insensitive). Union the two sets, dedupe.
-
-   - **Confirm each is a closed issue.** For each candidate number `I`, run
-     `gh issue view I --json number,title,author,state,comments` (suppress stderr; redirect `2>/dev/null`). Skip the
-     number if the command fails (it is a PR number, not an issue, or does not exist).
-
-   - **Gather attribution per issue.** Record:
-     - **opener** — `.author.login`, unless `.author.is_bot` is true.
-     - **issue contributors** (people who contributed meaningfully) — the people who left a **substantive** comment on
-       the issue. A reaction is not a comment (a 👍 or other emoji reaction never appears in `.comments[]`), so
-       reaction-only participants are already excluded. Drive-by comments do not count either. Pull each comment with
-       its author and body
-       (`gh issue view I --json comments --jq '.comments[] | select(.author.is_bot|not) | {login: .author.login, body: .body}'`,
-       stderr suppressed), and treat a comment as a drive-by when its trimmed body is emoji-only, or is a brief
-       acknowledgment or status ping (for example `+1`, `same`, `me too`, `bump`, `following`, `thanks`,
-       `any update(s)?`), or is shorter than roughly 15 words and adds no detail. A person qualifies only when at least
-       one of their comments is substantive (not a drive-by). Remove the opener and the PR workers so each person is
-       credited once. May be empty.
-     - **PR workers** — for the closing PR `N`, the union of the PR author, the review authors, and the commit authors:
-       `gh pr view N --json author,reviews,commits --jq '[.author.login] + [.reviews[]?.author.login] + [.commits[].authors[].login] | unique'`.
-       Drop bot accounts (`is_bot` where available, plus the `web-flow`, `github-actions`, and `dependabot` logins).
-
-   - **Build `$issue_list`.** One entry per closed issue: its number, title, opener, contributors, the closing PR
-     number(s), and the merged PR workers. If the same issue is closed by more than one PR in the range, record every
-     closing PR and merge their worker sets. Build the changelog bullets and release-body lines per
-     [references/changelog-rules.md](./references/changelog-rules.md) and
-     [references/release-notes-format.md](./references/release-notes-format.md). If no closed issues are found,
-     `$issue_list` is empty and the issues subsection/section is omitted everywhere.
+6. **Collect closed issues and their attribution.** For each merged PR `N` in `$pr_list`, find the issues that PR
+   closed and credit everyone involved, following [references/attribution-rules.md](./references/attribution-rules.md).
+   That file holds the closing-issue lookup, the substantive-comment test that decides who counts as a contributor, the
+   bot-account exclusions, and the shape of each `$issue_list` entry. If no closed issues are found, `$issue_list` is
+   empty and the issues subsection/section is omitted everywhere.
 
 ## Step 3: Build the per-plugin version plan
 
@@ -204,64 +167,11 @@ Enumerate the plugins from `plugins` in Project Context (one parent, plus each c
   baseline. Record the introduction in the changelog, but do not increment. This is the general rule for every future
   `han-*` extension, not a one-time exception for the current children.
 
-### 3a. Classify each plugin
-
-For each plugin, read `current` from `{source}/.claude-plugin/plugin.json` and compute `baseline`:
-
-- **Child, did not exist at `prev`** (`git cat-file -e {prev}:{source}/.claude-plugin/plugin.json` fails, or this is the
-  first release): **new plugin**. `baseline = current`, `target = current`, **no bump**, mark it `new`. Skip the rest of
-  the classification for this plugin.
-- **Child, existed at `prev`**: `baseline = git show {prev}:{source}/.claude-plugin/plugin.json | jq -r .version`.
-- **Parent**: `baseline = prev#` (the parent's version is what the tag tracks, regardless of any directory move). On the
-  first release `baseline` is empty and the parent is treated like a new plugin set to its `current` value.
-
-Determine whether the plugin **changed** in `{range}`:
-
-- **Child**: changed when `git diff --name-only {prev}..HEAD -- {source}/` is non-empty.
-- **Parent**: always treated as changed (it always bumps). Its change _level_ is computed in 3b from the whole release,
-  not just `{parent source}/`.
-
-### 3b. Compute each changed plugin's bump level and target
-
-For a **changed child**, classify the highest-priority change inside `{source}/`:
-
-- **major** — a skill directory under `{source}/skills/` was removed or renamed (renaming breaks `/skill-name`), an
-  agent under `{source}/agents/` was removed or renamed, or a commit indicates a breaking behavior change (`!` in the
-  type, `BREAKING CHANGE`, a review skill that now auto-posts, and so on). Inspect
-  `git diff --name-status {range} -- {source}/` for `D`/`R` on `SKILL.md` or agent paths, and scan commit subjects
-  scoped to that plugin.
-- **minor** — a new skill, a new agent, a new `references/` file, or a new optional capability was added inside
-  `{source}/`, with no major change present. Inspect the same diff for added `SKILL.md` / agent files.
-- **patch** — only typo, permission, edge-case, or context-injection fixes inside `{source}/`.
-
-For the **parent**, the bump level is the maximum across the whole release:
-
-- a child was **removed** from the suite → **major** (breaking for anyone who installed the meta-plugin).
-- any changed child's level is **major** → **major**.
-- a **new** child plugin was introduced, or any changed child's level is **minor** → at least **minor** (a new or
-  expanded capability reaches suite installers).
-- otherwise (only child patches, or only repo-level/`{parent source}/` doc and config fixes) → **patch**.
-
-Take the highest of those. Repo-root changes that do not live inside any plugin directory (for example `docs/`,
-`README.md`, `CONTRIBUTING.md`) are suite-level: they count toward the parent's level (normally patch) and never bump a
-child.
-
-Compute `proposed` from each plugin's `baseline`: major → `(x+1).0.0`, minor → `x.(y+1).0`, patch → `x.y.(z+1)`.
-
-### 3c. Decide each plugin's target (ahead path vs. compute path)
-
-For each changed plugin, compare `current` to `baseline`:
-
-```
-highest=$(printf '%s\n%s\n' "{baseline}" "{current}" | sort -V | tail -n1)
-```
-
-- **`current` strictly ahead of `baseline`** (`highest` == `current` and `current` != `baseline`): the version was
-  already bumped during development. **`target = current`. No confirmation for this plugin.** Still compute the expected
-  `proposed`, and if `current` is a _lower_ level of bump than the changes warrant, add one non-blocking advisory line
-  to the Step 7 summary.
-- **`current` equal to or behind `baseline`**: the one-bump-per-branch bump has not been applied for this plugin.
-  `target = proposed`; this plugin **needs confirmation**.
+Classify each plugin, compute its bump level, and decide its target by following
+[references/version-plan-rules.md](./references/version-plan-rules.md). That file holds the baseline lookup for a
+parent, an existing child, and a new child (3a); the major, minor, and patch classification for a changed child and for
+the parent (3b); and the ahead-path versus compute-path decision that determines which plugins need confirmation below
+(3c).
 
 ### 3d. Confirm the plan (conditional gate)
 
@@ -310,7 +220,7 @@ two reads above answer the same question and work in either state.
 
 ## Step 4: Apply the versions
 
-For **every** plugin whose `target` differs from its `current` (the compute-path plugins from Step 3c, and any plugin
+For **every** plugin whose `target` differs from its `current` (the compute-path plugins from 3c in `references/version-plan-rules.md`, and any plugin
 the operator edited at 3d), set both files so they read `target`:
 
 1. Set `{source}/.claude-plugin/plugin.json` `version` to that plugin's `target` (Edit).
@@ -327,7 +237,8 @@ recovery is discarding the working-tree edits.
 
 ## Step 5: Update CHANGELOG.md
 
-Follow [references/changelog-rules.md](./references/changelog-rules.md) exactly. From `v3.0.0` onward, each release
+Follow [references/changelog-rules.md](./references/changelog-rules.md) exactly, writing the narrative in the voice at
+[writing-voice.md](../../../han-communication/references/writing-voice.md). From `v3.0.0` onward, each release
 section is a parent `## v{parent target}` heading with one `### {plugin} v{version}` sub-heading per plugin that changed
 (the parent always appears; new and changed children appear; unchanged children are omitted), plus the release-level
 bookkeeping subsections. Every `@mention` in the changelog (narrative, PR bullets, issue bullets) is a markdown link to
@@ -437,7 +348,7 @@ The commit is on GitHub and no tag exists yet. Everything past this point is irr
 1. **Compute each plugin's `tag name`** as `{name}--v{target}`, for every plugin in `plugins`, then split them into two
    sets using the Step 3 version plan:
    - **Being tagged this release** — every plugin whose `target` differs from its `baseline` (the parent always, plus
-     each bumped child), and every **new** plugin from Step 3a, whose tag has never existed.
+     each bumped child), and every **new** plugin classified at 3a, whose tag has never existed.
    - **Carried forward** — every unchanged child, whose `target` equals its `baseline`. Its tag was created by the
      release that shipped that version and points at that older release commit. This run does not re-tag it.
 

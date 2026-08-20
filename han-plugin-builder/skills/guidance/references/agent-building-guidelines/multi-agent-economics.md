@@ -5,6 +5,16 @@ paths:
 
 # Multi-Agent Economics
 
+## Contents
+
+- Say what warrants delegation, because the model's default is eager
+- The Escalation Cascade
+- The 45% Threshold
+- Scaling Reality
+- Practical Implications for Skills
+- Summary Checklist
+- Sources
+
 When a skill dispatches agents via the `Agent` tool, each agent adds latency and token cost. This doc provides the
 decision framework for when adding agents is justified and when it's wasteful.
 

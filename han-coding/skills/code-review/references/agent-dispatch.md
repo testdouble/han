@@ -1,5 +1,11 @@
 # Agent Selection and Dispatch
 
+## Contents
+
+- Step 3.2: Select agents
+- Step 3.3: Scope every agent brief to the change
+- Step 3.4: Domain-scoped file lists
+
 The review roster, the signals that select each agent, the brief-scoping rules, the domain-scoped file
 lists, and the exact per-agent dispatch prompts. Step 3 selects and dispatches using this file. The sub-step numbering below is the skill's own; other sites cite
 these sections as Step 3.2 through Step 3.5.

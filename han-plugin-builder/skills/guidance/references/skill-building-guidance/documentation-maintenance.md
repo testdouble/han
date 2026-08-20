@@ -5,6 +5,15 @@ paths:
 
 # Documentation Maintenance
 
+## Contents
+
+- The Rules
+- Rule: Treat doc-code contradictions as functional bugs
+- Rule: Audit SKILL.md when its dependencies change
+- Rule: Audit references/ against source truth
+- Rule: Version documentation with the code it describes
+- Summary Checklist
+
 A skill that worked last month can silently degrade if its SKILL.md or references describe things that have changed. The
 model follows stale instructions faithfully — stale documentation is active poison, not passive neglect.
 

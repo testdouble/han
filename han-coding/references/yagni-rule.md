@@ -1,5 +1,13 @@
 # YAGNI Rule (Evidence-Based)
 
+## Contents
+
+- The two gates
+- Named anti-patterns (auto-flag as YAGNI candidates)
+- How to apply YAGNI in skills and agents
+- Deferred (YAGNI) section format
+- What YAGNI is not
+
 YAGNI — "You Aren't Gonna Need It" — is the rule this project uses to keep specs, plans, code, and operational machinery
 from accreting work that isn't needed yet. The rule is evidence-based, not absolute. Items survive when evidence
 justifies them. Items without evidence get deferred — recorded for later, not silently dropped.
@@ -10,8 +18,8 @@ copy. The bar for inclusion is "we need this now and have evidence to prove it,"
 
 The categories below answer whether evidence exists at all (the inclusion gate). For how strong the evidence is once it
 exists — trust classes, the corroboration gate for web sources, the no-evidence label — see the companion
-[`evidence-rule.md`](./evidence-rule.md). The two rules work together; this one gates inclusion, that one characterizes
-quality.
+`evidence-rule.md`, which a skill needing both loads directly. The two rules work together; this one gates inclusion,
+that one characterizes quality.
 
 ## The two gates
 

@@ -1,5 +1,18 @@
 # Readability Rule (Human-Readable Output Standard)
 
+## Contents
+
+- Who reads reader-facing output
+- The audience frame
+- What the standard requires
+- Length guidance
+- The vocabulary blocklist
+- Prose only
+- Fidelity wins
+- Break a rule before writing something clumsy
+- The standardized self-check
+- How to apply this rule in a skill
+
 This is the shared readability standard that every reader-facing Han skill applies while it writes. Its one aim: when a
 user runs a reader-facing skill, the human-facing deliverable it produces can be found, understood, and used by a reader
 who did not do the work and lacks the author's context.

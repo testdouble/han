@@ -1,5 +1,14 @@
 # Config Rule (`.han/config.md`)
 
+## Contents
+
+- The two files, the two probes, and the personal read
+- Schema
+- How a configured path resolves
+- Precedence
+- Extra agents joining the pool
+- Degradation and the one-line note
+
 Han reads two optional configuration files, and either one may be absent. A person may carry a personal
 `.han/config.md` inside their Claude Code configuration directory, and a consuming project may carry its own
 `.han/config.md`. The personal file supplies defaults that follow the person into every project; the project file

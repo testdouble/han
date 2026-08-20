@@ -1,5 +1,16 @@
 # Per-Entity Audit Checklist
 
+## Contents
+
+- Skills (`{plugin}/skills/{name}/SKILL.md` + `{plugin}/docs/skills/{name}.md`)
+- Agents (`{plugin}/agents/{name}.md` + `{plugin}/docs/agents/{name}.md`)
+- Top-level concept docs (`docs/concepts.md`, `docs/quickstart.md`, `docs/sizing.md`, `docs/yagni.md`)
+- Indexes (`docs/skills/README.md`, `docs/agents/README.md`)
+- Guidance docs (`han-plugin-builder/skills/guidance/references/**`)
+- Templates (`docs/templates/**`)
+- Root files (`README.md`, `CONTRIBUTING.md`, `CLAUDE.md`)
+- Reporting findings
+
 Verification rules applied to every entity in scope. The skill's mode (branch vs. sweep) determines _which_ entities are
 in scope. This checklist determines _what_ is checked for each one. Apply every rule that fits the entity's type. Record
 each finding with the file path and a concrete fix; do not paper over discrepancies.
