@@ -269,8 +269,9 @@ such as Claude, should be referenced here.
   distillation with two departures from the canonical rule. A turn drops preamble and recap and spends no sentence that
   carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes the reader wants less than
   the source carries, so detail rolls up into the statement it supports, with a floor holding a fact whose loss would
-  change what they do next, a number they will act on, and a stated condition that bounds a claim. Its self-check
-  criterion 6 is rewritten to match. Keep the two styles in sync on everything else, and keep both departures out of
+  change what they do next, a number they will act on, and a stated condition that bounds a claim. Its self-check runs
+  eight criteria rather than seven: one rewritten for the roll-up, and one added for keeping technical detail after the
+  prose rather than threaded through it. Keep the two styles in sync on everything else, and keep both departures out of
   `readability-rule.md` unless you intend every Han skill to adopt them.
 
 ### Shared planning conventions (`han-planning/references/`)

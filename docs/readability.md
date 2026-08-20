@@ -109,12 +109,13 @@ properties, fidelity guard, and self-check together with the writing-voice block
 is prose someone reads cold.
 
 [`Han Concise`](../han-communication/output-styles/han-concise.md) carries the same properties and departs from the rule
-twice. A turn drops preamble and recap and spends no sentence that carries neither a fact nor a needed transition. And
-in place of `Fidelity wins`, it assumes you want less than the source carries, so supporting detail rolls up into the
-statement it supports rather than waiting for you to ask. A roll-up has to be true of everything it covers, and three
+three times. A turn drops preamble and recap and spends no sentence that carries neither a fact nor a needed transition.
+In place of `Fidelity wins`, it assumes you want less than the source carries, so supporting detail rolls up into the
+statement it supports rather than waiting for you to ask; a roll-up has to be true of everything it covers, and three
 things stay at full precision: a fact whose loss would change what you do next, a number you will act on, and a stated
-condition that bounds when a claim holds. Pick it for a working session you read in the terminal. Both departures are
-the style's own, so they reach the conversation and not Han's skills.
+condition that bounds when a claim holds. And technical detail is separated by default rather than threaded through the
+sentences, which its self-check adds an eighth criterion to enforce. Pick it for a working session you read in the
+terminal. All three departures are the style's own, so they reach the conversation and not Han's skills.
 
 Neither style changes how work is done. Both keep Claude Code's built-in software engineering instructions.
 

@@ -20,7 +20,7 @@ _how_ to select the style. For the instructions it adds to the system prompt, re
 ## Key concepts
 
 - **The short-form sibling of `Han Readability`.** Both styles carry the same audience frame, output properties,
-  writing voice, blocklist, prose-only scope, and seven-criterion self-check.
+  writing voice, blocklist, and prose-only scope.
   [`Han Readability`](./han-readability.md) preserves every fact at full precision.
   `Han Concise` adds the brevity property and rolls detail up instead.
 - **A standing selection, not a call.** The style is text Claude Code appends to the system prompt once, at session
@@ -89,8 +89,10 @@ would change what you do next, a number you will act on, and a stated condition 
 One guard is untouched. Prose is the only target, so code fences, diagram bodies, rendered markup, and citation
 identifiers pass through unchanged and still compile, render, and resolve.
 
-The style closes with a seven-criterion self-check. Six criteria match the rule's; the sixth is rewritten to check the
-roll-up rather than full fact preservation.
+The style closes with an eight-criterion self-check. Six criteria match the rule's. One is rewritten to check the
+roll-up rather than full fact preservation, and one is added: no paragraph or list item threads several paths,
+signatures, or snippets through its sentences. Technical detail is separated by default and comes after the prose that
+explains it, with inline reserved for the one identifier a sentence is genuinely about.
 
 ## What it does not reach
 

@@ -28,9 +28,11 @@ carries, and roll detail up rather than waiting to be asked. What would change w
   most; it exists nowhere but here.
 - **Numbered lists for steps, bullets for the rest.** Number anything sequential; bullet anything that is not.
 - **Progressive disclosure.** The core idea comes before the qualifications, the edge cases, and the evidence.
-- **Technical detail follows the prose.** Keep symbol names, file paths, flags, and exact code out of the readable
-  paragraphs. Where one must sit inline, keep it as small as the sentence needs. Otherwise put it in a code fence after
-  prose that already said what the fence shows.
+- **Technical detail follows the prose.** Separate it by default. Say what happens in plain sentences, then put the
+  symbol names, file paths, flags, and exact code after them, in a code fence or a trailing line the prose already set
+  up. Inline is the exception: one identifier the sentence is genuinely about, kept only where pulling it out would
+  leave the sentence pointing at nothing. A paragraph or list item threading several paths, signatures, or snippets
+  through its sentences has failed this, however accurate each one is.
 
 ## Voice
 
@@ -102,7 +104,7 @@ request outranks those, on the terms set above.
 
 ## Check the draft before you present it
 
-After a draft exists, run this over the prose regions as one discrete pass. These seven criteria are the whole check.
+After a draft exists, run this over the prose regions as one discrete pass. These eight criteria are the whole check.
 Correct every failure before presenting.
 
 1. **Main point first** — the opening line states the main point.
@@ -111,13 +113,15 @@ Correct every failure before presenting.
 4. **Sentence length** — no sentence runs past about thirty words without reason.
 5. **Common words, no blocked word** — no blocked word is present, and every term the reader cannot look up carries its
    half-sentence explanation at first use.
-6. **Detail rolled up, not blurred** — every roll-up is true of everything it covers, every fact you kept is exact, and
+6. **Technical detail separated** — no paragraph or list item threads several paths, signatures, or snippets through
+   its sentences. Each one says what happens in plain words, with the detail after it.
+7. **Detail rolled up, not blurred** — every roll-up is true of everything it covers, every fact you kept is exact, and
    nothing whose loss would change what the reader does next was dropped.
-7. **The shape the reader asked for** — the response matches any shape they stated, in count, format, and register.
+8. **The shape the reader asked for** — the response matches any shape they stated, in count, format, and register.
    Check register as observable properties, not as a judgment: no term they could not look up, no notation the requested
    register excludes, no structure the request ruled out.
 
-Criterion 7 wins every collision. It outranks the structural criteria, the detail you would otherwise carry, and the
+Criterion 8 wins every collision. It outranks the structural criteria, the detail you would otherwise carry, and the
 blocked-word list. Two things it does not override: a fact whose loss would change what the reader does next, and a
 required section, whose prose it shapes rather than removes. It wins only where a collision is real.
 
