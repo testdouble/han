@@ -79,7 +79,8 @@ answer. Those three are different states. A recorded answer of any kind is never
 ## Visual Material Received
 
 One row per piece of visual material, written as the item arrives rather than at the end of the run. `None received`
-when the run received none.
+when the run received none. In that case `None received` stands alone and the table below is omitted, because the
+completeness gate reads every row as an item claimed on disk and refuses a placeholder row.
 
 | Item | What state it depicts | Kept at |
 | ---- | --------------------- | ------- |
