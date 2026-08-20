@@ -266,9 +266,12 @@ such as Claude, should be referenced here.
   above; when you edit either one, check whether the style needs the same change. It cannot read `.han/config.md`, so it
   carries the built-in voice and no configured-profile override.
 - **[han-communication/output-styles/han-concise.md](./han-communication/output-styles/han-concise.md).** The same
-  distillation with one property the canonical rule does not carry: a turn drops preamble and recap and spends no
-  sentence that carries neither a fact nor a needed transition. Keep the two styles in sync on everything else, and keep
-  the brevity property out of `readability-rule.md` unless you intend every Han skill to adopt it.
+  distillation with two departures from the canonical rule. A turn drops preamble and recap and spends no sentence that
+  carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes the reader wants less than
+  the source carries, so detail rolls up into the statement it supports, with a floor holding a fact whose loss would
+  change what they do next, a number they will act on, and a stated condition that bounds a claim. Its self-check
+  criterion 6 is rewritten to match. Keep the two styles in sync on everything else, and keep both departures out of
+  `readability-rule.md` unless you intend every Han skill to adopt them.
 
 ### Shared planning conventions (`han-planning/references/`)
 

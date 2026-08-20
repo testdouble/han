@@ -23,9 +23,9 @@ and _how_ to select the style. For the instructions it adds to the system prompt
 - **The third delivery path for one standard.** The rule reaches output three ways: a skill sources it while drafting,
   the `readability-editor` rewrites a finished draft, and this style shapes every turn. All three trace to the same
   canonical files.
-- **The long-form sibling of `Han Concise`.** Both styles carry the same standard, voice, fidelity guard, and
-  seven-criterion self-check. [`Han Concise`](./han-concise.md) adds a brevity property that drops preamble and recap;
-  this style does not, so the connective prose a cold reader needs stays in.
+- **The long-form sibling of `Han Concise`.** Both styles carry the same standard, voice, and self-check.
+  [`Han Concise`](./han-concise.md) adds a brevity property and rolls supporting detail up into the statement it
+  supports. This style does neither, so the connective prose and the full precision a cold reader needs stay in.
 - **A derived copy.** The style distills
   [`readability-rule.md`](../../references/readability-rule.md) and the blocklist in
   [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative, and the style can drift

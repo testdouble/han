@@ -10,7 +10,8 @@ _how_ to select the style. For the instructions it adds to the system prompt, re
 ## TL;DR
 
 - **What it does.** Holds the shared readability standard and the writing voice across every turn of a session, and
-  adds a brevity property: no preamble, no recap, and no sentence that carries neither a fact nor a needed transition.
+  adds a brevity property: no preamble, no recap, no sentence that carries neither a fact nor a needed transition, and
+  detail rolled up into the statement it supports.
 - **When to select it.** Turn it on for a working session you read in the terminal, where you want the answer and not
   the narration.
 - **What it changes.** How work is written up, not how it is done. It keeps Claude Code's software engineering
@@ -19,16 +20,23 @@ _how_ to select the style. For the instructions it adds to the system prompt, re
 ## Key concepts
 
 - **The short-form sibling of `Han Readability`.** Both styles carry the same audience frame, output properties,
-  fidelity guard, blocklist, and seven-criterion self-check.
-  [`Han Readability`](./han-readability.md) stops there. `Han Concise` adds the brevity property on top.
+  writing voice, blocklist, prose-only scope, and seven-criterion self-check.
+  [`Han Readability`](./han-readability.md) preserves every fact at full precision.
+  `Han Concise` adds the brevity property and rolls detail up instead.
 - **A standing selection, not a call.** The style is text Claude Code appends to the system prompt once, at session
   start. You pick it in `/config` and it applies until you pick something else.
-- **Brevity comes out of filler, never out of facts.** The fidelity guard is unchanged, so shortening a response cannot
-  drop or blur a claim, quantity, named entity, or stated condition.
-- **A derived copy, plus one property.** The style distills
+- **It assumes you want less, rather than making you ask.** Detail rolls up into the statement it supports whenever it
+  adds no meaningful value or clarification: nine near-identical passing checks become "all nine passed". The roll-up
+  has to be true of everything it covers, so a roll-up is never a blur. "Was sometimes slow" does not stand in for
+  "exceeded 340ms in three of ten windows", because it drops the magnitude and the frequency you would judge it by.
+- **Three things stay at full precision.** A fact whose loss would change what you do next, a number you will act on,
+  and a stated condition that bounds when a claim holds. Everything else is a candidate for the roll-up. Ask what was
+  left out and you get it in full.
+- **A derived copy, with two deliberate departures.** The style distills
   [`readability-rule.md`](../../references/readability-rule.md) and the blocklist in
-  [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative. The brevity property is
-  this style's own addition and is deliberately not in the canonical rule, so Han's skills are unaffected by it.
+  [`writing-voice.md`](../../references/writing-voice.md). Those two files stay authoritative on everything else. The
+  brevity property and the roll-up rule that replaces the canonical `Fidelity wins` section are this style's own, and
+  are deliberately kept out of the rule, so Han's skills are unaffected by either.
 
 ## When to select it
 
@@ -72,12 +80,17 @@ Responses are also shorter than under `Han Readability`. A turn does not restate
 to do, or summarize what it just said. It spends no sentence carrying neither a fact, a qualifier, nor a needed
 transition, and it reserves headings for responses with parts worth navigating.
 
-Two guards outrank the brevity property. Fidelity wins, so no claim, quantity, named entity, or stated condition is
-dropped or blurred to read more simply, unless the reader asked for less and losing it would not change what they do
-next. Prose is the only target, so code fences, diagram bodies, rendered markup, and citation identifiers pass through
-untouched and still compile, render, and resolve.
+Detail rolls up instead of listing out. The style starts from the assumption that you want less than the source carries,
+so a set of details becomes the statement it supports whenever the detail adds no meaningful value or clarification.
+That is a roll-up, not a blur: it has to be true of everything it covers, and the shorter true statement always beats
+the vaguer one. Three things stay at full precision anyway, so the roll-up never costs you a decision: a fact whose loss
+would change what you do next, a number you will act on, and a stated condition that bounds when a claim holds.
 
-The style closes with the same seven-criterion self-check the rule carries, run over the draft before it is presented.
+One guard is untouched. Prose is the only target, so code fences, diagram bodies, rendered markup, and citation
+identifiers pass through unchanged and still compile, render, and resolve.
+
+The style closes with a seven-criterion self-check. Six criteria match the rule's; the sixth is rewritten to check the
+roll-up rather than full fact preservation.
 
 ## What it does not reach
 
@@ -104,15 +117,18 @@ brevity property removes preamble and recap from every turn.
 
 - **You selected it and nothing changed.** The output style loads once at session start. Run `/clear` or start a new
   session.
-- **A response dropped something you needed.** Ask what was left out and you get it in full. If losing it would have
-  changed what you do next, the style was supposed to keep it; file that as a bug.
+- **A response dropped something you needed.** Working as designed unless it crossed the floor. Ask what was left out
+  and you get it in full. If losing it would have changed what you do next, was a number you had to act on, or was a
+  condition bounding a claim, the style was supposed to keep it; file that as a bug.
+- **A roll-up was not true of everything it covered.** That is a bug, not a trade-off. A roll-up is exact at its own
+  altitude by definition.
 - **A skill's document is still long.** Expected. The brevity property does not reach skills. See
   [What it does not reach](#what-it-does-not-reach).
 - **A dispatched agent's report ignores the standard.** Also expected, and for the same reason. Use a skill that
   dispatches the [`readability-editor`](../agents/readability-editor.md), or run
   [`/edit-for-readability`](../skills/edit-for-readability.md) over the report.
-- **The style contradicts the canonical rule.** On everything but the brevity property, the rule wins. File the drift as
-  a bug against the style and fix the style to match
+- **The style contradicts the canonical rule.** Outside the brevity property and the roll-up rule, the rule wins. File
+  the drift as a bug against the style and fix the style to match
   [`readability-rule.md`](../../references/readability-rule.md).
 
 ## Related documentation
@@ -121,13 +137,13 @@ brevity property removes preamble and recap from every turn.
   together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
   tree.
-- [`Han Readability`](./han-readability.md). The sibling style with the same standard and no brevity property, for
+- [`Han Readability`](./han-readability.md). The sibling style that preserves every fact at full precision, for
   sessions whose output someone reads cold.
 - [Readability](../../../docs/readability.md). The shared standard, its required properties, its staged application, and
   the per-skill table.
 - [`readability-rule.md`](../../references/readability-rule.md) and
   [`writing-voice.md`](../../references/writing-voice.md). The canonical files this style is distilled from. They are
-  authoritative on everything but the brevity property.
+  authoritative on everything but the brevity property and the roll-up rule.
 - [`/readability-guidance`](../skills/readability-guidance.md). The skill that sources the same standard into a calling
   skill's context, and the one that honors a configured writing-voice profile.
 - [`readability-editor`](../agents/readability-editor.md). The agent the synthesis skills dispatch for the adversarial
