@@ -226,6 +226,21 @@ the reasoning that creates a blind spot also grades it as correct. When you find
 4. **Run the four-surface coverage rule for each resulting agent.** Agent definition, long-form doc, plugin README scent
    line, and agents-index entry, per the [coverage rule](./docs/templates/coverage-rule.md).
 
+## Adding an output style
+
+1. Create `han-communication/output-styles/{name}.md` with frontmatter (`name`, `description`,
+   `keep-coding-instructions`) and the instruction body. An output style is text Claude Code appends to the system
+   prompt at session start, so write it as instructions to follow, not as documentation about itself. The directory is
+   auto-discovered, so `plugin.json` needs no field for it.
+2. Copy [the output-style variant](./docs/templates/coverage-rule.md#the-output-style-variant) of the skill template
+   into `han-communication/docs/output-styles/{name}.md` and fill it in. Every output style gets a long-form doc.
+3. Add a scent line to the plugin's `README.md`, reusing the long-form doc's own summary line. There is no repo-root
+   output-styles index; add one when a second plugin ships a style.
+4. A style derived from [`readability-rule.md`](./han-communication/references/readability-rule.md) or
+   [`writing-voice.md`](./han-communication/references/writing-voice.md) says so in its long-form doc. Record any place
+   it departs from the canonical file as deliberate in the CLAUDE.md doc map, so a later sync pass does not read the
+   difference as drift.
+
 ## Wiring the readability standard into a skill
 
 A skill is **reader-facing** when its primary deliverable is human-facing prose that a non-author reads end to end to
