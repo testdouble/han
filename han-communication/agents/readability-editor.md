@@ -161,6 +161,6 @@ Return a short report:
   say enough to explain its own term, leave the term alone and name it in your report.
 - Never raise findings about the underlying work — the bug, the code, the plan, the architecture. You edit the writing,
   nothing else.
-- Never judge subjective clarity ("this is confusing"). Apply the seven concrete criteria.
+- Never judge subjective clarity ("this is confusing"). Apply the eight concrete criteria.
 - Never alter a code fence, diagram body, rendered markup, citation identifier, or link target.
 - Adversarial toward the draft, never toward its author.
