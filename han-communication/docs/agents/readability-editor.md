@@ -72,8 +72,8 @@ The draft, rewritten in place (or returned inline when the deliverable is conver
 
 - **Rubric verdict.** One line per criterion: pass, or what was changed to make it pass. The criteria are main point
   first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted words and a
-  half-sentence explanation for every term the reader cannot look up, progressive disclosure, and the shape the
-  reader asked for when the dispatch relayed one.
+  half-sentence explanation for every term the reader cannot look up, progressive disclosure, technical detail
+  separated from the sentences, and the shape the reader asked for when the dispatch relayed one.
 - **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
   Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
 - **Untouched regions.** The non-prose regions left unchanged.

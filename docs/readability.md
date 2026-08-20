@@ -67,10 +67,10 @@ The rule names the output properties, and they shape each skill's template so th
 - **No blocklisted words.** The existing writing-voice blocklist is reused for word-level rules.
 - **Numbered lists for steps, bullets for the rest.**
 - **Progressive disclosure.** Reveal the core first and detail in layers.
-- **Technical detail follows the prose.** Keep implementation and technical references (symbol names, file paths, flags,
-  exact code) out of the readable paragraphs where you can. Where a reference has to appear inline, keep it as small as
-  the sentence needs. Otherwise the detail comes after the prose that describes it, in code fences the prose has already
-  explained.
+- **Technical detail follows the prose.** Separate it by default. The readable sentences say what happens, and the
+  implementation and technical references (symbol names, file paths, flags, exact code) come after them, in a code fence
+  or a trailing line the prose has already explained. Inline is the exception, for the one reference a sentence is
+  genuinely about.
 
 The applied set is kept deliberately tight. Structural rules that fit only a minority of deliverables are left out on
 purpose. That keeps the set small enough to apply without the compliance decay that comes from stacking instructions.
@@ -89,8 +89,8 @@ at a time:
    rule, preserving every fact.
 4. **Self-check.** A discrete pass over the prose regions evaluates behaviorally-anchored yes/no criteria: main
    point first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted word
-   and an explanation for every term the reader cannot look up, every fact preserved, and the shape the reader asked
-   for in count, format, and register. Anything it fails is corrected before the deliverable is presented. The last
+   and an explanation for every term the reader cannot look up, technical detail separated from the sentences, every
+   fact preserved, and the shape the reader asked for in count, format, and register. Anything it fails is corrected before the deliverable is presented. The last
    criterion wins a real collision with the others, except where a dropped fact would change what the reader does
    next, or where a skill requires a section.
 
@@ -108,19 +108,14 @@ the output style once at session start.
 properties, fidelity guard, and self-check together with the writing-voice blocklist. Pick it when the session's output
 is prose someone reads cold.
 
-Both styles depart from the rule on technical detail. The rule leaves inline detail an open option; the styles make
-separation the default, so plain sentences say what happens and the symbol names, paths, flags, and code come after
-them. Inline is reserved for the one identifier a sentence is genuinely about. Each style's self-check adds an eighth
-criterion to enforce it.
-
-[`Han Concise`](../han-communication/output-styles/han-concise.md) departs twice more. A turn drops preamble and recap
-and spends no sentence that carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes
+[`Han Concise`](../han-communication/output-styles/han-concise.md) carries the same properties and departs from the rule
+twice. A turn drops preamble and recap and spends no sentence that carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes
 you want less than the source carries, so supporting detail rolls up into the statement it supports rather than waiting
 for you to ask; a roll-up has to be true of everything it covers, and three things stay at full precision: a fact whose
 loss would change what you do next, a number you will act on, and a stated condition that bounds when a claim holds.
 Pick it for a working session you read in the terminal.
 
-Every departure belongs to the styles, so all of them reach the conversation and none reach Han's skills.
+Both departures belong to the style, so they reach the conversation and not Han's skills.
 
 Neither style changes how work is done. Both keep Claude Code's built-in software engineering instructions.
 
@@ -130,8 +125,8 @@ Both styles share the same three limits:
   specialists unchanged. The skills stay the mechanism that brings the standard to agent output.
 - **It carries the built-in voice only.** A static system prompt cannot run the `.han/config.md` probe, so a configured
   `writing-voice` profile does not override it the way it overrides `readability-guidance`.
-- **It is a derived copy.** Outside the departures above, the canonical rule and voice profile stay authoritative. When
-  you edit either one, check whether the styles need the same change.
+- **It is a derived copy.** The canonical rule and voice profile stay authoritative. When you edit either one, check
+  whether the styles need the same change.
 
 ## Scope: which skills are reader-facing
 
