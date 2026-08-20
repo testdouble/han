@@ -10,7 +10,7 @@ plugin. If you only want to use the plugin, start with the [Plugin landing page]
 ## TL;DR
 
 - Skills ship from the plugin that matches what they do: [`han-core/skills/`](./han-core/skills/) (project discovery
-  only), [`han-documentation/skills/`](./han-documentation/skills/) (project docs, ADRs, runbooks),
+  and the pairing working mode), [`han-documentation/skills/`](./han-documentation/skills/) (project docs, ADRs, runbooks),
   [`han-research/skills/`](./han-research/skills/) (research, gap analysis, issue triage),
   [`han-planning/skills/`](./han-planning/skills/) (specifying, planning, sequencing,
   breaking down, and stress-testing work before implementation), [`han-coding/skills/`](./han-coding/skills/) (writing,
@@ -20,7 +20,7 @@ plugin. If you only want to use the plugin, start with the [Plugin landing page]
   [`han-linear/skills/`](./han-linear/skills/) (publishing to Linear), or
   [`han-feedback/skills/`](./han-feedback/skills/) (feedback on Han itself); the contributor authoring guidance lives in
   [`han-plugin-builder/skills/`](./han-plugin-builder/skills/); the foundational
-  [`han-communication/skills/`](./han-communication/skills/) carries the readability capability. Agents live in
+  [`han-communication/skills/`](./han-communication/skills/) carries the readability and explanation standards. Agents live in
   [`han-core/agents/{name}.md`](./han-core/agents/), with three exceptions: the `readability-editor` agent lives in
   `han-communication` alongside the readability skills it belongs with, the `research-analyst` lives in
   `han-research` alongside the research skill that dispatches it, and the `discussion-facilitator` lives in

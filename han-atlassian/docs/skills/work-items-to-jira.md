@@ -76,7 +76,8 @@ decide _when_ and _how_ to use the skill. For what the skill does internally, re
 Run `/work-items-to-jira` in Claude Code.
 
 The skill ships in the opt-in `han-atlassian` plugin, which the `han` meta-plugin does not bundle. Install it on its own
-first with `/plugin install han-atlassian@han`; it pulls `han-core`, `han-planning`, and `han-coding` along the way.
+first with `/plugin install han-atlassian@han`; it pulls `han-communication`, `han-core`,
+`han-documentation`, `han-planning`, and `han-coding` along the way.
 Then make sure the Atlassian MCP server is configured and authenticated. See
 [Choosing a Han plugin](../../../docs/choosing-a-han-plugin.md) for where it sits in the suite.
 
@@ -138,7 +139,7 @@ Tickets in Jira plus one file change on disk:
 - **Re-run after a partial failure.** Heading annotations make the run idempotent: a re-run skips slices that already
   carry a Jira key and only creates the rest.
 
-## YAGNI (when applicable)
+## YAGNI
 
 YAGNI does not gate this skill's output. The work-items file is an already-committed decomposition, and this skill
 publishes it without adding new behavioral commitments or speculative infrastructure. The closest thing to a gate here

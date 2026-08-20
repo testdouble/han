@@ -18,7 +18,8 @@ and _how_ to dispatch the agent. For what the agent does internally, read the ag
   re-reads the code to verify a drafted overview's claims for accuracy rather than to validate a fix. `/code-review`
   also dispatches it, at Step 7.4, to re-read the change and confirm, demote, or drop each finding on the consolidated
   finding list. `/manual-test-planning` dispatches it against the drafted plan to disprove steps and expected outcomes
-  the supplied context does not promise, before the file is written.
+  the supplied context does not promise, before the file is written. `/design-an-api` runs it in its four-agent spine,
+  at every size, to attack the amended design and the evidence under it.
 - **What you get back.** Numbered `V#` validation items, each with a strategy, hypothesis, investigation steps, result
   (Confirmed / Refuted / Partially Refuted), and an impact statement. Plus a confidence assessment and remaining risks.
 

@@ -128,7 +128,7 @@ Files on disk plus issues on GitHub:
   skill then surfaces that PR URL to you. The issues are created right away, but their inline designs stay broken until
   that assets PR merges, so merging it is the follow-up that finishes the publish.
 
-## YAGNI (when applicable)
+## YAGNI
 
 YAGNI does not gate this skill's output. The work-items file is an already-committed decomposition, and this skill
 publishes it without adding new behavioral commitments or speculative infrastructure. The closest thing to a gate here

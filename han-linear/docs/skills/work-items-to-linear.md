@@ -142,7 +142,7 @@ Issues in Linear plus one file change on disk:
   One exception: if an issue is created but its heading annotation fails, the skill stops and reports the orphaned
   Linear identifier so you can annotate the heading by hand or delete the issue before re-running.
 
-## YAGNI (when applicable)
+## YAGNI
 
 YAGNI does not gate this skill's output. The work-items file is an already-committed decomposition, and this skill
 publishes it without adding new behavioral commitments or speculative infrastructure. The closest thing to a gate here

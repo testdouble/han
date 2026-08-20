@@ -137,11 +137,10 @@ cheap and safe to run often.
 ## Related documentation
 
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
-- [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs
+- [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [`/pairing`](../../../han-core/docs/skills/pairing.md). The skill this one is most often confused with, because both
   pace you through work a step at a time. This one explains code that already exists; `/pairing` builds work while
   pacing you through it.
-  tree.
 - [`code-overview`](./code-overview.md). The written-document counterpart. Same understanding goal, one artifact
   instead of a paced conversation.
 - [`code-review`](./code-review.md). What you run after the walkthrough, when you are ready to judge rather than learn.

@@ -137,7 +137,7 @@ One file on disk plus an in-channel summary:
   `/work-items-to-issues` publishes each item as a GitHub issue in its target repo. It needs the `han-github` plugin and
   the `gh` CLI.
 
-## YAGNI (when applicable)
+## YAGNI
 
 YAGNI does not gate this skill's output. The work-items file is a structural decomposition of an already-committed
 implementation plan: the work item boundaries, HITL/AFK classification, and reference artifact links derive from what

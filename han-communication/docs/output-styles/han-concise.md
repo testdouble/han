@@ -91,7 +91,7 @@ identifiers pass through unchanged and still compile, render, and resolve.
 
 The style closes with an eight-criterion self-check. Seven criteria match the rule's, including **Technical detail
 separated**, which keeps paths, signatures, and snippets out of the sentences and after the prose that explains them.
-The eighth is rewritten to check the roll-up rather than full fact preservation.
+The seventh is rewritten to check the roll-up rather than full fact preservation.
 
 ## What it does not reach
 
