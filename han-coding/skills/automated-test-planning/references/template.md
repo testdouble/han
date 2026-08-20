@@ -15,6 +15,7 @@
 - **Coverage health:** {one-line qualitative assessment — solid, thin, uneven, absent}
 - **Most significant gap:** {the single most important thing currently untested}
 - **Start here:** {the test or area to write first}
+- **Blocked by a production change:** {count, and one line on what the changes are — or "none"}
 
 ## What Needs Testing and Why
 
@@ -123,6 +124,19 @@ Items the test-engineer excluded because brittleness risk outweighs value:
 Items the edge-case-explorer intentionally excluded:
 
 - **{title}** — {reason for exclusion}
+
+### Blocked by a Production Change
+
+{If none: "No items require a production change before they can be tested."}
+
+<!-- Items the prerequisite sweep moved out of the priority tiers: the test cannot be written -->
+<!-- until shipped code changes first. These are not tests to write. Each is separate work that -->
+<!-- needs its own ticket and its own scope decision, and the consumer list is what tells a -->
+<!-- reader how far the change would reach. -->
+
+- **{SEC-###/T#/EC#}: {title}** — `{file_path:line_number}` — **Change needed:** {the production change the test
+  depends on}. **Other consumers:** {who else uses that file, or "none found"}. **Why it is blocked:** {what the test
+  would assert, and why it cannot be written against the code as it stands}.
 
 ### Coverage Summary
 

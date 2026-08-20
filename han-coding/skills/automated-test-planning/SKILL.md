@@ -147,21 +147,30 @@ Combine findings from every dispatched agent into a unified, prioritized test pl
    - **han-core:concurrency-analyst items** (C1, C2, ...) when dispatched: races on auth/billing/isolation = CRIT;
      realistic load contention, async error swallowing = HIGH; theoretical interleaving = MED.
    - **han-core:adversarial-security-analyst items** (SEC-NNN) when dispatched: every item lands at CRIT. Retain the
-     SEC-### cross-reference in the unified item so the source is visible.
+     SEC-### cross-reference in the unified item so the source is visible. CRIT ranks the finding's severity and says
+     nothing about whose ticket the fix belongs to; the prerequisite sweep below still applies to every one of them.
 2. **Apply the behavioral sweep** — walk every surviving recommendation and confirm it verifies observable behavior at a
    public seam (caller-supplied inputs, observed outputs and side effects, interactions with collaborating objects and
    services). Rewrite any item that asserts on private methods, internal state, or implementation structure so it tests
    the same behavior through the public boundary; if no public seam exposes it, drop the item and note that the behavior
    should be observed at a higher level rather than pinned to internals. Collapse multiple low-level items that protect
    the same observable behavior into the single behavioral test that catches the same realistic failure modes.
-3. **Assign unified IDs** — sequential IDs: TP-001, TP-002, TP-003, etc. Include the original agent ID as a
+3. **Apply the prerequisite sweep** — walk every surviving recommendation and ask what has to be true before the test
+   can be written at all. An item whose test approach needs a production-code change first, meaning an added `order`,
+   a new validation, a changed return value, a schema column, or any other edit to shipped code, is not a test to
+   write. It is a production change wearing a test's clothes, and folding it into the plan hands the implementer a code
+   change nobody authorized. Move it out of the priority tiers into Blocked by a Production Change, recording the
+   change it needs, the file that would carry it, and who else consumes that file, so a reader can see the blast radius
+   and open a separate ticket. Run this sweep before IDs are assigned, and run it over security items too: an honest
+   finding at CRIT is still out of scope if it cannot be tested without first changing shipped code.
+4. **Assign unified IDs** — sequential IDs: TP-001, TP-002, TP-003, etc. Include the original agent ID as a
    cross-reference (e.g., "TP-001 (from T3)", "TP-002 (from C1, concurrency)", "TP-003 (from SEC-001, security)").
-4. **Order by priority** — interleave items from every agent by priority: all CRIT items first, then HIGH, then MED,
+5. **Order by priority** — interleave items from every agent by priority: all CRIT items first, then HIGH, then MED,
    then LOW. Within each priority level, order by the agent's own ranking.
-5. **Cap at 40 items** — keep a maximum of 40 items total, prioritized by severity. Security items (SEC-derived) are
+6. **Cap at 40 items** — keep a maximum of 40 items total, prioritized by severity. Security items (SEC-derived) are
    exempt from the cap. If more than 40 non-security items exist, note how many were omitted and recommend running the
    skill again after addressing high-priority items.
-6. **Apply the YAGNI sweep** — walk every test recommendation that survived classification and apply
+7. **Apply the YAGNI sweep** — walk every test recommendation that survived classification and apply
    [../../references/yagni-rule.md](../../references/yagni-rule.md). Demote any test whose justification reduces to
    "completeness", "best practice", "for future flexibility", symmetry with another test, or hypothetical
    scaling/adversaries the change doesn't touch — these go to the Deferred Tests section with a
@@ -207,7 +216,9 @@ Lead with behavior. These rules make the plan a human-readable overview first an
 **Fill in all sections:**
 
 1. **Summary** — Plain-language paragraph plus orienting bullets (scope, coverage health, most significant gap, where to
-   start). This is the qualitative coverage assessment, promoted to the top and written for a non-author.
+   start, and how many items the prerequisite sweep blocked). This is the qualitative coverage assessment, promoted to
+   the top and written for a non-author. The blocked count belongs in the Summary because a caveat buried under the
+   Technical Reference loses every attention contest to a CRIT label above it.
 2. **What Needs Testing and Why** — The themes, in plain language, each ending with the test IDs it covers.
 3. **What Each Test Covers** — Every meaningful test as a plain-language line led by its TP-ID.
 4. **Technical Reference → Test Plan** — All items from Step 3, grouped by priority tier. Every test plan item should
@@ -215,8 +226,11 @@ Lead with behavior. These rules make the plan a human-readable overview first an
    paths, and risk assessments into the merged output.
 5. **Technical Reference → Deferred Tests** — Items the han-core:test-engineer excluded due to brittleness risk.
 6. **Technical Reference → Dropped Edge Cases** — Items the han-core:edge-case-explorer intentionally excluded.
-7. **Technical Reference → Coverage Summary** — Counts by priority tier.
-8. **Technical Reference → Scope** — Scope type, file count, branch, language, test framework, and the list of files.
+7. **Technical Reference → Blocked by a Production Change** — Items the prerequisite sweep moved out of the priority
+   tiers, each with the production change it would need, the file that would carry it, and that file's other consumers.
+   Write each one as separate work to be ticketed, never as a test this plan asks anyone to write.
+8. **Technical Reference → Coverage Summary** — Counts by priority tier.
+9. **Technical Reference → Scope** — Scope type, file count, branch, language, test framework, and the file list.
 
 ## Step 5: Review the Output
 

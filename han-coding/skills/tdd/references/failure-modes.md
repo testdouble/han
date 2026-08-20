@@ -111,7 +111,28 @@ once the fix lands. A bug-fix test that is green before the fix is the tell — 
 boundary: asserting that the code raises is the _right_ test when raising is the specified desired behavior (raise on
 invalid input). The failure mode is asserting the error that _is_ the bug being fixed.
 
+## 10. Making a test pass by changing code the ticket does not own
+
+**Symptom.** A list item goes red exactly as designed, and green arrives by editing a shared library, engine, or package
+that other applications consume. The observed-failure gate is satisfied, every test is green, and the branch carries a
+production change the ticket never authorized. It often compounds: a later test leans on the new behavior for a
+deterministic setup, so the out-of-scope change becomes load-bearing for work that could have arranged its own fixture.
+
+**Why it happens.** The item usually arrives carrying authority. A test plan or an analysis agent found something real,
+labeled it CRIT, and the label reads as permission. The red is genuine, the fix is small, and the finding is honest, so
+every local signal says proceed. Nothing in the moment asks the one question that matters.
+
+**Discipline.** The scope gate. A genuine red proves the behavior is missing, never that this build owns producing it.
+Before every production edit, name the file you are about to change and test it against the scope boundary recorded in
+Step 1. A severity label ranks a finding's importance and says nothing about whose ticket it belongs to; an item whose
+own text names a production change as a prerequisite is that change wearing a test's clothes. Work the resolution
+ladder: redesign the test so it does not need the out-of-scope behavior, defer the item as its own ticket, and escalate
+only when the requested behavior cannot be delivered without it. A test that needs the change only to make a fixture
+deterministic never reaches the second rung.
+
 ## The one check that catches most of these
 
 Before every production-code edit, you must be able to point to a specific test that you ran and watched fail for the
-intended reason in this loop. If you cannot, you are in one of the failure modes above. Stop and get back to red.
+intended reason in this loop, and to a scope boundary that contains the file you are about to change. If the first is
+missing, you are in one of failure modes 1 through 9: stop and get back to red. If the second is missing, you are in
+failure mode 10: stop and work the resolution ladder.
