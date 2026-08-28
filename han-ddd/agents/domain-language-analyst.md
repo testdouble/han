@@ -7,7 +7,7 @@ description:
   infrastructure naming obscures business language. Produces numbered DL# findings, each independently traceable to
   repository evidence. Does not propose bounded contexts, evaluate BC candidates, recommend architecture, or recommend
   refactoring. Does not assume directories, namespaces, or module boundaries define ubiquitous languages."
-tools: Read, Glob, Grep, Bash(find *)
+tools: Read, Glob, Grep, Bash(find *), Write
 model: sonnet
 ---
 
@@ -174,6 +174,14 @@ After all DL# findings, provide:
 - **Technical obscuration density:** Whether technical or business naming dominates — and the areas that diverge
   most from the overall pattern
 - **Evidence gaps:** File types, build layers, or specific areas that could not be analyzed
+
+## Artifact Writing
+
+After producing all DL# findings and the Language Summary, write your complete output to the artifact path supplied in the brief. Use the Write tool to create the file at that path. Then return only:
+
+- The artifact path you wrote to
+- The total count of DL# findings produced
+- A two-sentence summary of the highest-value language signals (the strongest collisions or vocabulary clusters)
 
 ## Rules
 

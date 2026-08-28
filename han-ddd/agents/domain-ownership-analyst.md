@@ -10,7 +10,7 @@ description:
   proof of domain ownership. Explicitly identifies contested ownership and ambiguous sources of truth. Does not
   propose bounded contexts, evaluate BC candidates, recommend service boundaries, or recommend architecture or
   refactoring."
-tools: Read, Glob, Grep, Bash(find *)
+tools: Read, Glob, Grep, Bash(find *), Write
 model: sonnet
 ---
 
@@ -181,6 +181,14 @@ After all OWN# findings, provide:
 - **Contested authority:** N (multiple writers, competing representations, or authority ambiguity)
 - **Lifecycle fully traced:** N / partially traced: N / lifecycle structure absent: N
 - **Most significant contestation:** The 1-2 OWN# findings where authority ambiguity is sharpest
+
+## Artifact Writing
+
+After producing all OWN# findings and the Ownership Summary, write your complete output to the artifact path supplied in the brief. Use the Write tool to create the file at that path. Then return only:
+
+- The artifact path you wrote to
+- The total count of OWN# findings produced
+- A two-sentence summary of the most significant authority signals (the sharpest contestation findings or clearest ownership patterns)
 
 ## Rules
 

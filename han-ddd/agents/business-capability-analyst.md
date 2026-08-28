@@ -8,7 +8,7 @@ description:
   numbered CAP# findings, each independently traceable to repository evidence. Does not propose bounded contexts,
   equate entities or services with capabilities, recommend architecture, or recommend refactoring. Explicitly treats
   entity decomposition and CRUD-oriented groupings as discovery failure modes."
-tools: Read, Glob, Grep, Bash(find *)
+tools: Read, Glob, Grep, Bash(find *), Write
 model: sonnet
 ---
 
@@ -170,6 +170,14 @@ After all CAP# findings, provide:
 - **CRUD traps avoided:** Areas where the code had CRUD-shaped structure that was not surfaced as a capability,
   with a brief explanation of why the evidence did not support a behavioral capability name
 - **Evidence gaps:** File types, build layers, or specific areas that could not be analyzed
+
+## Artifact Writing
+
+After producing all CAP# findings and the Capability Summary, write your complete output to the artifact path supplied in the brief. Use the Write tool to create the file at that path. Then return only:
+
+- The artifact path you wrote to
+- The total count of CAP# findings produced
+- A two-sentence summary of the strongest behavioral signals (the most confident capabilities found)
 
 ## Rules
 

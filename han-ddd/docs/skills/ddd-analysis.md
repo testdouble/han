@@ -103,10 +103,16 @@ A domain map report in your conversation with these named sections:
   vocabulary, ownership, relationships, evidence, and confidence rating.
 - **Rejected or Weak Context Candidates.** Contexts the critic rated weak or reject, with the primary failure
   mode and what would change the verdict.
+- **Integration Boundaries.** Components identified as integration points, external system interfaces, or
+  technical mechanisms rather than bounded contexts — with what semantic evidence would be needed to reclassify
+  them as candidates.
 - **Questions for Domain Experts.** Consolidated domain-expert questions from the critic, ordered by
-  consequence.
-- **Evidence Index.** A traceable per-type index of all DL#, CAP#, OWN#, S#, and B# findings with file paths
-  and which report sections cite them.
+  consequence, explaining what domain uncertainty needs resolving and how the answer affects boundary
+  interpretation. No implementation prescriptions.
+- **Evidence / Analysis Artifacts.** The paths to every artifact file produced by the run — five discovery
+  artifacts (domain language, business capabilities, domain ownership, structural, behavioral) and two synthesis
+  artifacts (initial context model, final context model). The finding identifier citations throughout the report
+  trace back to these files.
 
 ## How to get the most out of it
 

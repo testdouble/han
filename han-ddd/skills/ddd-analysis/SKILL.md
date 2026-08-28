@@ -12,7 +12,7 @@ description:
   or code-review."
 arguments: size
 argument-hint: "[size: small | medium | large] [focus area: module or directory to restrict analysis to]"
-allowed-tools: Read, Glob, Grep, Agent, Bash(find *)
+allowed-tools: Read, Glob, Grep, Agent, Write, Bash(find *), Bash(date *), Bash(mkdir *)
 ---
 
 ## Project Context
@@ -20,7 +20,7 @@ allowed-tools: Read, Glob, Grep, Agent, Bash(find *)
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: ~/.claude
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A
@@ -84,6 +84,22 @@ exists, discovery agents will infer from surrounding code — note this in every
 **State the driving concern, if any.** If the user named a concern ("I think billing and subscriptions overlap",
 "we need to understand where auth ends and identity begins"), capture it. Pass it to each discovery agent as a
 directing note — it biases attention without narrowing scope.
+
+**Resolve the run folder.** Determine where this run's artifacts will land before dispatching any agent:
+
+1. **Configured `output-directory`**: When the config read above supplied an `output-directory`, resolve it per
+   [config-rule.md](../../references/config-rule.md) (relative path resolves against the file that declared it;
+   `~/` expands to home; full path is used as-is). Write the run folder beneath that resolved base.
+2. **No configured value**: Write outside the repository — use `${TMPDIR:-/tmp}` as the base. This keeps an
+   unconfigured analysis out of version control, matching the same principle that governs `code-overview`.
+
+Run `date +%Y%m%d-%H%M%S` via Bash to obtain a timestamp suffix. Name the run folder `ddd-analysis-{timestamp}`
+inside the resolved base. If that directory already exists, check for `-2`, `-3` suffixes until the name is free.
+Run `mkdir -p {run_folder}/discovery {run_folder}/synthesis` to create the full directory tree. Set `$run_folder`
+to the absolute resolved path — this value threads through every subsequent step.
+
+If the resolved base cannot be written (permission error, path does not exist), fall back to
+`${TMPDIR:-/tmp}/ddd-analysis-{timestamp}` and record the failed path so Step 12 can name it.
 
 ## Step 2: Inventory the Analysis Surface
 
@@ -149,6 +165,8 @@ Brief for `han-ddd:domain-language-analyst`:
 - The driving concern, if any.
 - Reminder: language-signal evidence only — no bounded-context proposals, no service-split recommendations.
 - Ask the agent to prefix findings `DL1`, `DL2`, … exactly.
+- Artifact path: write complete findings to `$run_folder/discovery/domain-language.md` and return only the path
+  written, the total DL# count, and a two-sentence summary of the highest-value signals.
 
 Brief for `han-ddd:business-capability-analyst`:
 
@@ -160,6 +178,8 @@ Brief for `han-ddd:business-capability-analyst`:
 - The driving concern, if any.
 - Reminder: capability evidence only — no bounded-context proposals, no service-split recommendations.
 - Ask the agent to prefix findings `CAP1`, `CAP2`, … exactly.
+- Artifact path: write complete findings to `$run_folder/discovery/business-capabilities.md` and return only the
+  path written, the total CAP# count, and a two-sentence summary of the strongest behavioral signals.
 
 Brief for `han-ddd:domain-ownership-analyst`:
 
@@ -172,6 +192,8 @@ Brief for `han-ddd:domain-ownership-analyst`:
 - The driving concern, if any.
 - Reminder: ownership evidence only — no bounded-context proposals, no service-split recommendations.
 - Ask the agent to prefix findings `OWN1`, `OWN2`, … exactly.
+- Artifact path: write complete findings to `$run_folder/discovery/domain-ownership.md` and return only the path
+  written, the total OWN# count, and a two-sentence summary of the most significant authority signals.
 
 Brief for `han-core:structural-analyst`:
 
@@ -195,82 +217,130 @@ Brief for `han-core:behavioral-analyst`:
 
 Wait for all five agents to return before proceeding.
 
-## Step 5: Compile Discovery Findings
+## Step 5: Persist Discovery Artifacts
 
-Collect the full verbatim output from all five discovery agents. Preserve every DL#, CAP#, OWN#, S#, and B#
-item and its prefix exactly. Do not renumber, summarize, or drop items — the verbatim output is what the report
-carries and what the modeler cross-references.
+The three han-ddd discovery agents have written their own artifacts and returned the paths. Use the Read tool to
+confirm each reported path exists. If an artifact is absent, note the shortfall — the skill continues without it,
+but Step 12 must name the missing file.
 
-If any agent reported "no candidates found" or "no collisions detected" for a dimension, keep that statement
-verbatim — it is a valid negative result.
+The han-core agents do not write their own artifacts. Write their verbatim returned output now:
+
+- Write the structural-analyst's complete verbatim output to `$run_folder/discovery/structural.md` using the
+  Write tool. Preserve every S# finding and its prefix exactly, including any "no findings" statements.
+- Write the behavioral-analyst's complete verbatim output to `$run_folder/discovery/behavioral.md` using the
+  Write tool. Preserve every B# finding and its prefix exactly, including any "no findings" statements.
+
+The five discovery artifacts are now stable at:
+
+- `$run_folder/discovery/domain-language.md`
+- `$run_folder/discovery/business-capabilities.md`
+- `$run_folder/discovery/domain-ownership.md`
+- `$run_folder/discovery/structural.md`
+- `$run_folder/discovery/behavioral.md`
+
+Do not carry their contents transiently in context. All downstream stages read from these paths directly.
 
 ## Step 6: Dispatch Bounded Context Modeler — First Pass
 
 **Dispatch `han-ddd:bounded-context-modeler` with one `Agent` call.** The brief must contain:
 
-- The full verbatim DL# findings and Language Summary from the domain-language-analyst.
-- The full verbatim CAP# findings and Capability Summary from the business-capability-analyst.
-- The full verbatim OWN# findings and Ownership Summary from the domain-ownership-analyst.
-- The full verbatim S# findings from the structural-analyst.
-- The full verbatim B# findings from the behavioral-analyst.
+- The five discovery artifact paths from Step 5. Instruct the agent to read each file with the Read tool before
+  synthesizing — do not paste their contents into the brief.
 - A calibration directive matched to the depth band: small — top 3-5 most strongly-evidenced CURRENT contexts;
   medium — all convergence zones supported by at least two independent evidence types; large — exhaustive,
   include all SPECULATIVE candidates with meaningful evidence from at least two types.
 - Reminder: semantic context model only — no refactoring, migration, microservices, or topology recommendations.
+- Synthesis artifact path: write complete output (all BCM# entries, IBN# entries, and the Bounded Context Model
+  Summary) to `$run_folder/synthesis/context-model-initial.md` and return only the path written, the BCM# count
+  by status, and the Bounded Context Model Summary.
 
-Wait for the modeler to return. Capture the BCM# entries and Bounded Context Model Summary as the first-pass model.
+Wait for the modeler to return. Capture the reported path as `$context_model_initial`. Use Read to verify the file
+was written. This is the first-pass model.
 
 ## Step 7: Dispatch Bounded Context Critic
 
 **Dispatch `han-ddd:bounded-context-critic` with one `Agent` call.** The brief must contain:
 
-- The full verbatim BCM# entries and Bounded Context Model Summary from Step 6.
-- The full verbatim DL# findings and Language Summary from the domain-language-analyst.
-- The full verbatim CAP# findings and Capability Summary from the business-capability-analyst.
-- The full verbatim OWN# findings and Ownership Summary from the domain-ownership-analyst.
-- The full verbatim S# findings from the structural-analyst.
-- The full verbatim B# findings from the behavioral-analyst.
+- The path `$context_model_initial`. Instruct the agent to read this file with the Read tool before evaluating.
+- The five discovery artifact paths from Step 5. Instruct the agent to read each with the Read tool when
+  verifying specific claims against evidence — do not paste their contents into the brief.
 - Reminder: evaluation only — no context redesign, no replacement context map, no architectural or refactoring
   recommendations.
+- Synthesis artifact path: write complete output (all BCR# entries and the Bounded Context Model Critique Summary)
+  to `$run_folder/synthesis/critique.md` and return only the path written, the BCR# count with verdict
+  distribution, and the Bounded Context Model Critique Summary.
 
-Wait for the critic to return. Capture the BCR# entries and Bounded Context Model Critique Summary.
+Wait for the critic to return. Capture the reported path as `$critique`. Use Read to verify the file was written.
 
 ## Step 8: Dispatch Bounded Context Modeler — Revision Pass
 
 **Dispatch `han-ddd:bounded-context-modeler` a second time with one `Agent` call.** This is the final and only
 revision pass. The brief must contain:
 
-- The full verbatim BCM# entries and Bounded Context Model Summary from the first pass (Step 6).
-- The full verbatim BCR# entries and Bounded Context Model Critique Summary from the critic (Step 7).
-- The full verbatim DL#, CAP#, OWN#, S#, and B# evidence from Step 5.
+- The path `$context_model_initial`. Instruct the agent to read this file with the Read tool.
+- The path `$critique`. Instruct the agent to read this file with the Read tool.
+- The five discovery artifact paths from Step 5. Instruct the agent to read any file it needs to verify
+  synthesis claims — do not paste their contents into the brief.
 - An explicit instruction: address every criticism the BCR# entries support with discovery evidence; reject every
   criticism that the BCR# entries acknowledge is unsupported or requires domain-expert input to resolve; preserve
   every BCM# entry the critic rated strong or plausible without modification unless the critique identified
   specific counter-evidence.
 - Reminder: produce the final context model only — no refactoring, migration, or topology recommendations.
+- Synthesis artifact path: write complete revised output (all BCM# entries, IBN# entries, and the Bounded Context
+  Model Summary) to `$run_folder/synthesis/context-model-final.md` and return only the path written and a brief
+  revision summary (what changed from the first pass and why).
 
-Wait for the modeler to return. This output is the final BCM# model. The revision loop is now closed — do not
-dispatch the modeler or critic again.
+Wait for the modeler to return. Capture the reported path as `$context_model_final`. Use Read to verify the file
+was written. The revision loop is now closed — do not dispatch the modeler or critic again.
+
+## Step 8.5: Validate Identifier Cross-References
+
+Before rendering the report, run a deterministic cross-reference check on the final context model. This step uses
+Read and Grep only — no new agent is dispatched.
+
+1. Read `$context_model_final`. Extract every evidence identifier cited in BCM# entries and DC# entries — all
+   DL#, CAP#, OWN#, S#, and B# references appearing in Evidence fields.
+2. For each extracted identifier, use Grep to verify it appears in the corresponding discovery artifact:
+   - DL# → `$run_folder/discovery/domain-language.md`
+   - CAP# → `$run_folder/discovery/business-capabilities.md`
+   - OWN# → `$run_folder/discovery/domain-ownership.md`
+   - S# → `$run_folder/discovery/structural.md`
+   - B# → `$run_folder/discovery/behavioral.md`
+3. Also verify that no CURRENT or LATENT BCM# entry's Owns, Consumes, Does not own, Responsibilities, or
+   Relationships field references a SPECULATIVE BCM# entry by its BCM# identifier as an established participant
+   (SPECULATIVE isolation rule). Code-level observations about areas whose bounded-context status is speculative
+   must be described factually without using the SPECULATIVE BCM# identifier.
+4. Verify that DC# entries are not listed under any CURRENT, LATENT, or SPECULATIVE section — DC# must not
+   carry a BCM# status.
+5. Evaluate results. Identifier-integrity errors (step 2) and SPECULATIVE isolation violations (step 3) are
+   hard failures: if any are found, do not proceed to Step 9. Preserve all artifacts written to this point.
+   Report validation failure, naming each error type and count. Do not report "Analysis complete." Do not emit
+   successful next steps. Stop. DC# misclassification errors (step 4) are recorded but do not halt the run;
+   include them in the Step 12 closing message if none of the hard failures stopped the run.
 
 ## Step 9: Render the Report
 
-Read [references/ddd-analysis-report-template.md](./references/ddd-analysis-report-template.md). Render it into the
+Read `$context_model_final` to load the final BCM# model before rendering. Read
+[references/ddd-analysis-report-template.md](./references/ddd-analysis-report-template.md). Render it into the
 report draft. Render rules:
 
 1. **Fill the scope, depth, and git-availability header** from Step 1.
 2. **Synthesize each section following the template's placeholder instructions.** Most sections require
    synthesis from agent output, not verbatim carry. Derive each section from its designated source: Domain
-   Landscape and Business Capabilities from CAP# and OWN# summaries; Ubiquitous Language from DL# findings;
-   Current/Latent/Speculative sections from BCM# entries sorted by status; Boundary Problems from BCR# failure
-   modes and OWN# contestation findings; Context Map from BCM# relationship fields where evidence exists;
-   Context Details by expanding each CURRENT and LATENT BCM# entry's fields verbatim; Rejected or Weak
-   Candidates from BCR# weak and reject verdicts; Questions for Domain Experts consolidated and deduplicated
-   from BCR# domain-expert questions; Evidence Index as a traceable per-ID-type index of all DL#, CAP#, OWN#,
-   S#, and B# findings with file paths and which sections cite them.
-3. **Remove template placeholder instructions** — the text in curly braces is guidance to the skill.
+   Landscape and Business Capabilities from CAP# and OWN# summaries (read from the discovery artifacts);
+   Ubiquitous Language from DL# findings (read from the discovery artifact); Current/Latent/Speculative sections
+   from BCM# entries in `$context_model_final` sorted by status; Boundary Problems from BCR# failure modes in
+   `$critique` and OWN# contestation findings; Context Map from BCM# relationship fields where evidence exists;
+   Context Details by expanding each CURRENT and LATENT BCM# entry's fields verbatim from `$context_model_final`;
+   Rejected or Weak Candidates from BCR# weak and reject verdicts; Questions for Domain Experts consolidated and
+   deduplicated from BCR# domain-expert questions.
+3. **Evidence / Analysis Artifacts**: list the seven artifact files — five discovery, two synthesis (initial and
+   final; omit the intermediate critique from this section unless it was the only synthesis produced). For each:
+   filename, absolute path, and finding type with count from the agents' return summaries.
+4. **Remove template placeholder instructions** — the text in curly braces is guidance to the skill.
    Remove it when filling each section.
-4. **Handle empty sections with their fallback text.** Do not omit a section entirely.
-5. **Write the Executive Summary last**, after every other section is complete.
+5. **Handle empty sections with their fallback text.** Do not omit a section entirely.
+6. **Write the Executive Summary last**, after every other section is complete.
 
 **Readability.** Invoke `han-communication:readability-guidance` to surface the shared readability standard into
 your context. Apply it to every synthesized section as you write: main point first, descriptive headings, one
@@ -286,7 +356,7 @@ canonical rule, so pass no rule path. It preserves every fact and edits **prose 
 code fences, diagram bodies, or finding-ID and file-path citation identifiers. Scope its rewrite to all
 synthesized prose sections — Executive Summary, Domain Landscape, Ubiquitous Language, Business Capabilities,
 the overview paragraphs in Current/Latent/Speculative sections, Boundary Problems, Rejected or Weak Candidates,
-Questions for Domain Experts, and Evidence Index summaries. Leave Context Details unchanged (it carries BCM#
+Questions for Domain Experts, and Evidence / Analysis Artifacts. Leave Context Details unchanged (it carries BCM#
 field values directly) and do not edit within the Context Map Mermaid block. Apply its rewrite.
 
 ## Step 11: Run the Readability Self-Check
@@ -303,14 +373,52 @@ before presenting:
 - Common words with no blocklisted words; explanation for every unfamiliar term
 - Every fact preserved
 
+## Step 11.5: Validate Post-Render Registry Completeness
+
+After the readability rewrite and self-check, verify that the rendered report contains every entry from the
+canonical final model. This step uses Read and Grep only — no new agent is dispatched.
+
+1. Read `$context_model_final`. Extract the canonical registry:
+   - Every BCM# identifier, its canonical name, and its status (CURRENT, LATENT, or SPECULATIVE).
+   - Every DC# identifier and its canonical name.
+   - Every IBN# identifier and its canonical name.
+2. For each entry in the canonical registry, verify that the rendered report contains it in the correct section:
+   - CURRENT BCM# entries: must each appear exactly once in the "Current Bounded Contexts" section with the
+     identifier visible.
+   - LATENT BCM# entries: must each appear exactly once in the "Latent Bounded Contexts" section with the
+     identifier visible.
+   - SPECULATIVE BCM# entries: must each appear exactly once in the "Speculative Context Hypotheses" section
+     with the identifier visible.
+   - DC# entries: must each appear exactly once in the "Domain Concerns" section with the identifier visible.
+     If the canonical model produced no DC# entries, the Domain Concerns section must be absent.
+   - IBN# entries: must each appear exactly once in the "Integration Boundaries" section with the identifier
+     visible. If the canonical model produced no IBN# entries, the section's fallback text must appear instead
+     of fabricated entries.
+3. If any entry is missing from the correct section, or appears with the wrong identifier, this is a
+   post-render integrity failure. Re-render every affected section by reading the BCM#, DC#, or IBN# entry
+   directly from `$context_model_final` and replacing the defective section text before presenting. This is a
+   hard gate: do not present the report until set equality holds.
+4. If all entries are present and correctly placed, proceed to Step 12 with no changes.
+
+Unlike the soft gate in Step 8.5, this check must block presentation until resolved. An entry dropped during
+readability editing is a correctness failure, not a style issue.
+
 ## Step 12: Present the Report
 
 Present the rendered report directly in the conversation. Close by telling the user, in a short message:
+
 - The scope and depth used, and whether git was available.
 - The context model: N CURRENT, N LATENT, N SPECULATIVE contexts; verdict distribution from the critique
   (strong: N, plausible: N, weak: N, reject: N).
+- The analysis artifact directory: `$run_folder` (or the fallback path if the configured destination failed,
+  naming which path failed and which fallback was used instead).
+- Any identifier cross-reference errors found in Step 8.5 (omit this line if none were found).
+- Any missing discovery artifacts from Step 5 (omit this line if all five were present).
 - The most consequential domain-expert question from the Questions for Domain Experts section.
-- What to run next: `han-planning:plan-a-feature` to specify a change, or `han-coding:architectural-analysis`
-  to examine a module's code-level structure. If the resulting contexts suggest cross-service topology or
-  integration design, `han-core:system-architect` is the appropriate next agent after the team has confirmed
-  which boundaries to invest in.
+- What to run next: `han-coding:architectural-analysis` to examine a named module's code-level structure, or
+  a narrower `/ddd-analysis` restricted to a single focus area. If the team has gathered domain-expert input
+  on the open questions above and wants to specify next steps for a confirmed boundary,
+  `han-planning:plan-a-feature` starts that conversation. If the contexts raise cross-service or integration
+  questions, `han-core:system-architect` provides a topology read after the team has confirmed which boundaries
+  are real. Do not assert that any boundary violation can or should be fixed, prescribe a correction, or
+  recommend extraction, refactoring, or migration in this closing message.
