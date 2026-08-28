@@ -199,6 +199,7 @@ coherence, convergence zone, entity decomposition, latent boundary
    not traced deeply enough, either narrow the candidate to the positively evidenced scope (if that narrower
    scope independently clears the legitimacy gate) or classify the broader candidate SPECULATIVE. Do not use a
    domain expert question to compensate for evidence that would be required to reach CURRENT status.
+
 6. Identify relationships: where capabilities in one zone produce outputs consumed by another zone, or where
    ownership findings show a concept's lifecycle spanning two zones, surface the relationship with whatever
    evidence supports it.

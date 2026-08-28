@@ -232,4 +232,5 @@ Organize into two groups:
 
 The finding identifier citations (DL#, CAP#, OWN#, S#, B#, BCM#, BCR#) throughout this report trace to the
 discovery and synthesis artifacts listed here. Read the artifacts directly to follow any citation back to its
-repository evidence.}
+repository evidence. The rendered report file (`ddd-analysis.md`) and any visual artifacts in `visuals/`
+are derived views of the canonical model — they do not carry additional evidence identifiers.}

@@ -334,8 +334,9 @@ report draft. Render rules:
    Context Details by expanding each CURRENT and LATENT BCM# entry's fields verbatim from `$context_model_final`;
    Rejected or Weak Candidates from BCR# weak and reject verdicts; Questions for Domain Experts consolidated and
    deduplicated from BCR# domain-expert questions.
-3. **Evidence / Analysis Artifacts**: list the seven artifact files — five discovery, two synthesis (initial and
-   final; omit the intermediate critique from this section unless it was the only synthesis produced). For each:
+3. **Evidence / Analysis Artifacts**: list the artifact files — five discovery and three synthesis (initial
+   context model, final context model, and the rendered report written to
+   `$run_folder/synthesis/ddd-analysis.md`; omit the intermediate critique from this section). For each:
    filename, absolute path, and finding type with count from the agents' return summaries.
 4. **Remove template placeholder instructions** — the text in curly braces is guidance to the skill.
    Remove it when filling each section.
@@ -403,7 +404,40 @@ canonical final model. This step uses Read and Grep only — no new agent is dis
 Unlike the soft gate in Step 8.5, this check must block presentation until resolved. An entry dropped during
 readability editing is a correctness failure, not a style issue.
 
-## Step 12: Present the Report
+## Step 12: Write Report to Disk and Run Domain Visualizer
+
+**Write the rendered report to disk.** Use the Write tool to write the complete rendered report to
+`$run_folder/synthesis/ddd-analysis.md`. This persists the reader-facing report as a stable artifact and
+provides the domain visualizer with the consolidated Questions for Domain Experts section.
+
+**Create the visuals directory.** Run `mkdir -p $run_folder/visuals` via Bash.
+
+**Dispatch `han-ddd:domain-visualizer` with one `Agent` call.** The brief must contain:
+
+- All eight artifact paths (instruct the agent to read each with the Read tool before producing any visual):
+  - `$run_folder/synthesis/ddd-analysis.md` — the rendered report
+  - `$context_model_final` — the canonical context model
+  - `$critique` — the BCR# evaluations and domain-expert questions
+  - `$run_folder/discovery/domain-language.md`
+  - `$run_folder/discovery/business-capabilities.md`
+  - `$run_folder/discovery/domain-ownership.md`
+  - `$run_folder/discovery/structural.md`
+  - `$run_folder/discovery/behavioral.md`
+- Output path: write all visual artifacts to `$run_folder/visuals/`.
+- Reminder: presentation only — no discovery, no classification, no model changes, no target architecture,
+  no directive language prescribing structural or implementation changes.
+
+Wait for the visualizer to return. On success, capture:
+
+- `$visual_paths`: the list of generated artifact paths
+- `$visual_types`: the list of generated visual types
+- `$visual_skips`: any visuals that were skipped and the reason
+
+**Failure handling.** If the visualizer fails or returns an error, record the failure message as
+`$visual_failure`. Do not invalidate the DDD model or the rendered report. Proceed to Step 13 either way.
+Visual-generation failure must never affect the underlying DDD model's validity.
+
+## Step 13: Present the Report
 
 Present the rendered report directly in the conversation. Close by telling the user, in a short message:
 
@@ -415,6 +449,8 @@ Present the rendered report directly in the conversation. Close by telling the u
 - Any identifier cross-reference errors found in Step 8.5 (omit this line if none were found).
 - Any missing discovery artifacts from Step 5 (omit this line if all five were present).
 - The most consequential domain-expert question from the Questions for Domain Experts section.
+- Analysis Visuals: when visual generation succeeded, list the visual types generated and the
+  `$run_folder/visuals/` path. When generation failed, note the failure and that the DDD model is unaffected.
 - What to run next: `han-coding:architectural-analysis` to examine a named module's code-level structure, or
   a narrower `/ddd-analysis` restricted to a single focus area. If the team has gathered domain-expert input
   on the open questions above and wants to specify next steps for a confirmed boundary,

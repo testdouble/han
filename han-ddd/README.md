@@ -31,6 +31,10 @@ codebase. The entire repository is a valid scope — no module or directory need
 - [`domain-ownership-analyst`](docs/agents/domain-ownership-analyst.md) — Read a codebase and surface domain
   ownership evidence: who creates, modifies, and consumes domain concepts; which representation is authoritative;
   where lifecycle begins and ends; and where authority is contested or ambiguous.
+- [`domain-visualizer`](docs/agents/domain-visualizer.md) — Translate a completed DDD analysis into
+  evidence-backed visual artifacts: domain landscape, capability map, workflow swimlanes, lifecycle diagrams,
+  ownership map, language collision matrix, boundary friction map, and domain question impact map. Presentation
+  only; does not change the canonical model.
 
 The other agents the skill dispatches are the shared specialists in `han-core` (and, for the readability-editor,
 in `han-communication`).

@@ -110,9 +110,12 @@ A domain map report in your conversation with these named sections:
   consequence, explaining what domain uncertainty needs resolving and how the answer affects boundary
   interpretation. No implementation prescriptions.
 - **Evidence / Analysis Artifacts.** The paths to every artifact file produced by the run — five discovery
-  artifacts (domain language, business capabilities, domain ownership, structural, behavioral) and two synthesis
-  artifacts (initial context model, final context model). The finding identifier citations throughout the report
-  trace back to these files.
+  artifacts (domain language, business capabilities, domain ownership, structural, behavioral) and three
+  synthesis artifacts (initial context model, final context model, and the rendered report). The finding
+  identifier citations throughout the report trace back to these files.
+- **Analysis Visuals.** The path to the `visuals/` directory and the list of visual artifact types generated
+  by the `domain-visualizer` agent. If visual generation fails, this line notes the failure; the DDD model
+  and report are unaffected.
 
 ## How to get the most out of it
 
@@ -135,7 +138,8 @@ Five discovery agents (`domain-language-analyst`, `business-capability-analyst`,
 `han-core:structural-analyst`, `han-core:behavioral-analyst`) run in parallel on Sonnet. After they complete,
 `bounded-context-modeler` (Opus) produces a first-pass context model, then `bounded-context-critic` (Opus)
 evaluates each proposal, then `bounded-context-modeler` (Opus) runs a single revision pass. The
-`han-communication:readability-editor` (Sonnet) runs after the report is rendered.
+`han-communication:readability-editor` (Sonnet) runs after the report is rendered. After the report passes its
+final integrity check, `domain-visualizer` (Sonnet) produces the visual artifacts.
 
 The parallel discovery phase is the most time-intensive step on large repositories. Total wall-clock time scales
 with repository size and analysis depth.
@@ -174,5 +178,7 @@ URL: (book; no public URL)
   ownership evidence.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). The right next step when
   you want code-level coupling and SOLID findings for a module the domain map identified.
+- [`domain-visualizer`](../agents/domain-visualizer.md). The agent this skill dispatches last to produce
+  evidence-backed visual artifacts from the completed analysis.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). The right next step when the domain
   map identifies a boundary you want to align or introduce.
