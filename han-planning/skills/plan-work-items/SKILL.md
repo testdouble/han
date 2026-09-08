@@ -320,11 +320,9 @@ guard the output has, and it is not optional.
 Write incrementally per the operating principle: write the title and intro first, then append each work item as it is
 finalized. Save after each.
 
-Before you declare the file finished, run the completeness gate from Step 0 by executing it:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs
-```
+Before you declare the file finished, execute the completeness gate from Step 0 by running
+`${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs`.
+Capture its exit status and its output.
 
 Pass the record beside your own deliverable, not the one you inherited. Step 0 is what keeps the two consistent: your
 record lists only the material this run received.

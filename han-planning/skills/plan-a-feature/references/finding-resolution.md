@@ -8,9 +8,11 @@ Paths in this file are written from the skill directory, the same way Step 7 wri
 1. **Classify the finding as major or minor** before recording. A finding is **major** when it changes a behavioral
    commitment, edge-case rule, alternate flow, or failure mode in the spec; touches
    security/auth/PII/secrets/supply-chain; touches a coordination across actors, services, or subsystems; surfaces a
-   load-bearing mechanic (`T#` candidate); or is a "mechanics leaking into spec" finding. A finding is **minor**
-   otherwise — wording, typo, naming, formatting, citation cleanup. If the finding text contains any major-list keyword
-   ("auth", "PII", "race", "ordering", "coordination", "edge case", "T#"), force it to major. When in doubt, major.
+   load-bearing mechanic (`T#` candidate); leaves a contract two or more components must independently agree on
+   un-pinned; or is a "mechanics leaking into spec" finding. A finding is **minor** otherwise — wording, typo, naming,
+   formatting, citation cleanup. If the finding text contains any major-list keyword ("auth", "PII", "race",
+   "ordering", "coordination", "edge case", "T#", "format", "contract", "schema", "interface", "signature"), force it
+   to major. When in doubt, major.
 
 2. **Record it in `artifacts/team-findings.md`** using the
    [team-findings-template.md](./team-findings-template.md) format. Carry every originating reviewer's own
@@ -21,12 +23,14 @@ Paths in this file are written from the skill directory, the same way Step 7 wri
    finding is resolvable without the user's judgment, update the affected files and record the resolution in the `F#`
    entry (`Resolved by: evidence`). Route any implementation mechanic surfaced by a finding through the same
    classification the interview loop uses, in [mechanic-routing.md](./mechanic-routing.md):
-   - **Load-bearing mechanic** → capture as a new `T#` note in `artifacts/feature-technical-notes.md` (creating the file
-     lazily if this is the first qualifying note), link it from the affected spec section, and populate the `T#`'s
-     `Driven by findings:` field.
+   - **Load-bearing mechanic** → capture as a new `T#` note in `artifacts/feature-technical-notes.md`, following
+     [t-note-protocol.md](./t-note-protocol.md) for the qualifying tests, the entry fields, and the inline links.
+     Creating the file lazily here is the one case where the flush happens outside Step 5.
    - **Discoverable from code repo** → cite evidence on the relevant `D#` entry; do not write a `T#`.
    - **Pure implementation** → do not edit the spec, decision log, or tech-notes; surface as a
-     `plan-implementation`-stage input noted in the F# resolution.
+     `plan-implementation`-stage input noted in the F# resolution. The one exception is a contract two or more
+     components must independently agree on, which `mechanic-routing.md` records as an Open Item so
+     `plan-implementation` receives an item it must close.
 4. **Keep all files in sync (major findings only — minor findings only update `Changed in spec:` if a section actually
    changed).** For every major F# resolved:
    - Populate `Affected decisions:` on the `F#` entry with the `D#` IDs that were added or changed in

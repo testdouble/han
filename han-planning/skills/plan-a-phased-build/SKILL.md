@@ -145,11 +145,9 @@ Persist any visual material the user supplies into `ui-designs/` beside the outl
 written, and note each item into the record's Visual Material Received section. Copy destinations are always the resolved
 output folder's `ui-designs/`.
 
-Before you present the finished outline, run the completeness gate by executing it:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs
-```
+Before you present the finished outline, execute the completeness gate by running
+`${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs`.
+Capture its exit status and its output.
 
 It reads the record rather than your memory of the run, so it still works after a compaction and catches partial loss.
 
