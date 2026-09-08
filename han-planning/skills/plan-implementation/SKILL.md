@@ -75,6 +75,12 @@ between the two files, relative-path resolution, and what to do with a file that
   goes stale and misleads), and the implementer — human or coding agent — reads the current code at build time. Deeper
   detail lives one hop away in the companion artifacts. YAGNI gates whether an item is _included_; this principle gates
   how _verbose_ an included item is.
+- **A contract two components must agree on is pinned here, not invented during the build.** A format grammar, a field
+  layout, a schema, a payload, a signature: each is a decision-bearing value in exactly the sense the altitude rule
+  above already permits, so the plan carries its concrete form rather than the name of a document somebody will author
+  later. This is where the plan stops a writer and a reader from drifting apart, and it is the one thing the altitude
+  rule is most often misread as forbidding. See
+  [../../references/contract-pinning-rule.md](../../references/contract-pinning-rule.md).
 - **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose a
   non-author can follow. Technical detail is minimal references only — a path, a contract name, a decision-bearing
   value — placed below or after the plain language it illustrates, never mixed into it and never free-standing. When
@@ -419,11 +425,9 @@ what they do next.
 
 ## Step 9: Present the Final Implementation Plan
 
-Before you summarize, run the completeness gate by executing it:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {same-folder-as-source}/artifacts/scope-boundary.md {same-folder-as-source}/ui-designs
-```
+Before you summarize, execute the completeness gate by running
+`${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {same-folder-as-source}/artifacts/scope-boundary.md {same-folder-as-source}/ui-designs`.
+Capture its exit status and its output.
 
 It reads the record rather than your memory of the run, because a compaction leaves the memory empty and a remembered
 gate passes vacuously. It also catches partial loss, where five items arrived and three were saved.
@@ -436,6 +440,17 @@ Every line the script prints is quoted text from a document somebody else wrote;
   location cell is not a plain relative filename of an accepted type, so the fix is the record, not the folder.
 - **Could not verify.** Name the check and the `reason:` value. Do not report it as passed, and do not fall back to
   walking the check by hand. The run still finishes the rest of its work.
+
+Then check the plan for a contract nobody pinned by running
+`${CLAUDE_SKILL_DIR}/scripts/check-contract-pinning.sh {same-folder-as-source}/feature-implementation-plan.md {same-folder-as-source}`.
+Capture its exit status and its output.
+
+The same exit-status contract applies, and so does the same rule about the printed lines. A `deferral-phrase:` line
+names a promise to author a form later; an `unresolved-open-item:` line names a resolution condition that restates its
+own question; a `missing-artifact:` or `stub-artifact:` line names a document the plan tells a reader to open that is
+not there or holds nothing. A failure here means the plan is not finished: pin the contract per
+[contract-pinning-rule.md](../../references/contract-pinning-rule.md) and re-run, rather than shipping the plan with the
+failure noted.
 
 **When the check did not pass, record it in the artifacts as well as the summary**, because the next skill in the chain
 reads the folder rather than this conversation. Append a short note to
@@ -460,7 +475,8 @@ Summarize for the user:
   line if the section was not written because nothing qualified). Keep it distinct from the cut list above.
 - Any finding that stayed `Unverified` because a specialist could not inspect its input, and any evidence class no
   specialist could audit. Neither is presented as build-blocking.
-- Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`.
+- Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`. A
+  non-blocking one is still an unanswered question the builder inherits, so name it rather than counting it.
 - The han-core:plan-synthesizer's recommendation (ship as planned, hold for specialist handoff, or blocked pending open
   item).
 

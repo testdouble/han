@@ -109,9 +109,9 @@ han-plugin-builder skill:
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── agents/         # discussion-facilitator agent definition
-│   ├── skills/         # Planning skill directories, each with SKILL.md + references/
+│   ├── skills/         # Planning skill directories, each with SKILL.md + references/ + scripts/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/discussion-facilitator.md
-│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
+│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md, contract-pinning-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
 ├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
@@ -282,8 +282,14 @@ such as Claude, should be referenced here.
   per-unit justification field, the cut list and how it differs from a YAGNI deferral, and the scope gate with its floor.
 - **[han-planning/references/operator-escalation-rule.md](./han-planning/references/operator-escalation-rule.md).** One
   question per turn, the plain-language lead, named candidate answers, the single stop, and the escalation register.
+- **[han-planning/references/contract-pinning-rule.md](./han-planning/references/contract-pinning-rule.md).** What
+  counts as a contract two or more components must independently agree on, what counts as pinning one (a worked
+  example, a grammar line, a field layout, or a link to an artifact that already exists), the phrases that never close
+  one, and which stage of the chain owns pinning it. Consumed by `plan-a-feature`, `plan-implementation`,
+  `plan-work-items`, and `iterative-plan-review`. The phrase list is mirrored by
+  `check-contract-pinning.sh`; the rule is canonical, so edit it first.
 
-All three are owned by `han-planning`, not vendored. Each opens by saying so.
+Every file in this section is owned by `han-planning`, not vendored. Each opens by saying so.
 
 ### Templates (`docs/templates/`)
 

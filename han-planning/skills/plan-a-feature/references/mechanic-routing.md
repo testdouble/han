@@ -17,3 +17,13 @@ route it to the correct home:
    field, and do NOT create a `T#` note. `plan-implementation` will find the code.
 3. **Otherwise the question is pure implementation.** Do not settle it here. Do not put it in the spec, tech-notes, or
    Open Items. `plan-implementation` owns it.
+
+One exception to rule 3, and only one. When the mechanic is a contract two or more components must independently agree
+on — a file or wire format, a persisted schema, an API or event payload, a module or CLI signature, a config schema, an
+error or exit contract, an identity convention — record it as an Open Item naming what is delegated and to which stage.
+Still do not settle it: an Open Item is a delegation, not a behavioral commitment, so the spec stays behavior-only.
+
+The exception exists because rule 3's silence and rule 3's correctness are separable. The mechanic genuinely does not
+belong in the spec, and a contract that leaves this stage unrecorded reaches `plan-implementation` as nothing at all,
+which is how a shared format ends up invented mid-build. Recording it costs one Open Item and gives the next stage an
+item it must close. See [contract-pinning-rule.md](../../../references/contract-pinning-rule.md).

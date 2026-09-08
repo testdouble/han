@@ -224,9 +224,10 @@ and there is no mandatory agent consultation for these findings.
 
 1. **Classify each finding as major or minor before recording.** Major: changes a behavioral commitment, edge-case rule,
    alternate flow, or failure mode in the plan; touches security/auth/PII/secrets/supply-chain; touches a coordination
-   across actors, services, or subsystems; is a `T#-contradiction`; or is a "mechanics leaking into spec" finding.
-   Minor: typo, wording, naming, formatting, citation cleanup. Force-up to major if the finding text contains keywords
-   like "auth", "PII", "race", "ordering", "coordination", "edge case", "T#". When in doubt, major.
+   across actors, services, or subsystems; is a `T#-contradiction`; leaves a contract the build must conform to
+   un-pinned; or is a "mechanics leaking into spec" finding. Minor: typo, wording, naming, formatting, citation
+   cleanup. Force-up to major if the finding text contains keywords like "auth", "PII", "race", "ordering",
+   "coordination", "edge case", "T#", "format", "contract", "schema", "interface", "signature". When in doubt, major.
 
    For each refuted assumption, overlap finding, ambiguity, or edge case that required attention, append an `F#` entry
    to `{plan-dir}/artifacts/review-findings.md` using the
@@ -318,9 +319,10 @@ loop earlier whenever a round goes quiet, so the cap is a ceiling rather than a 
 3. **Classify and record findings.** For each finding from a specialist, classify it as major or minor before recording.
    Major: changes a behavioral commitment, edge-case rule, alternate flow, or failure mode in the plan; touches
    security/auth/PII/secrets/supply-chain; touches a coordination across actors, services, or subsystems; is a
-   `T#-contradiction`; or is a "mechanics leaking into spec" finding. Minor: typo, wording, naming, formatting, citation
-   cleanup. Force-up to major if the finding text contains keywords like "auth", "PII", "race", "ordering",
-   "coordination", "edge case", "T#". When in doubt, major.
+   `T#-contradiction`; leaves a contract the build must conform to un-pinned; or is a "mechanics leaking into spec"
+   finding. Minor: typo, wording, naming, formatting, citation cleanup. Force-up to major if the finding text contains
+   keywords like "auth", "PII", "race", "ordering", "coordination", "edge case", "T#", "format", "contract", "schema",
+   "interface", "signature". When in doubt, major.
 
    Append the entry to `{plan-dir}/artifacts/review-findings.md` (create the `artifacts/` subfolder if it does not
    already exist; append to the legacy root-level path if the prior session used it). Major findings go under
@@ -415,12 +417,10 @@ how the content is said, and drops a required fact only when the reader asked fo
 what they do next. This skill runs no separate editor pass, so the fidelity criterion is the only fact-preservation
 guard the output has, and it is not optional.
 
-**Preserve the cross-reference invariants across all files.** The two that a check can settle are executed rather than
-walked by hand:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/check-cross-references.sh {plan-dir}/artifacts/review-findings.md {plan-dir}/artifacts/review-iteration-history.md
-```
+**Preserve the cross-reference invariants across all files.** The two a check can settle are executed rather than
+walked by hand: run
+`${CLAUDE_SKILL_DIR}/scripts/check-cross-references.sh {plan-dir}/artifacts/review-findings.md {plan-dir}/artifacts/review-iteration-history.md`
+and capture its exit status and its output.
 
 It reports two failures separately, because you fix them differently. A `missing-target:` line means an identifier is
 cited with no entry behind it. An `empty-field:` line means the entry exists but a required field is blank. Identifiers
@@ -433,6 +433,18 @@ check did not pass, note the outcome in the plan's `## Review History` section a
 quoted text kept to a line inside a fenced block.
 
 Use the legacy root-level paths when the companion files live at the plan folder's root rather than in `artifacts/`.
+
+**Check the plan for a contract nobody pinned**, once per iteration: run
+`${CLAUDE_SKILL_DIR}/scripts/check-contract-pinning.sh {plan-file} {plan-dir}` and capture its exit status and its
+output. What counts as pinned is in
+[contract-pinning-rule.md](../../references/contract-pinning-rule.md).
+
+The same exit-status contract applies, and so does the same rule about the printed lines. A `deferral-phrase:` line
+names a promise to author a form later. An `unresolved-open-item:` line names a resolution condition that restates its
+own question. A `missing-artifact:` or `stub-artifact:` line names a document the plan tells a reader to open that is
+not there or holds nothing. Each one is a major finding, recorded like any other. The check reads only what it can
+settle mechanically, so a contract described in vague-but-concrete-sounding prose still needs the Contract Check in
+[iteration-checklist.md](./references/iteration-checklist.md).
 
 The two invariants the check covers, for reference:
 

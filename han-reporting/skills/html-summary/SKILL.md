@@ -181,11 +181,8 @@ If any check fails, fix it before Step 6.
 
 ### 6. Inline the mermaid bundle
 
-Make the file self-contained by inlining the vendored mermaid bundle in place of the placeholder:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/inline-mermaid.sh <path-to-html-file>
-```
+Make the file self-contained by inlining the vendored mermaid bundle in place of the placeholder: run
+`${CLAUDE_SKILL_DIR}/scripts/inline-mermaid.sh <path-to-html-file>` and capture its output.
 
 The script is idempotent: it replaces the `<!-- MERMAID_BUNDLE_INLINE_HERE -->` placeholder with the contents of
 `assets/mermaid.min.js`. If the report has no diagrams (no placeholder), it leaves the file untouched and exits cleanly.
