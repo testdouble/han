@@ -103,6 +103,9 @@ A domain map report in your conversation with these named sections:
   vocabulary, ownership, relationships, evidence, and confidence rating.
 - **Rejected or Weak Context Candidates.** Contexts the critic rated weak or reject, with the primary failure
   mode and what would change the verdict.
+- **Domain Concerns.** Named responsibilities that live inside a broader context without meeting the bar for a
+  bounded context of their own, each with its host context and the legitimacy criterion it does not meet. The
+  section is absent when the model produced no such entries.
 - **Integration Boundaries.** Components identified as integration points, external system interfaces, or
   technical mechanisms rather than bounded contexts — with what semantic evidence would be needed to reclassify
   them as candidates.

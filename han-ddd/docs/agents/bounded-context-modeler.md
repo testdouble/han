@@ -18,7 +18,8 @@ instructions and output format, read the agent definition at
   when you have existing discovery findings and want a semantic context model without running a full analysis.
 - **What you get back.** Numbered BCM# entries, each with a context name, purpose, responsibilities, vocabulary,
   capabilities, what it owns and consumes, explicit exclusions, relationships, supporting evidence, confidence,
-  and status; plus a Bounded Context Model Summary.
+  and status; numbered IBN# entries for integration boundaries that carry no distinct semantic model; numbered DC#
+  entries for named domain concerns that do not pass the legitimacy gate; plus a Bounded Context Model Summary.
 
 ## Key concepts
 
@@ -65,16 +66,18 @@ The `/ddd-analysis` skill dispatches this agent automatically. To invoke it dire
 Agent(subagent_type: "han-ddd:bounded-context-modeler", prompt: "...")
 ```
 
-The brief must include all available discovery findings — the full verbatim DL#, CAP#, OWN#, S#, and B#
-findings and their summaries — plus a calibration directive matched to the desired depth (top 3-5 CURRENT
+The brief names the five discovery artifact files (DL#, CAP#, OWN#, S#, and B# findings) by path and instructs the
+agent to read each with the Read tool rather than pasting their contents, plus a calibration directive matched to the desired depth (top 3-5 CURRENT
 contexts at small depth; all convergence zones supported by at least two evidence types at medium depth;
 exhaustive, including all SPECULATIVE candidates with meaningful evidence, at large depth), and a reminder that
-this agent produces a semantic context model only.
+this agent produces a semantic context model only. It also names the synthesis artifact path the agent writes its
+complete output to (`synthesis/context-model-initial.md` inside the run folder), so the agent returns only the
+path, the BCM# count by status, and the summary.
 
-For the revision pass, the brief must also include the full verbatim BCM# entries and Bounded Context Model
-Summary from the first pass, and the full verbatim BCR# entries and Bounded Context Model Critique Summary from
-`bounded-context-critic`, with an explicit instruction to address supported criticism and refuse criticism
-unsupported by evidence.
+For the revision pass, the brief also names the first-pass model file and the critique file
+(`synthesis/critique.md`) by path, with an explicit instruction to address supported criticism, refuse criticism
+unsupported by evidence, and preserve every entry the critic rated strong or plausible unless specific
+counter-evidence was named. The revised model is written to `synthesis/context-model-final.md`.
 
 ## What you get back
 
@@ -91,6 +94,15 @@ Numbered BCM# entries. Each entry contains:
 - **Does not own:** Concepts that appear near but belong to another context, named explicitly
 - **Relationships:** Other BCM# candidates with named DDD relationship types where evidence supports them
 - **Evidence:** The specific finding identifiers supporting this proposal
+
+**Integration Boundary entries (IBN#).** For components the evidence shows to be integration points, external
+system interfaces, or technical mechanisms rather than bounded contexts. Each names the component, what it
+integrates, the evidence, and what semantic evidence would be needed to reclassify it as a context candidate.
+
+**Domain Concern entries (DC#).** For concerns with coherent rules or vocabulary that are worth naming but lack the
+semantic evidence to qualify as a bounded-context hypothesis. Each names the host context where it most likely
+lives, its purpose, key rules or vocabulary, supporting evidence, and the legitimacy-gate criterion it does not
+meet. DC# entries never carry a CURRENT, LATENT, or SPECULATIVE status.
 
 After all BCM# items, the agent produces a Bounded Context Model Summary: total proposed, split by status tier,
 confidence distribution, strongest convergence, and evidence gaps.

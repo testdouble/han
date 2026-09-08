@@ -61,7 +61,9 @@ Agent(subagent_type: "han-ddd:business-capability-analyst", prompt: "...")
 The brief must include the scope, a calibration directive matched to the desired depth (surface commands and
 domain events with the strongest behavioral signals at small depth; all six dimensions at medium depth; all six
 dimensions with emphasis on cross-module workflows and process orchestration at large depth), and a reminder that
-this agent produces capability evidence only.
+this agent produces capability evidence only. It also names the artifact path the agent writes its complete
+findings to (`discovery/business-capabilities.md` inside the run folder), so the agent returns only the path, the
+CAP# count, and a two-sentence summary.
 
 ## What you get back
 

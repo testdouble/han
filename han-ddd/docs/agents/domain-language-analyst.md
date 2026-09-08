@@ -32,6 +32,9 @@ instructions and output format, read the agent definition at
 - **Language evidence only.** This agent does not propose bounded contexts, evaluate whether vocabulary clusters
   should become bounded contexts, or recommend any structural change. It reads the code and characterizes the
   language.
+- **Structural layout is not a language boundary.** The agent does not assume a directory, namespace, deployed
+  service, or module boundary defines a ubiquitous language; those structural signals belong to
+  `han-core:structural-analyst`. Vocabulary evidence stands on its own, independent of folder or deployment layout.
 
 ## When to use it
 
@@ -59,7 +62,9 @@ Agent(subagent_type: "han-ddd:domain-language-analyst", prompt: "...")
 The brief must include the scope, a calibration directive matched to the desired depth (surface the highest-frequency
 terms and most obvious collisions at small depth; full vocabulary inventory and all six dimensions at medium depth;
 exhaustive cross-module semantic collision detection at large depth), and a reminder that this agent produces
-language-signal evidence only.
+language-signal evidence only. It also names the artifact path the agent writes its complete findings to
+(`discovery/domain-language.md` inside the run folder), so the agent returns only the path, the DL# count, and a
+two-sentence summary.
 
 ## What you get back
 

@@ -13,7 +13,9 @@ directly. For the agent's internal instructions and output format, read the agen
 - **What it does.** Evaluates every BCM# entry from the bounded-context-modeler against the discovery evidence
   that produced it, returning a verdict (strong, plausible, weak, or reject), the strongest supporting and
   counter-evidence, detected failure modes, missing evidence, and domain-expert questions for each proposed
-  context, plus a model-level critique covering Context Explosion and God Context.
+  context, plus a model-level critique covering Context Explosion and God Context. It applies the legitimacy gate
+  to every entry, holds LATENT status to a strict bar, and accepts a named DDD strategic relationship only when
+  explicit strategic or organizational evidence backs it.
 - **When to use it.** Dispatched by `/ddd-analysis` after the bounded-context-modeler completes. Invoke directly
   when you have existing BCM# entries and want an independent evaluation without re-running the full analysis.
 - **What you get back.** Numbered BCR# evaluation entries, one per BCM# context, plus a Bounded Context Model
@@ -24,10 +26,13 @@ directly. For the agent's internal instructions and output format, read the agen
 - **Evaluation only, no redesign.** The critic assigns verdicts and names failure modes. It does not propose
   alternative designs, recommend context splits or merges, or suggest services. When a verdict is weak or reject,
   the critic names what evidence is missing — gathering that evidence or redesigning the model is the team's job.
-- **Twelve named failure modes.** The critic checks every proposed context against twelve specific failure modes:
-  Service Equals Context, Directory Equals Context, Database Equals Context, Entity Decomposition, Technical Layer
-  Context, CRUD Capability Bias, Context Explosion, God Context, Shared Kernel Reflex, Vocabulary Without Semantic
-  Difference, Boundary Without Behavioral Evidence, and Premature Microservice Extraction. Context Explosion and
+- **Eighteen named failure modes.** The critic checks every proposed context against a catalog of eighteen
+  failure modes grouped by origin: structural (Service Equals Context, Directory Equals Context, Database Equals
+  Context, Integration Boundary as Context), entity and noun (Entity Decomposition, Vocabulary Without Semantic
+  Difference), technical contamination (Technical Layer Context, Premature Microservice Extraction), capability
+  quality (CRUD Capability Bias, Boundary Without Behavioral Evidence, Workflow-Stage Context), scope (Scope
+  Overreach), legitimacy (Premature BCM# Classification, LATENT Overreach, DDD Strategic Relationship Overreach),
+  model scale (Context Explosion, God Context), and evidence quality (Shared Kernel Reflex). Context Explosion and
   God Context are model-level; the rest are per-context.
 - **Positive confirmation matters.** A report that finds only problems is an incomplete evaluation. When a context
   is strongly supported by convergent evidence, the critic says so explicitly.
@@ -63,10 +68,12 @@ directly:
 Agent(subagent_type: "han-ddd:bounded-context-critic", prompt: "...")
 ```
 
-The brief must include the full verbatim BCM# entries and Bounded Context Model Summary from the
-bounded-context-modeler, plus all discovery findings — the full verbatim DL#, CAP#, OWN#, S#, and B# findings
-and their summaries — and a reminder that this agent evaluates only. No calibration directive is needed; the
-critic evaluates every BCM# entry regardless of depth.
+The brief names the first-pass context model file (`synthesis/context-model-initial.md` inside the run folder) and
+the five discovery artifact files (DL#, CAP#, OWN#, S#, and B# findings) by path, instructing the agent to read them
+with the Read tool rather than pasting their contents, plus a reminder that this agent evaluates only. It also names
+the synthesis artifact path the agent writes its complete output to (`synthesis/critique.md`), so the agent returns
+only the path, the BCR# count with verdict distribution, and the critique summary. No calibration directive is
+needed; the critic evaluates every BCM# entry regardless of depth.
 
 ## What you get back
 

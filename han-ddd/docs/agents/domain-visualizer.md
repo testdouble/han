@@ -91,12 +91,12 @@ produced; files are skipped when evidence is insufficient.
   business journey across bounded contexts.
 - `state-machines/{name}.md` — One file per explicit lifecycle with evidence-backed states and transitions.
   Authority overlay when OWN# shows multiple writers.
-- `ownership-map.md` — When OWN# reveals contested authority or multiple writers. Shows observed actors and
-  the models they write.
+- `ownership-map.md` — When OWN# evidence establishes contested ownership, multiple writers, cross-context
+  writes, or unclear authority. Shows observed actors and the models or states they write.
 - `language-collisions.md` — When DL# identifies cross-context semantic collisions. Markdown table or Mermaid
   diagram showing "same word, different model."
-- `boundary-friction.md` — When BCR# failure modes or structural findings establish implementation friction
-  against the established domain model.
+- `boundary-friction.md` — When BCR# failure modes, OWN# contestation findings, or S# and B# structural findings
+  establish implementation friction against the established domain model.
 - `question-impact.md` — When domain-expert questions exist. Shows each question and the model elements whose
   interpretation depends on its answer.
 - `scenarios/{name}.md` — One file per important LATENT or SPECULATIVE candidate with competing interpretations

@@ -63,7 +63,9 @@ Agent(subagent_type: "han-ddd:domain-ownership-analyst", prompt: "...")
 The brief must include the scope, a calibration directive matched to the desired depth (authority mapping and the
 most obvious contestation signals at small depth; all six dimensions at medium depth; all six dimensions with
 emphasis on cross-module consistency coupling and exhaustive contestation detection at large depth), and a
-reminder that this agent produces ownership evidence only.
+reminder that this agent produces ownership evidence only. It also names the artifact path the agent writes its
+complete findings to (`discovery/domain-ownership.md` inside the run folder), so the agent returns only the path,
+the OWN# count, and a two-sentence summary.
 
 ## What you get back
 

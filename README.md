@@ -55,6 +55,7 @@ Han ships as multiple plugins:
 | `han-feedback`       | opt-in  | skill for capturing post-session feedback on Han skill runs                                                                                                            |
 | `han-atlassian`      | opt-in  | skills for publishing docs and work items to Atlassian products                                                                                                        |
 | `han-linear`         | opt-in  | skill for publishing work items to Linear (requires a Linear MCP server)                                                                                               |
+| `han-ddd`            | opt-in  | strategic Domain-Driven Design analysis: bounded context discovery and an evidence-backed domain and context map                                                       |
 | `han-plugin-builder` | opt-in  | carries the guidance and skills for building your own skills, agents, and plugins                                                                                      |
 
 Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-communication`, `han-core`,
@@ -88,8 +89,8 @@ codex plugin add han-github@han
 codex plugin add han-reporting@han
 ```
 
-Install `han-feedback`, `han-atlassian`, `han-linear`, or `han-plugin-builder` separately when you want those opt-in
-packages. Because Codex resolves no dependencies, install `han-communication` alongside `han-atlassian` (its wrapped
+Install `han-feedback`, `han-atlassian`, `han-linear`, `han-ddd`, or `han-plugin-builder` separately when you want those
+opt-in packages. Because Codex resolves no dependencies, install `han-communication` alongside `han-atlassian` (its wrapped
 prose-producing skills source the shared readability standard from it).
 
 ## Documentation
