@@ -96,6 +96,13 @@ supply. Step 5 is where the judgement comes into play, in dividing up the plan.
 - Every work item body MUST link the reference artifacts an implementer needs: API/event contracts, design frames,
   schema docs, runbooks, ADRs, coding standards. A work item that consumes an HTTP endpoint or event payload MUST link
   the contract section that defines it.
+- **A shared contract is pinned in one item, ahead of its consumers.** When more than one work item touches the same
+  contract — a file or wire format, a persisted schema, an API or event payload, a module or CLI signature, a config
+  schema, an error or exit contract, an identity convention — the item that introduces it carries the concrete form in
+  its acceptance criteria, and every consumer names that item under `Depends on`. Never split one contract across items
+  that each define part of it. When the item's own deliverable **is** the contract document, "the document exists" is
+  not a criterion: a criterion names the concrete form the document must carry. Full rule in
+  [contract-pinning-rule.md](../../references/contract-pinning-rule.md).
 - UI work items, when the plan folder has a `ui-designs/` subfolder, MUST reference the relevant visual material by a
   relative path from the work-items file to the file. See
   [references/work-item-template.md](./references/work-item-template.md). The accepted file set is named in
@@ -206,6 +213,14 @@ When an expected artifact is missing, that reference's "Missing-artifact handlin
 splits the case by who can supply the artifact. Apply it rather than deciding here. In short: an artifact only the user
 can hand over right now joins the single stop, and an artifact nobody can produce now is recorded and drafted around.
 
+**Read the plan's `## Open Items` section as part of this inventory, including the items marked
+`Blocks implementation: No`.** A non-blocking open item is not a resolved one, and this is the last stage that can see
+it before the work items are built. For each open item, do one of two things and never a third: when the item names a
+contract these work items will consume, pin it in the introducing work item per the Rules above; otherwise record it in
+the breakdown report as a named gap, saying which work items inherit it. An open item that reaches implementation
+without either is a question the builder answers alone, which is the failure mode
+[contract-pinning-rule.md](../../references/contract-pinning-rule.md) exists to prevent.
+
 ### 5. Draft the work items
 
 Source the shared readability standard by invoking `han-communication:readability-guidance`, and apply it to the
@@ -218,7 +233,8 @@ Launch `han-core:plan-synthesizer` (`subagent_type: "han-core:plan-synthesizer"`
 - The full plan or context content from Step 1.
 - The boundary record from Step 0: the recorded scope, the stated exclusions, any scope the user stated at invocation, and
   the direction-of-travel answer. This is the outer edge of what may be drafted.
-- The artifact inventory from Step 4.
+- The artifact inventory from Step 4, including each open item's disposition: the ones pinned into a work item and
+  the ones carried forward as named gaps.
 - The Rules section of this skill verbatim.
 - A directive on justification and cutting, quoting
   [scope-justification-rule.md](../../references/scope-justification-rule.md): every work item names what it descends
@@ -274,6 +290,10 @@ Print a numbered list for visibility. For each work item show:
 
 Then, when anything was cut, print the cut list under its own heading: what each cut item would have done, in plain
 language, and why it was cut. The user cannot reverse a cut they never saw.
+
+When Step 4 carried an open item forward as a named gap, print those under their own heading too: the question, and
+which work items inherit it. The same reasoning applies. An open question nobody reads is one the builder answers
+alone.
 
 This report is for visibility, not approval. Do not wait for the user's confirmation — proceed directly to Step 8 and
 write the file.

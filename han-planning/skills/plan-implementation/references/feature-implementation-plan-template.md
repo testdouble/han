@@ -44,7 +44,9 @@ and more technical detail, choose more plain language.
 
 ## Implementation Approach
 
-<!-- The shape of the implementation in plain prose: how the feature fits into the system, what it reuses, what it introduces, where the boundaries are. Lead with intention; name touch points, not edits. Technical identifiers appear only after the plain-language sentence they illustrate, or as a nested sub-bullet under it. Add a focused subsection ONLY for a surface the plan commits a real decision on (e.g., "Data model changes", "External interfaces") — a few sentences of intention plus its D-N links, not an inventory of changes. Omit every surface with nothing decided. -->
+<!-- The shape of the implementation in plain prose: how the feature fits into the system, what it reuses, what it introduces, where the boundaries are. Lead with intention; name touch points, not edits. Technical identifiers appear only after the plain-language sentence they illustrate, or as a nested sub-bullet under it. Add a focused subsection ONLY for a surface the plan commits a real decision on (e.g., "Data model changes", "External interfaces") — a few sentences of intention plus its D-N links, not an inventory of changes. Omit every surface with nothing decided.
+
+ANY CONTRACT THE FEATURE INTRODUCES APPEARS HERE IN CONCRETE FORM. When two or more components must independently agree on a form — a file or wire format, a persisted schema, an API or event payload, a module or CLI signature, a config schema, an error or exit contract, an identity convention — the subsection carries a worked example, a grammar line, or a field layout, or links an artifact that already exists concretely. Never a promise to author one during the build. This is the one place the altitude rule's "decision-bearing value" carve-out is load-bearing: a grammar line is a decision, not a file block. See ../../../references/contract-pinning-rule.md. -->
 
 ### {decision-bearing surface}
 
@@ -133,7 +135,7 @@ revisiting it.
 
 ## Open Items
 
-<!-- Questions the plan-synthesizer could not resolve through evidence, reframing, or user input. -->
+<!-- Questions the plan-synthesizer could not resolve through evidence, reframing, or user input. Resolves when names a falsifiable condition, never a restatement of the question itself ("Resolves when: resolved" closes nothing). An item naming a contract the build must conform to does not belong here at all: pin it in Implementation Approach and the decision log instead. -->
 
 - **OI-1:** <!-- question or concern -->
   - **Resolves when:** …
