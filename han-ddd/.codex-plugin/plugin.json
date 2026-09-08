@@ -17,7 +17,7 @@
     "longDescription": "Analyzes an existing codebase using strategic Domain-Driven Design to discover domain boundaries, identify bounded contexts, find boundary leaks, and produce an evidence-backed domain and context map. Discovery and analysis only — does not recommend service splits or migration plans.",
     "developerName": "Test Double",
     "category": "Developer Tools",
-    "capabilities": ["Skills", "Agents"],
+    "capabilities": ["Skills"],
     "websiteURL": "https://github.com/testdouble/han",
     "defaultPrompt": [
       "Analyze this repository's domain boundaries with /ddd-analysis.",

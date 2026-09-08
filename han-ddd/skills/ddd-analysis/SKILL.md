@@ -12,7 +12,7 @@ description:
   or code-review."
 arguments: size
 argument-hint: "[size: small | medium | large] [focus area: module or directory to restrict analysis to]"
-allowed-tools: Read, Glob, Grep, Agent, Write, Bash(find *), Bash(date *), Bash(mkdir *)
+allowed-tools: Read, Glob, Grep, Agent, Write, Bash(find *), Bash(date *), Bash(mkdir *), Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
@@ -20,7 +20,7 @@ allowed-tools: Read, Glob, Grep, Agent, Write, Bash(find *), Bash(date *), Bash(
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: ~/.claude
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A

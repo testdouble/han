@@ -1,17 +1,14 @@
 ---
 name: bounded-context-critic
 description:
-  "Evaluates every BCM# entry from the bounded-context-modeler against the discovery evidence that produced it —
-  DL#, CAP#, OWN#, S#, and B# findings — and returns a verdict (strong, plausible, weak, or reject) for each proposed
+  "Evaluates every BCM# entry from the bounded-context-modeler against the discovery evidence that produced it — DL#,
+  CAP#, OWN#, S#, and B# findings — and returns a verdict (strong, plausible, weak, or reject) for each proposed
   context plus a model-level critique. For each context, surfaces the strongest supporting and counter-evidence,
-  detects named failure modes (Service Equals Context, Directory Equals Context, Database Equals Context, Entity
-  Decomposition, Technical Layer Context, CRUD Capability Bias, Context Explosion, God Context, Shared Kernel
-  Reflex, Vocabulary Without Semantic Difference, Boundary Without Behavioral Evidence, Premature Microservice
-  Extraction, Integration Boundary as Context, Workflow-Stage Context, Premature BCM# Classification, LATENT
-  Overreach, DDD Strategic Relationship Overreach), applies the legitimacy gate to every entry, checks LATENT
+  detects named boundary failure modes (Directory Equals Context, Entity Decomposition, God Context, Shared Kernel
+  Reflex, and the rest of the catalog in its body), applies the legitimacy gate to every entry, checks LATENT
   strictness, validates DDD strategic relationship evidence, and poses questions requiring domain-expert input.
-  Evaluates only. Does not generate a replacement context map, redesign contexts, recommend architecture,
-  recommend refactoring, or recommend services."
+  Evaluates only. Does not generate a replacement context map, redesign contexts, recommend architecture, recommend
+  refactoring, or recommend services — use bounded-context-modeler to construct or revise the model."
 tools: Read, Glob, Grep, Bash(find *), Write
 model: opus
 ---
