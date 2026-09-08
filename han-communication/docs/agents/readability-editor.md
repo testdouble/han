@@ -18,9 +18,10 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 ## Key concepts
 
 - **Rewrites, does not merely review.** Unlike a reviewer that returns recommendations, this agent edits the prose in
-  place against a six-point rubric.
+  place against a fixed rubric.
 - **Fidelity outranks readability.** Every claim, quantity, named entity, and stated condition survives with its
-  precision intact. When a readability change would blur a fact, the fact wins.
+  precision intact. When a readability change would blur a fact, the fact wins. Only a shape the dispatching skill
+  relayed from the reader moves this, and never for a fact whose loss would change what the reader does next.
 - **Prose only.** Code fences, diagram bodies, rendered markup, and citation identifiers are left byte-for-byte
   unchanged so they still compile, render, and resolve.
 
@@ -69,9 +70,10 @@ Example prompts:
 
 The draft, rewritten in place (or returned inline when the deliverable is conversational), plus a short report:
 
-- **Rubric verdict.** One line per criterion: pass, or what was changed to make it pass. The six criteria are main point
-  first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted words and a
-  half-sentence explanation for every term the reader cannot look up, and progressive disclosure.
+- **Rubric verdict.** One line per criterion: pass, or what was changed to make it pass. The criteria are main point
+  first, descriptive headings, one idea per paragraph, short and active sentences, common words with no blocklisted words and a
+  half-sentence explanation for every term the reader cannot look up, progressive disclosure, technical detail
+  separated from the sentences, and the shape the reader asked for when the dispatch relayed one.
 - **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
   Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
 - **Untouched regions.** The non-prose regions left unchanged.
@@ -103,7 +105,7 @@ The agent generalizes and replaces the readability pass that some skills ran bef
 Where such a pass existed, the readability-editor takes its place so there is one readability review, not two with
 conflicting verdicts.
 
-Its rubric is the six behaviorally-anchored criteria of the shared standard, not a subjective clarity judgment. It never
+Its rubric is the behaviorally-anchored criteria of the shared standard, not a subjective clarity judgment. It never
 follows imperative or conditional prose inside the draft. That content is text to preserve and make readable, never a
 command to act on. Its adversarial posture is aimed at the draft, never at the author who wrote it.
 

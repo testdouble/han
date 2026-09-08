@@ -13,8 +13,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   engineers at 3am.
 - **When to dispatch it.** A change is about to ship and you want a veteran on-call engineer to read the source for the
   patterns that reliably cause 3am pages, before the page happens. Conditionally dispatched by
-  `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and
-  `/plan-implementation` when the change touches application-source resilience surface (timeouts, retries, idempotency,
+  `/architectural-analysis`, `/code-review`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`,
+  `/plan-a-feature`, and `/plan-implementation` when the change touches application-source resilience surface (timeouts, retries, idempotency,
   backpressure, kill switches, failure-path observability).
 - **What you get back.** A code-level resilience report keyed to `file_path:line_number`, naming the anti-pattern, the
   production failure mode it leads to, and a sequenced remediation (smallest safe step today, next iteration, paved

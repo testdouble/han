@@ -183,6 +183,12 @@ skip the writing voice, instead of picking for you.
 A personal configuration directory a run cannot reach is treated as no personal config, with no note. A run cannot tell
 that apart from someone who never wrote the file.
 
+There is one way the personal file can go quiet while still sitting where you put it. Skills locate your configuration
+directory by running a small script that ships inside each plugin. If that script is missing or fails, the lookup falls
+back to `~/.claude`, so a personal file at a directory named by `CLAUDE_CONFIG_DIR` stops applying until the script is
+restored. Nothing announces this, because the fallback looks the same as never having set the variable. Reinstalling the
+plugin restores the script.
+
 ## Which version you need
 
 The personal file needs every installed Han plugin at or above the release that introduced it. The suite ships as

@@ -5,6 +5,13 @@ paths:
 
 # Domain Focus in Agent Definitions
 
+## Contents
+
+- Why Domain Focus Matters
+- Implementation
+- Summary Checklist
+- Cross-References
+
 Agents perform better when they target a narrow domain with precise vocabulary. A focused agent activates deep expertise
 in the model. A broad generalist activates shallow, averaged knowledge across competing domains.
 

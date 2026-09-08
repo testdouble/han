@@ -94,8 +94,9 @@ operator invokes directly follows the full template, even when its output is sma
 
 An output style breaks the template for the opposite reason the inline-guidance skills do. Nobody runs it, and it
 produces nothing, because it is a block of text Claude Code appends to the system prompt at session start. You select it
-once and it shapes every turn until you change it. Today the only one is
-[`Han Readability`](../../han-communication/docs/output-styles/han-readability.md).
+once and it shapes every turn until you change it. Today they are
+[`Han Readability`](../../han-communication/docs/output-styles/han-readability.md) and
+[`Han Concise`](../../han-communication/docs/output-styles/han-concise.md).
 
 An output-style doc carries this section list, in this order:
 

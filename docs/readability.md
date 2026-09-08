@@ -24,8 +24,9 @@ and reveals detail in layers, instead of each skill restating the rule on its ow
 - **Synthesis skills rewrite; the rest self-check.** A skill with a synthesis or editor step dispatches the
   [`readability-editor`](../han-communication/docs/agents/readability-editor.md) to rewrite the draft, preserving every fact.
   Every in-scope skill runs the standardized self-check.
-- **Fidelity wins.** No required fact is dropped to read more simply. Every claim, quantity, named entity, and stated
-  condition survives with its precision intact.
+- **Fidelity wins, unless the reader asked for less.** Every claim, quantity, named entity, and stated condition
+  survives with its precision intact. A reader who asked for less can lose a fact, unless losing it would change
+  what they do next.
 - **Session-wide is opt-in.** Selecting the `Han Readability` output style holds the standard across every turn, not
   only inside a reader-facing skill. It reaches the main conversation, never a dispatched subagent.
 - **The canonical rule lives in
@@ -45,7 +46,7 @@ Without a shared standard:
 - Dense, technical deliverables get either unreadable or, worse, simplified until a load-bearing fact is lost.
 
 The standard fixes the first two by naming the output properties once and applying them everywhere. It guards against
-the third by making fidelity outrank every readability move.
+the third by making fidelity outrank every readability move the reader did not ask for.
 
 ## What the standard requires
 
@@ -66,10 +67,10 @@ The rule names the output properties, and they shape each skill's template so th
 - **No blocklisted words.** The existing writing-voice blocklist is reused for word-level rules.
 - **Numbered lists for steps, bullets for the rest.**
 - **Progressive disclosure.** Reveal the core first and detail in layers.
-- **Technical detail follows the prose.** Keep implementation and technical references (symbol names, file paths, flags,
-  exact code) out of the readable paragraphs where you can. Where a reference has to appear inline, keep it as small as
-  the sentence needs. Otherwise the detail comes after the prose that describes it, in code fences the prose has already
-  explained.
+- **Technical detail follows the prose.** Separate it by default. The readable sentences say what happens, and the
+  implementation and technical references (symbol names, file paths, flags, exact code) come after them, in a code fence
+  or a trailing line the prose has already explained. Inline is the exception, for the one reference a sentence is
+  genuinely about.
 
 The applied set is kept deliberately tight. Structural rules that fit only a minority of deliverables are left out on
 purpose. That keeps the set small enough to apply without the compliance decay that comes from stacking instructions.
@@ -86,10 +87,12 @@ at a time:
 3. **Rewrite pass (synthesis skills only).** A skill with a synthesis or editor step dispatches the
    [`readability-editor`](../han-communication/docs/agents/readability-editor.md) to audit and rewrite the draft against the
    rule, preserving every fact.
-4. **Self-check.** A discrete pass over the prose regions evaluates six behaviorally-anchored yes/no criteria: main
+4. **Self-check.** A discrete pass over the prose regions evaluates behaviorally-anchored yes/no criteria: main
    point first, descriptive headings, one idea per paragraph, sentence length, common words with no blocklisted word
-   and an explanation for every term the reader cannot look up, and every fact preserved. Anything it fails is
-   corrected before the deliverable is presented.
+   and an explanation for every term the reader cannot look up, technical detail separated from the sentences, every
+   fact preserved, and the shape the reader asked for in count, format, and register. Anything it fails is corrected before the deliverable is presented. The last
+   criterion wins a real collision with the others, except where a dropped fact would change what the reader does
+   next, or where a skill requires a section.
 
 The self-check and any rewrite operate on **prose regions only**. Code fences, diagram bodies, rendered markup, and
 inline citation identifiers are neither evaluated nor altered, so they still compile, render, and resolve.
@@ -97,23 +100,33 @@ inline citation identifiers are neither evaluated nor altered, so they still com
 ## Applying the standard to a whole session
 
 The path above covers a skill's deliverable. To hold the standard across every turn instead, including the conversation
-around a skill and the work no skill covers, select the `Han Readability` output style shipped in
-[`han-communication/output-styles/han-readability.md`](../han-communication/output-styles/han-readability.md). Choose it
+around a skill and the work no skill covers, select one of the two output styles `han-communication` ships. Choose it
 under **Output style** in `/config`. It takes effect on your next session or after `/clear`, because Claude Code reads
 the output style once at session start.
 
-The style distills the rule's audience frame, output properties, fidelity guard, and six-criterion self-check together
-with the writing-voice blocklist. It keeps Claude Code's built-in software engineering instructions, so it changes how
-work is written up, not how it is done.
+[`Han Readability`](../han-communication/output-styles/han-readability.md) distills the rule's audience frame, output
+properties, fidelity guard, and self-check together with the writing-voice blocklist. Pick it when the session's output
+is prose someone reads cold.
 
-The style has three limits:
+[`Han Concise`](../han-communication/output-styles/han-concise.md) carries the same properties and departs from the rule
+twice. A turn drops preamble and recap and spends no sentence that carries neither a fact nor a needed transition. And in place of `Fidelity wins`, it assumes
+you want less than the source carries, so supporting detail rolls up into the statement it supports rather than waiting
+for you to ask; a roll-up has to be true of everything it covers, and three things stay at full precision: a fact whose
+loss would change what you do next, a number you will act on, and a stated condition that bounds when a claim holds.
+Pick it for a working session you read in the terminal.
+
+Both departures belong to the style, so they reach the conversation and not Han's skills.
+
+Neither style changes how work is done. Both keep Claude Code's built-in software engineering instructions.
+
+Both styles share the same three limits:
 
 - **It does not reach subagents.** A subagent runs its own system prompt, so the style leaves Han's dispatched
   specialists unchanged. The skills stay the mechanism that brings the standard to agent output.
 - **It carries the built-in voice only.** A static system prompt cannot run the `.han/config.md` probe, so a configured
   `writing-voice` profile does not override it the way it overrides `readability-guidance`.
 - **It is a derived copy.** The canonical rule and voice profile stay authoritative. When you edit either one, check
-  whether the style needs the same change.
+  whether the styles need the same change.
 
 ## Scope: which skills are reader-facing
 
@@ -152,10 +165,11 @@ the standard in (see [Contributing](../CONTRIBUTING.md#wiring-the-readability-st
 
 ## Fidelity: the fact-preservation guard
 
-The standard governs _how_ content is said, never whether a required fact appears. When reading more simply would drop
-or blur a fact, fidelity wins. Every claim, quantity, named entity, and stated condition survives with its precision
-intact. Flattening "exceeded 340ms in three of ten windows" to "was sometimes slow," or "only when X and Y both hold" to
-"generally," is a fidelity failure, not a simplification.
+The standard governs _how_ content is said, and drops a required fact only when the reader asked for less and losing it
+would not change what they do next. When reading more simply would drop or blur a fact, fidelity wins. Every claim,
+quantity, named entity, and stated condition survives with its precision intact. Flattening "exceeded 340ms in three of
+ten windows" to "was sometimes slow," or "only when X and Y both hold" to "generally," is a fidelity failure, not a
+simplification.
 
 On a synthesis skill, the `readability-editor` preserves every fact as it rewrites. On a non-synthesis skill that runs
 no rewrite pass, the self-check's fact-preservation criterion is the only fidelity guard the output has, so it is not
@@ -184,8 +198,8 @@ optional.
   `han-communication:readability-guidance`, so a contributor changes the rule in one place.
 - **Applied in stages, not stacked.** The template, the audience frame, the rewrite pass, and the self-check each carry
   part of the rule, so no single step stacks enough instructions to decay.
-- **Fidelity outranks readability.** The one rule the standard never bends: a required fact is never dropped to read
-  more simply.
+- **Fidelity outranks readability, unless the reader asked for less.** A required fact is never dropped to read more
+  simply. When the reader asked for less, a fact may go, unless losing it would change what they do next.
 - **Loading is not compliance.** Loading the rule does not make output readable. The template, the audience frame, the
   rewrite pass, and the self-check are what make it take effect.
 

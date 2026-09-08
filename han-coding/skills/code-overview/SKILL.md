@@ -14,7 +14,9 @@ arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [target: file, directory, symbol, or PR reference — defaults to the current branch's
   changes]"
-allowed-tools: Read, Glob, Grep, Agent, Write, Bash(git *), Bash(gh *), Bash(find *)
+allowed-tools:
+  Read, Glob, Grep, Agent, Write, Bash(git *), Bash(gh *), Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
@@ -23,7 +25,7 @@ allowed-tools: Read, Glob, Grep, Agent, Write, Bash(git *), Bash(gh *), Bash(fin
 - gh installed: !`which gh 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -377,7 +379,7 @@ your context from `han-communication:readability-guidance`) over the overview's 
 Mermaid chart bodies, code fences, screenshot markup, or file/symbol references. Confirm each criterion and fix any
 failure before presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
+Run the readability rule's standardized self-check, which is already in your context from the
 `readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
 optional: the standard governs how the content is said, never whether a required fact about the code appears.
 

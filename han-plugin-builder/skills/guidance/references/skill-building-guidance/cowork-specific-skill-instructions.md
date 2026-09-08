@@ -5,6 +5,20 @@ paths:
 
 # Claude Cowork — Complete Reference
 
+## Contents
+
+- What is Cowork?
+- What Cowork Can Do
+- Cowork vs. Claude Code: Extension Model
+- Skills in Cowork
+- Skill File Format
+- Skill Directory Structure
+- How Skills Load (Progressive Disclosure)
+- Cowork Runtime Environment
+- Authoring Best Practices
+- Checklist Before Uploading a Skill
+- Resources
+
 ## What is Cowork?
 
 Claude Cowork is Anthropic's agentic AI system for knowledge workers (not developers), available as a research preview
@@ -194,8 +208,9 @@ bigquery-skill/
 For tracked changes: See [REDLINING.md](REDLINING.md) For OOXML details: See [OOXML.md](OOXML.md)
 ```
 
-Keep all references **one level deep** from SKILL.md. Avoid nested references (SKILL.md → A.md → B.md) — Claude may only
-partially read nested files.
+Keep all references **one level deep** from SKILL.md, and open any reference file over roughly 100 lines with a contents
+list. Neither rule is specific to cowork; both are in
+[Skill Reference Files](./skill-reference-files.md#keep-reference-links-one-level-deep-from-skillmd).
 
 ### Degrees of freedom
 
@@ -250,6 +265,7 @@ gerund rule plus directory-name, dependency-prefix, and case-sensitivity rules.
 - [ ] No time-sensitive information
 - [ ] Consistent terminology throughout
 - [ ] File references are one level deep from SKILL.md
+- [ ] Reference files over roughly 100 lines open with a contents list
 - [ ] Workflows have clear numbered steps
 
 **Code and scripts**

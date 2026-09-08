@@ -5,6 +5,22 @@ paths:
 
 # Writing Effective Instructions
 
+## Contents
+
+- The Rules
+- Rule: Be specific and actionable
+- Rule: Write constraints with embedded reasoning
+- Rule: Include error handling in instructions
+- Rule: Prefer inline discovery over forked data-fetch sub-skills
+- Rule: Reference bundled resources clearly
+- Rule: Use progressive disclosure for instruction length
+- Rule: Avoid verbose, buried, or ambiguous instructions
+- Rule: Structure conventions as heading + one-line rule + example
+- Rule: Resolve variation at the point of use
+- Rule: Include canonical examples for conventions the skill enforces
+- Rule: Use scripts for deterministic validation
+- Summary Checklist
+
 The SKILL.md body — everything below the YAML frontmatter — is where you tell Claude _how_ to execute the skill. These
 instructions load when the skill triggers (Level 2 in the progressive disclosure model) and guide Claude through the
 workflow step by step.

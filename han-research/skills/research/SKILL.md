@@ -13,7 +13,9 @@ arguments: size
 argument-hint:
   '[size: small | medium | large | dynamic] [the open-ended question to research] [optional output path] [optional: "evidence
   optional" / "exploratory" to relax the evidence requirement]'
-allowed-tools: Read, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *)
+allowed-tools:
+  Read, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
@@ -21,7 +23,7 @@ allowed-tools: Read, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *)
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -281,9 +283,10 @@ resolves to its registry entry) and to preserve every fact. Apply the returned r
 bodies, or citation identifiers (`A#`/`V#` survive unchanged). Confirm each criterion and fix any failure before
 presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 On top of the fidelity criterion, confirm every cited `A#` still resolves to its registry entry.
 

@@ -78,7 +78,8 @@ helps you decide _when_ and _how_ to use the skill. For what the skill does inte
 Run `/plan-a-feature-to-confluence` in Claude Code.
 
 The skill ships in the opt-in `han-atlassian` plugin, which the `han` meta-plugin does not bundle. Install it on its own
-first with `/plugin install han-atlassian@han` (it pulls `han-core`, `han-planning`, and `han-coding` along the way),
+first with `/plugin install han-atlassian@han` (it pulls `han-communication`, `han-core`,
+`han-documentation`, `han-planning`, and `han-coding` along the way),
 and make sure the Atlassian MCP server is configured and authenticated. See
 [Choosing a Han plugin](../../../docs/choosing-a-han-plugin.md) for where it sits in the suite.
 

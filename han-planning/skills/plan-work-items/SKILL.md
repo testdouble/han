@@ -8,7 +8,9 @@ description: >
   plan or iterative-plan-review to harden it first. Does not sequence work into demoable delivery phases — use
   plan-a-phased-build for that. Does not write code — use tdd to implement a work item.
 argument-hint: "[implementation plan path or feature name, optional; output folder, optional]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
@@ -16,7 +18,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 - feature-implementation-plan.md: !`find . -maxdepth 5 -name "feature-implementation-plan.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -94,6 +96,13 @@ supply. Step 5 is where the judgement comes into play, in dividing up the plan.
 - Every work item body MUST link the reference artifacts an implementer needs: API/event contracts, design frames,
   schema docs, runbooks, ADRs, coding standards. A work item that consumes an HTTP endpoint or event payload MUST link
   the contract section that defines it.
+- **A shared contract is pinned in one item, ahead of its consumers.** When more than one work item touches the same
+  contract — a file or wire format, a persisted schema, an API or event payload, a module or CLI signature, a config
+  schema, an error or exit contract, an identity convention — the item that introduces it carries the concrete form in
+  its acceptance criteria, and every consumer names that item under `Depends on`. Never split one contract across items
+  that each define part of it. When the item's own deliverable **is** the contract document, "the document exists" is
+  not a criterion: a criterion names the concrete form the document must carry. Full rule in
+  [contract-pinning-rule.md](../../references/contract-pinning-rule.md).
 - UI work items, when the plan folder has a `ui-designs/` subfolder, MUST reference the relevant visual material by a
   relative path from the work-items file to the file. See
   [references/work-item-template.md](./references/work-item-template.md). The accepted file set is named in
@@ -204,6 +213,14 @@ When an expected artifact is missing, that reference's "Missing-artifact handlin
 splits the case by who can supply the artifact. Apply it rather than deciding here. In short: an artifact only the user
 can hand over right now joins the single stop, and an artifact nobody can produce now is recorded and drafted around.
 
+**Read the plan's `## Open Items` section as part of this inventory, including the items marked
+`Blocks implementation: No`.** A non-blocking open item is not a resolved one, and this is the last stage that can see
+it before the work items are built. For each open item, do one of two things and never a third: when the item names a
+contract these work items will consume, pin it in the introducing work item per the Rules above; otherwise record it in
+the breakdown report as a named gap, saying which work items inherit it. An open item that reaches implementation
+without either is a question the builder answers alone, which is the failure mode
+[contract-pinning-rule.md](../../references/contract-pinning-rule.md) exists to prevent.
+
 ### 5. Draft the work items
 
 Source the shared readability standard by invoking `han-communication:readability-guidance`, and apply it to the
@@ -216,7 +233,8 @@ Launch `han-core:plan-synthesizer` (`subagent_type: "han-core:plan-synthesizer"`
 - The full plan or context content from Step 1.
 - The boundary record from Step 0: the recorded scope, the stated exclusions, any scope the user stated at invocation, and
   the direction-of-travel answer. This is the outer edge of what may be drafted.
-- The artifact inventory from Step 4.
+- The artifact inventory from Step 4, including each open item's disposition: the ones pinned into a work item and
+  the ones carried forward as named gaps.
 - The Rules section of this skill verbatim.
 - A directive on justification and cutting, quoting
   [scope-justification-rule.md](../../references/scope-justification-rule.md): every work item names what it descends
@@ -273,6 +291,10 @@ Print a numbered list for visibility. For each work item show:
 Then, when anything was cut, print the cut list under its own heading: what each cut item would have done, in plain
 language, and why it was cut. The user cannot reverse a cut they never saw.
 
+When Step 4 carried an open item forward as a named gap, print those under their own heading too: the question, and
+which work items inherit it. The same reasoning applies. An open question nobody reads is one the builder answers
+alone.
+
 This report is for visibility, not approval. Do not wait for the user's confirmation — proceed directly to Step 8 and
 write the file.
 
@@ -289,19 +311,18 @@ W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (D
 Justification, References, Design references), which must survive unchanged so they still resolve. Confirm each criterion
 and fix any failure before writing:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
-separate editor pass, so criterion 6 is the only fact-preservation guard the output has — it is not optional.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next. This skill runs no separate editor pass, so the fidelity criterion is the only fact-preservation
+guard the output has, and it is not optional.
 
 Write incrementally per the operating principle: write the title and intro first, then append each work item as it is
 finalized. Save after each.
 
-Before you declare the file finished, run the completeness gate from Step 0 by executing it:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs
-```
+Before you declare the file finished, execute the completeness gate from Step 0 by running
+`${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs`.
+Capture its exit status and its output.
 
 Pass the record beside your own deliverable, not the one you inherited. Step 0 is what keeps the two consistent: your
 record lists only the material this run received.

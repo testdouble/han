@@ -10,14 +10,16 @@ description: >
   edit-for-readability for that. Does not produce an ephemeral, understand-now overview of code or a PR — use
   code-overview for that.
 argument-hint: "[feature-name or document-path]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *), Bash(find *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(date *), Bash(mkdir *), Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md exists: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -183,10 +185,12 @@ Run the standardized readability self-check (the shared standard is in your cont
 `han-communication:readability-guidance`) over the document's prose regions only — never inside code fences, diagram
 bodies, or rendered markup. Confirm each criterion and fix any failure before finalizing:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
-at generation time; a later manual edit of the committed file is not re-checked.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
+
+The standard applies at generation time; a later manual edit of the committed file is not re-checked.
 
 ## Step 10: Verification
 

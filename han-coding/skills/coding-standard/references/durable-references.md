@@ -1,5 +1,12 @@
 # The durable-reference rule
 
+## Contents
+
+- Rule 1: The committed document cites a durable anchor, never a bare line number
+- Rule 2: Choose the anchor's scope
+- Rule 3: State applicability as a membership criterion, not a roster
+- Rule 4: Remove temporal phrasing or references to "current state"
+
 A committed document that cites code — a coding standard, a piece of project documentation — must stay accurate as the
 code it cites evolves. Two failure modes break that. A bare `file:line` citation in the document goes stale the moment a
 line is inserted above it. A snapshot roster of "current consumers" goes stale as consumers change. This rule prevents

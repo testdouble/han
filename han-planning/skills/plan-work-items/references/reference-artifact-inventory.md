@@ -5,9 +5,12 @@ same folder as the plan and from the plan's links.
 
 ## Include (link these from work items and/or the preamble)
 
-- **HTTP API contract files** (e.g., `api-contracts.md`) and the specific endpoint sections that work items in this
-  breakdown produce or consume.
-- **Event payload contract files** and the specific event sections.
+- **Contract files of any kind**, and the specific sections that work items in this breakdown produce or consume. HTTP
+  API contracts (e.g., `api-contracts.md`) and event payload contracts are the common cases, and they are not the only
+  ones: a file or wire format, a persisted schema, a module or CLI signature, a config schema, an error or exit
+  contract, and an identity convention all belong here on the same terms. The test is whether two components must
+  independently agree on the form, per
+  [`contract-pinning-rule.md`](../../../references/contract-pinning-rule.md).
 - **Feature specification** (`feature-specification.md`) — sections that define behavior the work item must realize.
 - **Design assets** — Pencil document file paths plus specific frame IDs (when the plan or a sibling doc maps frames to
   UI), screenshot files, Figma URLs, mockup PDFs.
@@ -68,6 +71,13 @@ undefined contract are not draftable, so say which ones are blocked.
 breakdown report and keep going: draft the work items that do not depend on it, and flag the ones it blocks as not
 draftable until the artifact exists. Do not stop. Stop only when no work items are draftable at all without it.
 
-The distinction is the whole rule. Stopping for an artifact nobody can produce gates the run on something no answer can
-unblock, and continuing past an artifact the user is holding produces work items with a hole in them that nobody
-noticed.
+**One exception, and it is the case that bites.** When the missing artifact is a contract that a work item in this same
+breakdown is going to author, the contract is not missing from the world, only from the plan. Do not flag its consumers
+as not draftable and move on. Pin the concrete form in the authoring work item's acceptance criteria and sequence the
+consumers behind it, per the skill's shared-contract rule. Flagging is a detect-and-skip move, and skipping here is
+what lets the authoring item ship a prose description while a consumer invents the real form against it.
+
+The who-can-supply split is the backbone. Stopping for an artifact nobody can produce gates the run on something no
+answer can unblock, and continuing past an artifact the user is holding produces work items with a hole in them that
+nobody noticed. The exception above sits beside the split rather than inside it, because a contract this breakdown
+authors belongs to neither side.

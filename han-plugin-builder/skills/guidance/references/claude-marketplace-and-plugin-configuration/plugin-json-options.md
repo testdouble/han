@@ -1,5 +1,18 @@
 # plugin.json Schema Reference
 
+## Contents
+
+- Required Fields
+- Metadata Fields (Optional)
+- Component Path Fields (Optional)
+- userConfig
+- channels
+- dependencies
+- Environment Variables
+- Complete Example
+- Official Reference
+- JSON example
+
 The `.claude-plugin/plugin.json` manifest file defines a Claude Code plugin's metadata and component paths.
 
 ## Required Fields

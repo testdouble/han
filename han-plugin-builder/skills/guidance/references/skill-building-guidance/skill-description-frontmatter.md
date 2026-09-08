@@ -5,6 +5,13 @@ paths:
 
 # Skill Description Frontmatter
 
+## Contents
+
+- How Description Matching Works
+- The Rules
+- Common Pitfalls
+- Summary Checklist
+
 The `description` field in SKILL.md frontmatter is the primary mechanism Claude uses to decide when to invoke a skill.
 Every installed skill's description is always loaded into Claude's context, where descriptions compete against each
 other for selection. A thin description means missed triggers — users ask for something the skill handles, but Claude

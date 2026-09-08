@@ -5,6 +5,18 @@ paths:
 
 # Workflow Patterns
 
+## Contents
+
+- Choosing Your Approach: Problem-First vs. Tool-First
+- Sequential Workflow Orchestration
+- Iterative Refinement
+- Context-Aware Tool Selection
+- Domain-Specific Intelligence
+- Combining Patterns
+- Human Gates in Workflow Steps
+- Ordering Within Steps: Recency Bias
+- Summary Checklist
+
 Skills encode workflows — multi-step processes that Claude executes in a specific order with specific tools. This guide
 documents four structural patterns that appear across well-built skills. Each pattern solves a different workflow shape,
 and most real skills combine two or more.

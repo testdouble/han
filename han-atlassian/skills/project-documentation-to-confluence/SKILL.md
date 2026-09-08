@@ -12,12 +12,13 @@ description: >
 argument-hint: "[feature-name or doc-path] [confluence location: page URL or space + parent]"
 allowed-tools:
   Read, Glob, Grep, Skill, Agent, Bash(date *), Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *),
-  mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
+  mcp__claude_ai_Atlassian__getAccessibleAtlassianResources,
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

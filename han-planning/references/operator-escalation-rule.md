@@ -1,5 +1,14 @@
 # Operator Escalation Rule (One Question at a Time)
 
+## Contents
+
+- One question per turn
+- Lead with the consequence, in plain language
+- The opening confirmation turn is not an escalation
+- The single stop
+- The escalation register
+- Related rules
+
 **Owned by `han-planning`.** This file is authored here and is not a vendored copy of a shared rule. Do not overwrite it
 from another plugin's `references/` folder during a re-sync sweep, and do not treat a difference between it and any
 similarly-named file elsewhere as drift to correct.

@@ -5,6 +5,15 @@ paths:
 
 # Progressive Disclosure
 
+## Contents
+
+- The Rules
+- Rule: Skills use three levels of information loading
+- Rule: Keep SKILL.md body focused on process steps — extract domain knowledge to references/
+- Rule: Frontmatter descriptions must earn every word
+- Rule: Use scripts/ for deterministic operations
+- Summary Checklist
+
 Skills use a three-level information architecture that balances context availability with token efficiency. Each level
 loads only when needed, keeping Claude's context window focused on what matters for the current task.
 
@@ -56,7 +65,10 @@ Read the diff between the current branch and the default branch...
 ```
 
 **Level 3 — Linked files (loaded on demand):** Files in `references/` and `scripts/` that Claude loads only when a step
-explicitly references them. Templates, checklists, style guides, and shell scripts live here.
+explicitly references them. Templates, checklists, style guides, and shell scripts live here. Level 3 is one level, not
+a chain: link every reference file directly from SKILL.md, and open any reference file over roughly 100 lines with a
+contents list, so a partial read still shows what the file holds. Both rules are in
+[Skill Reference Files](./skill-reference-files.md).
 
 ```
 skills/
@@ -248,6 +260,7 @@ flexibility.
 5. Keep step-by-step process instructions, context injection, and conditional logic in SKILL.md
 6. Use `scripts/` for deterministic operations where correctness matters more than flexibility
 7. Every token in frontmatter costs context in every conversation — make it count
+8. Level 3 files link directly from SKILL.md, and the ones over roughly 100 lines open with a contents list
 
 Cross-references:
 

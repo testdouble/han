@@ -9,12 +9,12 @@ description: >
   deliverable of its own, rewrite anything, or judge the caller's work. Does not run the adversarial rewrite pass —
   dispatch the readability-editor agent for that, or use edit-for-readability to rewrite an existing target. Does not
   cover explaining technical work to a reader who will not implement it — use explanation-guidance for that.
-allowed-tools: Read
+allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read

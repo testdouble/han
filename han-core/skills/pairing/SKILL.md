@@ -10,13 +10,15 @@ description: >
   straight through without pausing. Does not pace someone through code that already exists and builds nothing — use
   code-walkthrough. Does not explain, summarize, or research something instead of producing it — use code-overview or
   research.
-allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash(find *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Skill, Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 argument-hint: "[what to pair on]"
 ---
 
 ## Project Context
 
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 

@@ -36,3 +36,4 @@ Step 8's synthesis preserves these; it does not restate them.
   - The `## Cut for Scope` section carries every scope-gate cut with what it would have done and the boundary citation,
     and no entry appears in both that section and `## Deferred (YAGNI)`.
   - The `Visual Reference` table lists every item the boundary record records as received, under that exact heading, with
+    an inline embed beside the prose describing each state.

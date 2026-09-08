@@ -61,6 +61,7 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - Architectural analysis (coupling, behavior, concurrency). Use the architectural analysts.
 - Stack and tooling detection. Use `project-scanner`.
 - Writing documentation. The agent discovers; `/project-documentation` writes.
+- Researching options or prior art from the open web. Use `research-analyst`.
 
 ## How to invoke it
 

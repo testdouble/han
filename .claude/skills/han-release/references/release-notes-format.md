@@ -1,5 +1,13 @@
 # GitHub release notes format
 
+## Contents
+
+- Body template
+- PR line format
+- Issues closed section
+- Full-changelog links
+- Publish vs. draft, and idempotency
+
 The release notes body is assembled deterministically: the release's summary paragraph leads (no heading), followed by a
 `## What's Changed` PR list, an `## Issues closed` section, the per-plugin `### {plugin} v{version}` narrative
 sub-headings, then the full-changelog links. The release is named for the parent `han` plugin's version, so the body

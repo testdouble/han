@@ -1,5 +1,15 @@
 # Collaborative Stop Rule (Handing Control Back Mid-Run)
 
+## Contents
+
+- Who reads this
+- Detecting the flag
+- What a stop presents
+- Asking before building, and when
+- Recording what the person says
+- Acting on the answer
+- Pace
+
 This rule defines what happens when a skill running collaboratively reaches a unit boundary: how it knows to stop, what
 it presents when it stops, and what it does with the answer. It exists so a stop means the same thing whichever skill
 performed it.

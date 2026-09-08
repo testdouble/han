@@ -1,5 +1,13 @@
 # CHANGELOG.md rules
 
+## Contents
+
+- Per-plugin structure (from v3.0.0 onward)
+- Augment vs. generate
+- Linked mentions
+- Generated bookkeeping subsections
+- Register and voice for a generated narrative section
+
 `CHANGELOG.md` lives at the repository root. The title line is `# Han Release Notes`. Each version is a top-level
 section that starts with `## v{parent target}` (newest first, directly under the title), where `parent target` is the
 version of the parent `han` plugin.

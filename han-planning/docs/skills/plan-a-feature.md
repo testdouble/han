@@ -166,7 +166,11 @@ Up to four cross-referenced files on disk in the same folder, plus an in-channel
   summary, so the next skill in the chain does not read the folder as fully verified.
 - A **`ui-designs/` folder**, when you supply visual material. The files themselves, named for the state each one shows.
 - An **open items list** inside the spec. Questions or concerns the plan-synthesizer flagged that could not be resolved
-  during specification, each with what would resolve it and whether it blocks implementation.
+  during specification, each with what would resolve it and whether it blocks implementation. One kind of open item is
+  recorded here on purpose rather than dropped: a pure-implementation mechanic that two or more components must
+  independently agree on, such as a file format, a schema, or a signature. The spec still does not settle it, because
+  settling it would be a mechanic in a behavior-only document. Recording the delegation gives `plan-implementation` an
+  item it must close, instead of nothing at all.
 - A **summary** returned in-channel. All file paths (including `feature-technical-notes.md` and `ui-designs/` only when
   they were created), the number of decisions settled by evidence vs. by user input, the cut list in full when anything was
   cut for scope, the sub-agents consulted, key adjustments each drove, any finding that stayed unverified, and any

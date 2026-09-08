@@ -1,5 +1,16 @@
 # marketplace.json Schema Reference
 
+## Contents
+
+- Root Object
+- Plugin Entry Object
+- Source Variants
+- Strict Mode
+- Version Resolution
+- Reserved Marketplace Names
+- Official Reference
+- JSON example
+
 The `.claude-plugin/marketplace.json` file is the registry that Claude Code reads to discover and install plugins from a
 marketplace.
 

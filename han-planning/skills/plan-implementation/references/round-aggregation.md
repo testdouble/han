@@ -39,9 +39,24 @@ A single `T#`-contradiction does NOT trip the gate on its own — it routes thro
 (Step 6) and the user decides. One specialist raising many findings also does not trip the gate — one detailed reviewer
 is not a spec-immaturity signal.
 
+**Run the contract-pinning check.** Separately from the gate above, answer one binary question about the round's
+committed content: does every contract the plan commits to carry a concrete grammar, worked example, field layout, or a
+link to an artifact that already exists? Record the answer as `Contract pinning: Y` or `Contract pinning: N` in the
+round entry, naming each unpinned contract when the answer is `N`.
+
+Keep this check out of the gate's trip conditions. The gate counts findings from distinct specialists, and a binary
+condition bolted onto counted logic breaks it. An `N` instead becomes an `OQ-N` Open Question, which the Step 6 loop
+already knows how to settle by evidence, reframing, or escalation. What counts as pinned, and the phrases that never
+close a contract, are in [contract-pinning-rule.md](../../../references/contract-pinning-rule.md).
+
+Run it on every round, including one where no specialist raised a contract finding. That is the point of it: an
+un-pinned contract is invisible to a review that nobody thought to point at it, so a check reading only the specialist
+findings stays silent exactly when it is needed. This one reads the plan's own committed content instead.
+
 **Build the Open Questions list.** Any finding that cannot be settled deterministically (claim is `Anecdotal`, two
 specialists `Disputed`, or the finding is tagged `spec-level` / `T#-contradiction` and was not user-deferred) becomes an
-`OQ-N` entry. Open Questions are first-class output and feed into Step 6.
+`OQ-N` entry, as does an `N` from the contract-pinning check. Open Questions are first-class output and feed into
+Step 6.
 
 **Pick the next-step recommendation deterministically:**
 
@@ -54,7 +69,8 @@ specialists `Disputed`, or the finding is tagged `spec-level` / `T#-contradictio
 
 **Write the round entry** to `artifacts/implementation-iteration-history.md` using
 [implementation-iteration-history-template.md](./implementation-iteration-history-template.md). Populate the
-claim ledger, Open Questions, spec-maturity tags, and next-step recommendation fields directly from this aggregation.
+claim ledger, Open Questions, spec-maturity tags, contract-pinning answer, and next-step recommendation fields
+directly from this aggregation.
 
 **If the spec-maturity gate tripped**, this skill makes the one and only facilitation call in the round: launch
 `han-planning:discussion-facilitator` with the verbatim specialist outputs, the deterministic aggregation,

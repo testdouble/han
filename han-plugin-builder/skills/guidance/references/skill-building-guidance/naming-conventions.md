@@ -5,6 +5,18 @@ paths:
 
 # Naming Conventions
 
+## Contents
+
+- The Rules
+- Rule: Plugin directory name must match the `name` field in `plugin.json`
+- Rule: Never put a `.` in a plugin name
+- Rule: Skill directory names should indicate external dependencies
+- Rule: Avoid skill names that imply the wrong artifact type
+- Rule: Skill `name` in frontmatter matches the directory name
+- Rule: No README.md inside skill folders
+- Rule: SKILL.md is case-sensitive
+- Summary Checklist
+
 Consistent naming across plugins, skills, and directories helps users discover and understand what a skill does from its
 name alone.
 

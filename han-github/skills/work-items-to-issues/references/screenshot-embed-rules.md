@@ -1,5 +1,17 @@
 # Screenshot embed rules
 
+## Contents
+
+- The accepted file types
+- Why cross-repo URLs are forbidden
+- Required URL form
+- Why the path is feature-scoped
+- How assets reach the default branch
+- Embed format inside the issue body
+- Mapping visual material to slices
+- Duplication over sharing
+- What never to do
+
 When the plan folder contains a `ui-designs/` subfolder with visual material, every UI-bearing slice MUST embed the
 relevant material **inline in the issue body** — not as plain links.
 

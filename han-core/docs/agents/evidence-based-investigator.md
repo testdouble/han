@@ -59,6 +59,8 @@ _when_ and _how_ to dispatch the agent. For what the agent does internally, read
 - Architectural analysis. Use the architectural analysts.
 - Coverage gap analysis. Use `test-engineer`.
 - Documentation preservation audits. Use `content-auditor`.
+- Tracing runtime data flow across modules. Use `behavioral-analyst`.
+- Researching open-ended options from the open web. Use `research-analyst`.
 
 ## How to invoke it
 

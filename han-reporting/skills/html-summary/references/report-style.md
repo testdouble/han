@@ -1,5 +1,16 @@
 # Style Reference for HTML Summaries
 
+## Contents
+
+- CSS variables — paste verbatim into `:root`
+- Color role mapping
+- Typography
+- Shape and spacing
+- Mermaid theming
+- Component patterns
+- Accessibility
+- What not to do
+
 The default palette, typography, and component patterns for executive HTML reports. The colors derive from the Test
 Double brand palette (testdouble.com): a white page, deep purple as the primary accent, signature green for positive
 outcomes, and action orange for the stakeholder asks. Use these values verbatim. Do not introduce new accent colors or

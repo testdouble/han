@@ -1,5 +1,18 @@
 # Executive Layout Principles for HTML Summaries
 
+## Contents
+
+- Reading order — required
+- What hoists to the top
+- What stays in supporting detail
+- Diagram rendering rules
+- Mermaid containers — required
+- Data-flow section layout
+- Section omission
+- Length discipline
+- Voice and framing
+- What to never do
+
 These principles override the order of the source markdown. The HTML report is for executive readers — they read
 top-down and stop early. The most decision-relevant content must appear first, every time.
 

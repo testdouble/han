@@ -15,7 +15,8 @@ _when_ and _how_ to dispatch the agent. For what the agent does internally, read
   exploit-path findings rather than CWE checklists. Always dispatched by `/code-review`. Dispatched on a security signal
   by `/architectural-analysis` (security-signal roster on medium/large), `/gap-analysis` (swarm specialist),
   `/plan-a-feature` (spec-stage team), `/plan-implementation` (implementation team), and `/iterative-plan-review` (team
-  mode). Also dispatched by `/automated-test-planning` for negative security tests.
+  mode). `/design-an-api` adds it to the discovery wave on a trust-boundary signal, at medium and above. Also
+  dispatched by `/automated-test-planning` for negative security tests.
 - **What you get back.** A `security-analysis.md` file with `SEC-###` findings, each tagged with OWASP category,
   file:line location, exact code snippet, and a step-by-step exploit description. Plus an in-channel summary with
   severity counts.

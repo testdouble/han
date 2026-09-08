@@ -188,10 +188,10 @@ writes. That rule makes the deliverable lead with its main point, give each para
 headings, keep sentences short and active, prefer common words, and reveal detail in layers.
 
 The rule is applied in stages, never as one instruction block. Its structural rules shape each skill's output template,
-and its six behaviorally-anchored criteria run as a discrete self-check after the draft exists. Skills with a synthesis
-or editor step also dispatch the [`readability-editor`](../han-communication/docs/agents/readability-editor.md) agent to
+and its behaviorally-anchored criteria run as a discrete self-check after the draft exists. Skills with a synthesis or
+editor step also dispatch the [`readability-editor`](../han-communication/docs/agents/readability-editor.md) agent to
 rewrite the draft, preserving every fact. Fidelity outranks readability: no required fact is dropped to read more
-simply.
+simply, unless the reader asked for less and losing it would not change what they do next.
 
 Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `/project-documentation`,
 `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`,

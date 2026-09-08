@@ -1,5 +1,21 @@
 ### Review Checklist
 
+## Contents
+
+- YAGNI
+- Correctness
+- Data Isolation (when applicable)
+- Performance
+- Error Handling
+- Testing
+- API Design
+- Code Maintainability
+- Code Organization
+- Documentation
+- Code Style & Patterns
+- Database (when applicable)
+- Architecture Decision Records (when applicable)
+
 **YAGNI** (apply [../../../references/yagni-rule.md](../../../references/yagni-rule.md); these become `YAGNI-###` items
 in the separate YAGNI section, never CRIT/WARN/SUGG)
 

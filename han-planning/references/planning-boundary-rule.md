@@ -1,5 +1,11 @@
 # Planning Boundary Rule (Scope Boundary and Visual Material)
 
+## Contents
+
+- The boundary record
+- Visual material
+- Related rules
+
 **Owned by `han-planning`.** This file is authored here and is not a vendored copy of a shared rule. Do not overwrite it
 from another plugin's `references/` folder during a re-sync sweep, and do not treat a difference between it and any
 similarly-named file elsewhere as drift to correct.
@@ -79,7 +85,8 @@ answer. Those three are different states. A recorded answer of any kind is never
 ## Visual Material Received
 
 One row per piece of visual material, written as the item arrives rather than at the end of the run. `None received`
-when the run received none.
+when the run received none. In that case `None received` stands alone and the table below is omitted, because the
+completeness gate reads every row as an item claimed on disk and refuses a placeholder row.
 
 | Item | What state it depicts | Kept at |
 | ---- | --------------------- | ------- |

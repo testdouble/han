@@ -10,14 +10,16 @@ description: >
   specify — use research.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature description, optional: output folder path]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -217,19 +219,9 @@ it per [mechanic-routing.md](./references/mechanic-routing.md): a mechanic that 
 
 ### T-note capture discipline (in-message accumulator)
 
-The `feature-technical-notes.md` file is not written during Step 4 — it is flushed during Step 5 (or first written
-during Step 7 if finding resolution produces the first qualifying note). During the interview, track candidates
-in-message by stating them plainly as they are identified:
-
-> **T-note candidate captured — T(pending #N): {short title}. Supports D{n}; section {spec section}; mechanic: {one-line
-> summary}.**
-
-This makes the accumulator visible in the conversation history and gives the user a chance to redirect ("that's
-discoverable from code" / "not load-bearing") before the note is written. If the user redirects, drop the candidate from
-further consideration.
-
-Candidates that later become irrelevant (e.g., a review specialist in Step 6 proves the mechanic is discoverable from
-code) do not reach disk — Step 5 re-validates every candidate against the routing rules before writing.
+`feature-technical-notes.md` is not written during this step. Track candidates in-message as they are identified, so
+the user can redirect one before it reaches disk, and flush them in Step 5. The capture form, the two qualifying tests,
+and the flush procedure are all in [t-note-protocol.md](./references/t-note-protocol.md).
 
 ## Step 5: Draft the Initial Feature Specification
 
@@ -280,23 +272,10 @@ Write the files. The primary spec goes at the root of `{folder}/`; the companion
    Write the header block; leave the findings list empty. `F#` entries are added in Step 7 after the review team
    returns.
 
-4. **`{folder}/artifacts/feature-technical-notes.md`** — use
-   [feature-technical-notes-template.md](./references/feature-technical-notes-template.md). **This file is LAZILY
-   created — write it only if at least one captured `T#` candidate qualifies.**
-
-   Flush the in-message accumulator from Step 4:
-   - Review every T-note candidate captured during the interview.
-   - Re-validate each against the routing rules: load-bearing (affects observable behavior), not discoverable in the
-     code repo.
-   - Drop candidates the user redirected or that no longer qualify after later evidence.
-   - Assign `T1..Tn` in the order captured (not the order validated).
-   - Write one entry per qualifying candidate with `Title`, `Context`, `Technical detail`, `Supports decisions:` (D#
-     IDs), `Driven by findings:` (`—` during initial draft), and `Referenced in spec:` (spec section headings).
-   - For every D# whose behavior a T# supports, populate the D#'s `Linked technical notes:` field with the T# IDs.
-   - Add inline `([T#](artifacts/feature-technical-notes.md#t#-slug))` links to the spec sentences each note supports.
-
-   **If zero candidates qualify, do not create this file.** The artifacts folder does not gain an empty or stub file.
-   Every reference to `feature-technical-notes.md` in the other artifacts should be absent in this case.
+4. **`{folder}/artifacts/feature-technical-notes.md`** — **LAZILY created.** Flush the in-message accumulator from
+   Step 4 per [t-note-protocol.md](./references/t-note-protocol.md), which owns the re-validation, the `T1..Tn`
+   assignment order, the fields each entry carries, and the inline links the flush adds to the spec and the decision
+   log. When no candidate qualifies, the file is not created at all.
 
 Technical details (specific files, libraries, data shapes) appear **only** under `Evidence:` in
 `artifacts/decision-log.md` or in `Technical detail:` entries in `artifacts/feature-technical-notes.md` — never as
@@ -432,7 +411,7 @@ reviewer who reads the spec for approval; the editor reads han-communication's o
 It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D#/T#/F#
 citation identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the spec file.
 
-Then read the editor's fact-preservation report. **Do not walk the six-point checklist over the text the editor
+Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor
 produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
@@ -442,7 +421,7 @@ quantity, named entity, and stated condition survives, or it names a fact it kep
 fidelity. Leave that wording alone rather than re-editing it.
 
 **When no usable report comes back** — the editor could not be reached, returned nothing, or returned something you
-cannot read as either of those two shapes — run the readability rule's standardized six-point self-check yourself, over
+cannot read as either of those two shapes — run the readability rule's standardized self-check yourself, over
 prose regions only, and say in the Step 9 summary that you did so and why. The standard is already in your context from
 Step 5. With no report, that check is the only fidelity guard the output has, so its fidelity criterion is not
 optional.
@@ -451,11 +430,9 @@ optional.
 
 Summarize for the user:
 
-Before you summarize, run the completeness gate by executing it:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs
-```
+Before you summarize, execute the completeness gate by running
+`${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {folder}/artifacts/scope-boundary.md {folder}/ui-designs`.
+Capture its exit status and its output.
 
 It reads the record rather than your memory of the run, because a compaction leaves the memory empty and a remembered
 gate passes vacuously. It also catches partial loss, where five items arrived and three were saved.

@@ -11,12 +11,12 @@ description: >
   not analyze code for automated test coverage gaps — use automated-test-planning. Does not write test code — use tdd. Does not
   review code quality — use code-review. Does not stress-test an existing plan — use iterative-plan-review.
 argument-hint: "[optional: files, a branch, a plan, a PR, or a description of what to manually test]"
-allowed-tools: Bash(git *), Read, Grep, Glob, Write, Agent
+allowed-tools: Bash(git *), Read, Grep, Glob, Write, Agent, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -157,9 +157,10 @@ every fact — every step, expected outcome, test name, and category name must s
 Then run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the document. Confirm each criterion and fix any failure:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 Two checks are this skill's own, layered on top:
 

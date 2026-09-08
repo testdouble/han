@@ -7,14 +7,16 @@ description: >
   sequence the build into phases — use plan-a-phased-build. Does not produce an implementation plan — use
   plan-implementation.
 argument-hint: "[path to feature-specification.md, optional: extra context for the summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -239,11 +241,12 @@ run against the post-fix contents.
 **First, use the Read tool to load the output file from disk.** The readability-editor already rewrote the summary in
 Step 5; this pass confirms the standardized self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) holds, over the document's prose regions only — never inside the Mermaid
-diagram bodies. Confirm each of the six criteria and fix any failure with Edit:
+diagram bodies. Apply any fix with Edit.
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 Three things are this skill's own, layered on top of that check:
 

@@ -1,5 +1,12 @@
 # Scope Justification Rule (Justification, Cut List, and the Scope Gate)
 
+## Contents
+
+- The justification field
+- The cut list
+- The scope gate
+- Related rules
+
 **Owned by `han-planning`.** This file is authored here and is not a vendored copy of a shared rule. Do not overwrite it
 from another plugin's `references/` folder during a re-sync sweep, and do not treat a difference between it and any
 similarly-named file elsewhere as drift to correct.
@@ -123,4 +130,5 @@ the operator spends a turn re-deciding something their own ticket already said.
 - [`planning-boundary-rule.md`](./planning-boundary-rule.md), for the boundary record this gate reads and the visual
   material a justification can cite.
 - [`operator-escalation-rule.md`](./operator-escalation-rule.md), for the plain language a cut-list entry borrows.
-- [`yagni-rule.md`](./yagni-rule.md), for the evidence and simpler-version gates the scope gate sits beside.
+- `yagni-rule.md`, for the evidence and simpler-version gates the scope gate sits beside. A skill applying both loads
+  each of them directly from its `SKILL.md`.

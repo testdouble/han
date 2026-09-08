@@ -1,5 +1,15 @@
 # Choosing the Next Test: TPP and ZOMBIES
 
+## Contents
+
+- The Transformation Priority Premise (TPP)
+- Using the ranking to pick the next test
+- The decision-point rule
+- ZOMBIES: the same idea as a concrete ordering
+- How this composes with the rest of the loop
+- Worked example: `sum(numbers)`
+- Sources
+
 This is the canonical reference for the test-selection heuristics the `/tdd` skill uses when it orders the test list
 (Step 2) and picks the next item (Step 3). The loop tells you to write a failing test and make it pass. It does not tell
 you which test to write next. The Transformation Priority Premise and ZOMBIES both answer exactly that question, and

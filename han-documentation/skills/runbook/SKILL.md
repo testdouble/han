@@ -9,7 +9,8 @@ description: >
   architectural-decision-record. Does not create coding standards — use coding-standard.
 argument-hint: "[topic or scenario, or path to existing runbook to update]"
 allowed-tools:
-  Read, Write, Edit, Glob, Bash(git config *), Bash(whoami), Bash(date *), Bash(mkdir *), Bash(find *)
+  Read, Write, Edit, Glob, Bash(git config *), Bash(whoami), Bash(date *), Bash(mkdir *), Bash(find *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 # Create or Update Runbook
@@ -47,7 +48,7 @@ allowed-tools:
 - Today's date: !`date +%Y-%m-%d`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -230,8 +231,10 @@ Fix any issues found before presenting the runbook to the user.
 Run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the runbook's prose regions only — never inside code fences, command
 blocks, diagram bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity
-guard on the output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
+guard on the output; the fidelity criterion is not optional. Confirm each criterion and fix any failure before
+presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.

@@ -5,6 +5,13 @@ paths:
 
 # Skill Composition
 
+## Contents
+
+- Orchestration composition (supported, with care)
+- Data-fetch composition (avoid)
+- The `context: fork` field
+- Deciding which way to go
+
 Skills can call other skills through the Skill tool. This is a real, supported capability, and Han uses it in
 production. It also has sharp edges. Treat it as a power tool: reach for it deliberately, with the safeguards below, and
 only when the alternative is duplicating a whole skill's worth of work.

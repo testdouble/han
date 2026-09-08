@@ -7,14 +7,14 @@ description: >
   paths — use investigate for debugging, diagnosis, and root cause analysis. Does not plan features or build solutions —
   use plan-a-feature or plan-implementation for that.
 argument-hint: "[issue text, bug report, or path to a report file; optional output path]"
-allowed-tools: Read, Write, Bash(find *), Bash(mkdir *)
+allowed-tools: Read, Write, Bash(find *), Bash(mkdir *), Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -154,11 +154,12 @@ nothing is inferable, and omit Severity and Reproducibility per the Step 4 omit 
 Before presenting, run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the document's prose regions only — never inside code fences, diagram
 bodies, or citation identifiers. This skill runs no rewrite pass, so this self-check is the fidelity guard on the
-output; criterion 6 is not optional. Confirm each criterion and fix any failure before presenting:
+output; the fidelity criterion is not optional. Confirm each criterion and fix any failure before presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 Present the completed triage report to the user. When the Recommended Next Step is a han skill (`/investigate`,
 `/research`, `/plan-a-feature`, or `/plan-implementation`), state plainly that this triage report is the handoff

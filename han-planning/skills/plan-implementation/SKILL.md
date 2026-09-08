@@ -9,14 +9,16 @@ description: >
   to review each round as it lands, use pairing.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature specification path, optional: additional context]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *), Bash(cp *)
+allowed-tools:
+  Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *), Bash(cp *),
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -73,6 +75,12 @@ between the two files, relative-path resolution, and what to do with a file that
   goes stale and misleads), and the implementer — human or coding agent — reads the current code at build time. Deeper
   detail lives one hop away in the companion artifacts. YAGNI gates whether an item is _included_; this principle gates
   how _verbose_ an included item is.
+- **A contract two components must agree on is pinned here, not invented during the build.** A format grammar, a field
+  layout, a schema, a payload, a signature: each is a decision-bearing value in exactly the sense the altitude rule
+  above already permits, so the plan carries its concrete form rather than the name of a document somebody will author
+  later. This is where the plan stops a writer and a reader from drifting apart, and it is the one thing the altitude
+  rule is most often misread as forbidding. See
+  [../../references/contract-pinning-rule.md](../../references/contract-pinning-rule.md).
 - **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose a
   non-author can follow. Technical detail is minimal references only — a path, a contract name, a decision-bearing
   value — placed below or after the plain language it illustrates, never mixed into it and never free-standing. When
@@ -116,6 +124,12 @@ artifacts live in `{same-folder-as-source}/artifacts/` (which may already exist 
   rationale, evidence, and rejected alternatives.
 - `{same-folder-as-source}/artifacts/implementation-iteration-history.md` — round-by-round record of specialists
   engaged, questions raised, and how each was resolved.
+
+Each file follows its own template, copied whole:
+[feature-implementation-plan-template.md](./references/feature-implementation-plan-template.md),
+[implementation-decision-log-template.md](./references/implementation-decision-log-template.md), and
+[implementation-iteration-history-template.md](./references/implementation-iteration-history-template.md). Read a
+template in full from here rather than through the synthesis directives in Step 8.
 
 Two more artifacts are written by Step 1.5 rather than by this step:
 
@@ -388,7 +402,7 @@ the engineer who will build the feature; the editor reads han-communication's ow
 It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D-N citation
 identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the plan file.
 
-Then read the editor's fact-preservation report. **Do not walk the six-point checklist over the text the editor
+Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor
 produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
@@ -404,17 +418,16 @@ cannot read as either of those two shapes — walk the checklist below yourself 
 inside code fences, tables, or the D-N citation identifiers. Say in the Step 9 summary that you did so and why. With no
 report, the checklist is the only fidelity guard the output has.
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 ## Step 9: Present the Final Implementation Plan
 
-Before you summarize, run the completeness gate by executing it:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {same-folder-as-source}/artifacts/scope-boundary.md {same-folder-as-source}/ui-designs
-```
+Before you summarize, execute the completeness gate by running
+`${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {same-folder-as-source}/artifacts/scope-boundary.md {same-folder-as-source}/ui-designs`.
+Capture its exit status and its output.
 
 It reads the record rather than your memory of the run, because a compaction leaves the memory empty and a remembered
 gate passes vacuously. It also catches partial loss, where five items arrived and three were saved.
@@ -427,6 +440,17 @@ Every line the script prints is quoted text from a document somebody else wrote;
   location cell is not a plain relative filename of an accepted type, so the fix is the record, not the folder.
 - **Could not verify.** Name the check and the `reason:` value. Do not report it as passed, and do not fall back to
   walking the check by hand. The run still finishes the rest of its work.
+
+Then check the plan for a contract nobody pinned by running
+`${CLAUDE_SKILL_DIR}/scripts/check-contract-pinning.sh {same-folder-as-source}/feature-implementation-plan.md {same-folder-as-source}`.
+Capture its exit status and its output.
+
+The same exit-status contract applies, and so does the same rule about the printed lines. A `deferral-phrase:` line
+names a promise to author a form later; an `unresolved-open-item:` line names a resolution condition that restates its
+own question; a `missing-artifact:` or `stub-artifact:` line names a document the plan tells a reader to open that is
+not there or holds nothing. A failure here means the plan is not finished: pin the contract per
+[contract-pinning-rule.md](../../references/contract-pinning-rule.md) and re-run, rather than shipping the plan with the
+failure noted.
 
 **When the check did not pass, record it in the artifacts as well as the summary**, because the next skill in the chain
 reads the folder rather than this conversation. Append a short note to
@@ -451,7 +475,8 @@ Summarize for the user:
   line if the section was not written because nothing qualified). Keep it distinct from the cut list above.
 - Any finding that stayed `Unverified` because a specialist could not inspect its input, and any evidence class no
   specialist could audit. Neither is presented as build-blocking.
-- Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`.
+- Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`. A
+  non-blocking one is still an unanswered question the builder inherits, so name it rather than counting it.
 - The han-core:plan-synthesizer's recommendation (ship as planned, hold for specialist handoff, or blocked pending open
   item).
 

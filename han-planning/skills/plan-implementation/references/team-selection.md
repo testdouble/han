@@ -1,7 +1,15 @@
 # Team Selection
 
+## Contents
+
+- Size bands and the specialist cap
+- The roster
+- Domain-scoped briefs
+
 The size bands, the specialist cap, the round cap, and the roster Step 3 draws from.
 Step 3 selects using this file; it does not restate it.
+
+## Size bands and the specialist cap
 
 **Default to small.** Start the classification at **small** and only escalate to medium or large when the signals below
 clearly require it. When a signal is borderline, stay at the smaller band. Use the spec's coordinations, T# count,
@@ -27,6 +35,8 @@ and the reason for the size choice to the user in one short message before launc
 subsystems, small auth surface", "Medium: passed via `$size`", or "Medium: from the project `.han/config.md`
 `default-swarm-size`", naming whichever of the two files supplied it). If
 the user disagrees, accept the override (size, specific specialists, or both) and proceed.
+
+## The roster
 
 The team **always includes**:
 
@@ -113,6 +123,12 @@ Give each agent:
 - The evidence-first directive on Open Questions: **before raising an Open Question, re-read the relevant
   feature-specification section; if the spec already answers it, cite the line and do not raise it.** This keeps
   spec-answered questions out of the loop instead of costing a Step 6 pass to retire.
+- A directive on contracts: **every format, schema, or contract this plan introduces that two or more components must
+  independently agree on has to be specified to a concrete grammar, worked example, or field layout. Flag any that
+  carries only a prose description, a field-name list, or the name of a document to be authored during the build.**
+  Every specialist gets this, not only the data or architecture ones, because which specialist notices an un-pinned
+  contract depends on which side of it their domain sits. The categories and what counts as pinned are in
+  [contract-pinning-rule.md](../../../references/contract-pinning-rule.md).
 - A directive to return concrete, evidence-cited recommendations for the implementation plan — not behavioral rework of
   the spec.
 - A directive to apply the YAGNI rule from [../../references/yagni-rule.md](../../../references/yagni-rule.md) to every

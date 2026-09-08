@@ -5,6 +5,16 @@ paths:
 
 # Skill Description Length
 
+## Contents
+
+- The target: keep every description under 1024 characters
+- Why 1024, when there are two different limits
+- How to measure a description
+- What gets cut first: the priority order
+- What to do when a description is over the limit
+- Common Pitfalls
+- Summary Checklist
+
 Every installed skill's `description` is loaded into context in every conversation, and the harness budgets how much of
 it Claude actually gets to see. A description that runs too long does not fail loudly — it gets silently truncated or
 dropped from the listing, and the skill quietly stops triggering as well as it should. This doc sets the length target

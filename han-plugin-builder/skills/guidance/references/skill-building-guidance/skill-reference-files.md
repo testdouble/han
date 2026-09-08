@@ -5,6 +5,17 @@ paths:
 
 # Skill Reference Files
 
+## Contents
+
+- Why References Exist: Progressive Disclosure
+- The Rule
+- Keep Reference Links One Level Deep from SKILL.md
+- Give a Reference File Over 100 Lines a Table of Contents
+- Directory Structure
+- The `assets/` Directory
+- Skills vs. Agents
+- Summary Checklist
+
 Skills can include reference documents — templates, checklists, examples, and other supporting content — in a
 `references/` subdirectory within the skill folder. These files are loaded into the skill's context on demand when a
 step explicitly references them.
@@ -62,6 +73,73 @@ skills/
 ```
 
 Moved into `references/` where the plugin system expects them.
+
+## Keep Reference Links One Level Deep from SKILL.md
+
+Every reference file a run needs must be linked directly from SKILL.md. When Claude reaches a file through another
+reference file — SKILL.md, then `evidence-rule.md`, then `yagni-rule.md` — it may preview that third file with a partial
+read such as `head -100` rather than reading it whole, and the run proceeds on part of the content.
+
+**Before (two hops to the content):**
+
+```markdown
+<!-- SKILL.md -->
+
+Apply the evidence standard in [references/evidence-rule.md](./references/evidence-rule.md).
+
+<!-- references/evidence-rule.md -->
+
+This rule supplements [yagni-rule.md](./yagni-rule.md).
+```
+
+`yagni-rule.md` is reachable only through `evidence-rule.md`, so the run may get part of it.
+
+**After (both files linked from SKILL.md):**
+
+```markdown
+<!-- SKILL.md -->
+
+Apply the inclusion gate in [references/yagni-rule.md](./references/yagni-rule.md) and the evidence standard in
+[references/evidence-rule.md](./references/evidence-rule.md).
+```
+
+The rule is about reachability, not about forbidding links between reference files. Once both files are linked from
+SKILL.md, a cross-link from one to the other is a navigation aid rather than the only path. What the rule forbids is a
+file reachable **only** through another reference file.
+
+A reference file must also stay inside its own plugin. A link that climbs out of the plugin directory (`../../docs/`)
+resolves in the source repository and breaks for everyone who installs the plugin, because only the plugin directory
+ships. Name the external document in prose, or link it by its public URL.
+
+## Give a Reference File Over 100 Lines a Table of Contents
+
+A reference file longer than roughly 100 lines opens with a `## Contents` list of its own section headings. Claude often
+previews a long file with a partial read, and a contents list at the top means even a partial read shows the full scope
+of what the file holds, so nothing further down goes unnoticed.
+
+```markdown
+# API Reference
+
+## Contents
+
+- Authentication and setup
+- Core methods
+- Error handling patterns
+
+## Authentication and setup
+
+...
+```
+
+List the headings that name the file's real sections, and stop there. Usually those are the `##` headings. When a file
+puts its sections one level down under a single `##` wrapper — a `## The Rules` holding ten `### Rule: ...` headings —
+list the inner ones instead, because a two-entry contents list tells a reader nothing. A list that mirrors every
+sub-heading of an already well-sectioned file costs more than the partial read it protects against.
+
+**The exception: output templates.** A reference file that is a skeleton copied whole into a produced document — an ADR
+template, a report template, a specification template — gets no contents list, because the list would be copied into
+every document the template produces. Keep those files free of a table of contents no matter how long they run, and
+have the SKILL.md step that loads one say it is copied whole so the run reads all of it.
 
 ## Directory Structure
 
@@ -125,7 +203,10 @@ If an agent needs substantial reference content, inline it directly in the agent
 4. Use `assets/` for output files (templates, fonts, icons) not intended as context
 5. Extract domain knowledge (templates, checklists, rate tables, decision matrices) to `references/`
 6. Keep process steps and execution logic in SKILL.md
-7. Agents are self-contained — no `references/` or `scripts/` support
+7. Link every reference file a run needs directly from SKILL.md, so no file is reachable only through another one
+8. Keep every reference link inside the plugin directory — a link that climbs out of it breaks once the plugin is installed
+9. Open a reference file over roughly 100 lines with a `## Contents` list of its `##` headings, unless it is a template copied whole into output
+10. Agents are self-contained — no `references/` or `scripts/` support
 
 Cross-references:
 
@@ -133,3 +214,4 @@ Cross-references:
   don't support references
 - [Context Injection Commands](./context-injection-commands.md) — How injected context relates to reference files
 - [Progressive Disclosure](./progressive-disclosure.md) — The three-level architecture that references are part of
+- [Skill Decomposition](./skill-decomposition.md) — What to do when a reference file grows past what one file should hold

@@ -9,14 +9,14 @@ description: >
   something works when nothing is broken — use research for that. Does not capture feedback on Han's own skills — use
   han-feedback for that.
 argument-hint: "[symptom or problem description, and optionally an output path]"
-allowed-tools: Read, Glob, Grep, Agent
+allowed-tools: Read, Glob, Grep, Agent, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"`
+- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
 - project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
 As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
@@ -154,9 +154,10 @@ Then run the standardized readability self-check (the shared standard is in your
 signatures, diagram bodies, or file:line citation identifiers. Confirm each criterion and fix any failure before
 presenting:
 
-Run the readability rule's standardized six-point self-check, which is already in your context from the
-`readability-guidance` invocation above. Correct every failure before presenting. Its fidelity criterion is not
-optional: the standard governs how the content is said, never whether a required fact appears.
+Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
+invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
+how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
+what they do next.
 
 Present the plan file to the user for approval. The user can approve the plan (triggering implementation) or provide
 feedback for revisions.

@@ -1,5 +1,14 @@
 # Finding Content: the plain-language explanation
 
+## Contents
+
+- Which findings carry it
+- What the explanation answers
+- Where the answers come from
+- The fix route
+- Both cues reach the summary table
+- Security findings
+
 Every finding a reader is expected to act on opens with a plain-language explanation written for someone who will not
 open the file. This file says which findings carry it, what it answers, and where the answers come from. The block
 format it renders into is in [template.md](./template.md).

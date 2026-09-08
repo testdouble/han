@@ -14,7 +14,7 @@ the skill. For what the skill does internally, read the skill definition at
 - **When to use it.** You want a feature or behavior implemented test-first, the right way, instead of code with tests
   bolted on after.
 - **What you get back.** Working, tested code in your tree, grown behavior by behavior, with the test list, the
-  standards applied, and the verification output shown at the end.
+  standards applied, anything the scope gate declined to build, and the verification output shown at the end.
 
 ## Key concepts
 
@@ -25,6 +25,13 @@ the skill. For what the skill does internally, read the skill definition at
 - **The observed-failure gate.** No production code changes unless a test has been run and watched to fail for the
   intended reason in that loop. A test that passes the first time it runs means red was never seen, which is a process
   violation, not a success.
+- **The scope gate.** A genuine red proves the behavior is missing. It does not prove this build owns producing it.
+  Step 1 records a scope boundary in files and directories, and before every production edit the skill names the file it
+  is about to change and tests it against that boundary. An edit that lands outside, most of all in a shared library or
+  engine other applications consume, is a stop. The skill then works a three-rung ladder: redesign the test so it does
+  not need the out-of-scope behavior, defer the item as its own ticket, or, only when the requested behavior cannot be
+  delivered without the change, stop and ask you. A severity label on an incoming finding does not open the gate; CRIT
+  says the finding is real, not that the fix belongs to this ticket.
 - **Two hats.** Making a test pass and improving structure are different jobs done at different times. The skill never
   refactors while a test is red. Make it run, then make it right.
 - **BDD framing.** Tests describe observable behavior, named in your project's existing convention, asserting outcomes
@@ -107,6 +114,8 @@ Code in your working tree, not a report. Specifically:
   - behaviors implemented
   - the state of the test list, including any deferred items with their reopen triggers
   - which coding standards and ADRs were applied and where
+  - anything the scope gate moved, with the rung that resolved it: the test it redesigned, or the ticket write-up for a
+    change this build declined to make
   - any YAGNI deferrals from refactor
   - the final test, lint, and build status, with output shown rather than asserted
 
@@ -115,8 +124,10 @@ The skill resolves your test, lint, and build commands from CLAUDE.md's `## Proj
 manifest files (package.json, pyproject.toml, go.mod, Cargo.toml, Gemfile, mix.exs, pom.xml, gradle, .csproj, or a
 Makefile test target). Commands the script infers are treated as best-effort suggestions, surfaced in the scope report
 so you can correct them if you are watching, not trusted blindly. If none of those resolve the test command, the skill
-asks you for it before the loop starts, because the loop cannot run without it. That is the only input that can block an
-otherwise autonomous run.
+asks you for it before the loop starts, because the loop cannot run without it. That is one of only two things that can
+block an otherwise autonomous run. The other is the scope gate's top rung, reached when the behavior you asked for
+cannot be delivered without changing code outside the boundary, where your call is to widen the scope or split the
+work.
 
 ## How to get the most out of it
 
@@ -128,6 +139,10 @@ otherwise autonomous run.
   [`/coding-standard`](./coding-standard.md) and
   [`/architectural-decision-record`](../../../han-documentation/docs/skills/architectural-decision-record.md), the skill finds and applies them. If
   they do not exist, it infers conventions from surrounding code, which is weaker.
+- **Name the files when the boundary matters.** Step 1 infers the scope boundary from what your request names, falling
+  back to the application or package the behavior lives in. If shared code sits close to the work and you do not want it
+  touched, say so in the invocation. That turns a judgment call into a stated boundary, and the gate gets stricter for
+  free.
 - **Let the list be the scope signal.** If the open test list grows past about ten items, the skill flags a scope
   warning and keeps going, then recommends splitting the work in its final summary. Take that warning seriously: a
   ballooning list usually means the feature wanted to be planned, not grown in one sitting.
@@ -178,6 +193,10 @@ allowed to live, which contract it honors) are obeyed in green. Violating an ADR
 tidy later; it is the wrong code. Stylistic and structural standards, the kind you genuinely can defer, are the refactor
 hat. This keeps the green step minimal (the Three Laws still hold) while making sure the code that survives the cycle
 respects the project's architecture.
+
+The scope gate is the newer of the two gates and answers the question the observed-failure gate cannot. That gate asks
+whether the red is real; the scope gate asks whether the test deserved to exist in this build. Both have to hold before
+a production edit, and a finding that is honest, severe, and correctly evidenced can still fail the second one.
 
 The hardest honest limitation: the observed-failure gate is enforced by discipline and shown evidence (pasted runner
 output, the first-run-pass stop rule, strict step sequencing). It is not enforced by a mechanism that can physically
