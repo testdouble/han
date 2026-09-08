@@ -94,6 +94,8 @@ flowchart TD
     refactor --> tdd
     tdd --> prdesc["/update-pr-description"]
     investigate["/investigate"] --> iterate["/iterative-plan-review"]
+    ddd["/ddd-analysis"] --> arch
+    ddd --> feature["/plan-a-feature"]
     pairing["/pairing"] -.drives.-> refactor
     pairing -.drives.-> tdd
     pairing -.drives.-> design
@@ -115,6 +117,11 @@ flowchart TD
 - **[`/investigate`](../han-coding/docs/skills/investigate.md) →
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).** Root-cause the bug, then stress-test
   the proposed fix.
+- **[`/ddd-analysis`](../han-ddd/docs/skills/ddd-analysis.md) →
+  [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) or
+  [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).** Map the domain and context boundaries of the whole
+  repository first (opt-in `han-ddd`), then take a module the map singled out into a code-level structural read, or
+  specify the change once a domain expert has confirmed a boundary.
 - **[`/tdd`](../han-coding/docs/skills/tdd.md) →
   [`/update-pr-description`](../han-github/docs/skills/update-pr-description.md).** Once the branch carries the change,
   turn its commits into the PR body. This is the description half of the PR; `/post-code-review-to-pr` is the review half,

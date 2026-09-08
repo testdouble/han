@@ -36,7 +36,13 @@ carrying the Atlassian skills — Confluence publishing and work-items-to-Jira �
 requires a
 configured Atlassian MCP server, and is likewise _not_ bundled by the `han` meta-plugin), `han-linear` (an opt-in
 plugin carrying the work-items-to-Linear skill, which depends on no other Han plugin, requires a configured Linear MCP
-server, and is likewise _not_ bundled by the `han` meta-plugin), and `han-plugin-builder` (an opt-in plugin carrying
+server, and is likewise _not_ bundled by the `han` meta-plugin), `han-ddd` (an opt-in plugin carrying the
+`ddd-analysis` skill plus the `bounded-context-critic`, `bounded-context-modeler`,
+`business-capability-analyst`, `domain-language-analyst`, `domain-ownership-analyst`, and `domain-visualizer`
+agents — strategic Domain-Driven Design analysis for discovering bounded context
+candidates, business capabilities, domain language signals, and domain ownership patterns, constructing and
+evaluating semantic bounded context models, producing a domain and context map, and rendering it as diagrams; depends on
+`han-communication` and `han-core`; NOT bundled by the `han` meta-plugin), and `han-plugin-builder` (an opt-in plugin carrying
 the guidance for building skills
 and plugins, plus the interview-driven `skill-builder` and `agent-builder` skills that author a new skill or agent from
 scratch and review it against that guidance; it depends on nothing and is also deliberately _not_ bundled by the `han`
@@ -61,7 +67,7 @@ han-plugin-builder skill:
 ├── CLAUDE.md           # This file
 ├── CHANGELOG.md        # Version history
 ├── .claude-plugin/
-│   └── marketplace.json   # Test Double marketplace manifest (lists han, han-communication, han-core, han-documentation, han-research, han-planning, han-coding, han-github, han-reporting, han-feedback, han-atlassian, han-linear, han-plugin-builder)
+│   └── marketplace.json   # Test Double marketplace manifest (lists han, han-communication, han-core, han-documentation, han-research, han-planning, han-coding, han-github, han-reporting, han-feedback, han-atlassian, han-linear, han-ddd, han-plugin-builder)
 ├── .agents/
 │   └── plugins/
 │       └── marketplace.json   # Codex-format marketplace manifest for the Codex-compatible subset of the plugins
@@ -148,6 +154,16 @@ han-plugin-builder skill:
 │   ├── skills/         # Linear skill directory, with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/work-items-to-linear.md
 │   └── references/     # Vendored config-rule.md
+├── han-ddd/            # Opt-in DDD analysis plugin: ddd-analysis skill + bounded-context-critic, bounded-context-modeler, business-capability-analyst, domain-language-analyst, domain-ownership-analyst, and domain-visualizer agents (depends on han-communication and han-core; NOT bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills and agent lists
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── .codex-plugin/
+│   │   └── plugin.json
+│   ├── agents/         # Agent definitions (.md with frontmatter)
+│   ├── skills/         # ddd-analysis skill directory, with SKILL.md + references/
+│   ├── docs/           # In-plugin long-form docs: docs/skills/ddd-analysis.md + docs/agents/{name}.md
+│   └── references/     # Vendored config-rule.md, evidence-rule.md, yagni-rule.md
 ├── han-plugin-builder/ # Opt-in plugin-building plugin: guidance, skill-builder, agent-builder (depends on nothing; NOT bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
@@ -182,8 +198,8 @@ han-plugin-builder skill:
 ```
 
 The plugins are shipped from `han-communication/`, `han-core/`, `han-documentation/`, `han-research/`,
-`han-planning/`, `han-coding/`, `han-github/`, `han-reporting/`, `han-feedback/`, `han-atlassian/`, `han-linear/`, and
-`han-plugin-builder/`; the `han/` meta-plugin pulls in `han-communication`, `han-core`, `han-documentation`,
+`han-planning/`, `han-coding/`, `han-github/`, `han-reporting/`, `han-feedback/`, `han-atlassian/`, `han-linear/`,
+`han-ddd/`, and `han-plugin-builder/`; the `han/` meta-plugin pulls in `han-communication`, `han-core`, `han-documentation`,
 `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` through its `dependencies`.
 `han-communication` is the foundational layer beneath every other plugin: it depends on nothing and owns the canonical
 readability standard plus the explanation standard that governs what a run says to a person in a turn, and every plugin
@@ -191,11 +207,11 @@ that produces prose output (`han-documentation`, `han-research`,
 `han-planning`, `han-coding`, `han-github`, `han-reporting`, and the opt-in `han-atlassian`) declares a direct
 dependency on it. `han-documentation`, `han-research`, `han-planning`, and `han-coding` depend on
 `han-communication` and `han-core` and are bundled by the meta-plugin, as are `han-github` and `han-reporting`
-(`han-reporting` depends only on `han-communication`). `han-feedback`, `han-atlassian`, and `han-linear` are
+(`han-reporting` depends only on `han-communication`). `han-feedback`, `han-atlassian`, `han-linear`, and `han-ddd` are
 deliberately left out of the meta-plugin, so each is opt-in and installed on its own: `han-atlassian` depends on
 `han-communication`, `han-core`, `han-documentation`, `han-planning`, and `han-coding` and requires a configured
 Atlassian MCP server; `han-feedback` and `han-linear` depend on no other Han plugin, and `han-linear` requires a
-configured Linear MCP server. `han-plugin-builder` depends on nothing and is likewise opt-in and installed on its own. The
+configured Linear MCP server; `han-ddd` depends on `han-communication` and `han-core`. `han-plugin-builder` depends on nothing and is likewise opt-in and installed on its own. The
 contributor-facing authoring guidance (how to build skills, agents, and plugins) lives inside
 `han-plugin-builder/skills/guidance/references/`, not under `docs/`; running the `guidance` skill with `init` vendors
 all three plugin-building skills into any repo's `.claude/skills/` under a `plugin-` prefix (`plugin-guidance`,
@@ -205,7 +221,7 @@ The same plugin also ships those two interview-driven builder skills, `skill-bui
 design tree for a new skill or agent decision-by-decision and then review the finished artifact against that guidance.
 Documentation is plugin-first: each plugin carries a light front-door `README.md` and its own long-form docs. Long-form
 docs in `{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md` (agents only in `han-core`,
-`han-communication`, `han-research`, and `han-planning`) are the canonical operator-facing source for every skill and every agent,
+`han-communication`, `han-research`, `han-planning`, and `han-ddd`) are the canonical operator-facing source for every skill and every agent,
 sitting beside that plugin's README. The cross-plugin surfaces stay under repo-root `docs/`: the alphabetized skills
 and agents indexes (`docs/skills/README.md`, `docs/agents/README.md`), the plugin index
 (`docs/choosing-a-han-plugin.md`), and the workflows composition map (`docs/workflows.md`). The underlying definition
@@ -213,8 +229,9 @@ and agents indexes (`docs/skills/README.md`, `docs/agents/README.md`), the plugi
 `han-documentation/skills/{name}/SKILL.md`, `han-research/skills/{name}/SKILL.md`,
 `han-planning/skills/{name}/SKILL.md`, `han-coding/skills/{name}/SKILL.md`, `han-github/skills/{name}/SKILL.md`,
 `han-reporting/skills/{name}/SKILL.md`, `han-feedback/skills/{name}/SKILL.md`, `han-atlassian/skills/{name}/SKILL.md`,
-`han-linear/skills/{name}/SKILL.md`, `han-core/agents/{name}.md`, `han-communication/agents/{name}.md`,
-`han-research/agents/research-analyst.md`, or `han-planning/agents/discussion-facilitator.md`) is the implementation.
+`han-linear/skills/{name}/SKILL.md`, `han-ddd/skills/{name}/SKILL.md`, `han-core/agents/{name}.md`,
+`han-communication/agents/{name}.md`, `han-research/agents/research-analyst.md`,
+`han-planning/agents/discussion-facilitator.md`, or `han-ddd/agents/{name}.md`) is the implementation.
 
 ## When to use which doc
 
@@ -316,9 +333,9 @@ Every file in this section is owned by `han-planning`, not vendored. Each opens 
 - **Indexes stay complete, not counted.** Every skill in `han-communication/skills/`, `han-core/skills/`,
   `han-documentation/skills/`, `han-research/skills/`, `han-planning/skills/`, `han-coding/skills/`,
   `han-github/skills/`, `han-reporting/skills/`, `han-feedback/skills/`, `han-atlassian/skills/`, `han-linear/skills/`,
-  and `han-plugin-builder/skills/` has a long-form doc in its plugin's `docs/skills/`, a scent line in its plugin's
+  `han-ddd/skills/`, and `han-plugin-builder/skills/` has a long-form doc in its plugin's `docs/skills/`, a scent line in its plugin's
   `README.md`, and an entry in the skills index (`docs/skills/README.md`); same for agents in `han-core/agents/`,
-  `han-communication/agents/`, `han-research/agents/`, and `han-planning/agents/` (long-form docs in
+  `han-communication/agents/`, `han-research/agents/`, `han-planning/agents/`, and `han-ddd/agents/` (long-form docs in
   `{plugin}/docs/agents/`, indexed in
   `docs/agents/README.md`). Verify the indexes list every entity when editing them, rather than tracking a running
   total. An output style in `han-communication/output-styles/` gets a long-form doc in

@@ -252,7 +252,8 @@ The remaining plugins are opt-in. `han-feedback` adds the post-session feedback 
 plugin. `han-atlassian` adds the Confluence and Jira skills; it needs a configured Atlassian MCP server, and because its
 wrapper skills run skills from `han-documentation`, `han-planning`, and `han-coding`, it depends on those three plus
 `han-core`. `han-linear` adds the work-items-to-Linear skill, needs a configured Linear MCP server, and depends on no
-other Han plugin. The `han` meta-plugin does not pull these in, so you install each on its own.
+other Han plugin. `han-ddd` adds the `/ddd-analysis` skill and the Domain-Driven Design agents it dispatches, and depends
+on `han-communication` and `han-core`. The `han` meta-plugin does not pull these in, so you install each on its own.
 
 `han-plugin-builder` carries the guidance for building skills, agents, and plugins, plus the interview-driven
 `/skill-builder` and `/agent-builder` skills. It depends on nothing and is also opt-in.

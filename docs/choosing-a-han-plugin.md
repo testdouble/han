@@ -19,8 +19,9 @@ try, and know exactly what you got._
 > because the layer plugins depend on the core plugin and bring it along.
 >
 > Some plugins sit outside the bundle. Install `han-feedback` separately to send feedback, `han-atlassian` to publish to
-> Confluence or Jira, `han-linear` to publish work items to Linear, or `han-plugin-builder` for the guidance on building
-> your own skills, agents, and plugins.
+> Confluence or Jira, `han-linear` to publish work items to Linear, `han-ddd` to map a codebase's domain boundaries with
+> strategic Domain-Driven Design, or `han-plugin-builder` for the guidance on building your own skills, agents, and
+> plugins.
 
 The rest of this page lists the plugins, explains the one dependency that surprises people, and helps you pick.
 
@@ -57,12 +58,15 @@ description of what it does. The `han` meta-plugin is a convenience wrapper that
   `han-planning`, and `han-coding`; requires an Atlassian MCP server.
 - **[`han-linear`](../han-linear/README.md).** The opt-in Linear layer: creating one Linear issue per work-item slice.
   Opt-in; depends on no other Han plugin; requires a Linear MCP server.
+- **[`han-ddd`](../han-ddd/README.md).** The opt-in Domain-Driven Design layer: discovering bounded context candidates
+  and producing an evidence-backed domain and context map for an existing codebase. Opt-in; depends on
+  `han-communication` and `han-core`.
 - **[`han-plugin-builder`](../han-plugin-builder/README.md).** The opt-in plugin-building layer: the authoring guidance
   and two interview-driven builders for new skills and agents. Opt-in; depends on nothing.
 - **[`han`](../han/README.md).** The meta-plugin with no components of its own. It bundles `han-communication`,
   `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`.
   Installing it is how you ask for the bundled suite in one command. It does not bundle `han-feedback`, `han-atlassian`,
-  `han-linear`, or `han-plugin-builder`.
+  `han-linear`, `han-ddd`, or `han-plugin-builder`.
 
 ## The one thing that surprises people
 
@@ -84,7 +88,8 @@ That means **every layer install comes with the shared agents.** The real choice
   from `han-communication`.
 - **The bundled suite** (`han`): every layer at once.
 
-The opt-in plugins (`han-feedback`, `han-atlassian`, `han-linear`, `han-plugin-builder`) sit outside that choice. The
+The opt-in plugins (`han-feedback`, `han-atlassian`, `han-linear`, `han-ddd`, `han-plugin-builder`) sit outside that
+choice. The
 meta-plugin deliberately does not bundle them, so neither `han` nor any layer brings them in; install each on its own.
 `han-atlassian` needs a configured Atlassian MCP server and `han-linear` a configured Linear MCP server.
 
@@ -106,6 +111,7 @@ to.
 | You want to send post-session feedback on Han skills to the maintainers                                 | `han-feedback` (alongside whatever you already have)                                 | `/plugin install han-feedback@han`       |
 | You want to publish Han documentation or feature plans to Confluence, or work items to Jira             | `han-atlassian` (alongside whatever you already have; needs an Atlassian MCP server) | `/plugin install han-atlassian@han`      |
 | You want to publish Han work items to Linear                                                            | `han-linear` (alongside whatever you already have; needs a Linear MCP server)        | `/plugin install han-linear@han`         |
+| You want to discover a codebase's bounded contexts and produce a domain and context map                 | `han-ddd` (alongside whatever you already have; brings the `han-core` agents along)  | `/plugin install han-ddd@han`            |
 | You are building your own skills, agents, or plugins and want the authoring guidance                    | `han-plugin-builder` (on its own, or alongside whatever you already have)            | `/plugin install han-plugin-builder@han` |
 
 The bundled `han` suite is the right default for almost everyone. A single layer is the deliberate choice for a reader
@@ -122,8 +128,8 @@ First add the marketplace, then install the plugin you picked:
 
 Swap the second command for `han-core@han` if you chose core only, or name a layer plugin directly with
 `han-documentation@han`, `han-research@han`, `han-planning@han`, `han-coding@han`, `han-github@han`,
-`han-reporting@han`, `han-feedback@han`, `han-atlassian@han`, `han-linear@han`, or `han-plugin-builder@han`. They all
-resolve from the same marketplace.
+`han-reporting@han`, `han-feedback@han`, `han-atlassian@han`, `han-linear@han`, `han-ddd@han`, or
+`han-plugin-builder@han`. They all resolve from the same marketplace.
 
 Adding the marketplace makes the Test Double registry visible to Claude Code so it can resolve the plugin by name; that
 is why it comes first. When the install finishes, Claude Code lists what it added, including any dependencies it pulled

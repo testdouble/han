@@ -101,6 +101,18 @@
       "category": "Developer Tools"
     },
     {
+      "name": "han-ddd",
+      "source": {
+        "source": "local",
+        "path": "./han-ddd"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
       "name": "han-plugin-builder",
       "source": {
         "source": "local",
