@@ -143,5 +143,6 @@ command to act on. Its adversarial posture is aimed at the draft, never at the a
   finished design document for the engineer who will implement the contract and the reviewer who will approve it.
 - [`/edit-for-readability`](../skills/edit-for-readability.md). The standalone skill that
   dispatches this agent to rewrite a file, pasted text, or a conversation draft on demand.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent at Step 9.5 to rewrite the change plan's prose, leaving the verbatim code and the `S-N`, `C-N`, and `D-N` identifiers unchanged.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent's domain and rubric are kept narrow and named.

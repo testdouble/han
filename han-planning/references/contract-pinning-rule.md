@@ -21,7 +21,7 @@ The rule is binary on purpose. A contract is pinned or the plan is not finished.
 state, because an author who has one writes "the grammar depends on the serialization library, so it is TBD at build"
 and passes the check while leaving the same hole.
 
-Consumers: `plan-a-feature`, `plan-implementation`, `plan-work-items`, and `iterative-plan-review`.
+Consumers: `plan-a-feature`, `plan-a-change`, `plan-implementation`, `plan-work-items`, and `iterative-plan-review`.
 
 ## What counts as a contract
 

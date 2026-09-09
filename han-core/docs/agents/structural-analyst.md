@@ -136,3 +136,4 @@ URL: https://martinfowler.com/books/refactoring.html
   the plan covers module boundaries, coupling, or dependency direction.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
   consumer-spread signal, at the medium band and above.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent in its Step 2 discovery round at every size, to establish what the code does today before any target structure is proposed.

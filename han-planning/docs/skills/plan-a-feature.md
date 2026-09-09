@@ -76,6 +76,9 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Investigating a bug or failure.** Use `/investigate` for evidence-based root-cause work.
 - **Analyzing existing architecture.** Use `/architectural-analysis` for assessing coupling, cohesion, data flow,
   concurrency, and SOLID alignment of an already-built module.
+- **Planning a restructure of code that already exists.** Use [`/plan-a-change`](./plan-a-change.md) when the
+  responsibilities are in the wrong places and you want the fix planned. This skill specifies behavior a user observes
+  and keeps symbol names out; that one names the types and modules directly.
 - **Documenting an already-built feature.** Use `/project-documentation` when the feature exists and needs
   documentation.
 - **Contributing a new skill, agent, or documentation file to a plugin.** Follow the repository's `CONTRIBUTING.md`
@@ -417,6 +420,8 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). The next step when the specified behavior lands
   on an interface whose shape is still open. This skill settles what the feature does; that one settles the contract
   that delivers it.
+- [`/plan-a-change`](./plan-a-change.md). The sibling for existing code. Its content rule is the deliberate opposite of
+  this skill's: it names types, modules, and methods, because it plans the structure an engineer works in.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the
   `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative,
   facilitated team conversation.

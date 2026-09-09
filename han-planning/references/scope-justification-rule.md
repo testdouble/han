@@ -18,7 +18,8 @@ operator sees, and the same gate runs over commitments the plan inherited rather
 They live in one file because they share a destination. An unjustified unit and a scope-gated commitment both land in the
 cut list.
 
-Consumers: `plan-a-feature`, `plan-implementation`, `plan-a-phased-build`, and `plan-work-items`. The justification field
+Consumers: `plan-a-feature`, `plan-a-change`, `plan-implementation`, `plan-a-phased-build`, and `plan-work-items`. The
+justification field
 applies to the three that produce work units or work items; `plan-a-feature` produces a specification instead and takes
 the cut list only. The scope gate applies to the three that reason about commitments; see "Where the gate attaches"
 below.

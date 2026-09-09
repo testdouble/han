@@ -4,8 +4,8 @@ description: >
   Builds a feature specification from scratch through a relentless, evidence-based interview that walks the design tree
   decision-by-decision, resolving dependencies as it goes. Use when the user wants to plan, design, scope, specify, or
   flesh out a new feature, capability, or system behavior before implementation. Produces a feature specification
-  focused on system behaviors, not implementation detail. Does not refine or stress-test an existing plan — use
-  iterative-plan-review. Does not document already-built features — use project-documentation. Does not design the
+  focused on system behaviors, not implementation detail. Does not plan a restructure of code that already exists — use
+  plan-a-change. Does not refine or stress-test an existing plan — use iterative-plan-review. Does not document already-built features — use project-documentation. Does not design the
   contract for an interface — use design-an-api. Does not research open-ended options before there is a feature to
   specify — use research.
 arguments: size

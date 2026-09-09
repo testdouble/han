@@ -115,10 +115,10 @@ the shape of what comes back.
 
 Classification reads your request first and the resolved file list second, so a narrow question asked on a busy branch
 still lands in focused mode. Pass `small`, `medium`, `large`, or `dynamic` as the first argument to override, or set a
-standing default with `default-swarm-size` in [`.han/config.md`](../../docs/configuration.md). The prerequisite,
+standing default with `default-swarm-size` in [`.han/config.md`](../../../docs/configuration.md). The prerequisite,
 behavioral, and YAGNI sweeps run in both modes, so a focused answer is shorter without being less filtered.
 
-See [Sizing](../../docs/sizing.md) for how bands work across the suite.
+See [Sizing](../../../docs/sizing.md) for how bands work across the suite.
 
 ## What you get back
 

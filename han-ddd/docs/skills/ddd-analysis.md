@@ -77,6 +77,27 @@ Example invocations:
 - `/ddd-analysis src/billing` — _"Focus on the billing module — I think it spans two domain concerns."_
 - `/ddd-analysis medium` — _"I think our auth and identity contexts overlap. Map the whole repo at standard depth."_
 
+## Sizing
+
+Size sets the depth each discovery agent goes to, not how many agents run. The skill always dispatches the same five
+discovery agents, and it defaults to **medium**, not small, because a partial domain map is worth less than no map.
+
+| Size                   | What each agent covers                                                                                                                                                                                           | Reach for it when                                                                               |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Small**              | Surface scan: highest-frequency terms, the most obvious collisions, commands and domain events only, authority mapping and obvious contestation only, top-level module boundaries and primary entry points only. | An initial orientation pass, or a repository too large to analyze in full.                      |
+| **Medium** _(default)_ | Full analysis: every dimension for the language, capability, and ownership agents, plus full static structure and behavioral analysis.                                                                           | Most repositories.                                                                              |
+| **Large**              | Exhaustive pass: medium's coverage with added emphasis on cross-module collision detection, workflow discovery, contestation, inter-module coupling, cross-module data flow, and integration boundaries.         | A large, long-lived repository, or a comprehensive model before a major architectural decision. |
+
+How to override the size:
+
+- Pass `small`, `medium`, or `large` as the first positional argument: `/ddd-analysis large`.
+- A `default-swarm-size` band in a project or personal `.han/config.md` supplies the size when you pass none.
+- With neither, the skill uses medium.
+
+For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md). This skill is the one
+place the model is applied to analysis depth rather than to team size, so its default band differs from the
+suite-wide default of small.
+
 ## What you get back
 
 A domain map report in your conversation with these named sections:

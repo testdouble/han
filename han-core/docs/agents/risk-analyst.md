@@ -130,3 +130,4 @@ URL: https://www.howtomeasureanything.com/
   the plan carries significant blast radius.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Conditionally dispatches this agent
   when the plan carries significant blast radius.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist. The most common first pick, because a change plan's failure mode is carrying every finding at equal weight.

@@ -246,6 +246,7 @@ URL: https://www.nngroup.com/articles/personas-jobs-be-done/
   spec-stage team when the feature touches user-facing flows, UI, interaction, or accessibility.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Conditionally dispatches this agent when
   the implementation plan touches user-facing flows, UI, interaction, or accessibility.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist when the change moves a user-facing surface: a CLI, an interactive prompt, or a rendered output a person reads.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

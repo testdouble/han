@@ -231,6 +231,7 @@ URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
   it by name; the mechanic-focused specialists are excluded from the default spec-stage roster.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent in its four-agent
   spine, at every size, to produce the options document and every later amendment.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent at Step 4 at every size, to propose the target structure under the YAGNI and contract-pinning directives.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

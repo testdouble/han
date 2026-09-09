@@ -240,6 +240,8 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 - [`plan-synthesizer`](../../../han-core/docs/agents/plan-synthesizer.md). Dispatched in Step 5 to draft the work item breakdown.
 - [`/plan-implementation`](./plan-implementation.md). Pair upstream to produce the implementation plan this skill breaks
   down.
+- [`/plan-a-change`](./plan-a-change.md). Pair upstream when the work is a restructure of existing code. Its change
+  units are already sequenced so each leaves the codebase working, so they convert cleanly.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Pair upstream to harden a plan you do not yet trust before
   breaking it into work items.
 - [`/plan-a-phased-build`](./plan-a-phased-build.md). Pair upstream when the work is large enough to ship in phases.
