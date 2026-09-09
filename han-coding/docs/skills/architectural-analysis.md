@@ -74,6 +74,10 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **Planning the change the findings imply.** Use
   [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). This skill stops at findings on purpose; that
   one turns them into a buildable plan with the surface delta recorded.
+- **Finding where domain boundaries sit.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md) to
+  discover bounded contexts, surface ubiquitous language and semantic collisions, and map where code boundaries diverge
+  from domain boundaries. This skill assesses coupling, cohesion, and SOLID alignment inside a boundary you already
+  have.
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from
   scratch.
 - **Documenting an existing module.** Use [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md).
@@ -293,6 +297,8 @@ URL: https://www.domainlanguage.com/ddd/
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [Sizing](../../../docs/sizing.md). The small / medium / large dispatch model this skill shares with the other swarming skills.
+- [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md). Run it first when you do not yet know where the
+  domain boundaries are; run this skill on a module its domain map points you at.
 - [`structural-analyst`](../../../han-core/docs/agents/structural-analyst.md),
   [`behavioral-analyst`](../../../han-core/docs/agents/behavioral-analyst.md),
   [`concurrency-analyst`](../../../han-core/docs/agents/concurrency-analyst.md). The discovery analysts.

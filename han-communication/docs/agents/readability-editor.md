@@ -79,8 +79,14 @@ The draft, rewritten in place (or returned inline when the deliverable is conver
   the one place a fresh violation can originate, and several dispatching skills read only this report rather than
   checking the text themselves, so the editor catches its own rather than leaving it to them. The pass corrects
   violations only and leaves compliant wording alone.
-- **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
-  Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
+- **Insertions.** One line per sentence or clause the editor added that the draft did not carry, or the single word
+  `none`. Each line names the term it explained and quotes the span of the draft it wrote the explanation from, in the
+  form `Insertion: term="round cap" source="The round cap from Step 3 sets the upper bound"`. You can resolve the
+  quoted span against your own draft; you cannot resolve a bare claim that the editor stayed inside it. A quoted span
+  you cannot find means the editor wrote that sentence from something the draft does not carry.
+- **Fact-preservation ledger.** Only the facts the editor could not preserve in the rewrite's own wording and kept
+  verbatim instead, each one quoted, or `none`. The ledger does not assert that the rest survived: a blanket claim that
+  every fact is present is neither checkable by you nor falsifiable by the editor.
 - **Untouched regions.** The non-prose regions left unchanged.
 
 ## How to get the most out of it
