@@ -66,6 +66,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   file to a user-specified Confluence location; defaults to an unpublished draft.
 - [`/pairing`](../../han-core/docs/skills/pairing.md) — Build work collaboratively in reviewable pieces, handing each
   one back before starting the next, so you steer while the work happens.
+- [`/plan-a-change`](../../han-planning/docs/skills/plan-a-change.md) — Plan an architecture-driven change to existing
+  code, naming the types and modules involved and recording what is true of each one after the change.
 - [`/plan-a-feature`](../../han-planning/docs/skills/plan-a-feature.md) — Build a feature specification from scratch
   through an evidence-based interview that walks the design tree and dispatches specialist reviewers.
 - [`/plan-a-feature-to-confluence`](../../han-atlassian/docs/skills/plan-a-feature-to-confluence.md) — Run

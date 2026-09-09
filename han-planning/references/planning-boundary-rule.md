@@ -16,7 +16,8 @@ that arrives with it. Two rules that look separate live here together because on
 of visual material into the boundary record as it arrives, and the completeness gate reads that record back against the
 folder on disk.
 
-Consumers: `plan-a-feature`, `plan-implementation`, `plan-a-phased-build`, and `plan-work-items`.
+Consumers: `plan-a-feature`, `plan-a-change`, `plan-implementation`, `plan-a-phased-build`, and `plan-work-items`.
+`plan-a-change` uses the boundary record only; the visual-material convention does not apply to it.
 
 ## The boundary record
 

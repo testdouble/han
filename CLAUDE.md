@@ -15,8 +15,8 @@ depends on `han-communication` and `han-core` and is bundled by the `han` meta-p
 pre-planning knowledge-work skills — `research`, `gap-analysis`, and `issue-triage` — plus the `research-analyst`
 agent; depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin), `han-planning` (the
 planning skills you reach for before
-implementation: specifying with `plan-a-feature`, planning the build with `plan-implementation`, sequencing it with
-`plan-a-phased-build`, breaking it into work with `plan-work-items`, and stress-testing plans with
+implementation: specifying with `plan-a-feature`, planning a restructure of existing code with `plan-a-change`,
+planning the build with `plan-implementation`, sequencing it with `plan-a-phased-build`, breaking it into work with `plan-work-items`, and stress-testing plans with
 `iterative-plan-review`, plus the `discussion-facilitator` agent that audits a planning discussion in progress;
 depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin),
 `han-coding` (the coding skills
@@ -110,7 +110,7 @@ han-plugin-builder skill:
 │   ├── skills/         # Research skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/research-analyst.md
 │   └── references/     # Cross-skill reference files vendored for han-research skills (yagni-rule.md, evidence-rule.md, config-rule.md)
-├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation) + the discussion-facilitator agent (depends on han-communication and han-core; bundled by the han meta-plugin)
+├── han-planning/       # Planning plugin: plan-a-feature, plan-a-change, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation) + the discussion-facilitator agent (depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -302,7 +302,7 @@ such as Claude, should be referenced here.
 - **[han-planning/references/contract-pinning-rule.md](./han-planning/references/contract-pinning-rule.md).** What
   counts as a contract two or more components must independently agree on, what counts as pinning one (a worked
   example, a grammar line, a field layout, or a link to an artifact that already exists), the phrases that never close
-  one, and which stage of the chain owns pinning it. Consumed by `plan-a-feature`, `plan-implementation`,
+  one, and which stage of the chain owns pinning it. Consumed by `plan-a-feature`, `plan-a-change`, `plan-implementation`,
   `plan-work-items`, and `iterative-plan-review`. The phrase list is mirrored by
   `check-contract-pinning.sh`; the rule is canonical, so edit it first.
 

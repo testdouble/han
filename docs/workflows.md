@@ -88,6 +88,9 @@ prepare the ground for a test-first build.
 flowchart TD
     review["/code-review"] --> refactor["/refactor"]
     arch["/architectural-analysis"] --> refactor
+    arch --> change["/plan-a-change"]
+    change --> items["/plan-work-items"]
+    change --> refactor
     arch --> design["/design-an-api"]
     design --> tdd["/tdd"]
     review --> pr["/post-code-review-to-pr"]
@@ -108,6 +111,13 @@ flowchart TD
   [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
   [`/refactor`](../han-coding/docs/skills/refactor.md).** The review's structural findings become the refactoring plan's
   work orders.
+- **[`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
+  [`/plan-a-change`](../han-planning/docs/skills/plan-a-change.md) →
+  [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md) or
+  [`/refactor`](../han-coding/docs/skills/refactor.md).** When the findings are large enough that going straight to a
+  refactor would mean deciding the target structure while editing, plan the change first. The report becomes the
+  current-state record, and the plan's sequenced change units convert to work items or feed a refactor one at a time.
+  `/plan-a-change` runs its own discovery round when you have no report, so the analysis step is optional.
 - **[`/refactor`](../han-coding/docs/skills/refactor.md) → [`/tdd`](../han-coding/docs/skills/tdd.md).** Preparatory
   refactoring makes the change easy, then `/tdd` makes the easy change.
 - **[`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
