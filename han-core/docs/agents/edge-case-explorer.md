@@ -123,6 +123,11 @@ The agent enforces the **Speculative Edge Case** rule. These are YAGNI candidate
 They move to Dropped Edge Cases with a named _reopen-when_ trigger. When many speculative low-bound/high-bound items can
 be replaced by one durable boundary test that catches the realistic failure modes, the agent recommends the single test.
 
+Existing coverage counts only when it would actually catch the break. A test is sufficient for an edge case when it
+fails under a code change that breaks that case, and one that still passes is insufficient however directly it appears
+to cover it. Each dropped item records the change a test for it would catch and the existing test that already fails
+under that change. The agent cannot run tests, so it predicts this from reading assertions and says so.
+
 See [YAGNI](../../../docs/yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 
 ## Sources
