@@ -393,14 +393,20 @@ produced.** The canonical readability rule says the dedicated editor replaces a 
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
 
-The editor's report has two shapes, and neither is a loss you have to repair:
+The editor's report has three shapes that need no repair, and one that does:
 
-- It confirms every claim, quantity, named entity, and stated condition survives. Nothing further is needed.
-- It names a fact it kept in the original wording to satisfy fidelity. Leave that wording alone rather than re-editing
-  it.
+- The fact-preservation ledger names nothing it could not preserve. Nothing further is needed.
+- The ledger names a fact it kept in the original wording to satisfy fidelity. Leave that wording alone rather than
+  re-editing it.
+- `Insertions` names nothing, or names a line whose quoted `source=` span you find in the outline. Nothing further is
+  needed.
+- `Insertions` names a line whose quoted `source=` span is **not** in the outline. The editor wrote that sentence from
+  something the draft does not carry. Name it in the closing summary and record it in `artifacts/`, quoting the inserted text
+  and the span the editor claimed. Change no text: there is no pre-edit draft on disk to restore, because the rewrite
+  was applied in place. Check nothing else.
 
 **When no usable report comes back** — the editor could not be reached, returned nothing, or returned something you
-cannot read as either of those two shapes — walk the checklist below yourself over the outline's prose regions only,
+cannot read as any of those shapes — walk the checklist below yourself over the outline's prose regions only,
 never inside code fences, tables, the `{#phase-N}` and `{#oq-N}` anchors, or the source-citation links. Say in the
 closing summary that you did so and why. With no report, the checklist is the only fidelity guard the output has.
 

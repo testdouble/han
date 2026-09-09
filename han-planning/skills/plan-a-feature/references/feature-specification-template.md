@@ -218,7 +218,7 @@ system" is the level of abstraction — not "NATS JetStream publisher group" or
 
 <!--
 Commitments the recorded boundary excludes, cut by the scope gate
-([../../references/scope-justification-rule.md](../../../references/scope-justification-rule.md)).
+([../../../references/scope-justification-rule.md](../../../references/scope-justification-rule.md)).
 
 LAZILY CREATED — write this section only if at least one item was cut. If nothing was
 cut, omit the section entirely. Do not write an empty stub.
@@ -248,7 +248,7 @@ because the recorded boundary already settled it.
 
 <!--
 Items considered during specification but deferred under the YAGNI rule
-([../../references/yagni-rule.md](../../../references/yagni-rule.md)).
+([../../../references/yagni-rule.md](../../../references/yagni-rule.md)).
 
 LAZILY CREATED — write this section only if at least one item was deferred. If
 nothing qualified, omit the section entirely. Do not write an empty stub.

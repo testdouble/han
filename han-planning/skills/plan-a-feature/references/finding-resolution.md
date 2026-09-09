@@ -51,7 +51,7 @@ Paths in this file are written from the skill directory, the same way Step 7 wri
    feature's meaning.
 
 5a. **`YAGNI candidate` findings** — apply the YAGNI rule per
-[../../references/yagni-rule.md](../../../references/yagni-rule.md). For each finding, three resolution paths exist: (a)
+[../../../references/yagni-rule.md](../../../references/yagni-rule.md). For each finding, three resolution paths exist: (a)
 cite the missing evidence (per the rule's evidence test) and keep the spec item — record the citation in the relevant
 `D#`'s `Evidence:` field and close the finding; (b) replace with the strictly simpler version that satisfies the same
 evidence — update the spec sentence and the related `D#`, list the larger version under that `D#`'s
@@ -61,7 +61,7 @@ Surface YAGNI deferrals to the user in the escalation pass so the user can overr
 user input when evidence resolves the finding directly.
 
 5b. **The scope gate runs in this same pass.** Per
-[../../references/scope-justification-rule.md](../../../references/scope-justification-rule.md), check the spec's own
+[../../../references/scope-justification-rule.md](../../../references/scope-justification-rule.md), check the spec's own
 commitments against the recorded boundary in `artifacts/scope-boundary.md`. This gate attaches here, to the YAGNI
 reasoning path 5a already performs; no sweep step is added to this skill. Because this skill drafts from an interview
 rather than from an upstream artifact, the gate reduces to a work-item check on the commitments this run authored, and
