@@ -74,6 +74,11 @@ The draft, rewritten in place (or returned inline when the deliverable is conver
   first, descriptive headings, one idea per paragraph, short and active sentences, common words with no blocklisted words and a
   half-sentence explanation for every term the reader cannot look up, progressive disclosure, technical detail
   separated from the sentences, and the shape the reader asked for when the dispatch relayed one.
+- **Blocklist check on its own text.** Confirmation that the editor re-read the sentences it rewrote or inserted
+  against the vocabulary blocklist and the em-dash positions, naming anything it found and corrected. The rewrite is
+  the one place a fresh violation can originate, and several dispatching skills read only this report rather than
+  checking the text themselves, so the editor catches its own rather than leaving it to them. The pass corrects
+  violations only and leaves compliant wording alone.
 - **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
   Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
 - **Untouched regions.** The non-prose regions left unchanged.
