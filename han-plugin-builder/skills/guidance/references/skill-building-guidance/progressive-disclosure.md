@@ -53,6 +53,11 @@ process steps, context injection commands, and execution logic. Anthropic and th
 recommend keeping the SKILL.md body under **500 lines**; past that, move detail into `references/`. Treat 500 lines as
 the ceiling, not the target.
 
+**The unit of a move is a whole sentence or a whole bullet, never a fragment.** A move that cuts mid-sentence leaves the
+SKILL.md stating half an instruction and the reference file opening with the other half, and neither file read alone
+says what the step does. This has happened twice in this repository, both times in a commit made to get a skill back
+under the ceiling. After a move, read the last line before the cut and the first line after it, in both files.
+
 ```markdown
 ## Project Context
 

@@ -117,7 +117,7 @@ han-plugin-builder skill:
 │   ├── agents/         # discussion-facilitator agent definition
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/ + scripts/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/discussion-facilitator.md
-│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md, contract-pinning-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
+│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md, contract-pinning-rule.md, synthesis-failure-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
 ├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
@@ -305,6 +305,11 @@ such as Claude, should be referenced here.
   one, and which stage of the chain owns pinning it. Consumed by `plan-a-feature`, `plan-a-change`, `plan-implementation`,
   `plan-work-items`, and `iterative-plan-review`. The phrase list is mirrored by
   `check-contract-pinning.sh`; the rule is canonical, so edit it first.
+- **[han-planning/references/synthesis-failure-rule.md](./han-planning/references/synthesis-failure-rule.md).** The
+  check a caller runs after `han-core:plan-synthesizer` returns, to confirm the plan file exists and holds content
+  before any later step reads it, plus the three things the stop says when it does not: what did not happen, what
+  landed in `artifacts/`, and how to recover. Consumed by `plan-implementation` and `plan-a-feature`, the two skills
+  that dispatch the synthesizer to write files.
 
 Every file in this section is owned by `han-planning`, not vendored. Each opens by saying so.
 

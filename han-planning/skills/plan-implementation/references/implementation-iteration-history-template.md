@@ -10,8 +10,8 @@ no separate `implementation-facilitation-round-{N}.md` files are written. The
 claim ledger, Open Questions, and spec-maturity tags from each round live as
 fields on that round's entry below.
 
-The iteration loop is capped at four rounds (see the plan-implementation skill's
-Step 6). A round entry is appended at the end of each iteration with `Decisions
+The iteration loop is capped by the size band chosen at Step 3; the skill's
+Step 6 and its team-selection reference own that number. A round entry is appended at the end of each iteration with `Decisions
 produced:` and `Changed in plan:` backfilled during the plan-synthesizer's
 synthesis step.
 
@@ -60,7 +60,7 @@ files stay in sync.
 - **Changed in plan:** ...
 - **Next-step recommendation:** ...
 
-<!-- Add more rounds as needed (R3, R4). The iteration loop caps at four rounds. -->
+<!-- Add more rounds as needed, up to the size band's round cap. -->
 
 ## Unaudited evidence classes
 

@@ -29,7 +29,7 @@ specialist is chosen, so counting seats would make the medium band identical to 
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
 signal-based classification even when the project config sets a default band. If `$size` is empty and the project
 config supplies a band via `default-swarm-size` (per the config rule in
-[../../references/config-rule.md](../../../references/config-rule.md)), use that band and skip the signal-based
+[../../../references/config-rule.md](../../../references/config-rule.md)), use that band and skip the signal-based
 classification. The specialist cap and round cap still scale to the chosen size. State the chosen size, the recommended team,
 and the reason for the size choice to the user in one short message before launching agents (e.g., "Medium: two
 subsystems, small auth surface", "Medium: passed via `$size`", or "Medium: from the project `.han/config.md`
@@ -70,7 +70,7 @@ specialist rather than discovering a gap late. Unless the user specified a team 
 
 Extra agents named in the project config's `## Extra Agents` list join this specialist pool and compete under the same
 what-the-feature-touches selection and specialist caps, per
-[../../references/config-rule.md](../../../references/config-rule.md): select one only when the feature touches its
+[../../../references/config-rule.md](../../../references/config-rule.md): select one only when the feature touches its
 stated specialty, count it against the specialist cap, and skip an entry that does not resolve to a dispatchable agent with
 a one-line note.
 
@@ -105,6 +105,11 @@ Give each agent:
 - The path to `artifacts/.discovery-notes.md` from Step 2, with a directive: **read the discovery notes first; do not
   re-grep for what is already there. Search further only for what your domain specifically needs that the discovery
   notes do not cover.**
+- A directive on the discovery notes' `Measurements` block: **a line carrying a command and a returned value is a
+  measured figure you may rely on without re-deriving. A line saying the figure was not reachable, or that the command
+  failed, is an assertion from the specification and must be weighed as one.** The distinction matters because a figure
+  that reaches you looking measured cannot be doubted, and a wrong one then travels into every finding that rests on
+  it.
 - **The path to every item of visual material in `ui-designs/`, and the state each one shows, with a directive to read
   them.** Every dispatched specialist gets this, not only the design specialist: which one is most harmed by the omission
   varies by feature, and a specialist reviewing a design-driven feature without the designs is reviewing a paraphrase.
@@ -131,7 +136,7 @@ Give each agent:
   [contract-pinning-rule.md](../../../references/contract-pinning-rule.md).
 - A directive to return concrete, evidence-cited recommendations for the implementation plan — not behavioral rework of
   the spec.
-- A directive to apply the YAGNI rule from [../../references/yagni-rule.md](../../../references/yagni-rule.md) to every
+- A directive to apply the YAGNI rule from [../../../references/yagni-rule.md](../../../references/yagni-rule.md) to every
   recommendation: each abstraction, interface, configuration knob, runbook, observability hook, dashboard, alert, SLO,
   feature flag, infrastructure component, schema column, index, partition, audit machinery, retention pipeline, or test
   category recommended must cite evidence per the rule's evidence test (named upstream finding the change resolves,
@@ -162,6 +167,17 @@ Give each agent:
   `feature-specification.md#primary-flow`, or a specific `D#` in the spec's `artifacts/decision-log.md`, or `T3` in the
   spec's `artifacts/feature-technical-notes.md` — so the han-core:plan-synthesizer can cross-reference them precisely
   during synthesis.
+- A directive on citing a decision: **name the field, not just the entry.** A decision entry carries the option the
+  upstream run committed to and the options it declined, as sibling fields, and a bare `D#` does not say which one a
+  figure came from. Cite it in this form:
+
+  ```
+  D-4 / Decision:                     the option the upstream run committed to
+  D-4 / Rejected alternatives: B      an option that run declined; any figure quoted from
+                                      this field is attributed to the rejected option
+  ```
+
+  A citation naming only `D-4` is read as that decision's `Decision:` field.
 
 Collect every agent's verbatim output. If an agent returns "no concerns from my side," that is a valid answer — record
 it.

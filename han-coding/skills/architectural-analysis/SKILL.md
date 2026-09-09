@@ -7,8 +7,9 @@ description:
   part of the codebase. Not for investigating specific bugs, runtime errors, or failures — use investigate. Not for test
   planning — use automated-test-planning. Not for file-level code review — use code-review. Not for researching open-ended
   options, prior art, or how something works — use research. Not for designing a new interface or contract — use
-  design-an-api. Not for planning the change its findings imply — use plan-a-change. Not for writing documentation or
-  architectural decision records."
+  design-an-api. Not for planning the change its findings imply — use plan-a-change. Not for discovering bounded
+  contexts, ubiquitous language, or where code boundaries diverge from domain boundaries — use ddd-analysis. Not for
+  writing documentation or architectural decision records."
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [focus area: module, directory, or feature to analyze]"
 allowed-tools: Read, Glob, Grep, Agent, Bash(find *), Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")

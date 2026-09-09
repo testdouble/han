@@ -326,15 +326,28 @@ han-communication's own canonical rule, so pass no rule path. It must preserve e
 only — never inside code fences, tables, or the `D-N` and `C-N` citation identifiers, which must survive unchanged so
 they still resolve. Apply its rewrite to the plan file.
 
+It must also leave every plan section heading unchanged, because the decision log names those headings as text in its
+`Referenced in plan:` field. The editor is otherwise free to make a heading descriptive, and here that would break a
+link.
+
 Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor produced.** The
 canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than stacking a
 second one on top.
 
-The report has two shapes, and neither is a loss to repair: it confirms every claim, quantity, named entity, and stated
-condition survives; or it names a fact it kept in the original wording to satisfy fidelity, which you leave alone.
+The editor's report has three shapes that need no repair, and one that does:
+
+- The fact-preservation ledger names nothing it could not preserve. Nothing further is needed.
+- The ledger names a fact it kept in the original wording to satisfy fidelity. Leave that wording alone rather than
+  re-editing it.
+- `Insertions` names nothing, or names a line whose quoted `source=` span you find in the plan. Nothing further is
+  needed.
+- `Insertions` names a line whose quoted `source=` span is **not** in the plan. The editor wrote that sentence from
+  something the draft does not carry. Name it in the Step 10 summary and record it in `artifacts/`, quoting the inserted text
+  and the span the editor claimed. Change no text: there is no pre-edit draft on disk to restore, because the rewrite
+  was applied in place. Check nothing else.
 
 **When no usable report comes back** — the editor could not be reached, returned nothing, or returned something you
-cannot read as either shape — run the readability rule's standardized self-check yourself over the plan's prose regions
+cannot read as any of those shapes — run the readability rule's standardized self-check yourself over the plan's prose regions
 only. Say in the Step 10 summary that you did so and why. With no report, that check is the only fidelity guard the
 output has.
 

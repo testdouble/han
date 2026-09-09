@@ -64,6 +64,7 @@ ANY CONTRACT THE FEATURE INTRODUCES APPEARS HERE IN CONCRETE FORM. When two or m
 
 - [ ] <!-- Behavior X is observable when action Y occurs -->
 - [ ] <!-- Tests cover ([D-1](artifacts/implementation-decision-log.md#d-1-...)) -->
+- [ ] <!-- Nothing in `## Deferred (YAGNI)` was built, or its `Reopen when:` trigger fired and is recorded -->
 
 ## Testing Strategy
 

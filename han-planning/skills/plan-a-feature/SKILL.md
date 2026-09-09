@@ -398,9 +398,12 @@ directly. It must:
 - Preserve the cross-reference invariants across all files, and classify every decision as full or trivial in
   this one pass. Both are specified in [artifact-invariants.md](./references/artifact-invariants.md); read it
   before synthesizing.
-  an inline embed beside the prose describing each state.
 
 The han-core:plan-synthesizer owns the final synthesis — its output is authoritative.
+
+When the han-core:plan-synthesizer returns, confirm the specification landed before anything reads it, per
+[synthesis-failure-rule.md](../../references/synthesis-failure-rule.md). No specification file means the synthesis did
+not produce its primary artifact: stop with that file's message and do not run Step 8.5.
 
 ## Step 8.5: Readability Pass
 
@@ -411,17 +414,29 @@ reviewer who reads the spec for approval; the editor reads han-communication's o
 It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D#/T#/F#
 citation identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the spec file.
 
+It must also leave every specification section heading unchanged, because the decision log names those headings as text
+in its `Referenced in spec:` field. The editor is otherwise free to make a heading descriptive, and here that would
+break a link.
+
 Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor
 produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
 
-The editor's report has two shapes, and neither is a loss you have to repair. It either confirms every claim,
-quantity, named entity, and stated condition survives, or it names a fact it kept in the original wording to satisfy
-fidelity. Leave that wording alone rather than re-editing it.
+The editor's report has three shapes that need no repair, and one that does:
+
+- The fact-preservation ledger names nothing it could not preserve. Nothing further is needed.
+- The ledger names a fact it kept in the original wording to satisfy fidelity. Leave that wording alone rather than
+  re-editing it.
+- `Insertions` names nothing, or names a line whose quoted `source=` span you find in the specification. Nothing further is
+  needed.
+- `Insertions` names a line whose quoted `source=` span is **not** in the specification. The editor wrote that sentence from
+  something the draft does not carry. Name it in the Step 9 summary and record it in `artifacts/`, quoting the inserted text
+  and the span the editor claimed. Change no text: there is no pre-edit draft on disk to restore, because the rewrite
+  was applied in place. Check nothing else.
 
 **When no usable report comes back** — the editor could not be reached, returned nothing, or returned something you
-cannot read as either of those two shapes — run the readability rule's standardized self-check yourself, over
+cannot read as any of those shapes — run the readability rule's standardized self-check yourself, over
 prose regions only, and say in the Step 9 summary that you did so and why. The standard is already in your context from
 Step 5. With no report, that check is the only fidelity guard the output has, so its fidelity criterion is not
 optional.

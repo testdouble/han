@@ -16,6 +16,12 @@ mechanic-leak, T#-contradiction, YAGNI-candidate). For each finding, mark its st
 When two specialists raise the same claim, consolidate into a single ledger row that names every supporting specialist and
 carries every originating identifier, per Pass A.
 
+**One exception to that consolidation.** Two findings that cite the same identifier while asserting different figures do
+not merge. They become one `Disputed` row carrying both readings and both originating identifiers. A genuine
+disagreement usually cites different evidence, so identical evidence with divergent figures is a signal that one
+specialist has misread the source rather than a signal that the two disagree about the world. Settle it by opening the
+cited entry and reading which field each figure came from.
+
 **Tag spec-maturity.** Tag every finding as:
 
 - `plan-level` — resolvable inside `plan-implementation` by evidence, reframing, or user input.
