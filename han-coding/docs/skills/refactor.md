@@ -53,6 +53,10 @@ use the skill. For what the skill does internally, read the skill definition at
 - **Finding out what to refactor.** Use [`/code-review`](./code-review.md) or
   [`/architectural-analysis`](./architectural-analysis.md) to produce the findings; this skill executes
   them.
+- **Planning a restructure before executing it.** Use
+  [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md) when the change spans several modules and the
+  target structure is still open. This skill applies a named refactoring to a named target; that one settles what the
+  target structure should be.
 - **Fixing a bug.** A fix changes behavior, which this skill never does. Use
   [`/investigate`](./investigate.md) and then drive the fix in with [`/tdd`](./tdd.md).
 - **Building new behavior.** Use [`/tdd`](./tdd.md).
@@ -224,6 +228,9 @@ URL: https://arxiv.org/abs/2411.04444
 - [`/code-review`](./code-review.md) and
   [`/architectural-analysis`](./architectural-analysis.md). Where the strongest input comes from: their
   findings are this skill's work orders.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). The upstream planning skill for a multi-module
+  restructure. Its sequenced change units land here one at a time, and every unit it marks behavior-preserving is one
+  this skill can carry out.
 - [`/investigate`](./investigate.md). For when the "refactoring" you want is really a bug to diagnose and
   fix.
 - [`/design-an-api`](./design-an-api.md). For when the restructuring you want is really a new contract to design. It

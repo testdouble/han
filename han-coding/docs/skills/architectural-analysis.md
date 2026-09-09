@@ -71,6 +71,9 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **File-level correctness review.** Use [`/code-review`](./code-review.md) for per-file correctness, testing, and
   compliance.
 - **Test planning.** Use [`/automated-test-planning`](./automated-test-planning.md) for a coverage-and-edge-case plan.
+- **Planning the change the findings imply.** Use
+  [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). This skill stops at findings on purpose; that
+  one turns them into a buildable plan with the surface delta recorded.
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from
   scratch.
 - **Documenting an existing module.** Use [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md).
@@ -314,6 +317,8 @@ URL: https://www.domainlanguage.com/ddd/
 - [`/investigate`](./investigate.md). Run when a finding reveals a concrete runtime bug.
 - [`/design-an-api`](./design-an-api.md). Run after this skill when the finding is a contract to redesign. This skill
   judges the structure that exists; that one designs the interface that comes next.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). The downstream skill that consumes this
+  report. Pass it the path and it skips its own discovery round.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Stress-test the refactoring plan that implements
   the recommendations.
 - [`SKILL.md` for /architectural-analysis](../../skills/architectural-analysis/SKILL.md). The internal

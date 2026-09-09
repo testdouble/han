@@ -146,3 +146,4 @@ URL: https://go.dev/talks/2012/waza.slide
   findings defer to `/plan-implementation`.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on an
   ordering signal, at the medium band and above.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist when the area contains shared mutable state or async coordination the discovery round did not already cover.

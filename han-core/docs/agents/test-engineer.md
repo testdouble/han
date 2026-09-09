@@ -31,6 +31,11 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   `file:line`. No vague suggestions.
 - **Brittleness has a cost.** Tests that break on every refactor and catch bugs rarely are net-negative. The agent
   defers tests when the brittleness risk outweighs the value.
+- **A test earns its place by catching something.** Every recommendation and every deferral names its **discriminating
+  power**: a specific weakening of the code (a dropped term, a skipped filter, an inverted guard) the test would catch,
+  and which existing tests already fail under that same change. The set of changes a test catches is its **kill set**,
+  and a candidate whose kill set holds nothing new is deferred as redundant. The agent cannot run tests, so it predicts
+  this from reading assertions and labels it as a prediction.
 - **Existing patterns first.** New tests must match the project's existing framework, naming, and helper conventions. If
   no tests exist, the agent recommends the framework and structure based on the project's language and ecosystem before
   listing test cases.
@@ -158,3 +163,4 @@ URL: http://www.growing-object-oriented-software.com/
   spec-stage team when the feature commits to observable behaviors worth making testable.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Makes this agent available as a
   specialist in spec mode.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist, to name which existing tests pin the behavior a delta entry claims to preserve.

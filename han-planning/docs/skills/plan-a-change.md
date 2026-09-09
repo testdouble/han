@@ -110,6 +110,38 @@ settles.
 - **Pair with `/plan-work-items` next.** The change units are already sequenced so each leaves the codebase working, so
   they convert to independently-grabbable items cleanly. Or go straight to `/refactor` for a behavior-preserving unit.
 
+## Sizing
+
+Size sets two caps on the Step 7 review round: how many specialists are chosen, and how many rounds they run. It does
+not touch the Step 2 discovery agents or the Step 4 architects, which run regardless of band. The skill defaults to
+small and escalates only when a concrete signal requires it.
+
+| Size                  | Area                          | Other signals                                                                                     | Chosen specialists | Round cap |
+| --------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------- | ------------------ | --------- |
+| **Small** _(default)_ | One module or package         | No public API consumers outside the repo; every delta entry classified behavior-preserving.       | 1                  | 1         |
+| **Medium**            | Two or three modules          | A public surface with in-repo consumers, or at least one behavior-changing delta entry.           | 2                  | 2         |
+| **Large**             | A service boundary is crossed | A published API or persisted format changes, data ownership shifts, or you ask for the full team. | 3–4                | 3         |
+
+How the size is chosen:
+
+- **Classified from the change, not the file count.** The signals are the recorded reason, how many modules the area
+  spans, how many delta entries there are, and how many of those are behavior-changing. A single-module change with one
+  behavior-changing entry is medium.
+- **The cap counts chosen specialists, not seats.** `junior-developer` is seated on every team before any specialist is
+  chosen, so a small team is two agents and a large team is four or five.
+- **An agent does not review its own output.** A specialist that already ran in the Step 2 discovery round or as a Step
+  4 architect is not re-dispatched to review what it produced.
+
+How to override the size:
+
+- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument: `/plan-a-change medium "split the
+exporter module"`.
+- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
+  the change's own signals instead.
+- Conversational overrides (_"run this at large, it changes a published API"_) still work and are equivalent.
+
+For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md).
+
 ## YAGNI
 
 The skill is enforcing, not advisory. Three gates run at Step 8 over every part the target state introduces: the

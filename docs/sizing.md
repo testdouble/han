@@ -4,8 +4,8 @@ Sizing is one of the two foundational mechanics of the han plugin. Every skill t
 agents first classifies the work as **small**, **medium**, or **large**. That classification decides how many agents to
 dispatch, which agents to dispatch, how many rounds to iterate, and how aggressively to calibrate findings. The
 sizing-aware skills are `/architectural-analysis`, `/automated-test-planning`, `/code-overview`, `/code-review`,
-`/code-walkthrough`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`,
-`/plan-implementation`, and `/research`.
+`/code-walkthrough`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`,
+`/plan-a-feature`, `/plan-implementation`, and `/research`.
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [YAGNI](./yagni.md) ·
 > [All skills](./skills/README.md) · [All agents](./agents/README.md)
@@ -115,6 +115,7 @@ When the size is overridden with `$size`:
 | [`/design-an-api`](../han-coding/docs/skills/design-an-api.md)                     | Signal-selected roster on a fixed four-agent spine    | One interface, contained consumers, no cross-cutting signal (spine only, 4 agents) | Consumer-spread signal, or one cross-cutting signal (spine + up to 2 specialists, up to 6 agents) | Two or more cross-cutting signals, or a system-seam signal (spine + up to 4 specialists, up to 8 agents) |
 | [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md)                     | Default-on swarm size                                 | 0–3 gaps, single domain (2–3 agents, no PM)                                        | 4–10 gaps, two or three domains (4–6 agents with PM)                                              | 11+ gaps or cross-cutting domains (6–8 agents with PM)                                                   |
 | [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md)   | Lightweight vs team mode + specialist cap + round cap | 2–3 files, single system (lightweight, 1 round)                                    | 3–5 files, one cross-cutting concern (team, 1 chosen specialist, 2 rounds)                        | More than 5 files, multiple systems (team, 2 chosen specialists, 3 rounds)                               |
+| [`/plan-a-change`](../han-planning/docs/skills/plan-a-change.md)                   | Review specialist cap + round cap                     | One module, every delta entry behavior-preserving (1 chosen specialist, 1 round)   | Two or three modules, or at least one behavior-changing entry (2 chosen specialists, 2 rounds)    | A service boundary, published API, or persisted format changes (3–4 chosen specialists, 3 rounds)        |
 | [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md)                 | Review-team size cap                                  | Single subsystem (team cap 2)                                                      | Two to three subsystems (team cap 3–4)                                                            | Cross-service or security-sensitive (team cap 4–5)                                                       |
 | [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md)       | Implementation specialist cap + round cap             | Single subsystem (1 chosen specialist, 1 round)                                    | Two to three subsystems (2 chosen specialists, 2 rounds)                                          | Cross-service or security-sensitive (3–4 chosen specialists, 3 rounds)                                   |
 | [`/research`](../han-research/docs/skills/research.md)                             | Research-analyst angle count + reach                  | One domain, few or no options, narrow reach (2–3 agents)                           | Two to three domains or several options, codebase-plus-web reach (3–5 agents)                     | Many options across multiple domains, or full-breadth request (5–8 agents)                               |
@@ -154,5 +155,6 @@ Read each skill's **Sizing** section for the full per-skill rules.
   [`/design-an-api`](../han-coding/docs/skills/design-an-api.md),
   [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md),
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
+  [`/plan-a-change`](../han-planning/docs/skills/plan-a-change.md),
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
   [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md), [`/research`](../han-research/docs/skills/research.md).
