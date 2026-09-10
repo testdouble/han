@@ -530,6 +530,15 @@ so writing one is authoring a new process rather than repairing this defect. The
 Codex paragraph would have said in prose. **Reopen when** a contributor asks how to add a plugin, or when the check
 fires on a human branch and its error line proves insufficient.
 
+**A Codex packaging document in `han-plugin-builder`'s authoring guidance.** The repository routes every plugin-asset
+decision through that guidance, and it has no document describing the Codex packaging surface. Its only mentions of
+Codex are in `plugin-naming.md`, which forbids a dot in a plugin name because Codex rejects it, and whose rename
+checklist is the one place acknowledging that `.codex-plugin/plugin.json` and a Codex marketplace exist as things to
+keep in step. Nothing states that a plugin needs both to ship. Deferred because this change already answers the
+question mechanically, and a check that fails is a stronger statement than a document nobody is required to read.
+**Reopen when** someone adds a plugin and asks what its Codex packaging must contain, or when the Codex manifest schema
+changes and there is no document to change with it.
+
 **An ADR recording why `han/` is excluded from the Codex catalog.** The issue reporter had to infer this. After the
 change the exclusion is structural in the check's `han-*` glob and stated in both its header comment and `CLAUDE.md`.
 **Reopen when** someone proposes adding `han` to the catalog.
