@@ -192,9 +192,9 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
    running total, so there is no count to bump. If the skill belongs to a new category, add it to the category lists
    too.
 6. If the skill classifies its work as small / medium / large, add it to the sizing-aware list and the at-a-glance
-   table in [Sizing](./docs/sizing.md), to the sizing-aware list in [Concepts](./docs/concepts.md), and give its
-   long-form doc a `## Sizing` section. A sizing-aware skill that never lands in those catalogs is invisible to anyone
-   reading them to learn which skills scale.
+   table in [Sizing](./docs/sizing.md), to the sizing-aware list in [Concepts](./docs/concepts.md), to the sizing-aware
+   list in [Quickstart](./docs/quickstart.md), and give its long-form doc a `## Sizing` section. A sizing-aware skill
+   that never lands in those catalogs is invisible to anyone reading them to learn which skills scale.
 7. If the skill chains with others, add the chain to [Workflows](./docs/workflows.md), in both the prose and the
    mermaid diagram for that workflow.
 8. Update the marketplace registry at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) if the new
