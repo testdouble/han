@@ -163,7 +163,8 @@ URL: https://en.wikipedia.org/wiki/Red_team
   Investigators gather, validators falsify.
 - [`/investigate`](../../../han-coding/docs/skills/investigate.md). Always dispatches this agent after the fix plan is drafted.
 - [`/research`](../../../han-research/docs/skills/research.md). Always dispatches this agent as the adversarial-validation step at
-  the end of every research pass, attacking the recommendation and its sources.
+  the end of every research pass, attacking the recommendation, its sources, and citation support: whether each cited
+  registry entry's one-line summary bears on the claim it is attached to, traced through the merge's old-to-new mapping.
 - [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Required swarm role at every size. The swarm runs by
   default.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent in team mode.
