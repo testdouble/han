@@ -166,6 +166,9 @@ size band: small runs one round with one chosen specialist, large runs up to thr
 The architects at Step 4 run once regardless of size. Every specialist brief carries a report-length target scaled to
 the area, which is what keeps a single-module change from returning a plan-sized review.
 
+Once the plan is written, Step 9.5 adds one `han-communication:readability-editor` rewrite of the plan's prose, so
+expect one additional readability pass among the sub-agent dispatches.
+
 ## In more detail
 
 The skill exists because two neighbours leave a gap between them.
@@ -209,5 +212,8 @@ safe.
   under the YAGNI and contract-pinning directives.
 - [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). Reframes a question in plain terms before the
   run escalates it, and asks whether the target structure is more structure than the reason justifies.
+- [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched at Step 9.5 to
+  rewrite the plan's prose for the engineer who will make the change, preserving every fact, every `D-N` and `C-N`
+  citation identifier, and every section heading the decision log names in its `Referenced in plan:` field.
 - [Progressive Disclosure](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/progressive-disclosure.md).
   The three-level architecture behind this skill's split between its body and its `references/` files.

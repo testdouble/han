@@ -14,7 +14,7 @@ argument-hint:
   '[size: small | medium | large | dynamic] [the open-ended question to research] [optional output path] [optional: "evidence
   optional" / "exploratory" to relax the evidence requirement]'
 allowed-tools:
-  Read, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *),
+  Read, Write, Edit, Glob, Grep, Agent, WebSearch, WebFetch, Bash(find *),
   Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
 
