@@ -105,9 +105,11 @@ rewritten into the "No clear winner" form. -->
 <!--
 AT THE VERY BOTTOM. An indexed registry of EVERY information source used that
 is relevant to the results. ALWAYS present, even for a minimal run — never
-omitted. Every A# cited inline in Research Results, Options, or the
-Recommendation must RESOLVE to an entry here; that resolvability is the
-traceability invariant. The Summary stays ID-free.
+omitted. Every A# cited inline in Research Results, Options, the
+Recommendation, or an Evidence status field resolves to an entry here whose
+one-line summary bears on the claim it is attached to, per the skill's
+traceability invariant (defined once, in its Operating Principles). The
+Summary stays ID-free.
 
 Render the registry as a COMPACT TABLE by default — one row per source with its
 ID, title/source, link or location, retrieval date (web only), trust class,

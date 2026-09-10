@@ -26,9 +26,22 @@ to use the skill. For what the skill does internally, read the skill definition 
   governed by Step 3.3 in the skill body, the authoritative home for size-based demotion. Manual findings (Steps 4 to 6)
   and agent findings (Step 7) follow the same rules: small changes escalate only Critical and prefer the lower severity
   on uncertainty; medium escalates Critical and Warning; large prefers the higher severity when in doubt.
-- **Three review modes.** Mode A uses the full git branch diff. Mode B reviews uncommitted work when no branch diff
-  exists. Mode C reviews specified files when git is absent. **In Mode B and Mode C the YAGNI checklist is skipped
-  unless explicitly requested**, because no diff exists to distinguish introduced code from pre-existing code.
+- **Review modes on two independent axes.** The git axis: Mode A uses the full git branch diff, Mode B reviews
+  uncommitted work when no branch diff exists, and Mode C reviews specified files when git is absent. **In Mode B and
+  Mode C the YAGNI checklist is skipped unless explicitly requested**, because no diff exists to distinguish introduced
+  code from pre-existing code. The agent axis: **manual-only mode** is the state a run enters when the dispatch
+  mechanism fails (the `Agent` tool is unavailable or a dispatch call is denied), so no specialist reads the change. It
+  is independent of the git axis; a Mode A run with a full branch diff can be manual-only. An agent that returns with
+  nothing to say does not trigger it, because the security agent stays silent by design when its evidence bar is not
+  met. In manual-only mode the manual review also sweeps, by hand, the checklist categories that substitute for each
+  absent agent, and the report says which coverage was absent and which of it the sweep could not recover.
+- **Packaging findings name a gap, not a defect.** When a Mode A diff changes what gets packaged (shading or relocation
+  rules, vendoring, include or exclude patterns, dependency scope, bundling config), the checklist raises a Warning
+  saying the review did not open the built artifact and what to check by hand before merging. Its summary row opens
+  with `Not checked —` so you can tell it from a proven defect while triaging. It does not inspect the artifact.
+- **A location is confirmed, not carried forward.** When the review reads a file over 1000 lines by its changed regions,
+  a finding's location can be attributed upward to the wrong declaration. Such a finding names its enclosing unit and
+  the lines the review read in isolation to confirm it. A finding from a file read whole carries no such note.
 - **Size-aware agent dispatch.** Two agents always run on every review (`junior-developer` for clarity and standards,
   `adversarial-security-analyst` for exploit-path security). The rest of the roster (`test-engineer`,
   `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`,
@@ -61,7 +74,8 @@ to use the skill. For what the skill does internally, read the skill definition 
   a bare assertion demotes rather than drops, and an uncertain verdict leaves the finding standing. Security findings
   are dropped only when the demonstrated exploit is refuted with counter-evidence. The pass is a finding _filter, not a
   finding source_: it never contributes findings of its own, and it skips entirely when the review produced no
-  corrective findings.
+  corrective findings. It also skips in manual-only mode, because it dispatches an agent; the report's Review Coverage
+  section then says the findings were not re-checked by a second pass.
 - **Branch context loaded at Step 1.5.** Before agents are dispatched, the skill loads four sources of branch-level
   context in order: PR description (via `gh pr view` when `gh` is available, Mode A only), a local `pr-body`,
   `PR_BODY.md`, or `.pr-body` file at the repo root, branch commit messages, and an implementation plan from the
@@ -165,8 +179,13 @@ Each finding's prose appears exactly once (its finding block, or its full securi
 block; the summary-table row is an index, not a copy), and sections render only when they have content: a review of a
 small change produces a small document. The Review Summary table and the Review Recommendation are always present; every
 other section appears only when it has at least one item, and when several are present they keep a fixed order
-(Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good). The document can contain:
+(Review Coverage, Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good). The
+document can contain:
 
+- **A Review Coverage section**, present only when the run was manual-only. It opens by saying agent dispatch was
+  unavailable so no specialist read the change, then carries one row per absent coverage area in plain English: what
+  was swept by hand and under which checklist categories, and what was not swept with what to do instead. Its absence
+  means every planned coverage ran.
 - **A Review Summary table** indexing every corrective finding and every security finding across categories (automated
   checks, correctness, testing, security, ADR/standard/docs compliance, documentation freshness), ordered by severity. A
   corrective finding's tier is carried by its task-ID prefix; a security finding shows its tier inline in the row (for
@@ -278,7 +297,8 @@ project config), a file-by-file manual review, a documentation compliance pass, 
 - **Large change.** Typically 6–9 agents plus the manual pass.
 
 When the review produces at least one corrective finding, one additional `adversarial-validator` runs after the roster
-to validate the finding list (Step 7.4); a clean review skips it. One `han-communication:readability-editor` then
+to validate the finding list (Step 7.4); a clean review skips it, and so does a manual-only run, which cannot dispatch
+it. One `han-communication:readability-editor` then
 rewrites the assembled review's prose against the shared readability standard (Step 8.5), leaving every task ID,
 severity, `file_path:line_number` reference, and code snippet unchanged.
 
@@ -313,10 +333,13 @@ readability pass inserted between Steps 8 and 9):
    data-access files only; `junior-developer` and `adversarial-security-analyst` receive the full list). Step 3.5
    launches all selected agents in parallel, appending the shared `$focus_areas` and `$branch_context` blocks to every
    prompt and the per-agent dispatcher directives to `structural-analyst`, `behavioral-analyst`, `junior-developer`, and
-   `edge-case-explorer`.
+   `edge-case-explorer`. If the dispatch mechanism fails, the run enters manual-only mode: it keeps the selected roster
+   as the absent-coverage list and the manual review sweeps the mapped checklist categories in the agents' place.
 4. **Manual file-by-file review.** Every changed file (alphabetical) against the review checklist: correctness, data
    isolation, performance, error handling, testing, API design, maintainability, organization, docs, style, database,
-   ADR compliance. In Mode B and Mode C, the YAGNI checklist is skipped unless the user requests it in `$focus_areas`.
+   packaging (Mode A only), ADR compliance. In Mode B and Mode C, the YAGNI checklist is skipped unless the user
+   requests it in `$focus_areas`. A finding located through a region read of a file over 1000 lines has its enclosing
+   unit confirmed by reading that unit in isolation before the finding is written.
 5. **Documentation compliance analysis.** Read only the ADRs, coding standards, and docs whose subject matter the change
    touches, not the whole directory, and weight correctness-bearing rules over style minutiae the linter already covers.
    Verify each standard's premise applies by reading at least one architectural file in this codebase before raising a
@@ -328,8 +351,9 @@ readability pass inserted between Steps 8 and 9):
    the size-aware rubric in `agent-finding-classification.md`, governed by Step 3.3's size rules. Junior-developer
    findings that overlap with a specialist's finding reference the specialist instead of duplicating. 7.4 dispatches one
    `adversarial-validator` over the consolidated corrective finding list to confirm, demote, or (with concrete
-   counter-evidence) drop each finding; it runs whenever any corrective finding exists, even when no agents were
-   dispatched, and skips when the review is clean.
+   counter-evidence) drop each finding; it runs whenever any corrective finding exists, and skips when the review is
+   clean or the run is manual-only. Its brief also challenges any finding whose location came from a region read and
+   names an enclosing unit never read in isolation.
 8. **Generate review output.** Assemble the final review using the review template, rendering each section only when it
    has content and keeping the fixed section order.
    8.5. **Rewrite the finding prose for readability.** Dispatch `readability-editor` over the assembled review so its prose
@@ -347,7 +371,9 @@ readability pass inserted between Steps 8 and 9):
    recommendation still reflects their severity, and the YAGNI section's verbatim opening is preserved. The same step
    confirms the newer content arrived: every finding you are expected to act on carries its plain-language explanation,
    every corrective one names a fix route, and a finding that may never fire says so both in its own explanation and in
-   its summary row. Anything missing is fixed before the review reaches you, not reported to you as a caveat.
+   its summary row. It checks that a manual-only run's report carries the Review Coverage section with one row per
+   absent area, and that a full-coverage run's report does not, and that every region-read finding names its confirmed
+   enclosing unit. Anything missing is fixed before the review reaches you, not reported to you as a caveat.
 10. **Present.** A short message that leads with the recommendation and the counts by severity, then the path, then the
     run's own facts. The review is never pasted into the conversation.
 
@@ -358,7 +384,9 @@ A short message, in a fixed order, so the answer is the first thing you read:
 1. The recommendation, in the report's own words.
 2. The counts by severity, with any advisory count named separately rather than folded into the total.
 3. The path to the report, plus any report it replaced and any destination it could not write to.
-4. The run's own facts last: the size band and why, and the validator reconciliation.
+4. The run's own facts last: the size band and why, and the validator reconciliation. When no specialist read the
+   change, this part says so: agent dispatch was unavailable, how many coverage areas were swept by hand and how many
+   were not, and that the report's Review Coverage section lists them.
 
 A clean review says the code can be approved and gives you the path. A review whose only findings are advisory still
 recommends approval, says the count needing action is zero, and names the advisory count beside it, so you are never

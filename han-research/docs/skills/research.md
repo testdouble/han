@@ -44,9 +44,19 @@ use the skill. For what the skill does internally, read the skill definition at
   summary at the very top, carrying the formal confidence rating on one line. The results follow with minimal jargon,
   then indexed options when there are alternatives. Next comes the recommendation and its evidence basis, then
   validation, then an indexed Sources registry at the very bottom. Every section heading is present on every run; what
-  scales with the size is the depth of each entry. The traceability invariant is resolvability: every artifact ID cited
-  inline resolves to a registry entry carrying its link, retrieval date, trust class, and evidence status. The registry
-  renders as a compact table by default, with a full prose summary reserved for the sources the recommendation rests on.
+  scales with the size is the depth of each entry. The registry renders as a compact table by default, with a full prose
+  summary reserved for the sources the recommendation rests on.
+- **Every citation resolves and supports.** The traceability invariant is two-part. Resolvability: every artifact ID
+  cited inline resolves to a registry entry carrying its link, retrieval date, trust class, and evidence status.
+  Support: that entry's one-line summary states something bearing on the claim the citation is attached to.
+  Resolvability is necessary and not sufficient. The final check before the report is presented tests both parts, and
+  the validator is chartered to attack citation support too.
+- **The merge records what it renumbered.** Above the small band, each parallel analyst numbers its own sources from
+  A1, so consolidating them into one registry renumbers what each one cited. The merge step keeps an old-to-new mapping
+  (analyst, local ID, source, merged ID, disposition) as a working record, rewrites every citation surface through it,
+  including the evidence-status cross-references inside the registry itself, and hands it to the validator. A claim
+  whose only source the merge dropped as irrelevant loses its citation and is labelled as having no evidence, never
+  relabelled single-source.
 - **Sized small / medium / large.** Like the other swarming skills, `/research` scales its team to the question. It
   reads the question's conceptual scope (how many options, how many domains, how wide the reach), not its text length.
 
@@ -141,7 +151,7 @@ A research report file, plus an in-channel summary. Every report has the same fi
   retrieval date for web sources, trust class (codebase / web / provided), a one-line summary, and corroboration status.
   A full prose summary is reserved for the sources the recommendation rests on. Always present, even for a minimal run;
   the depth of each entry scales with the size. These IDs are what the rest of the report cross-references, and every
-  cited ID resolves to an entry here.
+  cited ID resolves to an entry here whose one-line summary bears on the claim citing it.
 
 The report is presented for review. Accept it, ask for specific revisions, or redirect the question.
 

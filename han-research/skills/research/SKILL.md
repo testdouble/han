@@ -68,11 +68,15 @@ Read these before dispatching anything. They constrain every step below.
   formal High/Med/Low confidence rating on one labeled line), then Research Results with minimal technical detail, then
   indexed Options to Consider (when applicable), then the Recommendation with its evidence basis, then Validation, then
   an indexed Sources registry at the bottom. Every section heading is present on every run; what scales with the band is
-  the _depth_ of each entry, not the set of sections. The traceability invariant is **resolvability**: every artifact ID
-  (`A#`) cited inline must resolve to a registry entry carrying its link, retrieval date, trust class, and evidence
-  status. By default the Sources registry is a compact table, with a full prose summary reserved for the sources the
-  recommendation rests on; at `small` the Research Results and Options carry the decisive evidence only, not the full
-  landscape.
+  the _depth_ of each entry, not the set of sections. By default the Sources registry is a compact table, with a full
+  prose summary reserved for the sources the recommendation rests on; at `small` the Research Results and Options carry
+  the decisive evidence only, not the full landscape.
+- **The traceability invariant is two-part, and this is its only definition.** Resolvability: every `A#` cited inline
+  resolves to a registry entry carrying its link, retrieval date, trust class, and evidence status. Support: the cited
+  entry's `Summary (one line)` states something that bears on the claim the citation is attached to. Resolvability is
+  necessary and not sufficient. A citation that resolves to an entry about something else is a defect, whether an
+  analyst wrote it that way or a merge renumbered it into that shape. Every later step that checks a citation cites this
+  invariant by name and does not restate it.
 - **Readability is applied while writing, held to the default audience frame.** The skill sources the standard by
   invoking `han-communication:readability-guidance` and applies it as it writes the report, holding the default audience
   frame: a capable reader who did not do this work and lacks the author's context. It operates on prose regions only, so
@@ -225,10 +229,42 @@ trust-class vocabulary, the web-source corroboration gate, conflict surfacing be
 codebase-as-current-state-anchor rule, and the no-evidence labeling pattern. In exploratory mode an unevidenced
 reasoning step may inform the recommendation but is recorded as its own labeled entry, never disguised as a sourced
 artifact. Every entry gets an ID that Research Results, Options, and the Recommendation cross-reference inline, so every
-conclusion traces to its sources — every `A#` cited inline must resolve to a registry entry. Render the registry as a
-compact table by default (ID, title/source, link or location, retrieval date for web, trust class, evidence status),
-reserving a full prose summary for the sources the recommendation rests on. The Sources registry is always produced,
-even for a minimal run; what scales with the band is each entry's depth, not whether the section appears.
+conclusion traces to its sources under the traceability invariant in Operating Principles. Render the registry as a
+compact table by default (ID, title/source, link or location, retrieval date for web, trust class, one-line summary,
+evidence status), reserving a full prose summary for the sources the recommendation rests on. The Sources registry is
+always produced, even for a minimal run; what scales with the band is each entry's depth, not whether the section
+appears.
+
+**Record the old-to-new mapping before rewriting anything.** Every parallel analyst numbers its own sources from `A1`,
+so above the small band two or more analysts return an `A1` that name different sources, and consolidating them into
+one sequence renumbers what each analyst cited. This step owns the record of what that renumbering and the relevance
+filter did. Build it as a working record you hold while rendering, not a report section: one row per source every
+analyst returned, in this layout.
+
+```markdown
+| Analyst angle       | Local ID | Source                          | Merged ID | Disposition                                            |
+| ------------------- | -------- | ------------------------------- | --------- | ------------------------------------------------------ |
+| messaging-patterns  | A1       | Kafka docs, exactly-once        | A1        | renumbered                                             |
+| messaging-patterns  | A2       | Fowler, "What do you mean by X" | A2        | renumbered                                             |
+| delivery-semantics  | A1       | Fowler, "What do you mean by X" | A2        | merged into A2 (same source as messaging-patterns A2)  |
+| delivery-semantics  | A2       | vendor blog, undated            | —         | dropped (not relevant to the results)                  |
+```
+
+The `Source` column is what makes the mapping checkable: without it, no row can be joined back to the analyst output it
+came from. Before trusting the mapping, check one analyst's rows against that analyst's raw output.
+
+**Rewrite every citation through the mapping.** A citation surface is anywhere an `A#` appears that an analyst wrote
+against its own numbering. There are four, and the rewrite covers all of them: every `A#` in Research Results, each
+option's `Rests on`, the recommendation's `Evidence basis`, and every `Evidence status` field, both in the registry
+table's last column and in each `A#` detail block. That last surface sits inside the registry being renumbered, where
+one entry cross-references another by identifier, and a rewrite that covers only prose leaves it stale.
+
+**A dropped source takes its citations with it.** When the merge drops an entry as not relevant, every claim that cited
+it loses that citation. A claim left with no source is either dropped with its source or carried under the evidence
+rule's no-evidence label with a reopen trigger naming what evidence would restore it. It is never relabelled
+single-source, because the evidence rule forbids that collapse: single-source means one source supports it, and this
+claim has none. In strict mode a recommendation that rested on the dropped source is re-evaluated in Step 7 against what
+remains.
 
 ## Step 7: Synthesize, then Validate
 
@@ -246,11 +282,13 @@ Synthesize, in this order:
   name the evidence that would settle it.
 
 Then launch `han-core:adversarial-validator` with one `Agent` call. Pass it the full verbatim Sources registry, the
-Research Results, the Options, and the Recommendation. Charter it to attack all of: the evidence, the way the options
-were framed, the recommendation itself, and the integrity of the evidence-gathering — whether any artifact could have
-been introduced or shaped by external content designed to influence the output, whether discounting any single external
-artifact changes the recommendation, and whether external sources are stale, adversarially constructed, or implausibly
-convenient. It emits `V#` findings. Wait for it to return.
+old-to-new mapping from Step 6, the Research Results, the Options, and the Recommendation. Charter it to attack all of:
+the evidence, the way the options were framed, the recommendation itself, citation support (whether each cited entry's
+one-line summary bears on the claim it is attached to, per the traceability invariant in Operating Principles, using
+the mapping to trace any suspect citation back to what the analyst wrote), and the integrity of the evidence-gathering
+— whether any artifact could have been introduced or shaped by external content designed to influence the output,
+whether discounting any single external artifact changes the recommendation, and whether external sources are stale,
+adversarially constructed, or implausibly convenient. It emits `V#` findings. Wait for it to return.
 
 ## Step 8: Re-evaluate, Render, and Present
 
@@ -265,9 +303,9 @@ brief, one phrase on how solid it is, and the formal High/Med/Low confidence rat
 Results**; **Options to Consider** (only when applicable); the (possibly rewritten) **Recommendation** with its evidence
 basis; **Validation** with the `V#` findings, any adjustments made, and the supporting confidence reasoning and
 remaining risks; and the indexed **Sources** registry at the very bottom — a compact table by default (ID, title/source,
-link or location, retrieval date, trust class, evidence status), with a full prose summary reserved for the sources the
-recommendation rests on. Artifact IDs are cross-referenced inline throughout Results, Options, and Recommendation, and
-every cited `A#` resolves to a registry entry. Every section is rendered on every run, even for a minimal one; at
+link or location, retrieval date, trust class, one-line summary, evidence status), with a full prose summary reserved
+for the sources the recommendation rests on. Artifact IDs are cross-referenced inline throughout Results, Options, and
+Recommendation under the traceability invariant. Every section is rendered on every run, even for a minimal one; at
 `small`, Results and Options carry the decisive evidence only, not the full landscape. Write the rendered draft to the
 output location.
 
@@ -288,7 +326,13 @@ invocation above. Correct every failure before presenting. Its fidelity criterio
 how the content is said, and drops a required fact only when the reader asked for less and losing it would not change
 what they do next.
 
-On top of the fidelity criterion, confirm every cited `A#` still resolves to its registry entry.
+On top of the fidelity criterion, check the traceability invariant from Operating Principles over the finished report,
+both parts. For every `A#` cited in Research Results, Options, the Recommendation, and every `Evidence status` field:
+confirm it resolves to a registry entry, then read that entry's `Summary (one line)` and confirm it states something
+that bears on the claim the citation is attached to. A citation that resolves but does not support its claim fails this
+check on the same terms as one that does not resolve. Fix each failure before presenting: trace the citation through the
+Step 6 mapping to what the analyst wrote and correct the identifier, or, when no entry supports the claim, apply the
+dropped-source handling from Step 6.
 
 Present the report, then close with a short message: the size and roster used (and why), the evidence mode (strict or
 exploratory), the count of options and artifacts, the recommendation (or "no clear winner" with deciding criteria) and

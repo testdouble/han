@@ -14,6 +14,7 @@
 - Documentation
 - Code Style & Patterns
 - Database (when applicable)
+- Packaging (when applicable)
 - Architecture Decision Records (when applicable)
 
 **YAGNI** (apply [../../../references/yagni-rule.md](../../../references/yagni-rule.md); these become `YAGNI-###` items
@@ -123,6 +124,35 @@ Named anti-patterns to match in Pass 2:
 - Migration files follow the project's naming convention
 - Schema changes are backward compatible, new columns have appropriate defaults or are nullable
 - Frequently queried columns have indexes
+
+**Packaging** (when applicable)
+
+Fires when the diff changes what gets packaged: shading or relocation rules, vendoring, include or exclude patterns,
+dependency scope changes, or bundling configuration. **This category does not open the built artifact.** The review
+reads source text; it acquires no new command and inspects no jar, wheel, bundle, or image. What the category does is
+tell the reader the review has that hole and name what to check by hand.
+
+- Default severity: Warning. The summary-table row's Description cell opens with `Not checked —`, so a triaging reader
+  sees a row that reports something unverified rather than something proven.
+- **The first sentence is derived from the diff; the rest is fixed.** The first sentence names the specific rule or
+  pattern the diff added and the specific symptom it could produce. Sentences two onward are invariant, so a builder who
+  pastes the worked example with the path swapped produces one varying sentence and not five identical ones.
+
+Worked example, pinned so two runs write the same thing:
+
+```markdown
+**WARN-002** `build.gradle:41` Someone installs the published jar and calls `WidgetFactory.create`, and it fails at
+startup with a missing-class error, because the exclude rule added here drops a class that surviving classes still
+reference. This review did not open the built artifact and cannot tell you whether that happened: the exclude
+patterns say what was removed, not what still points at it. A green build is not evidence either, because a
+development run has a wider classpath than the shipped artifact. Check the produced artifact before merging: that
+every internal reference resolves inside it, that no third-party package is exported unrelocated, and that the
+licence notices the packaging requires are present. **Fix:** by hand.
+```
+
+**Mode scope.** This category applies in Mode A only. Step 4's Mode B and Mode C conservative rule admits only
+focus-area items, source-file items, and file-boundary items, and without a base-branch diff the run cannot tell what
+the change altered about packaging. Same reason the YAGNI checklist is suspended in those modes.
 
 **Architecture Decision Records** (when applicable)
 

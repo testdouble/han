@@ -1,5 +1,11 @@
 # Review Output Verification
 
+## Contents
+
+- Step 9.0: Self-consistency check
+- Step 9.1: Structural verification
+- Step 9.2: Readability self-check
+
 The checks Step 9 runs over the finished review before presenting it: the self-consistency pass that
 detects contradictory recommendations, then the structural verification items.
 
@@ -55,7 +61,7 @@ Then verify:
 12. The `### 🟡 YAGNI` section, when present, opens with the verbatim statement defined in Review Constraints, and YAGNI
     findings appear ONLY in this section — not duplicated under CRIT/WARN/SUGG and not in the Review Summary table.
 13. Any `Tension with {other-task-id}:` notes added by Step 9.0 appear on both members of each contradictory pair.
-14. No section is rendered empty, and present sections appear in the template's fixed order, per Step 8. The only
+14. No section is rendered empty, and present sections appear in the fixed order `template.md` defines. The only
     always-present elements are the Review Summary table and the Review Recommendation.
 15. Each security finding's severity tier is shown inline in its Review Summary table row (e.g., `SEC-001 (Critical)`),
     since its task ID does not encode a tier.
@@ -73,6 +79,12 @@ Then verify:
     it.
 21. A finding the review established may never fire carries that cue in two places and they agree: leading its own
     explanation, and opening its summary row's Description cell.
+22. When the run was in manual-only mode (`agent-dispatch.md`), the `## Review Coverage` block is present in the position
+    the template fixes, opens with its cause line, and carries one row per item on the absent-coverage list: every agent
+    Step 3.2 selected, plus the independent validation pass. When every planned coverage ran, the block is absent.
+23. Every finding whose location was established by a region read (Step 4's path for a file over 1000 lines) names its
+    enclosing unit and the lines read in isolation to confirm it, in the form `finding-content.md` defines. A finding from
+    a file read whole carries no such note. This item runs in every mode, including the ones where Step 7.4 does not.
 
 Every item in this list is fixed before the review is presented, never reported alongside it as a caveat. A required
 piece of content that is missing is missing; saying so in the message does not put it in the report.

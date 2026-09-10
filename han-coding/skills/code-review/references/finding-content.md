@@ -8,10 +8,12 @@
 - The fix route
 - Both cues reach the summary table
 - Security findings
+- Enclosing-unit attribution
 
 Every finding a reader is expected to act on opens with a plain-language explanation written for someone who will not
-open the file. This file says which findings carry it, what it answers, and where the answers come from. The block
-format it renders into is in [template.md](./template.md).
+open the file. This file says which findings carry it, what it answers, and where the answers come from, plus the rule
+for confirming a finding's location when it came from a region read. The block format it renders into is in
+[template.md](./template.md).
 
 The register comes from Han's standard for explaining technical work to a non-implementer, sourced by invoking
 `han-communication:explanation-guidance` before any finding is drafted. Give a concrete outcome the reader could
@@ -112,3 +114,30 @@ skip the explanation.
 
 It does not gain a separately-labelled fix route. Its section already ends with a single Remediation note naming what to
 do, and a second answer to the same question in one block is worse than either alone.
+
+## Enclosing-unit attribution
+
+Step 4 reads a file over 1000 lines by its changed regions and their surrounding context rather than whole. A location
+established that way is a guess until the unit is read: you see a hit, you look upward for the nearest declaration, and
+the declaration you find may not be the one that encloses it. Nothing else in the review re-reads the code to check, and
+the pass that does (Step 7.4) runs only when there are corrective findings and never in manual-only mode.
+
+**The rule.** A location established by reading a region of a file rather than the unit that contains it is a guess until
+the unit is read. Read the enclosing unit in isolation before writing the finding, and never carry forward the nearest
+declaration a region read happened to include. Where a finding's severity depends on which unit the location names,
+confirm the unit twice.
+
+**The form.** Such a finding carries the existing reference plus the enclosing unit and how it was confirmed:
+
+```markdown
+**CRIT-003** `src/billing/reconciler.rb:2841` (enclosing member: `Reconciler.retry_batch`, confirmed by reading
+lines 2790-2860 in isolation) {explanation} … **Fix:** by hand.
+```
+
+**The population is region reads, and nothing else.** A finding from a file the run read whole carries no such note.
+That keeps the rule off the other findings a capped review can hold, and it keeps the note meaningful where it appears:
+its presence says this location was the kind that can be misattributed, and it was checked.
+
+Confirming the unit can change which unit the finding names, and that can change its severity. Unlike the explanation
+above, this is not writing work that runs after severity is set: it is part of establishing the finding, and it runs
+before the finding is drafted.

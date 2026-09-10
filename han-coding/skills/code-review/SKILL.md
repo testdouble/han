@@ -230,11 +230,12 @@ the rubric in `references/agent-finding-classification.md`. Do not re-derive siz
 These four sub-steps are specified in [agent-dispatch.md](./references/agent-dispatch.md), and every reference to
 Step 3.2, 3.3, 3.4, or 3.5 elsewhere in this skill points there. It carries the minimum roster dispatched at every size
 and the file-list signals that select each conditional agent (3.2), the brief-scoping rules including the authoritative
-size-based demotion rule (3.3), the domain-scoped file lists (3.4), and the two named-binding blocks plus the exact
-prompt for each agent (3.5).
+size-based demotion rule (3.3), the domain-scoped file lists (3.4), the two named-binding blocks plus the exact
+prompt for each agent (3.5), and **manual-only mode**: the mode a run enters when the dispatch mechanism itself fails at
+3.5, with its detection rule, the absent-coverage list selection leaves behind, and the by-hand sweep that substitutes.
 
 Select against the `{size}` from Step 3.1, scope each brief to the change, and dispatch every selected agent in a
-single message so they run in parallel.
+single message so they run in parallel. If dispatch fails, enter manual-only mode as that file specifies.
 
 Continue to Step 4 immediately. Results will be collected in Step 7.
 
@@ -333,8 +334,9 @@ Documentation freshness findings merge into the same output sections as the othe
 ## Step 7: Collect and Classify Agent Results
 
 Wait for all agents dispatched in Step 3 to complete. Each agent returns a summary with finding counts and a file path.
-**Skip Steps 7.1–7.3 if no agents were dispatched in Step 3; Step 7.4 still runs whenever the review has produced at
-least one corrective finding (manual or agent).**
+**In manual-only mode (the dispatch mechanism failed at Step 3.5; defined in `agent-dispatch.md`), skip Steps 7.1–7.3,
+and skip Step 7.4 too, because it dispatches an agent. Outside that mode, Step 7.4 runs whenever the review has produced
+at least one corrective finding (manual or agent).**
 
 This step runs in four numbered sub-steps. Order matters: read the agent output, apply the reachability demotion gate,
 apply the size-aware rubric, then validate the consolidated finding list with an independent adversarial pass.
@@ -397,13 +399,10 @@ open the file: what they could observe going wrong, what has to be true for it t
 [finding-content.md](./references/finding-content.md) for which findings carry it, what it answers, where the answers
 come from, and why working them out NEVER changes a finding's severity, task ID, or position. **Every CRIT, WARN, and
 SUGG finding also names how it gets fixed** — test-first, restructure, or by hand — chosen by the rule in that same
-file. Name the route; never start it. Use the template at
-[template.md](./references/template.md) for the output structure. **Render a section only when it has content** — never
-emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are
-always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,
-What's Good) appears only when it has at least one item. When more than one section is present, keep them in the fixed
-order the template defines and never vary it. A clean review is the table's no-issues row plus an approval
-recommendation, and nothing else.
+file. Name the route; never start it. Use the template at [template.md](./references/template.md) for the output
+structure. It is the authoritative home for which elements are always present, which sections render only when they
+have content, and the fixed order present sections keep; apply those rules from there and never restate them here. A
+clean review is the table's no-issues row plus an approval recommendation, and nothing else.
 
 Each finding's prose appears exactly once — in its finding block, or in its full security block. The Review Summary
 table row is an index entry, not a second copy of the prose; a `Tension with …` pointer note is a pointer, not prose.
@@ -479,7 +478,10 @@ report yet.
    total.
 3. **The path** to the report file. Name the report you replaced when Step 8.6 replaced one, and the destination you
    could not use when it fell back.
-4. **The run's own facts, last:** the size band and why, and the validator reconciliation line. Or nothing at all.
+4. **The run's own facts, last:** the size band and why, and the validator reconciliation line. In manual-only mode,
+   one clause: agent dispatch was unavailable, so no specialist read this change; how many coverage areas were swept by
+   hand and how many were not; and a pointer to the report's Review Coverage section. Name the cause and the
+   consequence, never the mode name, and do not list the areas; the report's block does. Or nothing at all.
 
 **NEVER paste the review into the conversation.** The report is the deliverable and it is a file. Pasting it is what
 made the one fact a person needed after a review, the path, unfindable inside a message long enough to hold everything
