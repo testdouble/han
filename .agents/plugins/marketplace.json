@@ -125,6 +125,18 @@
       "category": "Developer Tools"
     },
     {
+      "name": "han-linear",
+      "source": {
+        "source": "local",
+        "path": "./han-linear"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
       "name": "han-ddd",
       "source": {
         "source": "local",
