@@ -171,7 +171,8 @@ URL: https://en.wikipedia.org/wiki/Red_team
   accuracy against the code before the reader sees it.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Dispatches this agent at Step 7.4 to re-attack the
   consolidated finding list against the code, confirming, demoting, or dropping each finding before a human reads the
-  review.
+  review. Skipped when the review is clean, and in manual-only mode, where no agent can be dispatched at all; the
+  report's Review Coverage section then says the findings were not re-checked.
 - [`/manual-test-planning`](../../../han-coding/docs/skills/manual-test-planning.md). Dispatches this agent against the
   drafted manual test plan to disprove steps and expected outcomes the supplied context does not promise, before the
   file is written.

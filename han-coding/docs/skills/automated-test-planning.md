@@ -36,8 +36,9 @@ to use the skill. For what the skill does internally, read the skill definition 
   Classification comes from both agents' rankings mapped into a unified scheme.
 - **Unified IDs with cross-reference.** `TP-001`, `TP-002`, … with the original agent ID recorded (for example, _"TP-001
   (from T3)"_).
-- **Three review modes.** Mode A (full git context, branch vs default), Mode B (uncommitted/staged changes), Mode C (no
-  git, glob-discovered files).
+- **Git context modes.** Mode A (full git context, branch vs default), Mode B (uncommitted/staged changes), Mode C (no
+  git, glob-discovered files). These describe how much git context the run has; the focused / full distinction below is
+  a separate axis set by the size band.
 - **Plain-language spine, technical reference below.** The plan leads with a Summary, a What Needs Testing and Why
   themes section, and a What Each Test Covers walkthrough, all in plain language. The per-item detail (test level, code
   paths, approach, priority justification), deferred and dropped items, coverage counts, and scope sit below under a
