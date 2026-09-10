@@ -80,7 +80,7 @@ han-plugin-builder skill:
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── .codex-plugin/
-│   │   └── plugin.json    # Codex-format manifest; every plugin except han and han-linear carries one (omitted from the entries below)
+│   │   └── plugin.json    # Codex-format manifest; every han-* plugin carries one, han/ is excluded (omitted from the entries below)
 │   ├── scripts/        # han-config-dir.sh, a symlink to the repo-root script; every plugin except han carries one (omitted from the entries below), and each skill's `personal config directory` probe runs it
 │   ├── agents/         # readability-editor agent definition
 │   ├── skills/         # readability-guidance + explanation-guidance (both inline, each surfaces one standard) + edit-for-readability
