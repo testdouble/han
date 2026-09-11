@@ -24,9 +24,10 @@ use the skill. For what the skill does internally, read the skill definition at
 - **The plan.** A short list of the concerns and the pieces inside each, proposed before any work begins, that you
   accept or change. It also names which pieces carry a choice that is expensive to walk back.
 - **A stop.** The end of a turn. You get your position in the plan, what was built, what you can check, and what
-  changed. The reasoning does not lead.
+  changed. The reasoning does not lead, and the stop asks you nothing about a later piece.
 - **The pre-build ask.** For a piece the plan marked expensive to walk back, the skill asks what you expect before it
-  builds. Declining is a complete answer.
+  builds. The ask is a turn of its own: it arrives after you have responded to the previous stop, or to the plan when
+  the marked piece is the first, and nothing is built until you answer it or decline. Declining is a complete answer.
 - **The feedback record.** A file holding everything you said, so a correction you gave at the second stop still applies
   at the seventh. You can read it whenever you ask.
 - **A backing skill.** An existing skill that does the work while this one handles the pacing. The skills that carry the
@@ -82,8 +83,9 @@ Alongside it, one file: the running feedback record. It lives under the output b
 configuration. Each run gets its own file, so a second run does not overwrite the first. The skill names the path in the
 plan it proposes, and again when the loop ends.
 
-The record holds each piece of feedback you gave and which piece prompted it. When the skill applies a recorded entry to
-a later piece, it names which entry, so a misrecorded correction surfaces while it is still cheap to fix.
+The record holds each piece of feedback you gave, in your words, and which stop or ask prompted it, and any reading the
+skill adds is labeled as its own. When the skill applies a recorded entry to a later piece, it names which entry, so a
+misrecorded correction surfaces while it is still cheap to fix.
 
 ## How to get the most out of it
 
@@ -96,8 +98,9 @@ a later piece, it names which entry, so a misrecorded correction surfaces while 
 - **Ask for several pieces at once when you are moving fast.** "Show me the next three" is honored as asked, and the
   loop returns to its normal pace afterward without being asked. This is the middle gear between full ceremony and
   turning review off.
-- **Answer the pre-build ask honestly, including with "I don't know."** Declining advances the stop exactly as a
-  considered answer does. The ask exists to get an independent read, and a manufactured guess is worth less than none.
+- **Answer the pre-build ask honestly, including with "I don't know."** Declining advances the piece exactly as a
+  considered answer does, and only a reply to the ask counts as one: approving the previous piece never declines an ask
+  you have not answered. The ask exists to get an independent read, and a manufactured guess is worth less than none.
 - **Read the feedback record if a later piece feels subtly wrong.** That is usually a correction recorded in a way you
   did not intend, and it is much easier to spot in the file than to reconstruct from memory.
 - **Pair with `/code-review` afterward.** Reviewing as it goes catches direction; a review pass at the end catches
@@ -115,7 +118,8 @@ establishes what a run of approvals means. See [YAGNI](../../../docs/yagni.md).
 ## Cost and latency
 
 Runs on the session model with no dispatch fan-out of its own. The skill itself is thin: the cost is whatever the
-backing skill would have cost, plus one turn per stop.
+backing skill would have cost, plus one turn per stop, and one more for each piece the plan marked expensive to walk
+back.
 
 The expensive part is your attention, not tokens. A long session with many stops is the shape this is built for, and the
 several-pieces-at-once gear exists so you can spend that attention unevenly. Built for tight-loop iteration, not for a
