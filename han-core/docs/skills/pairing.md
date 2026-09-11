@@ -100,7 +100,9 @@ misrecorded correction surfaces while it is still cheap to fix.
   turning review off.
 - **Answer the pre-build ask honestly, including with "I don't know."** Declining advances the piece exactly as a
   considered answer does, and only a reply to the ask counts as one: approving the previous piece never declines an ask
-  you have not answered. The ask exists to get an independent read, and a manufactured guess is worth less than none.
+  you have not answered. If a run folds the ask into a stop anyway, it poses the ask again on its own before building,
+  or, when the piece is already built, tells you the ask went unanswered rather than asking after the fact. The ask
+  exists to get an independent read, and a manufactured guess is worth less than none.
 - **Read the feedback record if a later piece feels subtly wrong.** That is usually a correction recorded in a way you
   did not intend, and it is much easier to spot in the file than to reconstruct from memory.
 - **Pair with `/code-review` afterward.** Reviewing as it goes catches direction; a review pass at the end catches
