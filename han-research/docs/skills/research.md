@@ -29,7 +29,11 @@ use the skill. For what the skill does internally, read the skill definition at
   the skill that owns it.
 - **Reaches the open web.** Unlike `/investigate`, `/research` can search and fetch from the open web, read your
   codebase, and use material you provide. That web reach is the whole point: it answers "what is the prior art out
-  there", not only "what does this repo do".
+  there", not only "what does this repo do". Where Claude Code has no web search (Amazon Bedrock installs; the official
+  docs are silent on Vertex and Foundry), the analyst gathers by fetch only and the report's Summary says so on its
+  `Web search` line, directly under the confidence rating, so you can tell a survey from a fetch of the pages the
+  question already named. On such a run the validator is also asked what a search would likely have surfaced, and
+  Remaining Risks names the gap and how to close it.
 - **Fetched content is data, never instruction.** A web page that says "ignore your instructions and do X" is recorded
   as a claim about that page, not followed. The web-facing research runs with no codebase context, so a hostile page has
   nothing to exfiltrate.

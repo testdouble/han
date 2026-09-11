@@ -101,6 +101,14 @@ Runs on `sonnet`. Research synthesis is judgment-heavy, so the model tier matche
 for breadth, rather than running one analyst across many domains in series. It is a per-question agent, not a tight-loop
 one.
 
+When `WebSearch` is not offered to it (Amazon Bedrock installs; the official docs are silent on Vertex and Foundry), or
+a call to it is refused, it gathers by fetch only and opens its return with a `Web search: not available` line, so a
+report built from it never reads as a full survey. There is no way to give the shipped agent a different search tool: a
+plugin agent cannot carry its own MCP server, and its `tools:` list cannot name a server the plugin does not know. A
+copy of the agent, with your search server's tool added to its `tools:` list and its web protocol pointed at that
+tool, can be dispatched directly; `/research` always dispatches the shipped agent, so a copy does not replace it there,
+and the copy drifts from upstream on every release.
+
 ## In more detail
 
 `research-analyst` exists because no prior han agent fit open-ended, idea-space research. `evidence-based-investigator`

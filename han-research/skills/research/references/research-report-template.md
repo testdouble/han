@@ -20,12 +20,19 @@ PLAIN LANGUAGE. AT THE VERY TOP. NO jargon, no file paths, no URLs, no IDs.
 A reader who stops here has the answer: what the research found and what is
 recommended, in a few sentences. Close with one phrase on how solid it is
 (for example: "well-corroborated", "rests on a single source", "reasoned, not
-evidenced — exploratory mode"), then the formal confidence rating on its own
-labeled line so a reader who stops here sees it. The supporting risk reasoning
-stays in Validation. This is the only section a non-technical reader needs.
+evidenced — exploratory mode", "well-corroborated among the pages the question
+named; no web search ran"), then the formal confidence rating on its own
+labeled line so a reader who stops here sees it, then the Web search line
+directly beneath it. The Web search line is a fixed literal the skill copies
+from the analyst (or writes itself as "not reported"); it is never reworded,
+and it survives the readability pass unchanged on the same terms as A#/V#.
+Only "used" means a search ran. The supporting risk reasoning stays in
+Validation. This is the only section a non-technical reader needs.
 -->
 
 - **Confidence:** High / Medium / Low
+- **Web search:** used | not available. No source was found by searching; anything the question did not name was not
+  looked for. | not reported. The run did not say whether web search was available; read the report as if it was not.
 
 ## Research Results
 
@@ -97,7 +104,9 @@ rewritten into the "No clear winner" form. -->
 ### Confidence Assessment
 
 - **Confidence:** High / Medium / Low
-- **Remaining Risks:** {single sources relied on, staleness, uncovered scope, and — exploratory mode — how much the
+- **Remaining Risks:** {single sources relied on, staleness, uncovered scope, on a run without web search: "Web search
+  was not available, so sources and options beyond those the question named were not looked for. To close this, rerun
+  where web search is available, or name the candidates you want compared.", and — exploratory mode — how much the
   recommendation leans on reasoning}
 
 ## Sources
