@@ -1,6 +1,6 @@
 # Han: For the Solo Product Engineer
 
-<img src="images/han-banner.png">
+<img src="images/han-banner.png" alt="Han: your agentic ally for solo product engineers">
 
 Han is a suite of AI skills and agents for solo (or small-team) product engineers. It combines evidence-based planning,
 test-driven implementation, full documentation maintenance, deep code review, and architectural analysis into a team of

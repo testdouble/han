@@ -137,6 +137,7 @@ escalate.
   [`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md),
   [`/code-overview`](../han-coding/docs/skills/code-overview.md), [`/code-review`](../han-coding/docs/skills/code-review.md),
   [`/code-walkthrough`](../han-coding/docs/skills/code-walkthrough.md),
+  [`/ddd-analysis`](../han-ddd/docs/skills/ddd-analysis.md),
   [`/design-an-api`](../han-coding/docs/skills/design-an-api.md),
   [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md),
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
@@ -262,7 +263,8 @@ on `han-communication` and `han-core`. The `han` meta-plugin does not pull these
 `/skill-builder` and `/agent-builder` skills. It depends on nothing and is also opt-in.
 
 The practical choice is core only, the bundled suite, or the suite plus whichever opt-in plugins you want. There is no
-planning-only, coding-only, GitHub-only, or reporting-only install.
+planning-only, coding-only, or GitHub-only install. Reporting-only is possible: installing `han-reporting` gives you
+`/stakeholder-summary` and `/html-summary` plus `han-communication`, without the `han-core` agent roster.
 
 For which one to install and the dependency that surprises people, read
 [Choosing a Han plugin](./choosing-a-han-plugin.md).

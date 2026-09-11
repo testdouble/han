@@ -14,8 +14,9 @@ to dispatch the agent. For what the agent does internally, read the agent defini
 - **When to dispatch it.** The architectural analysts (`structural-analyst`, `behavioral-analyst`,
   `concurrency-analyst`) have produced findings and you need to prioritize them. Always dispatched by
   `/architectural-analysis` after the three parallel analysts complete. Conditionally dispatched by
-  `/architectural-decision-record` for ADR risk scoring, and by `/plan-a-feature`, `/plan-implementation`, and
-  `/iterative-plan-review` when the plan carries significant blast radius.
+  `/architectural-decision-record` for ADR risk scoring, by `/plan-a-feature`, `/plan-implementation`, and
+  `/iterative-plan-review` when the plan carries significant blast radius, and by `/plan-a-change` as a
+  signal-selected review specialist.
 - **What you get back.** Numbered `R#` risk assessments, each cross-referencing upstream findings, with likelihood /
   severity / blast radius / reversibility ratings and a concrete _what-happens-if-deferred_ description.
 
@@ -41,6 +42,8 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   synthesis. The skill always dispatches this agent.
 - `/architectural-decision-record` is running. The skill dispatches this agent to score the chosen option and each
   rejected alternative.
+- `/plan-a-change` is choosing its review specialists. The agent is the most common first pick, because a change plan's
+  failure mode is carrying every finding at equal weight.
 - You have a manual set of architectural findings (from a non-skill source) and want them prioritized.
 - A team needs to decide which architectural debt to address first and wants an evidence-based prioritization.
 

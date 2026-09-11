@@ -204,5 +204,8 @@ URL: (book; no public URL)
   you want code-level coupling and SOLID findings for a module the domain map identified.
 - [`domain-visualizer`](../agents/domain-visualizer.md). The agent this skill dispatches last to produce
   evidence-backed visual artifacts from the completed analysis.
+- [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched at Step 10 to
+  rewrite the report's prose for the engineer or product manager reading the context model, preserving every fact and
+  leaving code fences, diagram bodies, and finding-ID and file-path citations unchanged.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). The right next step when the domain
   map identifies a boundary you want to align or introduce.

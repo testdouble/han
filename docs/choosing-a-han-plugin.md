@@ -81,7 +81,7 @@ Code resolves and installs the dependency for you automatically and tells you wh
 installs both alongside it, and you get the shared agent roster, project discovery, the pairing working mode, and the
 readability standard either way. (`han-reporting` is the exception: it depends on `han-communication` alone.)
 
-That means **every layer install comes with the shared agents.** The real choice comes down to:
+That means **every layer install except `han-reporting` comes with the shared agents.** The real choice comes down to:
 
 - **A layer plus the foundations** (for example `han-documentation` or `han-coding`): that layer's skills, plus the
   shared agent roster, project discovery, and the pairing working mode from `han-core`, and the readability standard

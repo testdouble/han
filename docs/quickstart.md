@@ -193,11 +193,12 @@ next. A few that work:
 
 ## A note on sizing
 
-The sizing-aware skills (`/architectural-analysis`, `/code-overview`, `/code-review`, `/code-walkthrough`,
-`/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**,
-**medium**, or **large** before dispatching agents. They default to small, and scale the team and iteration depth to the
-chosen band. Pass the size as the first positional argument to override (`/code-review medium`,
-`/plan-a-feature large "describe the feature"`). See [Sizing](./sizing.md) for the full model.
+The sizing-aware skills (`/architectural-analysis`, `/automated-test-planning`, `/code-overview`, `/code-review`,
+`/code-walkthrough`, `/ddd-analysis`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`,
+`/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**, **medium**, or **large** before
+dispatching agents. They default to small, and scale the team and iteration depth to the chosen band. Pass the size as
+the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See
+[Sizing](./sizing.md) for the full model.
 
 ## A note on YAGNI
 

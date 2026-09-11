@@ -142,8 +142,9 @@ command to act on. Its adversarial posture is aimed at the draft, never at the a
   [`/research`](../../../han-research/docs/skills/research.md), [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md),
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md),
   [`/plan-a-phased-build`](../../../han-planning/docs/skills/plan-a-phased-build.md),
-  [`/update-pr-description`](../../../han-github/docs/skills/update-pr-description.md), and
-  [`/stakeholder-summary`](../../../han-reporting/docs/skills/stakeholder-summary.md). The [Readability](../../../docs/readability.md)
+  [`/update-pr-description`](../../../han-github/docs/skills/update-pr-description.md),
+  [`/stakeholder-summary`](../../../han-reporting/docs/skills/stakeholder-summary.md), and
+  [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md). The [Readability](../../../docs/readability.md)
   per-skill table is authoritative.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent to audit and rewrite the
   finished design document for the engineer who will implement the contract and the reviewer who will approve it.
