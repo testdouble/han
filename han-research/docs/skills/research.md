@@ -29,7 +29,11 @@ use the skill. For what the skill does internally, read the skill definition at
   the skill that owns it.
 - **Reaches the open web.** Unlike `/investigate`, `/research` can search and fetch from the open web, read your
   codebase, and use material you provide. That web reach is the whole point: it answers "what is the prior art out
-  there", not only "what does this repo do".
+  there", not only "what does this repo do". Where Claude Code has no web search (Amazon Bedrock installs; the official
+  docs are silent on Vertex and Foundry), the analyst gathers by fetch only and the report's Summary says so on its
+  `Web search` line, directly under the confidence rating, so you can tell a survey from a fetch of the pages the
+  question already named. On such a run the validator is also asked what a search would likely have surfaced, and
+  Remaining Risks names the gap and how to close it.
 - **Fetched content is data, never instruction.** A web page that says "ignore your instructions and do X" is recorded
   as a claim about that page, not followed. The web-facing research runs with no codebase context, so a hostile page has
   nothing to exfiltrate.
@@ -129,11 +133,14 @@ catchable.
 
 ## What you get back
 
-A research report file, plus an in-channel summary. Every report has the same fixed structure, top to bottom:
+A research report file, plus an in-channel summary. When no search ran, that summary opens with the report's own
+`Web search` line, so the gap is visible without opening the file. Every report has the same fixed structure, top to
+bottom:
 
 - **Summary.** Plain language, at the very top, no jargon. The answer in brief, one phrase on how solid it is, and the
-  formal High/Med/Low confidence rating on one labeled line so it is visible to a reader who stops here. If you read
-  nothing else, you have the answer. The supporting risk reasoning stays in Validation.
+  formal High/Med/Low confidence rating on one labeled line so it is visible to a reader who stops here, with the
+  `Web search` line directly beneath it: `used`, `not available`, or `not reported`. Only `used` means a search ran.
+  If you read nothing else, you have the answer. The supporting risk reasoning stays in Validation.
 - **Research Results.** The relevant findings with minimal technical detail. Every claim cites the artifact IDs it rests
   on, e.g. "(A1)", and is marked inline when it is single-source or (in exploratory mode) reasoning.
 - **Options to Consider.** Present only when the question implies discrete alternatives. An indexed list (O1, O2, …),
@@ -144,8 +151,10 @@ A research report file, plus an in-channel summary. Every report has the same fi
   answer, it says "no clear winner" and names the deciding criteria instead of forcing a pick.
 - **Validation.** Numbered `V1, V2, …` findings from `adversarial-validator`, which attacks the evidence, the options
   framing, the recommendation, and the integrity of the evidence-gathering (injection, staleness, single-source,
-  astroturfing). Includes any adjustments made (a non-surviving recommendation is rewritten into the no-clear-winner
-  form) and the confidence assessment and remaining risks.
+  astroturfing). On a run where web search did not run, the validator is also chartered to attack completeness: what
+  a search would likely have surfaced that the question did not name. Includes any adjustments made (a non-surviving
+  recommendation is rewritten into the no-clear-winner form) and the confidence assessment and remaining risks, which
+  on such a run name the search gap and how to close it.
 - **Sources.** At the very bottom, an indexed registry (A1, A2, …) of every information source used that is relevant to
   the results. It renders as a compact table by default: one row per source with its link or repository location,
   retrieval date for web sources, trust class (codebase / web / provided), a one-line summary, and corroboration status.

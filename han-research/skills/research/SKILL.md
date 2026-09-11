@@ -64,8 +64,9 @@ Read these before dispatching anything. They constrain every step below.
   recommendation.
 - **One fixed report structure, depth scaled to the band.** The skill renders the template at
   [references/research-report-template.md](./references/research-report-template.md) every run, never an inline
-  structure: a plain-language Summary at the very top (the answer in brief, one phrase on how solid it is, and the
-  formal High/Med/Low confidence rating on one labeled line), then Research Results with minimal technical detail, then
+  structure: a plain-language Summary at the very top (the answer in brief, one phrase on how solid it is, the formal
+  High/Med/Low confidence rating on one labeled line, and the Web search line on the labeled line beneath it), then
+  Research Results with minimal technical detail, then
   indexed Options to Consider (when applicable), then the Recommendation with its evidence basis, then Validation, then
   an indexed Sources registry at the bottom. Every section heading is present on every run; what scales with the band is
   the _depth_ of each entry, not the set of sections. By default the Sources registry is a compact table, with a full
@@ -210,13 +211,26 @@ Each `han-research:research-analyst` brief must contain:
   corroboration status.
 - A calibration directive scaled to the band: at small, the clearest options and the decisive evidence; at medium, the
   full viable-option set with trade-offs; at large, the full landscape including weaker options and edge considerations.
+- The instruction to open the return with the Web search line from the agent's Output Format, in one of its two exact
+  forms, before the Sources registry.
 
 The `han-core:codebase-explorer` brief carries the codebase-bearing part of the question, the resolved project context,
 and git availability — and only that. Wait for the entire wave to return before proceeding.
 
 ## Step 6: Compile the Sources Registry
 
-Collect the full verbatim output from every agent. Consolidate every information source used that is relevant to the
+Collect the full verbatim output from every agent.
+
+**Hold the Web search value before anything else.** Read the `**Web search:**` line from each analyst's return and hold
+one value for Steps 7 and 8, by this order of precedence: if any analyst returned the `not available` form, hold that
+line; else if any analyst's return has no Web search line, hold the line below, which only the skill writes; else hold
+`**Web search:** used`. Only `used` means a search ran.
+
+```markdown
+**Web search:** not reported. The run did not say whether web search was available; read the report as if it was not.
+```
+
+Consolidate every information source used that is relevant to the
 results into a single indexed Sources registry (`A1, A2, …`), merging duplicates. Each entry carries: a link or
 repository location the reader can independently check (a source URL for web, `repo/path:line` for codebase, a precise
 reference for provided material); a retrieval date for web sources; the trust class (codebase, web, or provided) per the
@@ -282,7 +296,15 @@ Synthesize, in this order:
   name the evidence that would settle it.
 
 Then launch `han-core:adversarial-validator` with one `Agent` call. Pass it the full verbatim Sources registry, the
-old-to-new mapping from Step 6, the Research Results, the Options, and the Recommendation. Charter it to attack all of:
+old-to-new mapping from Step 6, the Web search value held from Step 6, the Research Results, the Options, and the
+Recommendation. When that value is anything other than `used`, add this sentence to the charter, verbatim:
+
+```markdown
+Web search was not confirmed for this run, so also attack completeness: name any option or source the question did
+not mention that a web search would likely have surfaced, and say whether the recommendation survives its absence.
+```
+
+Charter it to attack all of:
 the evidence, the way the options were framed, the recommendation itself, citation support (whether each cited entry's
 one-line summary bears on the claim it is attached to, per the traceability invariant in Operating Principles, using
 the mapping to trace any suspect citation back to what the analyst wrote), and the integrity of the evidence-gathering
@@ -299,10 +321,11 @@ validation section that contradicts it.**
 Invoke `han-communication:readability-guidance` to surface the shared readability standard into your context before you
 render, then draft against it. Read [references/research-report-template.md](./references/research-report-template.md).
 Render it in the one fixed structure, top to bottom: a plain-language **Summary** (no jargon, no IDs — the answer in
-brief, one phrase on how solid it is, and the formal High/Med/Low confidence rating on one labeled line); **Research
-Results**; **Options to Consider** (only when applicable); the (possibly rewritten) **Recommendation** with its evidence
-basis; **Validation** with the `V#` findings, any adjustments made, and the supporting confidence reasoning and
-remaining risks; and the indexed **Sources** registry at the very bottom — a compact table by default (ID, title/source,
+brief, one phrase on how solid it is, the formal High/Med/Low confidence rating on one labeled line, and the Web search
+value held from Step 6 as the labeled bullet directly beneath it, copied without rewording); **Research Results**;
+**Options to Consider** (only when applicable); the (possibly rewritten) **Recommendation** with its evidence basis;
+**Validation** with the `V#` findings, any adjustments made, and the supporting confidence reasoning and remaining
+risks; and the indexed **Sources** registry at the very bottom — a compact table by default (ID, title/source,
 link or location, retrieval date, trust class, one-line summary, evidence status), with a full prose summary reserved
 for the sources the recommendation rests on. Artifact IDs are cross-referenced inline throughout Results, Options, and
 Recommendation under the traceability invariant. Every section is rendered on every run, even for a minimal one; at
@@ -313,13 +336,15 @@ output location.
 report draft against the shared readability standard. Pass it the report file path and the default audience frame (a
 capable reader who did not do this work and lacks the author's context); the editor reads han-communication's own
 canonical rule, so pass no rule path. Instruct it to operate on prose regions only (never inside code fences, Mermaid or
-other diagram bodies, or the `A#`/`V#` citation identifiers, which must survive unchanged so every cited `A#` still
-resolves to its registry entry) and to preserve every fact. Apply the returned rewrite to the report.
+other diagram bodies, the `A#`/`V#` citation identifiers, which must survive unchanged so every cited `A#` still
+resolves to its registry entry, or the Summary's `**Web search:**` bullet, which is a fixed literal copied from the
+analyst and survives unchanged on the same terms as `A#`/`V#`) and to preserve every fact. Apply the returned rewrite to
+the report.
 
 **Readability self-check.** Run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the report's prose regions only — never inside code fences, diagram
-bodies, or citation identifiers (`A#`/`V#` survive unchanged). Confirm each criterion and fix any failure before
-presenting:
+bodies, or citation identifiers (`A#`/`V#` survive unchanged), and never over the `**Web search:**` bullet, which
+survives unchanged on the same terms. Confirm each criterion and fix any failure before presenting:
 
 Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
 invocation above. Correct every failure before presenting. Its fidelity criterion is not optional: the standard governs
@@ -334,7 +359,9 @@ check on the same terms as one that does not resolve. Fix each failure before pr
 Step 6 mapping to what the analyst wrote and correct the identifier, or, when no entry supports the claim, apply the
 dropped-source handling from Step 6.
 
-Present the report, then close with a short message: the size and roster used (and why), the evidence mode (strict or
+Present the report, then close with a short message. When the Web search value is anything other than `used`, open the
+message with the report's own `**Web search:**` line, verbatim; on a `used` run the message says nothing about it,
+because the report carries it. Then give the size and roster used (and why), the evidence mode (strict or
 exploratory), the count of options and artifacts, the recommendation (or "no clear winner" with deciding criteria) and
 what it rests on, and what validation changed. Then point to the natural next skill: name the sibling for a hybrid
 request, and for a pure research request whose recommendation is a starting point for specifying or building, point to
