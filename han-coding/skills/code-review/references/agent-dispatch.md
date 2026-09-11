@@ -5,9 +5,10 @@
 - Step 3.2: Select agents
 - Step 3.3: Scope every agent brief to the change
 - Step 3.4: Domain-scoped file lists
+- Manual-only mode: when the dispatch mechanism fails
 
 The review roster, the signals that select each agent, the brief-scoping rules, the domain-scoped file
-lists, and the exact per-agent dispatch prompts. Step 3 selects and dispatches using this file. The sub-step numbering below is the skill's own; other sites cite
+lists, the exact per-agent dispatch prompts, and the manual-only mode a run enters when it cannot dispatch at all. Step 3 selects and dispatches using this file. The sub-step numbering below is the skill's own; other sites cite
 these sections as Step 3.2 through Step 3.5.
 
 ### Step 3.2: Select agents
@@ -208,3 +209,59 @@ from earlier steps):
     `han-core:devops-engineer`. Apply the calibration directive. Write every finding clear of the four named tone
     anti-patterns (sugarcoated criticism, thin blame, tourist citation, bibliographic empathy).
     Write your output to {output_directory}/on-call-analysis.md"
+
+### Manual-only mode: when the dispatch mechanism fails
+
+This section is the authoritative home for **manual-only mode**. Every other site (Step 3's pointer, Step 7's skip
+sentence, the template's Review Coverage block, the verification item, and Step 10's closing clause) names the mode and
+points here rather than describing it. The mode is not a fourth letter in the Mode A / B / C series: those letters
+enumerate how much git context a run has, and agent availability is an independent axis. A Mode A run with a full
+branch diff can be manual-only.
+
+**Detection is by the dispatch mechanism failing at Step 3.5.** Exactly two triggers:
+
+1. The `Agent` tool is unavailable to the run (not in the session's allowed tools, or absent from the tool list).
+2. A dispatch call is made and denied (a permission refusal, or a tool error saying the call could not be placed).
+
+**An agent that returns with nothing to say is not a trigger.** The always-dispatched security agent is specified to
+stay silent when its evidence standard is not met, so an empty result is a run that ran and passed. Reading silence as
+failure would print a disclosure saying security coverage was absent on a run where it was present. A false disclosure
+is worse than the silent gap this mode exists to name. Do not probe for availability before dispatching; the attempt is
+the detection.
+
+**What selection produces in this mode.** Step 3.2 has already run by the time detection fires, so the roster it
+selected is a fact, not a counterfactual. Keep that roster as the **absent-coverage list**: every agent Step 3.2
+selected (the two always-dispatched agents, every conditional agent whose signal fired, and any extra agent from a
+project config that was included), plus the independent validation pass at Step 7.4, which dispatches an agent and so
+cannot run either. That list is what the Review Coverage block in `template.md` renders, one row per item.
+
+**Emit this line** when detection fires, filling the parenthetical with the verbatim tool error or the phrase shown:
+
+```
+Manual-only mode: agent dispatch unavailable ({verbatim tool error, or "Agent tool not in allowed-tools"}).
+Manual review is the primary path. Coverage absent: junior-developer, security, and every conditional agent
+Step 3.2 selected. See the sweep mapping for what substitutes.
+```
+
+**The by-hand sweep.** Step 4's manual review normally runs at its own depth beside the specialists. In manual-only
+mode it is also the substitute for them, so for each agent on the absent-coverage list, apply the checklist categories
+mapped below with the extra scrutiny the Step 4 focus-area rule describes, at the `{size}` band from Step 3.1. The
+mapping is written out for every agent so two runs sweep the same thing, and so that what the sweep does not recover is
+visible rather than implied:
+
+- `han-core:junior-developer` → Code Maintainability, Documentation, Code Style & Patterns, Architecture Decision Records — at the `{size}` band from Step 3.1.
+- `han-core:adversarial-security-analyst` → Data Isolation, Error Handling, API Design — at the `{size}` band. Partial: nothing substitutes for an exploit path demonstrated against the code.
+- `han-core:test-engineer` → Testing, Correctness — at the `{size}` band.
+- `han-core:edge-case-explorer` → Correctness, Error Handling — at the `{size}` band. Partial: the checklist asks whether edge cases are handled, not which ones exist.
+- `han-core:structural-analyst` → Code Organization, Code Maintainability — at the `{size}` band.
+- `han-core:behavioral-analyst` → Error Handling, Correctness — at the `{size}` band.
+- `han-core:data-engineer` → Database, Performance, Data Isolation — at the `{size}` band.
+- `han-core:on-call-engineer` → Error Handling, Performance — at the `{size}` band. Partial: no category covers timeouts, retry backoff, or idempotency.
+- `han-core:concurrency-analyst` → nothing substitutes. No checklist category covers races, lock ordering, or shared mutable state.
+- `han-core:devops-engineer` → nothing substitutes. No checklist category covers rollout, observability, or infrastructure.
+- An agent from a project config's `## Extra Agents` list → nothing substitutes. Name the agent and say its coverage was not swept.
+- The Step 7.4 independent validation pass → nothing substitutes. The findings reach the report without a second pass against the code; the coverage row says so.
+
+Four roster agents have no counterpart or a partial one, and concurrency and infrastructure coverage is recovered not at
+all. Those rows render as `not swept` in the report. That is the honest result, and it is why the disclosure matters
+more than the sweep does.

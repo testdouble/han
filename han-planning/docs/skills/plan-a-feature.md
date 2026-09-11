@@ -76,6 +76,9 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Investigating a bug or failure.** Use `/investigate` for evidence-based root-cause work.
 - **Analyzing existing architecture.** Use `/architectural-analysis` for assessing coupling, cohesion, data flow,
   concurrency, and SOLID alignment of an already-built module.
+- **Planning a restructure of code that already exists.** Use [`/plan-a-change`](./plan-a-change.md) when the
+  responsibilities are in the wrong places and you want the fix planned. This skill specifies behavior a user observes
+  and keeps symbol names out; that one names the types and modules directly.
 - **Documenting an already-built feature.** Use `/project-documentation` when the feature exists and needs
   documentation.
 - **Contributing a new skill, agent, or documentation file to a plugin.** Follow the repository's `CONTRIBUTING.md`
@@ -166,7 +169,11 @@ Up to four cross-referenced files on disk in the same folder, plus an in-channel
   summary, so the next skill in the chain does not read the folder as fully verified.
 - A **`ui-designs/` folder**, when you supply visual material. The files themselves, named for the state each one shows.
 - An **open items list** inside the spec. Questions or concerns the plan-synthesizer flagged that could not be resolved
-  during specification, each with what would resolve it and whether it blocks implementation.
+  during specification, each with what would resolve it and whether it blocks implementation. One kind of open item is
+  recorded here on purpose rather than dropped: a pure-implementation mechanic that two or more components must
+  independently agree on, such as a file format, a schema, or a signature. The spec still does not settle it, because
+  settling it would be a mechanic in a behavior-only document. Recording the delegation gives `plan-implementation` an
+  item it must close, instead of nothing at all.
 - A **summary** returned in-channel. All file paths (including `feature-technical-notes.md` and `ui-designs/` only when
   they were created), the number of decisions settled by evidence vs. by user input, the cut list in full when anything was
   cut for scope, the sub-agents consulted, key adjustments each drove, any finding that stayed unverified, and any
@@ -413,6 +420,8 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). The next step when the specified behavior lands
   on an interface whose shape is still open. This skill settles what the feature does; that one settles the contract
   that delivers it.
+- [`/plan-a-change`](./plan-a-change.md). The sibling for existing code. Its content rule is the deliberate opposite of
+  this skill's: it names types, modules, and methods, because it plans the structure an engineer works in.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the
   `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative,
   facilitated team conversation.

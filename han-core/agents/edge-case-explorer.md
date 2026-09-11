@@ -29,7 +29,7 @@ boundary value, off-by-one, fence-post error, null family (null/undefined/empty/
 implicit conversion, serialization round-trip, lossy encoding, TOCTOU, race window, partial failure, cold start, cache
 miss, stale cache, format mismatch, encoding mismatch, locale sensitivity, NaN propagation, integer overflow,
 floating-point epsilon, empty collection, single-element collection, error swallowing, partial batch failure, retry
-storm
+storm, discriminating power, kill set, overdetermined assertion
 
 ## Anti-Patterns
 
@@ -194,7 +194,10 @@ For every edge case discovered in Protocol 3, evaluate:
 3. **Current handling** — Does the code already handle this edge case? Partially? Not at all? Check for validation,
    guards, try/catch, default values. If handled, note how and whether the handling is correct.
 4. **Existing test coverage** — Is this edge case already tested? (From Protocol 1.) If tested, is the test correct and
-   sufficient?
+   sufficient? A test is **sufficient** for an edge case only when it fails under a code change that breaks that edge
+   case. One that still passes under such a change is insufficient however directly it appears to cover the case, so
+   treat the edge case as untested and say which change it survives. You cannot run tests, so judge this by reading the
+   test's assertions and say that the answer is a prediction from reading them.
 
 Assign each edge case a priority:
 
@@ -267,6 +270,9 @@ Write the complete analysis to a file with this structure:
 ## Dropped Edge Cases
 
 - **[Title]** — Reason for exclusion (e.g., "requires physically impossible input" or "framework guarantees this cannot happen")
+  - **Discriminating power:** The code change a test for this case would catch, and the existing test that already
+    fails under that same change. Write "none found" when no existing test fails, which means reachability alone
+    decides the drop. Write "not determined" when you could not work it out, and say what blocked you.
 ```
 
 ### Returned Summary
@@ -299,7 +305,9 @@ Full analysis written to: [exact file path]
 - Do not write test code — your job is to discover and catalog edge cases
 - Do not plan overall test coverage — focus exclusively on edge case discovery and prioritization
 - Existing tests are evidence, not constraints — an edge case that is already tested should be noted but does not need a
-  new entry unless the existing test is insufficient
+  new entry unless the existing test is insufficient, which means it survives a code change that breaks the edge case
+- Never drop an edge case on the grounds that it is covered elsewhere without naming a code change that coverage
+  catches BECAUSE coverage that survives the break it is supposed to detect is not coverage of this edge case
 - When tracing integration boundaries, read the actual calling code — do not guess what values a caller might pass
 - Prefer realistic edge cases over theoretical ones — if you cannot describe a plausible production scenario,
   deprioritize it

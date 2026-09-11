@@ -8,8 +8,10 @@ at least one item. A clean review is the table's no-issues row plus an approval
 recommendation, and nothing else.
 
 FIXED ORDER: when more than one section is present, render them in this order and never
-vary it — Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation,
-What's Good.
+vary it — Review Coverage (immediately after the Review Summary block closes), Critical,
+Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good. This list
+is the authority on where a present section goes; a section absent from it has no defined
+position.
 
 READABILITY: the finding prose and narrative sections follow the shared readability standard (sourced via han-communication:readability-guidance)
 — each finding leads with what to do and why, one idea per paragraph, short active sentences,
@@ -31,9 +33,11 @@ part of that one place, not a second copy of it.
 <!-- A corrective finding's severity is already carried by its task-ID prefix (CRIT-/WARN-/SUGG-). A security finding's task ID does not encode a tier, so show the tier inline in the Task ID cell — e.g. `SEC-001 (Critical)` — so the table stands alone as the complete severity-ordered index. -->
 
 <!-- The Description cell carries the fix route, and opens with `May never fire —` on any finding the review established
-may not be reachable. Both cues sit here so a person triaging thirty findings gets them before opening any one of them;
-a longer finding body would leave the triage exactly where it was. The cell stays an index entry, not a second copy of
-the finding's prose. Security findings show `—` for the route: their Remediation note carries it. -->
+may not be reachable, or with `Not checked —` on a Packaging finding, which reports something the review did not look
+at rather than something it proved (see review-checklist.md). The cues sit here so a person triaging thirty findings
+gets them before opening any one of them; a longer finding body would leave the triage exactly where it was. The cell
+stays an index entry, not a second copy of the finding's prose. Security findings show `—` for the route: their
+Remediation note carries it. -->
 
 <!-- If no issues were found, use the no-issues row instead. -->
 
@@ -55,6 +59,33 @@ the finding's prose. Security findings show `—` for the route: their Remediati
 <!-- No items: "This code can be approved." -->
 
 {Selected recommendation text}
+
+## Review Coverage
+
+<!-- Render this section ONLY when some planned coverage was absent: the run was in manual-only mode (defined in
+agent-dispatch.md), so no specialist read the change. Its absence means every planned coverage ran; do not render it to
+say so. It is a `##` heading, a peer of Recommended Changes, never a child of Review Summary, and it sits immediately
+after the Review Recommendation. -->
+
+<!-- The block stands alone for a reader who never saw the terminal. A reviewer on a pull request sees this file and
+never sees the closing message, so the block opens by naming its own cause. Then one row per item on the absent-coverage
+list agent-dispatch.md defines (every agent Step 3.2 selected, plus the independent validation pass), in the grammar
+below. Name coverage in plain English; carry no agent identifier and no internal step number, because a reader on a pull
+request has no roster and no plugin. A `not swept` row ends with what to do instead, because a line with no verb aimed
+at the reader gets read as bookkeeping about the run. -->
+
+Agent dispatch was unavailable on this run, so no specialist read this change (manual-only mode).
+
+- **Absent:** {coverage name} — {swept by hand under {categories}. {what the sweep does not recover, if partial} | not swept — {why}. {what to do instead}}.
+
+<!-- Worked example of one run:
+
+Agent dispatch was unavailable on this run, so no specialist read this change (manual-only mode).
+
+- **Absent:** security review — swept by hand under Data Isolation, Error Handling, API Design. Nothing substitutes for an exploit path demonstrated against the code.
+- **Absent:** concurrency review — not swept; no checklist category covers races or lock ordering. Check shared state and async ordering by hand before merging.
+- **Absent:** independent validation of the findings — not swept; the findings below were not re-checked against the code by a second pass. Weigh each on its own evidence.
+-->
 
 ## Recommended Changes
 

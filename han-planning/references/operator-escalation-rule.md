@@ -20,7 +20,7 @@ reaches them.
 The rules here govern escalations only. They do not govern the opening confirmation turn, and they do not replace the
 habit of grouping findings by the decision they affect, which stays as an ordering.
 
-Consumers: `plan-a-feature`, `plan-implementation`, `plan-a-phased-build`, and `plan-work-items`.
+Consumers: `plan-a-feature`, `plan-a-change`, `plan-implementation`, `plan-a-phased-build`, and `plan-work-items`.
 
 ## One question per turn
 

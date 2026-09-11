@@ -31,6 +31,11 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   `file:line`. No vague suggestions.
 - **Brittleness has a cost.** Tests that break on every refactor and catch bugs rarely are net-negative. The agent
   defers tests when the brittleness risk outweighs the value.
+- **A test earns its place by catching something.** Every recommendation and every deferral names its **discriminating
+  power**: a specific weakening of the code (a dropped term, a skipped filter, an inverted guard) the test would catch,
+  and which existing tests already fail under that same change. The set of changes a test catches is its **kill set**,
+  and a candidate whose kill set holds nothing new is deferred as redundant. The agent cannot run tests, so it predicts
+  this from reading assertions and labels it as a prediction.
 - **Existing patterns first.** New tests must match the project's existing framework, naming, and helper conventions. If
   no tests exist, the agent recommends the framework and structure based on the project's language and ecosystem before
   listing test cases.
@@ -106,7 +111,14 @@ existing test suite (the agent reads it to learn conventions).
 The agent enforces the **Speculative Test** rule. These are YAGNI candidates: tests for code paths that don't exist yet,
 hypothetical adversaries the change does not touch, and branches that internal callers fully control. So is
 symmetry/completeness coverage (_"we tested create, so we should test delete"_ when delete isn't implemented). They move
-to Deferred / Skipped Tests with a named _reopen-when_ trigger. When many speculative low-level tests can be replaced by
+to Deferred / Skipped Tests with a named _reopen-when_ trigger.
+
+Every deferral also carries its **discriminating power**: the code change the proposed test would catch, and the
+existing test that already fails under that same change. A test whose assertion fails only where an existing one
+already fails adds nothing and is deferred on that ground. One that no existing test catches is recommended, whatever
+coverage appears to sit elsewhere. The agent cannot run tests, so it predicts this from reading assertions and says so.
+The point is that a deferral survives the obvious challenge: a reader who grants the path is reachable can still ask
+what the new assertion would add, and "it is covered elsewhere" does not answer that. When many speculative low-level tests can be replaced by
 one durable behavioral test that catches the same realistic failure modes, the agent recommends the single test.
 
 See [YAGNI](../../../docs/yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
@@ -151,3 +163,4 @@ URL: http://www.growing-object-oriented-software.com/
   spec-stage team when the feature commits to observable behaviors worth making testable.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Makes this agent available as a
   specialist in spec mode.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist, to name which existing tests pin the behavior a delta entry claims to preserve.

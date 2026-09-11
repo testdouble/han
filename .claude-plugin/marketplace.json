@@ -80,6 +80,12 @@
       "version": "1.1.1"
     },
     {
+      "name": "han-ddd",
+      "source": "./han-ddd",
+      "description": "Strategic Domain-Driven Design analysis for the Han suite. Discovers domain boundaries, identifies bounded context candidates (strongly expressed, latent, and speculative), finds boundary leaks, and produces an evidence-backed domain and context map for an existing codebase. Depends on han-communication and han-core. Opt-in: not bundled by the han meta-plugin.",
+      "version": "1.0.0"
+    },
+    {
       "name": "han-plugin-builder",
       "source": "./han-plugin-builder",
       "description": "Guidance for building Claude Code skills, agents, and plugins. The guidance skill answers authoring questions and, run with init, vendors the full guidance set into a repo as a path-scoped rule index so the right guidance surfaces while editing skill and agent files. Opt-in and dependency-free: installed on its own, not pulled in by the han meta-plugin.",

@@ -186,6 +186,7 @@ URL: https://cwe.mitre.org/
   covers data-level governance.
 - [`adversarial-validator`](./adversarial-validator.md). Pair when you want the security report challenged by another
   adversarial agent.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist when the change moves a trust boundary.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why this agent uses precise vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

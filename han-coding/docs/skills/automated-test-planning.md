@@ -36,8 +36,9 @@ to use the skill. For what the skill does internally, read the skill definition 
   Classification comes from both agents' rankings mapped into a unified scheme.
 - **Unified IDs with cross-reference.** `TP-001`, `TP-002`, … with the original agent ID recorded (for example, _"TP-001
   (from T3)"_).
-- **Three review modes.** Mode A (full git context, branch vs default), Mode B (uncommitted/staged changes), Mode C (no
-  git, glob-discovered files).
+- **Git context modes.** Mode A (full git context, branch vs default), Mode B (uncommitted/staged changes), Mode C (no
+  git, glob-discovered files). These describe how much git context the run has; the focused / full distinction below is
+  a separate axis set by the size band.
 - **Plain-language spine, technical reference below.** The plan leads with a Summary, a What Needs Testing and Why
   themes section, and a What Each Test Covers walkthrough, all in plain language. The per-item detail (test level, code
   paths, approach, priority justification), deferred and dropped items, coverage counts, and scope sit below under a
@@ -81,13 +82,15 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 ## How to invoke it
 
-Run `/automated-test-planning` in Claude Code. Optionally pass a scope or a focus description.
+Run `/automated-test-planning` in Claude Code. Optionally pass a size, a scope, or a focus description.
 
 Give it:
 
-1. **Scope.** File paths, directories, or a description of what should be tested. Without arguments, the skill uses the
+1. **A size, optional.** `small`, `medium`, `large`, or `dynamic` as the first argument. Without one, the skill
+   classifies the request itself and tells you which band it chose.
+2. **Scope.** File paths, directories, or a description of what should be tested. Without arguments, the skill uses the
    current branch's changed files (Mode A/B) or Glob-discovers source files (Mode C).
-2. **A focus description, optional.** _"Plan tests for the payment processing refactor I just finished."_ The
+3. **A focus description, optional.** _"Plan tests for the payment processing refactor I just finished."_ The
    description reaches both agents and sharpens their analysis.
 
 Example prompts:
@@ -96,6 +99,27 @@ Example prompts:
 - `/automated-test-planning src/auth/`. Create a test plan scoped to the auth directory.
 - `/automated-test-planning`. _"Plan tests for the payment processing refactor I just finished."_
 - `/automated-test-planning src/billing/invoice.ts src/billing/tax.ts`. Focus on two specific files.
+- `/automated-test-planning`. _"Is it worth adding a spec context for the disabled case here?"_ A narrow question runs
+  in focused mode and comes back as a short answer.
+- `/automated-test-planning large`. Force the full roster on a change the signals would have classified smaller.
+
+## Sizing
+
+The skill classifies every run as **small**, **medium**, or **large**, and the band decides both the agent roster and
+the shape of what comes back.
+
+| Band                  | Signals                                                                       | What runs                                                         |
+| --------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Small** _(default)_ | A question naming specific tests, or one a single agent can settle; 1-3 files | Focused mode: `test-engineer` alone, no reviewers, a prose answer |
+| **Medium**            | 4-10 files, or one cross-cutting concern                                      | Full mode: the full roster and the full template                  |
+| **Large**             | More than 10 files, multiple subsystems, or security or data implications     | Full mode: the full roster and the full template                  |
+
+Classification reads your request first and the resolved file list second, so a narrow question asked on a busy branch
+still lands in focused mode. Pass `small`, `medium`, `large`, or `dynamic` as the first argument to override, or set a
+standing default with `default-swarm-size` in [`.han/config.md`](../../../docs/configuration.md). The prerequisite,
+behavioral, and YAGNI sweeps run in both modes, so a focused answer is shorter without being less filtered.
+
+See [Sizing](../../../docs/sizing.md) for how bands work across the suite.
 
 ## What you get back
 
@@ -136,9 +160,12 @@ items land.
 
 ## Cost and latency
 
-The skill dispatches two always-on agents (`test-engineer`, `edge-case-explorer`) plus up to two conditional agents
-(`concurrency-analyst`, `adversarial-security-analyst`) in parallel, all on their default models. After the plan is
-generated, two reviewers (`information-architect`, `junior-developer`) run in parallel against it. Once the plan is
+Cost tracks the size band. In focused mode the skill dispatches `test-engineer` alone and runs no reviewers, so a
+narrow question costs one agent plus the readability pass.
+
+In full mode it dispatches two always-on agents (`test-engineer`, `edge-case-explorer`) plus up to two conditional
+agents (`concurrency-analyst`, `adversarial-security-analyst`) in parallel, all on their default models. After the plan
+is generated, two reviewers (`information-architect`, `junior-developer`) run in parallel against it. Once the plan is
 final, the skill runs one `han-communication:readability-editor` rewrite of its prose, so expect one additional
 readability pass. Typical runs are a few minutes. The 40-item cap keeps non-security output bounded; security items are
 uncapped, and dropped items are surfaced explicitly so nothing is quietly omitted.

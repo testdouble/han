@@ -74,8 +74,19 @@ The draft, rewritten in place (or returned inline when the deliverable is conver
   first, descriptive headings, one idea per paragraph, short and active sentences, common words with no blocklisted words and a
   half-sentence explanation for every term the reader cannot look up, progressive disclosure, technical detail
   separated from the sentences, and the shape the reader asked for when the dispatch relayed one.
-- **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived.
-  Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
+- **Blocklist check on its own text.** Confirmation that the editor re-read the sentences it rewrote or inserted
+  against the vocabulary blocklist and the em-dash positions, naming anything it found and corrected. The rewrite is
+  the one place a fresh violation can originate, and several dispatching skills read only this report rather than
+  checking the text themselves, so the editor catches its own rather than leaving it to them. The pass corrects
+  violations only and leaves compliant wording alone.
+- **Insertions.** One line per sentence or clause the editor added that the draft did not carry, or the single word
+  `none`. Each line names the term it explained and quotes the span of the draft it wrote the explanation from, in the
+  form `Insertion: term="round cap" source="The round cap from Step 3 sets the upper bound"`. You can resolve the
+  quoted span against your own draft; you cannot resolve a bare claim that the editor stayed inside it. A quoted span
+  you cannot find means the editor wrote that sentence from something the draft does not carry.
+- **Fact-preservation ledger.** Only the facts the editor could not preserve in the rewrite's own wording and kept
+  verbatim instead, each one quoted, or `none`. The ledger does not assert that the rest survived: a blanket claim that
+  every fact is present is neither checkable by you nor falsifiable by the editor.
 - **Untouched regions.** The non-prose regions left unchanged.
 
 ## How to get the most out of it
@@ -131,12 +142,14 @@ command to act on. Its adversarial posture is aimed at the draft, never at the a
   [`/research`](../../../han-research/docs/skills/research.md), [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md),
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md),
   [`/plan-a-phased-build`](../../../han-planning/docs/skills/plan-a-phased-build.md),
-  [`/update-pr-description`](../../../han-github/docs/skills/update-pr-description.md), and
-  [`/stakeholder-summary`](../../../han-reporting/docs/skills/stakeholder-summary.md). The [Readability](../../../docs/readability.md)
+  [`/update-pr-description`](../../../han-github/docs/skills/update-pr-description.md),
+  [`/stakeholder-summary`](../../../han-reporting/docs/skills/stakeholder-summary.md), and
+  [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md). The [Readability](../../../docs/readability.md)
   per-skill table is authoritative.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent to audit and rewrite the
   finished design document for the engineer who will implement the contract and the reviewer who will approve it.
 - [`/edit-for-readability`](../skills/edit-for-readability.md). The standalone skill that
   dispatches this agent to rewrite a file, pasted text, or a conversation draft on demand.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent at Step 9.5 to rewrite the change plan's prose, leaving the verbatim code and the `S-N`, `C-N`, and `D-N` identifiers unchanged.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent's domain and rubric are kept narrow and named.

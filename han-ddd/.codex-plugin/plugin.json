@@ -1,0 +1,28 @@
+{
+  "name": "han-ddd",
+  "version": "1.0.0",
+  "description": "Strategic Domain-Driven Design analysis for the Han suite: domain boundary discovery, bounded context identification, and evidence-backed context mapping.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "ddd", "domain-driven-design", "bounded-context", "context-map"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han DDD",
+    "shortDescription": "Strategic Domain-Driven Design analysis and context mapping.",
+    "longDescription": "Analyzes an existing codebase using strategic Domain-Driven Design to discover domain boundaries, identify bounded contexts, find boundary leaks, and produce an evidence-backed domain and context map. Discovery and analysis only — does not recommend service splits or migration plans.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Analyze this repository's domain boundaries with /ddd-analysis.",
+      "Discover the bounded contexts in this codebase.",
+      "Produce a domain and context map for this project."
+    ]
+  }
+}

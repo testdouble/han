@@ -32,6 +32,10 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **Edits the plan in place.** No separate review document. Forward traceability lives in each `F#` finding's
   `Changed in plan:` field rather than inline markers; the only inline markers on plan sentences are the spec-aware-mode
   `([T#](...))` links that tag load-bearing mechanic-driven spec sentences.
+- **An un-pinned contract is a major finding.** A form two components must independently agree on that the plan names
+  but never shows in concrete terms is forced up to major, alongside auth, races, and ordering. An executed check backs
+  the judgment for the part that can be settled mechanically: a promise to author the form later, a resolution
+  condition that restates its own question, and a referenced document that is absent or empty.
 - **Numbering is stable across runs.** Re-run the skill on a plan that was already reviewed and new `F#` / `R#` entries
   append from the highest existing ID. Resolved findings do not re-surface.
 - **Verification framing is first-class.** _"Can you verify this will work?", "is this sound?",_ and _"check for
@@ -153,6 +157,11 @@ in-channel summary:
   not verify with the reason named. Identifiers inside fenced example blocks are ignored, so a format example never reads
   as a live citation. A check that did not pass is noted in the plan's `## Review History` section as well as the closing
   summary.
+- **A contract-pinning check over the plan file**, executed once per iteration. It reports the same three outcomes and
+  names four kinds of failure separately: a phrase promising to author a form later, an Open Item whose resolution
+  condition restates its own question, a referenced document that does not exist, and one too small to hold a contract.
+  Phrases inside fenced blocks are ignored, so a worked example never reads as a deferral. Each failure is recorded as a
+  major finding like any other.
 - An **`artifacts/feature-technical-notes.md`** companion file, in spec-aware mode only and created lazily. When you
   refine a `feature-specification.md` and the review surfaces a load-bearing mechanic (one that affects observable
   behavior), the skill extracts it to a `T#` entry in this file rather than leaking the mechanic into the spec. It then

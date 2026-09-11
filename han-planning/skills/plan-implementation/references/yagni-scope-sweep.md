@@ -4,7 +4,7 @@ The three gates Step 7.5 runs over every committed item in the plan: the evidenc
 simpler-version test, and the scope test.
 
 Before synthesis, walk every committed item the iterative loop has produced and run the YAGNI rule from
-[../../references/yagni-rule.md](../../../references/yagni-rule.md). Items in scope: every recommendation captured in
+[../../../references/yagni-rule.md](../../../references/yagni-rule.md). Items in scope: every recommendation captured in
 `artifacts/implementation-iteration-history.md`'s claim ledgers across all rounds, every Open Question that proposes
 adding an artifact, and every specialist recommendation that survived the loop without explicit deferral.
 
@@ -24,7 +24,7 @@ multi-region for unproven workloads, indexes for unrun queries, audit columns no
 don't exist yet.
 
 **The scope gate runs in the same sweep, as a third gate.** Per
-[../../references/scope-justification-rule.md](../../../references/scope-justification-rule.md), and this is the one skill of
+[../../../references/scope-justification-rule.md](../../../references/scope-justification-rule.md), and this is the one skill of
 the four with a discrete sweep step for it to attach to.
 
 3. **Scope test.** Does the recorded boundary in `artifacts/scope-boundary.md` ask for this, or exclude it by statement or

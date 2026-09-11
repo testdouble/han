@@ -73,9 +73,11 @@ A full review plus GitHub integration:
 
 - **The full `/code-review` report**, written to a file by that skill and read back from the path its closing message
   names. Review Summary table, Review Recommendation, and all findings organized by severity, plus any optional sections
-  (What's Good, Security Vulnerabilities, Remediation) that are present. The code-review skill renders a section only
-  when it has content, so the body builder treats every section other than the table and the recommendation as optional.
-  See the `/code-review` documentation for the detailed shape.
+  (Review Coverage, What's Good, Security Vulnerabilities, Remediation) that are present. The code-review skill renders a
+  section only when it has content, so the body builder treats every section other than the table and the
+  recommendation as optional. A Review Coverage section, present only when no specialist read the change, always crosses
+  to the pull request and is exempt from the clarity pass's length-matching, so the reviewers there see the same
+  disclosure the report carries. See the `/code-review` documentation for the detailed shape.
 - **An offer to post to GitHub.** `AskUserQuestion` with "Yes, post to GitHub" / "No, just the local review."
 - **When accepted.** The skill gathers PR metadata (`owner/repo`, `pr_number`, `head_sha`, author login, current user
   login) and runs a `junior-developer` clarity pass on the draft review body. That pass flags unclear wording,

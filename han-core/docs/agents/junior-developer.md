@@ -333,6 +333,7 @@ URL: https://www.nngroup.com/articles/5-whys/
   skills that dispatch this agent for generalist clarity and assumption checks.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent in its four-agent
   spine, at every size, to question the chosen option as a generalist who was not in the room.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Seats this agent on every review team at every size, so it asks whether the target structure is more structure than the recorded reason justifies, and reframes a question in plain terms before the run escalates it.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns even when the domain is "being a generalist."
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

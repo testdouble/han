@@ -149,9 +149,17 @@ Then wait. The person accepts the plan, changes it, or replaces it.
 Repeat until the plan is finished or the person ends it. The loop walks the concerns in the order the plan named, and
 the pieces inside each one in the order the plan named.
 
-1. **If the plan marked this piece expensive to walk back, ask first.** Follow the ask protocol in the stop rule: name
-   the dimension the choice turns on, offer no candidate answers, and accept a declined answer as a complete one. The ask
-   comes before the build, never after.
+1. **If the plan marked this piece expensive to walk back, ask first, in a turn of its own.** The ask opens this piece's
+   turn, after the person has responded to the previous stop, or to the plan when this is the first piece. Name the
+   dimension the choice turns on, offer no candidate answers, and end the turn. Never append the ask to that stop or
+   plan, BECAUSE a reply to it is a reply to that alone and answers nothing about this piece.
+
+   When the reply arrives, write it into the record in the person's words, against this ask, then build. A declined
+   answer is a complete one, and a question about the ask holds it open: answer it and end the turn again. The reply is
+   not routed through Step 6, which handles replies to a stop.
+
+   When an earlier turn already bundled the ask into a stop or the plan and the reply spoke only to that, the ask was
+   never posed on its own: present it now, on its own, before building.
 
 2. **Build one piece.**
 
@@ -170,15 +178,16 @@ the pieces inside each one in the order the plan named.
    checked, what changed, and one line saying the reasoning is available for the asking.
 
    When the piece closes a concern, say so in the position line and name the concern that comes next. That tells the
-   person the next response starts different work, which is the moment their review matters most.
+   person the next response starts different work, which is the moment their review matters most. That is a report
+   about what comes next, never a question about it.
 
 4. **End the turn.** Nothing further is built until the person responds. **Starting the next concern is not an
    exception**, however directly it follows from the one that just closed.
 
 ## Step 6: Act on the Response
 
-Write the response into the record before acting on it. When a recorded entry shapes this piece, name which entry it
-was.
+Write the response into the record, in the person's words and against the stop or ask it answers, before acting on it.
+When a recorded entry shapes this piece, name which entry it was.
 
 Then route by what the feedback touches, per the stop rule:
 

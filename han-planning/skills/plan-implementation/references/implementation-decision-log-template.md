@@ -58,7 +58,13 @@ decision log and find the outcome.
 ### D-1: {Short title}
 
 - **Question:** <!-- The implementation question this decision answers -->
-- **Decision:** <!-- What is being committed to, in outcome terms where possible -->
+- **Decision:** <!-- What is being committed to, in outcome terms where possible. When the decision resolves a
+  contract two or more components must agree on (a file or wire format, a persisted schema, an API or event
+  payload, a module or CLI signature, a config schema, an error or exit contract, an identity convention), this
+  field carries the concrete form inline: a worked example, a grammar line, or a field layout. A link to an
+  artifact that already exists concretely also closes it. A field-name list, a prose description, the name of a
+  document to be authored later, or any phrase from the non-closure list does not. Full rule in
+  [contract-pinning-rule.md](../../../references/contract-pinning-rule.md). -->
 - **Rationale:** <!-- Why this choice given outcome, constraints, and evidence -->
 - **Evidence:**
   <!-- File paths, ADR IDs, coding standards, metrics, specialist findings, or "user input" / "junior-developer reframing" -->

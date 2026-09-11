@@ -359,6 +359,7 @@ URL: https://danluu.com/postmortem-lessons/
   failure-path signal, at the medium band and above.
 - [Research backing this agent](../../../docs/research/on-call-engineer-research.md). The evidence-based research informing the
   agent's vocabulary, scope boundary, and tone calibration.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist, for the failure paths a responsibility shift can quietly relocate.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

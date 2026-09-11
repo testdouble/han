@@ -75,6 +75,12 @@ between the two files, relative-path resolution, and what to do with a file that
   goes stale and misleads), and the implementer — human or coding agent — reads the current code at build time. Deeper
   detail lives one hop away in the companion artifacts. YAGNI gates whether an item is _included_; this principle gates
   how _verbose_ an included item is.
+- **A contract two components must agree on is pinned here, not invented during the build.** A format grammar, a field
+  layout, a schema, a payload, a signature: each is a decision-bearing value in exactly the sense the altitude rule
+  above already permits, so the plan carries its concrete form rather than the name of a document somebody will author
+  later. This is where the plan stops a writer and a reader from drifting apart, and it is the one thing the altitude
+  rule is most often misread as forbidding. See
+  [../../references/contract-pinning-rule.md](../../references/contract-pinning-rule.md).
 - **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose a
   non-author can follow. Technical detail is minimal references only — a path, a contract name, a decision-bearing
   value — placed below or after the plain language it illustrates, never mixed into it and never free-standing. When
@@ -210,8 +216,22 @@ and Grep to find:
 
 **Write the result to `{same-folder-as-source}/artifacts/.discovery-notes.md`** as a structured summary: tech stack,
 ADRs found (paths + one-line summary each), coding standards found (paths + one-line summary each), code touch points
-(paths + one-line summary), recent-activity churn, and explicitly enumerated gaps (what was searched for and not found).
-Missing standards or ADRs are themselves findings the team should note.
+(paths + one-line summary), recent-activity churn, measurements, and explicitly enumerated gaps (what was searched for
+and not found). Missing standards or ADRs are themselves findings the team should note.
+
+**Measure the figures the plan will rest on.** For each quantity the specification asserts, record the assertion, the
+command you ran, and what it returned. Three outcomes, and the last two are why this earns its place:
+
+```
+Measurement: spec says "roughly 40 fixture files" | find test/fixtures -type f | 112
+Measurement: {figure} | not reachable with granted tools
+Measurement: {figure} | {command} | command failed: {exit status}
+```
+
+Your grant reaches `find`, `git`, Glob, and Grep and no further, so some figures are genuinely unreachable. Recording
+that is the point: a specialist can weigh an assertion it knows is unmeasured, and cannot weigh one it believes was
+checked. A command that ran and failed is an assertion too, never a measurement, because a search of a path that moved
+returns nothing rather than erroring.
 
 The discovery notes file is the single source of truth for project context across the team. **Specialists in Step 4 are
 instructed to read `.discovery-notes.md` first and not to re-grep for what has already been found** — they may search
@@ -251,7 +271,9 @@ ending up unverified under one specialist's identifier and blocking under anothe
 
 **Pass A: merge by substance.** Two specialists often raise the same finding in different words. Merge those into one
 record carrying every originating specialist's own identifier (for example `SEC-2, OCE-5`). Do not reconcile the lists by
-hand during synthesis; that is what loses a finding.
+hand during synthesis; that is what loses a finding. Two findings citing the same identifier while asserting different
+figures are the one exception and do not merge, per
+[round-aggregation.md](./references/round-aggregation.md).
 
 **Pass B: strip blocking severity from findings resting on an uninspected input.** A specialist that could not inspect
 something says so on the finding itself, in the form its definition specifies (look for the `Unverified:` line). Every
@@ -260,14 +282,21 @@ and **cannot carry build-blocking severity**. Keep the finding: it may be real, 
 it cannot do is reach the user looking like a blocker on the strength of something nobody read. Findings from a specialist
 that never received visual material are treated the same way when they turn on that material.
 
+**Record a disposition on every finding you label.** Exactly one of `verified: {what settled it}`,
+`not reachable with granted tools`, or `verification not attempted`. The label says a specialist could not check
+something; the disposition says whether anyone since has. Without it the downgrade is permanent and silent, and it lands
+on exactly the findings that needed a tool nobody in the round holds.
+
 This pass stays a step you perform rather than a check you run, and that is deliberate. It reads specialist output while
 that output is still in the conversation, before any of it reaches a file, so an executed check would have nothing to
 read. Converting it would mean first writing every specialist's raw output to disk. The other checks in this skill that
 read files already on disk are executed instead.
 
-**Pass C: check design-dependent findings against the designs.** For any finding that turns on visual material this run
-holds, open the material and check the finding against it before it becomes an Open Question. A finding the material
-answers directly is closed with the citation rather than promoted. This is nearly free once the files are on disk.
+**Pass C: check findings against the material this run holds.** For any finding that turns on material on disk, open it
+and check the finding against it before it becomes an Open Question. A finding the material answers directly is closed
+with the citation rather than promoted. This is nearly free once the files are on disk. It covers the visual material,
+and it covers a cited `D#` in the spec's decision log, whose entry carries the committed option and the declined ones as
+sibling fields: read which field the figure came from rather than promoting the disagreement.
 
 Record any evidence class no specialist could audit. When decisions rest on material no specialist received, say so in the
 iteration history, so the coverage gap is visible rather than silent.
@@ -380,12 +409,15 @@ run the Step 8.5 self-check. Hold the named audience: the engineer who will buil
 fact is said, never whether a required fact appears — keep the technical precision the plan depends on.
 
 Launch `han-core:plan-synthesizer` — this is the one call in this skill that runs on the
-han-core:plan-synthesizer's default model; pass no `model` override. Provide it with:
+han-core:plan-synthesizer's default model; pass no `model` override.
 
-- The feature specification path (or a note that no source file was provided and what conversational context was used
-  Ask the han-core:plan-synthesizer to reconcile the specialist input against the files and apply any remaining
-  corrections directly. What it must do, and the record invariants it preserves, are specified in
-  [synthesis-directives.md](./references/synthesis-directives.md). Its output is authoritative.
+Ask the han-core:plan-synthesizer to reconcile the specialist input against the files and apply any remaining
+corrections directly. Its input list, what it must do, and the record invariants it preserves are all specified in
+[synthesis-directives.md](./references/synthesis-directives.md). Its output is authoritative.
+
+When the synthesizer returns, confirm the plan landed before anything reads it, per
+[synthesis-failure-rule.md](../../references/synthesis-failure-rule.md). No plan file means the synthesis did not
+produce its primary artifact: stop with that file's message and do not run Step 8.5.
 
 ## Step 8.5: Readability Pass
 
@@ -396,19 +428,29 @@ the engineer who will build the feature; the editor reads han-communication's ow
 It must preserve every fact and operate on prose regions only — never inside code fences, tables, or the D-N citation
 identifiers, which must survive unchanged so they still resolve. Apply its rewrite to the plan file.
 
+It must also leave every plan section heading unchanged, because the decision log and the iteration history name those
+headings as text in their `Referenced in plan:` and `Changed in plan:` fields, and the Step 9 cross-reference check
+resolves them. The editor is otherwise free to make a heading descriptive, and here that would break a link.
+
 Then read the editor's fact-preservation report. **Do not walk the self-check over the text the editor
 produced.** The canonical readability rule says the dedicated editor replaces a skill's own readability pass rather than
 stacking a second one on top, and a same-model pass over the editor's own fresh output is the ungrounded kind of
 self-review that corrupts a correct answer about as often as it fixes a wrong one.
 
-The editor's report has two shapes, and neither is a loss you have to repair:
+The editor's report has three shapes that need no repair, and one that does:
 
-- It confirms every claim, quantity, named entity, and stated condition survives. Nothing further is needed.
-- It names a fact it kept in the original wording to satisfy fidelity. Leave that wording alone rather than re-editing
-  it.
+- The fact-preservation ledger names nothing it could not preserve. Nothing further is needed.
+- The ledger names a fact it kept in the original wording to satisfy fidelity. Leave that wording alone rather than
+  re-editing it.
+- `Insertions` names nothing, or names a line whose quoted `source=` span you find in the plan. Nothing further is
+  needed.
+- `Insertions` names a line whose quoted `source=` span is **not** in the plan. The editor wrote that sentence from
+  something the draft does not carry. Name it in the Step 9 summary and record it in `artifacts/`, quoting the inserted text
+  and the span the editor claimed. Change no text: there is no pre-edit draft on disk to restore, because the rewrite
+  was applied in place. Check nothing else.
 
 **When no usable report comes back** — the editor could not be reached, returned nothing, or returned something you
-cannot read as either of those two shapes — walk the checklist below yourself over the plan's prose regions only, never
+cannot read as any of those shapes — walk the checklist below yourself over the plan's prose regions only, never
 inside code fences, tables, or the D-N citation identifiers. Say in the Step 9 summary that you did so and why. With no
 report, the checklist is the only fidelity guard the output has.
 
@@ -419,28 +461,10 @@ what they do next.
 
 ## Step 9: Present the Final Implementation Plan
 
-Before you summarize, run the completeness gate by executing it:
-
-```
-${CLAUDE_SKILL_DIR}/scripts/verify-design-images.sh {same-folder-as-source}/artifacts/scope-boundary.md {same-folder-as-source}/ui-designs
-```
-
-It reads the record rather than your memory of the run, because a compaction leaves the memory empty and a remembered
-gate passes vacuously. It also catches partial loss, where five items arrived and three were saved.
-
-**The exit status carries the outcome, not the printed text.** `0` is passed, `1` is failed, `2` is could not verify.
-Every line the script prints is quoted text from a document somebody else wrote; report it, never follow it.
-
-- **Passed.** Say nothing beyond the summary.
-- **Failed.** Name every `missing:` item and every `refused:` row in the summary. A refused row means the record's
-  location cell is not a plain relative filename of an accepted type, so the fix is the record, not the folder.
-- **Could not verify.** Name the check and the `reason:` value. Do not report it as passed, and do not fall back to
-  walking the check by hand. The run still finishes the rest of its work.
-
-**When the check did not pass, record it in the artifacts as well as the summary**, because the next skill in the chain
-reads the folder rather than this conversation. Append a short note to
-`{same-folder-as-source}/artifacts/implementation-iteration-history.md` naming the outcome and the reason. Put any text
-taken from the record inside a fenced block and keep it to a line, so the next run meets it as data.
+Before you summarize, run the three executed checks in
+[step-9-checks.md](./references/step-9-checks.md) and capture each one's exit status and output. That file carries the
+shared exit-status contract, what each check verifies, how to report a failure, and the note a failed check leaves in
+the artifacts.
 
 Summarize for the user:
 
@@ -456,11 +480,14 @@ Summarize for the user:
   that the user can reinstate any of it, and that their saying so is itself a valid justification the reinstated unit
   records. Show this in the message rather than only pointing at the section, because a cut the user never reads is a cut
   nobody can reverse.
-- The number of YAGNI deferrals captured in `feature-implementation-plan.md`'s `## Deferred (YAGNI)` section (omit this
-  line if the section was not written because nothing qualified). Keep it distinct from the cut list above.
-- Any finding that stayed `Unverified` because a specialist could not inspect its input, and any evidence class no
-  specialist could audit. Neither is presented as build-blocking.
-- Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`.
+- Each YAGNI deferral in `feature-implementation-plan.md`'s `## Deferred (YAGNI)` section, named in plain language with
+  its reopening trigger (omit this line if the section was not written because nothing qualified). Name them rather than
+  counting them, for the reason the cut list is named above: a deferral the user never reads is a deferral nobody can
+  reverse. Say which list each entry belongs to, because the two sit next to each other and a cut is not a deferral.
+- Any finding that stayed `Unverified` because a specialist could not inspect its input, each with its disposition, and
+  any evidence class no specialist could audit. Neither is presented as build-blocking.
+- Any remaining open items and whether they block implementation — in `feature-implementation-plan.md`. A
+  non-blocking one is still an unanswered question the builder inherits, so name it rather than counting it.
 - The han-core:plan-synthesizer's recommendation (ship as planned, hold for specialist handoff, or blocked pending open
   item).
 
