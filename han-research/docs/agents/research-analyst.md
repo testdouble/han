@@ -70,7 +70,10 @@ Example prompts:
 
 ## What you get back
 
-You get an indexed Sources registry (A1, A2, …). Each entry carries a link or location, a retrieval date for web
+The return opens with one `Web search` line in one of two fixed forms, `used` or `not available`. Only `used` means a
+search ran; the dispatching skill copies the line into the report without rewording it.
+
+Then you get an indexed Sources registry (A1, A2, …). Each entry carries a link or location, a retrieval date for web
 sources, a trust class (codebase / web / provided), a short plain-language summary, and an evidence status (corroborated
 by A#, single source and caveated, or contradicted by A#).
 
