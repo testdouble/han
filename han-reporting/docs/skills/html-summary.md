@@ -67,7 +67,7 @@ One file: the source path with `.md` replaced by `.html`, written in the same di
 The HTML is structured in fixed executive order:
 
 1. **Header.** The summary subject as the `<h1>` title, with `Han: Stakeholder Summary` as the subtitle. No brand mark.
-2. **Bottom line card.** Purple accent strip; one-sentence lead plus 4–8 outcome bullets.
+2. **Bottom line card.** Purple accent strip; one-sentence lead in larger type; 4–8 outcome bullets in a two-column list.
 3. **Stakeholder asks card.** Orange accent strip; numbered decisions the team needs from stakeholders. Omitted entirely
    if the source has no asks.
 4. **Problem statement.**

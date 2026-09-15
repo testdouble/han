@@ -12,8 +12,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **What it does.** Audits a feature, change, service, pipeline, or environment for production readiness.
 - **When to dispatch it.** A change is approaching production and needs a principled readiness review covering hosting,
   observability, rollout, scale, cost, and compliance. Conditionally dispatched by `/architectural-analysis`,
-  `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the work
-  touches deployment, observability, rollout, scale, or cost.
+  `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`, `/plan-a-feature`, and
+  `/plan-implementation` when the work touches deployment, observability, rollout, scale, or cost.
 - **What you get back.** A production-readiness report with location, principle, and blast-radius per finding, plus
   P0/P1/P2 sequenced remediations.
 

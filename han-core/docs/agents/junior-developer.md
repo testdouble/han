@@ -12,7 +12,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **What it does.** Generalist stress-testing of plans, designs, and live discussions with the clarifying questions a
   respected junior-to-mid teammate would ask.
 - **When to dispatch it.** A plan, design, or decision looks good on paper and you want someone to force plain-language
-  restatement before specialists dig in. Always included in planning skill review rounds, and required in
+  restatement before specialists dig in. Always included in planning skill review rounds (`/plan-a-change` seats it
+  on every review team at every size), and required in
   `/gap-analysis` swarms at every size where it runs the actor-perspective sweep across human users, API callers, AI
   agents, integration partners, batch processes, and internal services.
 - **What you get back.** A report (artifact mode) or a set of clarifying questions (discussion mode) tied to specific

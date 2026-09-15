@@ -72,7 +72,9 @@ the skill. For what the skill does internally, read the skill definition at
   lands), not that the bug's error is raised.
 - **Restructuring existing code outside a TDD cycle.** Use [`/refactor`](./refactor.md). The refactor step inside `/tdd`
   cleans up only what the current red-green cycle touched; restructuring code that predates the cycle is its sibling's
-  job.
+  job. When the restructure spans several modules and the target structure is still open, plan it first with
+  [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md); its change plan is a valid input here for
+  the units that build new behavior.
 
 ## How to invoke it
 

@@ -81,6 +81,9 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   and keeps symbol names out; that one names the types and modules directly.
 - **Documenting an already-built feature.** Use `/project-documentation` when the feature exists and needs
   documentation.
+- **Mapping the bounded contexts of existing code.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md)
+  to discover where the domain's boundaries sit today. Bring its domain and context map here when the feature is a new
+  boundary or a service split the map identified.
 - **Contributing a new skill, agent, or documentation file to a plugin.** Follow the repository's `CONTRIBUTING.md`
   checklist. This skill is sized for software features grounded in a codebase. A plugin contribution is a
   conventions-driven file addition, and routing it through the full specification protocol produces more scaffolding
@@ -414,6 +417,9 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
 - [`/research`](../../../han-research/docs/skills/research.md). The upstream step when you had options to weigh before specifying. `/research`
   recommends an option among trade-offs; bring that recommendation here to turn it into a behavioral spec. The pairing
   is bidirectional: `/research` closes by pointing here.
+- [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md). The upstream step when the feature is a new boundary
+  or a service split in existing code. Its domain and context map names the boundary; this skill specifies the
+  behavior that crosses it.
 - [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after the synthesis pass to
   rewrite the specification's prose for the stakeholder or reviewer who reads it, preserving every fact and every `D#` /
   `T#` cross-reference identifier.

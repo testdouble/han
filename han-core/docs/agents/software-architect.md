@@ -16,7 +16,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **When to dispatch it.** Dispatch after the three architectural analysts and `risk-analyst` have produced findings for
   a focus area that lives inside a single codebase or bounded context. Then dispatch it when you want synthesis into
   recommended changes with pseudocode sketches. Always dispatched by `/architectural-analysis` (it runs on the synthesis
-  spine at every size). Conditionally dispatched by `/architectural-decision-record`, `/gap-analysis`,
+  spine at every size) and by `/plan-a-change` (it proposes the target structure at every size). Conditionally
+  dispatched by `/architectural-decision-record`, `/gap-analysis`,
   `/iterative-plan-review`, and `/plan-implementation` when the work touches intra-codebase module boundaries or
   abstractions. `/plan-a-feature` excludes it from the default spec-stage roster and includes it only when you ask for
   it by name.

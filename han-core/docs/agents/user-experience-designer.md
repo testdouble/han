@@ -13,8 +13,8 @@ and _how_ to dispatch the agent. For what the agent does internally, read the ag
   principles.
 - **When to dispatch it.** A UI surface needs a principled usability review independent of code correctness: before
   ship, after a recurring usability complaint, or during a structural redesign. Conditionally dispatched by
-  `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the spec or plan touches
-  user-facing flows, UI, interaction, or accessibility.
+  `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`, `/plan-a-feature`, and `/plan-implementation` when the
+  spec or plan touches user-facing flows, UI, interaction, or accessibility.
 - **What you get back.** A UX findings report with every finding tied to a specific UI location, a named UX principle,
   and a user-impact statement.
 

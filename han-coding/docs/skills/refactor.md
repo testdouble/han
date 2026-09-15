@@ -59,6 +59,10 @@ use the skill. For what the skill does internally, read the skill definition at
   target structure should be.
 - **Fixing a bug.** A fix changes behavior, which this skill never does. Use
   [`/investigate`](./investigate.md) and then drive the fix in with [`/tdd`](./tdd.md).
+- **Mapping domain boundaries before restructuring along them.** Use
+  [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md) to find where the bounded contexts sit; this skill
+  needs a named target and a named refactoring, and that map is where both come from when the smell is a domain
+  boundary the code ignores.
 - **Building new behavior.** Use [`/tdd`](./tdd.md).
 
 ## How to invoke it

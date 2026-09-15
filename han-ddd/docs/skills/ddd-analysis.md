@@ -53,6 +53,9 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   map identifies the boundary.
 - **Investigating a specific bug or failure.** Use [`/investigate`](../../../han-coding/docs/skills/investigate.md)
   instead.
+- **Restructuring code along the boundaries the map finds.** Use
+  [`/refactor`](../../../han-coding/docs/skills/refactor.md) to carry out a named refactoring against a named target;
+  this skill produces the map and changes no code.
 
 ## How to invoke it
 

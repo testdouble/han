@@ -6,8 +6,9 @@ description: >
   re-run after every step. Use when the user wants to refactor, restructure, clean up, simplify, or improve the design
   of existing code, or to apply refactoring recommendations from a code-review or architectural-analysis report. This
   skill changes code; it does not review code (use code-review), assess architecture (use architectural-analysis), plan
-  a multi-module restructure before executing it (use plan-a-change), or build new behavior test-first (use tdd). Do not use it on code inside an active tdd loop; the refactor step of tdd
-  owns that cleanup. Runs its planned sequence to completion without pausing for review; to review each named
+  a multi-module restructure before executing it (use plan-a-change), map domain boundaries before restructuring along
+  them (use ddd-analysis), or build new behavior test-first (use tdd). Do not use it on code inside an active tdd loop;
+  the refactor step of tdd owns that cleanup. Runs its planned sequence to completion without pausing for review; to review each named
   refactoring as it lands, use pairing.
 argument-hint: "[file, module, named smell, or a path to review findings]"
 allowed-tools:

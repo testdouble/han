@@ -12,7 +12,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **What it does.** Analyzes the runtime behavior of a specified codebase focus area: data flow, error propagation,
   state management, and integration boundaries. Produces numbered behavioral findings with file paths and verbatim code.
 - **When to dispatch it.** You want a principled runtime-behavior pass on a module or focus area, independent of static
-  structure or concurrency. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`.
+  structure or concurrency. Always dispatched by `/architectural-analysis` and by `/plan-a-change` in its discovery
+  round. Conditionally dispatched by `/code-review`.
   Dispatched by `/investigate` when the symptom matches a data-flow or error-propagation bug. Dispatched by
   `/plan-implementation` by signal when plan sections describe runtime behavior, data flow, error propagation, or state.
   Conditionally dispatched by `/iterative-plan-review` when the review covers runtime behavior, data flow, error

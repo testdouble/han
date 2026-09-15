@@ -7,7 +7,7 @@ description: >
   focused on system behaviors, not implementation detail. Does not plan a restructure of code that already exists — use
   plan-a-change. Does not refine or stress-test an existing plan — use iterative-plan-review. Does not document already-built features — use project-documentation. Does not design the
   contract for an interface — use design-an-api. Does not research open-ended options before there is a feature to
-  specify — use research.
+  specify — use research. Does not map the bounded contexts of existing code — use ddd-analysis.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature description, optional: output folder path]"
 allowed-tools:

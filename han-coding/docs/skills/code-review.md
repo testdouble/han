@@ -133,6 +133,9 @@ to use the skill. For what the skill does internally, read the skill definition 
   data flow, concurrency, and SOLID assessment across a module.
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial
   validation.
+- **Mapping bounded contexts or domain boundaries.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md)
+  to discover where the domain's boundaries sit and where the code's boundaries diverge from them. This skill judges the
+  code in front of it; that one maps the domain the code is trying to express.
 - **Test planning in isolation.** Use [`/automated-test-planning`](./automated-test-planning.md) when you want a prioritized test plan
   without a full correctness review, or [`/manual-test-planning`](./manual-test-planning.md) for a plain-language plan
   a person runs by hand.

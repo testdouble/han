@@ -16,7 +16,8 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   `/automated-test-planning`. Conditionally dispatched by `/plan-a-feature` as part of the spec-stage team when the feature
   commits to observable behaviors worth making testable. Conditionally dispatched by `/code-review` when the file list
   suggests coverage gaps. Conditionally dispatched by `/plan-implementation` for the implementation plan's testing
-  strategy. Available as a specialist in `/iterative-plan-review` spec mode.
+  strategy. Conditionally dispatched by `/plan-a-change` whenever a behavior-preservation claim needs an existing test
+  to rest on. Available as a specialist in `/iterative-plan-review` spec mode.
 - **What you get back.** A `test-plan.md` with `T#` recommendations, each citing an entry point with `file:line`, a test
   level (unit / integration / end-to-end), test approach (behavior, stubs, input/action, expected output, expected
   commands), and a brittleness assessment. Plus a Deferred section for tests where brittleness outweighs value.

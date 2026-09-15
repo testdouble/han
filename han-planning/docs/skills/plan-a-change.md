@@ -208,6 +208,9 @@ safe.
   this skill's: it keeps symbol names out, because it specifies what a user observes.
 - [`/plan-work-items`](./plan-work-items.md). The usual next step, converting the sequenced change units into
   independently-grabbable work.
+- [`/refactor`](../../../han-coding/docs/skills/refactor.md). Carries out a behavior-preserving change unit once the
+  plan names its target and its refactoring.
+- [`/tdd`](../../../han-coding/docs/skills/tdd.md). Builds a behavior-changing change unit test-first.
 - [`software-architect`](../../../han-core/docs/agents/software-architect.md). Proposes the target structure at Step 4,
   under the YAGNI and contract-pinning directives.
 - [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). Reframes a question in plain terms before the

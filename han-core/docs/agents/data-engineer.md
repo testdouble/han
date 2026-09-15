@@ -13,7 +13,8 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   protocols.
 - **When to dispatch it.** A schema change, migration, or data-access layer needs a principled review before it ships.
   Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/design-an-api`, `/gap-analysis`,
-  `/investigate`, `/iterative-plan-review`, and `/plan-implementation` when the change or focus area touches data.
+  `/investigate`, `/iterative-plan-review`, `/plan-a-change`, and `/plan-implementation` when the change or focus area
+  touches data.
 - **What you get back.** A data-engineering findings report with location, principle, and data-level impact per finding,
   plus P0/P1/P2 sequenced remediations.
 
