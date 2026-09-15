@@ -11,19 +11,19 @@
       "name": "han",
       "source": "./han",
       "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han-communication, han-core, han-documentation, han-research, han-planning, han-coding, han-github, and han-reporting so installing it pulls them all in. Does not bundle the opt-in han-feedback, han-atlassian, or han-plugin-builder plugins.",
-      "version": "5.4.0"
+      "version": "5.5.0"
     },
     {
       "name": "han-communication",
       "source": "./han-communication",
       "description": "Foundational communication plugin for the Han suite. Owns the canonical readability standard, writing-voice profile, and explanation standard, the readability-guidance skill that surfaces the first two into a calling skill's context for in-voice drafting, the explanation-guidance skill that surfaces the third at the point a run talks to a person, the readability-editor agent that runs the adversarial rewrite, and the edit-for-readability skill. Depends on nothing and sits beneath every other plugin; the plugins that produce prose output depend on it.",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     {
       "name": "han-core",
       "source": "./han-core",
       "description": "The shared foundation of the Han suite: the specialist agent roster the other plugins dispatch, the project-discovery skill with its project-scanner agent, and the canonical evidence and YAGNI rule files. The documentation skills live in han-documentation, the pre-planning research skills in han-research, the planning skills in han-planning, and the coding skills in han-coding; each depends on han-core.",
-      "version": "3.1.1"
+      "version": "3.2.0"
     },
     {
       "name": "han-documentation",
@@ -35,31 +35,31 @@
       "name": "han-research",
       "source": "./han-research",
       "description": "Pre-planning knowledge-work skills for the Han suite: understanding a problem before anyone commits to a plan. Home of research, gap-analysis, and issue-triage, plus the research-analyst agent. Depends on han-communication and han-core; bundled by the han meta-plugin.",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "name": "han-planning",
       "source": "./han-planning",
       "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, and iterative-plan-review, plus the discussion-facilitator agent. Depends on han-communication and han-core; bundled by the han meta-plugin.",
-      "version": "2.2.1"
+      "version": "2.3.0"
     },
     {
       "name": "han-coding",
       "source": "./han-coding",
       "description": "Code-writing and execution skills for the Han suite. Home of the tdd skill, which drives a feature or behavior through a BDD-framed red-green-refactor loop with an enforced observed-failure gate. Depends on han-core and han-communication; bundled by the han meta-plugin.",
-      "version": "3.3.0"
+      "version": "3.4.0"
     },
     {
       "name": "han-github",
       "source": "./han-github",
       "description": "GitHub-specific extensions to Han. Provides skills to post code reviews as PR comments, update a PR description with a consistent format, and other GitHub-facing workflows.",
-      "version": "2.3.1"
+      "version": "2.3.2"
     },
     {
       "name": "han-reporting",
       "source": "./han-reporting",
       "description": "Reporting and summary skills for the Han suite. Turns feature specifications into plain-language stakeholder summaries (also called executive or business summaries) with diagrams, for sharing with non-technical stakeholders before implementation kicks off.",
-      "version": "2.2.1"
+      "version": "2.2.2"
     },
     {
       "name": "han-feedback",
@@ -77,7 +77,7 @@
       "name": "han-linear",
       "source": "./han-linear",
       "description": "Linear-facing extensions to the Han suite. Adds work-items-to-linear, which creates one Linear issue per slice from a work-items file. Works through the Linear MCP server and requires it to be configured. Depends on no other Han plugin. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
-      "version": "1.1.1"
+      "version": "1.1.2"
     },
     {
       "name": "han-ddd",
@@ -89,7 +89,7 @@
       "name": "han-plugin-builder",
       "source": "./han-plugin-builder",
       "description": "Guidance for building Claude Code skills, agents, and plugins. The guidance skill answers authoring questions and, run with init, vendors the full guidance set into a repo as a path-scoped rule index so the right guidance surfaces while editing skill and agent files. Opt-in and dependency-free: installed on its own, not pulled in by the han meta-plugin.",
-      "version": "2.2.0"
+      "version": "2.2.1"
     }
   ]
 }

@@ -1,5 +1,309 @@
 # Han Release Notes
 
+## v5.5.0
+
+han 5.5.0 adds an opt-in Domain-Driven Design plugin, a second planning entry point for code that already exists, and
+closes nine tracked issues, six of them feedback records from Han's own runs. `han-ddd` (1.0.0) is new: `/ddd-analysis`
+and six agents map bounded context candidates, business capabilities, domain language, and ownership in an existing
+codebase, then render the model as diagrams. `han-planning` (2.3.0) ships `/plan-a-change` for architecture-driven
+changes, pins every shared contract before implementation, and closes six gaps in `/plan-implementation`. `han-core`
+(3.2.0) gives the pre-build ask in `/pairing` a turn of its own and makes the two test agents argue a deferral from
+discriminating power. `han-coding` (3.4.0) sizes `/automated-test-planning` to the question asked and gives
+`/code-review` a manual-only mode that says what it did not check. `han-communication` (1.2.1) makes the readability
+editor check its own insertions, `han-research` (1.0.2) says whether web search ran in every report, `han-github`
+(2.3.2) carries review coverage to the pull request, `han-reporting` (2.2.2) and `han-plugin-builder` (2.2.1) pick up
+small authoring fixes, and `han-linear` (1.1.2) gains a Codex manifest. `han-documentation` (1.0.1), `han-feedback`
+(2.0.2), and `han-atlassian` (2.3.1) are unchanged.
+
+### han v5.5.0
+
+#### The Codex catalog lists every plugin, and a test keeps it that way
+
+`.agents/plugins/marketplace.json` omitted `han-documentation`, `han-research`, and `han-linear`, so
+`codex plugin add han-documentation@han` failed with "plugin not found in marketplace" even though the first two had
+carried a valid `.codex-plugin/plugin.json` since they were scaffolded.
+[@ethan-hann](https://github.com/ethan-hann) reported it in issue #198, and PR #210 added the three catalog entries.
+Nothing in the test, lint, or CI chain had read a manifest or a marketplace file, so the same PR adds
+`test/codex-packaging.bats`. The directory tree is the authority: every `han-*` directory needs a Codex manifest and a
+catalog entry whose name and path sit in the same entry. Version parity and description parity are deliberately not
+asserted. `test/sanity.bats` widens to name this second category of `test/` checks.
+
+#### The sizing-aware lists agree with each other
+
+`docs/quickstart.md` listed nine sizing-aware skills and `docs/concepts.md` twelve, where thirteen skills classify their
+own work and `docs/sizing.md` already said so. [@amirbiron](https://github.com/amirbiron) reported it in issue #200,
+and PR #211 brought both pages in line and made `CONTRIBUTING.md` step 6 name the quickstart beside the sizing and
+concepts catalogs, which is why the quickstart had fallen four months behind. The same PR fixes two pages that stated
+the `han-reporting` dependency exception correctly and then contradicted it a few lines later: on
+`docs/choosing-a-han-plugin.md` the exception now sits in the bold sentence a skimming reader stops on, and
+`docs/concepts.md` now says what a reporting-only install gives you instead of listing it among installs that do not
+exist. The `README.md` banner gains alt text, the only image embed in the repo's prose.
+
+#### The cross-plugin surfaces carry the new plugin and the new skill
+
+`README.md`, `CONTRIBUTING.md`, `CLAUDE.md`, `docs/choosing-a-han-plugin.md`, `docs/concepts.md`,
+`docs/skills/README.md`, `docs/agents/README.md`, and `docs/workflows.md` register `han-ddd` and its agents, and
+`docs/workflows.md` gains a `/ddd-analysis` chain. `/plan-a-change` joins the sizing, YAGNI, evidence, readability, and
+`han-planning` enumerations in `docs/concepts.md`, the per-skill table in `docs/sizing.md`, and the per-skill table in
+`docs/readability.md` alongside `/design-an-api` and `/ddd-analysis`. `docs/sizing.md` records that `/ddd-analysis`
+sizes analysis depth rather than team size and defaults to medium, and qualifies the claim that the default is small.
+`CLAUDE.md` records `synthesis-failure-rule.md`, names `scripts/` under every `han-planning` skill, and drops the line
+that called the missing `han-linear` Codex manifest intentional.
+
+#### The planning records behind this release
+
+`docs/plans/` gains eight plan folders, one per tracked fix (issues #107, #148, #193, #194, #198, #200, #201, and #212),
+each carrying its plan, decision log, current-state findings, and scope boundary.
+
+#### Dev tooling
+
+Dependabot PR #199 bumps `actions/checkout`, `actions/setup-node`, and `actions/cache` in `.github/workflows/ci.yml`,
+and `@j178/prek` and `prettier` in `package.json`.
+
+### han-ddd v1.0.0 (new)
+
+`han-ddd` is an opt-in plugin for strategic Domain-Driven Design analysis of an existing codebase. It depends on
+`han-communication` and `han-core`, is not bundled by the `han` meta-plugin, and ships in both marketplace manifests.
+[@mattsnyder](https://github.com/mattsnyder) authored it in PR #197.
+
+#### /ddd-analysis maps bounded context candidates from evidence
+
+`/ddd-analysis` resolves scope, inventories the repository, runs parallel discovery across `domain-language-analyst`,
+`business-capability-analyst`, `domain-ownership-analyst`, `han-core:structural-analyst`, and
+`han-core:behavioral-analyst`, has `bounded-context-modeler` build a model and `bounded-context-critic` evaluate it,
+allows exactly one revision pass, and renders a report from `references/ddd-analysis-report-template.md` covering the
+domain landscape, ubiquitous language, business capabilities, current, latent, and speculative contexts, boundary
+problems, the context map, rejected candidates, questions for domain experts, and an evidence index.
+
+Two hard gates stand before rendering. Identifier-integrity and speculative-isolation errors stop the run, and
+speculative isolation covers the Owns, Consumes, Does not own, Responsibilities, and Relationships fields. The critic
+scans every field of every `BCM#` entry for strategic-relationship overreach. The closing message is restricted to
+discovery-only next steps: it never asserts that a boundary violation can be fixed, prescribes a correction, or
+recommends an extraction or refactor.
+
+#### domain-visualizer renders the model
+
+`domain-visualizer` runs as the final step after both gates pass, reads the eight persisted artifacts from the run
+folder, and writes Mermaid diagrams and Markdown tables to `visuals/`: domain landscape, capability map, workflow
+swimlanes, state machines, ownership map, language collision matrix, boundary friction map, domain question impact map,
+and scenario diagrams for competing interpretations. A visual-generation failure is isolated, so the model and the
+rendered report stay valid without it.
+
+Before shipping, a conformance pass trimmed every agent's role identity, removed two agents whose coverage the others
+already carried, re-synced the vendored `config-rule.md`, `evidence-rule.md`, and `yagni-rule.md` with the `han-core`
+canonical copies, added the `scripts/han-config-dir.sh` symlink every plugin carries, and brought the
+`bounded-context-critic` description under the 1024-character target.
+
+### han-planning v2.3.0
+
+#### /plan-a-change plans a restructure of code that already exists
+
+`/architectural-analysis` produces findings and stops, and `/plan-a-feature` specifies behavior a user observes while
+keeping symbol names out, so neither answered "these responsibilities are wrong, plan the fix".
+[@taminomara](https://github.com/taminomara) reported the gap in issue #183, and PR #207 added `/plan-a-change`. The
+skill establishes the current state, settles a target state, and produces a change plan that `/plan-work-items`,
+`/tdd`, or `/refactor` can build directly. Code-level names are the subject rather than a leak. The surface delta in
+`references/surface-delta-rule.md` is a target-state record: every element removed, added, moved, renamed, or re-scoped
+carries a statement that stays correct if every other entry were deleted, so a removal always says where the
+responsibility went. Behavior preservation is a gate: every delta entry is classified preserving, changing, or unknown,
+and the last two are escalated before they are committed. The run reads a prior findings report when one exists and
+dispatches its own structural, behavioral, and concurrency round when one does not. `/plan-a-feature` gains the
+reciprocal boundary clause, and the four shared planning rules list the new skill as a consumer.
+
+#### Shared contracts are pinned before implementation
+
+The planning chain had no checkpoint forcing an interface or data contract into concrete, buildable form, so a trusted
+plan could ship a shared contract as a to-be-authored deliverable and a builder would invent it mid-build.
+[@taminomara](https://github.com/taminomara) reported it in issue #107, and PR #204 added
+`references/contract-pinning-rule.md`, owned by `han-planning`. It defines what counts as a contract, what counts as
+pinned, the phrases that never close one, and which stage owns pinning it, with no deferred-with-reason state.
+`/plan-implementation` pins it through a new operating principle, a Decision-field rule, a specialist-brief directive,
+and a binary aggregation check that raises an Open Question. `/plan-work-items` keeps a contract whole in the item that
+introduces it, with consumers sequenced behind it, and Step 4 now reads the plan's non-blocking Open Items.
+`/iterative-plan-review` backstops it with five keywords in both force-up lists and a Contract Check in
+`references/iteration-checklist.md`; `/plan-a-feature` routes a shared contract to an Open Item instead of dropping it,
+and its `references/finding-resolution.md` forces such a finding up to major. `check-contract-pinning.sh` gives the rule
+a mechanical proxy, reporting four failure classes separately and skipping fenced blocks, and two tests keep the two
+per-skill copies byte-identical and every phrase the script owns present in the canonical rule.
+
+#### /plan-implementation closes six gaps
+
+[@zaBees](https://github.com/zaBees) reported six gaps in issue #193, and PR #208 closed them. Four had the same shape:
+a mechanic written in one file that the file which must honor it never read back, and each now has a named reader.
+Synthesis writes the plan first, so both companion files write backward into a file that exists and a mid-run death
+leaves the primary artifact. `scripts/check-plan-cross-references.sh` resolves the links in both directions, and the new
+`references/synthesis-failure-rule.md` stops `/plan-implementation` and `/plan-a-feature` from running the readability
+pass against a plan that was never written. Specialists cite a decision's field rather than the whole entry, and two
+findings citing one identifier with different figures no longer merge. Discovery measures the figures its tools reach
+and records what they cannot, rather than passing a spec assertion through as fact. All four consuming skills had their
+readability-editor branches rewritten to match the narrowed Insertions ledger, since each tested for a sentence the
+ledger no longer emits. Run against the fourteen existing plan folders, the new check found the reported defect class in
+six of them.
+
+#### Script calls are prose, and /plan-a-feature is back under the ceiling
+
+Script calls in `/plan-a-feature`, `/plan-a-phased-build`, and `/plan-work-items` were fenced code blocks, which Claude
+may read as code to display rather than a command to run; every call site is now prose with an action verb.
+`plan-a-feature/SKILL.md` had reached 501 lines, so the `T#` note lifecycle moved whole into
+`references/t-note-protocol.md`. `.claude-plugin/plugin.json` no longer claims a `han-core`-only dependency while
+declaring `han-communication` too, and `references/collaborative-stop-rule.md` re-synced with the `han-core` copy.
+
+### han-core v3.2.0
+
+#### The pre-build ask in /pairing gets its own turn
+
+`references/collaborative-stop-rule.md` said the pre-build ask comes before the build and never forbade folding it into
+the tail of the previous piece's stop. A run did exactly that, read "commit and next" as declining an ask it had tucked
+under the previous stop, built the next piece without the person's read, and recorded "ask declined" as their decision.
+[@mxriverlynn](https://github.com/mxriverlynn) reported it in issue #201, and PR #213 fixed it. A stop now covers what
+closed and asks nothing about a later piece; the ask opens the marked piece's turn after the person has replied to the
+previous stop or to the plan; a reply to a stop or the plan never counts as declining an ask they have not answered; a
+question about the ask holds it open; and a bundled ask was never posed, so it is presented on its own before building.
+The build now waits for a reply to the ask, though a decline is a full reply. The record's entry form is pinned: the
+person's words, the stop or ask they answered, and any reading the run adds labeled as the run's. `/pairing` Step 5
+carries the same rule in the loop's terms, naming the next concern is a report and never a question, and Step 6 writes
+the response in the person's words. The long-form doc adds one turn per marked piece to its cost line.
+
+#### test-engineer and edge-case-explorer argue a deferral from discriminating power
+
+`test-engineer` could justify skipping a proposed test only by pointing at coverage elsewhere or at brittleness risk,
+and `edge-case-explorer` left "sufficient" undefined. [@mxriverlynn](https://github.com/mxriverlynn) reported it in
+issue #148, and PR #206 fixed it. `test-engineer` gains a fifth evaluation axis: name a specific weakening of the code
+under test, predict which existing tests fail under it, and defer only when an existing test already catches everything
+the candidate would, with a Redundant Kill Set anti-pattern, a required Discriminating power field on every deferred
+item, and a rule against deferring on coverage location alone. `edge-case-explorer` now calls a test sufficient only
+when it fails under a change that breaks that case. Neither agent has a test runner, so both state that the answer is a
+prediction from reading assertions and name the test and assertion it came from.
+
+Fourteen agent long-form docs name `/plan-a-change` as a dispatcher, and the `adversarial-validator` doc names the
+citation-support charter its `/research` dispatch now carries.
+
+### han-coding v3.4.0
+
+#### /automated-test-planning sizes its run to the question asked
+
+The skill classified nothing, so a narrow yes/no question ran the same pipeline as a whole-branch analysis: up to seven
+agent dispatches, a nine-section document, and two reviewers over it. [@mxriverlynn](https://github.com/mxriverlynn)
+reported it in issue #148, and PR #206 added a size band with the shape `/code-review` and `/iterative-plan-review`
+already use. Small defaults to a focused mode with one agent, no conditional specialists, no reviewers, and a prose
+answer in place of the template; medium and large are unchanged. Classification reads the request before Step 1's file
+list, because that list falls back to the whole branch when no scope is named. Step 3's behavioral, prerequisite, and
+YAGNI sweeps run in both modes, so a focused answer is shorter without being less filtered.
+
+#### /code-review says what it did not check
+
+[@zaBees](https://github.com/zaBees) reported in issue #194 three runs where `/code-review` confirmed a reference
+existed without confirming it pointed at the right thing, or produced a complete-looking report without saying what it
+had not done, and PR #209 fixed them. The skill gains a named manual-only mode, entered when the dispatch mechanism
+fails rather than when an agent returns nothing. In that mode the manual review sweeps the mapped checklist categories
+in the absent agents' place, the report gains a `## Review Coverage` section that renders only when coverage was
+absent, the closing message names the cause and the count, and the independent validation pass skips because it
+dispatches an agent. A `Packaging (when applicable)` category in `references/review-checklist.md` fires on diffs that
+change what gets packaged and raises a Warning saying the review did not open the built artifact and what to check by
+hand, with a summary row that opens as not checked. A finding whose location came from a region read of a file over
+1000 lines names its enclosing unit and the lines read to confirm it, guarded by a fifth challenge axis in the validator
+brief and a structural verification item that runs in every mode. Two departures from the issue are the operator's
+decision: the packaging finding discloses the gap rather than inspecting the artifact, and the location rule fires on
+the region-read path rather than on disassembler output the skill never reads.
+
+`/architectural-analysis`, `/refactor`, `/tdd`, and `/investigate` gain reciprocal boundary clauses for
+`/plan-a-change` and `/ddd-analysis`, and `references/collaborative-stop-rule.md` re-synced with the `han-core` copy.
+
+### han-communication v1.2.1
+
+#### The readability editor checks the sentences it wrote
+
+`agents/readability-editor.md` confirmed facts survived a rewrite but never checked its own sentences against the voice
+blocklist, so the rewrite was the one place a fresh violation could originate with no check on it.
+[@mxriverlynn](https://github.com/mxriverlynn) reported it in issue #148, and PR #206 added a step 4 that re-reads only
+the sentences the editor rewrote or inserted against the vocabulary blocklist and the em-dash positions, correcting
+named violations only, so a legal appositive em-dash survives it. PR #208 (issue #193) adds an Insertions ledger to the
+returned report: the editor names what it inserted with the source span it drew from, and the ledger stops asserting
+that everything survived. The long-form doc documents the ledger, corrects the fact-preservation bullet, and adds
+`/ddd-analysis` to the dispatcher list.
+
+### han-research v1.0.2
+
+#### Every report says whether web search ran
+
+On a Claude Code install backed by Amazon Bedrock the WebSearch tool does not exist. `research-analyst` declared it, the
+harness dropped the unmatched entry silently, and the agent ran on WebFetch alone while its report read as though a full
+survey had happened. [@diblaze](https://github.com/diblaze) reported it in issue #212, and PR #214 fixed it. The analyst
+notices when WebSearch is not offered or a call is refused, gathers by fetch alone, and opens its return with one fixed
+"Web search:" line. `/research` copies that line to the top of every report under Confidence, shields it from the
+readability rewrite, passes it to the validator, and on any run where the value is not "used" charters a completeness
+check and names the gap under Remaining Risks. The long-form docs say the shipped agent cannot be given another search
+tool.
+
+#### Traceability means resolvable and supporting
+
+[@zaBees](https://github.com/zaBees) reported in issue #194 a run that confirmed a citation resolved without confirming
+it supported the claim, and PR #209 made the traceability invariant two-part, defined once in Operating Principles. The
+merge step records an old-to-new mapping across renumbering, rewrites every citation surface through it including the
+evidence-status field, and labels a claim whose only source was dropped as no-evidence rather than single-source. Write
+and Edit join the allowed-tools line, which Step 8 needed and never declared.
+
+### han-github v2.3.2
+
+`/post-code-review-to-pr` carries the `## Review Coverage` section from `/code-review` across to the pull request and
+exempts it from the clarity pass's length-matching, so the disclosure of what a review did not check survives to the
+widest audience. [@zaBees](https://github.com/zaBees) reported the gap in issue #194, and PR #209 fixed it.
+
+### han-reporting v2.2.2
+
+`/html-summary` Step 6 invokes `inline-mermaid.sh` as prose with an action verb rather than as a fenced block, per the
+authoring guidance, and the long-form doc matches.
+
+### han-linear v1.1.2
+
+`han-linear` had never carried a `.codex-plugin/plugin.json`, so a catalog entry alone would have pointed at a directory
+with nothing to read. [@ethan-hann](https://github.com/ethan-hann) reported it in issue #198, and PR #210 added the
+manifest at 1.0.0, a separate lineage from the Claude manifest's version because a Codex manifest that has never
+existed is a brand-new plugin by the release rule.
+
+### han-plugin-builder v2.2.1
+
+`skills/guidance/references/skill-building-guidance/progressive-disclosure.md` adds the rule that the unit of a move
+into `references/` is a whole sentence or whole bullet, never a fragment, and that after a move you read the line before
+and after the cut in both files. It sits beside the line ceiling that caused two split sentences PR #208 repaired.
+
+### Deferred (YAGNI)
+
+Two items are recorded as deferrals with reopening triggers rather than built. A document describing the Codex
+packaging surface in the `han-plugin-builder` guidance is deferred because `test/codex-packaging.bats` answers the
+question mechanically, and a failing check is a stronger statement than a document nobody has to read. An automated
+check that the sizing-aware lists in `docs/quickstart.md`, `docs/concepts.md`, and `docs/sizing.md` agree is deferred
+in favor of the `CONTRIBUTING.md` checklist naming all three pages.
+
+### Issues closed in this release
+
+- Planning chain lets shared interface/data contracts reach implementation un-pinned (invented mid-build) (#107) — opened by [@taminomara](https://github.com/taminomara); fixed in #204 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: automated-test-planning-readability-guidance (2026-07-24) (#148) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #206 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: investigate-plan-a-feature (2026-08-17) (#183) — opened by [@taminomara](https://github.com/taminomara); fixed in #207 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: plan-implementation (2026-08-23) (#193) — opened by [@zaBees](https://github.com/zaBees); fixed in #208 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: code-review-research (2026-08-23) (#194) — opened by [@zaBees](https://github.com/zaBees); fixed in #209 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Codex marketplace catalog omits han-documentation, han-research, and han-linear (#198) — opened by [@ethan-hann](https://github.com/ethan-hann); fixed in #210 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Docs: quickstart omits /design-an-api from the sizing-aware list, and two pages contradict han-reporting's dependency (#200) — opened by [@amirbiron](https://github.com/amirbiron); fixed in #211 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Han Feedback: pairing-tdd-han-feedback (2026-09-03) (#201) — opened by [@mxriverlynn](https://github.com/mxriverlynn); fixed in #213 by [@mxriverlynn](https://github.com/mxriverlynn)
+- Research agent declares WebSearch, which is absent on Bedrock/Vertex, and degrades to fetch-only without saying so (#212) — opened by [@diblaze](https://github.com/diblaze); fixed in #214 by [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- fix(han-planning): pin shared contracts before implementation (#204) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Han ddd (#197) — [@mattsnyder](https://github.com/mattsnyder)
+- Bump the "dev-tooling" group with 2 updates across multiple ecosystems (#199) — [@dependabot](https://github.com/apps/dependabot)
+- fix(han): correct the three findings in feedback issue #148 (#206) — [@mxriverlynn](https://github.com/mxriverlynn)
+- feat(han-planning): add plan-a-change for architecture-driven code changes (#207) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(han-planning): close the six gaps feedback issue #193 reported (#208) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix: close the four defects feedback issue #194 reported in code-review and research (#209) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(codex): register the three packages missing from the Codex catalog (#210) — [@mxriverlynn](https://github.com/mxriverlynn)
+- docs: correct the sizing-aware lists and the han-reporting install claims (#211) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(han-core): give the pre-build ask its own turn (#213) — [@mxriverlynn](https://github.com/mxriverlynn)
+- fix(han-research): say whether web search ran in every research report (#214) — [@mxriverlynn](https://github.com/mxriverlynn)
+- V5.5.0 beta (#205) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/han--v5.5.0/CHANGELOG.md#v550
+
 ## v5.4.0
 
 han 5.4.0 fixes the personal-config probe that broke in every skill at once, and adds a second output style to the
