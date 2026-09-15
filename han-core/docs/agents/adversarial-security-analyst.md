@@ -15,8 +15,9 @@ _when_ and _how_ to dispatch the agent. For what the agent does internally, read
   exploit-path findings rather than CWE checklists. Always dispatched by `/code-review`. Dispatched on a security signal
   by `/architectural-analysis` (security-signal roster on medium/large), `/gap-analysis` (swarm specialist),
   `/plan-a-feature` (spec-stage team), `/plan-implementation` (implementation team), and `/iterative-plan-review` (team
-  mode). `/design-an-api` adds it to the discovery wave on a trust-boundary signal, at medium and above. Also
-  dispatched by `/automated-test-planning` for negative security tests.
+  mode). `/design-an-api` adds it to the discovery wave on a trust-boundary signal, at medium and above, and
+  `/plan-a-change` seats it on the review team when a security-sensitive area's change moves a trust boundary. Also dispatched by
+  `/automated-test-planning` for negative security tests.
 - **What you get back.** A `security-analysis.md` file with `SEC-###` findings, each tagged with OWASP category,
   file:line location, exact code snippet, and a step-by-step exploit description. Plus an in-channel summary with
   severity counts.
@@ -186,6 +187,7 @@ URL: https://cwe.mitre.org/
   covers data-level governance.
 - [`adversarial-validator`](./adversarial-validator.md). Pair when you want the security report challenged by another
   adversarial agent.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist when the area handles authentication, authorization, PII, secrets, or untrusted input, and the change moves a trust boundary.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why this agent uses precise vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

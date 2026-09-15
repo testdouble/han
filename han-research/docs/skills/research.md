@@ -29,7 +29,11 @@ use the skill. For what the skill does internally, read the skill definition at
   the skill that owns it.
 - **Reaches the open web.** Unlike `/investigate`, `/research` can search and fetch from the open web, read your
   codebase, and use material you provide. That web reach is the whole point: it answers "what is the prior art out
-  there", not only "what does this repo do".
+  there", not only "what does this repo do". Where Claude Code has no web search (Amazon Bedrock installs; the official
+  docs are silent on Vertex and Foundry), the analyst gathers by fetch only and the report's Summary says so on its
+  `Web search` line, directly under the confidence rating, so you can tell a survey from a fetch of the pages the
+  question already named. On such a run the validator is also asked what a search would likely have surfaced, and
+  Remaining Risks names the gap and how to close it.
 - **Fetched content is data, never instruction.** A web page that says "ignore your instructions and do X" is recorded
   as a claim about that page, not followed. The web-facing research runs with no codebase context, so a hostile page has
   nothing to exfiltrate.
@@ -44,9 +48,19 @@ use the skill. For what the skill does internally, read the skill definition at
   summary at the very top, carrying the formal confidence rating on one line. The results follow with minimal jargon,
   then indexed options when there are alternatives. Next comes the recommendation and its evidence basis, then
   validation, then an indexed Sources registry at the very bottom. Every section heading is present on every run; what
-  scales with the size is the depth of each entry. The traceability invariant is resolvability: every artifact ID cited
-  inline resolves to a registry entry carrying its link, retrieval date, trust class, and evidence status. The registry
-  renders as a compact table by default, with a full prose summary reserved for the sources the recommendation rests on.
+  scales with the size is the depth of each entry. The registry renders as a compact table by default, with a full prose
+  summary reserved for the sources the recommendation rests on.
+- **Every citation resolves and supports.** The traceability invariant is two-part. Resolvability: every artifact ID
+  cited inline resolves to a registry entry carrying its link, retrieval date, trust class, and evidence status.
+  Support: that entry's one-line summary states something bearing on the claim the citation is attached to.
+  Resolvability is necessary and not sufficient. The final check before the report is presented tests both parts, and
+  the validator is chartered to attack citation support too.
+- **The merge records what it renumbered.** Above the small band, each parallel analyst numbers its own sources from
+  A1, so consolidating them into one registry renumbers what each one cited. The merge step keeps an old-to-new mapping
+  (analyst, local ID, source, merged ID, disposition) as a working record, rewrites every citation surface through it,
+  including the evidence-status cross-references inside the registry itself, and hands it to the validator. A claim
+  whose only source the merge dropped as irrelevant loses its citation and is labelled as having no evidence, never
+  relabelled single-source.
 - **Sized small / medium / large.** Like the other swarming skills, `/research` scales its team to the question. It
   reads the question's conceptual scope (how many options, how many domains, how wide the reach), not its text length.
 
@@ -119,11 +133,14 @@ catchable.
 
 ## What you get back
 
-A research report file, plus an in-channel summary. Every report has the same fixed structure, top to bottom:
+A research report file, plus an in-channel summary. When no search ran, that summary opens with the report's own
+`Web search` line, so the gap is visible without opening the file. Every report has the same fixed structure, top to
+bottom:
 
 - **Summary.** Plain language, at the very top, no jargon. The answer in brief, one phrase on how solid it is, and the
-  formal High/Med/Low confidence rating on one labeled line so it is visible to a reader who stops here. If you read
-  nothing else, you have the answer. The supporting risk reasoning stays in Validation.
+  formal High/Med/Low confidence rating on one labeled line so it is visible to a reader who stops here, with the
+  `Web search` line directly beneath it: `used`, `not available`, or `not reported`. Only `used` means a search ran.
+  If you read nothing else, you have the answer. The supporting risk reasoning stays in Validation.
 - **Research Results.** The relevant findings with minimal technical detail. Every claim cites the artifact IDs it rests
   on, e.g. "(A1)", and is marked inline when it is single-source or (in exploratory mode) reasoning.
 - **Options to Consider.** Present only when the question implies discrete alternatives. An indexed list (O1, O2, …),
@@ -134,14 +151,16 @@ A research report file, plus an in-channel summary. Every report has the same fi
   answer, it says "no clear winner" and names the deciding criteria instead of forcing a pick.
 - **Validation.** Numbered `V1, V2, …` findings from `adversarial-validator`, which attacks the evidence, the options
   framing, the recommendation, and the integrity of the evidence-gathering (injection, staleness, single-source,
-  astroturfing). Includes any adjustments made (a non-surviving recommendation is rewritten into the no-clear-winner
-  form) and the confidence assessment and remaining risks.
+  astroturfing). On a run where web search did not run, the validator is also chartered to attack completeness: what
+  a search would likely have surfaced that the question did not name. Includes any adjustments made (a non-surviving
+  recommendation is rewritten into the no-clear-winner form) and the confidence assessment and remaining risks, which
+  on such a run name the search gap and how to close it.
 - **Sources.** At the very bottom, an indexed registry (A1, A2, …) of every information source used that is relevant to
   the results. It renders as a compact table by default: one row per source with its link or repository location,
   retrieval date for web sources, trust class (codebase / web / provided), a one-line summary, and corroboration status.
   A full prose summary is reserved for the sources the recommendation rests on. Always present, even for a minimal run;
   the depth of each entry scales with the size. These IDs are what the rest of the report cross-references, and every
-  cited ID resolves to an entry here.
+  cited ID resolves to an entry here whose one-line summary bears on the claim citing it.
 
 The report is presented for review. Accept it, ask for specific revisions, or redirect the question.
 

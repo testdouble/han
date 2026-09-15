@@ -88,12 +88,17 @@ prepare the ground for a test-first build.
 flowchart TD
     review["/code-review"] --> refactor["/refactor"]
     arch["/architectural-analysis"] --> refactor
+    arch --> change["/plan-a-change"]
+    change --> items["/plan-work-items"]
+    change --> refactor
     arch --> design["/design-an-api"]
     design --> tdd["/tdd"]
     review --> pr["/post-code-review-to-pr"]
     refactor --> tdd
     tdd --> prdesc["/update-pr-description"]
     investigate["/investigate"] --> iterate["/iterative-plan-review"]
+    ddd["/ddd-analysis"] --> arch
+    ddd --> feature["/plan-a-feature"]
     pairing["/pairing"] -.drives.-> refactor
     pairing -.drives.-> tdd
     pairing -.drives.-> design
@@ -106,6 +111,13 @@ flowchart TD
   [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
   [`/refactor`](../han-coding/docs/skills/refactor.md).** The review's structural findings become the refactoring plan's
   work orders.
+- **[`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
+  [`/plan-a-change`](../han-planning/docs/skills/plan-a-change.md) →
+  [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md) or
+  [`/refactor`](../han-coding/docs/skills/refactor.md).** When the findings are large enough that going straight to a
+  refactor would mean deciding the target structure while editing, plan the change first. The report becomes the
+  current-state record, and the plan's sequenced change units convert to work items or feed a refactor one at a time.
+  `/plan-a-change` runs its own discovery round when you have no report, so the analysis step is optional.
 - **[`/refactor`](../han-coding/docs/skills/refactor.md) → [`/tdd`](../han-coding/docs/skills/tdd.md).** Preparatory
   refactoring makes the change easy, then `/tdd` makes the easy change.
 - **[`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
@@ -115,6 +127,11 @@ flowchart TD
 - **[`/investigate`](../han-coding/docs/skills/investigate.md) →
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).** Root-cause the bug, then stress-test
   the proposed fix.
+- **[`/ddd-analysis`](../han-ddd/docs/skills/ddd-analysis.md) →
+  [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) or
+  [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).** Map the domain and context boundaries of the whole
+  repository first (opt-in `han-ddd`), then take a module the map singled out into a code-level structural read, or
+  specify the change once a domain expert has confirmed a boundary.
 - **[`/tdd`](../han-coding/docs/skills/tdd.md) →
   [`/update-pr-description`](../han-github/docs/skills/update-pr-description.md).** Once the branch carries the change,
   turn its commits into the PR body. This is the description half of the PR; `/post-code-review-to-pr` is the review half,

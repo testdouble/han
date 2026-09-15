@@ -6,8 +6,9 @@ description: >
   out why something is broken. Does not review code for quality or style — use code-review for auditing changes or
   post-code-review-to-pr for posting review feedback to GitHub. Does not assess architectural health or structural risk
   — use architectural-analysis for architectural concerns. Does not research open-ended options, prior art, or how
-  something works when nothing is broken — use research for that. Does not capture feedback on Han's own skills — use
-  han-feedback for that.
+  something works when nothing is broken — use research for that. Does not plan the structural change a root cause
+  calls for — use plan-a-change. Does not map bounded contexts or domain boundaries — use ddd-analysis. Does not
+  capture feedback on Han's own skills — use han-feedback for that.
 argument-hint: "[symptom or problem description, and optionally an output path]"
 allowed-tools: Read, Glob, Grep, Agent, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---

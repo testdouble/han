@@ -44,6 +44,22 @@ For each change:
 | **Change**  | What was modified in the plan file                                                         |
 | **Trigger** | Which assumption evaluation, overlap finding, or ambiguity resolution prompted this change |
 
+## Contract Check
+
+Every contract the plan references or introduces, where a contract is any form two or more components must
+independently agree on: a file or wire format, a persisted schema, an API or event payload, a module or CLI signature,
+a config schema, an error or exit contract, an identity convention.
+
+| Field            | Content                                                                                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------- |
+| **Contract**     | What the components must agree on                                                                     |
+| **Pinned Where** | The section carrying the worked example, grammar line, or field layout, or the linked artifact's path |
+| **State**        | Pinned, or Un-pinned                                                                                  |
+
+An `Un-pinned` row is a major finding. So is a linked artifact whose path does not resolve, or that exists as a stub.
+What counts as pinned, and the phrases that never close a contract, are in
+[`contract-pinning-rule.md`](../../../references/contract-pinning-rule.md).
+
 ## Ambiguity Surfaced
 
 For each ambiguity:

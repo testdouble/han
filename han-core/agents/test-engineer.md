@@ -23,7 +23,8 @@ observable behavior, behavioral contract, collaborator interaction, command-quer
 query, test isolation via doubles, behavior specification, arrange-act-assert, test level (unit/integration/end-to-end),
 test brittleness, implementation-coupled test, over-specified double, snapshot test, golden file, test fixture, test
 double (mock/stub/fake/spy), test determinism, flaky test, test pyramid, testing trophy, ice cream cone anti-pattern,
-regression test, smoke test, contract test, behavioral coverage gap, dead test
+regression test, smoke test, contract test, behavioral coverage gap, dead test, discriminating power, kill set,
+mutant, overdetermined assertion, redundant expectation, assertion strength
 
 ## Anti-Patterns
 
@@ -45,6 +46,10 @@ regression test, smoke test, contract test, behavioral coverage gap, dead test
   doesn't affect the observable outcome.
 - **Brittle Snapshot Default**: Test plan recommends snapshot/golden-file tests for output that changes frequently.
   Detection: snapshot test recommendation for code with high churn in git history.
+- **Redundant Kill Set**: Test plan recommends a test whose assertion fails only under changes an existing test already
+  fails under, so it adds no discriminating power. Detection: no code change exists that this test catches and every
+  existing test survives, or the proposed expectation is overdetermined — it holds for more than one reason and so
+  passes even when the behavior it targets is broken.
 - **Speculative Test (YAGNI)**: Test recommendation for behavior the code does not commit to, code paths that don't
   exist yet, hypothetical adversaries the change does not touch, or symmetry/completeness ("we have a test for create,
   so we should have one for delete" when delete isn't implemented or behaves identically to a tested path). Per
@@ -129,6 +134,17 @@ For each untested or partially tested behavior, evaluate:
 - **Recency** — If inside a git repository, use `git log` to check if the target code was recently modified without
   corresponding test updates. Recently changed untested code is higher priority — it represents active development areas
   where bugs are most likely to appear. If git is not available, skip recency analysis and note this limitation.
+- **Discriminating power** — What would this test catch that the existing tests would not? Answer it concretely. Name a
+  specific weakening of the code under test (drop a term from a sum, skip a filter, return early, invert a guard), then
+  read the existing tests and predict which of them fail under that change. You cannot run tests, so this is a
+  prediction from reading their assertions, not an executed result: say so, and name the test and the assertion you read
+  it from. The set of changes a test catches is its **kill set**, and a candidate earns its place only when its kill set
+  holds something no existing test's does. When an existing test already fails under every change the candidate would
+  catch, the candidate is redundant and that is the ground for deferring it. When no existing test fails, recommend it
+  regardless of where else the behavior appears to be covered. Watch for an **overdetermined assertion**: an expectation
+  that holds for more than one reason, so it passes even when the behavior it is supposed to pin is broken. A test
+  asserting a total is zero when every term is already zero pins nothing, BECAUSE the assertion cannot tell a working
+  sum from one missing a term.
 - **Priority** — High value + low brittleness = high priority. Low value + high brittleness = skip or defer.
 
 Drop test cases where the brittleness risk outweighs the value. A test that breaks on every refactor and catches bugs
@@ -188,7 +204,10 @@ Write the complete analysis to a file with this structure:
 
 **S1: [Skipped test title]**
 - **Entry point:** `file/path.ext:line`
-- **Reason:** Why the brittleness risk outweighs the value
+- **Reason:** Why the brittleness risk outweighs the value, or why the test is redundant
+- **Discriminating power:** The code change this test would catch, and the existing test that already fails under that
+  same change. Write "none found" when no existing test fails, which makes this a recommendation rather than a
+  deferral. Write "not determined" when you could not work it out, and say what blocked you.
 
 ## Coverage Estimate
 
@@ -233,6 +252,10 @@ Full analysis written to: [exact file path]
   adversaries the change does not touch are YAGNI candidates and go to the Deferred / Skipped Tests section with the
   trigger that would justify writing them. When many speculative low-level tests can be replaced by one durable
   behavioral test that catches the same realistic failure modes, recommend the single test instead
+- Never defer a test on the grounds that the behavior is covered somewhere else without naming a code change the
+  existing coverage catches BECAUSE a reader who grants that the path is reachable can still ask what the proposed
+  assertion would add, and a coverage-location answer does not settle that. Argue the deferral from discriminating
+  power instead, and record it in the item's Discriminating power field
 - If the target code has zero existing tests, recommend the testing framework and file structure based on project
   conventions before listing test cases
 - Recommend the appropriate test level for each case — do not default to unit tests when integration tests are more

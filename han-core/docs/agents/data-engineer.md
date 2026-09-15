@@ -13,7 +13,8 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   protocols.
 - **When to dispatch it.** A schema change, migration, or data-access layer needs a principled review before it ships.
   Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/design-an-api`, `/gap-analysis`,
-  `/investigate`, `/iterative-plan-review`, and `/plan-implementation` when the change or focus area touches data.
+  `/investigate`, `/iterative-plan-review`, `/plan-a-change`, and `/plan-implementation` when the change or focus area
+  touches data.
 - **What you get back.** A data-engineering findings report with location, principle, and data-level impact per finding,
   plus P0/P1/P2 sequenced remediations.
 
@@ -383,6 +384,7 @@ URL: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Che
   implementation team on a data-design signal.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
   data-contract signal, at the medium band and above.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist when the change touches a schema, a persisted format, a migration, or a data-access layer.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

@@ -8,7 +8,8 @@ description: >
   refine existing plans — use iterative-plan-review. Does not review code quality, security, or style — use code-review
   for full code review. Does not evaluate architectural testability or structural coupling — use architectural-analysis
   for architectural assessment.
-argument-hint: "[optional: file paths, directories, or description of what to test]"
+arguments: size
+argument-hint: "[size: small | medium | large | dynamic] [optional: file paths, directories, or description of what to test]"
 allowed-tools:
   Bash(git *), Bash(find *), Read, Grep, Glob, Agent,
   Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
@@ -34,6 +35,11 @@ allowed-tools:
   that would justify writing them. When many speculative low-level tests can be replaced by one durable behavioral test
   that catches the same realistic failure modes, recommend the single test instead. Every test is ongoing maintenance
   and a brittleness surface.
+
+- **Dispatch in proportion to the question.** The size band chosen in Step 1.5 caps the roster, and a narrow question
+  gets one agent and a prose answer rather than a team and a full document. Never dispatch the full roster for a
+  question a single agent can settle BECAUSE the dispatch overhead exceeds the work, and a reader who asked one
+  question pays for a document they did not want.
 
 ## Project Context
 
@@ -82,12 +88,54 @@ C** below.
 Build a list of source files to analyze: expand directories to find source files; identify relevant source files from
 branch changes or project structure for descriptions.
 
+## Step 1.5: Classify Size and Mode
+
+**Default to small.** Start the classification at **small** and only escalate to medium or large when the signals below
+clearly require it. When a signal is borderline, stay at the smaller band.
+
+Classify from the user's own request first, and from Step 1's file list only when the request settles nothing. A
+narrow question asked on a branch with many changed files is still small BECAUSE Step 1 falls back to the whole
+changed-files list whenever the user named no scope, and that list describes the branch rather than the question.
+
+- **Small** _(default)_ — the request names specific existing or proposed tests and asks whether they are worth writing,
+  or asks one question a single agent can settle, or the scope from Step 1 is 1-3 files in a single subsystem. Defaults
+  to **focused mode**.
+- **Medium** — 4-10 files, or one cross-cutting concern such as a single API contract, a schema migration, or a new
+  permission check. Defaults to **full mode**.
+- **Large** — more than 10 files, multiple subsystems, architectural changes, or security or data implications.
+  Defaults to **full mode**.
+
+**Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
+argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
+signal-based classification even when the config sets a default band. If `$size` is empty and either `.han/config.md`
+supplies a band via `default-swarm-size` (per [../../references/config-rule.md](../../references/config-rule.md)), use
+that band and skip the signal-based classification. Anything that is not one of the four accepted values is trailing
+context, not a size.
+
+**Bind `$focus`.** Read the user's free-form argument string from the invocation (everything after the optional `$size`
+positional). If non-empty, bind `$focus` to that string verbatim; if empty, bind it to `none provided`. This binding is
+the description Step 2 passes to each agent prompt.
+
+State the chosen band and mode in one line with the justification before dispatching anything (for example,
+`Small: the request names two proposed contexts on one method, so focused mode`, `Medium: passed via $size`, or
+`Medium: from the project .han/config.md default-swarm-size`, naming whichever file supplied it). Accept the user's
+override of the band, the mode, or both.
+
+In **focused mode**, dispatch only `han-core:test-engineer` in Step 2, skip the conditional specialists, answer in prose
+per Step 4's focused-mode rules, and skip the two reviewers in Step 5. **Step 3 runs in full either way.** Its
+behavioral, prerequisite, and YAGNI sweeps decide what may be recommended at all, so skipping them would let a focused
+answer recommend a test that cannot be written without an out-of-scope production change. In **full mode**, run every
+step as written.
+
 ## Step 2: Dispatch Testing Agents
+
+In focused mode, dispatch item 1 alone and skip the conditional-dispatch section entirely.
 
 Launch the testing agents **in parallel** using the `Agent` tool with `run_in_background: true`. Pass each agent the
 file list from Step 1. In Mode A or Mode B, include `on branch {branch}` in agent prompts if a branch name was detected
-by the script; in Mode C or when no branch was detected, omit the branch reference entirely. If the user described what
-they want tested, include that description in every agent prompt so they can focus their analysis.
+by the script; in Mode C or when no branch was detected, omit the branch reference entirely. When `$focus` is anything
+other than `none provided`, include it in every agent prompt so they can focus their analysis; it is what the
+`{any additional context from user arguments}` placeholder below resolves to.
 
 ### Always dispatch
 
@@ -113,7 +161,8 @@ they want tested, include that description in every agent prompt so they can foc
 
 ### Conditional dispatch
 
-Inspect the file list before launching. Skip any that do not apply.
+Skip this whole section in focused mode. Otherwise inspect the file list before launching, and skip any that do not
+apply.
 
 3. **Launch han-core:concurrency-analyst agent** — only if the file list touches threads, async/await, goroutines,
    actors, shared mutable state across requests, timers, locks, or message queues. Prompt: "Identify concurrency test
@@ -187,8 +236,13 @@ context, then apply it as you write the plan's plain-language spine (Summary, Wh
 Covers), holding the named audience: the engineer who will implement the tests. The frame governs how a fact is said,
 never whether a required fact appears — keep the file:line references, test levels, and TP-IDs the plan depends on.
 
-Use the template at [template.md](./references/template.md) for the output structure. The test plan leads with plain
-language and defers the implementation detail.
+**In focused mode, do not use the template.** Answer in prose: the verdict on what was asked, the reasoning that
+settles it, and any test worth writing, with the file:line references and test levels the engineer needs. Write no
+section that the question did not ask for BECAUSE a reader who asked one question should not have to search a
+nine-section document for its answer. Skip the rest of this step's template rules and go to Step 5.
+
+In full mode, use the template at [template.md](./references/template.md) for the output structure. The test plan leads
+with plain language and defers the implementation detail.
 
 **Writing rules:**
 
@@ -234,7 +288,11 @@ Lead with behavior. These rules make the plan a human-readable overview first an
 
 ## Step 5: Review the Output
 
-Dispatch two reviewers against the generated test plan, **in parallel**, using the `Agent` tool. The plan is produced
+**In focused mode, skip the two reviewers below** and go straight to the readability editor and the self-check that
+follow them. The two reviewers audit a document's structure and its plain-language layer, and a focused answer has
+neither BECAUSE it is a few paragraphs rather than a layered document.
+
+In full mode, dispatch two reviewers against the generated test plan, **in parallel**, using the `Agent` tool. The plan is produced
 in-channel, so embed the full plan text in each agent's prompt (in place of `{plan text}` below). If the plan was
 written to a file, pass that path instead and let the agent read it.
 

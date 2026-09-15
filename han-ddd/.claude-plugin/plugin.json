@@ -1,0 +1,6 @@
+{
+  "name": "han-ddd",
+  "description": "Strategic Domain-Driven Design analysis for the Han suite. Discovers domain boundaries, identifies bounded context candidates (strongly expressed, latent, and speculative), finds boundary leaks, and produces an evidence-backed domain and context map for an existing codebase. Depends on han-communication and han-core. Opt-in: not bundled by the han meta-plugin.",
+  "version": "1.0.0",
+  "dependencies": ["han-communication", "han-core"]
+}

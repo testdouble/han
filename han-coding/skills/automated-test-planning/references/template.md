@@ -113,9 +113,12 @@ Covered by: TP-001, TP-004.
 
 {If none: "No test cases were deferred."}
 
-Items the test-engineer excluded because brittleness risk outweighs value:
+Items the test-engineer excluded because brittleness risk outweighs value, or because they add no discriminating
+power:
 
 - **{S#}: {title}** — `{file_path:line_number}` — {reason for deferral}
+  - **Discriminating power:** {the code change this test would catch, and the existing test that already fails under
+    it; "none found" or "not determined" where that applies}
 
 ### Dropped Edge Cases
 
@@ -124,6 +127,8 @@ Items the test-engineer excluded because brittleness risk outweighs value:
 Items the edge-case-explorer intentionally excluded:
 
 - **{title}** — {reason for exclusion}
+  - **Discriminating power:** {the code change a test for this case would catch, and the existing test that already
+    fails under it; "none found" or "not determined" where that applies}
 
 ### Blocked by a Production Change
 

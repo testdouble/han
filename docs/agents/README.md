@@ -2,10 +2,10 @@
 
 Every agent in the Han suite, alphabetized. Each entry is a short scent line and a link to the agent's canonical
 long-form doc, which now lives inside the plugin that owns it (`han-core`, except the readability-editor in
-`han-communication`, the research-analyst in `han-research`, and the discussion-facilitator in `han-planning`). Most
-agents are dispatched for you by skills; you
-rarely invoke them directly. For how the skills
-that dispatch them chain together, see [Workflows](../workflows.md).
+`han-communication`; the research-analyst in `han-research`; the discussion-facilitator in `han-planning`; and the
+bounded-context-critic, bounded-context-modeler, business-capability-analyst, domain-language-analyst,
+domain-ownership-analyst, and domain-visualizer in `han-ddd`). Most agents are dispatched for you by skills;
+you rarely invoke them directly. For how the skills that dispatch them chain together, see [Workflows](../workflows.md).
 
 > See also: [Repo root](../../README.md) · [Plugin index](../choosing-a-han-plugin.md) · [Workflows](../workflows.md) ·
 > [All skills](../skills/README.md) · [Concepts](../concepts.md) · [Quickstart](../quickstart.md)
@@ -14,8 +14,9 @@ that dispatch them chain together, see [Workflows](../workflows.md).
 
 Read [Concepts](../concepts.md) for the skill-and-agent model before browsing this list. To dispatch one directly, use
 the `Agent` tool with `subagent_type: {plugin}:{agent-name}` (the plugin is `han-core` for all but the readability-editor,
-which is `han-communication`, the research-analyst, which is `han-research`, and the discussion-facilitator, which is
-`han-planning`).
+which is `han-communication`; the research-analyst, which is `han-research`; the discussion-facilitator, which is
+`han-planning`; and the bounded-context-critic, bounded-context-modeler, business-capability-analyst,
+domain-language-analyst, domain-ownership-analyst, and domain-visualizer, which are `han-ddd`).
 
 ## Agents
 
@@ -25,6 +26,16 @@ which is `han-communication`, the research-analyst, which is `han-research`, and
   and the proposed fix will fail, and search for counter-evidence and unhandled edge cases.
 - [`behavioral-analyst`](../../han-core/docs/agents/behavioral-analyst.md) — Analyze data flow, error propagation, state
   management, and integration boundaries.
+- [`bounded-context-critic`](../../han-ddd/docs/agents/bounded-context-critic.md) — Evaluate every BCM# entry
+  from bounded-context-modeler against the discovery evidence, returning a verdict and detected failure modes for
+  each proposed context.
+- [`bounded-context-modeler`](../../han-ddd/docs/agents/bounded-context-modeler.md) — Read DL#, CAP#, OWN#, S#,
+  and B# discovery findings and construct a semantic bounded context model: proposals whose vocabulary,
+  capabilities, rules, and ownership cohere around distinct domain concerns, with CURRENT, LATENT, and SPECULATIVE
+  status tiers.
+- [`business-capability-analyst`](../../han-ddd/docs/agents/business-capability-analyst.md) — Read a codebase and
+  surface cohesive business capabilities from behavioral evidence: actions, workflows, policies, state transitions,
+  commands, and domain events — named as verb phrases rather than entity groupings.
 - [`codebase-explorer`](../../han-core/docs/agents/codebase-explorer.md) — Discover implementation details for a specific
   feature: entry points, core logic, data models, configuration, and tests.
 - [`concurrency-analyst`](../../han-core/docs/agents/concurrency-analyst.md) — Analyze race conditions, shared-resource
@@ -37,6 +48,16 @@ which is `han-communication`, the research-analyst, which is `han-research`, and
   it against DORA, Twelve-Factor, the Four Golden Signals, SLO discipline, and named production failure modes.
 - [`discussion-facilitator`](../../han-planning/docs/agents/discussion-facilitator.md) — Audit a planning discussion in
   progress: run the round-robin, grade every claim against evidence, and log what the team has not answered yet.
+- [`domain-language-analyst`](../../han-ddd/docs/agents/domain-language-analyst.md) — Read a codebase and surface
+  Domain-Driven Design language signals: business terminology, vocabulary clusters, semantic collisions, synonyms,
+  and places where technical naming obscures the domain.
+- [`domain-ownership-analyst`](../../han-ddd/docs/agents/domain-ownership-analyst.md) — Read a codebase and
+  surface domain ownership evidence: who creates, modifies, and consumes domain concepts; which representation is
+  authoritative; where lifecycle begins and ends; and where authority is contested or ambiguous.
+- [`domain-visualizer`](../../han-ddd/docs/agents/domain-visualizer.md) — Translate a completed DDD analysis
+  into evidence-backed visual artifacts: domain landscape, capability map, workflow swimlanes, lifecycle
+  diagrams, ownership map, language collision matrix, boundary friction map, and domain question impact map.
+  Presentation only; does not change the canonical domain model.
 - [`edge-case-explorer`](../../han-core/docs/agents/edge-case-explorer.md) — Systematically discover and catalog edge
   cases: boundary values, type-coercion traps, and state-dependent failures.
 - [`evidence-based-investigator`](../../han-core/docs/agents/evidence-based-investigator.md) — Gather concrete evidence

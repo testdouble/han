@@ -48,8 +48,9 @@ the change rather than by trusting the producing agent's rationale.
 
 **Run condition.** Run this sub-step whenever at least one corrective finding (CRIT / WARN / SUGG, manual or agent, plus
 any SEC-### finding) has survived to this point. **Skip it when there are zero corrective findings** — a clean review
-needs no validation. YAGNI findings are out of scope here: they are advisory and are never validated, demoted, or
-dropped by this pass.
+needs no validation. **Skip it in manual-only mode** (`agent-dispatch.md`), because it dispatches an agent and dispatch
+is what is unavailable; the report's Review Coverage block records that the findings were not re-checked. YAGNI
+findings are out of scope here: they are advisory and are never validated, demoted, or dropped by this pass.
 
 **Dispatch one `han-core:adversarial-validator`** via the `Agent` tool. Give it, in this order:
 
@@ -70,7 +71,9 @@ Pass this brief verbatim:
 > issue is critical irrespective of who introduced it; (c) findings whose rationale hedges its own reachability in
 > paraphrase ("unlikely in practice", "would need an unusual sequence", "only under a race we don't see") that the
 > literal-phrase gate did not catch; (d) severity that overstates impact, where the true worst case is "an operator sees
-> an error and retries". Do not invent new findings — you are validating the list, not extending it.
+> an error and retries"; (e) findings whose cited location came from a region read and names an enclosing unit that was
+> never read in isolation, and any finding whose severity depends on which unit the location names. Do not invent new
+> findings — you are validating the list, not extending it.
 
 **Reconcile the verdicts (orchestrator).** Apply each verdict to the finding:
 

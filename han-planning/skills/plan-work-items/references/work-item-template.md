@@ -43,6 +43,7 @@ SDK or platform caveats that affect acceptance.
 **Acceptance criteria.**
 - [ ] Each criterion is an observable, verifiable outcome of this work item's own behavior: a behavior that occurs, a state that exists, a check that passes. A person can mark it done without interpreting intent.
 - [ ] When the behavior needs automated test coverage, one criterion names that coverage in plain terms (e.g., "Automated tests cover the rejection path and the happy path").
+- [ ] When this item authors or changes a contract another item consumes, one criterion carries the contract's concrete form: a worked example, a grammar line, or a field layout. "The schema document exists" and "the document names all five entry types" are not that criterion.
 
 **Depends on.** `<W-N>` (within this file), comma-separated for multiple, or `None.`
 ```
@@ -62,6 +63,9 @@ SDK or platform caveats that affect acceptance.
   surrounding spaces), then the title.
 - A work item body ends at the next `## ` heading or end of file.
 - `**Justification.**` sits immediately before `**References.**`, and is present on every work item.
+- A contract shared across work items is pinned in the item that introduces it and consumed by items that name it under
+  `**Depends on.**`, never defined a piece at a time across several items. See
+  [`contract-pinning-rule.md`](../../../references/contract-pinning-rule.md) for what counts as pinned.
 - `**Summary.**` comes first; `**Acceptance criteria.**` renders at the bottom, immediately before `**Depends on.**`.
   Every block between them supports a criterion; there is no separate `**Tests.**` block — test expectations live
   inside the acceptance criteria.

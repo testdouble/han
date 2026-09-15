@@ -14,8 +14,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **When to dispatch it.** A change is about to ship and you want a veteran on-call engineer to read the source for the
   patterns that reliably cause 3am pages, before the page happens. Conditionally dispatched by
   `/architectural-analysis`, `/code-review`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`,
-  `/plan-a-feature`, and `/plan-implementation` when the change touches application-source resilience surface (timeouts, retries, idempotency,
-  backpressure, kill switches, failure-path observability).
+  `/plan-a-change`, `/plan-a-feature`, and `/plan-implementation` when the change touches application-source
+  resilience surface (timeouts, retries, idempotency, backpressure, kill switches, failure-path observability).
 - **What you get back.** A code-level resilience report keyed to `file_path:line_number`, naming the anti-pattern, the
   production failure mode it leads to, and a sequenced remediation (smallest safe step today, next iteration, paved
   path).
@@ -359,6 +359,7 @@ URL: https://danluu.com/postmortem-lessons/
   failure-path signal, at the medium band and above.
 - [Research backing this agent](../../../docs/research/on-call-engineer-research.md). The evidence-based research informing the
   agent's vocabulary, scope boundary, and tone calibration.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist, for the failure paths a responsibility shift can quietly relocate.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

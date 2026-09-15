@@ -15,9 +15,9 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **When to dispatch it.** A focus area uses threads, async, parallel execution, or shared mutable state. Dispatched by
   `/architectural-analysis` when the focus area shows a concurrency signal (it joins the signal-selected discovery
   roster, not the always-on synthesis spine). Conditionally dispatched by `/code-review`, `/automated-test-planning`, and
-  `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation` and
-  `/iterative-plan-review` by signal when plan sections touch concurrent access, race conditions, or async
-  coordination, and by `/plan-a-feature` only when you ask for it by name (the mechanic-focused specialists are
+  `/investigate` when the symptom matches a concurrency bug. Dispatched by `/plan-implementation`,
+  `/iterative-plan-review`, and `/plan-a-change` by signal when the plan or the area touches concurrent access, race
+  conditions, or async coordination, and by `/plan-a-feature` only when you ask for it by name (the mechanic-focused specialists are
   excluded from its default spec-stage roster).
 - **What you get back.** Numbered `C#` findings, each tied to a concurrency dimension (Race Conditions / Resource
   Contention / Deadlock / Async Errors / Synchronization), file paths, verbatim code, and a concrete failure-scenario
@@ -146,3 +146,4 @@ URL: https://go.dev/talks/2012/waza.slide
   findings defer to `/plan-implementation`.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on an
   ordering signal, at the medium band and above.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist when the area contains shared mutable state or async coordination the discovery round did not already cover.

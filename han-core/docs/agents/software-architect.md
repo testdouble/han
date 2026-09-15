@@ -16,7 +16,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **When to dispatch it.** Dispatch after the three architectural analysts and `risk-analyst` have produced findings for
   a focus area that lives inside a single codebase or bounded context. Then dispatch it when you want synthesis into
   recommended changes with pseudocode sketches. Always dispatched by `/architectural-analysis` (it runs on the synthesis
-  spine at every size). Conditionally dispatched by `/architectural-decision-record`, `/gap-analysis`,
+  spine at every size) and by `/plan-a-change` (it proposes the target structure at every size). Conditionally
+  dispatched by `/architectural-decision-record`, `/gap-analysis`,
   `/iterative-plan-review`, and `/plan-implementation` when the work touches intra-codebase module boundaries or
   abstractions. `/plan-a-feature` excludes it from the default spec-stage roster and includes it only when you ask for
   it by name.
@@ -231,6 +232,7 @@ URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
   it by name; the mechanic-focused specialists are excluded from the default spec-stage roster.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Dispatches this agent in its four-agent
   spine, at every size, to produce the options document and every later amendment.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent at Step 4 at every size, to propose the target structure under the YAGNI and contract-pinning directives.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

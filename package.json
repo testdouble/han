@@ -8,8 +8,8 @@
     "test": "find . -name node_modules -prune -o -name '*.bats' -print0 | xargs -0 bats"
   },
   "devDependencies": {
-    "@j178/prek": "^0.4.9",
+    "@j178/prek": "^0.4.11",
     "bats": "^1.11.1",
-    "prettier": "^3.4.2"
+    "prettier": "^3.9.6"
   }
 }

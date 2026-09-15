@@ -13,7 +13,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   dependency direction, abstractions, and duplication. Produces numbered structural findings with file paths and
   verbatim code.
 - **When to dispatch it.** You want a principled static-structure pass on a module or focus area, independent of runtime
-  behavior or risk assessment. Always dispatched by `/architectural-analysis`. Conditionally dispatched by
+  behavior or risk assessment. Always dispatched by `/architectural-analysis` and by `/plan-a-change` in its discovery
+  round. Conditionally dispatched by
   `/code-review`, and by `/iterative-plan-review` and `/plan-implementation` when the plan or review covers module
   boundaries, coupling, or dependency direction. Available to `/plan-a-feature` as an opt-in specialist, included on
   request.
@@ -136,3 +137,4 @@ URL: https://martinfowler.com/books/refactoring.html
   the plan covers module boundaries, coupling, or dependency direction.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
   consumer-spread signal, at the medium band and above.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent in its Step 2 discovery round at every size, to establish what the code does today before any target structure is proposed.

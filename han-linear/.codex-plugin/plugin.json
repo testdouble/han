@@ -1,0 +1,28 @@
+{
+  "name": "han-linear",
+  "version": "1.0.0",
+  "description": "Linear-facing extensions to the Han suite: publish Han work items to Linear through the Linear MCP server, one issue per slice.",
+  "author": {
+    "name": "Test Double",
+    "url": "https://testdouble.com"
+  },
+  "homepage": "https://github.com/testdouble/han#readme",
+  "repository": "https://github.com/testdouble/han",
+  "license": "MIT",
+  "keywords": ["han", "linear", "work-items", "issues"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Han Linear",
+    "shortDescription": "Publish Han work items to Linear as issues.",
+    "longDescription": "Creates one Linear issue per slice from a /plan-work-items work-items file in a single target team, resolving the team's real workflow states, labels, Projects, and members before it creates anything, and linking within-file dependencies as native \"blocked by\" relations. Requires a configured Linear MCP server.",
+    "developerName": "Test Double",
+    "category": "Developer Tools",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/testdouble/han",
+    "defaultPrompt": [
+      "Publish these work items to Linear.",
+      "Create Linear issues from my work-items file.",
+      "Push this plan's slices into my Linear team."
+    ]
+  }
+}

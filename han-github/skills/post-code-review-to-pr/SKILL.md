@@ -60,9 +60,10 @@ If the user accepts:
 2. Read the report file at the path captured in Step 2, then build the review body from it: Review Summary table, Review
    Recommendation, and all findings organized by severity, plus any optional sections that are present. Treat every section other than the Review Summary table and the Review
    Recommendation as optional — the code-review skill renders a section only when it has content, so a section (the
-   What's Good section, an absent severity section on a clean review, the Security Vulnerabilities section, the
-   Remediation note) may simply not be there. Include each section when present and omit it without error or an empty
-   heading when absent.
+   Review Coverage section, the What's Good section, an absent severity section on a clean review, the Security
+   Vulnerabilities section, the Remediation note) may simply not be there. Include each section when present and omit
+   it without error or an empty heading when absent. **Review Coverage always crosses when present.** It appears only
+   when no specialist read the change, and a reviewer on the pull request is the reader who most needs to know that.
 3. Continue to Step 4 — do **not** post yet.
 
 ## Step 4: Pre-Post Clarity Check
@@ -71,16 +72,20 @@ Because the review body will be publicly visible on the PR, run a clarity pass o
 
 Match the body's length to what the review found. Every finding earns its place by naming a specific problem at a
 specific location. Skip filler sections, a restated summary of the diff, and boilerplate the reader can see for
-themselves on the PR. Stay inside what the review covered: this step edits wording and severity, and never adds a
-finding `/code-review` did not raise.
+themselves on the PR. Three sections are exempt from that length-matching and are never cut or shortened: the Review
+Summary table, the Review Recommendation, and the Review Coverage section. Review Coverage names no problem at any
+location by construction; it says which coverage the review did not have, and deleting it as filler would hide that from
+the widest audience the review reaches. Stay inside what the review covered: this step edits wording and severity, and
+never adds a finding `/code-review` did not raise.
 
 1. Write the draft review body to a temporary file (e.g., `/tmp/post-code-review-to-pr-draft.md`) using the Write tool.
 2. Launch a single `han-core:junior-developer` agent in artifact-review mode with the prompt: "You are reviewing the
    text of a code review that is about to be posted publicly on a GitHub pull request. The review is at {draft_path}. Do
    not re-review the code — review the review. Flag findings whose wording is unclear, severity is mis-assigned (CRIT
    used where WARN would be accurate, or vice versa), language is accusatory or blaming rather than evidence-based, or
-   `file_path:line_number` references are missing or invalid. Return a short list of specific edits with before/after
-   text; return an empty list if the review reads well as-is."
+   `file_path:line_number` references are missing or invalid. Leave the Review Summary table, the Review Recommendation,
+   and any Review Coverage section as they are; they are not findings and are not subject to the length-matching bar.
+   Return a short list of specific edits with before/after text; return an empty list if the review reads well as-is."
 3. Apply every actionable edit the agent returns. If the agent raises a severity-assignment issue, adjust the finding's
    task ID and the Review Summary table to match.
 4. Generate a unique temp file path by running `${CLAUDE_SKILL_DIR}/scripts/create-review-tempfile.sh`. Write the final,

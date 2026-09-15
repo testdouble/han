@@ -10,8 +10,8 @@ no separate `implementation-facilitation-round-{N}.md` files are written. The
 claim ledger, Open Questions, and spec-maturity tags from each round live as
 fields on that round's entry below.
 
-The iteration loop is capped at four rounds (see the plan-implementation skill's
-Step 6). A round entry is appended at the end of each iteration with `Decisions
+The iteration loop is capped by the size band chosen at Step 3; the skill's
+Step 6 and its team-selection reference own that number. A round entry is appended at the end of each iteration with `Decisions
 produced:` and `Changed in plan:` backfilled during the plan-synthesizer's
 synthesis step.
 
@@ -38,6 +38,8 @@ files stay in sync.
   <!-- OQ-N items the specialists or the round aggregation surfaced this round. Reference the decisions they ultimately became (D# IDs) if known at write time; otherwise leave the linkage to be filled during synthesis. -->
 - **Spec-maturity tags:**
   <!-- Counts and IDs by tag: plan-level (resolvable in plan stage), spec-level (requires spec-stage decision), T#-contradiction (specialist disagrees with a committed T# note). Note whether the spec-maturity gate tripped. -->
+- **Contract pinning:**
+  <!-- Y or N. N names each contract the plan commits to without a concrete grammar, worked example, field layout, or link to an artifact that already exists. Each one also becomes an Open Question above. -->
 - **Resolution source:**
   <!-- For each Open Question: "evidence" (found in the Step 6 loop) / "junior-developer reframing" / "user input" / "deferred to next round" / "synthesis (Step 8 evidence)" (the plan-synthesizer settled it by re-reading the spec during synthesis, not in the loop — keep this distinct from loop-stage "evidence" so the audit trail is honest) -->
 - **Decisions produced:** <!-- D# IDs added or changed this round, or — -->
@@ -52,12 +54,13 @@ files stay in sync.
 - **Claim ledger:** ...
 - **Open Questions raised:** ...
 - **Spec-maturity tags:** ...
+- **Contract pinning:** ...
 - **Resolution source:** ...
 - **Decisions produced:** ...
 - **Changed in plan:** ...
 - **Next-step recommendation:** ...
 
-<!-- Add more rounds as needed (R3, R4). The iteration loop caps at four rounds. -->
+<!-- Add more rounds as needed, up to the size band's round cap. -->
 
 ## Unaudited evidence classes
 

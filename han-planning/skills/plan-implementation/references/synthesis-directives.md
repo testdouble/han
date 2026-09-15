@@ -3,9 +3,11 @@
 What the plan-synthesizer must do, and the record invariants the plan folder holds.
 Step 8 hands these to the agent; it does not restate them.
 
-instead), plus the spec's `artifacts/decision-log.md`, `artifacts/team-findings.md`, and
-`artifacts/feature-technical-notes.md` paths if they exist (falling back to the spec folder root for legacy layouts).
+## What Step 8 provides
 
+- The feature specification path, or a note that no source file was provided and what conversational context was used
+  instead, plus the spec's `artifacts/decision-log.md`, `artifacts/team-findings.md`, and
+  `artifacts/feature-technical-notes.md` paths if they exist (falling back to the spec folder root for legacy layouts).
 - The full verbatim output from every specialist engaged across all rounds.
 - The aggregated round entries from `artifacts/implementation-iteration-history.md` (claim ledger, Open Questions,
   spec-maturity tags, next-step recommendations). These are the deterministic-aggregation summaries that replaced
@@ -24,27 +26,31 @@ instead), plus the spec's `artifacts/decision-log.md`, `artifacts/team-findings.
   [implementation-decision-log-template.md](./implementation-decision-log-template.md), and
   [implementation-iteration-history-template.md](./implementation-iteration-history-template.md).
 
-Ask the han-core:plan-synthesizer to produce the final synthesis across all three files:
+Ask the han-core:plan-synthesizer to produce the final synthesis across all three files.
 
-1. **Write `artifacts/implementation-decision-log.md`** — classify each decision as **full** or **trivial** before
-   writing it. Full: has rejected alternatives, evidence beyond the user's framing or the source spec's commitments, was
-   changed across rounds, has dependent decisions, or has recorded dissent. Trivial: settled directly by the user, the
-   source spec, or an obvious convention. Full decisions go under `## Full decisions` with the structured fields
-   (rationale, evidence, rejected alternatives, specialist owner, revisit criterion, dissent, `Driven by rounds:`,
-   `Dependent decisions:`, `Referenced in plan:`). Trivial decisions go under `## Trivial decisions` as a one-line
-   bullet (`D-N: {title} — {outcome}. — Referenced in plan: {sections}.`). The D-N counter is shared across both
-   sections, and every plan inline link still resolves to a D-N whether full or trivial.
-2. **Write `feature-implementation-plan.md`** — the primary plan, following the template's progressive-disclosure
+**Classify every decision as full or trivial, and fix its `D-N`, before writing any file.** Full: has rejected
+alternatives, evidence beyond the user's framing or the source spec's commitments, was changed across rounds, has
+dependent decisions, or has recorded dissent. Trivial: settled directly by the user, the source spec, or an obvious
+convention. Settling identity first is what lets the plan be written before the log while every inline
+`([D-N](...))` link still resolves.
+
+**Write the plan first.** It is the file both companions point into: the decision log's `Referenced in plan:` and the
+iteration history's `Changed in plan:` both name its section headings. Written first, both companions write backward
+into a file that exists, and a synthesis that terminates mid-write leaves the primary artifact rather than losing it.
+
+1. **Write `feature-implementation-plan.md`** — the primary plan, following the template's progressive-disclosure
    order: a plain-language opening paragraph, Outcome, User Stories (when the feature has a describable actor benefit),
    Constraints and Boundaries, Implementation Approach, Work Units and Sequencing, Definition of Done, Testing
-   Strategy, the lazy specialist sections, Open Items, Sources and Plan Records, and Recommendation. The upper layers
+   Strategy, the lazy specialist sections (`Cut for Scope` immediately before `Deferred (YAGNI)`, as the template
+   places them), Open Items, Sources and Plan Records, and Recommendation. The upper layers
    stay in plain language at intention altitude per the Operating Principles: plain language leads every section,
    technical detail appears only as minimal references below the plain language it illustrates, and work units name the
    user story each one advances. The template's guidance comments carry the per-section rules. The lazy sections are written only when
    they have real content and omitted entirely otherwise, never as an empty stub: `Security Posture` (threat surface or
    `han-core:adversarial-security-analyst` contributed), `Operational Readiness` (operational surface or
    `han-core:devops-engineer` contributed), `On-Call Resilience Posture` (resilience surface or
-   `han-core:on-call-engineer` contributed), `Risks and Assumptions` (at least one real entry), `Deferred (YAGNI)` (at
+   `han-core:on-call-engineer` contributed), `Risks and Assumptions` (at least one real entry), `Cut for Scope` (at least one
+   entry cut by the scope gate per Step 7.5's ledger), `Deferred (YAGNI)` (at
    least one item deferred per Step 7.5's ledger), and `Specialist Handoffs for Implementation` (at least one planned
    handoff). Omitting a lazy section records the judgment that the surface is genuinely absent, not a skipped concern —
    confirm before omitting. The plan carries no team-composition table and no statistics summary — both live in the
@@ -52,6 +58,13 @@ Ask the han-core:plan-synthesizer to produce the final synthesis across all thre
    append an inline parenthetical link, e.g. `([D-3](artifacts/implementation-decision-log.md#d-3-rollout-strategy))`.
    Link only non-obvious claims. Do not inline rationale or rejected alternatives. Do not repeat round-by-round
    history.
+2. **Write `artifacts/implementation-decision-log.md`** — Full: has rejected alternatives, evidence beyond the user's framing or the source spec's commitments, was
+   changed across rounds, has dependent decisions, or has recorded dissent. Trivial: settled directly by the user, the
+   source spec, or an obvious convention. Full decisions go under `## Full decisions` with the structured fields
+   (rationale, evidence, rejected alternatives, specialist owner, revisit criterion, dissent, `Driven by rounds:`,
+   `Dependent decisions:`, `Referenced in plan:`). Trivial decisions go under `## Trivial decisions` as a one-line
+   bullet (`D-N: {title} — {outcome}. — Referenced in plan: {sections}.`). The D-N counter is shared across both
+   sections, and every plan inline link still resolves to a D-N whether full or trivial.
 3. **Backfill `artifacts/implementation-iteration-history.md`** — for each `R#` entry already present from Step 6,
    populate `Decisions produced:` with the `D#` IDs added or changed that round and `Changed in plan:` with the plan
    sections updated that round.

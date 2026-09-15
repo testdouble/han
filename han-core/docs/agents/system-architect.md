@@ -18,7 +18,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   recommendations at the altitude where the unit of design is a service or context, not a class or module. Conditionally
   dispatched by `/architectural-analysis` (large size, when a system-seam signal is present),
   `/architectural-decision-record`, `/gap-analysis`, `/iterative-plan-review`, and `/plan-implementation` when the work
-  crosses a service or bounded-context boundary. `/plan-a-feature` excludes it from the default roster and includes it
+  crosses a service or bounded-context boundary, and by `/plan-a-change` when the area crosses a service boundary,
+  changes a context-map relationship, or shifts data ownership between services. `/plan-a-feature` excludes it from the default roster and includes it
   only when you explicitly ask.
 - **What you get back.** Numbered `SA#` recommendations, each with the seam it crosses, the relationship type (ACL,
   conformist, partnership, OHS, and so on), integration style (sync, async event, saga, batch), data ownership,
@@ -311,6 +312,7 @@ URL: https://www.melconway.com/Home/Committees_Paper.html
   when you explicitly ask.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
   system-seam signal, at the large band only.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent at Step 4 only when the area crosses a service boundary, changes a context-map relationship, or shifts data ownership between services.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

@@ -54,6 +54,11 @@ to use the skill. For what the skill does internally, read the skill definition 
   existing plan.
 - **Open-ended research.** Use [`/research`](../../../han-research/docs/skills/research.md) when nothing is broken and you want options, prior
   art, or how something works before committing to a direction.
+- **Planning the structural change a root cause calls for.** Use
+  [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md) when this skill's report shows the defect is a
+  responsibility in the wrong place rather than a one-line fix. Its report is a valid input there.
+- **Mapping bounded contexts or domain boundaries.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md)
+  when the question is where the domain's boundaries sit, not why a specific thing is broken.
 - **Feedback on Han's own skills.** Use [`/han-feedback`](../../../han-feedback/docs/skills/han-feedback.md) to capture post-session
   feedback on the Han skills you ran.
 

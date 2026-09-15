@@ -12,7 +12,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **What it does.** Analyzes the runtime behavior of a specified codebase focus area: data flow, error propagation,
   state management, and integration boundaries. Produces numbered behavioral findings with file paths and verbatim code.
 - **When to dispatch it.** You want a principled runtime-behavior pass on a module or focus area, independent of static
-  structure or concurrency. Always dispatched by `/architectural-analysis`. Conditionally dispatched by `/code-review`.
+  structure or concurrency. Always dispatched by `/architectural-analysis` and by `/plan-a-change` in its discovery
+  round. Conditionally dispatched by `/code-review`.
   Dispatched by `/investigate` when the symptom matches a data-flow or error-propagation bug. Dispatched by
   `/plan-implementation` by signal when plan sections describe runtime behavior, data flow, error propagation, or state.
   Conditionally dispatched by `/iterative-plan-review` when the review covers runtime behavior, data flow, error
@@ -140,3 +141,4 @@ URL: https://martinfowler.com/bliki/TwoHardThings.html
   findings defer to `/plan-implementation`.
 - [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). Adds this agent to the discovery wave on a
   boundary-data signal, at the medium band and above.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent in its Step 2 discovery round at every size, to establish what the code does today before any target structure is proposed.

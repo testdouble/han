@@ -12,8 +12,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **What it does.** Audits a feature, change, service, pipeline, or environment for production readiness.
 - **When to dispatch it.** A change is approaching production and needs a principled readiness review covering hosting,
   observability, rollout, scale, cost, and compliance. Conditionally dispatched by `/architectural-analysis`,
-  `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the work
-  touches deployment, observability, rollout, scale, or cost.
+  `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`, `/plan-a-feature`, and
+  `/plan-implementation` when the work touches deployment, observability, rollout, scale, or cost.
 - **What you get back.** A production-readiness report with location, principle, and blast-radius per finding, plus
   P0/P1/P2 sequenced remediations.
 
@@ -334,6 +334,7 @@ URL: https://martinfowler.com/bliki/StranglerFigApplication.html
   production-readiness signal.
 - [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). Dispatches this agent into the
   implementation team on a production-readiness signal.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). Dispatches this agent as a signal-selected review specialist when the change alters deployment shape, rollout, observability, or a build boundary.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).
   Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md).

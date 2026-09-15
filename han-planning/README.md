@@ -1,7 +1,8 @@
 # han-planning
 
 The planning layer of the Han suite: the skills you reach for before implementation. It specifies what a feature does,
-plans how to build it, sequences the build, breaks it into work, and stress-tests plans before you commit, each through
+plans how to build it, plans a restructure of code that already exists, sequences the build, breaks it into work, and
+stress-tests plans before you commit, each through
 an evidence-based process that dispatches specialist agents to do the judgment-heavy work. Reach for it when you have a
 problem to solve and want a durable, reviewed plan before any code is written.
 
@@ -11,12 +12,15 @@ problem to solve and want a durable, reviewed plan before any code is written.
 with [`/plan-implementation`](docs/skills/plan-implementation.md), sequence it with
 [`/plan-a-phased-build`](docs/skills/plan-a-phased-build.md), and break it into work with
 [`/plan-work-items`](docs/skills/plan-work-items.md); stress-test any plan along the way with
-[`/iterative-plan-review`](docs/skills/iterative-plan-review.md).
+[`/iterative-plan-review`](docs/skills/iterative-plan-review.md). When the work is restructuring code that already
+exists rather than adding behavior, start at [`/plan-a-change`](docs/skills/plan-a-change.md) instead.
 
 ## Skills
 
 - [`/plan-a-feature`](docs/skills/plan-a-feature.md) — Build a feature specification from scratch through an
   evidence-based interview that walks the design tree and dispatches specialist reviewers.
+- [`/plan-a-change`](docs/skills/plan-a-change.md) — Plan an architecture-driven change to existing code, naming the
+  types and modules involved and recording what is true of each one after the change.
 - [`/plan-implementation`](docs/skills/plan-implementation.md) — Turn a feature specification into an implementation
   plan through a facilitated team conversation.
 - [`/plan-a-phased-build`](docs/skills/plan-a-phased-build.md) — Split a body of context into a numbered sequence of

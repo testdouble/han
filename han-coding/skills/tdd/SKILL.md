@@ -7,8 +7,9 @@ description: >
   the Transformation Priority Premise (TPP) or ZOMBIES ordering, or grow a feature behavior-by-behavior with tests
   leading. This skill writes and changes code; it does not produce a test plan document (use automated-test-planning, or manual-test-planning for a plan a person
   runs by hand), review or
-  audit existing code (use code-review), restructure existing code outside a TDD loop (use refactor), specify what a
-  feature should do (use plan-a-feature), or find the root cause of a bug (use investigate). Runs its loop to
+  audit existing code (use code-review), restructure existing code outside a TDD loop (use refactor, or plan-a-change to
+  plan a multi-module restructure), specify what a feature should do (use plan-a-feature), or find the root cause of a
+  bug (use investigate). Runs its loop to
   completion without pausing for review; to review each behavior as it lands, use pairing.
 argument-hint: "[what to build, a behavior to drive, or a path to a spec/plan]"
 allowed-tools:

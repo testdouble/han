@@ -33,6 +33,10 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   unless a clear external-data or type-coercion signal appears. Exhaustive mode traces to origin.
 - **Code location per finding.** Every `EC#` cites the affected `file:line` and references the input it touches.
   Untraceable edge cases are dropped.
+- **Existing coverage counts only when it would catch the break.** A test is sufficient for an edge case when it fails
+  under a code change that breaks that case. One that still passes is insufficient however directly it appears to cover
+  it, and the edge case is treated as untested. Every dropped item names the change a test for it would catch and the
+  existing test that already fails under that change.
 - **Discovers and catalogs, does not write tests.** Output is a prioritization plan. `test-engineer` or your team writes
   the tests.
 - **`/code-review` adds a failure-mode-target dispatcher directive at Step 3.5.** When dispatched from `/code-review`,
@@ -122,6 +126,11 @@ The agent enforces the **Speculative Edge Case** rule. These are YAGNI candidate
 
 They move to Dropped Edge Cases with a named _reopen-when_ trigger. When many speculative low-bound/high-bound items can
 be replaced by one durable boundary test that catches the realistic failure modes, the agent recommends the single test.
+
+Existing coverage counts only when it would actually catch the break. A test is sufficient for an edge case when it
+fails under a code change that breaks that case, and one that still passes is insufficient however directly it appears
+to cover it. Each dropped item records the change a test for it would catch and the existing test that already fails
+under that change. The agent cannot run tests, so it predicts this from reading assertions and says so.
 
 See [YAGNI](../../../docs/yagni.md) for the two gates, the acceptable-evidence list, and the named anti-patterns.
 

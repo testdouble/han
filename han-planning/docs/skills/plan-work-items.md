@@ -34,6 +34,13 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   after they are written, and a prescribed edit list goes stale against the moving codebase while intention and
   criteria stay valid. Plan references live in the References block, each ID paired with a one-sentence description of
   what it is.
+- **A shared contract lives in one item.** When more than one work item touches the same form two components must
+  agree on, the item that introduces it carries the concrete form in its acceptance criteria and the consumers name it
+  under `Depends on`. One contract is never defined a piece at a time across several items, and "the schema document
+  exists" is never the criterion that closes the item that authors it.
+- **A non-blocking open item does not evaporate here.** The skill reads the plan's Open Items, including the ones the
+  plan marked as not blocking. Each one either gets pinned into the work item that owns it or is printed as a named gap
+  saying which items inherit it. This is the last stage that can see an open question before somebody builds against it.
 - **Symbolic ID.** Each work item gets a stable identifier (`W-N`). IDs are for cross-referencing work items within the
   file and citing them in tickets, threads, and follow-up work. They are stable for the life of the file.
 - **One work-items file, no repository awareness.** The breakdown is one `work-items.md`. Beside it the run also writes
@@ -117,8 +124,8 @@ One file on disk plus an in-channel summary:
   named. A check that did not pass is recorded beside the work items as well as in the summary, so whoever picks the
   items up does not read the folder as fully verified.
 - An **in-channel summary** with the file path, the boundary record's path, a count of work items by type (HITL / AFK),
-  the cut list when anything was cut, the escalation register when the run took its single stop, and the next concrete
-  action.
+  the cut list when anything was cut, any open item carried forward as a named gap with the work items that inherit it,
+  the escalation register when the run took its single stop, and the next concrete action.
 
 ## How to get the most out of it
 
@@ -233,6 +240,8 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 - [`plan-synthesizer`](../../../han-core/docs/agents/plan-synthesizer.md). Dispatched in Step 5 to draft the work item breakdown.
 - [`/plan-implementation`](./plan-implementation.md). Pair upstream to produce the implementation plan this skill breaks
   down.
+- [`/plan-a-change`](./plan-a-change.md). Pair upstream when the work is a restructure of existing code. Its change
+  units are already sequenced so each leaves the codebase working, so they convert cleanly.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Pair upstream to harden a plan you do not yet trust before
   breaking it into work items.
 - [`/plan-a-phased-build`](./plan-a-phased-build.md). Pair upstream when the work is large enough to ship in phases.

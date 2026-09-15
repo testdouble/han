@@ -66,6 +66,13 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   It never prescribes line-level edits or inlines full file contents: a non-author must be able to read it, plans are
   executed after the codebase has moved on (a prescribed edit list goes stale and misleads), and the implementer,
   human or coding agent, reads the current code at build time.
+- **A shared contract is pinned, not promised.** When two components must independently agree on a form, the plan
+  carries that form concretely: a worked example, a grammar line, a field layout, or a link to an artifact that already
+  exists. This is the altitude rule's decision-bearing-value carve-out, applied to formats. A decision whose content is
+  "authored during the build" does not close the item, and an aggregation check answers the question every round even
+  when no specialist raised it, so an un-pinned contract becomes an Open Question rather than a silence. Before the
+  skill summarizes, an executed check reads the finished plan for a deferral phrase, an Open Item whose resolution
+  restates its own question, and a referenced document that is absent or empty.
 - **Plain language leads; technical detail nests beneath it.** Every section leads with plain-language prose.
   Technical detail is minimal references only, placed below or after the plain language it illustrates, never mixed
   into it. When choosing between more plain language and more technical detail, the plan chooses more plain language.
@@ -198,16 +205,28 @@ Four cross-referenced files in the same folder as the source specification, plus
   entry records the specialists engaged, the new input provided that round, and the questions raised. For each question
   it records the resolution source (`evidence` found in the loop / `junior-developer reframing` / `user input` /
   `synthesis (Step 8 evidence)` when the plan-synthesizer settled it by re-reading the spec during synthesis rather
-  than in the loop) and the round's next-step recommendation. It also records the decisions the round produced
-  (`Decisions produced:`, backfilled during synthesis) and the plan sections the round changed (`Changed in plan:`, also
-  backfilled). This captures how the plan evolved across rounds without bloating the primary plan file.
-- A **summary** returned in-channel. All three file paths, team composition, number of iterations the loop ran before
+  than in the loop), the round's contract-pinning answer, and the round's next-step recommendation. It also records the
+  decisions the round produced (`Decisions produced:`, backfilled during synthesis) and the plan sections the round
+  changed (`Changed in plan:`, also backfilled). This captures how the plan evolved across rounds without bloating the
+  primary plan file.
+- An **`artifacts/scope-boundary.md`** file at `{same-folder-as-source}/artifacts/scope-boundary.md`. The boundary
+  record, always present whether this run wrote it or inherited it from the upstream specification. It holds what the
+  plan may draw from, what was stated as out of scope, and the visual material the run received. A `ui-designs/` folder
+  sits beside it when you supply visual material.
+- **Two executed checks**, run before the skill summarizes. A completeness gate reads the boundary record against the
+  `ui-designs/` folder, and a contract-pinning check reads the finished plan for a phrase promising to author a form
+  later, an Open Item whose resolution restates its own question, and a referenced document that is absent or empty.
+  Each reports one of three outcomes: passed, failed with the offending lines named, or could not verify with the
+  reason named. A check that did not pass is recorded in `artifacts/implementation-iteration-history.md` as well as the
+  summary, so the next skill in the chain does not read the folder as fully verified.
+- A **summary** returned in-channel. All four file paths, team composition, number of iterations the loop ran before
   convergence, decisions settled by evidence vs. junior-developer reframing vs. user input, remaining open items and
   whether they block implementation, and the plan-synthesizer's recommendation (ship as planned, hold for specialist
-  handoff, or blocked pending open item).
+  handoff, or blocked pending open item). Each remaining open item is named rather than counted, including the ones
+  that do not block, because a non-blocking question is still one the builder inherits.
 
-The three files interlock through shared IDs. Every `D-N` lists the `R#` rounds that drove it and the plan sections that
-cite it. Every `R#` lists the `D-N` decisions it produced and the plan sections it changed. Every non-obvious claim in
+The plan and its two companion artifacts interlock through shared IDs. Every `D-N` lists the `R#` rounds that drove
+it and the plan sections that cite it. Every `R#` lists the `D-N` decisions it produced and the plan sections it changed. Every non-obvious claim in
 the plan carries its inline `([D-N](...))` marker. The plan-synthesizer preserves these structural invariants during
 synthesis, so cross-references stay consistent. On top of that, it runs a semantic audit. It checks that each
 decision-log title matches its body, that a path named in one section matches the file layout described in another, and

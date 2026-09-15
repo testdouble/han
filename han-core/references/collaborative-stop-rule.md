@@ -62,6 +62,10 @@ The reasoning behind the choices comes last or not at all. State in one line tha
 stop there BECAUSE an unannounced affordance in a conversation is the same as no affordance, while a volunteered
 rationale is the thing that suppresses scrutiny.
 
+A stop covers what just closed and asks nothing about a later piece. Its position line reports what remains, and naming
+the work that comes next is a report, not a question. The one question this convention poses about a piece not yet
+built is the pre-build ask, and it has a turn of its own.
+
 Then end the turn. Nothing further is built until the person responds.
 
 That last instruction is a directive, not a guarantee. Nothing in the platform enforces it. When a run does build past a
@@ -93,8 +97,21 @@ test as provisional and revisit it once real runs show whether it marks the piec
 **The ask itself** names the dimension the choice turns on and stops there. Do not pose a blank question, and do not
 offer candidate answers, BECAUSE named candidates anchor the guess and the point is an independent read.
 
+**The ask is a turn of its own.** It opens the marked piece's turn, after the person has responded to the previous
+stop, or to the plan when the marked piece is the first, and it is the whole turn: pose it and end the turn. Never
+append it to that stop or plan, BECAUSE a reply to a stop or a plan is a reply to that alone, and answers nothing about
+a later piece.
+
 **Declining is a first-class answer.** "I don't know" and "just show me" advance the piece exactly as a considered
-answer does. Never re-prompt, and never require an answer before building.
+answer does. Never re-prompt once the person has replied to the ask, and never hold the build for a fuller answer than
+the one given. A decline is a reply to the ask. A reply to the previous stop, or to the plan, is a reply to that alone,
+and never counts as declining an ask the person has not yet answered. A question about the ask holds it open: answer
+the question and end the turn again.
+
+**A bundled ask is an unanswered ask.** When an earlier turn put the ask into a stop or the plan and the reply spoke
+only to that, the ask was never posed on its own: present it now, on its own, before building. That is the first ask,
+not a re-prompt. If the piece was already built when this comes to light, do not ask now; say that the run put the ask
+under an earlier turn so it went unanswered, and continue from the stop in hand.
 
 **After the build, the reveal is an ordinary stop.** It does not restate the person's read, score it, or defend a
 divergence from it. A stop that grades you teaches you to answer noncommittally, and a stop that argues with you leads
@@ -104,6 +121,10 @@ with the reasoning this convention keeps out of the lead.
 
 Write every piece of feedback into the running record before acting on it. A correction given at the second stop has to
 still apply at the seventh, and mid-context material is the least reliably recalled.
+
+An entry holds the person's words and names the stop or ask they answered. A reading the run adds, such as "declined"
+or "approved", follows the words and is marked as the run's, never written as what the person decided. An entry reads,
+for example, "Piece 2 stop: 'commit and next' (run's reading: approved)". An ask with no entry is an ask with no answer.
 
 The person can read the record whenever they ask. When a recorded entry shapes a later piece, name which entry it was,
 so a misrecorded correction surfaces while it is still cheap to fix rather than quietly governing the rest of the
