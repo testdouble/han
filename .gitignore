@@ -14,6 +14,7 @@ tests/harness-web
 tests/harness
 tests/duckdb.node
 tests/libduckdb.dylib
+output/
 
 # ralph loop progress tracking
 progress.txt
