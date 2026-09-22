@@ -1,0 +1,1 @@
+Analyze the coupling between the internal packages and identify module boundary violations

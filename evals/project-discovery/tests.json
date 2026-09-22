@@ -1,0 +1,47 @@
+{
+  "plugins": ["han-core"],
+  "tests": [
+    {
+      "name": "Prompt: /project-discovery",
+      "type": "skill-prompt",
+      "promptFile": "prompt-project-discovery.md",
+      "model": "opus",
+      "scaffold": "polyglot-project",
+      "expect": [
+        { "result-contains": "project-discovery.md" },
+        { "skill-call": { "skill": "han-core:project-discovery", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: no op",
+      "type": "skill-prompt",
+      "model": "sonnet",
+      "promptFile": "prompt-no-op.md",
+      "expect": [
+        { "result-does-not-contain": "project-discovery.md" },
+        { "skill-call": { "skill": "han-core:project-discovery", "expected": false } }
+      ]
+    },
+    {
+      "name": "Skill Call: /project-discovery",
+      "type": "skill-call",
+      "model": "opus",
+      "skillFile": "han-core:project-discovery",
+      "promptFile": "skill-call-project-discovery.md",
+      "scaffold": "polyglot-project",
+      "expect": [
+        { "skill-call": true }
+      ]
+    },
+    {
+      "name": "Skill Call: no project-discovery",
+      "type": "skill-call",
+      "model": "sonnet",
+      "skillFile": "han-core:project-discovery",
+      "promptFile": "skill-call-no-project-discovery.md",
+      "expect": [
+        { "skill-call": false }
+      ]
+    }
+  ]
+}

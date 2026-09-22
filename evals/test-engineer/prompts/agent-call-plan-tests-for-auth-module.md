@@ -1,0 +1,1 @@
+Plan what tests we need for the auth module

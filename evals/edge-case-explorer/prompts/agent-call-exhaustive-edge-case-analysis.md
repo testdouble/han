@@ -1,0 +1,1 @@
+Do an exhaustive exploration of edge cases for the runner module — check all dimensions including race conditions and error propagation

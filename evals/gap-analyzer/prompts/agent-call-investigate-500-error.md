@@ -1,0 +1,1 @@
+investigate why the login endpoint returns a 500 error

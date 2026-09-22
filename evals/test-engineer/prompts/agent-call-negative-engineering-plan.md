@@ -1,0 +1,1 @@
+Plan the sprint for next week and assign tasks to the engineering team

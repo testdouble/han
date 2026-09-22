@@ -1,0 +1,1 @@
+Explain behavioral patterns in consumer psychology and how they affect purchasing decisions

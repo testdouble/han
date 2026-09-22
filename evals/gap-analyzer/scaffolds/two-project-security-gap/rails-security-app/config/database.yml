@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: prod-db.internal
+  port: 5432
+  username: admin
+  password: Password123!
+  database: userservice
+
+development:
+  <<: *default
+
+production:
+  <<: *default

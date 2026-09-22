@@ -1,0 +1,1 @@
+I need to understand the architectural debt in lib/auth before we refactor it

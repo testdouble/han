@@ -1,0 +1,1 @@
+Investigate why the user creation endpoint is returning 500 errors in production — find the root cause

@@ -1,0 +1,1 @@
+write a test plan for the new auth module

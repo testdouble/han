@@ -15,6 +15,10 @@ tests/harness
 tests/duckdb.node
 tests/libduckdb.dylib
 
+# skillwalker eval files
+output/
+analytics/
+
 # ralph loop progress tracking
 progress.txt
 deferred.txt

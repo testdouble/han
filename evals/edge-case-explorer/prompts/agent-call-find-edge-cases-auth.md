@@ -1,0 +1,1 @@
+Find the edge cases in the authentication module — what unexpected inputs could break it?

@@ -1,0 +1,25 @@
+{
+  "plugins": ["han-communication", "han-core", "han-coding", "han-github"],
+  "tests": [
+    {
+      "name": "Prompt: /post-code-review-to-pr",
+      "type": "skill-prompt",
+      "promptFile": "prompt-post-code-review-to-pr.md",
+      "model": "opus",
+      "expect": [
+        { "result-contains": "gh CLI" },
+        { "skill-call": { "skill": "han-github:post-code-review-to-pr", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: no op",
+      "type": "skill-prompt",
+      "model": "sonnet",
+      "promptFile": "prompt-no-op.md",
+      "expect": [
+        { "result-does-not-contain": "gh CLI" },
+        { "skill-call": { "skill": "han-github:post-code-review-to-pr", "expected": false } }
+      ]
+    }
+  ]
+}

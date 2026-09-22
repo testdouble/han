@@ -1,0 +1,1 @@
+Create a behavioral test plan for the API endpoints — focus on inputs, outputs, and side effects

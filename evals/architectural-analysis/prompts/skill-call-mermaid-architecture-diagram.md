@@ -1,0 +1,1 @@
+write an architecture diagram in Mermaid for the README

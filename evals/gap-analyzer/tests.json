@@ -1,0 +1,18 @@
+{
+  "plugins": ["han-core"],
+  "tests": [
+    { "name": "Agent Call: compare implementation to PRD", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-compare-impl-to-prd.md", "model": "opus", "expect": [{ "agent-call": true }] },
+    { "name": "Agent Call: check code covers requirements", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-check-code-covers-requirements.md", "model": "opus", "expect": [{ "agent-call": true }] },
+    { "name": "Agent Call: what's missing from spec", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-whats-missing-from-spec.md", "model": "opus", "expect": [{ "agent-call": true }] },
+    { "name": "Agent Call: diff built vs planned", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-diff-built-vs-planned.md", "model": "opus", "expect": [{ "agent-call": true }] },
+    { "name": "Agent Call: find gaps to migration target", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-find-gaps-migration-target.md", "model": "opus", "expect": [{ "agent-call": true }] },
+    { "name": "Agent Call: revenue projections (negative)", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-revenue-projections.md", "model": "sonnet", "expect": [{ "agent-call": false }] },
+    { "name": "Agent Call: db performance bottleneck (negative)", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-db-performance-bottleneck.md", "model": "sonnet", "expect": [{ "agent-call": false }] },
+    { "name": "Agent Call: refactor suggestions (negative)", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-refactor-suggestions.md", "model": "sonnet", "expect": [{ "agent-call": false }] },
+    { "name": "Agent Call: investigate 500 error (sibling)", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-investigate-500-error.md", "model": "sonnet", "expect": [{ "agent-call": false }] },
+    { "name": "Agent Call: module coupling (sibling)", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-module-coupling.md", "model": "sonnet", "expect": [{ "agent-call": false }] },
+    { "name": "Agent Call: trace data flow (sibling)", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-trace-data-flow.md", "model": "sonnet", "expect": [{ "agent-call": false }] },
+    { "name": "Agent Call: check README preserved (sibling)", "type": "agent-call", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-call-check-readme-preserved.md", "model": "sonnet", "expect": [{ "agent-call": false }] },
+    { "name": "Agent Prompt: security gap analysis — rails to go migration", "type": "agent-prompt", "agentFile": "han-core:gap-analyzer", "promptFile": "agent-prompt-security-gap-rails-to-go.md", "scaffold": "two-project-security-gap", "model": "opus", "expect": [{ "llm-judge": { "rubricFile": "gap-analyzer-quality.md", "model": "opus", "threshold": 0.8 } }] }
+  ]
+}
