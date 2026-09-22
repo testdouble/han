@@ -1,0 +1,1 @@
+Examine the Go project and create a test plan. Identify all untested behaviors, recommend test doubles for isolation, and prioritize test cases by value and brittleness risk. Write the full analysis to test-plan.md.

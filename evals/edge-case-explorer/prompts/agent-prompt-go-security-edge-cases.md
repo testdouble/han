@@ -1,0 +1,1 @@
+Explore the edge cases in this Go project. Trace inputs, find boundary values, type coercion traps, and integration boundary issues. Write the full analysis to edge-case-analysis.md.

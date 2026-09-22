@@ -1,0 +1,1 @@
+review the module boundaries and dependencies in src/core

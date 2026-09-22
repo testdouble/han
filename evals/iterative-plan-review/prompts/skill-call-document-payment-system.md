@@ -1,0 +1,1 @@
+document how the payment system works

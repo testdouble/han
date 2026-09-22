@@ -1,0 +1,1 @@
+Explore how the HTTP handlers can fail — trace the inputs and find edge cases we haven't thought of

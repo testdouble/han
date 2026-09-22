@@ -1,0 +1,25 @@
+{
+  "plugins": ["plugins/han"],
+  "tests": [
+    {
+      "name": "Prompt: /gh-pr-review",
+      "type": "skill-prompt",
+      "promptFile": "prompt-gh-pr-review.md",
+      "model": "opus",
+      "expect": [
+        { "result-contains": "gh CLI" },
+        { "skill-call": { "skill": "han:gh-pr-review", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: no op",
+      "type": "skill-prompt",
+      "model": "sonnet",
+      "promptFile": "prompt-no-op.md",
+      "expect": [
+        { "result-does-not-contain": "gh CLI" },
+        { "skill-call": { "skill": "han:gh-pr-review", "expected": false } }
+      ]
+    }
+  ]
+}

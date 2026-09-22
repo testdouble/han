@@ -1,0 +1,1 @@
+analyze the module boundaries and coupling in the auth service

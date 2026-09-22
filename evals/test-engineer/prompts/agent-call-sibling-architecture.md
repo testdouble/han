@@ -1,0 +1,1 @@
+Analyze the architectural structure of the internal packages and identify coupling problems

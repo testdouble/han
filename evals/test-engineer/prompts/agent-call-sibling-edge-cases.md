@@ -1,0 +1,1 @@
+Explore all the edge cases and boundary values for the authentication module — what inputs could cause it to fail?

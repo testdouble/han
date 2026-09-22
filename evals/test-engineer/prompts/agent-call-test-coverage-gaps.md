@@ -1,0 +1,1 @@
+Examine the handlers package and identify test coverage gaps — what behaviors are missing tests?

@@ -1,0 +1,1 @@
+Investigate why the server crashes on startup when the DATABASE_URL environment variable is missing

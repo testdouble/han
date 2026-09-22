@@ -1,0 +1,70 @@
+{
+  "plugins": ["plugins/han"],
+  "tests": [
+    {
+      "name": "Prompt: controller design patterns",
+      "type": "skill-prompt",
+      "promptFile": "prompt-controller-patterns.md",
+      "model": "opus",
+      "scaffold": "rails-api-project",
+      "expect": [
+        { "skill-call": { "skill": "han:coding-standard", "expected": true } },
+        { "llm-judge": { "rubricFile": "coding-standard-quality.md", "model": "opus", "threshold": 0.8 } }
+      ]
+    },
+    {
+      "name": "Prompt: API response conventions",
+      "type": "skill-prompt",
+      "promptFile": "prompt-api-response-conventions.md",
+      "model": "opus",
+      "scaffold": "rails-api-project",
+      "expect": [
+        { "skill-call": { "skill": "han:coding-standard", "expected": true } },
+        { "llm-judge": { "rubricFile": "coding-standard-quality.md", "model": "opus", "threshold": 0.8 } }
+      ]
+    },
+    {
+      "name": "Prompt: /coding-standard",
+      "type": "skill-prompt",
+      "promptFile": "prompt-coding-standard.md",
+      "model": "opus",
+      "scaffold": "ruby-project",
+      "expect": [
+        { "result-contains": "coding standard" },
+        { "skill-call": { "skill": "han:coding-standard", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: no op",
+      "type": "skill-prompt",
+      "model": "sonnet",
+      "promptFile": "prompt-no-op.md",
+      "expect": [
+        { "result-does-not-contain": "coding standard" },
+        { "skill-call": { "skill": "han:coding-standard", "expected": false } }
+      ]
+    },
+    {
+      "name": "Skill Call: /coding-standard",
+      "type": "skill-call",
+      "model": "opus",
+      "skillFile": "han:coding-standard",
+      "promptFile": "skill-call-coding-standard.md",
+      "scaffold": "ruby-project",
+      "expect": [
+        { "skill-call": true }
+      ]
+    },
+    {
+      "name": "Skill Call: no coding standard",
+      "type": "skill-call",
+      "model": "sonnet",
+      "skillFile": "han:coding-standard",
+      "promptFile": "skill-call-no-coding-standard.md",
+      "scaffold": "ruby-project",
+      "expect": [
+        { "skill-call": false }
+      ]
+    }
+  ]
+}

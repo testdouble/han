@@ -1,0 +1,1 @@
+Explain how edge computing works and when to deploy workloads to the edge versus the cloud

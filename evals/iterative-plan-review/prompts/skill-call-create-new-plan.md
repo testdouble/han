@@ -1,0 +1,1 @@
+create a new plan for adding auth to the app

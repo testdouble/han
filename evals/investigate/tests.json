@@ -1,0 +1,48 @@
+{
+  "plugins": ["plugins/han"],
+  "tests": [
+    {
+      "name": "Prompt: /investigate",
+      "type": "skill-prompt",
+      "promptFile": "prompt-investigate.md",
+      "model": "opus",
+      "scaffold": "ruby-project",
+      "expect": [
+        { "result-contains": "Root Cause" },
+        { "skill-call": { "skill": "han:investigate", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: no op",
+      "type": "skill-prompt",
+      "model": "sonnet",
+      "promptFile": "prompt-no-op.md",
+      "expect": [
+        { "result-does-not-contain": "Root Cause" },
+        { "skill-call": { "skill": "han:investigate", "expected": false } }
+      ]
+    },
+    {
+      "name": "Skill Call: /investigate",
+      "type": "skill-call",
+      "model": "opus",
+      "skillFile": "han:investigate",
+      "promptFile": "skill-call-investigate.md",
+      "scaffold": "ruby-project",
+      "expect": [
+        { "skill-call": true }
+      ]
+    },
+    {
+      "name": "Skill Call: no investigate",
+      "type": "skill-call",
+      "model": "sonnet",
+      "skillFile": "han:investigate",
+      "promptFile": "skill-call-no-investigate.md",
+      "scaffold": "ruby-project",
+      "expect": [
+        { "skill-call": false }
+      ]
+    }
+  ]
+}

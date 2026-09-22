@@ -1,0 +1,1 @@
+Compare rails-security-app/ (current state) against go-security-app/ (desired state) and find all security gaps. What security features and behaviors does the Rails app lack compared to the Go app? Write the full analysis to gap-analysis.md.

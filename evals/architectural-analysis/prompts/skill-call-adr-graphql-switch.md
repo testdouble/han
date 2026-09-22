@@ -1,0 +1,1 @@
+create an ADR for our decision to switch from REST to GraphQL
