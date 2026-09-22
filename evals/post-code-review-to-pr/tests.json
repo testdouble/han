@@ -2,13 +2,13 @@
   "plugins": ["han-communication", "han-core", "han-coding", "han-github"],
   "tests": [
     {
-      "name": "Prompt: /update-pr-description",
+      "name": "Prompt: /post-code-review-to-pr",
       "type": "skill-prompt",
-      "promptFile": "prompt-update-pr-description.md",
+      "promptFile": "prompt-post-code-review-to-pr.md",
       "model": "opus",
       "expect": [
         { "result-contains": "gh CLI" },
-        { "skill-call": { "skill": "han-github:update-pr-description", "expected": true } }
+        { "skill-call": { "skill": "han-github:post-code-review-to-pr", "expected": true } }
       ]
     },
     {
@@ -18,7 +18,7 @@
       "promptFile": "prompt-no-op.md",
       "expect": [
         { "result-does-not-contain": "gh CLI" },
-        { "skill-call": { "skill": "han-github:update-pr-description", "expected": false } }
+        { "skill-call": { "skill": "han-github:post-code-review-to-pr", "expected": false } }
       ]
     }
   ]

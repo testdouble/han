@@ -1,5 +1,5 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-communication", "han-core", "han-documentation"],
   "tests": [
     {
       "name": "Prompt: /project-documentation",
@@ -9,7 +9,7 @@
       "scaffold": "node-project",
       "expect": [
         { "result-contains": "docs/" },
-        { "skill-call": { "skill": "han:project-documentation", "expected": true } }
+        { "skill-call": { "skill": "han-documentation:project-documentation", "expected": true } }
       ]
     },
     {
@@ -19,14 +19,14 @@
       "promptFile": "prompt-no-op.md",
       "expect": [
         { "result-does-not-contain": "docs/" },
-        { "skill-call": { "skill": "han:project-documentation", "expected": false } }
+        { "skill-call": { "skill": "han-documentation:project-documentation", "expected": false } }
       ]
     },
     {
       "name": "Skill Call: /project-documentation",
       "type": "skill-call",
       "model": "opus",
-      "skillFile": "han:project-documentation",
+      "skillFile": "han-documentation:project-documentation",
       "promptFile": "skill-call-project-documentation.md",
       "scaffold": "node-project",
       "expect": [
@@ -37,7 +37,7 @@
       "name": "Skill Call: no project-documentation",
       "type": "skill-call",
       "model": "sonnet",
-      "skillFile": "han:project-documentation",
+      "skillFile": "han-documentation:project-documentation",
       "promptFile": "skill-call-no-project-documentation.md",
       "expect": [
         { "skill-call": false }

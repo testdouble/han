@@ -1,5 +1,5 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-communication", "han-core", "han-coding"],
   "tests": [
     {
       "name": "Prompt: controller design patterns",
@@ -8,7 +8,7 @@
       "model": "opus",
       "scaffold": "rails-api-project",
       "expect": [
-        { "skill-call": { "skill": "han:coding-standard", "expected": true } },
+        { "skill-call": { "skill": "han-coding:coding-standard", "expected": true } },
         { "llm-judge": { "rubricFile": "coding-standard-quality.md", "model": "opus", "threshold": 0.8 } }
       ]
     },
@@ -19,7 +19,7 @@
       "model": "opus",
       "scaffold": "rails-api-project",
       "expect": [
-        { "skill-call": { "skill": "han:coding-standard", "expected": true } },
+        { "skill-call": { "skill": "han-coding:coding-standard", "expected": true } },
         { "llm-judge": { "rubricFile": "coding-standard-quality.md", "model": "opus", "threshold": 0.8 } }
       ]
     },
@@ -31,7 +31,7 @@
       "scaffold": "ruby-project",
       "expect": [
         { "result-contains": "coding standard" },
-        { "skill-call": { "skill": "han:coding-standard", "expected": true } }
+        { "skill-call": { "skill": "han-coding:coding-standard", "expected": true } }
       ]
     },
     {
@@ -41,14 +41,14 @@
       "promptFile": "prompt-no-op.md",
       "expect": [
         { "result-does-not-contain": "coding standard" },
-        { "skill-call": { "skill": "han:coding-standard", "expected": false } }
+        { "skill-call": { "skill": "han-coding:coding-standard", "expected": false } }
       ]
     },
     {
       "name": "Skill Call: /coding-standard",
       "type": "skill-call",
       "model": "opus",
-      "skillFile": "han:coding-standard",
+      "skillFile": "han-coding:coding-standard",
       "promptFile": "skill-call-coding-standard.md",
       "scaffold": "ruby-project",
       "expect": [
@@ -59,7 +59,7 @@
       "name": "Skill Call: no coding standard",
       "type": "skill-call",
       "model": "sonnet",
-      "skillFile": "han:coding-standard",
+      "skillFile": "han-coding:coding-standard",
       "promptFile": "skill-call-no-coding-standard.md",
       "scaffold": "ruby-project",
       "expect": [

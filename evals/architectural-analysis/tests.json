@@ -1,5 +1,5 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-communication", "han-core", "han-coding"],
   "tests": [
     {
       "name": "Prompt: /architectural-analysis of go-project runner module",
@@ -8,22 +8,22 @@
       "model": "opus",
       "scaffold": "go-project",
       "expect": [
-        { "skill-call": { "skill": "han:architectural-analysis", "expected": true } },
+        { "skill-call": { "skill": "han-coding:architectural-analysis", "expected": true } },
         { "llm-judge": { "rubricFile": "architectural-analysis-quality.md", "model": "opus", "threshold": 0.8 } }
       ]
     },
-    { "name": "Skill Call: analyze payments module architecture", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-analyze-payments-module.md", "model": "opus", "expect": [{ "skill-call": true }] },
-    { "name": "Skill Call: evaluate api gateway coupling", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-evaluate-api-gateway-coupling.md", "model": "opus", "expect": [{ "skill-call": true }] },
-    { "name": "Skill Call: understand architectural debt before refactor", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-architectural-debt-refactor.md", "model": "opus", "expect": [{ "skill-call": true }] },
-    { "name": "Skill Call: review module boundaries and dependencies", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-module-boundaries-dependencies.md", "model": "opus", "expect": [{ "skill-call": true }] },
-    { "name": "Skill Call: assess concurrency and data flow", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-concurrency-data-flow.md", "model": "opus", "expect": [{ "skill-call": true }] },
-    { "name": "Skill Call: write mermaid architecture diagram", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-mermaid-architecture-diagram.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
-    { "name": "Skill Call: architecture book recommendation", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-architecture-book-recommendation.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
-    { "name": "Skill Call: set up project directory structure", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-setup-directory-structure.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
-    { "name": "Skill Call: review code changes on branch", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-review-branch-code-changes.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
-    { "name": "Skill Call: debug intermittent webhook errors", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-debug-webhook-errors.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
-    { "name": "Skill Call: create test plan for auth module", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-test-plan-auth-module.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
-    { "name": "Skill Call: document notification system", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-document-notification-system.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
-    { "name": "Skill Call: create ADR for GraphQL switch", "type": "skill-call", "skillFile": "han:architectural-analysis", "promptFile": "skill-call-adr-graphql-switch.md", "model": "sonnet", "expect": [{ "skill-call": false }] }
+    { "name": "Skill Call: analyze payments module architecture", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-analyze-payments-module.md", "model": "opus", "expect": [{ "skill-call": true }] },
+    { "name": "Skill Call: evaluate api gateway coupling", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-evaluate-api-gateway-coupling.md", "model": "opus", "expect": [{ "skill-call": true }] },
+    { "name": "Skill Call: understand architectural debt before refactor", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-architectural-debt-refactor.md", "model": "opus", "expect": [{ "skill-call": true }] },
+    { "name": "Skill Call: review module boundaries and dependencies", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-module-boundaries-dependencies.md", "model": "opus", "expect": [{ "skill-call": true }] },
+    { "name": "Skill Call: assess concurrency and data flow", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-concurrency-data-flow.md", "model": "opus", "expect": [{ "skill-call": true }] },
+    { "name": "Skill Call: write mermaid architecture diagram", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-mermaid-architecture-diagram.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
+    { "name": "Skill Call: architecture book recommendation", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-architecture-book-recommendation.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
+    { "name": "Skill Call: set up project directory structure", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-setup-directory-structure.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
+    { "name": "Skill Call: review code changes on branch", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-review-branch-code-changes.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
+    { "name": "Skill Call: debug intermittent webhook errors", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-debug-webhook-errors.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
+    { "name": "Skill Call: create test plan for auth module", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-test-plan-auth-module.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
+    { "name": "Skill Call: document notification system", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-document-notification-system.md", "model": "sonnet", "expect": [{ "skill-call": false }] },
+    { "name": "Skill Call: create ADR for GraphQL switch", "type": "skill-call", "skillFile": "han-coding:architectural-analysis", "promptFile": "skill-call-adr-graphql-switch.md", "model": "sonnet", "expect": [{ "skill-call": false }] }
   ]
 }

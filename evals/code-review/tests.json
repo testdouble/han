@@ -1,5 +1,5 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-communication", "han-core", "han-coding"],
   "tests": [
     {
       "name": "Prompt: /code-review simple ruby file",
@@ -9,7 +9,7 @@
       "scaffold": "ruby-project",
       "expect": [
         { "result-contains": "# Code Review:" },
-        { "skill-call": { "skill": "han:code-review", "expected": true } },
+        { "skill-call": { "skill": "han-coding:code-review", "expected": true } },
         { "llm-judge": { "rubricFile": "code-review-quality.md", "model": "opus", "threshold": 0.8 } }
       ]
     },
@@ -21,7 +21,7 @@
       "scaffold": "go-security-project",
       "expect": [
         { "result-contains": "# Code Review:" },
-        { "skill-call": { "skill": "han:code-review", "expected": true } },
+        { "skill-call": { "skill": "han-coding:code-review", "expected": true } },
         { "llm-judge": { "rubricFile": "code-review-security-quality.md", "model": "opus", "threshold": 0.8 } }
       ]
     },
@@ -32,14 +32,14 @@
       "promptFile": "prompt-no-op.md",
       "expect": [
         { "result-does-not-contain": "# Code Review:" },
-        { "skill-call": { "skill": "han:code-review", "expected": false } }
+        { "skill-call": { "skill": "han-coding:code-review", "expected": false } }
       ]
     },
     {
       "name": "Skill Call: /code-review",
       "type": "skill-call",
       "model": "opus",
-      "skillFile": "han:code-review",
+      "skillFile": "han-coding:code-review",
       "promptFile": "skill-call-code-review.md",
       "scaffold": "ruby-project",
       "expect": [
@@ -50,7 +50,7 @@
       "name": "Skill Call: don't include the word 'review'",
       "type": "skill-call",
       "promptFile": "skill-call-lack-of-word.md",
-      "skillFile": "han:code-review",
+      "skillFile": "han-coding:code-review",
       "model": "opus",
       "scaffold": "ruby-project",
       "expect": [
@@ -61,7 +61,7 @@
       "name": "Skill Call: movie review",
       "type": "skill-call",
       "model": "sonnet",
-      "skillFile": "han:code-review",
+      "skillFile": "han-coding:code-review",
       "promptFile": "skill-call-movie-review.md",
       "scaffold": "ruby-project",
       "expect": [
@@ -72,7 +72,7 @@
       "name": "Skill Call: book review",
       "type": "skill-call",
       "model": "sonnet",
-      "skillFile": "han:code-review",
+      "skillFile": "han-coding:code-review",
       "promptFile": "skill-call-book-review.md",
       "scaffold": "ruby-project",
       "expect": [
@@ -83,7 +83,7 @@
       "name": "Skill Call: review changes in branch",
       "type": "skill-call",
       "promptFile": "skill-call-review-branch.md",
-      "skillFile": "han:code-review",
+      "skillFile": "han-coding:code-review",
       "model": "opus",
       "scaffold": "ruby-project",
       "expect": [

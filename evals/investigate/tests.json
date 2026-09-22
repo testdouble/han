@@ -1,5 +1,5 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-communication", "han-core", "han-coding"],
   "tests": [
     {
       "name": "Prompt: /investigate",
@@ -9,7 +9,7 @@
       "scaffold": "ruby-project",
       "expect": [
         { "result-contains": "Root Cause" },
-        { "skill-call": { "skill": "han:investigate", "expected": true } }
+        { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
       ]
     },
     {
@@ -19,14 +19,14 @@
       "promptFile": "prompt-no-op.md",
       "expect": [
         { "result-does-not-contain": "Root Cause" },
-        { "skill-call": { "skill": "han:investigate", "expected": false } }
+        { "skill-call": { "skill": "han-coding:investigate", "expected": false } }
       ]
     },
     {
       "name": "Skill Call: /investigate",
       "type": "skill-call",
       "model": "opus",
-      "skillFile": "han:investigate",
+      "skillFile": "han-coding:investigate",
       "promptFile": "skill-call-investigate.md",
       "scaffold": "ruby-project",
       "expect": [
@@ -37,7 +37,7 @@
       "name": "Skill Call: no investigate",
       "type": "skill-call",
       "model": "sonnet",
-      "skillFile": "han:investigate",
+      "skillFile": "han-coding:investigate",
       "promptFile": "skill-call-no-investigate.md",
       "scaffold": "ruby-project",
       "expect": [

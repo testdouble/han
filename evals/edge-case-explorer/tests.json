@@ -1,10 +1,10 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-core"],
   "tests": [
     {
       "name": "Agent Call: find edge cases in auth module",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-find-edge-cases-auth.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -12,7 +12,7 @@
     {
       "name": "Agent Call: boundary values for database layer",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-boundary-values-db-layer.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -20,7 +20,7 @@
     {
       "name": "Agent Call: explore how handlers can fail",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-how-can-handlers-fail.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -28,7 +28,7 @@
     {
       "name": "Agent Call: type coercion traps in user service",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-type-coercion-traps.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -36,7 +36,7 @@
     {
       "name": "Agent Call: exhaustive edge case analysis of runner",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-exhaustive-edge-case-analysis.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -44,7 +44,7 @@
     {
       "name": "Agent Call: negative — edge computing explanation",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-negative-edge-computing.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -52,7 +52,7 @@
     {
       "name": "Agent Call: negative — property boundary survey",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-negative-boundary-survey.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -60,7 +60,7 @@
     {
       "name": "Agent Call: negative — interview questions",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-negative-edge-case-interview.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -68,7 +68,7 @@
     {
       "name": "Agent Call: sibling — test planning for auth",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-sibling-test-plan.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -76,7 +76,7 @@
     {
       "name": "Agent Call: sibling — code review for handlers",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-sibling-code-review.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -84,7 +84,7 @@
     {
       "name": "Agent Call: sibling — investigate server crash",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-sibling-investigate-crash.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -92,7 +92,7 @@
     {
       "name": "Agent Call: sibling — structural coupling analysis",
       "type": "agent-call",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-call-sibling-structural-coupling.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -100,7 +100,7 @@
     {
       "name": "Agent Prompt: edge case analysis of go-security-project",
       "type": "agent-prompt",
-      "agentFile": "han:edge-case-explorer",
+      "agentFile": "han-core:edge-case-explorer",
       "promptFile": "agent-prompt-go-security-edge-cases.md",
       "scaffold": "go-security-project",
       "model": "opus",

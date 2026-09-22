@@ -1,10 +1,10 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-core"],
   "tests": [
     {
       "name": "Agent Call: plan tests for auth module",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-plan-tests-for-auth-module.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -12,7 +12,7 @@
     {
       "name": "Agent Call: find untested behaviors in user service",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-find-untested-behaviors.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -20,7 +20,7 @@
     {
       "name": "Agent Call: identify test coverage gaps in handlers",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-test-coverage-gaps.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -28,7 +28,7 @@
     {
       "name": "Agent Call: prioritize test cases by risk",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-prioritize-test-cases.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -36,7 +36,7 @@
     {
       "name": "Agent Call: behavioral test plan for API endpoints",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-behavioral-test-plan.md",
       "model": "opus",
       "expect": [{ "agent-call": true }]
@@ -44,7 +44,7 @@
     {
       "name": "Agent Call: negative — sports test results",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-negative-sports-test.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -52,7 +52,7 @@
     {
       "name": "Agent Call: negative — sprint planning",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-negative-engineering-plan.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -60,7 +60,7 @@
     {
       "name": "Agent Call: negative — behavioral psychology",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-negative-behavior-psychology.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -68,7 +68,7 @@
     {
       "name": "Agent Call: sibling — edge case exploration",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-sibling-edge-cases.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -76,7 +76,7 @@
     {
       "name": "Agent Call: sibling — code review",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-sibling-code-review.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -84,7 +84,7 @@
     {
       "name": "Agent Call: sibling — investigate production bug",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-sibling-investigate-bug.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -92,7 +92,7 @@
     {
       "name": "Agent Call: sibling — architectural analysis",
       "type": "agent-call",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-call-sibling-architecture.md",
       "model": "sonnet",
       "expect": [{ "agent-call": false }]
@@ -100,7 +100,7 @@
     {
       "name": "Agent Prompt: test plan for go-security-project",
       "type": "agent-prompt",
-      "agentFile": "han:test-engineer",
+      "agentFile": "han-core:test-engineer",
       "promptFile": "agent-prompt-go-security-test-plan.md",
       "scaffold": "go-security-project",
       "model": "opus",

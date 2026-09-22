@@ -1,5 +1,5 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-communication", "han-core", "han-documentation"],
   "tests": [
     {
       "name": "Prompt: /architectural-decision-record",
@@ -9,7 +9,7 @@
       "scaffold": "node-project",
       "expect": [
         { "result-contains": "ADR" },
-        { "skill-call": { "skill": "han:architectural-decision-record", "expected": true } }
+        { "skill-call": { "skill": "han-documentation:architectural-decision-record", "expected": true } }
       ]
     },
     {
@@ -19,14 +19,14 @@
       "promptFile": "prompt-no-op.md",
       "expect": [
         { "result-does-not-contain": "ADR" },
-        { "skill-call": { "skill": "han:architectural-decision-record", "expected": false } }
+        { "skill-call": { "skill": "han-documentation:architectural-decision-record", "expected": false } }
       ]
     },
     {
       "name": "Skill Call: /architectural-decision-record",
       "type": "skill-call",
       "model": "opus",
-      "skillFile": "han:architectural-decision-record",
+      "skillFile": "han-documentation:architectural-decision-record",
       "promptFile": "skill-call-architectural-decision-record.md",
       "scaffold": "node-project",
       "expect": [
@@ -37,7 +37,7 @@
       "name": "Skill Call: no architectural-decision-record",
       "type": "skill-call",
       "model": "sonnet",
-      "skillFile": "han:architectural-decision-record",
+      "skillFile": "han-documentation:architectural-decision-record",
       "promptFile": "skill-call-no-architectural-decision-record.md",
       "expect": [
         { "skill-call": false }

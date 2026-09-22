@@ -1,5 +1,5 @@
 {
-  "plugins": ["plugins/han"],
+  "plugins": ["han-core"],
   "tests": [
     {
       "name": "Prompt: /project-discovery",
@@ -9,7 +9,7 @@
       "scaffold": "polyglot-project",
       "expect": [
         { "result-contains": "project-discovery.md" },
-        { "skill-call": { "skill": "han:project-discovery", "expected": true } }
+        { "skill-call": { "skill": "han-core:project-discovery", "expected": true } }
       ]
     },
     {
@@ -19,14 +19,14 @@
       "promptFile": "prompt-no-op.md",
       "expect": [
         { "result-does-not-contain": "project-discovery.md" },
-        { "skill-call": { "skill": "han:project-discovery", "expected": false } }
+        { "skill-call": { "skill": "han-core:project-discovery", "expected": false } }
       ]
     },
     {
       "name": "Skill Call: /project-discovery",
       "type": "skill-call",
       "model": "opus",
-      "skillFile": "han:project-discovery",
+      "skillFile": "han-core:project-discovery",
       "promptFile": "skill-call-project-discovery.md",
       "scaffold": "polyglot-project",
       "expect": [
@@ -37,7 +37,7 @@
       "name": "Skill Call: no project-discovery",
       "type": "skill-call",
       "model": "sonnet",
-      "skillFile": "han:project-discovery",
+      "skillFile": "han-core:project-discovery",
       "promptFile": "skill-call-no-project-discovery.md",
       "expect": [
         { "skill-call": false }
