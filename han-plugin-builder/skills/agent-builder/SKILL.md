@@ -43,6 +43,7 @@ Map from decision to governing document (read just-in-time):
 | Which frontmatter fields are valid (and which plugins ignore)   | `agent-building-guidelines/agent-external-files.md`                                                                 |
 | Degraded environments (no git, missing tools)                   | `agent-building-guidelines/graceful-degradation.md`                                                                 |
 | Whether this agent is justified at all; how it gets dispatched  | `agent-building-guidelines/multi-agent-economics.md`, `skill-building-guidance/agent-dispatch-namespacing.md`       |
+| Instructions for a named target model                           | `per-model-authoring.md`                                                                                            |
 | New plugin needed (plugin.json, marketplace.json)               | `claude-marketplace-and-plugin-configuration/` and `templates/`                                                     |
 
 ## Operating Principles
@@ -183,6 +184,11 @@ Cover at minimum:
    claim it could not confirm and names where it looked.
 9. **Economic justification** (`multi-agent-economics.md`) — the agent clears the bar for existing: a single
    well-prompted agent or an instruction improvement to an existing agent would not do the job as well.
+10. **Model-specific leftovers** (`per-model-authoring.md`) — no "think step by step" or "think carefully" line; no
+    instruction to reproduce the model's reasoning in its reply; no pinned `effort` without a reason stated in the
+    body; and no vague limiting phrase in a review step. A limit passes when it names a bar the reader could check and
+    asks for evidence on each item. "List only problems you'd block the merge for. For each one, give the file and
+    line, why it's wrong, and how to show it fails." passes; "Only report high-severity issues." does not.
 
 Apply the YAGNI discipline throughout: vocabulary terms, anti-patterns, tools, and frontmatter fields must each earn
 their place against the agent's actual job. Cut anything added "for completeness."

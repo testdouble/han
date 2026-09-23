@@ -50,6 +50,7 @@ Map from decision to governing document (read just-in-time):
 | Frontmatter safety (angle brackets, YAML types)                  | `skill-building-guidance/security-restrictions.md`                                                                      |
 | Hardening fuzzy steps into deterministic ones                    | `skill-building-guidance/hardening-fuzzy-vs-deterministic.md`                                                           |
 | Splitting or composing skills                                    | `skill-building-guidance/skill-decomposition.md`, `skill-building-guidance/skill-composition.md`                        |
+| Instructions for a named target model                            | `per-model-authoring.md`                                                                                                |
 | Defining success and tests                                       | `skill-building-guidance/success-criteria-and-testing.md`                                                               |
 | New plugin needed (plugin.json, marketplace.json)                | `claude-marketplace-and-plugin-configuration/` and `templates/`                                                         |
 
@@ -174,9 +175,10 @@ Cover at minimum:
    `SKILL.md` cased exactly.
 4. **Progressive disclosure** (`progressive-disclosure.md`, `skill-reference-files.md`) — body is process only and under
    500 lines; domain knowledge is in `references/`; scripts hold deterministic work; nothing the toolchain already
-   enforces is restated; every reference file is linked directly from SKILL.md rather than only through another
-   reference file, every reference link stays inside the plugin directory, and any reference file over roughly 100 lines
-   opens with a `## Contents` list unless it is a template copied whole into output.
+   enforces, and no default the model already follows, is restated; every reference file is linked directly from
+   SKILL.md rather than only through another reference file, every reference link stays inside the plugin directory, and
+   any reference file over roughly 100 lines opens with a `## Contents` list unless it is a template copied whole into
+   output.
 5. **Instruction quality** (`writing-effective-instructions.md`, `workflow-patterns.md`) — steps are specific and
    actionable; constraints embed reasoning; error handling is present; human gates sit only at irreversible actions; the
    most critical item in each list is placed last.
@@ -190,6 +192,11 @@ Cover at minimum:
    `defining-plugin:agent-name`, and the agents actually exist in an installed plugin.
 9. **Tests** (`success-criteria-and-testing.md`) — each use case maps to a triggering and functional test the user can
    run.
+10. **Model-specific leftovers** (`per-model-authoring.md`) — no "think step by step" or "think carefully" line; no
+    instruction to reproduce the model's reasoning in its reply; no pinned `effort` without a reason stated in the
+    body; and no vague limiting phrase in a review step. A limit passes when it names a bar the reader could check and
+    asks for evidence on each item. "List only problems you'd block the merge for. For each one, give the file and
+    line, why it's wrong, and how to show it fails." passes; "Only report high-severity issues." does not.
 
 Apply the YAGNI discipline throughout: every step, reference file, tool permission, and frontmatter field must earn its
 place against a real use case. Cut anything added "for completeness" or "for future flexibility."
