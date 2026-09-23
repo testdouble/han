@@ -60,7 +60,8 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   fenced code blocks. Read when a skill runs shell scripts during its steps.
 - [Hardening: Fuzzy vs. Deterministic](.claude/skills/plugin-guidance/references/skill-building-guidance/hardening-fuzzy-vs-deterministic.md)
   — The framework for classifying each skill step as fuzzy (keep as an LLM instruction) or deterministic (extract to a
-  script). Read when hardening a skill for reliability or deciding what to script.
+  script), including a helper library the model composes into one-off scripts. Read when hardening a skill for
+  reliability or deciding what to script.
 - [Skill Reference Files](.claude/skills/plugin-guidance/references/skill-building-guidance/skill-reference-files.md) —
   When and how to extract domain knowledge (templates, checklists, rate tables, gotchas) into a `references/`
   subdirectory loaded on demand. Read when a skill carries content that is knowledge rather than process steps.
@@ -99,7 +100,8 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   plugin.json and that skill directories must not carry README files. Read when creating or renaming any plugin entity.
 - [Success Criteria and Testing](.claude/skills/plugin-guidance/references/skill-building-guidance/success-criteria-and-testing.md)
   — Three test types (triggering, functional, outcome) for knowing a skill works, plus the rule to test on the model
-  tier the skill targets. Read when validating a skill before shipping it.
+  tier the skill targets, and how to build a skill whose job is verifying a running product. Read when validating a
+  skill before shipping it, or when building a verification skill.
 - [Documentation Maintenance](.claude/skills/plugin-guidance/references/skill-building-guidance/documentation-maintenance.md)
   — Why stale SKILL.md or reference content is active poison the model follows faithfully, and how to audit a skill so
   its docs match reality. Read when changing a skill's behavior or auditing existing skills.
@@ -148,7 +150,8 @@ Schema references for the JSON manifests that define a plugin and its marketplac
   naming a new plugin or renaming an existing one.
 - [plugin.json Schema Reference](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md)
   — Full schema for `.claude-plugin/plugin.json`: required fields, metadata, component paths, dependencies, and
-  experimental keys. Read when creating or editing a plugin manifest.
+  experimental keys, plus where a plugin-shipped skill keeps state that must survive an update. Read when creating or
+  editing a plugin manifest, or when a skill saves first-run answers or run history.
 - [marketplace.json Schema Reference](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md)
   — Schema for `.claude-plugin/marketplace.json`, the registry Claude Code reads to discover and install plugins. Read
   when adding a plugin to a marketplace or editing the manifest.
