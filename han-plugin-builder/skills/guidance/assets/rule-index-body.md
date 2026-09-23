@@ -44,8 +44,9 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   focused on what the current step needs. Read when deciding where a piece of content belongs, or when a SKILL.md is
   growing too large.
 - [Writing Effective Instructions](.claude/skills/plugin-guidance/references/skill-building-guidance/writing-effective-instructions.md)
-  — How to write the SKILL.md body so steps are specific, actionable, and reliably followed across sessions. Read when a
-  skill behaves inconsistently, skips steps, or improvises when it should follow a fixed process.
+  — How to write the SKILL.md body so steps are specific, actionable, and reliably followed across sessions, and where
+  to stop specifying. Read when a skill behaves inconsistently, skips steps, or improvises when it should follow a fixed
+  process, or when its rules are over-constraining it.
 - [Workflow Patterns](.claude/skills/plugin-guidance/references/skill-building-guidance/workflow-patterns.md) — Four
   structural patterns for organizing the steps inside a single skill, mapped to Anthropic's effective-agent patterns,
   plus how to name the stops an autonomous stretch should and should not make and how to bound a step that works through
@@ -61,8 +62,8 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   — The framework for classifying each skill step as fuzzy (keep as an LLM instruction) or deterministic (extract to a
   script). Read when hardening a skill for reliability or deciding what to script.
 - [Skill Reference Files](.claude/skills/plugin-guidance/references/skill-building-guidance/skill-reference-files.md) —
-  When and how to extract domain knowledge (templates, checklists, rate tables) into a `references/` subdirectory loaded
-  on demand. Read when a skill carries content that is knowledge rather than process steps.
+  When and how to extract domain knowledge (templates, checklists, rate tables, gotchas) into a `references/`
+  subdirectory loaded on demand. Read when a skill carries content that is knowledge rather than process steps.
 - [Context Hygiene](.claude/skills/plugin-guidance/references/skill-building-guidance/context-hygiene.md) — The
   attention-budget mechanism behind progressive disclosure and conciseness rules: why every irrelevant token degrades
   the model's attention on the rest. Read when justifying why content should be trimmed or moved out of a SKILL.md.

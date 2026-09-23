@@ -99,6 +99,8 @@ decision matrices — belongs in `references/`.
 - Rate tables, formulas, or scoring matrices (pricing tables, complexity scores, risk assessments)
 - Style guides or brand standards (voice guidelines, formatting rules)
 - Decision matrices with multiple criteria
+- Gotchas: failure points found in use, which grow over the skill's life (see
+  [Skill Reference Files](./skill-reference-files.md))
 
 **When to keep in SKILL.md:**
 
@@ -113,6 +115,10 @@ decision matrices — belongs in `references/`.
 - Rules already enforced by the toolchain (linters, formatters, CI checks). If a linter catches it, documenting it in
   SKILL.md wastes attention budget and risks contradiction when the linter config changes. Reserve SKILL.md instructions
   for judgment calls — decisions that require context, tradeoffs, or domain knowledge that no automated tool checks.
+- Instructions that restate what the model already does by default, such as "read the code before changing it" or
+  "check your work for errors." They add tokens without changing the output. Keep what pushes the model away from its
+  default, and cut what describes the default. See
+  [Context Hygiene](./context-hygiene.md#rule-every-token-must-earn-its-place).
 
 **Before (restating what the toolchain enforces):**
 
