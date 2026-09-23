@@ -179,7 +179,8 @@ Cover at minimum:
    since dispatch flows from skills to agents; it carries the `Agent` tool only when its own protocol dispatches
    sub-agents. The `tools` allowlist is the minimum the work needs, each tool present only if the body uses it.
 8. **Graceful degradation** (`agent-building-guidelines/graceful-degradation.md`) — every tool-dependent step checks
-   availability inline and notes the limitation when the tool is absent.
+   availability inline and notes the limitation when the tool is absent, and a research or analysis agent marks each
+   claim it could not confirm and names where it looked.
 9. **Economic justification** (`multi-agent-economics.md`) — the agent clears the bar for existing: a single
    well-prompted agent or an instruction improvement to an existing agent would not do the job as well.
 

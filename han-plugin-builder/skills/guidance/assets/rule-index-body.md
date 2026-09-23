@@ -47,8 +47,10 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   — How to write the SKILL.md body so steps are specific, actionable, and reliably followed across sessions. Read when a
   skill behaves inconsistently, skips steps, or improvises when it should follow a fixed process.
 - [Workflow Patterns](.claude/skills/plugin-guidance/references/skill-building-guidance/workflow-patterns.md) — Four
-  structural patterns for organizing the steps inside a single skill, mapped to Anthropic's effective-agent patterns.
-  Read when designing or restructuring a skill's internal workflow.
+  structural patterns for organizing the steps inside a single skill, mapped to Anthropic's effective-agent patterns,
+  plus how to name the stops an autonomous stretch should and should not make and how to bound a step that works through
+  an unknown number of items. Read when designing or restructuring a skill's internal workflow, or when a skill stops
+  early or loses track mid-run.
 - [Context Injection Commands](.claude/skills/plugin-guidance/references/skill-building-guidance/context-injection-commands.md)
   — The `` !`command` `` syntax that runs a shell command at skill load time and injects its output as runtime context.
   Read when a skill needs dynamic environment data (dates, git state, branch names) available to its steps.
@@ -126,11 +128,14 @@ Guidance for authoring agent `.md` definitions. Agents are self-contained and ca
   explicitly not a factor. Read when setting or revisiting an agent's model.
 - [Multi-Agent Economics](.claude/skills/plugin-guidance/references/agent-building-guidelines/multi-agent-economics.md)
   — The escalation cascade for deciding whether adding more agents is justified, given that each agent multiplies
-  latency and token cost, plus the delegation policy a skill should state because the model's own default is eager.
-  Read when a skill is considering dispatching multiple or parallel agents.
+  latency and token cost, plus the delegation policy a skill should state because the model's own default is eager, the
+  evidence check a skill runs on each fanned-out subagent's result, and the rule against finishing while a background
+  dispatch is still running. Read when a skill is considering dispatching multiple or parallel agents.
 - [Graceful Degradation (agents)](.claude/skills/plugin-guidance/references/agent-building-guidelines/graceful-degradation.md)
   — How a dispatched agent should check tool availability inline and skip gracefully, so the orchestrating skill needs
-  no defensive guards around the dispatch. Read when an agent's steps depend on git or other tools that may be missing.
+  no defensive guards around the dispatch, and how a research or analysis agent marks a claim it could not confirm and
+  says where it looked. Read when an agent's steps depend on git or other tools that may be missing, or when an agent
+  reports findings.
 
 ## Plugin configuration files
 

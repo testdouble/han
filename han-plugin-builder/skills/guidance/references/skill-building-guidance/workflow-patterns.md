@@ -14,6 +14,8 @@ paths:
 - Domain-Specific Intelligence
 - Combining Patterns
 - Human Gates in Workflow Steps
+- Naming the Stops in an Autonomous Stretch
+- Bounding a Step That Works Through an Unknown Number of Items
 - Ordering Within Steps: Recency Bias
 - Summary Checklist
 
@@ -358,6 +360,79 @@ Present the review summary to the user and ask for confirmation before posting. 
 manually.
 ```
 
+## Naming the Stops in an Autonomous Stretch
+
+Some skills contain a stretch meant to run without the user: a fan-out across many files, a long tool-calling loop, a
+migration that works through every call site. Newer models keep the user posted as they work, and on a long stretch
+some of those updates end the turn instead of taking the next step. The run stops, and nothing moves until someone
+types "continue." [Per-Model Authoring](../per-model-authoring.md) covers which models do this.
+
+Name the stops in the step that starts the stretch. First, the ones you do not want:
+
+- A summary that announces the next step instead of taking it.
+- An offer to carry on, which waits for an answer the user was not going to give.
+- A list of choices for the user when none of them blocks the rest of the work.
+
+Then the ones you do want, so the instruction does not read as "never stop":
+
+- No work can move without the user's input.
+- The next action is destructive or cannot be undone. A keep-going instruction never overrides a human gate.
+- The stretch is finished.
+
+Status notes are welcome. Ask for them in the same message as the next action, so reporting never ends the turn.
+
+**Before (no stops named):**
+
+```markdown
+## Step 3: Migrate Call Sites
+
+Update every call site of `oldClient` to use `newClient`.
+```
+
+**After (unwanted and wanted stops named):**
+
+```markdown
+## Step 3: Migrate Call Sites
+
+Update every call site of `oldClient` to use `newClient`. When a call site does not need the user's input, keep going,
+and put any status note in the same message as your next edit. Do not stop to summarize progress, to offer to
+continue, or to list choices that block nothing. Stop only when a call site cannot be migrated without a decision from
+the user, before deleting anything, or when every call site is done.
+```
+
+### When not to use it
+
+Leave the keep-going instruction out of any skill built to hand control back. An interview that asks one question per
+turn, a collaborative mode that pauses for review after each piece of work, and every human gate are stops the design
+wants. For work where someone is there to answer, Anthropic's guidance points the other way: a one-line plan before
+starting and a short recap at the end. Scope the instruction to the stretch meant to run unattended, never to the whole
+skill.
+
+## Bounding a Step That Works Through an Unknown Number of Items
+
+A fixed step ends when its instructions end. A step that works through a set whose size is not known up front (every
+changed file, every endpoint, every finding a review turned up) has no natural last line. On a long run, the model can
+also lose track of what is left once older turns are summarized. Two instructions keep the step bounded:
+
+- **State the finish line in checkable terms.** "Done means every call site uses `newClient` and the test suite passes"
+  tells the model when to stop. "Migrate the call sites" does not.
+- **Keep the checklist in a file.** Have the step write its items to a file, check each one off as it finishes, and add
+  any new item it discovers. To decide what remains, it reads the file, not the conversation. A file survives context
+  summarization; earlier turns do not.
+
+```markdown
+## Step 2: Fix Each Finding
+
+Write every finding from Step 1 to `{output_dir}/tasks.md` as an unchecked item. Work through them in order, checking
+each one off as it is fixed and adding any new finding you discover. Done means every item in `tasks.md` is checked and
+the test suite passes. Before stopping, re-read `tasks.md`. If an item is still open and nothing blocks it, continue
+with it.
+```
+
+A fixed flowchart step needs neither. For the moment right after a sub-skill returns, see
+[Skill Composition](./skill-composition.md#instruct-continuation-explicitly-after-the-skill-call). For items handed to
+subagents, see [Multi-Agent Economics](../agent-building-guidelines/multi-agent-economics.md).
+
 ## Ordering Within Steps: Recency Bias
 
 Within any step, the model weights the last instruction or example more heavily than earlier ones. When a step contains
@@ -411,6 +486,8 @@ Check each changed file against:
 6. Include validation gates, bounded loops, decision criteria, or audit trails as appropriate
 7. Combine patterns by using one as the primary structure and embedding others within steps
 8. Within a step, place the most critical instruction or most representative example last (recency bias)
+9. In a stretch meant to run without the user, name the stops you do not want and the ones you do
+10. Give a step that works through an unknown number of items a checkable finish line and a checklist file
 
 Cross-references:
 
