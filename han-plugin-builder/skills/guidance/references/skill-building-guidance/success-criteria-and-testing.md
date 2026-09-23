@@ -192,7 +192,7 @@ most measurable effect on Claude's output quality of any kind of skill it built,
   silently. Check the state the step should have produced (the database row, the page element, the exit code) before
   moving on, so a failure names the step where it happened.
 - **Record what was tested.** Where the driver supports it, save a recording or a step log of the run, so a person can
-  see what the skill actually exercised rather than trusting its summary.
+  see what the skill exercised rather than trusting its summary.
 
 A verification skill still gets the triggering and functional tests above. They check that the skill runs; the skill
 checks that the product works.
