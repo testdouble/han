@@ -97,22 +97,22 @@ Many agents set only `name`, `description`, `tools`, and `model`, but the
 [Subagents documentation](https://code.claude.com/docs/en/sub-agents) supports more. Only `name` and `description` are
 required. The others, briefly:
 
-| Field             | What it does                                                                                 |
-| ----------------- | -------------------------------------------------------------------------------------------- |
-| `tools`           | Allowlist of tools the agent may use. Inherits all tools if omitted.                         |
-| `disallowedTools` | Denylist applied on top of `tools`. A tool in both is removed.                               |
-| `model`           | Model alias, full model ID, or `inherit`. See [Model Selection](./agent-model-selection.md). |
-| `permissionMode`  | Permission posture (`default`, `acceptEdits`, `plan`, and so on).                            |
-| `maxTurns`        | Cap on agentic turns before the agent stops.                                                 |
-| `skills`          | Skills to preload at startup (full content injected).                                        |
-| `mcpServers`      | MCP servers available to the agent.                                                          |
-| `hooks`           | Lifecycle hooks scoped to the agent.                                                         |
-| `memory`          | `user`, `project`, or `local` to enable cross-session persistent memory.                     |
-| `background`      | `true` to always run the agent as a background task.                                         |
-| `effort`          | `low`/`medium`/`high`/`xhigh`/`max` effort override.                                         |
-| `isolation`       | `worktree` to run the agent in a temporary git worktree.                                     |
-| `color`           | Display color for the agent in the UI.                                                       |
-| `initialPrompt`   | First user turn auto-submitted when the agent runs as a main session via `--agent`.          |
+| Field             | What it does                                                                                                                                                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tools`           | Allowlist of tools the agent may use. Inherits all tools if omitted.                                                                                                                                                                              |
+| `disallowedTools` | Denylist applied on top of `tools`. A tool in both is removed.                                                                                                                                                                                    |
+| `model`           | Model alias, full model ID, or `inherit`. See [Model Selection](./agent-model-selection.md).                                                                                                                                                      |
+| `permissionMode`  | Permission posture (`default`, `acceptEdits`, `plan`, and so on).                                                                                                                                                                                 |
+| `maxTurns`        | Cap on agentic turns before the agent stops.                                                                                                                                                                                                      |
+| `skills`          | Skills to preload at startup (full content injected).                                                                                                                                                                                             |
+| `mcpServers`      | MCP servers available to the agent.                                                                                                                                                                                                               |
+| `hooks`           | Lifecycle hooks scoped to the agent.                                                                                                                                                                                                              |
+| `memory`          | `user`, `project`, or `local` to enable cross-session persistent memory.                                                                                                                                                                          |
+| `background`      | `true` to always run the agent as a background task. A skill that dispatches it waits for its result before finishing; see [Multi-Agent Economics](./multi-agent-economics.md#practical-implications-for-skills).                                 |
+| `effort`          | `low`/`medium`/`high`/`xhigh`/`max` effort override. Re-test a pinned value when the model changes; see [Per-Model Authoring](../per-model-authoring.md#other-settings-the-model-differences-affect-thinking-mode-effort-and-subagent-eagerness). |
+| `isolation`       | `worktree` to run the agent in a temporary git worktree.                                                                                                                                                                                          |
+| `color`           | Display color for the agent in the UI.                                                                                                                                                                                                            |
+| `initialPrompt`   | First user turn auto-submitted when the agent runs as a main session via `--agent`.                                                                                                                                                               |
 
 ### Plugin agents ignore three of these (security boundary)
 

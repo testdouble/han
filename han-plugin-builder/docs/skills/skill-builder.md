@@ -101,7 +101,9 @@ cases.
 - **Push back during the interview.** Every recommendation is a proposal. If a recommended workflow pattern or tool set
   is wrong for your case, say so; the skill resolves dependent decisions from your redirect.
 - **Trust the review pass, then run the tests.** The Step 6 conformance review fixes description length, naming,
-  progressive-disclosure, and `allowed-tools` problems before you ever see them. After it lands, run the triggering and
+  progressive-disclosure, and `allowed-tools` problems before you ever see them. It also strips model-specific leftovers,
+  such as a "think step by step" line, a pinned `effort` with no stated reason, or a vague limit like "only report
+  high-severity issues" in a review step. After it lands, run the triggering and
   functional tests it hands you against the model tier the skill targets.
 - **Plan for iteration.** Plugin entities rarely land in one pass. Expect 3-5 iterations; the skill says so and invites
   you to iterate on specific steps.
@@ -126,7 +128,8 @@ The workflow runs in seven steps: capture the request and confirm a skill is the
 discover the target plugin and its conventions; and build the design tree in dependency order. Then it runs the
 interview loop one branch at a time; writes the skill files; runs the full guidance-conformance review; and presents the
 result with tests. Each design-tree decision maps to a specific governing document (use-case planning, naming
-conventions, description frontmatter, progressive disclosure, workflow patterns, allowed-tools, and so on). It is read
+conventions, description frontmatter, progressive disclosure, workflow patterns, allowed-tools, per-model authoring
+when the skill targets a named model, and so on). It is read
 only when that decision is on the table. The review pass re-reads each document that applies to what was built and
 corrects the files directly rather than reporting problems back to you.
 

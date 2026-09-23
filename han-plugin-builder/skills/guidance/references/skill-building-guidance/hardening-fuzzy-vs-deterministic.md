@@ -5,6 +5,14 @@ paths:
 
 # Hardening: Fuzzy vs. Deterministic Steps
 
+## Contents
+
+- The Fuzzy-Deterministic Spectrum
+- Recognition Signals
+- The Hardening Process
+- When NOT to Harden
+- Summary Checklist
+
 Other guidance docs tell you to extract deterministic operations to scripts
 ([Progressive Disclosure](./progressive-disclosure.md),
 [Writing Effective Instructions](./writing-effective-instructions.md)). This doc provides the decision framework for
@@ -38,6 +46,14 @@ git commands with exact flags, escaping strings, computing checksums.
 
 **Where they belong:** Shell scripts in `scripts/`. See
 [Script Execution Instructions](./script-execution-instructions.md) for the invocation pattern.
+
+**A library instead of a fixed script.** When a skill answers open-ended questions over the same data source ("what
+happened on Tuesday?"), one fixed script per question does not scale. Put a small library of helper functions in
+`scripts/` instead, each doing one deterministic thing (fetch the events, join the tables, compute the rate), with its
+gotchas written in the function's own comments. The model then writes a one-off script that loads the library and
+composes the helpers for the question at hand, spending its turns on the composition rather than on rebuilding the
+plumbing. Each composed script is new, so it still prompts for permission when it runs; see
+[Script Execution Instructions](./script-execution-instructions.md).
 
 ### Hybrid Steps
 

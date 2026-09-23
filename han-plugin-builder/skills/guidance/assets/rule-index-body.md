@@ -44,11 +44,14 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   focused on what the current step needs. Read when deciding where a piece of content belongs, or when a SKILL.md is
   growing too large.
 - [Writing Effective Instructions](.claude/skills/plugin-guidance/references/skill-building-guidance/writing-effective-instructions.md)
-  — How to write the SKILL.md body so steps are specific, actionable, and reliably followed across sessions. Read when a
-  skill behaves inconsistently, skips steps, or improvises when it should follow a fixed process.
+  — How to write the SKILL.md body so steps are specific, actionable, and reliably followed across sessions, and where
+  to stop specifying. Read when a skill behaves inconsistently, skips steps, or improvises when it should follow a fixed
+  process, or when its rules are over-constraining it.
 - [Workflow Patterns](.claude/skills/plugin-guidance/references/skill-building-guidance/workflow-patterns.md) — Four
-  structural patterns for organizing the steps inside a single skill, mapped to Anthropic's effective-agent patterns.
-  Read when designing or restructuring a skill's internal workflow.
+  structural patterns for organizing the steps inside a single skill, mapped to Anthropic's effective-agent patterns,
+  plus how to name the stops an autonomous stretch should and should not make and how to bound a step that works through
+  an unknown number of items. Read when designing or restructuring a skill's internal workflow, or when a skill stops
+  early or loses track mid-run.
 - [Context Injection Commands](.claude/skills/plugin-guidance/references/skill-building-guidance/context-injection-commands.md)
   — The `` !`command` `` syntax that runs a shell command at skill load time and injects its output as runtime context.
   Read when a skill needs dynamic environment data (dates, git state, branch names) available to its steps.
@@ -57,10 +60,11 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   fenced code blocks. Read when a skill runs shell scripts during its steps.
 - [Hardening: Fuzzy vs. Deterministic](.claude/skills/plugin-guidance/references/skill-building-guidance/hardening-fuzzy-vs-deterministic.md)
   — The framework for classifying each skill step as fuzzy (keep as an LLM instruction) or deterministic (extract to a
-  script). Read when hardening a skill for reliability or deciding what to script.
+  script), including a helper library the model composes into one-off scripts. Read when hardening a skill for
+  reliability or deciding what to script.
 - [Skill Reference Files](.claude/skills/plugin-guidance/references/skill-building-guidance/skill-reference-files.md) —
-  When and how to extract domain knowledge (templates, checklists, rate tables) into a `references/` subdirectory loaded
-  on demand. Read when a skill carries content that is knowledge rather than process steps.
+  When and how to extract domain knowledge (templates, checklists, rate tables, gotchas) into a `references/`
+  subdirectory loaded on demand. Read when a skill carries content that is knowledge rather than process steps.
 - [Context Hygiene](.claude/skills/plugin-guidance/references/skill-building-guidance/context-hygiene.md) — The
   attention-budget mechanism behind progressive disclosure and conciseness rules: why every irrelevant token degrades
   the model's attention on the rest. Read when justifying why content should be trimmed or moved out of a SKILL.md.
@@ -96,7 +100,8 @@ Guidance for authoring and hardening `SKILL.md` files and their companion folder
   plugin.json and that skill directories must not carry README files. Read when creating or renaming any plugin entity.
 - [Success Criteria and Testing](.claude/skills/plugin-guidance/references/skill-building-guidance/success-criteria-and-testing.md)
   — Three test types (triggering, functional, outcome) for knowing a skill works, plus the rule to test on the model
-  tier the skill targets. Read when validating a skill before shipping it.
+  tier the skill targets, and how to build a skill whose job is verifying a running product. Read when validating a
+  skill before shipping it, or when building a verification skill.
 - [Documentation Maintenance](.claude/skills/plugin-guidance/references/skill-building-guidance/documentation-maintenance.md)
   — Why stale SKILL.md or reference content is active poison the model follows faithfully, and how to audit a skill so
   its docs match reality. Read when changing a skill's behavior or auditing existing skills.
@@ -126,11 +131,14 @@ Guidance for authoring agent `.md` definitions. Agents are self-contained and ca
   explicitly not a factor. Read when setting or revisiting an agent's model.
 - [Multi-Agent Economics](.claude/skills/plugin-guidance/references/agent-building-guidelines/multi-agent-economics.md)
   — The escalation cascade for deciding whether adding more agents is justified, given that each agent multiplies
-  latency and token cost, plus the delegation policy a skill should state because the model's own default is eager.
-  Read when a skill is considering dispatching multiple or parallel agents.
+  latency and token cost, plus the delegation policy a skill should state because the model's own default is eager, the
+  evidence check a skill runs on each fanned-out subagent's result, and the rule against finishing while a background
+  dispatch is still running. Read when a skill is considering dispatching multiple or parallel agents.
 - [Graceful Degradation (agents)](.claude/skills/plugin-guidance/references/agent-building-guidelines/graceful-degradation.md)
   — How a dispatched agent should check tool availability inline and skip gracefully, so the orchestrating skill needs
-  no defensive guards around the dispatch. Read when an agent's steps depend on git or other tools that may be missing.
+  no defensive guards around the dispatch, and how a research or analysis agent marks a claim it could not confirm and
+  says where it looked. Read when an agent's steps depend on git or other tools that may be missing, or when an agent
+  reports findings.
 
 ## Plugin configuration files
 
@@ -142,7 +150,8 @@ Schema references for the JSON manifests that define a plugin and its marketplac
   naming a new plugin or renaming an existing one.
 - [plugin.json Schema Reference](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/plugin-json-options.md)
   — Full schema for `.claude-plugin/plugin.json`: required fields, metadata, component paths, dependencies, and
-  experimental keys. Read when creating or editing a plugin manifest.
+  experimental keys, plus where a plugin-shipped skill keeps state that must survive an update. Read when creating or
+  editing a plugin manifest, or when a skill saves first-run answers or run history.
 - [marketplace.json Schema Reference](.claude/skills/plugin-guidance/references/claude-marketplace-and-plugin-configuration/marketplace-json-options.md)
   — Schema for `.claude-plugin/marketplace.json`, the registry Claude Code reads to discover and install plugins. Read
   when adding a plugin to a marketplace or editing the manifest.
@@ -164,11 +173,12 @@ Process guidance for building and evolving a plugin over its lifetime.
   on narrow tasks, without raising the capability ceiling. Read when reasoning about the
   specialization-versus-model-tier trade-off across skills and agents.
 - [Per-Model Authoring Guidance](.claude/skills/plugin-guidance/references/per-model-authoring.md) — How Sonnet 5,
-  Opus 5, and Fable 5 differ in how they follow instructions, and how those differences change what you write: the
-  model-agnostic default for an unknown target, the opposite-direction instruction-style split, the verification and
-  re-check instructions to leave out, how to calibrate response length, narration, and scope, and the Fable 5
-  reasoning-echo refusal to avoid. Read when writing or hardening a skill or agent and tuning the instructions to a
-  target model, not when choosing which model tier to run (see Specialization and Model Selection).
+  Opus 5, Opus 5.5, and Fable 5 differ in how they follow instructions, and how those differences change what you write:
+  the model-agnostic default for an unknown target, the opposite-direction instruction-style split, the verification and
+  re-check instructions to leave out, how to calibrate response length, narration, and scope, effort and thinking on
+  Opus 5.5, and the reasoning-echo refusal on Fable 5 and Opus 5.5. Read when writing or hardening a skill or agent and
+  tuning the instructions to a target model, not when choosing which model tier to run (see Specialization and Model
+  Selection).
 
 ## Templates and examples
 

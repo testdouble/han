@@ -108,7 +108,10 @@ would call it.
   sonnet for structured procedures, haiku for fast lookups). If your sense of the work differs, say so.
 - **Trust the review pass.** The Step 6 conformance review fixes role-identity length, description budget,
   self-containment violations, and an over-broad tool set before you see them. That includes dropping the `Agent` tool
-  unless the agent's own protocol dispatches sub-agents, since dispatch flows from skills to agents by default.
+  unless the agent's own protocol dispatches sub-agents, since dispatch flows from skills to agents by default. It also
+  strips model-specific leftovers, such as a "think step by step" line, a pinned `effort` with no stated reason, or a
+  vague limit like "only report high-severity issues" in a review step, and checks that a research or analysis agent
+  marks each claim it could not confirm.
 - **Wire up the caller.** An agent is dispatched by a skill. If the calling skill does not exist yet, the skill
   recommends [`/skill-builder`](./skill-builder.md) to build it.
 
@@ -132,7 +135,7 @@ flowchartable process) with a single role; discover the target plugin, its sibli
 build the design tree in dependency order. Then it runs the interview loop one branch at a time; writes the single
 self-contained file; runs the full guidance-conformance review; and presents the result with the dispatch wiring. Each
 design-tree decision maps to a specific governing document (domain focus, description length, model selection, external
-files, multi-agent economics, dispatch namespacing), read only when that decision is on the table. The review pass
+files, multi-agent economics, dispatch namespacing, per-model authoring), read only when that decision is on the table. The review pass
 re-reads each document that applies and corrects the file directly rather than reporting problems back to you.
 
 ## Sources
