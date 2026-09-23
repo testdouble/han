@@ -1,10 +1,25 @@
 # Per-Model Authoring Guidance
 
-Write your skill and agent instructions to be model-agnostic by default. When you know the model that will run them, three of Anthropic's models differ enough in how they follow instructions that you should adjust how you write. This document tells you when that adjustment is worth making and what it is.
+## Contents
 
-_Last checked against Anthropic's published guidance on 2026-07-31, for Sonnet 5, Opus 5, and Fable 5. The per-model behavior below comes from Anthropic's own prompting pages (see Sources). Treat it as current only as of that date: those pages are pinned snapshots that get revised and archived as new models ship._
+- Default to model-agnostic instructions
+- What "model-agnostic" means when you do not know the target
+- The difference that changes how you write: instruction style
+- The difference that can cause a failure: reasoning echo on Fable 5 and Opus 5.5
+- Other settings the model differences affect: thinking mode, effort, and subagent eagerness
+- Instructions to leave out on Opus 5 and Opus 5.5
+- Calibrating length, narration, and scope on Opus 5 and Opus 5.5
+- What this guidance does not cover
+- Cross-References
+- Sources
+
+Write your skill and agent instructions to be model-agnostic by default. When you know the model that will run them, four of Anthropic's models differ enough in how they follow instructions that you should adjust how you write. This document tells you when that adjustment is worth making and what it is.
+
+_Last checked against Anthropic's published guidance on 2026-09-23, for Sonnet 5, Opus 5, Opus 5.5, and Fable 5. The per-model behavior below comes from Anthropic's own prompting pages (see Sources). Treat it as current only as of that date: those pages are pinned snapshots that get revised and archived as new models ship._
 
 This is author-time guidance. It shapes how you write instructions, not how a skill behaves while it runs.
+
+Opus 5.5 inherits the Opus 5 guidance below except where a section says otherwise. Anthropic's Opus 5.5 prompting page says that existing Opus 5 prompts should perform well on Opus 5.5 without changes, so wherever this document says "Opus 5" without naming Opus 5.5, the advice holds for both.
 
 A skill cannot reliably detect which model is running it, so do not try to branch skill content on the active model. Claude Code exposes no reliable model signal to a skill, and asking a model to name itself is unreliable. The source research covers the reasons in more detail. Keep your shipped skills model-agnostic, and act on the differences below as you write them.
 
@@ -16,9 +31,9 @@ Reach for per-model tuning only when you have a specific reason: you know the ta
 
 ## What "model-agnostic" means when you do not know the target
 
-The three models pull in opposite directions on how much to spell out (see the next section), so "write model-agnostic" needs a concrete meaning. Here it is: lead with the goal and the reasons behind it, state the load-bearing constraints and scope explicitly, and skip the exhaustive step-by-step micro-checklist.
+The models pull in opposite directions on how much to spell out (see the next section), so "write model-agnostic" needs a concrete meaning. Here it is: lead with the goal and the reasons behind it, state the load-bearing constraints and scope explicitly, and skip the exhaustive step-by-step micro-checklist.
 
-This middle path serves all three models. Stating the goal and the reasons gives Fable 5 the context it uses well, without the checklist that degrades its output. Stating the load-bearing constraints explicitly gives Opus 5 and Sonnet 5 the scope they need on the behaviors that matter. You are not writing to the lowest common denominator; you are giving each model what it needs and withholding what hurts one of them.
+This middle path serves all of them. Stating the goal and the reasons gives Fable 5 the context it uses well, without the checklist that degrades its output. Stating the load-bearing constraints explicitly gives Opus 5, Opus 5.5, and Sonnet 5 the scope they need on the behaviors that matter. You are not writing to the lowest common denominator; you are giving each model what it needs and withholding what hurts one of them.
 
 ## The difference that changes how you write: instruction style
 
@@ -30,25 +45,31 @@ Because the two directions are opposite, a skill written to one model's guidance
 
 Literal instruction-following cuts both ways, and on Opus 5 the cost of a careless limiting phrase is high. A review instruction that says "only report high-severity issues" or "be conservative" is followed literally, and the run reports less than it found. When you want a filtered result, have the skill report everything and filter in a separate step, rather than narrowing what the model is allowed to notice in the first place.
 
+A limit is not the problem on its own; a vague one is. A limit is fine when it names a bar the reader could check, such as a consequence ("would block the merge") or a rubric the skill itself carries, and it requires evidence for each item it keeps. Anthropic's Opus 5.5 guidance recommends a review prompt of exactly that shape:
+
+> List only problems you'd block the merge for. For each one, give the file and line, why it's wrong, and how to show it fails.
+
+Compare "Only report high-severity issues", which names no bar anyone could check and asks for no evidence. Keep the report-then-filter approach for a limit like that one.
+
 When you know the target, match its style. When you do not, use the model-agnostic middle above.
 
-## The difference that can cause a failure: Fable 5 and reasoning echo
+## The difference that can cause a failure: reasoning echo on Fable 5 and Opus 5.5
 
-On Fable 5, an instruction that tells the model to reproduce or transcribe its own internal thinking into its visible answer can be refused outright. This is the one difference here that causes a functional failure rather than a stylistic mismatch, so it is worth recognizing on sight.
+On Fable 5 and Opus 5.5, an instruction that tells the model to reproduce or transcribe its own internal thinking into its visible answer can be refused outright. On Opus 5.5 the refusal carries the `reasoning_extraction` category, which is new for anyone coming from Opus 5. This is the one difference here that causes a functional failure rather than a stylistic mismatch, so it is worth recognizing on sight.
 
 Use this test to tell when the pattern is present. It applies when an instruction tells the model to copy its own internal reasoning or thinking into the deliverable it returns. It does not apply when you ask the model to write a normal explanation of a decision, or to produce a reasoned answer as ordinary content. Asking for an explanation written for the reader is fine; asking the model to echo its private thinking verbatim is the pattern to avoid.
 
-This warning rests on a single Anthropic source and is not independently corroborated (see Sources). It is a documented product behavior, not a subjective style claim, so it is worth heeding. Weigh it knowing the evidence is single-source and single-vendor.
+Three Anthropic publications state this behavior: the Fable 5 prompting page, the Opus 5.5 prompting page, and Anthropic's Opus 5.5 blog post (see Sources). They are all Anthropic's, so the evidence is single-vendor rather than independently corroborated. It is a documented product behavior, not a subjective style claim, so it is worth heeding.
 
 ## Other settings the model differences affect: thinking mode, effort, and subagent eagerness
 
-These three differences rarely decide how you write on their own, but each changes a specific choice:
+These differences rarely decide how you write on their own, but each changes a specific choice:
 
-- **Thinking mode.** The three models default differently. Opus 5 and Sonnet 5 have thinking on by default; on Opus 5 it can be disabled only at effort `high` or below. Fable 5 always has it on and cannot turn it off. So do not write "think step by step" prompt hacks or instructions that assume you can toggle thinking. Set the behavior you want through the model's own controls, not through prose that fights the default. Never write a rule telling the model not to think or not to reason: on Opus 5 with thinking disabled, that kind of rule increases the chance internal XML tags leak into the visible response.
-- **Effort.** The reasoning-depth lever is the effort setting, not "think harder" phrasing in your instructions. The same effort label does not mean the same depth across the three models, so do not hardcode an assumption that a given level produces a fixed amount of reasoning. On Opus 5, `low` and `medium` hold quality on most work at a fraction of the tokens and latency, and `xhigh` is reserved for demanding coding and agentic work. Effort governs how much the model thinks, not how much it says, so lowering it will not reliably shorten a response.
-- **Subagent eagerness.** The three models reach for subagents with different eagerness, and Opus 5 delegates more readily than earlier models. If your skill dispatches subagents, state the delegation you want rather than relying on the model's default tendency. [Multi-Agent Economics](./agent-building-guidelines/multi-agent-economics.md) covers the delegation rules that follow from this.
+- **Thinking mode.** The models default differently. Opus 5 and Sonnet 5 have thinking on by default; on Opus 5 it can be disabled only at effort `high` or below. Fable 5 and Opus 5.5 always have it on and cannot turn it off. So do not write "think step by step" prompt hacks or instructions that assume you can toggle thinking. Set the behavior you want through the model's own controls, not through prose that fights the default. Never write a rule telling the model not to think or not to reason: on Opus 5 with thinking disabled, that kind of rule increases the chance internal XML tags leak into the visible response. That leak is an artifact of disabled thinking, so it does not arise on Opus 5.5, but the rule still has no place in a skill.
+- **Effort.** The reasoning-depth lever is the effort setting, not "think harder" phrasing in your instructions. The same effort label does not mean the same depth across models, so do not hardcode an assumption that a given level produces a fixed amount of reasoning. On Opus 5, `low` and `medium` hold quality on most work at a fraction of the tokens and latency, and `xhigh` is reserved for demanding coding and agentic work. On Opus 5.5 the same name means more thinking than it did on Opus 5: Anthropic's platform docs put Opus 5.5's API default at `medium`, where Opus 5's is `high`, and report `medium` on Opus 5.5 matching or beating Opus 5 at `high`. Reserve `xhigh` and `max` for work where you have measured a gain. If a skill or agent pins `effort` in its frontmatter and that value was tuned for Opus 5, re-test it on Opus 5.5 rather than carrying it over, and say in the body why the value is pinned. Effort governs how much the model thinks, not how much it says, so lowering it will not reliably shorten a response.
+- **Subagent eagerness.** The models reach for subagents with different eagerness, and Opus 5 delegates more readily than earlier models. If your skill dispatches subagents, state the delegation you want rather than relying on the model's default tendency. [Multi-Agent Economics](./agent-building-guidelines/multi-agent-economics.md) covers the delegation rules that follow from this.
 
-## Instructions to leave out on Opus 5
+## Instructions to leave out on Opus 5 and Opus 5.5
 
 Opus 5 already does several things that older prompts told the model to do. Leaving those instructions in does not reinforce the behavior; it compounds with it and burns tokens for no quality gain. When you write for Opus 5, or when you inherit a skill written for an older model, cut the following.
 
@@ -56,7 +77,7 @@ Opus 5 already does several things that older prompts told the model to do. Leav
 - **Re-check and double-check prompts.** "Double-check your answer" and "re-verify before responding" fall in the same category. Opus 5 catches and fixes its own mistakes well, and these phrasings add cost without improving the result.
 - **Rules that forbid thinking or reasoning.** Covered in the thinking-mode bullet above.
 
-## Calibrating length, narration, and scope on Opus 5
+## Calibrating length, narration, and scope on Opus 5 and Opus 5.5
 
 Opus 5 runs longer and narrates more than earlier models, and it will extend a task's scope on its own judgment. None of these are fixed by lowering effort; each needs an explicit instruction. Write the behavior you want positively, describing the shape you are after rather than listing what to avoid, which works better on this model.
 
@@ -84,6 +105,10 @@ The per-model behavior above comes from Anthropic's own prompting pages, plus th
 
 The Opus 5 material (the instructions to leave out, the length and narration and scope calibration, the effort recommendations, the readier delegation, and the thinking defaults) comes directly from the Opus 5 prompting page and postdates that research report. It is single-vendor and not independently corroborated.
 
+The Opus 5.5 material (the inherited Opus 5 guidance, the reasoning-echo refusal, the thinking and effort changes, the acceptable review limit, and the early-stop behavior) comes from the Opus 5.5 prompting page and Anthropic's Opus 5.5 blog post, and postdates that research report too. The two agree with each other, but both are Anthropic's, so this material is also single-vendor.
+
+- [Prompting Claude Opus 5.5 (Anthropic)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5)
+- [Getting the most out of Opus 5.5 in Claude and Claude Code (Anthropic blog, Addy Osmani, 2026-09-22)](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/)
 - [Prompting Claude Opus 5 (Anthropic)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5)
 - [Prompting Claude Sonnet 5 (Anthropic)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5)
 - [Prompting Claude Fable 5 (Anthropic)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5)
