@@ -41,7 +41,7 @@ Then verify:
    selected) have valid task IDs continuing from manual review IDs. Findings from agents that were not dispatched in
    Step 3 must not appear.
 3. Agent findings have valid `file_path:line_number` references
-4. Deferred tests note is present if the han-core:test-engineer produced skipped items
+4. Deferred tests note is present if the han-coding:test-engineer produced skipped items
 5. The Review Summary table includes every corrective finding (CRIT/WARN/SUGG) and every security finding, and matches
    the sections that are present. YAGNI findings are excluded from the table (see rule 12). For findings whose block
    omits the category, the table is the only place that category appears. Every CRIT/WARN/SUGG row carries its fix route

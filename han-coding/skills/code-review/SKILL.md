@@ -606,7 +606,7 @@ escalate to those bands. Continue task ID numbering sequentially from Steps 4-6 
 
 ### Deferred tests
 
-If the han-core:test-engineer produced Deferred/Skipped items, include them as a note after the testing findings (not
+If the han-coding:test-engineer produced Deferred/Skipped items, include them as a note after the testing findings (not
 counted toward the cap):
 
 > **Deferred tests:** The following test cases were considered but excluded because brittleness risk outweighs value:

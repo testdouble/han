@@ -7,7 +7,7 @@ Verify that the change on this branch resolves the named work ticket.
 ## Roster
 
 - Always: han-core:gap-analyzer
-- When relevant: han-core:test-engineer
+- When relevant: han-coding:test-engineer
 
 ## Checklist categories
 

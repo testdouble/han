@@ -121,7 +121,7 @@ State the chosen band and mode in one line with the justification before dispatc
 `Medium: from the project .han/config.md default-swarm-size`, naming whichever file supplied it). Accept the user's
 override of the band, the mode, or both.
 
-In **focused mode**, dispatch only `han-core:test-engineer` in Step 2, skip the conditional specialists, answer in prose
+In **focused mode**, dispatch only `han-coding:test-engineer` in Step 2, skip the conditional specialists, answer in prose
 per Step 4's focused-mode rules, and skip the two reviewers in Step 5. **Step 3 runs in full either way.** Its
 behavioral, prerequisite, and YAGNI sweeps decide what may be recommended at all, so skipping them would let a focused
 answer recommend a test that cannot be written without an out-of-scope production change. In **full mode**, run every
@@ -139,7 +139,7 @@ other than `none provided`, include it in every agent prompt so they can focus t
 
 ### Always dispatch
 
-1. **Launch han-core:test-engineer agent** — prompt: "Analyze test coverage for the following files{on branch {branch}
+1. **Launch han-coding:test-engineer agent** — prompt: "Analyze test coverage for the following files{on branch {branch}
    if applicable}: {file list}. Recommend tests only at the public API: the inputs a real caller supplies, the outputs
    and side effects they observe, and the interactions the unit has with the objects and services it collaborates with.
    Do not recommend tests that reach into private methods, internal state, or implementation structure — if two
@@ -189,7 +189,7 @@ Wait for every dispatched agent to complete and collect full output for processi
 Combine findings from every dispatched agent into a unified, prioritized test plan:
 
 1. **Classify findings** —
-   - **han-core:test-engineer items** (T1, T2, ...): map High to CRIT or HIGH depending on the code path (security, data
+   - **han-coding:test-engineer items** (T1, T2, ...): map High to CRIT or HIGH depending on the code path (security, data
      integrity, auth = CRIT; business logic, error handling = HIGH), Medium to MED, Low to LOW.
    - **han-core:edge-case-explorer items** (EC1, EC2, ...): map directly — Critical to CRIT, High to HIGH, Medium to
      MED, Low to LOW.
@@ -278,7 +278,7 @@ Lead with behavior. These rules make the plan a human-readable overview first an
 4. **Technical Reference → Test Plan** — All items from Step 3, grouped by priority tier. Every test plan item should
    include file:line references from the agent output, and preserve agent detail — carry through the test approach, code
    paths, and risk assessments into the merged output.
-5. **Technical Reference → Deferred Tests** — Items the han-core:test-engineer excluded due to brittleness risk.
+5. **Technical Reference → Deferred Tests** — Items the han-coding:test-engineer excluded due to brittleness risk.
 6. **Technical Reference → Dropped Edge Cases** — Items the han-core:edge-case-explorer intentionally excluded.
 7. **Technical Reference → Blocked by a Production Change** — Items the prerequisite sweep moved out of the priority
    tiers, each with the production change it would need, the file that would carry it, and that file's other consumers.

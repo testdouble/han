@@ -6,7 +6,7 @@ Check the test coverage and edge cases of the change.
 
 ## Roster
 
-- Always: han-core:test-engineer, han-core:edge-case-explorer
+- Always: han-coding:test-engineer, han-core:edge-case-explorer
 - When relevant: none
 
 ## Checklist categories
