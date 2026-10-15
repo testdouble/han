@@ -206,7 +206,10 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
    agents live in `han-core` by default; an agent moves out only when a single skill family in one plugin above
    `han-core` dispatches it exclusively. Today that is the readability-editor, living in `han-communication` with
    the readability skills it serves; the research-analyst, living in `han-research` with the research skill that
-   dispatches it; and the discussion-facilitator, living in `han-planning` with `plan-implementation`. See
+   dispatches it; and the discussion-facilitator, living in `han-planning` with `plan-implementation`. An agent that one
+   plugin dispatches directly and `han-planning` uses only through a role can also move out: today that is the
+   test-engineer, living in `han-coding` and filling `han-planning`'s `test-planning` role. See
+   [agent-roles.md](./han-planning/references/agent-roles.md) for how an agent claims a role. See
    [agent-domain-focus.md](./han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md)
    for how narrow and named the domain vocabulary should be.
 2. Copy [the agent template](./docs/templates/agent-long-form-template.md) into `{plugin}/docs/agents/{name}.md`

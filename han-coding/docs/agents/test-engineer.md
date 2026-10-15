@@ -1,8 +1,10 @@
 # test-engineer
 
-Operator documentation for the `test-engineer` agent in the han plugin. This document helps you decide _when_ and _how_
+Operator documentation for the `test-engineer` agent in the `han-coding` plugin. This document helps you decide _when_ and _how_
 to dispatch the agent. For what the agent does internally, read the agent definition at
-[`han-core/agents/test-engineer.md`](../../agents/test-engineer.md).
+[`han-coding/agents/test-engineer.md`](../../agents/test-engineer.md). The agent fills `han-planning`'s
+`test-planning` role, so planning skills use it when `han-coding` is installed and skip the role when it is not; see
+[`agent-roles.md`](../../../han-planning/references/agent-roles.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All agents](../../../docs/agents/README.md) ·
 > [All skills](../../../docs/skills/README.md) · [YAGNI](../../../docs/yagni.md)

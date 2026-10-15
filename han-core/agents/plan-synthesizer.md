@@ -150,7 +150,7 @@ Specialists available on this team:
   `software-architect`
 - **Cross-service / bounded-context topology, context-map relationships, integration patterns, data ownership across
   services, failure-domain containment** → `system-architect`
-- **Test planning for observable behavior** → `test-engineer`
+- **Test planning for observable behavior** → the `test-planning` role (`test-engineer`, when `han-coding` is installed)
 - **Edge-case discovery for tests** → `edge-case-explorer`
 - **Bug root-cause investigation** → `evidence-based-investigator`
 - **Spec vs. implementation gap** → `gap-analyzer`

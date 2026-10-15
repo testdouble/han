@@ -238,7 +238,7 @@ Domain handoffs:
   `software-architect`
 - **Cross-service / bounded-context topology, context-map relationships, integration patterns, data ownership across
   services, failure-domain containment** → `system-architect`
-- **Test planning depth, behavior-focused tests, test doubles** → `test-engineer`
+- **Test planning depth, behavior-focused tests, test doubles** → the `test-planning` role (`test-engineer`, when `han-coding` is installed)
 - **Edge-case discovery for tests** → `edge-case-explorer`
 - **Bug root-cause investigation** → `evidence-based-investigator`
 - **Spec / PRD vs implementation gap** → `gap-analyzer`

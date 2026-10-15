@@ -83,8 +83,6 @@ Most agents are dispatched for you by skills; you rarely invoke them directly. G
 
 ### Testing
 
-- [`test-engineer`](docs/agents/test-engineer.md) — Plan tests focused on observable behavior and recommend test
-  doubles for isolation, producing a prioritized test plan.
 - [`edge-case-explorer`](docs/agents/edge-case-explorer.md) — Systematically discover and catalog edge cases: boundary
   values, type-coercion traps, and state-dependent failures.
 

@@ -9,7 +9,7 @@ surfaces the first two, the inline `explanation-guidance` skill that surfaces th
 the `readability-editor` agent, and the `han-readability` and `han-concise` output styles that apply the first two to
 every turn of a session; it depends on nothing and every prose-producing plugin depends on it), `han-core` (the shared foundation: the
 specialist agent roster the rest of the suite dispatches — every shared agent except the `readability-editor`, the
-`research-analyst`, and the `discussion-facilitator` — plus the `project-discovery` skill, the `pairing` collaborative working mode, and the canonical rule files; depends on no other Han plugin),
+`research-analyst`, the `discussion-facilitator`, and the `test-engineer` — plus the `project-discovery` skill, the `pairing` collaborative working mode, and the canonical rule files; depends on no other Han plugin),
 `han-documentation` (the documentation skills: `project-documentation`, `architectural-decision-record`, and `runbook`;
 depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin), `han-research` (the
 pre-planning knowledge-work skills — `research`, `gap-analysis`, and `issue-triage` — plus the `research-analyst`
@@ -117,13 +117,14 @@ han-plugin-builder skill:
 │   ├── agents/         # discussion-facilitator agent definition
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/ + scripts/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/discussion-facilitator.md
-│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md, contract-pinning-rule.md, synthesis-failure-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
-├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
-│   ├── README.md       # Light front door + scent-line skills list
+│   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md, contract-pinning-rule.md, synthesis-failure-rule.md, agent-roles.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
+├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code) + the test-engineer agent, which fills han-planning's test-planning role (depends on han-communication and han-core; bundled by the han meta-plugin)
+│   ├── README.md       # Light front door + scent-line skills and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
+│   ├── agents/         # test-engineer agent definition
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
-│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md
+│   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/test-engineer.md
 │   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md)
 ├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues (depends on han-communication, han-core, and han-coding, whose code-review skill post-code-review-to-pr wraps)
 │   ├── README.md       # Light front door + scent-line skills list
@@ -221,7 +222,7 @@ The same plugin also ships those two interview-driven builder skills, `skill-bui
 design tree for a new skill or agent decision-by-decision and then review the finished artifact against that guidance.
 Documentation is plugin-first: each plugin carries a light front-door `README.md` and its own long-form docs. Long-form
 docs in `{plugin}/docs/skills/{name}.md` and `{plugin}/docs/agents/{name}.md` (agents only in `han-core`,
-`han-communication`, `han-research`, `han-planning`, and `han-ddd`) are the canonical operator-facing source for every skill and every agent,
+`han-communication`, `han-research`, `han-planning`, `han-coding`, and `han-ddd`) are the canonical operator-facing source for every skill and every agent,
 sitting beside that plugin's README. The cross-plugin surfaces stay under repo-root `docs/`: the alphabetized skills
 and agents indexes (`docs/skills/README.md`, `docs/agents/README.md`), the plugin index
 (`docs/choosing-a-han-plugin.md`), and the workflows composition map (`docs/workflows.md`). The underlying definition
@@ -231,7 +232,7 @@ and agents indexes (`docs/skills/README.md`, `docs/agents/README.md`), the plugi
 `han-reporting/skills/{name}/SKILL.md`, `han-feedback/skills/{name}/SKILL.md`, `han-atlassian/skills/{name}/SKILL.md`,
 `han-linear/skills/{name}/SKILL.md`, `han-ddd/skills/{name}/SKILL.md`, `han-core/agents/{name}.md`,
 `han-communication/agents/{name}.md`, `han-research/agents/research-analyst.md`,
-`han-planning/agents/discussion-facilitator.md`, or `han-ddd/agents/{name}.md`) is the implementation.
+`han-planning/agents/discussion-facilitator.md`, `han-coding/agents/test-engineer.md`, or `han-ddd/agents/{name}.md`) is the implementation.
 
 ## When to use which doc
 
@@ -305,6 +306,11 @@ such as Claude, should be referenced here.
   one, and which stage of the chain owns pinning it. Consumed by `plan-a-feature`, `plan-a-change`, `plan-implementation`,
   `plan-work-items`, and `iterative-plan-review`. The phrase list is mirrored by
   `check-contract-pinning.sh`; the rule is canonical, so edit it first.
+- **[han-planning/references/agent-roles.md](./han-planning/references/agent-roles.md).** The named roles on
+  `han-planning` team lists that an agent from another plugin can fill, how an agent claims one in its description, and
+  how a skill fills a role or skips it when no installed agent claims it. Lets `han-planning` use an agent such as
+  `han-coding`'s `test-engineer` without depending on that plugin. `test/agent-roles.bats` checks every claim names a
+  defined role.
 - **[han-planning/references/synthesis-failure-rule.md](./han-planning/references/synthesis-failure-rule.md).** The
   check a caller runs after `han-core:plan-synthesizer` returns, to confirm the plan file exists and holds content
   before any later step reads it, plus the three things the stop says when it does not: what did not happen, what
@@ -340,7 +346,7 @@ Every file in this section is owned by `han-planning`, not vendored. Each opens 
   `han-github/skills/`, `han-reporting/skills/`, `han-feedback/skills/`, `han-atlassian/skills/`, `han-linear/skills/`,
   `han-ddd/skills/`, and `han-plugin-builder/skills/` has a long-form doc in its plugin's `docs/skills/`, a scent line in its plugin's
   `README.md`, and an entry in the skills index (`docs/skills/README.md`); same for agents in `han-core/agents/`,
-  `han-communication/agents/`, `han-research/agents/`, `han-planning/agents/`, and `han-ddd/agents/` (long-form docs in
+  `han-communication/agents/`, `han-research/agents/`, `han-planning/agents/`, `han-coding/agents/`, and `han-ddd/agents/` (long-form docs in
   `{plugin}/docs/agents/`, indexed in
   `docs/agents/README.md`). Verify the indexes list every entity when editing them, rather than tracking a running
   total. An output style in `han-communication/output-styles/` gets a long-form doc in
