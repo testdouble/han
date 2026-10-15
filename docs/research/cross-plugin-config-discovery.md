@@ -57,7 +57,7 @@ against that slot.
 - Java ServiceLoader: the service owner defines the interface (A18).
 - OSGi whiteboard: providers register themselves, and the consumer looks them all up [single-source] (A22).
 
-The surveyed systems do not have a provider list the consumer's internal features. This is a bounded survey of about
+None of the surveyed systems has a provider list the consumer's internal features. This is a bounded survey of about
 ten systems, not proof that none does. The nearest cases, VS Code `contributes` and IntelliJ optional `<depends>`, have
 the provider name a host-defined slot or id (A14, A19). Applied to your example, "`test-engineer` is usable by
 `plan-a-feature` and `plan-implementation`" names consumer skills. "`test-engineer` fills `han-planning`'s
@@ -220,13 +220,15 @@ A registry file in `han-core` that each provider edits is not listed. It puts `h
 
 - **Recommendation:** Adopt O5 for `test-engineer`. Name roles, not agents, in `han-planning`'s team lists, and have the
   moved agent's description claim its role. A planning skill uses an available agent that claims the role and otherwise
-  skips it with Han's existing one-line note. Add a test that every role an agent description claims appears in some
-  consumer team list. Amend the agent-placement rule and decision D1, and update the `han-core` agents, the evals, and
-  the docs that name `test-engineer`. Hold O1 until a plugin needs to contribute something other than an agent. At
-  that point, first run one live check: install `han-coding` with a SessionStart hook from a local marketplace and
-  confirm a `han-planning` skill and its subagents see the printed text after a compaction. If you would rather keep
-  descriptions free of planning concepts, O4 is the plainer fallback, at the cost of the mapping living in
-  `han-planning`.
+  skips it with Han's existing one-line note.
+  - Add a test that every role an agent description claims appears in some consumer team list.
+  - Amend the agent-placement rule and decision D1, and update the `han-core` agents, the evals, and the docs that name
+    `test-engineer`.
+  - Hold O1 until a plugin needs to contribute something other than an agent. At that point, first run one live check:
+    install `han-coding` with a SessionStart hook from a local marketplace and confirm a `han-planning` skill and its
+    subagents see the printed text after a compaction.
+  - If you would rather keep descriptions free of planning concepts, O4 is the plainer fallback, at the cost of the
+    mapping living in `han-planning`.
 - **Evidence basis:**
   - Corroborated: the consumer owns the slot and the handling of absence (A13, A15, A16, A18, A20, A21); Claude Code
     has no optional or contributes field, and dependencies are hard (A1, A2); the model sees each plugin agent's name
