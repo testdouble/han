@@ -72,6 +72,10 @@ teams route around.
   application source line: devops-engineer covers infrastructure, pipelines, IaC, and observability config;
   on-call-engineer covers application source code. The two are designed to be dispatched together for a ship-readiness
   pass.
+- Telemetry design: naming and semantic conventions, metric label cardinality and telemetry cost, head and tail
+  sampling design, Collector pipeline processors, and the choice between metrics, events, traces, and logs. Use
+  [`observability-engineer`](./observability-engineer.md). This agent keeps its observability sweep to SLOs, alert
+  rules, dashboards, and readiness, and defers deeper telemetry design findings there.
 - Bug triage or root-cause investigation. Use `/investigate` or `evidence-based-investigator`.
 - Writing or iterating IaC. The agent does not modify infrastructure. It produces a findings report.
 
@@ -320,6 +324,8 @@ URL: https://martinfowler.com/bliki/StranglerFigApplication.html
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
 - [`data-engineer`](./data-engineer.md). Pair on production migrations. This agent covers rollout-level progressive
   delivery; `data-engineer` covers schema-level expand-and-contract.
+- [`observability-engineer`](./observability-engineer.md). Pair when SLOs or alerts depend on new telemetry. This agent
+  owns SLOs, alert rules, and dashboards; `observability-engineer` owns the telemetry design beneath them.
 - [`adversarial-security-analyst`](./adversarial-security-analyst.md). Pair on changes touching auth, secrets, or
   regulated surfaces. This agent covers operational readiness; the security analyst covers exploit paths.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Adds this agent to its roster on a

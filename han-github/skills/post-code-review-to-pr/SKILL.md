@@ -5,7 +5,9 @@ description: >
   CLI to be installed and a PR to already exist for the current branch. Use when you want review feedback posted to
   GitHub as PR comments. For local code review without posting to GitHub, use code-review instead. Does not write or
   update PR descriptions — use update-pr-description for that.
-argument-hint: "[optional context about the PR or areas to focus on]"
+argument-hint:
+  "[type: security | testing | architecture | data | observability | resilience | release | maintainability | docs | ux
+  | work-ticket <ticket> | a type from .han/config.md] [focus]"
 allowed-tools:
   Bash(jq *), Bash(gh *), Bash(git *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Skill, Agent,
   Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
@@ -41,12 +43,17 @@ exists for the current branch and stop.
 
 ## Step 2: Run Code Review
 
-Invoke the `/code-review` skill to perform the full code review. Pass along any user-provided focus areas or context
-from the original arguments.
+Invoke the `/code-review` skill to perform the code review, passing this skill's original argument string to it
+verbatim. `/code-review` parses that string itself, so a leading review type token, shipped or declared in
+`.han/config.md`, selects that review type, and everything after it is focus text. A `work-ticket` run may stop to ask
+for the ticket; let it ask, and continue once it does.
 
 `/code-review` writes its report to a file and names the path in its closing message; it does not print the review into
 the conversation. **Capture that path** — Step 3 reads the report from it. After /code-review completes, proceed
 immediately to Step 3 — do not stop here.
+
+**When `/code-review` ends without naming a report path** — it stopped with a message, or the user left a
+`work-ticket` wait without supplying the ticket — relay its last message and stop. Post nothing.
 
 ## Step 3: Offer to Post Review to GitHub
 
@@ -57,8 +64,12 @@ If the user accepts:
 
 1. Gather PR metadata by running `${CLAUDE_SKILL_DIR}/scripts/pr-metadata.sh`, which outputs JSON with `owner_repo`,
    `pr_number`, `head_sha`, `pr_author_login`, and `current_user_login`.
-2. Read the report file at the path captured in Step 2, then build the review body from it: Review Summary table, Review
-   Recommendation, and all findings organized by severity, plus any optional sections that are present. Treat every section other than the Review Summary table and the Review
+2. Read the report file at the path captured in Step 2, then build the review body from it: the report's
+   `**Review type:**` line, the Review Summary table, the Review Recommendation, everything between the report's
+   `<!-- type-section:start -->` and `<!-- type-section:end -->` markers, and all findings organized by severity, plus
+   any optional sections that are present. The type line lets two posted reviews of one PR be told apart. The type
+   section, such as `work-ticket`'s Ticket Resolution, crosses whole and uncut whatever its heading, and is absent when
+   the report has no markers. Treat every section other than the Review Summary table and the Review
    Recommendation as optional — the code-review skill renders a section only when it has content, so a section (the
    Review Coverage section, the What's Good section, an absent severity section on a clean review, the Security
    Vulnerabilities section, the Remediation note) may simply not be there. Include each section when present and omit
@@ -72,8 +83,9 @@ Because the review body will be publicly visible on the PR, run a clarity pass o
 
 Match the body's length to what the review found. Every finding earns its place by naming a specific problem at a
 specific location. Skip filler sections, a restated summary of the diff, and boilerplate the reader can see for
-themselves on the PR. Three sections are exempt from that length-matching and are never cut or shortened: the Review
-Summary table, the Review Recommendation, and the Review Coverage section. Review Coverage names no problem at any
+themselves on the PR. Four parts are exempt from that length-matching and are never cut or shortened: the Review
+Summary table, the Review Recommendation, the type section between the type-section markers, and the Review Coverage
+section. Review Coverage names no problem at any
 location by construction; it says which coverage the review did not have, and deleting it as filler would hide that from
 the widest audience the review reaches. Stay inside what the review covered: this step edits wording and severity, and
 never adds a finding `/code-review` did not raise.
@@ -83,8 +95,9 @@ never adds a finding `/code-review` did not raise.
    text of a code review that is about to be posted publicly on a GitHub pull request. The review is at {draft_path}. Do
    not re-review the code — review the review. Flag findings whose wording is unclear, severity is mis-assigned (CRIT
    used where WARN would be accurate, or vice versa), language is accusatory or blaming rather than evidence-based, or
-   `file_path:line_number` references are missing or invalid. Leave the Review Summary table, the Review Recommendation,
-   and any Review Coverage section as they are; they are not findings and are not subject to the length-matching bar.
+   `file_path:line_number` references are missing or invalid. Leave the review type line, the Review Summary table, the
+   Review Recommendation, any type section, and any Review Coverage section as they are; they are not findings and are
+   not subject to the length-matching bar.
    Return a short list of specific edits with before/after text; return an empty list if the review reads well as-is."
 3. Apply every actionable edit the agent returns. If the agent raises a severity-assignment issue, adjust the finding's
    task ID and the Review Summary table to match.

@@ -145,6 +145,8 @@ URL: https://standards.ieee.org/ieee/829/3787/
   against a PRD or reference spec.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent to compare the
   plan under review against its source spec or PRD.
+- [`/code-review`](../../../han-coding/docs/skills/code-review.md). Its `work-ticket` review type always dispatches this
+  agent to compare the change against the named ticket and return a requirement-by-requirement map.
 - [Evidence](../../../docs/evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes for evidence
   pairs, the corroboration gate for single-source web claims, and the no-evidence label for silent desired-state
   evidence.

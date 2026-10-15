@@ -4,7 +4,9 @@ Each work item in `work-items.md` uses this template. The template is built for 
 disclosure: the summary says why the work is needed and what is being done, the work-to-be-done list says what the
 implementer will do, the acceptance criteria at the bottom say how anyone knows it is done, and everything in between
 exists to support a criterion. The criteria are drafted immediately after the summary — before any detail — even though
-they render at the bottom, so the detail is forced to serve them. Required fields appear in the order shown. The
+they render at the bottom, so the detail is forced to serve them. The classification fields after the criteria tell
+whoever picks the item up which skill builds it, which reviews it, whether either part needs a human, and which files
+it is expected to touch. Required fields appear in the order shown. The
 `**Justification.**` block is always required: no work item ships without naming what it descends from. The
 `**References.**` block is required whenever the work item consumes any artifact identified in Step 4 of the skill or
 restates a plan decision — omit it only when neither applies. Additional `**Bold paragraph.**` context blocks are
@@ -44,6 +46,18 @@ SDK or platform caveats that affect acceptance.
 - [ ] Each criterion is an observable, verifiable outcome of this work item's own behavior: a behavior that occurs, a state that exists, a check that passes. A person can mark it done without interpreting intent.
 - [ ] When the behavior needs automated test coverage, one criterion names that coverage in plain terms (e.g., "Automated tests cover the rejection path and the happy path").
 - [ ] When this item authors or changes a contract another item consumes, one criterion carries the contract's concrete form: a worked example, a grammar line, or a field layout. "The schema document exists" and "the document names all five entry types" are not that criterion.
+- [ ] For an `audit`, the criteria name the checks it runs; for a `spike`, the question the finding must answer. A no-output `audit` must be side-effect-free and safe to re-run.
+
+**Type.** `deliverable` (default; builds and commits an artifact), `audit` (a checks-only pass), or `spike` (an investigation that records a finding). Required.
+
+**Requires pre-work decisions.** `yes` if a human judgment statable in a single sentence is required before work starts, otherwise `no`. A record-worthy decision instead becomes an ADR this item depends on; one needing investigation becomes a spike it depends on. Required. `yes` can be accompanied by one clarifying sentence.
+
+**Suggested implementation.** The skill or agent that should build this item, and whether it can run unattended. Required. Choose it with [deliverable-skill-catalog.md](./deliverable-skill-catalog.md). Example: `han-coding:tdd`, AFK.
+
+**Suggested review.** The skill or agent that should review this item, comes from deliverable-skill-catalog as well. Required. Example: `han-coding:code-review`, AFK.
+
+**Expected paths.**
+- `<repo-root-relative path this work item creates or modifies>`. One path per bullet, never absolute or a cross-repository URL. A rename lists both the old and the new path. Required. An `audit` that produces no files declares `**Expected paths.** None.`
 
 **Depends on.** `<W-N>` (within this file), comma-separated for multiple, or `None.`
 ```
@@ -66,12 +80,15 @@ SDK or platform caveats that affect acceptance.
 - A contract shared across work items is pinned in the item that introduces it and consumed by items that name it under
   `**Depends on.**`, never defined a piece at a time across several items. See
   [`contract-pinning-rule.md`](../../../references/contract-pinning-rule.md) for what counts as pinned.
-- `**Summary.**` comes first; `**Acceptance criteria.**` renders at the bottom, immediately before `**Depends on.**`.
-  Every block between them supports a criterion; there is no separate `**Tests.**` block — test expectations live
-  inside the acceptance criteria.
+- `**Summary.**` comes first; `**Acceptance criteria.**` renders after the content blocks, followed by the
+  classification fields (`**Type.**`, `**Requires pre-work decisions.**`, `**Suggested implementation.**`,
+  `**Suggested review.**`, `**Expected paths.**`) in that order, and then `**Depends on.**`. Every block between the
+  summary and the criteria supports a criterion; there is no separate `**Tests.**` or `**Checks.**` block — test and
+  check expectations live inside the acceptance criteria.
 - Plan references live only in the `**References.**` block, each ID paired with a one-sentence description. The summary
   and work-to-be-done bullets never carry an ID-only reference such as `See plan: D-1, D-5`.
 - Design-reference paths are relative to the `work-items.md` file (e.g., `ui-designs/<file>.png` when the screenshots
   live in the plan folder). Never use an absolute path or a cross-repository URL.
-- The `**Depends on.**` line uses the literal bold marker, comma-separates dependencies, and ends with `.` (the trailing
-  period is part of the format, not a sentence terminator).
+- The `**Type.**`, `**Requires pre-work decisions.**`, `**Suggested implementation.**`, `**Suggested review.**`, and
+  `**Depends on.**` lines use the literal bold marker and end with `.` (the trailing period is part of the format, not a
+  sentence terminator). `**Depends on.**` comma-separates dependencies.

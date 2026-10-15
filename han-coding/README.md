@@ -15,8 +15,7 @@ it, dispatching specialist agents to cover each dimension in parallel. Reach for
 - [`/design-an-api`](docs/skills/design-an-api.md) — Design the contract for an API change inside one codebase, with
   every element justified from one stated goal and the design run past a question round and an adversarial validation
   round.
-- [`/code-review`](docs/skills/code-review.md) — Run a comprehensive code review on the current branch or specified
-  files, with a size-scaled roster of specialist agents.
+- [`/code-review`](docs/skills/code-review.md) — Reviews a branch, uncommitted work, or named files for one named concern, such as security or testing, with the specialist agents that review type names, or runs the default review across all of them.
 - [`/code-overview`](docs/skills/code-overview.md) — Produce a human-readable, progressive-disclosure overview of
   unfamiliar code or a PR's changes, leading with why the code exists; raises no findings.
 - [`/code-walkthrough`](docs/skills/code-walkthrough.md) — Walk someone through a branch's changes one step at a time in

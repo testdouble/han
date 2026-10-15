@@ -37,9 +37,9 @@ check.
 Then verify:
 
 1. Task IDs are sequential within each category (CRIT-001, CRIT-002, ...; WARN-001, WARN-002, ...)
-2. Agent findings from every dispatched agent (testing, edge-case, structural, behavioral, concurrency, data, devops,
-   han-core:junior-developer) have valid task IDs continuing from manual review IDs. Findings from agents that were not
-   dispatched in Step 3 must not appear.
+2. Agent findings from every agent dispatched in Step 3 (every row of the roster table in `agent-dispatch.md` that was
+   selected) have valid task IDs continuing from manual review IDs. Findings from agents that were not dispatched in
+   Step 3 must not appear.
 3. Agent findings have valid `file_path:line_number` references
 4. Deferred tests note is present if the han-core:test-engineer produced skipped items
 5. The Review Summary table includes every corrective finding (CRIT/WARN/SUGG) and every security finding, and matches
@@ -52,7 +52,8 @@ Then verify:
 8. Every SEC-### finding has an `EXPLOIT:` field populated
 9. Security findings are NOT cross-referenced in `### 🔴 Critical`. Instead, when any SEC-### finding exists, the Review
    Recommendation reflects the highest severity across all findings including the security findings' own severities (a
-   Critical-severity security finding yields a do-not-merge recommendation)
+   Critical-severity security finding yields a do-not-merge recommendation, and a High- or Medium-severity one yields the
+   warnings recommendation)
 10. Junior-developer findings that overlap with a specialist agent's finding reference the specialist finding instead of
     duplicating it
 11. The report file is the COMPLETE deliverable. It carries no trailing commentary or sign-off, and no part of it is
@@ -82,7 +83,16 @@ Then verify:
 22. When the run was in manual-only mode (`agent-dispatch.md`), the `## Review Coverage` block is present in the position
     the template fixes, opens with its cause line, and carries one row per item on the absent-coverage list: every agent
     Step 3.2 selected, plus the independent validation pass. When every planned coverage ran, the block is absent.
-23. Every finding whose location was established by a region read (Step 4's path for a file over 1000 lines) names its
+23. The `**Review type:**` header line is present under the title and names this run's type and its purpose, or
+    `default`. A typed run's report names no other review type anywhere. On a typed run whose roster does not include
+    `han-core:adversarial-security-analyst`, the line ends with `Security analysis did not run on this review.`; that
+    sentence names missing coverage, not a review type.
+24. When the run's type file has a `## Report section` other than `none`, that section is present between the
+    `<!-- type-section:start -->` and `<!-- type-section:end -->` markers, immediately after the Review Recommendation,
+    and filled by the type file's rules. On a `work-ticket` run, the verdict follows those rules and every row's
+    evidence names a `file:line`, a surviving WARN-### or SUGG-###, or `GAP-### discarded at validation`. When the type
+    has no report section, neither the section nor the markers appear.
+25. Every finding whose location was established by a region read (Step 4's path for a file over 1000 lines) names its
     enclosing unit and the lines read in isolation to confirm it, in the form `finding-content.md` defines. A finding from
     a file read whole carries no such note. This item runs in every mode, including the ones where Step 7.4 does not.
 

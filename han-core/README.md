@@ -47,6 +47,9 @@ Most agents are dispatched for you by skills; you rarely invoke them directly. G
   DORA, Twelve-Factor, the Four Golden Signals, SLO discipline, and named production failure modes.
 - [`on-call-engineer`](docs/agents/on-call-engineer.md) — Read application source for the code-level resilience
   anti-patterns that wake on-call engineers at 3am; a hard boundary against `devops-engineer`, reading source only.
+- [`observability-engineer`](docs/agents/observability-engineer.md) — Audit telemetry design for the cost, sampling,
+  naming, and pipeline problems that leave a team unable to afford its telemetry or missing the request it needs when
+  something breaks.
 - [`data-engineer`](docs/agents/data-engineer.md) — Assume the data design is over-normalized, under-normalized, and
   indexed for the wrong workload, and audit schemas, migrations, queries, and pipelines.
 - [`information-architect`](docs/agents/information-architect.md) — Assume the documentation is harder to find, orient

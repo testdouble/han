@@ -9,12 +9,18 @@
 - Processing data-engineer results (only if dispatched)
 - Processing devops-engineer results (only if dispatched)
 - Processing on-call-engineer results (only if dispatched)
+- Processing observability-engineer results (only if dispatched)
 - Processing junior-developer results
+- Processing information-architect results (only if dispatched)
+- Processing content-auditor results (only if dispatched)
+- Processing user-experience-designer results (only if dispatched)
+- Processing gap-analyzer results (only if dispatched)
+- Processing results from an agent without a roster-table row
 
-**Size-based demotion (applies to every category below).** Size-based demotion is governed by [SKILL.md](../SKILL.md)
-Step 3.3, the authoritative home for size-based severity rules. The bands in each category define what each severity
-means; Step 3.3 governs which findings escalate to those bands at the change's size (read from Step 3.1). When
-uncertain, prefer the lower severity. The per-category bands below do not restate this rule.
+**Severity calibration (applies to every category below).** Severity calibration is governed by the Step 3.3
+calibration directive in [agent-dispatch.md](./agent-dispatch.md), the authoritative home for the severity rule. The
+bands in each category define what each severity means; the directive governs which findings escalate to those bands.
+When uncertain, prefer the lower severity. The per-category bands below do not restate this rule.
 
 ### Processing test-engineer results
 
@@ -47,7 +53,8 @@ For each security finding (SEC-001, SEC-002, ...) from the agent:
   `SEC-001 (Critical)`) since the SEC-### ID does not encode a tier. Do **not** also add a CRIT-### cross-reference
   entry under `### 🔴 Critical` — security findings are not duplicated into the Critical section.
 - The Review Recommendation reflects the highest severity across all findings including these security severities: a
-  Critical-severity security finding yields a do-not-merge recommendation even though it is not listed under Critical.
+  Critical-severity security finding yields a do-not-merge recommendation even though it is not listed under Critical,
+  and a High- or Medium-severity one counts as a Warning for the recommendation.
 - If the security agent found no proven vulnerabilities, the `## 🔐 Security Vulnerabilities` section and the
   Remediation note are omitted entirely.
 
@@ -149,6 +156,26 @@ Apply the agent's own tone-anti-pattern sweep as a classification check: a findi
 thin blame, tourist citation, or bibliographic empathy should be either rewritten or omitted before being carried into
 the rollup.
 
+### Processing observability-engineer results (only if dispatched)
+
+For each observability-engineer finding (OBS1, OBS2, ...), assign category **[Observability]** and classify severity:
+
+- **CRIT**: A telemetry design problem the change actively introduces whose worst case is losing the evidence or an
+  unbounded bill — an unbounded identifier (user, request, or account ID, raw URL path) as a metric label on a
+  production path, a sampler that cannot keep error traces on a path that has none of its own error signal, a pipeline
+  change that ships unscrubbed credentials or regulated data to a third-party backend.
+- **WARN**: Telemetry design that degrades analysis or cost but loses nothing on its own — a wrong instrument type, a
+  value interpolated into a metric name, attribute names that drift from semantic conventions or from names used
+  elsewhere in the repository, a Collector pipeline missing `memory_limiter` or `batch`, an event written as a log, a
+  metric, and a span event with nothing joining them.
+- **SUGG**: Telemetry polish on code the change touches — span names, units, histogram buckets, a shared
+  instrumentation helper.
+
+Reject findings that cross into `devops-engineer` territory (SLO definitions, alert rules, dashboards) or
+`on-call-engineer` territory (whether a source-line log or metric exists, correlation-id propagation, PII in an
+individual log statement). Reject recommendations for tail sampling, a Collector tier, or retention tiers that the
+calibration directive rules out for the project's volume. Demote one severity level when in doubt.
+
 ### Processing junior-developer results
 
 For each junior-developer finding (JD1, JD2, ...) from the junior-developer, assign category **[Clarity]** and classify
@@ -162,3 +189,65 @@ severity:
 
 Do not duplicate a junior-developer finding when another agent has already raised the same issue — prefer the
 specialist's classification and reference it from the JD finding instead.
+
+### Processing information-architect results (only if dispatched)
+
+For each information-architect finding (IA1, IA2, ...), assign category **[Documentation: Findability]** and classify
+severity:
+
+- **CRIT**: Never, unless the finding meets the calibration directive's critical cases. A hard-to-find document is not
+  data loss.
+- **WARN**: A structural problem the change introduces that stops a named reader from finding or following what the
+  change documents — a new document nothing links to, a broken internal cross-reference, a label that names one thing
+  in two ways, or a front door that no longer routes to the content it moved.
+- **SUGG**: Orientation polish on documents the change touches — headings, ordering, progressive disclosure.
+
+Reject findings about documents the change does not touch, and any finding that is a prose rewrite rather than a
+structural change.
+
+### Processing content-auditor results (only if dispatched)
+
+For each missing fact the content-auditor reports (CA1, CA2, ...), assign category **[Documentation: Lost Fact]** and
+classify severity:
+
+- **CRIT**: Never, unless the finding meets the calibration directive's critical cases.
+- **WARN**: A fact the original carried that a reader needs to act correctly — a command, a configuration value, a
+  constraint, a warning, or a step — and the updated document no longer carries, with no other document carrying it.
+- **SUGG**: A lost fact a reader could recover from elsewhere in the repository, or a specific value the update
+  replaced with a generic description.
+
+Drop facts the auditor classified as present or correctly removed; they produce no findings.
+
+### Processing user-experience-designer results (only if dispatched)
+
+For each user-experience-designer finding (UX1, UX2, ...), assign category **[Usability]** and classify severity:
+
+- **CRIT**: An interface the change introduces that a user cannot complete at all through a supported input or
+  assistive technology — a keyboard trap, a required control with no accessible name, a flow with no way back from an
+  error — or a dark pattern that commits a user to something they did not choose.
+- **WARN**: A WCAG 2.2 Level A or AA failure the change introduces, or a usability problem the change introduces that a
+  named heuristic predicts will cause errors or abandonment.
+- **SUGG**: Interaction polish on screens the change touches — microcopy, feedback timing, visual hierarchy.
+
+Reject findings about screens the change does not touch, and pure visual or brand preferences that name no user
+impact.
+
+### Processing gap-analyzer results (only if dispatched)
+
+For each gap finding (GAP-001, GAP-002, ...) from the gap-analyzer, assign category **[Ticket: Gap]** and classify
+severity:
+
+- **CRIT**: Only under the calibration directive's critical cases — proven security exploit, data corruption, data
+  isolation break, or data loss with no recovery.
+- **WARN**: A Missing, Divergent, or Partial gap — a ticket requirement the change does not meet, meets differently
+  than the ticket states, or meets only in part.
+- **SUGG**: An Implicit gap — a requirement the ticket implies but does not state.
+
+Keep a map from each GAP-### to the task ID it becomes, so the Ticket Resolution table can show that task ID as the
+row's evidence. Carry the `## Requirement Map` into the report's type section; it produces no findings of its own.
+
+### Processing results from an agent without a roster-table row
+
+An agent a configured type or a `.han/config.md` line names, with no roster-table row of its own, has no rubric here.
+Keep its findings in its `X-{agent name}` series, assign the category **[{agent name}]**, and classify each finding by
+the Step 3.3 calibration directive alone. The Step 7.2 reachability gate applies to these findings.

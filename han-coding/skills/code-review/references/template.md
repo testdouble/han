@@ -1,5 +1,9 @@
 # Code Review: {PR title, branch name, or directory name}
 
+**Review type:** {token}: {Purpose from the type file} <!-- or, on the default run: **Review type:** default -->
+<!-- On a typed run whose roster does not include han-core:adversarial-security-analyst, end the line above with:
+" Security analysis did not run on this review." -->
+
 <!--
 LAZY SECTIONS: render a section ONLY when it has content. Do not emit a heading
 followed by empty-state placeholder text. The Review Summary table and the Review
@@ -8,7 +12,7 @@ at least one item. A clean review is the table's no-issues row plus an approval
 recommendation, and nothing else.
 
 FIXED ORDER: when more than one section is present, render them in this order and never
-vary it — Review Coverage (immediately after the Review Summary block closes), Critical,
+vary it — the type section (immediately after the Review Summary block closes), Review Coverage, Critical,
 Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good. This list
 is the authority on where a present section goes; a section absent from it has no defined
 position.
@@ -54,18 +58,26 @@ Remediation note carries it. -->
 
 <!-- Select ONE of the following based on the highest severity present across ALL findings, INCLUDING security findings (whose severity is read from their security block even though they are not listed in the Critical section): -->
 <!-- CRIT items (or a Critical-severity security finding) exist: "This code should not be merged until the critical issues are resolved." -->
-<!-- WARN items exist (no CRIT, no Critical/High security): "This code can be merged, but the identified warnings should be reviewed first." -->
-<!-- SUGG items exist (no CRIT/WARN): "This code can be merged, but the suggestions should be reviewed first." -->
+<!-- WARN items or a High- or Medium-severity security finding exist (no CRIT, no Critical security): "This code can be merged, but the identified warnings should be reviewed first." -->
+<!-- SUGG items exist (no CRIT, no WARN, no security finding): "This code can be merged, but the suggestions should be reviewed first." -->
 <!-- No items: "This code can be approved." -->
 
 {Selected recommendation text}
+
+<!-- type-section:start -->
+
+<!-- Render this slot ONLY when the run's type file holds a section layout under `## Report section` rather than `none`.
+Render that layout here, filled by the rules that follow it in the type file, and keep both marker comments around it
+so post-code-review-to-pr can carry the section by position. The default run renders no type section and no markers. -->
+
+<!-- type-section:end -->
 
 ## Review Coverage
 
 <!-- Render this section ONLY when some planned coverage was absent: the run was in manual-only mode (defined in
 agent-dispatch.md), so no specialist read the change. Its absence means every planned coverage ran; do not render it to
-say so. It is a `##` heading, a peer of Recommended Changes, never a child of Review Summary, and it sits immediately
-after the Review Recommendation. -->
+say so. It is a `##` heading, a peer of Recommended Changes, never a child of Review Summary, and it sits after the Review
+Recommendation and any type section. -->
 
 <!-- The block stands alone for a reader who never saw the terminal. A reviewer on a pull request sees this file and
 never sees the closing message, so the block opens by naming its own cause. Then one row per item on the absent-coverage

@@ -357,7 +357,8 @@ A YAGNI sweep runs before the implementation plan is committed. Every plan step,
 observability hook, configuration knob, and rollout step must cite acceptable evidence that it is needed _now_.
 Speculative work moves to a `## Deferred (YAGNI)` section in the plan with a named _reopen-when_ trigger. The team
 agents that participate in the iterative discussion (`plan-synthesizer`, `junior-developer`, `software-architect`,
-`system-architect`, `data-engineer`, `devops-engineer`, `test-engineer`, `edge-case-explorer`) each enforce their own
+`system-architect`, `data-engineer`, `devops-engineer`, `observability-engineer`, `test-engineer`,
+`edge-case-explorer`) each enforce their own
 slice of the rule. Between them, that covers premature operational machinery, speculative data machinery,
 single-implementation interfaces, defensive code at trusted internal boundaries, observability for telemetry that isn't
 reaching the destination yet, and so on.
@@ -497,6 +498,9 @@ URL: https://ieeexplore.ieee.org/document/1204375
   application-source resilience patterns: timeouts and deadline propagation, retry logic with backoff and jitter,
   idempotency-key wiring, queue and buffer handling, async / blocking-I/O patterns, bulkhead boundaries, correlation-id
   propagation, kill-switch wiring. Hard boundary against `devops-engineer`: this agent reads application source only.
+- [`observability-engineer`](../../../han-core/docs/agents/observability-engineer.md). Typically engaged when the plan
+  adds or alters telemetry design: metric instruments or labels, span attributes, log schemas, sampling, or a telemetry
+  pipeline. SLOs, alert rules, and dashboards stay with `devops-engineer`.
 - [`data-engineer`](../../../han-core/docs/agents/data-engineer.md). Typically engaged when the feature touches schema changes,
   migrations, data movement, or analytics implications.
 - [`user-experience-designer`](../../../han-core/docs/agents/user-experience-designer.md). Typically engaged when the feature

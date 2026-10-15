@@ -5,7 +5,7 @@ This plan resolves every item in `code-review-result.md`: 15 critical issues, 18
 ## Guiding Principles
 
 - **Characterize, then fix.** For each critical defect, land a failing/characterization test first (in the same PR as the fix) so the behavioral change is visible in the diff. This is what CRIT-001..CRIT-003 and WARN-010 are asking for.
-- **Rotate before removing.** Secrets already committed (SEC-002) must be rotated on the live systems *before* they are scrubbed from the repo, or the scrub is cosmetic.
+- **Rotate before removing.** Secrets already committed (SEC-002) must be rotated on the live systems _before_ they are scrubbed from the repo, or the scrub is cosmetic.
 - **Auth opt-out, not opt-in.** Move `authenticate_user!` onto `ApplicationController` and have exceptions `skip_before_action` explicitly. Prevents the whole class of SEC-007-style omissions.
 - **Fail closed on errors.** Exceptions must never render `e.message` to clients. All paths go through an opaque error with a server-side correlation id.
 
@@ -35,6 +35,7 @@ Goal: close every unauthenticated remote exploit path. Everything in this phase 
 - Both finders call the helper.
 
 **Tests to land with the fix (same PR):**
+
 - CRIT-001: characterization test `User.find_by_name("nobody' OR name='admin' --")` that asserted the vulnerable return before the fix, now asserts `nil` after.
 - CRIT-003: `User.find_by_user_id("1 OR 1=1")` returns `nil` — pins the parameterization invariant on the already-safe finder.
 - WARN-008, WARN-009: happy-path tests that insert a row and assert every field is populated by each finder.
@@ -46,13 +47,14 @@ Goal: close every unauthenticated remote exploit path. Everything in this phase 
 
 **Files:** `app/models/user.rb`, `app/controllers/sessions_controller.rb:14-22`, `db/migrate/001_create_users.rb:6`, new migration `db/migrate/002_add_password_digest_to_users.rb`.
 
-- New migration adds `password_digest:string, null: false` and backfills existing rows via a one-shot bcrypt of the legacy plaintext column. Drop the plaintext `password` column in a follow-up migration *after* all readers are off it. Do not drop in the same migration — it kills rollback.
+- New migration adds `password_digest:string, null: false` and backfills existing rows via a one-shot bcrypt of the legacy plaintext column. Drop the plaintext `password` column in a follow-up migration _after_ all readers are off it. Do not drop in the same migration — it kills rollback.
 - `User` adds `has_secure_password`. Remove `user.password = result["password"]` from `row_to_user`; the digest is loaded by AR automatically once `password_digest` exists.
 - `SessionsController#create` replaces `user.password != password` with `user.authenticate(password)`.
 - Equal-time branches: even when `User.find_by_name` returns `nil`, run a dummy `BCrypt::Password.create("")` comparison before returning `401`, so the user-not-found and wrong-password timings match.
 - Both failure branches return the same JSON body (`"invalid credentials"`) — they already do (noted in "What's Good"), keep it.
 
 **Tests to land with the fix:**
+
 - CRIT-002: happy-path login test (seed user, POST correct creds, assert 200 + `session[:user_id]` + `session[:role]`).
 - WARN-002: same test, verifying the contract.
 - SEC-004 timing: `user.authenticate` is called on both the nil-user and wrong-password paths (assert via stub that the dummy compare ran when the user was missing).
@@ -69,6 +71,7 @@ Goal: close every unauthenticated remote exploit path. Everything in this phase 
 - The client never sees `e.message`. This closes the error-based SQLi oracle (WARN-012, WARN-017) and the generic leak (SEC-005).
 
 **Tests to land with the fix:**
+
 - WARN-010: stub `User.find_by_name` to raise; assert response body does not contain the exception message and does contain a UUID-shaped `id`.
 - WARN-016: stub to raise `ActiveRecord::ConnectionNotEstablished`; assert 500 + opaque body.
 
@@ -79,9 +82,10 @@ Goal: close every unauthenticated remote exploit path. Everything in this phase 
 - `ApplicationController` gains `before_action :authenticate_user!`, implemented as: look up `session[:user_id]`, set `@current_user`, 401 if missing.
 - `SessionsController` `skip_before_action :authenticate_user!, only: :create` (login cannot require a session).
 - `UsersController` stays authenticated; additionally narrow the response to the current user unless `@current_user.role == "admin"` (SEC-006 scoping). Do not remove the field allow-list — keep `{ id, name, email, role }` as-is, never serialize the whole record.
-- In `SessionsController#create`, call `reset_session` *before* assigning `session[:user_id]` / `session[:role]` to close the fixation window (CRIT-007, WARN-018 interacts).
+- In `SessionsController#create`, call `reset_session` _before_ assigning `session[:user_id]` / `session[:role]` to close the fixation window (CRIT-007, WARN-018 interacts).
 
 **Tests:**
+
 - CRIT-008: unauthenticated `GET /users?name=alice` → 401.
 - WARN-005: authenticated `GET /users` response body has exactly the fields `id`, `name`, `email`, `role` — no `password`, no `password_digest`.
 - CRIT-007: pre-seed a session cookie, log in, assert `session.id` changed.
@@ -101,7 +105,7 @@ Runs after Phase 1. Each item is small and independently landable.
 - Add `config/database.yml` to `.gitignore`? **No** — Rails reads it at boot. Instead, commit a sanitized template and keep the ENV values out of git. If the team prefers encrypted credentials, use `Rails.application.credentials.database` and keep `master.key` out of version control.
 - Add a CI check (Phase 4) that greps `config/database.yml` for literal `Password123!` and any `.internal` host.
 
-Note: this is *in addition to* the Phase 0 rotation. The file scrub without rotation is useless; rotation without the scrub leaves the next dev to rediscover it.
+Note: this is _in addition to_ the Phase 0 rotation. The file scrub without rotation is useless; rotation without the scrub leaves the next dev to rediscover it.
 
 ### 2.2 — Input validation on login and user show (WARN-011, WARN-014, WARN-015, SUGG-006, SUGG-008)
 
@@ -110,7 +114,7 @@ Note: this is *in addition to* the Phase 0 rotation. The file scrub without rota
 - Extract a helper `scalar_param(name, max: 255)` on `ApplicationController` that:
   - Returns `nil` if the value is not a `String` (rejects `Array` / `ActionController::Parameters` — WARN-011).
   - Returns `nil` if over `max` bytes (WARN-014).
-  - Does *not* strip whitespace — whitespace normalization for names happens in the model (see 3.1).
+  - Does _not_ strip whitespace — whitespace normalization for names happens in the model (see 3.1).
 - Both controllers call it for `name` / `username` / `password`, returning 400 `invalid request body` on `nil`.
 - WARN-015: change the blank-param branch in `SessionsController` to return `401 invalid credentials` instead of `400 invalid request body`, so blank and wrong-password share a response shape. (Trade-off acknowledged: this makes malformed requests indistinguishable from bad credentials for legitimate clients. The review explicitly asks for it; preserving 400 for explicitly-missing keys while returning 401 on wrong values is an acceptable middle ground if the team pushes back.)
 - SUGG-006: reject literal `"null"`, `"undefined"`, `"NaN"` in `scalar_param` or document that they are treated as literal names. Default here: reject with 400, because no legitimate user has a name of `"null"`.
@@ -190,22 +194,22 @@ Note: this is *in addition to* the Phase 0 rotation. The file scrub without rota
 
 ## Cross-Reference: Review ID → Plan Section
 
-| Review ID | Section |
-|---|---|
-| CRIT-001, CRIT-003, WARN-008, WARN-009, SUGG-004, SUGG-005, WARN-012 | 1.1 |
-| CRIT-002, CRIT-005, CRIT-011, CRIT-012, WARN-002, SEC-003, SEC-004 | 1.2 |
-| CRIT-004, CRIT-009, SEC-001, CRIT-006 | 1.1 |
-| CRIT-013, SEC-005, WARN-010, WARN-016, WARN-017 | 1.3 |
-| CRIT-007, CRIT-008, CRIT-014, CRIT-015, SEC-006, SEC-007, WARN-005 | 1.4 |
-| CRIT-010, SEC-002 | 0, 2.1 |
-| WARN-001 | 1.1 (extracted with the fix) |
-| WARN-003, WARN-004, WARN-006, WARN-007, WARN-011, WARN-014, WARN-015, SUGG-006, SUGG-008 | 2.2 |
-| SUGG-002 | 2.3 |
-| WARN-018 | 2.4 |
-| WARN-013 | 3.1 |
-| SUGG-007 | 3.2 |
-| SUGG-003 | 4.1 (executed first) |
-| SUGG-001 | 4.2 |
+| Review ID                                                                                | Section                      |
+| ---------------------------------------------------------------------------------------- | ---------------------------- |
+| CRIT-001, CRIT-003, WARN-008, WARN-009, SUGG-004, SUGG-005, WARN-012                     | 1.1                          |
+| CRIT-002, CRIT-005, CRIT-011, CRIT-012, WARN-002, SEC-003, SEC-004                       | 1.2                          |
+| CRIT-004, CRIT-009, SEC-001, CRIT-006                                                    | 1.1                          |
+| CRIT-013, SEC-005, WARN-010, WARN-016, WARN-017                                          | 1.3                          |
+| CRIT-007, CRIT-008, CRIT-014, CRIT-015, SEC-006, SEC-007, WARN-005                       | 1.4                          |
+| CRIT-010, SEC-002                                                                        | 0, 2.1                       |
+| WARN-001                                                                                 | 1.1 (extracted with the fix) |
+| WARN-003, WARN-004, WARN-006, WARN-007, WARN-011, WARN-014, WARN-015, SUGG-006, SUGG-008 | 2.2                          |
+| SUGG-002                                                                                 | 2.3                          |
+| WARN-018                                                                                 | 2.4                          |
+| WARN-013                                                                                 | 3.1                          |
+| SUGG-007                                                                                 | 3.2                          |
+| SUGG-003                                                                                 | 4.1 (executed first)         |
+| SUGG-001                                                                                 | 4.2                          |
 
 ---
 

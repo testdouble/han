@@ -3,8 +3,9 @@
 Han reads two optional configuration files, and you can use either one or both. A personal `.han/config.md` in your
 Claude Code configuration directory carries settings that follow you into every project. A project's own
 `.han/config.md` adjusts those settings for that project. Both control where skills write their markdown deliverables,
-which extra agents dispatching skills consider, the default swarm size the sizing-aware skills start at, and the
-writing-voice profile the readability skills apply. Every Han skill reads both files on every run, so the overrides take
+which extra agents dispatching skills consider, the default swarm size the sizing-aware skills start at, the
+writing-voice profile the readability skills apply, and the review types and attached agents `/code-review` adds to
+what Han ships. Every Han skill reads both files on every run, so the overrides take
 effect without depending on the model remembering to look. Someone with neither file sees no change of any kind.
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [Quickstart](./quickstart.md) ·
@@ -22,7 +23,10 @@ effect without depending on the model remembering to look. Someone with neither 
   `default-swarm-size` sets the size band every sizing-aware skill starts at. `writing-voice` points the readability
   skills at a writing-voice profile of your own in place of the built-in Han voice. `## Extra Agents` names
   project-defined or third-party agents that Han's dispatching skills consider alongside their built-in rosters.
-- **A bad config can never fail a skill run.** The worst it can do is be ignored, with a one-line note naming what was
+  `## Code Review Types` declares review types of your own for `/code-review`, and `## Code Review Type Agents` attaches
+  your own agents to any review type.
+- **A bad config almost never fails a skill run.** Apart from the two cases under
+  [When something is wrong](#when-something-is-wrong), the worst it can do is be ignored, with a one-line note naming what was
   ignored and which file it came from. A missing or empty file changes nothing and says nothing.
 - **The interpretation contract lives in
   [`han-core/references/config-rule.md`](../han-core/references/config-rule.md).** Every skill applies that one rule
@@ -79,6 +83,23 @@ case-insensitively against the agents available in the session.
 
 - my-plugin:payments-domain-expert
 - accessibility-reviewer
+
+## Code Review Types
+
+One review type per line: a token, then the path to its type file. A relative path is
+read from the folder holding this file, as writing-voice is. /code-review reads the
+file only when you invoke its token, as in `/code-review pii-check`.
+
+- pii-check: .han/review-types/pii-check.md
+- hipaa-compliance: ~/review-types/hipaa-compliance.md
+
+## Code Review Type Agents
+
+One review type per line: a token, shipped or declared above, then one or more agents.
+They run on every /code-review run of that type.
+
+- testing: acme:mutation-tester
+- pii-check: acme:pii-scanner
 ```
 
 ## What each override does
@@ -96,9 +117,8 @@ of the repo on purpose.
 
 ### `default-swarm-size`
 
-The eight sizing-aware skills ([`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
+The seven sizing-aware skills ([`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
 [`/code-overview`](../han-coding/docs/skills/code-overview.md),
-[`/code-review`](../han-coding/docs/skills/code-review.md),
 [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md),
 [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md),
 [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md),
@@ -110,8 +130,8 @@ Specialists are still selected by signal within the band's caps. `dynamic`, or o
 auto-classification. Values are trimmed and matched case-insensitively; anything else degrades with a one-line note and
 the skill classifies the size itself.
 
-One configured band applies to all eight skills at once, and their bands scope differently (a `large` code review and a
-`large` research swarm cost different work), so a global `large` raises agent cost on every sizing-aware run. Setting it
+One configured band applies to all seven skills at once, and their bands scope differently (a `large` feature plan and
+a `large` research swarm cost different work), so a global `large` raises agent cost on every sizing-aware run. Setting it
 personally raises that cost in every project you touch, so it is the setting most worth leaving at `dynamic` until you
 want otherwise. The per-run correction never needs a file edit: passing a size on the invocation always wins, and
 passing `dynamic` auto-classifies that run. See [Sizing](./sizing.md) for the bands and per-skill caps.
@@ -147,6 +167,91 @@ already in the pool has no effect, whether the duplicate came from the same file
 not resolve to a dispatchable agent (a misspelling, a skill name) is skipped with a one-line note. The override selects
 among agents that already exist in the session; it does not define new agents.
 
+`/code-review` considers this list on its default run only, the run with no review type named. A typed run such as
+`/code-review testing` stays on its one concern and ignores the list without comment. To add an agent to a typed review,
+attach it under `## Code Review Type Agents` instead.
+
+### `## Code Review Types`
+
+Declares review types Han does not ship, for [`/code-review`](../han-coding/docs/skills/code-review.md) to run by name.
+A financial institution might add `pii-check`, or a healthcare company `hipaa-compliance`. Every other skill ignores the
+section.
+
+Each line names a token and a type file. The token is lowercase letters, digits, and hyphens, starting with a letter. A
+shipped type (`security`, `testing`, `architecture`, `data`, `observability`, `resilience`, `release`,
+`maintainability`, `docs`, `ux`, `work-ticket`), a retired size
+word (`small`, `medium`, `large`, `dynamic`), or `default` is reserved: its line is ignored with a one-line note naming
+the file. The path resolves exactly as `writing-voice` does. When both files declare the same token, the project file's
+line wins; different tokens from the two files add together.
+
+The type file has the same shape as the types Han ships: a `# Review type: {token}` title and six sections in this
+order. A section with nothing to say holds `none`, except `## Severity`, which holds `default`.
+
+| Section                   | What it holds                                                                                                                       |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `## Purpose`              | One sentence, shown when the review starts and in the report's header.                                                              |
+| `## Roster`               | `- Always:` agents that always run, and `- When relevant:` agents that run when their signal fires, or `none`.                      |
+| `## Checklist categories` | Manual-checklist categories, named exactly as `/code-review`'s checklist bolds them, or `none`.                                     |
+| `## Severity`             | `default`, or text that replaces the default severity rule: which severities are reported, and which way an uncertain finding goes. |
+| `## Instructions`         | `none`, or one blockquote added to every agent's prompt and applied to the manual pass.                                             |
+| `## Report section`       | `none`, or one fenced section layout followed by the rules for filling it.                                                          |
+
+For example, `.han/review-types/pii-check.md`:
+
+```markdown
+# Review type: pii-check
+
+## Purpose
+
+Whether the change stores, logs, or sends personal data without the handling our policy requires.
+
+## Roster
+
+- Always: acme:pii-scanner, han-core:adversarial-security-analyst
+- When relevant: han-core:data-engineer
+
+## Checklist categories
+
+Data Isolation, Error Handling
+
+## Severity
+
+Critical and Warning findings escalate, and a Suggestion is raised for any personal-data handling the change touches.
+When uncertain between two severities, prefer the higher one.
+
+## Instructions
+
+> This is a PII review under the team's data-handling policy. Treat names, emails, account numbers, and government
+> identifiers as personal data. Report only findings that touch personal data.
+
+## Report section
+
+none
+```
+
+The roster may name any agent in your session. An agent Han's roster already knows keeps its usual signal under
+`When relevant`; an agent Han has no roster entry for runs whenever the type runs. A configured type never joins the
+default run, and [`/post-code-review-to-pr`](../han-github/docs/skills/post-code-review-to-pr.md) passes its token
+through like any shipped one. Its `## Instructions` reach every agent's prompt, so treat the file with the same care as
+the config itself.
+
+The file is read only when you invoke its token. When the project file's line points at a missing or incomplete file
+and your personal file declares the same token, the personal line is used. When no usable line remains, the review stops
+before it starts and says which file declared the token, at which path, and what was wrong.
+
+### `## Code Review Type Agents`
+
+Attaches your own agents to any review type, shipped or declared under `## Code Review Types`. Each line names a token
+and one or more comma-separated agents, matched as `## Extra Agents` entries are. Both files' lines add together, and an
+agent named twice for one type runs once.
+
+On a run of that type, every attached agent runs, with no signal check: you named it for that type. On the default run,
+agents attached to a default-set type (`security`, `testing`, `architecture`, `data`, `observability`, `resilience`,
+`release`, `maintainability`) join
+under the `## Extra Agents` signal rule, so the default run still dispatches only what the change calls for. A line is
+read only when its token runs, so a personal file can attach agents to a type only some of your projects declare,
+without a note in the others.
+
 ## How the two files combine
 
 Each single-value setting resolves through a fixed chain; the first source that supplies a usable value wins:
@@ -167,18 +272,25 @@ as no value, so it falls through to your personal value rather than to the skill
 The extra-agents list adds rather than replaces: agents you name explicitly are always considered, and both files'
 entries join them as candidates.
 
+A keyed list resolves per key. When both files declare the same `## Code Review Types` token, the project file's line
+wins, and an unusable project line falls through to your personal line for that token. `## Code Review Type Agents`
+lines add together across both files.
+
 ## When something is wrong
 
-A configuration problem degrades to defaults; it never blocks or fails the run. You hear about a problem under one rule:
+A configuration problem degrades to defaults; apart from the two cases below, it never blocks or fails the run. You hear
+about a problem under one rule:
 a one-line note appears only when content that attempts a recognized override cannot be used, such as malformed
 frontmatter, an unrecognized setting name, a blank value, or an unresolvable agent name. Every such note names which of
 the two files held the problem, because they share a name and you would otherwise open both. Two separate problems, one
 in each file, produce two notes. Content the suite has no use for (plain prose in the file) is passed over silently, and
 when everything applies cleanly the skills say nothing about the config at all.
 
-`writing-voice` naming a missing file is the one exception to the note-and-move-on rule: because the wrong fallback
-would silently change the voice of everything a run writes, the skill asks you whether to use the built-in Han voice or
-skip the writing voice, instead of picking for you.
+Two cases are exceptions to the note-and-move-on rule. `writing-voice` naming a missing file asks you whether to use the
+built-in Han voice or skip the writing voice, because the wrong fallback would silently change the voice of everything a
+run writes. A review type you invoke by name, whose configured file is missing or incomplete, stops that code review
+before it starts, because no fallback would still be the review you asked for. The fix is an edit to the file, and a
+rerun is the retry.
 
 A personal configuration directory a run cannot reach is treated as no personal config, with no note. A run cannot tell
 that apart from someone who never wrote the file.

@@ -60,12 +60,15 @@ declared_ids() {
 
 # The value of a named field on a given entry, where the entry runs from its own heading
 # to the next heading of the same level. The field name is a literal this script owns.
+#
+# The heading level is spelled `###?#?` rather than `#{2,4}`: mawk, the default awk on
+# Debian and Ubuntu, does not match three or four hashes with the interval form.
 field_value() {
   local file="$1" id="$2" field="$3"
   outside_fences "$file" |
     awk -v id="$id" -v field="$field" '
-      $0 ~ "^#{2,4}[[:space:]]+" id ":" { inside = 1; next }
-      inside && /^#{2,4}[[:space:]]/ { exit }
+      $0 ~ "^###?#?[[:space:]]+" id ":" { inside = 1; next }
+      inside && /^###?#?[[:space:]]/ { exit }
       inside && index($0, "**" field ":**") {
         sub(/.*\*\*[^*]+:\*\*[[:space:]]*/, "")
         print

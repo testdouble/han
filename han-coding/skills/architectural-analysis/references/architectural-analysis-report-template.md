@@ -15,6 +15,7 @@ sections_included:
   - data_engineering_analysis # remove this line if data-engineer was not dispatched
   - devops_readiness # remove this line if devops-engineer was not dispatched
   - on_call_resilience # remove this line if on-call-engineer was not dispatched
+  - observability_design # remove this line if observability-engineer was not dispatched
   - codebase_map # remove this line if codebase-explorer was not dispatched
   - risk_assessment
   - software_architecture_recommendations
@@ -32,8 +33,8 @@ of one specialist agent, and the Executive Summary is the only synthesized prose
 - **Executive Summary.** The shape of the architecture, the few findings that matter most, and the highest-impact
   recommendations. Read this if you have two minutes.
 - **Analysis sections** (Structural, Behavioral, and any of Concurrency / Security / Data-Engineering / DevOps / On-Call
-  Resilience / Codebase Map that were part of this run). Each is a specialist's full findings with file paths and
-  verbatim code. Findings carry stable IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`, `OCE-###`) you can cite in tickets
+  Resilience / Observability Design / Codebase Map that were part of this run). Each is a specialist's full findings with file paths and
+  verbatim code. Findings carry stable IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`, `OCE-###`, `OBS-###`) you can cite in tickets
   and follow-up work.
 - **Risk Assessment.** `R#` items scoring the structural / behavioral / concurrency findings by likelihood, severity,
   blast radius, and reversibility.
@@ -158,6 +159,20 @@ of one specialist agent, and the Executive Summary is the only synthesized prose
 
 ---
 
+## Observability Design
+
+> Verbatim output from `observability-engineer`. `OBS-###` findings on telemetry design within the focus area: naming
+> and semantic conventions, metric label cardinality and telemetry cost, sampling design, telemetry pipeline
+> configuration, and signal choice. SLOs, alert rules, and dashboards live in DevOps Readiness; source-line
+> debuggability, correlation IDs, and PII in individual log statements live in On-Call Resilience.
+>
+> Remove this entire section, its `sections_included` line, and its "How to Read" mention if `observability-engineer`
+> was not dispatched.
+
+{{observability_engineer_verbatim_output}}
+
+---
+
 ## Codebase Map
 
 > Verbatim output from `codebase-explorer`. Entry points, core logic, data models, configuration, and tests for the
@@ -220,5 +235,5 @@ To get recommendations at that altitude, dispatch `system-architect` separately 
 
 ---
 
-_End of report. Finding IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`, `OCE-###`, `R#`, `A#`, `SA#`) are stable for the
+_End of report. Finding IDs (`S#`, `B#`, `C#`, `SEC-###`, `DOR-###`, `OCE-###`, `OBS-###`, `R#`, `A#`, `SA#`) are stable for the
 life of this report — cite them in tickets, ADRs, and follow-up work._

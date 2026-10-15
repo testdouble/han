@@ -10,6 +10,7 @@ paths:
 - Triggering Tests
 - Functional Tests
 - Performance Comparison
+- Building a Verification Skill
 - Summary Checklist
 
 How do you know a skill is working? Without defined success criteria, "it seems fine" becomes the bar — and that bar
@@ -20,9 +21,11 @@ Testing rigor should match the skill's audience. A skill used by one person inte
 deployed across an organization. But every skill benefits from at least running through the triggering tests and a few
 functional scenarios.
 
-**Test against the model the skill targets.** Anthropic notes that smaller, faster models (Haiku) may need more
-detailed, explicit instructions than larger ones to follow a skill reliably, while a larger model can fill gaps a terse
-skill leaves. A skill that passes on Opus can still fail on Haiku. If a skill is meant to run on a faster tier (or to be
+**Test against the model the skill targets.** A smaller, faster model can behave differently on the same skill. Haiku
+5.5, for example, sometimes stops early on a long prompt at `low` effort and sometimes reports a code change done
+without checking it, where Opus checks its own work unprompted (see
+[Per-Model Authoring Guidance](../per-model-authoring.md#early-stops-and-scope-on-sonnet-55-and-haiku-55)). A skill that
+passes on Opus can still fail on Haiku. If a skill is meant to run on a faster tier (or to be
 dispatched into a Haiku subagent), run the triggering and functional tests on that tier, not just on your session's
 default. See
 [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
@@ -178,6 +181,24 @@ Beyond the numbers, watch for:
 - **Workflows complete without user correction** — steps execute in the right order with the right tools
 - **Consistent results across sessions** — a new user gets the same quality as an experienced one
 
+## Building a Verification Skill
+
+Everything above tests a skill. A verification skill is a different thing: a skill whose job is to test the product,
+by driving it the way a user would and checking that it behaves. Anthropic reports that verification skills had the
+most measurable effect on Claude's output quality of any kind of skill it built, so they are worth the extra effort.
+
+- **Pair the skill with a driver.** The skill does not click or type itself. Give it an external tool that does, such
+  as browser automation for a web flow or a terminal driver for an interactive CLI, and keep the driving code in
+  `scripts/`.
+- **Assert state at every step, not once at the end.** A final screenshot can look right while an earlier step failed
+  silently. Check the state the step should have produced (the database row, the page element, the exit code) before
+  moving on, so a failure names the step where it happened.
+- **Record what was tested.** Where the driver supports it, save a recording or a step log of the run, so a person can
+  see what the skill exercised rather than trusting its summary.
+
+A verification skill still gets the triggering and functional tests above. They check that the skill runs; the skill
+checks that the product works.
+
 ## Summary Checklist
 
 1. Build triggering tests: obvious triggers, paraphrased triggers, and unrelated prompts that should NOT trigger
@@ -187,6 +208,7 @@ Beyond the numbers, watch for:
 5. Run functional tests 3-5 times to check consistency
 6. Compare performance with and without the skill: messages, tool calls, tokens, errors, corrections
 7. Match testing rigor to the skill's audience and visibility
+8. For a skill that verifies a product, pair it with a driver, assert state at every step, and record the run
 
 Cross-references:
 

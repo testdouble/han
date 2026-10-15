@@ -43,6 +43,10 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **Hard boundary against `devops-engineer`.** This agent reads application source files only. Dockerfiles, IaC,
   Kubernetes manifests, CI/CD pipelines, observability platform configuration, feature-flag platform configuration,
   alert rules, dashboards, runbooks-as-documents, and secrets management infrastructure all stay with `devops-engineer`.
+- **Boundary against `observability-engineer`.** This agent checks that a new code path emits enough to debug it, that
+  correlation IDs propagate, and that a log line, label, or attribute does not leak PII at the source line. Telemetry
+  design (metric label cardinality, naming and semantic conventions, sampling, and pipeline configuration) stays with
+  `observability-engineer`. A PII finding on a metric label stays here; the label's cardinality goes there.
 
 ## Summary
 
@@ -81,6 +85,10 @@ Every wakes-someone-up severity finding is paired with the smallest safe step th
 - **Infrastructure, pipeline, IaC, deployment, observability platform, or alert configuration review.** Use
   [`devops-engineer`](./devops-engineer.md) instead. The hard boundary lives at the application source line. If the
   finding cannot be expressed as a `file_path:line_number` in application source, it belongs to the DevOps engineer.
+- **Telemetry design: metric label cardinality, naming and semantic conventions, sampling, or pipeline
+  configuration.** Use [`observability-engineer`](./observability-engineer.md) instead. This agent checks that the
+  failure path is observable in the source; the observability engineer checks that the telemetry is affordable,
+  consistently named, and kept by the sampler.
 - **Exploit-path vulnerability analysis.** Use [`adversarial-security-analyst`](./adversarial-security-analyst.md). This
   agent focuses on operational and resilience patterns, not on exploit paths.
 - **Race condition, lock ordering, or deadlock analysis at the critical-section level.** Use
@@ -338,6 +346,9 @@ URL: https://danluu.com/postmortem-lessons/
 - [`devops-engineer`](./devops-engineer.md). The sibling agent on the infrastructure side of the line. This agent reads
   application source; `devops-engineer` reads Dockerfiles, IaC, pipelines, manifests, observability platform config, and
   alert rules. The boundary is hard; the two agents are designed to be dispatched together for any ship-readiness pass.
+- [`observability-engineer`](./observability-engineer.md). The sibling for telemetry design. This agent owns
+  source-line debuggability, correlation IDs, and PII in individual log statements; `observability-engineer` owns
+  cardinality, naming, sampling, and pipeline scrubbing.
 - [`concurrency-analyst`](./concurrency-analyst.md). Pair on async-heavy code. This agent flags blocking-I/O-in-async;
   the concurrency analyst goes deeper into races, locks, and deadlocks.
 - [`behavioral-analyst`](./behavioral-analyst.md). Pair on changes that cross module boundaries. This agent operates at

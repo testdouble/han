@@ -27,8 +27,7 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   overview of unfamiliar code or a PR's changes, leading with why the code exists; raises no findings.
 - [`/code-overview-to-confluence`](../../han-atlassian/docs/skills/code-overview-to-confluence.md) — Run `/code-overview`
   (changing no code), show it for review, then publish it as one Confluence page after confirmation.
-- [`/code-review`](../../han-coding/docs/skills/code-review.md) — Run a comprehensive code review on the current branch
-  or specified files, with a size-scaled roster of specialist agents.
+- [`/code-review`](../../han-coding/docs/skills/code-review.md) — Reviews a branch, uncommitted work, or named files for one named concern, such as security or testing, with the specialist agents that review type names, or runs the default review across all of them.
 - [`/code-walkthrough`](../../han-coding/docs/skills/code-walkthrough.md) — Walk someone through a branch's changes one
   step at a time in conversation, from the entry point along the flow, stopping after every step so they set the pace.
 - [`/coding-standard`](../../han-coding/docs/skills/coding-standard.md) — Create and update coding standards from

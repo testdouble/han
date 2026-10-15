@@ -139,11 +139,14 @@ Take the plan items in order. For each:
    stop in the shape [collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies. Absent such a
    request, continue as below; an ordinary invocation is unchanged.
 
-4. **Red: revert this step.** When git is available and the tree was clean at start, `git checkout`/`git restore` the
-   touched files. When git is absent, or the tree was already dirty at start, undo the edits directly instead, so
-   reverting this step does not discard the user's other work. Do not patch forward over a red suite; a failed step
-   means the mechanic was unsafe or the coverage was thinner than it looked. Diagnose, then either retry with a smaller
-   step or defer the item with what you learned.
+4. **Red: revert this step, and only this step.** Undo the edits this step made directly: reverse each edit, delete
+   any file the step created, and move a renamed or moved file back to its original path. Every earlier green step and
+   the user's other work stay in place. Never undo a step by restoring files from git: `git checkout`/`git restore`
+   resets a file to its last commit, which also discards any earlier green step in that file not yet committed. Never
+   run `git reset --hard`, `git clean`, or `git stash` to undo a step. Re-run the suite and paste the summary line to
+   show the revert is back to green. Do not patch forward over a red suite; a failed step means the mechanic was unsafe
+   or the coverage was thinner than it looked. Diagnose, then either retry with a smaller step or defer the item with
+   what you learned.
 5. **Stop rules.** If the step needed files outside its declared blast radius, or the only way to make it work changes
    observable behavior, or two consecutive plan items have been reverted: stop, report where things stand (everything
    already applied is green and stands), and let the user re-scope.

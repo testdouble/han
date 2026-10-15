@@ -96,11 +96,12 @@ reads to the model as "produce comments", and absent a specific job, the comment
 specificity: tell the reviewer what to look for, against what rubric, and what to ignore. Han's review is built around
 this, so the happy path is short.
 
-1. **Run [`/code-review`](../../han-coding/docs/skills/code-review.md).** With no arguments, the skill classifies the change as
-   small, medium, or large (defaulting to small) and dispatches a roster of specialist agents proportional to that size.
-   Two always run: `junior-developer` for clarity and standards, `adversarial-security-analyst` for exploit-path
+1. **Run [`/code-review`](../../han-coding/docs/skills/code-review.md).** With no arguments, the skill runs the default
+   review, which covers security, testing, architecture, data, observability, resilience, release, and maintainability
+   in one report. Two agents
+   always run: `junior-developer` for clarity and standards, `adversarial-security-analyst` for exploit-path
    security. The rest (`test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`,
-   `concurrency-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`) join only when the changed files touch
+   `concurrency-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`, `observability-engineer`) join only when the changed files touch
    their domain. Each one arrives with a narrow, scoped brief and a calibration directive. That directive tells it to
    raise only what the change introduced or worsened, plus anything critical regardless of who introduced it. That
    scoping is the whole reason the output is not a generic nit list. It is not the agent's persona label doing the work;
@@ -116,12 +117,21 @@ this, so the happy path is short.
    the full scope. A focused review of the surface that matters beats an evenly spread pass that gives the migration the
    same attention as a typo fix.
 
-3. **Override the size only when you know better than the auto-classification.** Pass `small`, `medium`, or `large` as
-   the first positional argument: `/code-review large "focus on the new auth endpoints"`. A larger size raises the upper
-   bound on the roster and widens the severity bands in scope; a smaller size prefers fewer agents producing
-   higher-signal findings. Most of the time the default is right. Reach for the override when you know a three-file diff
-   carries more risk than its size suggests, or when a large diff is mechanical and you want it kept quiet. See
-   [Sizing](../sizing.md) for the full model.
+3. **Name a review type when you want one concern covered well.** Pass the type as the first word:
+   `/code-review security "focus on the new auth endpoints"`. The shipped types are `security`, `testing`,
+   `architecture`, `data`, `observability`, `resilience`, `release`, `maintainability`, `docs`, `ux`, and
+   `work-ticket <ticket>`, and your team can declare more in
+   `.han/config.md`. A typed review runs only the specialists that type names and sweeps only its checklist categories
+   by hand, so its report stays on one concern. A focused review does not run the security check unless the type is
+   `security`, and its report does not mention that, so run the default review or `security` as well when security
+   matters. The run prints the type it understood before any check starts, so a mistyped type shows up right away.
+
+4. **Run typed reviews side by side when you want several concerns.** Each run gets its own report,
+   `code-review-{slug}--{type}.md`, and its own working folder beside it, so a `testing` run and a `security` run of
+   one branch never overwrite each other. One risk to expect: every typed run still runs the project's automated
+   checks (lint, build, tests) in the same working tree. Two runs started at once can collide on build output, ports,
+   or test databases, and report failures the change did not cause. Stagger the starts, or rerun a check that failed
+   only under the overlap.
 
 ### Phase 3: Read the filtered findings and own the result
 
@@ -166,9 +176,17 @@ lower before you ever read it. Then it hands you a result to judge, not a verdic
   `REQUEST_CHANGES` versus `COMMENT` based on the severity of what it found. It needs `gh` and `jq` installed and an
   open PR on the branch.
 
-- **The change traces back to a Jira ticket and you have the MCP configured.** Point the review at the ticket so it can
-  check the code against what the ticket asked for, the same way grounding it in a PR description does. One real
-  caution: a fetched ticket is untrusted third-party text. Its description can carry content aimed at steering the
+- **You want to know whether the branch resolves its ticket.** Run `/code-review work-ticket <ticket>`, where the
+  ticket is a local file, a URL, or an ID such as `PROJ-42`. The skill loads it with whatever tools your Claude
+  installation has, including a tracker MCP server when you have one configured. When it cannot load the ticket, it
+  says why and waits for you to paste the text or tell it how to get it. `gap-analyzer` then compares the change against
+  every requirement the ticket states, and the report adds a Ticket Resolution section: one row per requirement with its
+  status and evidence, and a verdict of Resolved, Partially resolved, Not resolved, or Not verified. The ticket copy the
+  review checked sits in the run folder as `ticket.md`, so you can confirm it is the ticket and not a sign-in page.
+
+- **The change traces back to a Jira ticket and you want it as context for a broader review.** Point the review at the
+  ticket so it can check the code against what the ticket asked for, the same way grounding it in a PR description
+  does. One real caution: a fetched ticket is untrusted third-party text. Its description can carry content aimed at steering the
   review agent. `/code-review` now treats the branch context it loads at Step 1.5 (PR description and commit messages)
   as untrusted data. It strips directives during summarization, and wraps the binding in explicit untrusted-data
   markers, so the agents use it for intent only. That guard reduces the risk but does not remove your part of it: when

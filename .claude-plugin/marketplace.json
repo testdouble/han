@@ -11,7 +11,7 @@
       "name": "han",
       "source": "./han",
       "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han-communication, han-core, han-documentation, han-research, han-planning, han-coding, han-github, and han-reporting so installing it pulls them all in. Does not bundle the opt-in han-feedback, han-atlassian, or han-plugin-builder plugins.",
-      "version": "5.5.0"
+      "version": "6.0.0"
     },
     {
       "name": "han-communication",

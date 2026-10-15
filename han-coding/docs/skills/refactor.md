@@ -103,7 +103,8 @@ Restructured code in your working tree, not a report. Specifically:
 - **A refactoring plan**, shown before the first edit: numbered items, each one named refactoring with the evidence
   behind it and the files it should touch.
 - **One verified step at a time.** Each step shows the runner's summary line after the change. Red steps are reverted
-  and either retried smaller or deferred with what was learned.
+  and either retried smaller or deferred with what was learned. A revert undoes only that step's own edits, so earlier
+  green steps and your other uncommitted work stay in place even when nothing has been committed yet.
 - **A final summary**, covering:
   - each refactoring applied (named, with its evidence and finding IDs where a report was the source)
   - YAGNI deferrals with reopen triggers

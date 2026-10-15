@@ -35,6 +35,11 @@ Extract content to `references/` when it represents domain knowledge rather than
 - **Style guides** that define standards (voice guidelines, formatting rules, naming conventions)
 - **Canonical examples** that demonstrate conventions the skill enforces (2-3 representative "do this / not this" code
   samples per convention)
+- **Gotchas** that record failure points found in use: the places the model goes wrong while doing the skill's work,
+  each with the fact that corrects it ("the subscriptions table is append-only; the current row has the highest
+  `version`, not the latest `created_at`"). A gotchas list differs from a checklist, which says what to verify, and from
+  a canonical example, which shows what a convention looks like. It starts small and grows each time the skill hits a
+  new failure, and it is often the highest-signal content a skill carries.
 
 Reference files are not passive lookups — they are demonstration material the model pattern-matches against during
 execution. Every example in a reference file functions as a few-shot demonstration that calibrates the model's output.

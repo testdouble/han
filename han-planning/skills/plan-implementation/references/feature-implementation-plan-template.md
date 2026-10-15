@@ -86,6 +86,10 @@ ANY CONTRACT THE FEATURE INTRODUCES APPEARS HERE IN CONCRETE FORM. When two or m
 
 <!-- LAZILY CREATED — only if `on-call-engineer` contributed or the plan commits to a concrete application-source resilience measure; otherwise omit (confirm first). Only the bullets with real commitments: timeouts, retries, idempotency, bulkheads, backpressure, kill switches, degradation, failure-path observability, data integrity, migration safety. Application source only; infrastructure lives in Operational Readiness. -->
 
+## Telemetry Design
+
+<!-- LAZILY CREATED — only if `observability-engineer` contributed or the plan commits to a concrete telemetry-design decision; otherwise omit (confirm first). Only the bullets with real commitments: metric, span, and log attribute naming and semantic conventions, metric label cardinality, sampling design, telemetry pipeline configuration, signal choice, telemetry volume and cost. SLOs, alert rules, and dashboards live in Operational Readiness; source-line debuggability, correlation IDs, and PII in log statements live in On-Call Resilience Posture. -->
+
 ## Risks and Assumptions
 
 <!-- LAZILY CREATED — only when at least one real entry exists; omit an empty sub-table, omit the whole section when both are empty (confirm first). -->

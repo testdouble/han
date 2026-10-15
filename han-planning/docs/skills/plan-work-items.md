@@ -20,9 +20,20 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 
 - **Vertical slice.** Each work item is a narrow but complete path through the relevant layers (schema, API, UI, tests).
   A completed work item is demoable or verifiable on its own: not a layer, not a stub.
-- **HITL and AFK.** Every work item is classified as HITL (requires a human sync: an architectural decision, a design
-  review) or AFK (can be implemented and merged without one). The skill prefers AFK and prefers many thin work items
-  over few thick ones.
+- **Suggested implementation and review.** For each work item the skill selects a suggested implementation skill and a
+  suggested review, chosen from the deliverable-skill catalog by the item's deliverable nature (testable code to `tdd`
+  reviewed by `code-review`, documentation to `project-documentation` reviewed by a content audit, a new skill to
+  `skill-builder` reviewed by a human read, and so on). Each suggestion carries an `AFK` marker (the part can run
+  unattended) or a `HITL` marker (the part needs a human). You can override either one per item. The skill prefers many
+  thin work items over few thick ones.
+- **Item type.** Each work item records a `Type`: `deliverable` (the default, which builds and commits), `audit` (a
+  checks-only pass that may declare `Expected paths: None` and complete without a commit), or `spike` (an investigation
+  that records a finding). Non-code, plugin-editing, audit, and spike work all have catalog homes, so a plan that mixes
+  them with code classifies without a manual override.
+- **Derived autonomy.** AFK/HITL is not stored as a single field. A work item is fully autonomous only when its
+  implementation and its review are both `AFK` and its separate `Requires pre-work decisions` field is `no`; otherwise
+  it needs a human. The closing summary counts the items that can run unattended against the ones that pause for a
+  human, and names the ones that pause.
 - **Acceptance criteria carry the item.** Each work item is drafted summary-first, criteria-second, so every block of
   detail is written in support of a criterion; in the rendered output the summary opens the item and the acceptance
   criteria sit at the bottom, with test expectations inside them. Criteria are outcomes of the work item only: never
@@ -113,7 +124,11 @@ One file on disk plus an in-channel summary:
   one section per work item, in dependency order. Each work item carries: `Summary` (three to five very short plain
   sentences), `Work to be done` (plain-language bullets with technical detail nested beneath), optional
   `Design references`, `Justification` (what the item descends from), `References` (including plan decisions, each ID
-  with a one-sentence description), `Acceptance criteria` (at the bottom, test expectations included), and `Depends on`.
+  with a one-sentence description), `Acceptance criteria` (test and check expectations included), then the
+  classification fields: `Type` (`deliverable`, `audit`, or `spike`), `Requires pre-work decisions` (`yes` or `no`),
+  `Suggested implementation` and `Suggested review` (each a skill, agent, or bare `none`, plus an `AFK` or `HITL`
+  marker), and `Expected paths` (the repo-root-relative files the item is expected to touch). `Depends on` closes the
+  item.
   When anything was cut for scope, a `Cut for Scope` section closes the file.
 - **`artifacts/scope-boundary.md`** beside it. The boundary record: the work item, its stated scope and exclusions, any
   scope you stated at invocation, the direction-of-travel answer, and the visual material the run received. A later skill
@@ -123,8 +138,9 @@ One file on disk plus an in-channel summary:
   one of three outcomes: passed, failed with each missing or malformed row named, or could not verify with the reason
   named. A check that did not pass is recorded beside the work items as well as in the summary, so whoever picks the
   items up does not read the folder as fully verified.
-- An **in-channel summary** with the file path, the boundary record's path, a count of work items by type (HITL / AFK),
-  the cut list when anything was cut, any open item carried forward as a named gap with the work items that inherit it,
+- An **in-channel summary** with the file path, the boundary record's path, a count of how many items can run unattended
+  versus how many need a human, an install recommendation for any best-fit skill that is not installed, the cut list
+  when anything was cut, any open item carried forward as a named gap with the work items that inherit it,
   the escalation register when the run took its single stop, and the next concrete action.
 
 ## How to get the most out of it
@@ -147,8 +163,8 @@ One file on disk plus an in-channel summary:
 ## YAGNI
 
 YAGNI does not gate this skill's output. The work-items file is a structural decomposition of an already-committed
-implementation plan: the work item boundaries, HITL/AFK classification, and reference artifact links derive from what
-the plan already decided. This skill does not introduce new behavioral commitments or speculative infrastructure. YAGNI
+implementation plan: the work item boundaries, the per-item skill selection and derived autonomy, and reference artifact
+links derive from what the plan already decided. This skill does not introduce new behavioral commitments or speculative infrastructure. YAGNI
 enforcement belongs upstream, in `/plan-implementation` and `/iterative-plan-review`, before the plan reaches this
 stage.
 
@@ -190,9 +206,12 @@ does not stop to ask. It writes to a timestamp-suffixed name instead, and states
 is always preserved.
 
 **The breakdown.** `plan-synthesizer` receives the full plan content, the boundary record, the reference artifact
-inventory, and the skill's Rules verbatim. Its directive is to draft vertical slices: each work item a narrow but complete path through the
-appropriate layers, demoable or verifiable on its own, classified HITL or AFK. It prefers AFK, and prefers many thin
-work items over few thick ones. It returns a numbered list and writes no files. The skill returns that list verbatim,
+inventory, and the skill's Rules verbatim. Its directive is to draft vertical slices: each work item a narrow but complete
+path through the appropriate layers, demoable or verifiable on its own, preferring many thin work items over few thick
+ones. For each item it selects a type, a suggested implementation, and a suggested review from the deliverable-skill
+catalog, records the `AFK` or `HITL` marker on each and the `Requires pre-work decisions` field, derives the expected
+paths, applies any operator override, and checks that each suggested skill is installed, so a best-fit skill that is
+not installed is reported rather than silently assigned. It returns a numbered list and writes no files. The skill returns that list verbatim,
 assigns `W-N` IDs, prints the breakdown for visibility, and writes the file without waiting for approval.
 
 **Incremental writing.** The skill writes the title and intro first, then appends each work item as it is finalized.
@@ -225,8 +244,9 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 
 Cohn's INVEST criteria (Independent, Negotiable, Valuable, Estimable, Small, Testable) inform the per-work-item shape.
 Each work item is independent enough to grab on its own, small enough to ship as a unit, and testable through its
-`Acceptance criteria`, which carry the test expectations. The HITL/AFK split is the skill's read of the Independent
-criterion: an AFK work item can be merged without a human sync.
+`Acceptance criteria`, which carry the test expectations. The derived autonomy is the skill's read of the Independent
+criterion: a fully-autonomous item (both parts `AFK`, no required pre-work decision) can be built and merged without a
+human sync.
 
 URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 
@@ -251,6 +271,9 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
   issues. Part of the `han-github` plugin.
 - [Work item template](../../skills/plan-work-items/references/work-item-template.md). The template the
   skill renders for each work item.
+- [Deliverable-skill catalog](../../skills/plan-work-items/references/deliverable-skill-catalog.md). The
+  deliverable-nature map the skill uses to select each item's type, suggested implementation, and suggested review,
+  plus the override, non-han, and not-installed rules.
 - [Work-items file format](../../skills/plan-work-items/references/work-items-file-format.md). The
   title, intro, and preamble structure of the output file.
 - [Reference artifact inventory](../../skills/plan-work-items/references/reference-artifact-inventory.md).

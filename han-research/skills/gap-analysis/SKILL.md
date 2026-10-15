@@ -179,6 +179,14 @@ from:
   patterns the desired state implies: timeouts, retry safety, idempotency, backpressure, kill switches, correlation-id
   propagation, observability of failure paths. Application source only — defer infrastructure and pipeline gaps to
   `han-core:devops-engineer`.
+- `han-core:observability-engineer` — gaps in telemetry design between the current and desired state: metric
+  instruments or labels, span attributes, log schemas, OpenTelemetry SDK setup (samplers, exporters, resource
+  attributes), telemetry pipeline configuration (OpenTelemetry Collector, Prometheus scrape or relabel rules, a log
+  shipper), or telemetry volume and cost. Owns naming and semantic conventions, metric label cardinality and telemetry
+  cost, sampling design, telemetry pipeline configuration, and signal choice. Defer SLO, alert-rule, and dashboard gaps
+  to `han-core:devops-engineer`, and source-line debuggability, correlation-ID propagation, and PII in individual log
+  statements to `han-core:on-call-engineer`. Do not let it close a gap with tail sampling, a Collector tier, or
+  retention tiers for volume the project does not have.
 - `han-core:system-architect` — gaps crossing service or bounded-context boundaries, integration patterns, data
   ownership.
 - `han-core:software-architect` — gaps inside a single codebase touching module boundaries, abstractions, SOLID

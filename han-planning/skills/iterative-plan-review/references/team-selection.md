@@ -36,6 +36,14 @@ review. Draw from:
 - `han-core:on-call-engineer` — application-source resilience patterns named in the plan: timeouts, retry strategy,
   idempotency, backpressure, kill switches, observability of new code paths. Hard boundary against
   `han-core:devops-engineer`: defer infrastructure and pipeline concerns to it.
+- `han-core:observability-engineer` — telemetry design the plan commits to: metric instruments or labels, span
+  attributes, log schemas, OpenTelemetry SDK setup (samplers, exporters, resource attributes), telemetry pipeline
+  configuration (OpenTelemetry Collector, Prometheus scrape or relabel rules, a log shipper), or telemetry volume and
+  cost. Owns naming and semantic conventions, metric label cardinality and telemetry cost, sampling design, telemetry
+  pipeline configuration, and signal choice. Hard boundaries: SLO definitions, alert rules, and dashboards stay with
+  `han-core:devops-engineer`; source-line debuggability, correlation-ID propagation, and PII in individual log
+  statements stay with `han-core:on-call-engineer`. Brief it not to recommend tail sampling, a Collector tier, or
+  retention tiers for volume the project does not have.
 - `han-core:structural-analyst` — module boundaries, coupling, dependency direction, duplication.
 - `han-core:behavioral-analyst` — runtime behavior, data flow, error propagation, state transitions.
 - `han-core:concurrency-analyst` — concurrent access, race conditions, async coordination, ordering.
@@ -81,7 +89,8 @@ review. Draw from:
 - Remaining available specialists in spec mode: `han-core:user-experience-designer`,
   `han-core:adversarial-security-analyst`, `han-core:devops-engineer`, `han-core:on-call-engineer` (scoped to spec-level
   resilience commitments — idempotency, retry behavior, kill switches, graceful degradation — not file-and-line
-  mechanics), `han-core:edge-case-explorer`, `han-core:test-engineer`, `han-core:gap-analyzer`, `han-core:risk-analyst`
+  mechanics), `han-core:observability-engineer` (scoped to the telemetry the spec commits to — which signals a flow
+  emits and what they must let someone answer — not instrument or pipeline mechanics), `han-core:edge-case-explorer`, `han-core:test-engineer`, `han-core:gap-analyzer`, `han-core:risk-analyst`
   (no structural/behavioral/concurrency upstream dependency), `han-core:content-auditor`, `han-core:codebase-explorer`.
 
 Present the proposed team to the user briefly — the required agents (and whether `han-core:evidence-based-investigator`

@@ -102,7 +102,7 @@ Give it:
    claims to verify. If you already know which additional specialists should be in the team (for example, _"include
    `adversarial-security-analyst` and `data-engineer`"_), name them. The skill otherwise picks one chosen specialist at
    medium, or two at large, from the roster: `user-experience-designer`, `adversarial-security-analyst`,
-   `devops-engineer`, `on-call-engineer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`,
+   `devops-engineer`, `on-call-engineer`, `observability-engineer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`,
    `software-architect`, `system-architect`, `risk-analyst`, `test-engineer`, `edge-case-explorer`, `data-engineer`,
    `gap-analyzer`, `content-auditor`, `codebase-explorer`.
 4. **Specific sections or concerns to emphasize, optional.** If you want the review to focus on a particular section of
