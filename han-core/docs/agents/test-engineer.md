@@ -1,10 +1,8 @@
 # test-engineer
 
-Operator documentation for the `test-engineer` agent in the `han-coding` plugin. This document helps you decide _when_ and _how_
+Operator documentation for the `test-engineer` agent in the han plugin. This document helps you decide _when_ and _how_
 to dispatch the agent. For what the agent does internally, read the agent definition at
-[`han-coding/agents/test-engineer.md`](../../agents/test-engineer.md). The agent fills `han-planning`'s
-`test-planning` role, so planning skills use it when `han-coding` is installed and skip the role when it is not; see
-[`agent-roles.md`](../../../han-planning/references/agent-roles.md).
+[`han-core/agents/test-engineer.md`](../../agents/test-engineer.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All agents](../../../docs/agents/README.md) ·
 > [All skills](../../../docs/skills/README.md) · [YAGNI](../../../docs/yagni.md)
@@ -64,7 +62,7 @@ to dispatch the agent. For what the agent does internally, read the agent defini
 
 ## How to invoke it
 
-Dispatch via the `Agent` tool with `subagent_type: han-coding:test-engineer`. Give it:
+Dispatch via the `Agent` tool with `subagent_type: han-core:test-engineer`. Give it:
 
 1. **A focus area.** Files, a directory, or a feature description. The narrower the scope, the sharper the plan.
 2. **Project context, optional.** If the project's test framework and conventions are not obvious from the existing

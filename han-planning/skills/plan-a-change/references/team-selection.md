@@ -50,9 +50,8 @@ Select additional specialists up to the cap, based on what the area actually con
 
 - `han-core:risk-analyst` — prioritization across the findings the discovery round and the review produced. The most
   common first pick, because a change plan's failure mode is carrying every finding at equal weight.
-- The [`test-planning` role](../../../references/agent-roles.md) — how the change is verified, and which existing tests pin behavior the delta must
-  preserve. Include whenever a behavior-preservation claim needs something to rest on. Filled by whichever installed
-  agent claims it; skipped with a one-line note when none does.
+- `han-core:test-engineer` — how the change is verified, and which existing tests pin behavior the delta must preserve.
+  Include whenever a behavior-preservation claim needs something to rest on.
 - `han-core:on-call-engineer` — code-level resilience the change moves or removes: timeouts, retries, idempotency,
   queue handling, kill switches, and the failure paths a responsibility shift can quietly relocate.
 - `han-core:adversarial-security-analyst` — the area handles authentication, authorization, PII, secrets, or untrusted
@@ -84,7 +83,7 @@ Pass each specialist only what its domain needs, plus the pointers below. Do not
 | Specialist                              | Plan sections to include in the brief                                             |
 | --------------------------------------- | --------------------------------------------------------------------------------- |
 | `han-core:risk-analyst`                 | Target State, the full delta with behavior classifications, Change Units          |
-| `test-planning` role                    | Current State, the delta entries classified Preserving, Change Units              |
+| `han-core:test-engineer`                | Current State, the delta entries classified Preserving, Change Units              |
 | `han-core:on-call-engineer`             | Delta entries touching error paths, retries, timeouts, queues, or lifecycle order |
 | `han-core:adversarial-security-analyst` | Delta entries moving a trust boundary, plus Current State on those paths          |
 | `han-core:data-engineer`                | Delta entries touching a schema, persisted format, or data-access path            |

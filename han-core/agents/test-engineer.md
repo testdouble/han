@@ -6,7 +6,7 @@ description:
   expectations for commands) for isolation, and produces a prioritized test plan with recommended test levels. Use when
   thorough, multi-angle test planning is needed for new or existing code. Does not write test code — produces a plan
   only. Does not do deep edge case exploration or boundary analysis — use edge-case-explorer for exhaustive boundary
-  value and failure mode discovery. Fills the han-planning `test-planning` role."
+  value and failure mode discovery."
 tools: Read, Glob, Grep, Bash(git *), Bash(find *), Write
 model: sonnet
 ---

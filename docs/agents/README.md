@@ -93,7 +93,7 @@ domain-language-analyst, domain-ownership-analyst, and domain-visualizer, which 
   dependency direction, abstractions, and duplication.
 - [`system-architect`](../../han-core/docs/agents/system-architect.md) — Synthesize boundary-crossing findings into
   context-map relationships, integration patterns, data ownership, and failure-domain containment across services.
-- [`test-engineer`](../../han-coding/docs/agents/test-engineer.md) — Plan tests focused on observable behavior and
+- [`test-engineer`](../../han-core/docs/agents/test-engineer.md) — Plan tests focused on observable behavior and
   recommend test doubles for isolation, producing a prioritized test plan.
 - [`user-experience-designer`](../../han-core/docs/agents/user-experience-designer.md) — Review a UI adversarially
   against Nielsen's heuristics, WCAG 2.2, universal design, and dark-pattern detection.

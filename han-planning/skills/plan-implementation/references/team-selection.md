@@ -71,8 +71,7 @@ specialist rather than discovering a gap late. Unless the user specified a team 
   the feature crosses a service boundary, introduces a new integration, changes a context-map relationship, or shifts
   data ownership. Include both when the feature does both.
 - `han-core:risk-analyst` — prioritization of architectural and delivery risks.
-- The [`test-planning` role](../../../references/agent-roles.md) — observable-behavior test planning and test doubles. Filled by whichever installed agent claims it; skipped
-  with a one-line note when none does.
+- `han-core:test-engineer` — observable-behavior test planning and test doubles.
 - `han-core:edge-case-explorer` — boundary values, input messiness, state-dependent failures.
 - `han-core:data-engineer` — schema changes, migrations, data movement, analytics implications.
 
@@ -101,7 +100,7 @@ Pass each selected specialist only the sections relevant to its domain, plus the
 | `han-core:concurrency-analyst`                              | Sections touching concurrent access, race conditions, async coordination                                                                                                                                  |
 | `han-core:software-architect` / `han-core:system-architect` | Architecture / topology / context-map sections                                                                                                                                                            |
 | `han-core:risk-analyst`                                     | Architectural and delivery risks; depends on upstream specialist findings                                                                                                                                 |
-| `test-planning` role / `han-core:edge-case-explorer`        | Outcome, Primary Flow, Alternate Flows, Edge Cases                                                                                                                                                        |
+| `han-core:test-engineer` / `han-core:edge-case-explorer`    | Outcome, Primary Flow, Alternate Flows, Edge Cases                                                                                                                                                        |
 | `han-core:data-engineer`                                    | Sections touching schema, migration, data movement, analytics                                                                                                                                             |
 | `han-core:junior-developer`                                 | Outcome + first paragraph of every section (plain-language overview)                                                                                                                                      |
 

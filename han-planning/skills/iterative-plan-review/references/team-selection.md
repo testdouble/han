@@ -52,8 +52,7 @@ review. Draw from:
 - `han-core:system-architect` — cross-service / bounded-context topology, context-map relationships, integration
   patterns, data ownership, failure-domain containment.
 - `han-core:risk-analyst` — prioritization of architectural and delivery risks.
-- The [`test-planning` role](../../../references/agent-roles.md) — observable-behavior test planning, test doubles. Filled by whichever installed agent
-  claims it; skipped with a one-line note when none does.
+- `han-core:test-engineer` — observable-behavior test planning, test doubles.
 - `han-core:edge-case-explorer` — boundary values, input messiness, state-dependent failures.
 - `han-core:data-engineer` — schema changes, migrations, data movement, analytics implications.
 - `han-core:gap-analyzer` — spec-vs-implementation gap checks when a source spec exists.
@@ -91,7 +90,7 @@ review. Draw from:
   `han-core:adversarial-security-analyst`, `han-core:devops-engineer`, `han-core:on-call-engineer` (scoped to spec-level
   resilience commitments — idempotency, retry behavior, kill switches, graceful degradation — not file-and-line
   mechanics), `han-core:observability-engineer` (scoped to the telemetry the spec commits to — which signals a flow
-  emits and what they must let someone answer — not instrument or pipeline mechanics), `han-core:edge-case-explorer`, the `test-planning` role, `han-core:gap-analyzer`, `han-core:risk-analyst`
+  emits and what they must let someone answer — not instrument or pipeline mechanics), `han-core:edge-case-explorer`, `han-core:test-engineer`, `han-core:gap-analyzer`, `han-core:risk-analyst`
   (no structural/behavioral/concurrency upstream dependency), `han-core:content-auditor`, `han-core:codebase-explorer`.
 
 Present the proposed team to the user briefly — the required agents (and whether `han-core:evidence-based-investigator`

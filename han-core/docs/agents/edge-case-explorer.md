@@ -165,7 +165,7 @@ https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-de
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [YAGNI](../../../docs/yagni.md). The Speculative Edge Case rule.
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
-- [`test-engineer`](../../../han-coding/docs/agents/test-engineer.md). Sibling agent. `/automated-test-planning` runs both in parallel.
+- [`test-engineer`](./test-engineer.md). Sibling agent. `/automated-test-planning` runs both in parallel.
 - [`/automated-test-planning`](../../../han-coding/docs/skills/automated-test-planning.md). Always dispatches this agent.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Conditionally dispatches this agent.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Dispatches this agent as part of the spec-stage

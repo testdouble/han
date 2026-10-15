@@ -30,13 +30,7 @@ it, dispatching specialist agents to cover each dimension in parallel. Reach for
 - [`/coding-standard`](docs/skills/coding-standard.md) — Create and update coding standards from existing patterns or
   evidence-based research.
 
-## Agents
-
-- [`test-engineer`](docs/agents/test-engineer.md) — Plan tests focused on observable behavior and recommend test
-  doubles for isolation, producing a prioritized test plan.
-
-The other agents its skills dispatch are the shared specialists that live in `han-core` (and, for the
-readability-editor, in `han-communication`).
+Its skills dispatch shared agents that live in `han-core` (and, for the readability-editor, in `han-communication`).
 
 ## Installation
 
