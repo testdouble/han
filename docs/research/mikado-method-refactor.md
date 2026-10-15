@@ -8,9 +8,10 @@ first. Evidence mode: strict.
 
 Add only a thin slice of the Mikado Method to the refactor skill, and fix a bug in the skill first. The bug: when a
 step fails, the skill's "undo this step" instruction can also throw away earlier steps that had already passed, if they
-were never committed. That fix stands on its own and is worth making whether or not Mikado goes in. The Mikado slice:
-when the skill stops because a step spread beyond its planned files, it should write down what blocked the step as a
-list of prerequisites, the way it already writes down what it learned when a step fails its tests. The full method,
+were never committed. That fix stands on its own and is worth making whether or not Mikado goes in.
+
+The Mikado slice: when the skill stops because a step spread beyond its planned files, it should write down what
+blocked the step as a list of prerequisites. It already writes down what it learned when a step fails its tests. The full method,
 where the agent deliberately breaks the code to discover its plan, conflicts with three rules the skill is built on and
 should not be added. The bug finding is solid. The case for the Mikado slice rests on practitioner accounts of the
 method and on this request; nothing in the repo shows people hitting that stop today.
@@ -278,12 +279,13 @@ are common, so the failure needs no unusual setup. It is also the same class of 
 - **Impact:** The recommendation now names a per-step snapshot or diff, covers created and renamed files, and adds an
   audit of the `tdd` revert.
 
-### Adjustments Made
+### What validation changed
 
 Validation split the recommendation in two: a standalone undo fix (new O2) and a narrowed Mikado slice (O3) that
-extends behavior the skill already has. It added the "fix the undo only" option, corrected the separate-skill option's
-support, caveated the preprint behind the design research, stated that the slice's need rests on this request, and
-fixed four citation overstatements. The recommendation survived in narrower form.
+extends behavior the skill already has. It also added the "fix the undo only" option and
+corrected the separate-skill option's support. It caveated the preprint behind the design research and stated that the
+slice's need rests on this request. It fixed four citation overstatements. The recommendation survived in narrower
+form.
 
 ### Confidence Assessment
 
