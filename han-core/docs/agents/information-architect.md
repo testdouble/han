@@ -13,8 +13,8 @@ and _how_ to dispatch the agent. For what the agent does internally, read the ag
 - **When to dispatch it.** A README, plugin docs tree, API reference, or ADR collection needs a principled structural
   audit before or during a rewrite. Also dispatched by `/plan-a-phased-build`, by `/coding-standard` (to audit the draft
   standard for findability and scannability), by `/automated-test-planning` (to confirm the plan leads with plain language), by
-  `/project-documentation` (to audit the information architecture of the docs), and by `/gap-analysis` (to design the
-  report template).
+  `/project-documentation` (to audit the information architecture of the docs), by `/gap-analysis` (to design the
+  report template), and by `/code-review` on a `docs` review.
 - **What you get back.** An IA findings report with numbered findings tied to IA principles and named reader audiences,
   plus structural recommendations sequenced ship-now vs. track-and-improve.
 
@@ -255,6 +255,7 @@ URL: https://jarango.com/2021/01/14/the-culture-layer/
 - [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). Dispatches this agent to audit the
   information architecture of the docs.
 - [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent to design the report template.
+- [`/code-review`](../../../han-coding/docs/skills/code-review.md). Always dispatches this agent on a `docs` review.
 - [`user-experience-designer`](./user-experience-designer.md). The sibling agent for live UI surfaces. Dispatch both in
   parallel when a docs site blends content and interactive navigation.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md).

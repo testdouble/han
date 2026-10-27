@@ -68,6 +68,9 @@ domain-language-analyst, domain-ownership-analyst, and domain-visualizer, which 
   find, orient in, and comprehend than it needs to be, and audit it against established IA frameworks.
 - [`junior-developer`](../../han-core/docs/agents/junior-developer.md) — Stress-test an artifact or discussion as a
   generalist, asking the clarifying questions hidden assumptions and muddied scope beg for.
+- [`observability-engineer`](../../han-core/docs/agents/observability-engineer.md) — Audit telemetry design for the cost,
+  sampling, naming, and pipeline problems that leave a team unable to afford its telemetry or missing the request it
+  needs when something breaks.
 - [`on-call-engineer`](../../han-core/docs/agents/on-call-engineer.md) — Read application source for the code-level
   resilience anti-patterns that wake on-call engineers at 3am; a hard boundary against `devops-engineer`, reading source
   only.

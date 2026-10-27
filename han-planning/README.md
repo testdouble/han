@@ -13,7 +13,9 @@ with [`/plan-implementation`](docs/skills/plan-implementation.md), sequence it w
 [`/plan-a-phased-build`](docs/skills/plan-a-phased-build.md), and break it into work with
 [`/plan-work-items`](docs/skills/plan-work-items.md); stress-test any plan along the way with
 [`/iterative-plan-review`](docs/skills/iterative-plan-review.md). When the work is restructuring code that already
-exists rather than adding behavior, start at [`/plan-a-change`](docs/skills/plan-a-change.md) instead.
+exists rather than adding behavior, start at [`/plan-a-change`](docs/skills/plan-a-change.md) instead. When a plan or
+a piece of code keeps drawing findings without converging, ask
+[`/reassess-approach`](docs/skills/reassess-approach.md) whether the approach is still the right one.
 
 ## Skills
 
@@ -29,6 +31,9 @@ exists rather than adding behavior, start at [`/plan-a-change`](docs/skills/plan
   independently-grabbable, atomic work items in a single work-items file.
 - [`/iterative-plan-review`](docs/skills/iterative-plan-review.md) — Stress-test an already-written plan through
   multiple codebase-grounded review passes.
+- [`/reassess-approach`](docs/skills/reassess-approach.md) — Ask, in a fresh context, whether the approach a plan or a
+  piece of code commits to is still the right one, and get structurally different alternatives, including stopping,
+  with one recommendation.
 
 ## Agents
 

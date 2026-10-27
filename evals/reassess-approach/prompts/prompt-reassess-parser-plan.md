@@ -1,0 +1,1 @@
+run /reassess-approach on plans/ingest-parser/plan.md with the findings in plans/ingest-parser/artifacts/review-findings.md. Three review rounds have gone into the hand-written parser and the edge-case findings keep landing on it.

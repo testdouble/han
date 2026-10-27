@@ -72,10 +72,12 @@ file it sits in.
   produces no prose deliverable ignores the setting silently.
 - `## Extra Agents` (section heading): one agent per list line, in qualified `plugin:agent` form or bare-name form.
   Match names case-insensitively against the agents available in the session.
+- `## Code Review Types` and `## Code Review Type Agents` (section headings): list settings owned by the code-review
+  skill, which defines their line format and how it uses them. Every other skill ignores both silently.
 
 ## How a configured path resolves
 
-Both `output-directory` and `writing-voice` name a path, and both resolve the same way.
+`output-directory`, `writing-voice`, and each path listed under `## Code Review Types` name a path, and all resolve the same way.
 
 - **A relative path resolves against the folder holding the file that declared it.** A relative path in the project
   file resolves against the working directory. A relative path in the personal file resolves against the
@@ -109,6 +111,11 @@ the skill's default.
 The extra-agents list adds rather than replaces: agents the user names explicitly are always considered, and both
 files' entries join them as candidates.
 
+A keyed list setting, where each line names a key such as a review type, resolves per key. When both files name the
+same key, the project file's line is used; when that line is unusable, the personal file's line for the same key is
+used. Lines with different keys are all kept. `## Code Review Type Agents` lines add together across both files, as
+`## Extra Agents` entries do.
+
 ## Extra agents joining the pool
 
 A skill that selects among candidate agents adds both files' extra agents to its candidate pool. They compete under the
@@ -116,14 +123,15 @@ skill's own signal-based selection and size caps; a selected extra agent may tak
 otherwise have filled, and that displacement happens without comment. An entry that duplicates an agent already in the
 pool has no effect, whether the duplicate comes from the same file or the other one: the agent is one candidate,
 counted once against the caps. An entry that does not resolve to a dispatchable agent is skipped with the one-line note
-naming it.
+naming it. A skill may consider the list on only some of its runs; when it does, its own instructions say which.
 
 ## Degradation and the one-line note
 
-A bad config can never fail a skill run; the worst it can do is be ignored. Show a one-line note only when content that
-attempts a recognized override cannot be used; pass over everything else silently. A `writing-voice` value naming a
-file that does not exist is the one exception: per its definition above, it asks the user which fallback to take
-instead of degrading with a note.
+A bad config never fails a skill run, with two exceptions. A `writing-voice` value naming a file that does not exist
+asks the user which fallback to take, per its definition above. A review type the user invokes by name, whose
+configured file is missing or incomplete, stops that code review before it starts, as the code-review skill defines.
+Otherwise the worst a bad config can do is be ignored. Show a one-line note only when content that attempts a
+recognized override cannot be used; pass over everything else silently.
 
 **Every message about configuration names which of the two files it came from**, on the failure path and the success
 path alike. That includes the announcement a sizing skill makes when it adopts a configured band. The two files share a

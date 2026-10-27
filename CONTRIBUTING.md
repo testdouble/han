@@ -111,11 +111,12 @@ change goes before you scaffold anything. (For the user-facing version of this m
 - **`han-research`** carries the pre-planning knowledge-work skills (`research`, `gap-analysis`, `issue-triage`) plus
   the `research-analyst` agent. A skill goes here when its job is understanding a problem before anyone commits to a
   plan. It depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin.
-- **`han-planning`** carries the planning skills (`plan-a-feature`, `plan-implementation`, `plan-a-phased-build`,
-  `plan-work-items`, `iterative-plan-review`). A skill goes here when its job is specifying what a feature does,
-  planning how to build it, sequencing the build, breaking it into work, or stress-testing a plan before implementation.
+- **`han-planning`** carries the planning skills (`plan-a-feature`, `plan-a-change`, `plan-implementation`,
+  `plan-a-phased-build`, `plan-work-items`, `iterative-plan-review`, `reassess-approach`). A skill goes here when its
+  job is specifying what a feature does, planning how to build it, sequencing the build, breaking it into work,
+  stress-testing a plan before implementation, or questioning the approach a stalled plan commits to.
   It depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin.
-- **`han-coding`** carries the coding skills (`tdd`, `refactor`, `code-review`, `code-overview`,
+- **`han-coding`** carries the coding skills (`tdd`, `refactor`, `restructure`, `code-review`, `code-overview`,
   `architectural-analysis`, `automated-test-planning`, `manual-test-planning`, `investigate`, `coding-standard`). A skill goes here when its job is
   working directly in code: writing it, reviewing it, analyzing it, testing it, investigating it, or standardizing it.
   It depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin.

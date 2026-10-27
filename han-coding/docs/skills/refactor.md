@@ -57,6 +57,9 @@ use the skill. For what the skill does internally, read the skill definition at
   [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md) when the change spans several modules and the
   target structure is still open. This skill applies a named refactoring to a named target; that one settles what the
   target structure should be.
+- **Restructuring a whole area.** Use [`/restructure`](./restructure.md) when the change spans many files or modules
+  and you want it carried out unit by unit with a commit and a logged decision for each. It runs this skill for each
+  unit and uses the Mikado Method when a unit stops here because its scope spread.
 - **Fixing a bug.** A fix changes behavior, which this skill never does. Use
   [`/investigate`](./investigate.md) and then drive the fix in with [`/tdd`](./tdd.md).
 - **Mapping domain boundaries before restructuring along them.** Use
@@ -103,7 +106,8 @@ Restructured code in your working tree, not a report. Specifically:
 - **A refactoring plan**, shown before the first edit: numbered items, each one named refactoring with the evidence
   behind it and the files it should touch.
 - **One verified step at a time.** Each step shows the runner's summary line after the change. Red steps are reverted
-  and either retried smaller or deferred with what was learned.
+  and either retried smaller or deferred with what was learned. A revert undoes only that step's own edits, so earlier
+  green steps and your other uncommitted work stay in place even when nothing has been committed yet.
 - **A final summary**, covering:
   - each refactoring applied (named, with its evidence and finding IDs where a report was the source)
   - YAGNI deferrals with reopen triggers

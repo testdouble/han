@@ -29,9 +29,7 @@
       "skillFile": "han-documentation:project-documentation",
       "promptFile": "skill-call-project-documentation.md",
       "scaffold": "node-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: no project-documentation",
@@ -39,9 +37,7 @@
       "model": "sonnet",
       "skillFile": "han-documentation:project-documentation",
       "promptFile": "skill-call-no-project-documentation.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     }
   ]
 }

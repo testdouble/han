@@ -5,8 +5,9 @@ description: >
   and recording every finding and iteration in cross-referenced companion files. Use this skill whenever the user wants
   to iterate on, refine, tighten, or improve a plan. Also use it when the user asks to verify, validate, or confirm
   feasibility of an approach. Does not implement plan steps, write test plans, review code, or investigate bugs, and
-  does not generate new plans from scratch — use plan-a-feature for a new plan. Runs its review rounds to completion
-  without pausing between them; to review each round as it lands, use pairing.
+  does not generate new plans from scratch — use plan-a-feature for a new plan. Does not propose a different approach
+  when a plan stops converging — at its round cap it hands that question to reassess-approach. Runs its review rounds to
+  completion without pausing between them; to review each round as it lands, use pairing.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [context or path to plan file]"
 allowed-tools:
@@ -225,8 +226,9 @@ and there is no mandatory agent consultation for these findings.
 1. **Classify each finding as major or minor before recording.** Major: changes a behavioral commitment, edge-case rule,
    alternate flow, or failure mode in the plan; touches security/auth/PII/secrets/supply-chain; touches a coordination
    across actors, services, or subsystems; is a `T#-contradiction`; leaves a contract the build must conform to
-   un-pinned; or is a "mechanics leaking into spec" finding. Minor: typo, wording, naming, formatting, citation
-   cleanup. Force-up to major if the finding text contains keywords like "auth", "PII", "race", "ordering",
+   un-pinned; is a "mechanics leaking into spec" finding; or is an `approach` finding, which names the plan's
+   mechanism as the open question and carries the alternatives considered. Minor: typo, wording, naming, formatting,
+   citation cleanup. Force-up to major if the finding text contains keywords like "auth", "PII", "race", "ordering",
    "coordination", "edge case", "T#", "format", "contract", "schema", "interface", "signature". When in doubt, major.
 
    For each refuted assumption, overlap finding, ambiguity, or edge case that required attention, append an `F#` entry
@@ -248,6 +250,13 @@ and there is no mandatory agent consultation for these findings.
 findings (security, T#-contradiction, missing coordination, unhandled failure mode in a primary flow path). The size cap
 from Step 2 sets the upper bound: small = 1 iteration, medium = 2, large = 3. Never exceed the size cap.
 
+**No hand-off in lightweight mode.** When the single iteration did not satisfy the convergence condition above, say so
+in the closing summary and add one line: if this plan keeps drawing findings, run `/reassess-approach` on it. Do not
+invoke `han-planning:reassess-approach` from this mode, BECAUSE one pass cannot tell a plan that is stuck on its
+approach from a plan that needed edits, and the hand-off would add the suite's most expensive dispatch to its cheapest
+mode on that weakest signal. The hand-off belongs to team mode, where it fires after two or three rounds (Step 4,
+sub-step 7).
+
 Skip to Step 6.
 
 ## Step 5: Team Iteration Rounds (team mode only)
@@ -266,6 +275,7 @@ loop earlier whenever a round goes quiet, so the cap is a ceiling rather than a 
    | `han-core:adversarial-security-analyst`                                                                 | Sections touching auth, authorization, PII, secrets, supply chain                                                                                                                                                     |
    | `han-core:devops-engineer`                                                                              | Sections touching deployment, observability, rollout, feature flags, scale, SLO impact, cost                                                                                                                          |
    | `han-core:on-call-engineer`                                                                             | Sections naming outbound calls, retry behavior, queue or buffer handling, async work, error handling on failure paths, idempotency, kill switches, and observability of new code paths at the application source line |
+   | `han-core:observability-engineer`                                                                       | Sections naming metric instruments or labels, span attributes, log schemas, OpenTelemetry SDK setup (samplers, exporters, resource attributes), telemetry pipeline configuration, or telemetry volume and cost        |
    | `han-core:structural-analyst`                                                                           | Sections naming module boundaries, coupling, dependency direction                                                                                                                                                     |
    | `han-core:behavioral-analyst`                                                                           | Sections describing runtime behavior, data flow, error propagation, state                                                                                                                                             |
    | `han-core:concurrency-analyst`                                                                          | Sections touching concurrent access, race conditions, async coordination                                                                                                                                              |
@@ -319,10 +329,11 @@ loop earlier whenever a round goes quiet, so the cap is a ceiling rather than a 
 3. **Classify and record findings.** For each finding from a specialist, classify it as major or minor before recording.
    Major: changes a behavioral commitment, edge-case rule, alternate flow, or failure mode in the plan; touches
    security/auth/PII/secrets/supply-chain; touches a coordination across actors, services, or subsystems; is a
-   `T#-contradiction`; leaves a contract the build must conform to un-pinned; or is a "mechanics leaking into spec"
-   finding. Minor: typo, wording, naming, formatting, citation cleanup. Force-up to major if the finding text contains
-   keywords like "auth", "PII", "race", "ordering", "coordination", "edge case", "T#", "format", "contract", "schema",
-   "interface", "signature". When in doubt, major.
+   `T#-contradiction`; leaves a contract the build must conform to un-pinned; is a "mechanics leaking into spec"
+   finding; or is an `approach` finding, which names the plan's mechanism as the open question and carries the
+   alternatives considered. Minor: typo, wording, naming, formatting, citation cleanup. Force-up to major if the finding
+   text contains keywords like "auth", "PII", "race", "ordering", "coordination", "edge case", "T#", "format",
+   "contract", "schema", "interface", "signature". When in doubt, major.
 
    Append the entry to `{plan-dir}/artifacts/review-findings.md` (create the `artifacts/` subfolder if it does not
    already exist; append to the legacy root-level path if the prior session used it). Major findings go under
@@ -354,6 +365,16 @@ loop earlier whenever a round goes quiet, so the cap is a ceiling rather than a 
    primary flow path). The size cap from Step 2 sets the upper bound: medium = 2 rounds, large = 3 rounds. Never exceed
    the size cap.
 
+7. **Hand off at the cap.** When the cap is reached and the most recent round did not satisfy the convergence condition
+   in sub-step 6, the plan has stopped converging on its current approach. Invoke `han-planning:reassess-approach` with
+   the plan path, `{plan-dir}/artifacts/review-findings.md`, the output folder `{plan-dir}/artifacts/`, and a one-line
+   reason naming the cap and what the last round produced. Record its recommendation as a major `F#` entry with
+   `Category: approach`, `Agent: reassess-approach`, `Alternatives:` pointing at the report it wrote, `Resolution:`
+   blank, and `Resolved by:` awaiting user input. Present it through the between-rounds channel below as the run's
+   closing question, and end the run. Do not spend a further round on the plan, BECAUSE the budget is spent and another
+   pass would polish an approach the person has not yet confirmed. "Continue as is" is a complete answer and, when
+   given, the next invocation proceeds as it does today.
+
 **Running collaboratively.** When the request asks to review each round as it lands, which is what `pairing` does when
 it hands work here, stop at the end of each round and hand control back instead of starting the next. Present the stop
 in the shape [collaborative-stop-rule.md](../../references/collaborative-stop-rule.md) specifies: the round's findings
@@ -364,7 +385,9 @@ continue as below; an ordinary invocation is unchanged.
 Between rounds, surface to the user any finding where two agents disagree on substance, or where resolving the finding
 requires a judgment only the plan's author can make. Present each as a contextual question with impact, tradeoffs, and a
 recommended answer. Record the question on the corresponding `F#` entry and, if the user answers before the next round,
-update `Resolution:` / `Resolved by:` and the relevant plan section.
+update `Resolution:` / `Resolved by:` and the relevant plan section. An `approach` finding from the hand-off at the cap
+is such a judgment: its options are the named candidates, its recommendation is the recommended answer, and the
+consequence of staying on the current approach leads the question.
 
 ## Step 6: Update the Plan's Review History Section
 

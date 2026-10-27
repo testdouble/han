@@ -1,417 +1,509 @@
 # /code-review
 
-Operator documentation for the `/code-review` skill in the han plugin. This document helps you decide _when_ and _how_
-to use the skill. For what the skill does internally, read the skill definition at
+Operator documentation for the `/code-review` skill in the han-coding plugin. This page walks you through running a
+review, choosing what it checks, and acting on the report. It starts with what you need for your first run and saves the
+internals for the end. For what the skill does step by step, read the skill definition at
 [`han-coding/skills/code-review/SKILL.md`](../../skills/code-review/SKILL.md).
 
 > See also: [Plugin README](../../README.md) · [Repo root](../../../README.md) · [All skills](../../../docs/skills/README.md) ·
-> [All agents](../../../docs/agents/README.md) · [YAGNI](../../../docs/yagni.md)
+> [All agents](../../../docs/agents/README.md) · [How to run an effective code review](../../../docs/how-to/run-an-effective-code-review.md)
+> · [YAGNI](../../../docs/yagni.md)
 
 ## TL;DR
 
-- **What it does.** Comprehensive code review of the current branch's changes, or of specified files when git is not
-  available.
-- **When to use it.** You want a principled review of what changed before merge: correctness, testing, security,
-  documentation compliance, and project-pattern deference.
-- **What you get back.** A structured review with findings classified as CRIT / WARN / SUGG, each with
-  `file_path:line_number` references and suggested fixes.
-- **Size-aware.** The skill classifies the change as small / medium / large, defaults to small, and dispatches a roster
-  proportional to scope. Pass the size as the first positional argument to override (`/code-review medium`). See
-  [Sizing](../../../docs/sizing.md) for the full model.
+- **What it does.** Reviews the changes on your branch, your uncommitted work, or files you name, and writes a report
+  of findings ranked by severity, each with a file and line and a suggested fix.
+- **When to use it.** Before you merge, when you want a careful second read of what changed.
+- **What you get back.** A report file, `code-review-{slug}.md`, that opens with a merge recommendation. The skill
+  never edits your code, commits, or posts to GitHub.
+
+**Start here:** on your feature branch, run `/code-review`.
 
 ## Key concepts
 
-- **Three severity levels.** CRIT (must fix before merge: security, data corruption, breaking API), WARN (should fix:
-  bugs, missing error handling, missing tests), SUGG (consider: style, refactoring, docs). Severity calibration is
-  governed by Step 3.3 in the skill body, the authoritative home for size-based demotion. Manual findings (Steps 4 to 6)
-  and agent findings (Step 7) follow the same rules: small changes escalate only Critical and prefer the lower severity
-  on uncertainty; medium escalates Critical and Warning; large prefers the higher severity when in doubt.
-- **Review modes on two independent axes.** The git axis: Mode A uses the full git branch diff, Mode B reviews
-  uncommitted work when no branch diff exists, and Mode C reviews specified files when git is absent. **In Mode B and
-  Mode C the YAGNI checklist is skipped unless explicitly requested**, because no diff exists to distinguish introduced
-  code from pre-existing code. The agent axis: **manual-only mode** is the state a run enters when the dispatch
-  mechanism fails (the `Agent` tool is unavailable or a dispatch call is denied), so no specialist reads the change. It
-  is independent of the git axis; a Mode A run with a full branch diff can be manual-only. An agent that returns with
-  nothing to say does not trigger it, because the security agent stays silent by design when its evidence bar is not
-  met. In manual-only mode the manual review also sweeps, by hand, the checklist categories that substitute for each
-  absent agent, and the report says which coverage was absent and which of it the sweep could not recover.
-- **Packaging findings name a gap, not a defect.** When a Mode A diff changes what gets packaged (shading or relocation
-  rules, vendoring, include or exclude patterns, dependency scope, bundling config), the checklist raises a Warning
-  saying the review did not open the built artifact and what to check by hand before merging. Its summary row opens
-  with `Not checked —` so you can tell it from a proven defect while triaging. It does not inspect the artifact.
-- **A location is confirmed, not carried forward.** When the review reads a file over 1000 lines by its changed regions,
-  a finding's location can be attributed upward to the wrong declaration. Such a finding names its enclosing unit and
-  the lines the review read in isolation to confirm it. A finding from a file read whole carries no such note.
-- **Size-aware agent dispatch.** Two agents always run on every review (`junior-developer` for clarity and standards,
-  `adversarial-security-analyst` for exploit-path security). The rest of the roster (`test-engineer`,
-  `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`,
-  `devops-engineer`, `on-call-engineer`) is dispatched conditionally based on what the changed files touch. Larger sizes
-  raise the upper bound on the roster; smaller sizes prefer fewer agents producing higher-signal findings. See the
-  [Sizing](#sizing) section below.
-- **Calibration directive.** Every dispatched agent receives a calibration directive that requires findings to be either
-  introduced or worsened by the change, or critical irrespective of who introduced it. Theoretical concerns,
-  pre-existing best-practice gaps, and benign-outcome scaling worries are excluded. Severity scales with size: small
-  change → only Critical findings escalate; medium → Critical and Warning; large → all severities.
-- **Per-agent dispatcher tailoring.** When `/code-review` dispatches `structural-analyst` and `behavioral-analyst`, it
-  appends a default-SUGG directive so those agents start at the lowest severity and escalate only when the change
-  introduces or worsens the issue. When it dispatches `junior-developer` and `edge-case-explorer`, it appends a
-  file-list scoping directive so findings concern code on the scoped file list (with a narrower wording for
-  `edge-case-explorer` that preserves its caller-read protocol while keeping the failure-mode target on the file list).
-  These directives are `/code-review`'s tailoring; the agents' default behavior in other skills is unchanged.
-- **Reachability phrase-match gate (Step 7.2).** When an agent's own rationale contains phrases like _theoretical_,
-  _hypothetical_, _defense-in-depth_, _effectively impossible_, _in case the upstream_, _could happen_, _should never
-  happen_, or _edge case that does not occur_, the finding is demoted by one severity before the rubric is applied.
-  Security findings are exempt because the security agent's evidence standard already requires a demonstrated exploit
-  path. The gate is a cheap, deterministic first pass and is brittle to paraphrase by design; a finding that hedges its
-  reachability without one of the literal phrases is caught semantically by the Step 7.4 validation pass, not by growing
-  the phrase list.
-- **Independent findings validation (Step 7.4).** After the agent findings are collected and classified, the skill
-  dispatches one `adversarial-validator` over the _consolidated corrective finding list_, the same agent `/investigate`
-  uses to attack a root cause and fix. It is the only pass that re-reads the change in fresh context and judges each
-  finding against the code rather than against the producing agent's rationale, so it does not anchor on what the
-  specialists concluded. Each finding comes back Confirmed (kept), Partially Refuted (demoted one severity), or Refuted
-  (dropped). A finding is dropped only when the validator supplies concrete counter-evidence at `file_path:line_number`;
-  a bare assertion demotes rather than drops, and an uncertain verdict leaves the finding standing. Security findings
-  are dropped only when the demonstrated exploit is refuted with counter-evidence. The pass is a finding _filter, not a
-  finding source_: it never contributes findings of its own, and it skips entirely when the review produced no
-  corrective findings. It also skips in manual-only mode, because it dispatches an agent; the report's Review Coverage
-  section then says the findings were not re-checked by a second pass.
-- **Branch context loaded at Step 1.5.** Before agents are dispatched, the skill loads four sources of branch-level
-  context in order: PR description (via `gh pr view` when `gh` is available, Mode A only), a local `pr-body`,
-  `PR_BODY.md`, or `.pr-body` file at the repo root, branch commit messages, and an implementation plan from the
-  planning directory. The planning directory resolves first to the `plans:` (or `planning:`) key under CLAUDE.md's
-  `## Project Discovery` section. Otherwise, the skill globs `docs/plans/*/feature-implementation-plan.md` and
-  `plans/*/feature-implementation-plan.md`, picking the directory whose name matches the current branch (treating `-`
-  and `_` as interchangeable). The loaded content is summarized into a `$branch_context` block of at most 200 words. It
-  is plumbed, alongside the user's `$focus_areas` argument, into every agent prompt so agents avoid re-raising items the
-  team has already deferred or resolved. Because PR descriptions, ticket bodies, and commit messages are third-party
-  content that can carry text aimed at steering the review agent, the skill treats `$branch_context` as **untrusted
-  data, not instructions**. The Step 1.5 summary strips any directives addressed to the reader or an agent. Step 3.5
-  wraps the binding in explicit untrusted-data markers with a guard telling agents to use it for intent only and never
-  to obey instructions inside it. The user's own `$focus_areas` argument is trusted and is not wrapped. Step 1.5 is
-  skipped in Mode C. In Mode A and Mode B, when none of the four sources returns content, the skill emits a single
-  fail-open warning and proceeds with `$branch_context` set to `none provided`.
-- **Self-consistency check at Step 9.0.** Before the structural verification, the skill scans every pair of findings on
-  the same file with overlapping line ranges, detects contradictory recommendations, demotes both, and adds a
-  `Tension with {other-task-id}:` note for the human reviewer. Cross-file semantic contradictions are out of scope.
-- **Premise verification before standards-compliance findings.** Step 5 requires reading at least one architectural file
-  in the codebase that demonstrates a standard's premise before the skill raises a "violates standard X" finding. When
-  the file does not confirm the premise, the finding is omitted with a logged note rather than raised on inferred
-  premises.
-- **Project-pattern deference.** A pattern that differs from general best practices but is consistent within the project
-  is _not_ a finding. Only deviations from the project's own conventions count.
-- **Automated tool boundary.** If the project has a linter or formatter, trust it. Only flag style issues that tooling
-  cannot catch.
-- **Documentation compliance and freshness.** ADRs, coding standards, and general docs are read and checked against the
-  diff. Only documents whose subject matter the change touches are read; pulling unrelated standards into the review
-  dilutes the signal and degrades judgment, the same reason Step 1.5 caps branch context. Correctness- and
-  behavior-bearing rules are weighted over style minutiae the linter already enforces. Stale docs that misdescribe
-  current behavior become CRIT findings.
+- **Review type.** The one concern a review checks, such as `security` or `testing`. With no type, you get the
+  _default review_, which covers eight concerns at once.
+- **Three severity levels.** Critical (fix before merge), Warning (should fix), and Suggestion (consider). When a
+  finding could go either way, it takes the lower level.
+- **Only what this change did.** A finding counts when this change introduced or worsened the problem, or when the
+  problem is critical no matter who introduced it. A second agent then re-checks the findings against the code.
+- **Your project's conventions win.** A pattern that differs from general best practice but matches the rest of your
+  project is not a finding. Style your linter or formatter enforces is left to it.
+- **YAGNI findings are advisory.** The review notes speculative code ("you aren't gonna need it") so you can decide
+  about it, but those notes never block a merge.
+- **Specialists.** The skill hands parts of the review to specialist agents, such as a security analyst or a test
+  engineer. Which ones run depends on the review type and on what your change touches. The skill also reads every changed file
+  itself against a checklist; this page calls that the _hand review_.
 
 ## When to use it
 
 **Invoke when:**
 
-- You are about to merge a branch and want a principled pre-merge review covering correctness, tests, security, and doc
-  compliance.
-- A change has landed that you want audited against the project's ADRs, coding standards, or general docs.
-- You want the exploit-path, coverage-gap, edge-case, structural, behavioral, clarity, and (when relevant) concurrency
-  dimensions covered _in parallel_ rather than one at a time.
-- You are working without a GitHub PR (local code, experimental branch, personal fork) and want the full review without
-  posting to a PR.
-- You want review findings on files you specify by name even when git is not available. The skill gracefully degrades to
-  file-based review.
+- You are about to merge a branch and want a review covering correctness, tests, security, and fit with your project's
+  docs and standards.
+- A change has landed and you want it checked against your ADRs, coding standards, or other docs.
+- You want several specialist reviews at once instead of one at a time.
+- You are working without a GitHub PR (local code, an experimental branch, a personal fork) and want a full review that
+  posts nothing.
+- You want named files reviewed even when git is not available.
 
 **Do not invoke for:**
 
-- **Posting the review to a GitHub PR.** Use [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md). It
-  delegates to this skill and then posts the review as PR comments.
-- **Explaining a change or getting oriented before reviewing.** Use [`/code-overview`](./code-overview.md) for a written
-  overview, or [`/code-walkthrough`](./code-walkthrough.md) to be paced through the change one step at a time. Run
-  either to understand what a change does, then run this skill to judge whether it is any good.
-- **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling,
-  data flow, concurrency, and SOLID assessment across a module.
-- **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial
-  validation.
-- **Mapping bounded contexts or domain boundaries.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md)
-  to discover where the domain's boundaries sit and where the code's boundaries diverge from them. This skill judges the
-  code in front of it; that one maps the domain the code is trying to express.
-- **Test planning in isolation.** Use [`/automated-test-planning`](./automated-test-planning.md) when you want a prioritized test plan
-  without a full correctness review, or [`/manual-test-planning`](./manual-test-planning.md) for a plain-language plan
-  a person runs by hand.
-- **Plan review.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) for reviewing a work plan,
-  not code.
-- **Feedback on Han's own skills.** Use [`/han-feedback`](../../../han-feedback/docs/skills/han-feedback.md) to capture post-session
-  feedback on the Han skills you ran.
+- **Posting the review to a GitHub PR.** Use [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md).
+  It runs this skill and then posts the result as PR comments.
+- **Understanding a change before you judge it.** Use [`/code-overview`](./code-overview.md) for a written overview, or
+  [`/code-walkthrough`](./code-walkthrough.md) to be led through the change one step at a time. Then run this skill.
+- **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow,
+  concurrency, and SOLID across a whole module.
+- **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence.
+- **Mapping bounded contexts or domain boundaries.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md).
+  This skill judges the code in front of it; that one maps the domain the code is trying to express.
+- **Test planning on its own.** Use [`/automated-test-planning`](./automated-test-planning.md) for a prioritized test
+  plan, or [`/manual-test-planning`](./manual-test-planning.md) for a plan a person runs by hand.
+- **Reviewing a plan, not code.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md).
+- **Feedback on Han's own skills.** Use [`/han-feedback`](../../../han-feedback/docs/skills/han-feedback.md).
 
 ## How to invoke it
 
-Run `/code-review` in Claude Code. Pass an optional size override and/or context.
+### Run your first review
 
-Give it:
+1. **Check out the branch you want reviewed.** The skill compares it against your default branch. If you are on the
+   default branch, it reviews your uncommitted work instead.
+2. **Optionally, run [`/project-discovery`](../../../han-core/docs/skills/project-discovery.md) once per project.** It
+   records where your ADRs, coding standards, and docs live, and your lint, build, and test commands. Without it, the
+   review finds them on a best-effort basis.
+3. **Run `/code-review`.** Before any check runs, the skill tells you what it understood: the review type and your
+   focus text. A default review also lists the available types, so a mistyped type shows up before anything starts.
+4. **Wait for the summary.** The run ends with a short message: the merge recommendation, the finding counts, and the
+   path to the report. See [What you get back](#what-you-get-back).
+5. **Fix, then run it again.** Each finding names how to fix it. Re-run after your fixes to confirm the count drops.
 
-1. **A size override, optional.** Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument to override
-   auto-classification. Without an override, the skill defaults to small and escalates only when signals clearly require
-   it. See the [Sizing](#sizing) section.
-2. **A focus-area or context hint, optional.** _"Focus on the security implications of the new auth endpoints,"_ or
-   _"review with extra attention to the database migration."_ Focus hints bias the manual review toward the named area;
-   the parallel agents still run on their domain-scoped slice of files.
-3. **A branch (implied).** If you are on a feature branch, the skill reviews changed files against the default branch
-   (Mode A). If you are on the default branch with uncommitted work, Mode B kicks in. If there is no git, Mode C reviews
-   what you point it at.
-4. **Specific files or globs, optional.** In Mode C (or when you want to scope a git-mode review), pass file paths or
-   glob patterns.
+The skill reads code and runs your project's lint, build, and test commands. It does not edit code, commit, or post
+anything.
 
-Example prompts:
+For a fuller walkthrough of the whole review workflow, read
+[How to run an effective code review](../../../docs/how-to/run-an-effective-code-review.md).
 
-- `/code-review`. Full review of the current branch's changes; auto-classifies size, defaulting to small.
-- `/code-review medium`. Override the size to medium.
-- `/code-review large "focus on the new auth endpoints"`. Override to large with a focus hint.
-- `/code-review`. _"Focus on the security implications of the new auth endpoints."_
-- `/code-review src/billing/`. Scope the review to the billing directory.
+### Choose a review type
+
+Leave the type off for the default review. Name a type as the first word, as in `/code-review testing`, when you want a
+deeper look at one concern.
+
+| Type              | Use it to check                                            | In the default review? |
+| ----------------- | ---------------------------------------------------------- | ---------------------- |
+| _(none)_          | All eight default concerns at once                         | It is the default      |
+| `security`        | Whether the change opens an exploitable path               | Yes                    |
+| `testing`         | Test coverage and edge cases of the change                 | Yes                    |
+| `architecture`    | Module structure, dependency direction, runtime flow       | Yes                    |
+| `data`            | Schemas, migrations, queries, and regulated data           | Yes                    |
+| `observability`   | Telemetry design and whether failures are visible          | Yes                    |
+| `resilience`      | Whether the code survives production failures              | Yes                    |
+| `release`         | Whether the change ships and rolls back safely             | Yes                    |
+| `maintainability` | Clarity, naming, and fit with the project's own standards  | Yes                    |
+| `docs`            | Whether docs can be found and followed, with no lost facts | No, name it to run it  |
+| `ux`              | Usability and accessibility of the interface               | No, name it to run it  |
+| `work-ticket`     | Whether the change resolves a named work ticket            | No, name it to run it  |
+
+> **A typed review skips security.** `/code-review testing` runs no security check. Its report says so on the review type line, with
+> `Security analysis did not run on this review.`
+> Run `security` on its own, or run the default review, when you want the security analyst.
+
+Picking a type narrows which specialists run and which parts of the checklist the review applies by hand. To see which
+specialists each type runs, read [Which specialists run](#which-specialists-run). Your team can also add its own types;
+see [Add your own review types](#add-your-own-review-types).
+
+You can run several typed reviews of one branch. Each type gets its own report, so they never overwrite each other;
+only re-running the same type replaces its earlier report.
+
+Run typed reviews one after another, not at once. Each review runs your lint, build, and tests in the same working
+tree, and two started together can collide on build output, ports, or test databases. That reports failures your change
+did not cause.
+
+### Steer the review with a focus hint
+
+Anything after the type is your focus hint. Use it to point the review at what matters most, such as
+_"focus on the security implications of the new auth endpoints"_ or _"extra attention to the database migration."_
+Every specialist and the hand review get the hint. Every changed file is still read, but with a hint, minor findings
+outside the focus area are left out.
+
+When there is no git, or nothing to review on the branch, words in your hint that name files, directories, or globs
+become the list of files to review. If you name none, the skill finds the source files in the current directory and
+asks you to confirm that list. It skips folders such as `node_modules/`, `vendor/`, `dist/`, and `build/`. On a branch,
+a path in your hint is only a hint: every changed file is still reviewed.
+
+### Example prompts
+
+- `/code-review`. The default review of your branch's changes.
+- `/code-review testing focus on retries`. A `testing` review with the hint "focus on retries."
+- `/code-review security the new auth endpoints`. A `security` review aimed at the auth endpoints.
+- `/code-review auth endpoints`. "auth" is not a type, so this is the default review with the hint "auth endpoints."
+- `/code-review work-ticket docs/tickets/my-ticket.md`. Checks whether the branch resolves that ticket. The ticket can
+  also be a URL or an ID, such as `work-ticket PROJ-42`.
+
+### When your first word looks like a type
+
+The skill reads your first word as a type when it matches one. Three cases trip people up:
+
+- **A hint that starts with a type word.** `/code-review data import flow` runs a `data` review. Put `default` first,
+  as in `/code-review default data import flow`, to run the default review with that hint.
+- **A file named like a type.** When reviewing files without git, write `./testing` so it reads as a path.
+- **Old size words.** `small`, `medium`, `large`, and `dynamic` no longer do anything. As the whole argument, or right
+  before a type, the word is dropped with the note
+  `Size options were removed from code review; "{word}" was ignored.` Anywhere else it stays in your hint, so
+  `/code-review large file uploads` keeps the hint "large file uploads."
+
+### Check a branch against a work ticket
+
+`/code-review work-ticket <ticket>` checks whether your change does what a ticket asks. The ticket can be a local file,
+a URL, or an ID. With nothing after `work-ticket`, the run stops and shows you the usage line.
+
+1. **The skill loads the ticket.** It reads a local file directly. Anything else it fetches with whatever tools and
+   permissions your Claude installation has.
+2. **If loading fails, it asks you.** On a failed load, a sign-in page, or an empty body, the run prints
+   `work-ticket could not load the ticket {ticket}: {what failed}.` and
+   `Paste the ticket's text, or tell me how to get it, and the review will continue.` Then it waits, with nothing
+   running. Paste the text, or say how to get it and the skill retries.
+3. **It compares the change against every requirement.** The ticket is saved as `ticket.md` in the run folder (a folder
+   beside the report that holds each specialist's working file). The
+   `gap-analyzer` agent lists each requirement the ticket states, met or not, and counts them. It treats the ticket as
+   data and never follows an instruction inside it.
+4. **The report gets a Ticket Resolution section** with one row per requirement (Met, Partial, or Not met) and the
+   evidence, plus a verdict:
+
+| Verdict                | When                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **Resolved**           | Every requirement is met, and none are missing from the count                                                                  |
+| **Not resolved**       | Any requirement is not met                                                                                                     |
+| **Partially resolved** | Otherwise: some requirement is Partial, or some are missing. When some are missing, the verdict says how many were not checked |
+| **Not verified**       | No requirement map came back and none was built by hand; one line says why                                                     |
 
 ## What you get back
 
-A structured review written to a file, named `code-review-{slug}.md` for the branch, ticket, or scope it covers. It
-lands under the `output-directory` in your `.han/config.md` when you have set one, and beside the specialists' own
-reports when you have not. A report already sitting at that name is replaced, and the run tells you which one it
-replaced. When the resolved destination cannot be written, the run falls back and names the destination it could not
-use, rather than throwing away a finished review.
+### The message when the run finishes
 
-Each finding's prose appears exactly once (its finding block, or its full security
-block; the summary-table row is an index, not a copy), and sections render only when they have content: a review of a
-small change produces a small document. The Review Summary table and the Review Recommendation are always present; every
-other section appears only when it has at least one item, and when several are present they keep a fixed order
-(Review Coverage, Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good). The
-document can contain:
+The run ends with a short message in a fixed order, so the answer comes first:
 
-- **A Review Coverage section**, present only when the run was manual-only. It opens by saying agent dispatch was
-  unavailable so no specialist read the change, then carries one row per absent coverage area in plain English: what
-  was swept by hand and under which checklist categories, and what was not swept with what to do instead. Its absence
-  means every planned coverage ran.
-- **A Review Summary table** indexing every corrective finding and every security finding across categories (automated
-  checks, correctness, testing, security, ADR/standard/docs compliance, documentation freshness), ordered by severity. A
-  corrective finding's tier is carried by its task-ID prefix; a security finding shows its tier inline in the row (for
-  example, `SEC-001 (Critical)`) so the table stands alone as the complete severity index. Each row also carries the
-  finding's fix route, and a finding the review established may never fire says so in its row. Both cues are there so
-  you can triage a long list before opening any single finding. Row order, severities, and finding identifiers are
-  unchanged; the cues sit inside existing rows.
-- **Critical findings** (🔴). Each with task ID (`CRIT-001`, `CRIT-002`, …), `file_path:line_number`, the issue, and the
-  recommended fix. Each also opens with a plain-language explanation written for someone who will not open the file:
-  what they could observe going wrong, what has to be true for it to happen, and how likely that is, said outright when
-  the answer is that the finding may never fire. All three are answered, and an answer that is not in doubt takes a
-  clause rather than a sentence. The guidance for the person who will open the file follows it, unchanged. Each finding
-  then names how it gets fixed: test-first (`/tdd`) when a behavior is missing, restructure (`/refactor`) when the
-  behavior is right and the shape is wrong, or by hand when the edit is small. The route is named, never started. The
-  `[Category]` label is kept on a block only when it names content a standalone reader needs (an ADR violation naming
-  the record, a standards violation naming the standard, or a security finding) and dropped for generic categories the
-  table already carries.
-- **Warnings** (🟡). Same structure with task ID `WARN-NNN`.
-- **Suggestions** (🔵). Same structure with task ID `SUGG-NNN`.
-- **Agent findings.** Coverage gaps (`T#`), edge cases (`EC#`), security findings (`SEC-NNN`), structural findings
-  (`S#`), behavioral findings (`B#`), clarity findings (`JD#`), concurrency findings (`C#` when the concurrency analyst
-  was dispatched), data findings (`D#` when the data engineer was dispatched), devops findings (`DV#` when the devops
-  engineer was dispatched), and on-call resilience findings (`OCE#` when the on-call engineer was dispatched). Each is
-  classified into the main severity tiers using the classification rubric. Security findings are the exception: they are
-  not folded into a severity section (see below).
-- **YAGNI findings.** Listed in their own `### 🟡 YAGNI` section with task IDs `YAGNI-NNN`. The section opens with the
-  verbatim statement _"These findings will not be corrected unless explicitly requested. They are documented so the team
-  can decide consciously whether to keep, simplify, or defer the items."_ Each finding is one line naming the failing
-  evidence type, the matched anti-pattern, and a single reopen-trigger clause. YAGNI findings are advisory; they are not
-  counted under CRIT / WARN / SUGG, do not appear in the summary table, and do not block a clean review. They carry no
-  plain-language explanation either, because that reopen trigger already answers what the explanation would say.
-- **Security vulnerabilities** (🔐). One full `SEC-NNN` block per proven vulnerability (OWASP category, location,
-  evidence, `EXPLOIT:` path, and severity), followed by a single short **Remediation** note that references the
-  `SEC-NNN` IDs and states the actionable fix in one or two sentences. Security findings are not cross-referenced into
-  the Critical section; instead the Review Recommendation reflects their severity (a Critical-severity security finding
-  yields a do-not-merge recommendation). The whole section is omitted when no proven vulnerabilities exist.
-- **What's Good** (✅). Rendered only when there is a specific, substantive positive worth recording; omitted entirely
-  otherwise rather than filled with generic praise.
-- **Deferred tests note.** Test cases the `test-engineer` considered but excluded as brittle, listed for transparency
-  (not counted toward the finding cap).
-- **ADR / coding-standard / documentation compliance findings.** Violations of project-specific docs, tagged with the
-  source (for example, `[ADR: 0042]`, `[Standard: error-handling]`, `[Docs Update: payments.md]`).
+1. The merge recommendation, in the report's own words.
+2. The counts by severity. Any YAGNI count is named separately, never added to the total.
+3. The paths to the report and the run folder, plus any report it replaced and any location it could not write to.
+4. Last, how many findings the second-check agent confirmed, lowered, or dropped. When no specialist could run, it says
+   so instead, along with how many areas it covered by hand and how many it could not.
 
-Finding caps are 30 items each for the manual review pass and the agent pass; security findings are not capped. If a cap
-is exceeded, the skill says so and recommends another review after fixes land.
+A clean review says the code can be approved and gives you the path. A review whose only findings are YAGNI notes
+still recommends approval and says zero findings need action, with the advisory count beside it. The review itself is
+never pasted into the conversation; it is always a file.
+
+### Where the report lands
+
+| What           | Detail                                                                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Report name    | `code-review-{slug}.md` for a default review, `code-review-{slug}--{type}.md` for a typed one                                                          |
+| The slug       | The branch, ticket, or scope reviewed, lowercased, with other characters turned into hyphens                                                           |
+| Location       | The `output-directory` in your [`.han/config.md`](../../../docs/configuration.md), else your docs folder (such as `docs/`), else the current directory |
+| Run folder     | A folder with the same name beside the report, holding each specialist's working file (and `ticket.md` for `work-ticket`)                              |
+| Same name      | A report already at that name is replaced, and the run tells you which one                                                                             |
+| Can't write it | The run falls back to another location and tells you which one it could not use, rather than losing a finished review                                  |
+
+The run prints the run folder's path before the specialists start and again when it finishes.
+
+### Reading the report
+
+The report opens with a summary table and a merge recommendation. Use the table to triage; open a finding only when you
+are ready to act on it. This is what each part of a row tells you:
+
+| What you see                           | What it means                                                                                                                 | What to do                                                                                                              |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 🔴 `CRIT-001`                          | Must fix before merge: security, data corruption, a breaking API, a failed lint, build, or test                               | Fix it. The report recommends not merging while any remain.                                                             |
+| 🟡 `WARN-001`                          | Should fix: a bug, missing error handling, a missing test                                                                     | You can merge, but review the warnings first.                                                                           |
+| 🔵 `SUGG-001`                          | Consider: style, refactoring, docs                                                                                            | Review before merging; fixing is optional.                                                                              |
+| 🔐 `SEC-001 (Critical)`                | A security hole with a demonstrated exploit path                                                                              | A Critical one means do not merge. Weigh High and Medium ones like Warnings. The Remediation note says how to fix them. |
+| A row starting `May never fire —`      | The review found this may not be reachable                                                                                    | Weigh it against how likely it is.                                                                                      |
+| A row starting `Not checked —`         | A Warning: your change affects what gets packaged, and the review did not open the built artifact. A gap, not a proven defect | Check the built artifact by hand before merging.                                                                        |
+| `test-first`, `restructure`, `by hand` | How to fix the finding                                                                                                        | Use `/tdd`, `/refactor`, or a small edit. The review never starts the fix.                                              |
+
+Each Critical, Warning, Suggestion, and security finding opens with a plain-language explanation for someone who will
+not open the file: what could go wrong, what has to be true for it to happen, and how likely that is. The technical
+detail for the person who will fix it follows: the `file_path:line_number`, the issue, and the suggested fix. Findings
+that break a project document are tagged with it, such as `[ADR: 0042]`, `[Standard: error-handling]`, or
+`[Docs Update: payments.md]`.
+
+YAGNI findings (`YAGNI-001`) are not in the summary table. They have their own section and never need action; see
+[YAGNI](#yagni).
+
+Two findings that give opposite advice for the same lines are both lowered one level (a Suggestion stays a
+Suggestion), and each carries a `Tension with {other-task-id}:` note so you can decide between them.
+
+### Sections in the report
+
+The summary table and the recommendation always appear. Every other section appears only when it has something in it,
+so a small change gets a small report. When present, sections come in this order:
+
+1. **Review type line**, under the title, such as `**Review type:** testing: {purpose}` or `**Review type:** default`.
+   It is always there, so you can tell two reports of one branch apart.
+2. **Review Summary** table: every corrective (Critical, Warning, Suggestion) and security finding, ordered by severity,
+   with the fix route for each corrective finding.
+3. **Review Recommendation**: whether to merge.
+4. **Type section**, only when the type adds one. Today only `work-ticket` does, with Ticket Resolution.
+5. **Review Coverage**, only when no specialist could run. It lists what the review covered by hand and what it could
+   not, with what to do instead. If this section is missing, specialists could run. A single specialist that failed on
+   its own is not listed here; its working file in the run folder reads `Not covered in this run`.
+6. **🔴 Critical**, **🟡 Warnings**, **🔵 Suggestions**: one block per finding.
+7. **🟡 YAGNI**: one line per finding. See [YAGNI](#yagni).
+8. **🔐 Security Vulnerabilities**: one block per proven vulnerability, with its OWASP category, location, evidence,
+   exploit path, and severity.
+9. **Remediation**: a short note on how to fix the security findings.
+10. **✅ What's Good**: only when there is something specific worth saying, never generic praise.
+
+Each finding's prose appears once. The summary table is an index, not a copy.
+
+When `test-engineer` considered a test but left it out because it would be brittle, the report lists it in a
+**Deferred tests** note after the testing findings, so you can see what was skipped and why. These do not count toward
+the finding limit.
+
+The type section sits between two marker comments, so `/post-code-review-to-pr` can carry it to the PR whole.
+
+The review lists at most 30 findings from its own hand review and 30 from the specialists. Security findings have no
+limit. If a limit is hit, the report says so and recommends another review once you have fixed the first batch.
 
 ## How to get the most out of it
 
-- **Run `/project-discovery` first.** The skill reads CLAUDE.md and `project-discovery.md` to find the ADR,
-  coding-standards, and documentation directories. Without them, the compliance and freshness steps degrade to
-  best-effort discovery.
-- **Keep docs, ADRs, and standards up to date.** Every reference the skill finds sharpens the compliance check. Stale
-  docs that contradict current behavior become CRIT findings, which is the signal to update the doc, not to bypass the
-  skill.
-- **Use focus hints for high-stakes branches.** When a branch touches a load-bearing surface (auth, billing, data
-  migrations), name it in the prompt. The skill biases manual attention toward the area while the parallel agents still
-  cover the full scope.
-- **Pair with `/investigate` when findings reveal a bug.** If the review surfaces a CRIT finding whose root cause needs
-  deeper analysis, dispatch `/investigate` next. It produces a fix plan with adversarial validation.
-- **Pair with `/architectural-analysis` when findings reveal coupling or structural issues.** The review runs per-file;
-  the architectural analysis runs per-module. Use both when the branch touches boundaries.
-- **Re-run after fixes.** The skill is cheap to re-dispatch. Fix the findings, run again, confirm the count drops.
-- **Use `/post-code-review-to-pr` if you want it posted to the PR.** `/post-code-review-to-pr` invokes this skill
-  end-to-end, then posts the review to GitHub. If you already ran this one locally, you can run
-  `/post-code-review-to-pr` next to publish.
+- **Run `/project-discovery` first.** The skill uses what it records to find your ADRs, coding standards, docs, and
+  commands.
+- **Keep your docs, ADRs, and standards current.** The review checks your change against them. A doc that now tells
+  developers the wrong thing about the changed code becomes a Critical finding; treat that as the cue to update the doc.
+- **Write down what the change is for.** The skill reads your PR description, a local `pr-body`, `PR_BODY.md`, or
+  `.pr-body` file, your commit messages, and your implementation plan, so it does not re-raise what you already
+  deferred or resolved. See [Branch context](#branch-context-and-why-the-skill-treats-it-as-untrusted).
+- **Name high-stakes areas in the focus hint.** When a branch touches auth, billing, or a data migration, say so.
+- **Re-run after fixes.** Fix the findings, run again, and confirm the count drops.
+- **Follow a bug to `/investigate`.** When a Critical finding hides a bug whose root cause needs digging, run
+  [`/investigate`](./investigate.md) next.
+- **Pair with `/architectural-analysis` for structural issues.** This review works file by file;
+  [`/architectural-analysis`](./architectural-analysis.md) works module by module. Use both when a branch moves
+  boundaries.
+- **Post it with `/post-code-review-to-pr`.** It runs this skill and posts the review to GitHub. You can also run it
+  after a local review to publish.
 
-## Sizing
+### Add your own review types
 
-Size is the primary lever the skill uses to decide how aggressively to review the change. The skill defaults to small
-and only escalates when concrete signals require it.
+A team can add review types, such as a `pii-check`, in [`.han/config.md`](../../../docs/configuration.md):
 
-| Size                  | Files              | Other signals                                                                                                                                               | Roster (max)                                                                                                                                                                                                | Severity bands in scope                                                                                                                                                                                     |
-| --------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Small** _(default)_ | 1–3 files          | Single subsystem; no cross-cutting concerns; no new module boundaries; no schema, migration, or infra changes; no auth/PII surface added.                   | The two required agents (`junior-developer`, `adversarial-security-analyst`) plus any conditional agent whose signal clearly fires (for example, a new test boundary triggers `test-engineer`).             | Only Critical findings escalate. Raise Warnings only when the finding is directly introduced by the change. Suggestions are omitted. Same rule for manual findings (Steps 4–6) and agent findings (Step 7). |
-| **Medium**            | 3–10 files         | One or two adjacent subsystems; may touch a single cross-cutting concern (one API contract, one schema migration, one new permission check, one new index). | Required two plus the conditional agents whose signals fire. Typically `test-engineer`, `edge-case-explorer`, and one of `structural-analyst` / `behavioral-analyst` / `data-engineer` / `devops-engineer`. | Critical and Warning findings escalate. Raise Suggestions only when directly introduced by the change. Same rule for manual and agent findings.                                                             |
-| **Large**             | More than 10 files | Multiple subsystems, architectural changes, security or data implications, multi-service coordination, or you explicitly request full agent review.         | Required two plus all conditional agents whose signals fire.                                                                                                                                                | All severities are in scope. Same rule for manual and agent findings.                                                                                                                                       |
+| You want to                                    | Use this section in `.han/config.md` | Notes                                                                                                                                |
+| ---------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Add a new review type                          | `## Code Review Types`               | Points at a type file with the same sections the shipped types use. Never joins the default review.                                  |
+| Add your own agent to a type, shipped or yours | `## Code Review Type Agents`         | The agent runs on every run of that type. On a default-set type, it also joins the default review when your change touches its area. |
+| Add an agent to the default review only        | `## Extra Agents`                    | Runs when what your change touches matches it. Typed reviews ignore it.                                                              |
 
-How the size is chosen:
+If a configured type's file is missing or incomplete, the skill falls back to the same type in your personal
+`.han/config.md` if there is one. When no usable entry remains, the run stops before it starts and names the file to
+fix. The
+[Configuration](../../../docs/configuration.md) guide has the schema and a worked example. The shipped type files under
+`han-coding/skills/code-review/references/types/` are working examples.
 
-- **Default to small.** Unless the file list and signals push the change into medium or large, the skill stays at small.
-- **Conditional roster.** Agents are dispatched only when their signal appears in the file list. `concurrency-analyst`
-  only when the files touch threads / async / shared state. `data-engineer` only when the files touch schemas,
-  migrations, queries, or ORM models. `devops-engineer` only when the files touch infra, CI/CD, or deployment. Larger
-  sizes do not force agents whose signals are absent.
-- **Calibration directive.** Every dispatched agent receives a directive scoped to the size. The smaller the size, the
-  narrower the severity bands the agent escalates, and the more aggressively benign-outcome concerns are dropped.
+### When a run does not go as planned
 
-How to override the size:
+| What happened                                                                   | What you'll see                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No specialist could run (the agent tool is unavailable or a dispatch is denied) | The review still runs, covering what it can by hand. The report adds a Review Coverage section listing what it could not cover.                                                                                      |
+| One specialist failed or returned nothing usable                                | Its working file in the run folder reads `Not covered in this run`, and it adds no findings.                                                                                                                         |
+| The work ticket would not load                                                  | The run asks you to paste it or say how to get it, and waits.                                                                                                                                                        |
+| A configured type's file is broken                                              | The run stops before it starts and names the file.                                                                                                                                                                   |
+| The report location can't be written                                            | The report goes somewhere else, and the run tells you where.                                                                                                                                                         |
+| Tests fail that your change didn't break                                        | Every failing lint, build, or test is a Critical finding, whoever caused it. Check whether it also fails on a clean checkout of the default branch, and whether another review was running in the same working tree. |
+| The review hit its finding limit                                                | Fix the listed findings and run again.                                                                                                                                                                               |
 
-- Pass `small`, `medium`, `large`, or `dynamic` as the first positional argument: `/code-review medium`,
-  `/code-review large "focus on the new auth endpoints"`.
-- When the size is overridden via `$size`, the skill announces the override (`Medium: passed via $size`) and uses the
-  chosen band for the roster cap and the calibration directive.
-- Pass `dynamic` when a project or personal `.han/config.md` sets a default band and you want this one run sized from
-  the change's own signals instead.
-- Conversational overrides (_"treat this as a large review"_) work as well and are equivalent.
-
-For the cross-skill sizing model and design principles, see [Sizing](../../../docs/sizing.md).
-
-## Cost and latency
-
-Cost scales with the chosen size. The two required agents (`junior-developer`, `adversarial-security-analyst`) always
-run; the rest of the roster is dispatched conditionally and capped by size. Automated checks (lint/build/tests from the
-project config), a file-by-file manual review, a documentation compliance pass, and a freshness pass run alongside.
-
-- **Small change.** Typically 2–4 agents in parallel plus the manual pass. Minutes for the agents; manual pass scales
-  with file count.
-- **Medium change.** Typically 4–6 agents plus the manual pass.
-- **Large change.** Typically 6–9 agents plus the manual pass.
-
-When the review produces at least one corrective finding, one additional `adversarial-validator` runs after the roster
-to validate the finding list (Step 7.4); a clean review skips it, and so does a manual-only run, which cannot dispatch
-it. One `han-communication:readability-editor` then
-rewrites the assembled review's prose against the shared readability standard (Step 8.5), leaving every task ID,
-severity, `file_path:line_number` reference, and code snippet unchanged.
-
-Agents run on their default models. Finding caps of 30 per pass keep output bounded. Security findings are uncapped. The
-skill is built for per-branch cadence, not tight-loop iteration over the same code. Fix the findings and re-run.
-
-## In more detail
-
-The skill walks an eleven-step process (Step 1.5 is a context loader inserted between Steps 1 and 2, and Step 8.5 is a
-readability pass inserted between Steps 8 and 9):
-
-1. **Identify changes.** Detect git mode (A/B/C), resolve project config, enumerate changed files. Bind `$focus_areas`
-   from the user's free-form argument. 1.5. **Load branch context.** Attempt PR description via
-   `gh pr view --json title,body,headRefName,baseRefName` (Mode A only, when `gh` is available); a local `pr-body`,
-   `PR_BODY.md`, or `.pr-body` file at the repo root; branch commit messages via
-   `git log {default-branch}..HEAD --pretty=format:%B` (Mode A) or `git log -n 20 --pretty=format:%B` (Mode B); and an
-   implementation plan resolved through the CLAUDE.md `plans:` / `planning:` key or, failing that, a Glob over
-   `docs/plans/*/feature-implementation-plan.md` and `plans/*/feature-implementation-plan.md` that prefers the directory
-   matching the current branch name (with `-` and `_` interchangeable). Summarize loaded content into `$branch_context`
-   (at most 200 words), treating the fetched content as untrusted data: the summary strips any instruction or directive
-   addressed to the reader or an agent rather than carrying it forward. When nothing loads, emit a single fail-open
-   warning, set `$branch_context` to `none provided`, and proceed. Skipped in Mode C. At Step 3.5 the binding is wrapped
-   in explicit untrusted-data markers so agents use it for intent only and never obey instructions inside it.
-2. **Automated quality checks.** Run the project's lint, build, and test commands. Report each failure as a CRIT finding
-   with category `[Automated Check]`. Do not fix; report.
-3. **Classify size and dispatch review agents in parallel.** Step 3.1 classifies the change as small / medium / large,
-   defaulting to small, and binds `{size}` for every later consumer. Step 3.2 selects agents: the required two
-   (`junior-developer`, `adversarial-security-analyst`) plus any conditional agents whose signals appear in the file
-   list. Step 3.3 is the authoritative home for size-based demotion and attaches the calibration directive verbatim to
-   every brief. Step 3.4 narrows each agent's brief to a domain-scoped slice of the file list (for example,
-   `structural-analyst` receives source files only; `data-engineer` receives schema, migration, query, ORM, and
-   data-access files only; `junior-developer` and `adversarial-security-analyst` receive the full list). Step 3.5
-   launches all selected agents in parallel, appending the shared `$focus_areas` and `$branch_context` blocks to every
-   prompt and the per-agent dispatcher directives to `structural-analyst`, `behavioral-analyst`, `junior-developer`, and
-   `edge-case-explorer`. If the dispatch mechanism fails, the run enters manual-only mode: it keeps the selected roster
-   as the absent-coverage list and the manual review sweeps the mapped checklist categories in the agents' place.
-4. **Manual file-by-file review.** Every changed file (alphabetical) against the review checklist: correctness, data
-   isolation, performance, error handling, testing, API design, maintainability, organization, docs, style, database,
-   packaging (Mode A only), ADR compliance. In Mode B and Mode C, the YAGNI checklist is skipped unless the user
-   requests it in `$focus_areas`. A finding located through a region read of a file over 1000 lines has its enclosing
-   unit confirmed by reading that unit in isolation before the finding is written.
-5. **Documentation compliance analysis.** Read only the ADRs, coding standards, and docs whose subject matter the change
-   touches, not the whole directory, and weight correctness-bearing rules over style minutiae the linter already covers.
-   Verify each standard's premise applies by reading at least one architectural file in this codebase before raising a
-   "violates standard X" finding; omit findings whose premise is not verified.
-6. **Documentation freshness review.** Check whether docs describing the changed code are now stale.
-7. **Collect, classify, and validate findings in four sub-steps.** 7.1 reads each dispatched agent's output file. 7.2
-   applies the reachability phrase-match demotion gate (CRIT → WARN → SUGG → omitted) when a finding's rationale
-   contains a documented reachability phrase; security findings are exempt. 7.3 classifies the surviving findings using
-   the size-aware rubric in `agent-finding-classification.md`, governed by Step 3.3's size rules. Junior-developer
-   findings that overlap with a specialist's finding reference the specialist instead of duplicating. 7.4 dispatches one
-   `adversarial-validator` over the consolidated corrective finding list to confirm, demote, or (with concrete
-   counter-evidence) drop each finding; it runs whenever any corrective finding exists, and skips when the review is
-   clean or the run is manual-only. Its brief also challenges any finding whose location came from a region read and
-   names an enclosing unit never read in isolation.
-8. **Generate review output.** Assemble the final review using the review template, rendering each section only when it
-   has content and keeping the fixed section order.
-   8.5. **Rewrite the finding prose for readability.** Dispatch `readability-editor` over the assembled review so its prose
-   meets the shared readability standard, with every task ID, severity, `file_path:line_number` reference, and code excerpt
-   preserved.
-   8.6. **Write the report file.** Resolve the directory (a configured `output-directory`, else the specialists' report
-   directory) and the file name (the branch, the ticket, or what was reviewed), then write it. A report already at that
-   name is replaced and recorded; an unwritable destination falls back and is recorded.
-9. **Verify.** Step 9.0 runs the self-consistency check (extract
-   `{task-id, file-path, line-range, recommended-action-summary}` tuples, then compare overlapping pairs and demote
-   contradictory recommendations with a `Tension with {other-task-id}:` note). Step 9.1 then verifies task IDs are
-   sequential, `file_path:line_number` references are valid, exploit fields are populated for security findings, the
-   summary table indexes every corrective and security finding (with security tiers shown inline) and matches the
-   sections present, no section is rendered empty, security findings carry no Critical cross-reference while the
-   recommendation still reflects their severity, and the YAGNI section's verbatim opening is preserved. The same step
-   confirms the newer content arrived: every finding you are expected to act on carries its plain-language explanation,
-   every corrective one names a fix route, and a finding that may never fire says so both in its own explanation and in
-   its summary row. It checks that a manual-only run's report carries the Review Coverage section with one row per
-   absent area, and that a full-coverage run's report does not, and that every region-read finding names its confirmed
-   enclosing unit. Anything missing is fixed before the review reaches you, not reported to you as a caveat.
-10. **Present.** A short message that leads with the recommendation and the counts by severity, then the path, then the
-    run's own facts. The review is never pasted into the conversation.
-
-## What the run says when it finishes
-
-A short message, in a fixed order, so the answer is the first thing you read:
-
-1. The recommendation, in the report's own words.
-2. The counts by severity, with any advisory count named separately rather than folded into the total.
-3. The path to the report, plus any report it replaced and any destination it could not write to.
-4. The run's own facts last: the size band and why, and the validator reconciliation. When no specialist read the
-   change, this part says so: agent dispatch was unavailable, how many coverage areas were swept by hand and how many
-   were not, and that the report's Review Coverage section lists them.
-
-A clean review says the code can be approved and gives you the path. A review whose only findings are advisory still
-recommends approval, says the count needing action is zero, and names the advisory count beside it, so you are never
-told "no findings" about a report whose body lists items.
+A specialist that has nothing to say does not count as a failure. The security analyst, for one, stays silent unless it
+can show a real exploit path.
 
 ## YAGNI
 
-YAGNI in `/code-review` is **advisory-only** and runs as a two-pass procedure. **Pass 1, evidence test:** for every
-speculative addition (defensive code, single-implementation interfaces, configuration knobs no caller sets,
-instrumentation for non-flowing telemetry), check whether the diff contains evidence of need from one of the acceptable
-evidence types in [`yagni-rule.md`](../../references/yagni-rule.md). When evidence is present, do not
-flag. **Pass 2, anti-pattern check:** only items that fail Pass 1 are matched against the named anti-patterns; matches
-become `YAGNI-###` findings whose body names the failing evidence type, the matched anti-pattern, and the simpler form
-considered.
+YAGNI in `/code-review` is **advisory only**. The review notes speculative additions so you can decide about them
+consciously; it does not reject the change.
 
-A YAGNI finding alone does not block a clean review; the posture is _make the cost of inclusion visible_, not _reject
-the change_. Critical-path correctness, security, and data-integrity findings are unaffected by this advisory posture
-and follow the standard severity rules. In Mode B and Mode C, the YAGNI checklist is skipped unless the user explicitly
-requests it, since the diff signal that distinguishes introduced code from pre-existing code is absent.
+It checks each speculative addition, such as defensive code, an interface with one implementation, a configuration
+option nothing sets, or telemetry nobody reads, in two passes:
 
-See [YAGNI](../../../docs/yagni.md) for the two gates, the acceptable-evidence list, the named anti-patterns, and why review
-skills make the cost of inclusion visible rather than enforce inclusion bans.
+1. **Is there evidence of need?** If the diff shows a need of one of the kinds accepted in
+   [`yagni-rule.md`](../../references/yagni-rule.md), the item is not flagged.
+2. **Does it match a named anti-pattern?** Only items that fail the first pass are checked. A match becomes a
+   `YAGNI-###` finding.
+
+YAGNI findings get their own section, which opens with this statement: _"These findings will not be corrected unless
+explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the
+items."_ Each finding is one line naming the missing evidence, the anti-pattern it matches, the simpler form considered,
+and what would make it worth revisiting. They are not in the summary table, carry no severity, and do not block a clean
+review.
+
+When reviewing uncommitted work or named files, the review skips YAGNI unless you ask for it in your focus hint.
+Without a branch diff, it cannot tell code you added from code that was already there.
+
+Correctness, security, and data-integrity findings are not affected; they follow the usual severity rules. See
+[YAGNI](../../../docs/yagni.md) for the full rule and why review skills surface the cost rather than ban the code.
+
+## Cost and latency
+
+What a review costs depends on its type and on what your change touches:
+
+- **A typed review** runs one or two specialists, plus any agents you attached to that type in `.han/config.md`.
+- **The default review** always runs two, `junior-developer` and `adversarial-security-analyst`, and adds each other
+  specialist whose area your change touches: up to eleven shipped specialists, plus any extras your config adds.
+- **Every review** also runs your lint, build, and test commands, reads each changed file by hand, and checks your docs.
+- **When at least one Critical, Warning, Suggestion, or security finding survives**, one more agent re-checks the
+  findings.
+- **On every review**, one agent rewrites the report's prose for readability, without changing any finding ID,
+  severity, file reference, or code sample.
+
+Specialists start in parallel, each on its own configured model. The skill is built to run once per branch or after a
+batch of fixes, not in a tight loop over the same code.
+
+## In more detail
+
+This section explains how the review reaches its findings, for when you want to know why something was or was not
+flagged. The full step-by-step process is in [`SKILL.md`](../../skills/code-review/SKILL.md).
+
+### What gets reviewed
+
+The skill picks one of three scopes on its own:
+
+| Your situation                                                               | What it reviews                                                     | Called in `SKILL.md` |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------- |
+| On a branch with changes                                                     | The full diff against the default branch                            | Mode A               |
+| No branch changes (for example, on the default branch), but uncommitted work | Your staged, unstaged, and untracked changes                        | Mode B               |
+| No git, or nothing to review                                                 | The files you name, or the source files it finds when you name none | Mode C               |
+
+Without a branch diff (Modes B and C), the review cannot tell new code from old, so it skips YAGNI unless you ask, and
+it does not load branch context in Mode C. Packaging checks, for changes to bundling, vendoring, shading, or dependency
+scope, run only on a branch diff.
+
+### Which specialists run
+
+Each review type names the specialists it always runs and the ones that join when the change touches their area.
+
+| Type              | Always runs                                | Joins when relevant   | Hand-review checklist                                                                     |
+| ----------------- | ------------------------------------------ | --------------------- | ----------------------------------------------------------------------------------------- |
+| `security`        | `adversarial-security-analyst`             | none                  | Data Isolation, Error Handling, API Design                                                |
+| `testing`         | `test-engineer`, `edge-case-explorer`      | none                  | Testing, Correctness                                                                      |
+| `architecture`    | `structural-analyst`, `behavioral-analyst` | none                  | Code Organization, API Design, Performance                                                |
+| `data`            | `data-engineer`                            | `on-call-engineer`    | Database, Data Isolation, Performance                                                     |
+| `observability`   | `observability-engineer`                   | none                  | Error Handling                                                                            |
+| `resilience`      | `on-call-engineer`                         | `concurrency-analyst` | Error Handling, Performance, Correctness                                                  |
+| `release`         | `devops-engineer`                          | `data-engineer`       | Packaging, Error Handling                                                                 |
+| `maintainability` | `junior-developer`                         | none                  | Code Maintainability, Documentation, Code Style & Patterns, Architecture Decision Records |
+| `docs`            | `information-architect`                    | `content-auditor`     | Documentation, Architecture Decision Records                                              |
+| `ux`              | `user-experience-designer`                 | none                  | none                                                                                      |
+| `work-ticket`     | `gap-analyzer`                             | `test-engineer`       | Correctness, Testing                                                                      |
+
+The default review combines the eight default types into one run. `junior-developer` and
+`adversarial-security-analyst` always run; every other specialist from those eight types joins only when the change
+touches its area, and the hand review covers every checklist category. The default review uses none of the member
+types' own severity rules, instructions, or report sections. A typed report never names or recommends another type.
+
+Each specialist sees only the files in its area. For example, `structural-analyst` gets source files and
+`data-engineer` gets schema, migration, query, and data-access files, while `junior-developer` and
+`adversarial-security-analyst` see the whole list. Each specialist numbers its findings in its own series, such as
+`T1` from `test-engineer` or `EC1` from `edge-case-explorer`, which you will see in its working file in the run folder.
+In the report, those findings are sorted into Critical, Warning, or Suggestion like any other, except security
+findings, which keep their `SEC-###` IDs and their own section. The skill's
+[`agent-dispatch.md`](../../skills/code-review/references/agent-dispatch.md) holds the full table of each
+specialist's area, files, and ID series.
+
+| Prefix | Specialist                      | Prefix      | Specialist                        |
+| ------ | ------------------------------- | ----------- | --------------------------------- |
+| `T`    | `test-engineer` (coverage gaps) | `DV`        | `devops-engineer`                 |
+| `EC`   | `edge-case-explorer`            | `OCE`       | `on-call-engineer`                |
+| `SEC`  | `adversarial-security-analyst`  | `OBS`       | `observability-engineer`          |
+| `S`    | `structural-analyst`            | `IA`        | `information-architect` (`docs`)  |
+| `B`    | `behavioral-analyst`            | `CA`        | `content-auditor` (`docs`)        |
+| `JD`   | `junior-developer` (clarity)    | `UX`        | `user-experience-designer` (`ux`) |
+| `C`    | `concurrency-analyst`           | `GAP`       | `gap-analyzer` (`work-ticket`)    |
+| `D`    | `data-engineer`                 | `X-{agent}` | An agent your team configured     |
+
+Each specialist writes its findings to a file in the run folder, or returns them as its final message, which the skill
+then saves there. The skill reads only what this run recorded, so a re-run never picks up an earlier run's files, and
+findings from a specialist that cannot write files still reach the report.
+
+The skill also tunes a few specialists for this review, without changing how they behave elsewhere.
+`structural-analyst` and `behavioral-analyst` start at Suggestion and raise a finding only when the change introduced
+or worsened it. `junior-developer` and `edge-case-explorer` keep their findings to the files under review.
+
+### How findings are filtered
+
+Several checks keep the report to findings that matter for this change:
+
+- **The severity rule.** Every specialist is told to raise only problems this change introduced or worsened, or that
+  are critical regardless. Theoretical concerns, existing best-practice gaps, and harmless scaling worries are left
+  out. Hand-review findings follow the same rule. A type file can replace this rule for its own runs, but all eleven
+  shipped types keep the default.
+- **Hedge words lower a finding.** When a specialist's own reasoning uses phrases like _theoretical_, _hypothetical_,
+  _defense-in-depth_, _effectively impossible_, _in case the upstream_, _could happen_, _should never happen_, or
+  _edge case that does not occur_, the finding drops one level, and a Suggestion is dropped. Security findings, which
+  already need a demonstrated exploit, and ticket gaps are exempt. This is a quick literal-phrase check; the second
+  check below catches hedging in other words.
+- **A second agent re-checks the findings.** `adversarial-validator` re-reads the change with fresh eyes and judges
+  each finding against the code, not against the specialist's reasoning. Each finding comes back confirmed, lowered one
+  level, or dropped. It drops a finding only with concrete counter-evidence at a `file_path:line_number`. A bare
+  assertion lowers the finding instead, and an unsure verdict leaves it standing. A security finding is dropped only
+  when its exploit is disproved that way. The agent adds no findings of its own. It does not run when there are no
+  corrective or security findings, or when no specialist could run; in that last case, the report says the findings were
+  not re-checked.
+- **Standards findings need proof.** Before raising "violates standard X," the review reads at least one file in your
+  codebase that shows the standard applies. If none does, it leaves the finding out.
+- **Contradictions are flagged.** Two findings on overlapping lines of one file that recommend opposite things are both
+  lowered (a Suggestion stays a Suggestion) and marked with a `Tension with` note. Contradictions across different files
+  are not checked.
+- **Locations in large files are confirmed.** In a file over 1000 lines, read by its changed regions, a finding can be
+  pinned to the wrong function. So the review reads the enclosing unit on its own to confirm it, and the finding names
+  that unit and the lines read.
+
+### Branch context, and why the skill treats it as untrusted
+
+Before the specialists start, the skill gathers what the change is for, in this order:
+
+1. The PR description, through `gh pr view`, on a branch with changes when `gh` is installed.
+2. A `pr-body`, `PR_BODY.md`, or `.pr-body` file at the repo root.
+3. Commit messages: the branch's own commits, or the last 20 when you are reviewing uncommitted work.
+4. An implementation plan. It looks first at the `plans:` (or `planning:`) key under `## Project Discovery` in
+   CLAUDE.md, then at `docs/plans/*/feature-implementation-plan.md` and `plans/*/feature-implementation-plan.md`. When
+   several plans match, it picks the folder whose name matches your branch (`-` and `_` count as the same).
+
+It sums these up in at most 200 words and gives that summary to every specialist, along with your focus hint. If none
+of them has content, it prints one warning and continues without.
+
+PR descriptions, tickets, and commit messages can be written by anyone, and can hold text meant to steer the review.
+So the skill treats this summary as data, never as instructions. It strips anything addressed to the reader or an
+agent, and wraps the rest in markers telling specialists to use it only to understand intent. Your own focus hint is
+trusted and is not wrapped.
+
+### Documentation checks
+
+The review reads only the ADRs, coding standards, and docs whose subject your change touches. Pulling in unrelated
+standards dilutes the review. It weighs rules about correctness and behavior over style details your linter already
+enforces. A doc that now tells developers the wrong thing about the changed code is a Critical finding; one that is
+merely incomplete is a Warning, and minor staleness is a Suggestion.
+
+### When no specialist can run
+
+If the skill cannot start specialists, because the agent tool is unavailable or a dispatch is denied, it does not stop.
+The hand review covers, by hand, the checklist categories that stand in for each missing specialist. The report's
+Review Coverage section lists what was covered and what could not be, and the second-check agent does not run. This can
+happen on any scope, including a full branch diff.
+
+### The steps, in order
+
+1. **Read the request.** Parse the type and focus hint, pick the scope, and tell you what it understood.
+2. **Gather context.** Load branch context and, for `work-ticket`, the ticket.
+3. **Run your checks.** Run lint, build, and tests. Each failure is a Critical `[Automated Check]` finding; the skill
+   reports failures and does not fix them.
+4. **Start the specialists** in parallel, each with its files, the severity rule, your focus hint, and the branch
+   context.
+5. **Review by hand.** Read every changed file against the type's checklist, then check the relevant docs for
+   compliance and freshness.
+6. **Collect and filter** the specialists' findings, then have the second agent re-check them.
+7. **Write the report**, rewrite its prose for readability, and save it.
+8. **Verify the report** before you see it: IDs, file references, section order, contradictions, and that every
+   finding carries its explanation and fix route. Anything missing is fixed, not passed on to you as a caveat.
+9. **Tell you the result** in the short message described in
+   [The message when the run finishes](#the-message-when-the-run-finishes).
 
 ## Sources
 
@@ -422,24 +514,24 @@ review, and documentation-compliance checking.
 
 Wiegers's _Peer Reviews in Software_ (2001) formalized inspection-style peer review as a distinct engineering
 discipline: a structured, checklist-driven pass that finds defects earlier and cheaper than testing alone. The skill's
-manual review step uses a structured checklist for exactly this reason.
+hand review uses a structured checklist for exactly this reason.
 
 URL: https://www.processimpact.com/books/PeerReviews.html
 
 ### Smartbear: State of Code Review
 
 Smartbear's annual surveys of code-review practice document the measurable effect of structured reviews on defect
-density and time-to-fix. The skill's severity scheme (CRIT/WARN/SUGG) and its finding cap reflect the consistently
-measured finding that reviews of more than ~400 LoC per hour lose effectiveness. Caps prevent flood and prioritization
-drift.
+density and time-to-fix. The skill's three severity levels and its finding limits reflect the consistently measured
+finding that reviews of more than ~400 LoC per hour lose effectiveness. The limits prevent a flood of findings and
+drift in priorities.
 
 URL: https://smartbear.com/resources/ebooks/the-state-of-code-review/
 
 ### Gene Kim, Jez Humble, et al.: Accelerate
 
 _Accelerate_ documents DORA research showing that high-performing teams rely on fast, automated, continuous review
-practices as part of their delivery flow. The skill's parallel agent dispatch during the manual review reflects this.
-Specialists and the reviewer work concurrently rather than in sequence.
+practices as part of their delivery flow. The skill's parallel specialists reflect this: they and the hand review work
+at the same time rather than in sequence.
 
 URL: https://itrevolution.com/product/accelerate/
 
@@ -447,40 +539,47 @@ URL: https://itrevolution.com/product/accelerate/
 
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
-- [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing
-  items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
+- [How to run an effective code review](../../../docs/how-to/run-an-effective-code-review.md). The end-to-end workflow
+  guide for reviewing a change with this skill.
+- [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies as advisory
+  findings: the two gates, the accepted evidence, and the named anti-patterns.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
-- [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md). Wraps this skill and posts the review to a
-  GitHub PR.
-- [`/code-overview`](./code-overview.md). The orientation counterpart: run it to understand a change before this skill
-  judges its quality.
-- [`/code-walkthrough`](./code-walkthrough.md). The paced counterpart to `/code-overview`: run it when you want to be
-  taught the change step by step before this skill judges it.
-- [`/investigate`](./investigate.md). Next step when a CRIT finding hides a bug whose root cause needs deeper analysis.
-- [`/architectural-analysis`](./architectural-analysis.md). Run alongside when the change touches module
-  boundaries.
-- [Sizing](../../../docs/sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the
-  default-to-small rule, and the `$size` override.
-- [`junior-developer`](../../../han-core/docs/agents/junior-developer.md),
-  [`adversarial-security-analyst`](../../../han-core/docs/agents/adversarial-security-analyst.md). The two agents this skill
-  always dispatches.
+- [Configuration](../../../docs/configuration.md). The `.han/config.md` guide, including `## Code Review Types` and
+  `## Code Review Type Agents`.
+
+**Skills to use alongside it:**
+
+- [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md). Runs this skill and posts the
+  review to a GitHub PR.
+- [`/code-overview`](./code-overview.md). Run it to understand a change before this skill judges it.
+- [`/code-walkthrough`](./code-walkthrough.md). Run it to be taught the change step by step before this skill judges
+  it.
+- [`/investigate`](./investigate.md). The next step when a Critical finding hides a bug whose root cause needs digging.
+- [`/architectural-analysis`](./architectural-analysis.md). Run alongside when the change moves module boundaries.
+
+**Agents this review runs:**
+
+- [`junior-developer`](../../../han-core/docs/agents/junior-developer.md) and
+  [`adversarial-security-analyst`](../../../han-core/docs/agents/adversarial-security-analyst.md). Always run on the
+  default review.
 - [`test-engineer`](../../../han-core/docs/agents/test-engineer.md),
   [`edge-case-explorer`](../../../han-core/docs/agents/edge-case-explorer.md),
   [`structural-analyst`](../../../han-core/docs/agents/structural-analyst.md),
   [`behavioral-analyst`](../../../han-core/docs/agents/behavioral-analyst.md),
-  [`concurrency-analyst`](../../../han-core/docs/agents/concurrency-analyst.md). Conditional dispatches that join the roster
-  when their signal appears in the file list.
-- [`data-engineer`](../../../han-core/docs/agents/data-engineer.md),
-  [`devops-engineer`](../../../han-core/docs/agents/devops-engineer.md). Conditional dispatches for changes touching
-  schemas/migrations/queries (data) or infra/CI/observability (devops).
-- [`on-call-engineer`](../../../han-core/docs/agents/on-call-engineer.md). Conditional dispatch when the change adds or modifies
-  application source with runtime resilience surface (outbound calls, retry logic, queue/buffer handling, async/await
-  code, error-handling on failure paths, idempotency, schema migrations co-deployed with dependent code, new production
-  code paths). Hard boundary against `devops-engineer`: this agent reads application source only.
-- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). Dispatched once at Step 7.4 to re-attack
-  the consolidated finding list against the code and confirm, demote, or drop each finding. Runs whenever the review
-  produced at least one corrective finding.
-- [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched at Step 8.5 to rewrite the
-  review's prose against the shared readability standard for the change's author and reviewers, leaving task IDs,
-  severities, `file_path:line_number` references, and code snippets unchanged.
+  [`concurrency-analyst`](../../../han-core/docs/agents/concurrency-analyst.md),
+  [`data-engineer`](../../../han-core/docs/agents/data-engineer.md),
+  [`devops-engineer`](../../../han-core/docs/agents/devops-engineer.md),
+  [`on-call-engineer`](../../../han-core/docs/agents/on-call-engineer.md), and
+  [`observability-engineer`](../../../han-core/docs/agents/observability-engineer.md). Run by the review types that name
+  them, and join a default review when the change touches their area.
+- [`information-architect`](../../../han-core/docs/agents/information-architect.md) and
+  [`content-auditor`](../../../han-core/docs/agents/content-auditor.md). Run by `docs`: the first always, the second
+  when the change edits an existing doc, given that doc's earlier version from git.
+- [`user-experience-designer`](../../../han-core/docs/agents/user-experience-designer.md). Run by `ux`.
+- [`gap-analyzer`](../../../han-core/docs/agents/gap-analyzer.md). Run by `work-ticket` to compare the change with the
+  ticket.
+- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). Re-checks the findings against the
+  code whenever the review has at least one.
+- [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Rewrites the report's prose for
+  readability, leaving IDs, severities, file references, and code unchanged.
 - [`SKILL.md` for /code-review](../../skills/code-review/SKILL.md). The internal process definition.

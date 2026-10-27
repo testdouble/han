@@ -1,0 +1,61 @@
+{
+  "plugins": ["han-communication", "han-core", "han-planning"],
+  "tests": [
+    {
+      "name": "Skill Call: /reassess-approach",
+      "type": "skill-call",
+      "model": "opus",
+      "skillFile": "han-planning:reassess-approach",
+      "promptFile": "skill-call-reassess-approach.md",
+      "scaffold": "ruby-ingest-parser",
+      "expect": [{ "skill-call": true }]
+    },
+    {
+      "name": "Skill Call: step back after six review rounds",
+      "type": "skill-call",
+      "model": "opus",
+      "skillFile": "han-planning:reassess-approach",
+      "promptFile": "skill-call-step-back-after-rounds.md",
+      "scaffold": "ruby-ingest-parser",
+      "expect": [{ "skill-call": true }]
+    },
+    {
+      "name": "Skill Call: is this worth doing at all",
+      "type": "skill-call",
+      "model": "opus",
+      "skillFile": "han-planning:reassess-approach",
+      "promptFile": "skill-call-worth-doing.md",
+      "scaffold": "ruby-ingest-parser",
+      "expect": [{ "skill-call": true }]
+    },
+    {
+      "name": "Skill Call: refine the plan is not a reassessment",
+      "type": "skill-call",
+      "model": "sonnet",
+      "skillFile": "han-planning:reassess-approach",
+      "promptFile": "skill-call-no-refine-plan.md",
+      "scaffold": "ruby-ingest-parser",
+      "expect": [{ "skill-call": false }]
+    },
+    {
+      "name": "Skill Call: research parsing libraries is not a reassessment",
+      "type": "skill-call",
+      "model": "sonnet",
+      "skillFile": "han-planning:reassess-approach",
+      "promptFile": "skill-call-no-research-libraries.md",
+      "expect": [{ "skill-call": false }]
+    },
+    {
+      "name": "Skill Prompt: reassess the hand-written parser after three stalled review rounds",
+      "type": "skill-prompt",
+      "model": "opus",
+      "skillFile": "han-planning:reassess-approach",
+      "promptFile": "prompt-reassess-parser-plan.md",
+      "scaffold": "ruby-ingest-parser",
+      "expect": [
+        { "result-contains": "Continue as is" },
+        { "llm-judge": { "rubricFile": "reassess-approach-quality.md", "model": "opus", "threshold": 0.8 } }
+      ]
+    }
+  ]
+}

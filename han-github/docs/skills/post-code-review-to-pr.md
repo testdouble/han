@@ -19,6 +19,12 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 
 - **Wraps `/code-review`.** The skill delegates the actual review to `/code-review`, adds a pre-post clarity check from
   `junior-developer`, then handles the GitHub-posting step.
+- **Review types pass straight through.** Your argument string goes to `/code-review` verbatim, so a leading review
+  type, shipped or declared in `.han/config.md`, selects that type: `/post-code-review-to-pr testing` runs a `testing`
+  review. Free text that happens to start with a type name, such as "testing the retry logic", also runs that type.
+- **Stops cleanly when there is no report.** When `/code-review` ends without naming a report path (it stopped with a
+  message, or you left a `work-ticket` wait without supplying the ticket), the skill relays its last message and posts
+  nothing.
 - **Branch context flows automatically.** Because the wrapped `/code-review` runs Step 1.5 (branch context loading) on
   the same branch, it fetches the PR description via `gh pr view` and summarizes it into a `$branch_context` block. That
   block is plumbed to every dispatched agent, so agents avoid re-raising items the PR description has already deferred
@@ -36,10 +42,9 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 **Invoke when:**
 
 - You have an open PR and want a full code review posted as PR comments (or a formal review) on GitHub.
-- A PR is ready for review and you want `/code-review`'s size-aware roster: `junior-developer` and
-  `adversarial-security-analyst` always, plus `test-engineer`, `edge-case-explorer`, `structural-analyst`,
-  `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, and `devops-engineer` conditionally, based on what the
-  changed files touch. You also get the manual file-by-file review, with the results visible on GitHub.
+- A PR is ready for review and you want `/code-review`'s specialists on it, either the default review or one focused
+  review type such as `security` or `work-ticket <ticket>`, with the manual file-by-file review and the results visible
+  on GitHub.
 - You want the review to drive a fix plan afterward for the Critical and Warning findings.
 
 **Do not invoke for:**
@@ -51,19 +56,26 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 
 ## How to invoke it
 
-Run `/post-code-review-to-pr` in Claude Code. Optionally pass focus areas.
+Run `/post-code-review-to-pr` in Claude Code. Optionally pass a review type and focus areas.
 
 Give it:
 
 1. **An open PR on the current branch.** The skill verifies with `gh pr view --json number,url` and
    `gh pr diff --name-only`. If either fails, it stops.
-2. **A focus hint, optional.** _"Focus on the security implications of the new auth endpoints."_ The hint is forwarded
-   to `/code-review`.
-3. **gh and jq installed.** Both are required. Otherwise the skill stops at the pre-requisite check.
+2. **A review type, optional.** The same first-word type `/code-review` takes: `security`, `testing`, `architecture`,
+   `data`, `observability`, `resilience`, `release`, `maintainability`, `docs`, `ux`, `work-ticket <ticket>`, or a type
+   your `.han/config.md` declares. Without one,
+   the default review runs.
+3. **A focus hint, optional.** _"Focus on the security implications of the new auth endpoints."_ The whole argument
+   string is forwarded to `/code-review` as you typed it.
+4. **gh and jq installed.** Both are required. Otherwise the skill stops at the pre-requisite check.
 
 Example prompts:
 
-- `/post-code-review-to-pr`. Run a full code review on the current PR.
+- `/post-code-review-to-pr`. Run the default code review on the current PR.
+- `/post-code-review-to-pr testing`. Run a `testing` review and post it.
+- `/post-code-review-to-pr work-ticket PROJ-42`. Check the PR against ticket PROJ-42. If the ticket cannot be loaded,
+  the review waits for you to paste it, and posts once the review finishes.
 - `/post-code-review-to-pr`. _"Focus on the security implications of the new auth endpoints."_
 - `/post-code-review-to-pr`. _"Review with extra attention to the database migration changes."_
 
@@ -72,12 +84,16 @@ Example prompts:
 A full review plus GitHub integration:
 
 - **The full `/code-review` report**, written to a file by that skill and read back from the path its closing message
-  names. Review Summary table, Review Recommendation, and all findings organized by severity, plus any optional sections
+  names. The report's `**Review type:**` line, the Review Summary table, the Review Recommendation, the type section, and
+  all findings organized by severity, plus any optional sections
   (Review Coverage, What's Good, Security Vulnerabilities, Remediation) that are present. The code-review skill renders a
   section only when it has content, so the body builder treats every section other than the table and the
   recommendation as optional. A Review Coverage section, present only when no specialist read the change, always crosses
   to the pull request and is exempt from the clarity pass's length-matching, so the reviewers there see the same
-  disclosure the report carries. See the `/code-review` documentation for the detailed shape.
+  disclosure the report carries. The type line lets two posted reviews of one PR be told apart. The type section (such
+  as `work-ticket`'s Ticket Resolution) is everything between the report's `<!-- type-section:start -->` and
+  `<!-- type-section:end -->` markers; it crosses whole and uncut, whatever its heading, and is absent when the report
+  has no markers. See the `/code-review` documentation for the detailed shape.
 - **An offer to post to GitHub.** `AskUserQuestion` with "Yes, post to GitHub" / "No, just the local review."
 - **When accepted.** The skill gathers PR metadata (`owner/repo`, `pr_number`, `head_sha`, author login, current user
   login) and runs a `junior-developer` clarity pass on the draft review body. That pass flags unclear wording,
@@ -104,10 +120,9 @@ A full review plus GitHub integration:
 
 ## Cost and latency
 
-The skill wraps `/code-review`, whose roster scales with the change [size](../../../docs/sizing.md). Two agents always run
-(`junior-developer`, `adversarial-security-analyst`); the rest (`test-engineer`, `edge-case-explorer`,
-`structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, `devops-engineer`) join only when
-their domain is touched by the diff. Plus the manual review pass and optional compliance/freshness steps. Costs match
+The skill wraps `/code-review`, whose roster comes from the review type. A typed review runs that type's one to four
+specialists. The default review always runs `junior-developer` and `adversarial-security-analyst`, and the rest of its
+roster joins only when the diff touches that agent's domain. Plus the manual review pass and optional compliance/freshness steps. Costs match
 `/code-review` plus the incremental gh-posting time. Typical runs are a few minutes for the review and a few seconds for
 the post.
 
@@ -116,10 +131,10 @@ the post.
 The skill walks a five-step process:
 
 1. **Validate PR state.** Require gh and jq installed; require a PR that exists on the current branch.
-2. **Run `/code-review`.** Invoke the skill with any user-provided focus areas. Inherits the size-aware code-review
-   roster (`junior-developer` and `adversarial-security-analyst` always, plus the conditional roster) when the changed
-   files trigger their domain.
-3. **Offer to post review to GitHub.** On yes, gather PR metadata and assemble the draft review body.
+2. **Run `/code-review`.** Invoke the skill with the original argument string, verbatim, so any review type selects
+   that type's roster. When `/code-review` names no report path, relay its last message and stop without posting.
+3. **Offer to post review to GitHub.** On yes, gather PR metadata and assemble the draft review body, including the
+   review type line and the type section.
 4. **Pre-post clarity check.** Dispatch a `junior-developer` agent against the drafted review text (not the code) to
    catch unclear wording, mis-assigned severity, accusatory tone, or missing `file_path:line_number` references. Apply
    the edits, then post the final body. As PR comment (self-authored) or formal review (otherwise), event type from

@@ -1,7 +1,7 @@
 # han-coding
 
 The coding layer of the Han suite: the skills you reach for while working in code. It writes code test-first, refactors
-it under a green suite, and reviews, overviews, walks someone through, analyzes, tests, investigates, and standardizes
+it under a green suite, restructures whole areas of it unit by unit, and reviews, overviews, walks someone through, analyzes, tests, investigates, and standardizes
 it, dispatching specialist agents to cover each dimension in parallel. Reach for it once there is code to write, change, or judge.
 
 **Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication` and `han-core`.
@@ -12,11 +12,13 @@ it, dispatching specialist agents to cover each dimension in parallel. Reach for
   enforced observed-failure gate; it writes code, not a document.
 - [`/refactor`](docs/skills/refactor.md) — Restructure existing code without changing its behavior through a test-gated
   loop that re-runs the full suite after every small step.
+- [`/restructure`](docs/skills/restructure.md) — Restructure a codebase or a large area of it toward a target layout,
+  unit by unit through `/refactor` and `/tdd` with a commit and a logged decision for each, using the Mikado Method to
+  tease apart any unit too tangled to move in one step.
 - [`/design-an-api`](docs/skills/design-an-api.md) — Design the contract for an API change inside one codebase, with
   every element justified from one stated goal and the design run past a question round and an adversarial validation
   round.
-- [`/code-review`](docs/skills/code-review.md) — Run a comprehensive code review on the current branch or specified
-  files, with a size-scaled roster of specialist agents.
+- [`/code-review`](docs/skills/code-review.md) — Reviews a branch, uncommitted work, or named files for one named concern, such as security or testing, with the specialist agents that review type names, or runs the default review across all of them.
 - [`/code-overview`](docs/skills/code-overview.md) — Produce a human-readable, progressive-disclosure overview of
   unfamiliar code or a PR's changes, leading with why the code exists; raises no findings.
 - [`/code-walkthrough`](docs/skills/code-walkthrough.md) — Walk someone through a branch's changes one step at a time in

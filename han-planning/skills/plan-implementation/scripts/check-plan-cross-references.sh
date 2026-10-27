@@ -91,14 +91,17 @@ outside_fences "$PLAN" |
 # One awk over the file, tracking fences itself and never exiting early. An early `exit`
 # inside a pipeline sends SIGPIPE upstream, which `set -o pipefail` turns into a failure of
 # the whole check — a check that dies rather than reporting is worse than no check.
+#
+# The heading level is spelled `###?#?` rather than `#{2,4}`: mawk, the default awk on
+# Debian and Ubuntu, does not match three or four hashes with the interval form.
 field_value() {
   local file="$1" id="$2" field="$3"
   awk -v id="$id" -v field="$field" '
     /^[[:space:]]*```/ { fenced = !fenced; next }
     fenced { next }
     done_field { next }
-    $0 ~ "^#{2,4}[[:space:]]+" id ":" { inside = 1; next }
-    inside && /^#{2,4}[[:space:]]/ { inside = 0; done_field = 1; next }
+    $0 ~ "^###?#?[[:space:]]+" id ":" { inside = 1; next }
+    inside && /^###?#?[[:space:]]/ { inside = 0; done_field = 1; next }
     collecting && /^[[:space:]]*$/ { done_field = 1; collecting = 0; next }
     collecting && /^[[:space:]]*[-*][[:space:]]/ { done_field = 1; collecting = 0; next }
     collecting { sub(/^[[:space:]]+/, ""); printf " %s", $0; next }

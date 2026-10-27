@@ -26,6 +26,9 @@ flowchart TD
     research --> feature["/plan-a-feature"]
     feature --> impl["/plan-implementation"]
     impl --> review["/iterative-plan-review"]
+    review -.at the cap, not converged.-> reassess["/reassess-approach"]
+    impl -.at the cap, not converged.-> reassess
+    reassess -.re-specify.-> feature
     review --> items["/plan-work-items"]
     impl --> items
     items --> gh["/work-items-to-issues (GitHub)"]
@@ -49,6 +52,14 @@ flowchart TD
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md) →
   [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md).** Specify, plan the build, stress-test the plan,
   then break it into work. Skip the review pass when the plan is already trusted.
+- **[`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) or
+  [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md) →
+  [`/reassess-approach`](../han-planning/docs/skills/reassess-approach.md).** When either loop's multi-round run
+  (medium or large) reaches its cap without converging, it hands the plan and its findings to a fresh-context critic
+  that returns structurally different alternatives, including stopping, and asks you to choose. A small run ends with a
+  pointer to the skill instead. "Continue as is" sends the run on as before; a different
+  approach sends it back to `/plan-a-feature` or on to [`/plan-a-change`](../han-planning/docs/skills/plan-a-change.md).
+  You can also run it by hand on any plan or code path that keeps drawing findings.
 - **[`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md) → publish.** Turn the work items into tickets
   where your team tracks them: [`/work-items-to-issues`](../han-github/docs/skills/work-items-to-issues.md) for GitHub,
   [`/work-items-to-jira`](../han-atlassian/docs/skills/work-items-to-jira.md) for Jira (opt-in `han-atlassian`), or
@@ -95,6 +106,10 @@ flowchart TD
     design --> tdd["/tdd"]
     review --> pr["/post-code-review-to-pr"]
     refactor --> tdd
+    restructure["/restructure"] -.runs.-> arch
+    restructure -.runs.-> change
+    restructure -.runs.-> refactor
+    restructure -.runs.-> tdd
     tdd --> prdesc["/update-pr-description"]
     investigate["/investigate"] --> iterate["/iterative-plan-review"]
     ddd["/ddd-analysis"] --> arch
@@ -102,6 +117,7 @@ flowchart TD
     pairing["/pairing"] -.drives.-> refactor
     pairing -.drives.-> tdd
     pairing -.drives.-> design
+    pairing -.drives.-> restructure
 ```
 
 - **[`/code-review`](../han-coding/docs/skills/code-review.md) →
@@ -118,6 +134,12 @@ flowchart TD
   refactor would mean deciding the target structure while editing, plan the change first. The report becomes the
   current-state record, and the plan's sequenced change units convert to work items or feed a refactor one at a time.
   `/plan-a-change` runs its own discovery round when you have no report, so the analysis step is optional.
+- **[`/restructure`](../han-coding/docs/skills/restructure.md) runs
+  [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
+  [`/plan-a-change`](../han-planning/docs/skills/plan-a-change.md), and then
+  [`/refactor`](../han-coding/docs/skills/refactor.md) or [`/tdd`](../han-coding/docs/skills/tdd.md) per unit.** When a
+  restructure spans many files or modules and you want to step away, it chains the whole sequence after one start gate,
+  commits each unit, and uses the Mikado Method on any unit `/refactor` cannot finish in one step.
 - **[`/refactor`](../han-coding/docs/skills/refactor.md) → [`/tdd`](../han-coding/docs/skills/tdd.md).** Preparatory
   refactoring makes the change easy, then `/tdd` makes the easy change.
 - **[`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) →
@@ -137,10 +159,10 @@ flowchart TD
   turn its commits into the PR body. This is the description half of the PR; `/post-code-review-to-pr` is the review half,
   and the two are independent.
 - **[`/pairing`](../han-core/docs/skills/pairing.md) drives
-  [`/refactor`](../han-coding/docs/skills/refactor.md), [`/tdd`](../han-coding/docs/skills/tdd.md), and
-  [`/design-an-api`](../han-coding/docs/skills/design-an-api.md).** This is not a chain but a wrapper: `/pairing` runs one
-  of them and takes control back at each unit boundary, so you review as the work lands rather than at the end. Invoking
-  any of the three directly runs it straight through, unchanged.
+  [`/refactor`](../han-coding/docs/skills/refactor.md), [`/restructure`](../han-coding/docs/skills/restructure.md),
+  [`/tdd`](../han-coding/docs/skills/tdd.md), and [`/design-an-api`](../han-coding/docs/skills/design-an-api.md).** This
+  is not a chain but a wrapper: `/pairing` runs one of them and takes control back at each unit boundary, so you review
+  as the work lands rather than at the end. Invoking any of the four directly runs it straight through, unchanged.
 
 ## Planning the tests
 

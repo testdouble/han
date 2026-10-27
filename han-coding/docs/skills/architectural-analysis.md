@@ -30,7 +30,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   `adversarial-security-analyst`, `data-engineer`, and `devops-engineer` join when the focus area touches auth/PII,
   schemas/data contracts, or operational surface. `on-call-engineer` joins when application source in the focus area
   shows on-call resilience signal (outbound calls, retry logic, queue/buffer handling, async/await code, error handling
-  on production paths, idempotency surfaces). `codebase-explorer` joins for large, unfamiliar areas. `system-architect`
+  on production paths, idempotency surfaces). `observability-engineer` joins when the focus area carries telemetry
+  design (instrumentation, metric labels, sampling, or telemetry pipeline configuration). `codebase-explorer` joins for large, unfamiliar areas. `system-architect`
   joins at large size when the focus area crosses a service or bounded-context seam. An agent whose domain the code does
   not touch is not dispatched, because that only burns tokens and dilutes the report.
 - **The roster scales with size.** Small runs the spine plus concurrency. Medium adds one or two of the security, data,
@@ -116,11 +117,11 @@ Example prompts:
 Size sets how many specialists join the spine and how aggressively each agent calibrates its findings. The skill
 defaults to small and only escalates when concrete signals require it.
 
-| Size                  | Scope signals                                                                                                                                                                   | Roster                                                                                                                                                                                                                                             |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Small** _(default)_ | A single module or directory. No security, data, DevOps, or system-seam signal. Concurrency may or may not be present.                                                          | The spine (`structural-analyst`, `behavioral-analyst`, then `risk-analyst`, then `software-architect`) plus `concurrency-analyst` when concurrency primitives are present. 3–4 agents. Analysts escalate only the clearest high-impact findings.   |
-| **Medium**            | Two or three adjacent subsystems, or exactly one cross-cutting concern (one auth surface, one data contract, or one operational surface).                                       | The spine plus one or two of `adversarial-security-analyst` / `data-engineer` / `devops-engineer` / `on-call-engineer` whose signals fire, plus `concurrency-analyst` when present. 4–6 agents. Analysts surface high- and medium-impact findings. |
-| **Large**             | More than roughly a dozen files across multiple subsystems, two or more cross-cutting concerns together, a cross-service or bounded-context seam, or you explicitly request it. | The spine plus every signalled specialist, `codebase-explorer` when the area is large and unfamiliar, and `system-architect` when a system-seam signal is present. 6–9 agents. Analysts surface the full finding set.                              |
+| Size                  | Scope signals                                                                                                                                                                   | Roster                                                                                                                                                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Small** _(default)_ | A single module or directory. No security, data, DevOps, or system-seam signal. Concurrency may or may not be present.                                                          | The spine (`structural-analyst`, `behavioral-analyst`, then `risk-analyst`, then `software-architect`) plus `concurrency-analyst` when concurrency primitives are present. 3–4 agents. Analysts escalate only the clearest high-impact findings.                              |
+| **Medium**            | Two or three adjacent subsystems, or exactly one cross-cutting concern (one auth surface, one data contract, or one operational surface).                                       | The spine plus one or two of `adversarial-security-analyst` / `data-engineer` / `devops-engineer` / `on-call-engineer` / `observability-engineer` whose signals fire, plus `concurrency-analyst` when present. 4–6 agents. Analysts surface high- and medium-impact findings. |
+| **Large**             | More than roughly a dozen files across multiple subsystems, two or more cross-cutting concerns together, a cross-service or bounded-context seam, or you explicitly request it. | The spine plus every signalled specialist, `codebase-explorer` when the area is large and unfamiliar, and `system-architect` when a system-seam signal is present. 6–9 agents. Analysts surface the full finding set.                                                         |
 
 How the size is chosen:
 
@@ -166,6 +167,9 @@ Sections whose agent was not dispatched are removed, not left empty. The full se
 - **On-Call Resilience** _(when the on-call signal fires)._ Verbatim `on-call-engineer` output. `OCE-###` findings at
   the application source line, naming the code-level resilience anti-pattern, the production failure mode it leads to,
   and the impact. Application source only; infrastructure and pipeline concerns live in DevOps Readiness.
+- **Observability Design** _(when the telemetry-design signal fires)._ Verbatim `observability-engineer` output.
+  `OBS-###` findings on naming and semantic conventions, metric label cardinality and telemetry cost, sampling design,
+  telemetry pipeline configuration, and signal choice. SLOs, alert rules, and dashboards live in DevOps Readiness.
 - **Codebase Map** _(large, unfamiliar areas)._ Verbatim `codebase-explorer` output: the discovery map the analysts and
   architects worked from.
 - **Risk Assessment.** Verbatim `risk-analyst` output. `R#` items scoring the `S`/`B`/`C` findings by likelihood,
@@ -306,6 +310,7 @@ URL: https://www.domainlanguage.com/ddd/
   [`data-engineer`](../../../han-core/docs/agents/data-engineer.md),
   [`devops-engineer`](../../../han-core/docs/agents/devops-engineer.md),
   [`on-call-engineer`](../../../han-core/docs/agents/on-call-engineer.md),
+  [`observability-engineer`](../../../han-core/docs/agents/observability-engineer.md),
   [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). The signal-selected specialists added at medium and
   large.
 - [`risk-analyst`](../../../han-core/docs/agents/risk-analyst.md). The agent that scores the analysts' findings by likelihood,

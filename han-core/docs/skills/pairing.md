@@ -50,7 +50,7 @@ use the skill. For what the skill does internally, read the skill definition at
 - **Understanding something rather than producing it.** Use
   [`/code-overview`](../../../han-coding/docs/skills/code-overview.md) for a written overview, or
   [`/research`](../../../han-research/docs/skills/research.md) for an open question.
-- **Running a skill straight through.** Invoke `tdd`, `refactor`, `design-an-api`, `iterative-plan-review`, or
+- **Running a skill straight through.** Invoke `tdd`, `refactor`, `restructure`, `design-an-api`, `iterative-plan-review`, or
   `plan-implementation` directly. Each runs to completion without pausing unless this skill is driving.
 
 ## How to invoke it
@@ -170,8 +170,8 @@ Treat both as provisional.
 - [YAGNI](../../../docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule.
 - [`collaborative-stop-rule.md`](../../references/collaborative-stop-rule.md). The shared contract this skill and its
   backing skills follow, defining what a stop presents and what returning control means.
-- [`/tdd`](../../../han-coding/docs/skills/tdd.md), [`/refactor`](../../../han-coding/docs/skills/refactor.md), and
-  [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). The coding skills this one can drive.
+- [`/tdd`](../../../han-coding/docs/skills/tdd.md), [`/refactor`](../../../han-coding/docs/skills/refactor.md),
+  [`/restructure`](../../../han-coding/docs/skills/restructure.md), and [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md). The coding skills this one can drive.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) and
   [`/plan-implementation`](../../../han-planning/docs/skills/plan-implementation.md). The planning skills this one can
   drive.

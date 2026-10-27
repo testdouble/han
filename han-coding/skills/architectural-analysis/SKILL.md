@@ -144,25 +144,31 @@ large") is equivalent to `$size`.
 
 **Signal-selected discovery specialists — added when the signal is present and the band allows:**
 
-| Specialist                                          | Add when                                                                                                                                                                                                                                                                                  | Min band |
-| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `han-core:concurrency-analyst` (`C#`)               | Concurrency signal present                                                                                                                                                                                                                                                                | Small    |
-| `han-core:adversarial-security-analyst` (`SEC-###`) | Security signal present                                                                                                                                                                                                                                                                   | Medium   |
-| `han-core:data-engineer`                            | Data signal present                                                                                                                                                                                                                                                                       | Medium   |
-| `han-core:devops-engineer` (`DOR-###`)              | DevOps signal present                                                                                                                                                                                                                                                                     | Medium   |
-| `han-core:on-call-engineer` (`OCE-###`)             | On-call resilience signal present: application source in the focus area has outbound calls, retry logic, queue/buffer handling, async/await code, error-handling on a production path, fan-out loops, idempotency surfaces, or new production code paths whose failure would page someone | Medium   |
-| `han-core:codebase-explorer`                        | Unfamiliar-area signal present                                                                                                                                                                                                                                                            | Large    |
-| `han-core:system-architect` (`SA#`)                 | System-seam signal present                                                                                                                                                                                                                                                                | Large    |
+| Specialist                                          | Add when                                                                                                                                                                                                                                                                                                                                       | Min band |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `han-core:concurrency-analyst` (`C#`)               | Concurrency signal present                                                                                                                                                                                                                                                                                                                     | Small    |
+| `han-core:adversarial-security-analyst` (`SEC-###`) | Security signal present                                                                                                                                                                                                                                                                                                                        | Medium   |
+| `han-core:data-engineer`                            | Data signal present                                                                                                                                                                                                                                                                                                                            | Medium   |
+| `han-core:devops-engineer` (`DOR-###`)              | DevOps signal present                                                                                                                                                                                                                                                                                                                          | Medium   |
+| `han-core:on-call-engineer` (`OCE-###`)             | On-call resilience signal present: application source in the focus area has outbound calls, retry logic, queue/buffer handling, async/await code, error-handling on a production path, fan-out loops, idempotency surfaces, or new production code paths whose failure would page someone                                                      | Medium   |
+| `han-core:observability-engineer` (`OBS-###`)       | Telemetry-design signal present: the focus area defines metric instruments or labels, span attributes, log schemas, OpenTelemetry SDK setup (samplers, exporters, resource attributes), or telemetry pipeline configuration (OpenTelemetry Collector, Prometheus scrape or relabel rules, a log shipper), or carries telemetry volume and cost | Medium   |
+| `han-core:codebase-explorer`                        | Unfamiliar-area signal present                                                                                                                                                                                                                                                                                                                 | Large    |
+| `han-core:system-architect` (`SA#`)                 | System-seam signal present                                                                                                                                                                                                                                                                                                                     | Large    |
 
 Roster caps by band: **small** runs the spine plus `han-core:concurrency-analyst` only (3–4 agents); **medium** adds one
 or two of
-`{han-core:adversarial-security-analyst, han-core:data-engineer, han-core:devops-engineer, han-core:on-call-engineer}`
+`{han-core:adversarial-security-analyst, han-core:data-engineer, han-core:devops-engineer, han-core:on-call-engineer, han-core:observability-engineer}`
 by signal (4–6 agents); **large** adds the remaining signalled specialists, `han-core:codebase-explorer` if the area is
 unfamiliar, and `han-core:system-architect` if a system-seam signal is present (6–9 agents). If more than the cap's
 worth of specialists are signalled, keep the band's count and prefer the specialists covering the strongest signals;
 note the omitted domains in the executive summary so the user can re-run larger. When both `han-core:devops-engineer`
 and `han-core:on-call-engineer` are signalled, prefer `han-core:on-call-engineer` if the focus area is application
-source and `han-core:devops-engineer` if it is infrastructure or pipelines; include both at large size only.
+source and `han-core:devops-engineer` if it is infrastructure or pipelines; include both at large size only. When
+`han-core:observability-engineer` is signalled beside either of them, prefer it when the focus area's concern is
+telemetry design itself: naming and semantic conventions, metric label cardinality and telemetry cost, sampling design,
+telemetry pipeline configuration, or signal choice. SLO definitions, alert rules, and dashboards stay with
+`han-core:devops-engineer`; source-line debuggability, correlation-ID propagation, and PII in individual log statements
+stay with `han-core:on-call-engineer`.
 
 Extra agents named in the project config's `## Extra Agents` list join the signal-selected specialist pool and compete
 under the same signals and band caps, per [../../references/config-rule.md](../../references/config-rule.md): add one
@@ -189,7 +195,7 @@ gate a reversible operation. If the user objects to the roster, honor the adjust
 Launch every discovery agent on the roster in a single message with one `Agent` call per agent so they run concurrently:
 `han-core:structural-analyst`, `han-core:behavioral-analyst`, and whichever of `han-core:concurrency-analyst`,
 `han-core:adversarial-security-analyst`, `han-core:data-engineer`, `han-core:devops-engineer`,
-`han-core:on-call-engineer`, `han-core:codebase-explorer` are on the roster. Do **not** launch `han-core:risk-analyst`,
+`han-core:on-call-engineer`, `han-core:observability-engineer`, `han-core:codebase-explorer` are on the roster. Do **not** launch `han-core:risk-analyst`,
 `han-core:software-architect`, or `han-core:system-architect` here — they are the synthesis layer (Steps 6 and 7).
 
 Each brief must contain:
@@ -202,19 +208,22 @@ Each brief must contain:
 - A **calibration directive scaled to the band**: at **small**, escalate only the clearest high-impact findings and let
   lower-confidence observations default down; at **medium**, surface high- and medium-impact findings; at **large**,
   surface the full finding set. This scales the brief to the size the same way the roster does.
-- For `han-core:adversarial-security-analyst`, `han-core:data-engineer`, `han-core:devops-engineer`, and
-  `han-core:on-call-engineer`: scope the brief to the focus area and direct findings at architectural concerns within it
+- For `han-core:adversarial-security-analyst`, `han-core:data-engineer`, `han-core:devops-engineer`,
+  `han-core:on-call-engineer`, and `han-core:observability-engineer`: scope the brief to the focus area and direct findings at architectural concerns within it
   (its domain's structural and behavioral risk), not a general audit of the whole repository. For
   `han-core:on-call-engineer`, the brief must restrict findings to application source files only — infrastructure,
-  pipelines, and IaC are out of scope.
+  pipelines, and IaC are out of scope. For `han-core:observability-engineer`, the brief must defer SLO definitions,
+  alert rules, and dashboards to `han-core:devops-engineer` and source-line debuggability, correlation-ID propagation,
+  and PII in individual log statements to `han-core:on-call-engineer`, and must carry its YAGNI calibration: do not
+  recommend tail sampling, a Collector tier, or retention tiers for volume the project does not have.
 
 Wait for the entire wave to return before proceeding.
 
 ## Step 5: Compile the Discovery Findings
 
 Collect the full verbatim output from every discovery agent. Preserve every numbered item and its prefix exactly: `S#`
-(structural), `B#` (behavioral), `C#` (concurrency), `SEC-###` (security), `DOR-###` (devops), and
-`han-core:data-engineer`'s own finding IDs. Do not renumber, summarize, or drop items — the verbatim output is what the
+(structural), `B#` (behavioral), `C#` (concurrency), `SEC-###` (security), `DOR-###` (devops), `OBS-###`
+(observability), and `han-core:data-engineer`'s own finding IDs. Do not renumber, summarize, or drop items — the verbatim output is what the
 report carries and what the synthesis layer cross-references.
 
 If `han-core:concurrency-analyst` reported "no concurrency patterns found", keep that statement verbatim — it is a valid

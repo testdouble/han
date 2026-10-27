@@ -16,11 +16,11 @@ pre-planning knowledge-work skills — `research`, `gap-analysis`, and `issue-tr
 agent; depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin), `han-planning` (the
 planning skills you reach for before
 implementation: specifying with `plan-a-feature`, planning a restructure of existing code with `plan-a-change`,
-planning the build with `plan-implementation`, sequencing it with `plan-a-phased-build`, breaking it into work with `plan-work-items`, and stress-testing plans with
-`iterative-plan-review`, plus the `discussion-facilitator` agent that audits a planning discussion in progress;
+planning the build with `plan-implementation`, sequencing it with `plan-a-phased-build`, breaking it into work with `plan-work-items`, stress-testing plans with
+`iterative-plan-review`, and questioning a stalled approach with `reassess-approach`, plus the `discussion-facilitator` agent that audits a planning discussion in progress;
 depends on `han-communication` and `han-core` and is bundled by the `han` meta-plugin),
 `han-coding` (the coding skills
-you reach for while working in code: writing it with `tdd` and `refactor`, designing an interface contract with
+you reach for while working in code: writing it with `tdd` and `refactor`, restructuring whole areas of it with `restructure`, designing an interface contract with
 `design-an-api`, plus reviewing, overviewing, analyzing,
 testing, investigating, and standardizing it with `code-review`, `code-overview`, `code-walkthrough`,
 `architectural-analysis`,
@@ -110,7 +110,7 @@ han-plugin-builder skill:
 │   ├── skills/         # Research skill directories, each with SKILL.md + references/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/research-analyst.md
 │   └── references/     # Cross-skill reference files vendored for han-research skills (yagni-rule.md, evidence-rule.md, config-rule.md)
-├── han-planning/       # Planning plugin: plan-a-feature, plan-a-change, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation) + the discussion-facilitator agent (depends on han-communication and han-core; bundled by the han meta-plugin)
+├── han-planning/       # Planning plugin: plan-a-feature, plan-a-change, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review, reassess-approach (the skills for planning before implementation) + the discussion-facilitator agent (depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills and agent lists
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -118,7 +118,7 @@ han-plugin-builder skill:
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/ + scripts/
 │   ├── docs/           # In-plugin long-form docs: docs/skills/{name}.md + docs/agents/discussion-facilitator.md
 │   └── references/     # Both kinds: han-planning-owned canonical files (planning-boundary-rule.md, scope-justification-rule.md, operator-escalation-rule.md, contract-pinning-rule.md, synthesis-failure-rule.md) beside vendored copies (yagni-rule.md, evidence-rule.md, config-rule.md, collaborative-stop-rule.md). Each owned file opens by saying so; do not overwrite one in a re-sync sweep
-├── han-coding/         # Coding plugin: tdd, refactor, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
+├── han-coding/         # Coding plugin: tdd, refactor, restructure, design-an-api, code-review, code-overview, code-walkthrough, architectural-analysis, automated-test-planning, manual-test-planning, investigate, coding-standard (the skills for working in code; depends on han-communication and han-core; bundled by the han meta-plugin)
 │   ├── README.md       # Light front door + scent-line skills list
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -262,8 +262,8 @@ such as Claude, should be referenced here.
 - **[han-core/references/collaborative-stop-rule.md](./han-core/references/collaborative-stop-rule.md).** The shared
   contract behind `/pairing`: how a skill detects the collaborative flag, what a stop presents and in what order, when
   the pre-build ask fires and what makes a choice expensive to walk back, and what to do with the answer. Consumed by
-  `pairing` and by the skills that hand control back at their own boundaries — `tdd`, `refactor`, `design-an-api`,
-  `iterative-plan-review`, and `plan-implementation`. Vendored byte-identical into `han-coding/references/` and
+  `pairing` and by the skills that hand control back at their own boundaries — `tdd`, `refactor`, `restructure`,
+  `design-an-api`, `iterative-plan-review`, and `plan-implementation`. Vendored byte-identical into `han-coding/references/` and
   `han-planning/references/`; edit the canonical copy and re-sync the others.
 
 ### Writing voice

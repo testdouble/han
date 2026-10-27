@@ -445,12 +445,14 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
   [`adversarial-security-analyst`](../../../han-core/docs/agents/adversarial-security-analyst.md),
   [`devops-engineer`](../../../han-core/docs/agents/devops-engineer.md),
   [`on-call-engineer`](../../../han-core/docs/agents/on-call-engineer.md),
+  [`observability-engineer`](../../../han-core/docs/agents/observability-engineer.md),
   [`edge-case-explorer`](../../../han-core/docs/agents/edge-case-explorer.md),
   [`test-engineer`](../../../han-core/docs/agents/test-engineer.md), [`gap-analyzer`](../../../han-core/docs/agents/gap-analyzer.md),
   [`risk-analyst`](../../../han-core/docs/agents/risk-analyst.md). The signal-selected specialists the skill dispatches in the
   spec-review round when the spec touches their domain. `on-call-engineer` is engaged for resilience commitments the
   spec must make (idempotency on retried operations, timeout and deadline behavior, graceful-degradation paths,
-  kill-switch availability, named failure-mode coverage).
+  kill-switch availability, named failure-mode coverage). `observability-engineer` is engaged when the spec commits to
+  telemetry: new metrics, tracing, log schemas, sampling, or a telemetry pipeline.
 - [skill-decomposition.md](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-decomposition.md).
   Why this skill owns the "build the spec" slice and hands off to sibling skills for implementation planning, iteration,
   and review instead of doing everything itself.

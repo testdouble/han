@@ -32,6 +32,7 @@ Han's specialist sub-agents are built to fill those role gaps.
 When you run [`/code-review`](../han-coding/docs/skills/code-review.md), the skill dispatches
 [`adversarial-security-analyst`](../han-core/docs/agents/adversarial-security-analyst.md),
 [`devops-engineer`](../han-core/docs/agents/devops-engineer.md), [`on-call-engineer`](../han-core/docs/agents/on-call-engineer.md),
+[`observability-engineer`](../han-core/docs/agents/observability-engineer.md),
 [`data-engineer`](../han-core/docs/agents/data-engineer.md), [`test-engineer`](../han-core/docs/agents/test-engineer.md), and
 [`edge-case-explorer`](../han-core/docs/agents/edge-case-explorer.md) at the size of your branch. It also dispatches the
 [`structural-analyst`](../han-core/docs/agents/structural-analyst.md),

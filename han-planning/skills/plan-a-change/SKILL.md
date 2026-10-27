@@ -7,7 +7,8 @@ description: >
   a restructure, extraction, split, consolidation, responsibility shift, or API revision of existing code, including
   "these responsibilities are wrong, plan the fix". Does not assess an area and stop at findings — use
   architectural-analysis. Does not specify new behavior — use plan-a-feature. Does not diagnose a bug — use investigate.
-  Does not write the code — use refactor to restructure it or tdd to build it.
+  Does not question whether the current approach is the right one — use reassess-approach. Does not write the code —
+  use refactor for one named spot, restructure to carry out a restructure across a whole area, or tdd to build it.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [what needs to change, optional: source findings path]"
 allowed-tools:

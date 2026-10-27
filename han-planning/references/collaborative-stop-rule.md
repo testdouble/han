@@ -14,9 +14,10 @@ This rule defines what happens when a skill running collaboratively reaches a un
 it presents when it stops, and what it does with the answer. It exists so a stop means the same thing whichever skill
 performed it.
 
-Six places need to agree on that answer. `pairing` drives the loop, and `tdd`, `refactor`, `design-an-api`,
-`iterative-plan-review`, and `plan-implementation` each stop at a boundary they already have. Without one shared
-definition, each would describe stopping in its own words and a person would meet six slightly different experiences.
+Seven places need to agree on that answer. `pairing` drives the loop, and `tdd`, `refactor`, `restructure`,
+`design-an-api`, `iterative-plan-review`, and `plan-implementation` each stop at a boundary they already have. Without
+one shared definition, each would describe stopping in its own words and a person would meet seven slightly different
+experiences.
 Every vendored copy of this file is byte-identical to the canonical `han-core/references/collaborative-stop-rule.md`.
 
 ## Who reads this

@@ -5,7 +5,7 @@ description: >
   person stays in the lead and steers while the work happens instead of reviewing a finished result. Use when someone
   says to pair with them on something, asks to collaborate rather than direct, wants to review as it goes, or wants to
   guide the work piece by piece — on code, on a design decision, or on writing. For a test-first build it runs tdd, for
-  restructuring it runs refactor, for an interface contract it runs design-an-api, and for plan work it runs
+  restructuring it runs refactor, for reorganizing a whole area it runs restructure, for an interface contract it runs design-an-api, and for plan work it runs
   iterative-plan-review or plan-implementation, each collaboratively; invoke any of those directly instead to run it
   straight through without pausing. Does not pace someone through code that already exists and builds nothing — use
   code-walkthrough. Does not explain, summarize, or research something instead of producing it — use code-overview or
@@ -85,7 +85,8 @@ person can merge them back. An extra stop costs one turn. A missing one costs th
 Apply this test to each concern separately, in order, and stop at the first match:
 
 1. Does a skill carrying the collaborative flag cover this work? Then it is **skill-backed**. The flagged skills are
-   `tdd` for a test-first build, `refactor` for restructuring, `design-an-api` for an interface contract,
+   `tdd` for a test-first build, `refactor` for restructuring, `restructure` for reorganizing a whole area unit by
+   unit, `design-an-api` for an interface contract,
    `iterative-plan-review` for sharpening a plan, and `plan-implementation` for planning a build.
 2. Does the work produce a choice among options that commits the person to something? Then it is **decision work**.
 3. Does the work produce prose someone will read? Then it is **prose work**.
