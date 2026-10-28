@@ -61,7 +61,7 @@ type files and SKILL.md's `## Review Types` section say which agents run.
 - Honor any agent the user named explicitly.
 - On the default run only, extra agents named in the config's `## Extra Agents` list, and agents attached to a
   default-set type, join this candidate pool and compete under the same signal-based selection as the roster above,
-  per [../../references/config-rule.md](../../../references/config-rule.md): include one only when a signal in the
+  per the config rule `han-core:load-han-config` surfaced: include one only when a signal in the
   file list matches its stated specialty, justify the inclusion in one line, and skip an entry that does not resolve
   to a dispatchable agent with a one-line note. A typed run does not consider `## Extra Agents` and says nothing about
   it.

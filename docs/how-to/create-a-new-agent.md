@@ -139,7 +139,7 @@ place you can stop and look at what you have.
 - **YAGNI applies to the artifact.** Vocabulary terms, anti-patterns, tools, and frontmatter fields each have to earn
   their place against the agent's actual job. Anything added "for completeness" is cut during the review pass, which
   keeps the always-loaded description lean. See [YAGNI](../yagni.md) for the rule the discipline derives from.
-- **No agents are dispatched to build yours.** `han-plugin-builder` depends on nothing and ships no agents, so the
+- **No agents are dispatched to build yours.** `han-plugin-builder` depends only on `han-core` and ships no agents, so the
   review is done inline by reading the guidance, not by a review team.
 
 ## Where to go next

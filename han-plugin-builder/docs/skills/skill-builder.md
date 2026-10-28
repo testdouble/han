@@ -32,7 +32,7 @@ decide _when_ and _how_ to use the skill. For what the skill does internally, re
 - **Apply-as-you-go, verify-at-the-end.** The interview consults the governing guidance document when a decision is on
   the table; a final review pass re-reads every relevant document and corrects the finished files. The interview gets
   each decision approximately right; the review pass makes the artifact correct.
-- **Self-contained review.** `han-plugin-builder` depends on nothing and ships no agents, so the review is done inline
+- **Self-contained review.** `han-plugin-builder` depends only on `han-core` and ships no agents, so the review is done inline
   by reading the guidance, not by dispatching a review team.
 
 ## When to use it

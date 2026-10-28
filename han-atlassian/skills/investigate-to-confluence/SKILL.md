@@ -12,19 +12,12 @@ argument-hint:
   "[symptom or question to investigate] [confluence location: page URL or space + parent] [--mode draft|live (default
   draft)]"
 allowed-tools:
-  Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources,
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 # Investigate to Confluence
 
@@ -75,7 +68,7 @@ adversarial validation, and the final report) — **except** add two explicit in
 - It must write the resulting investigation report to a file under `/tmp/` (for example `/tmp/<symptom-slug>.md`) rather
   than into the project's docs or plans directory. This keeps the working report out of the repo until the user decides
   to publish it, and because the path is explicit input it outranks any `output-directory` the project or personal
-  `.han/config.md` supplies (see [../../references/config-rule.md](../../references/config-rule.md)).
+  `.han/config.md` supplies (see the config rule `han-core:load-han-config` surfaced).
 - It must **stop after producing the report**. `han-coding:investigate` normally ends by presenting the plan for
   approval and can trigger the fix's implementation on approval; this skill wants the report only, so instruct it not to
   implement the fix or change any code — this skill publishes findings, it does not ship them.

@@ -17,10 +17,13 @@ have the specialists, project discovery, and the pairing mode. `/pairing` gains 
 interface, and plan-review paths when the plugins carrying those skills are installed alongside it, and names the missing skill
 rather than substituting when they are not.
 
-**Bundled.** Installed with the `han` meta-plugin. Depends on no other Han plugin.
+**Bundled.** Installed with the `han` meta-plugin. Depends on no other Han plugin; every other Han plugin depends on
+it, because its `load-han-config` skill is the one place a run reads `.han/config.md`.
 
 ## Skills
 
+- [`/load-han-config`](docs/skills/load-han-config.md) — Bring both `.han/config.md` files into the calling skill's
+  context once per run, so a chain of skills reads the configuration once instead of once per skill.
 - [`/pairing`](docs/skills/pairing.md) — Build work collaboratively in reviewable pieces, handing each one back before
   starting the next, so you steer while the work happens instead of reviewing a finished result.
 - [`/project-discovery`](docs/skills/project-discovery.md) — Scan the repository for languages, frameworks, tooling, and

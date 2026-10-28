@@ -12,7 +12,7 @@ description:
   or code-review."
 arguments: size
 argument-hint: "[size: small | medium | large] [focus area: module or directory to restrict analysis to]"
-allowed-tools: Read, Glob, Grep, Agent, Write, Bash(find *), Bash(date *), Bash(mkdir *), Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Skill, Read, Glob, Grep, Agent, Write, Bash(find *), Bash(date *), Bash(mkdir *)
 ---
 
 ## Project Context
@@ -20,14 +20,8 @@ allowed-tools: Read, Glob, Grep, Agent, Write, Bash(find *), Bash(date *), Bash(
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A
-read that returns no file is no personal configuration: continue silently. When that file or the
-`project .han/config.md` probe supplies content, apply it per
-[config-rule.md](../../references/config-rule.md), which governs precedence between the two files, relative-path
-resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -66,7 +60,7 @@ Read these before dispatching anything. They constrain every step below.
 
 **Bind `$size`.** If the user passed `small`, `medium`, or `large` as the first positional argument, bind `$size`
 to it. If `$size` is `none provided` and the project config supplies a `default-swarm-size` value via
-`config-rule.md`, adopt that value as `$size` and note the config as the source. If no value is available from
+the config rule the loader surfaced, adopt that value as `$size` and note the config as the source. If no value is available from
 either source, set `$size` to `medium`.
 
 **Resolve the focus area.** Take the remaining argument and conversation context as the focus area. If a focus area
@@ -88,7 +82,7 @@ directing note — it biases attention without narrowing scope.
 **Resolve the run folder.** Determine where this run's artifacts will land before dispatching any agent:
 
 1. **Configured `output-directory`**: When the config read above supplied an `output-directory`, resolve it per
-   [config-rule.md](../../references/config-rule.md) (relative path resolves against the file that declared it;
+   the config rule `han-core:load-han-config` surfaced (relative path resolves against the file that declared it;
    `~/` expands to home; full path is used as-is). Write the run folder beneath that resolved base.
 2. **No configured value**: Write outside the repository — use `${TMPDIR:-/tmp}` as the base. This keeps an
    unconfigured analysis out of version control, matching the same principle that governs `code-overview`.

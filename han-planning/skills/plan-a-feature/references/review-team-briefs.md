@@ -28,7 +28,7 @@ Select the remaining specialists by matching domain to feature, under the size c
 | `han-core:risk-analyst`                 | Significant blast radius, where risks need prioritizing.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 Extra agents named in the project config's `## Extra Agents` list join this pool and compete under the same
-domain-to-feature matching and size cap, per [`config-rule.md`](../../../references/config-rule.md). Select one only
+domain-to-feature matching and size cap, per the config rule `han-core:load-han-config` surfaced. Select one only
 when the feature touches its stated specialty, count it against the cap, brief it with the spec sections relevant to its
 domain, and skip an entry that does not resolve to a dispatchable agent with a one-line note.
 

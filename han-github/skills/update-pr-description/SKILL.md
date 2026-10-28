@@ -6,8 +6,7 @@ description: >
   comments — use code-review for local review or post-code-review-to-pr for posting a review to GitHub.
 argument-hint: "[optional context about the PR]"
 allowed-tools:
-  Read, Glob, Grep, Agent, Bash(git *), Bash(gh *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Glob, Grep, Agent, Bash(git *), Bash(gh *)
 ---
 
 ## Pre-requisites
@@ -26,13 +25,8 @@ allowed-tools:
 - branch summary: !`git log origin/HEAD..HEAD --oneline 2>/dev/null || echo unknown`
 - branch stats: !`git diff origin/HEAD...HEAD --stat 2>/dev/null || echo unknown`
 - branch changes: !`git diff origin/HEAD...HEAD 2>/dev/null || echo unknown`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Step 1: Validate Branch State
 

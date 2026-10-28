@@ -9,18 +9,12 @@ description: >
   deliverable of its own, rewrite anything, or judge the caller's work. Does not run the adversarial rewrite pass —
   dispatch the readability-editor agent for that, or use edit-for-readability to rewrite an existing target. Does not
   cover explaining technical work to a reader who will not implement it — use explanation-guidance for that.
-allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Skill, Read
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 # Readability Guidance
 
@@ -43,15 +37,15 @@ human reads your deliverable end to end, apply the standard to it.
 
 First resolve which writing-voice profile this run uses:
 
-- When either `.han/config.md` probe supplied a `writing-voice` value, resolve it and check that the file exists. A
+- When the run's `project .han/config.md` value or its personal `.han/config.md` supplied a `writing-voice` value, resolve it and check that the file exists. A
   relative value resolves against the folder holding the file that declared it: the working directory for the project
-  file, and the `personal config directory` the probe reported for the personal file. A full path is used as it stands,
+  file, and the run's `personal config directory` value for the personal file. A full path is used as it stands,
   and a leading `~` expands to the home directory. When both files supply a value, the project file's wins.
   - When the file exists, it is the writing-voice profile for this run, used in place of the built-in profile.
   - When the file does not exist, warn the user that the configured writing-voice file was not found, naming which of
     the two configuration files declared it, and ask whether to use the built-in Han voice or skip the writing voice
     entirely for this run. Honor the answer: fall back to the built-in profile, or proceed with no voice profile at all.
-- When neither probe supplied a `writing-voice` value, the built-in profile at
+- When neither file supplied a `writing-voice` value, the built-in profile at
   `${CLAUDE_PLUGIN_ROOT}/references/writing-voice.md` applies.
 
 Then read the reference files, in this order, so their full content enters your context:

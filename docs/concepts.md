@@ -237,7 +237,8 @@ Direct invocation uses the `Agent` tool with `subagent_type: {plugin}:{agent-nam
 ## How Han is packaged
 
 Han ships as a family of plugins in one marketplace. `han-core` carries the shared specialist agent roster the other
-plugins dispatch, the project-discovery skill, the `/pairing` collaborative working mode, and the canonical rule files.
+plugins dispatch, the `/load-han-config` skill every other skill invokes to read `.han/config.md` once per run, the
+project-discovery skill, the `/pairing` collaborative working mode, and the canonical rule files.
 
 `han-documentation` adds the documentation skills (`/project-documentation`, `/architectural-decision-record`, and
 `/runbook`). `han-research` adds the pre-planning knowledge-work skills (`/research`, `/gap-analysis`, and
@@ -246,26 +247,25 @@ implementation (`/plan-a-feature`, `/plan-a-change`, `/plan-implementation`, `/p
 `/plan-work-items`, `/iterative-plan-review`, and `/reassess-approach`). `han-coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`,
 `/restructure`, `/design-an-api`, `/code-review`, `/code-overview`, `/code-walkthrough`, `/architectural-analysis`,
 `/automated-test-planning`, `/manual-test-planning`, `/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
-skills. All of these except `han-reporting` depend on `han-core`, so installing any of them brings the shared agents
-along; `han-reporting` depends only on `han-communication`.
+skills. All of them depend on `han-core`, so installing any of them brings the shared agents along.
 
 `han` is a meta-plugin with no components of its own. It depends on `han-communication`, `han-core`,
 `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`, so installing it
 pulls in the bundled suite.
 
-The remaining plugins are opt-in. `han-feedback` adds the post-session feedback skill and depends on no other Han
-plugin. `han-atlassian` adds the Confluence and Jira skills; it needs a configured Atlassian MCP server, and because its
+The remaining plugins are opt-in. `han-feedback` adds the post-session feedback skill and depends on `han-core` for the shared configuration loader. `han-atlassian` adds the Confluence and Jira skills; it needs a configured Atlassian MCP server, and because its
 wrapper skills run skills from `han-documentation`, `han-planning`, and `han-coding`, it depends on those three plus
-`han-core`. `han-linear` adds the work-items-to-Linear skill, needs a configured Linear MCP server, and depends on no
-other Han plugin. `han-ddd` adds the `/ddd-analysis` skill and the Domain-Driven Design agents it dispatches, and depends
+`han-core`. `han-linear` adds the work-items-to-Linear skill, needs a configured Linear MCP server, and depends on
+`han-core` for the shared configuration loader. `han-ddd` adds the `/ddd-analysis` skill and the Domain-Driven Design agents it dispatches, and depends
 on `han-communication` and `han-core`. The `han` meta-plugin does not pull these in, so you install each on its own.
 
 `han-plugin-builder` carries the guidance for building skills, agents, and plugins, plus the interview-driven
-`/skill-builder` and `/agent-builder` skills. It depends on nothing and is also opt-in.
+`/skill-builder` and `/agent-builder` skills. It depends on `han-core` for the shared configuration loader and is also opt-in.
 
 The practical choice is core only, the bundled suite, or the suite plus whichever opt-in plugins you want. There is no
 planning-only, coding-only, or GitHub-only install. Reporting-only is possible: installing `han-reporting` gives you
-`/stakeholder-summary` and `/html-summary` plus `han-communication`, without the `han-core` agent roster.
+`/stakeholder-summary` and `/html-summary` plus `han-communication` and `han-core`, which every Han plugin depends on
+for the shared configuration loader.
 
 For which one to install and the dependency that surprises people, read
 [Choosing a Han plugin](./choosing-a-han-plugin.md).

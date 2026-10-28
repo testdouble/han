@@ -14,8 +14,7 @@ argument-hint:
   "[type: security | testing | architecture | data | observability | resilience | release | maintainability | docs | ux
   | work-ticket <ticket> | a type from .han/config.md] [focus areas, or file paths in Mode C]"
 allowed-tools:
-  Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Agent,
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Bash(git *), Bash(gh *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Agent
 ---
 
 When running a code review, follow the process outlined here.
@@ -25,13 +24,8 @@ When running a code review, follow the process outlined here.
 - git installed: !`which git 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Review Constraints
 
@@ -155,7 +149,7 @@ skips it in Mode B and Mode C unless the user asks for it.
 ### Review types and agents from `.han/config.md`
 
 A team declares review types Han does not ship, and attaches its own agents to any type, in either config file read at
-the top of this skill. [config-rule.md](../../references/config-rule.md) governs path resolution and which file wins;
+the top of this skill. The config rule `han-core:load-han-config` surfaced governs path resolution and which file wins;
 the line formats and how this skill uses them are defined here.
 
 ```markdown
@@ -417,7 +411,7 @@ Name the run before anything is dispatched, so every agent's output is filed in 
 
 1. **A configured `output-directory`.** When the config read at the top of this skill supplied one, use it.
    Relative-path resolution, `~` expansion, and precedence between the personal and project files are governed by
-   [config-rule.md](../../references/config-rule.md); do not re-derive them here.
+   the config rule `han-core:load-han-config` surfaced; do not re-derive them here.
 2. **No configured value.** Use the project's existing documentation folder (e.g., `docs/`) when there is one, and the
    current working directory otherwise. This is also the fallback Step 8.6 uses when the first destination cannot be
    written.

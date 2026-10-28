@@ -11,21 +11,15 @@ description: >
   code-walkthrough. Does not explain, summarize, or research something instead of producing it — use code-overview or
   research.
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Skill, Bash(find *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Read, Write, Edit, Glob, Grep, Skill, Bash(find *)
 argument-hint: "[what to pair on]"
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## The contract this skill runs on
 
@@ -46,7 +40,7 @@ Two constraints from that file govern every step below and are repeated here bec
 ## Step 1: Resolve the Record Location
 
 Resolve where the running feedback record will be written, using the output base directory from the configuration
-probed above. Absent any configuration, write it beside the work under `.han/pairing/`.
+`han-core:load-han-config` surfaced. Absent any configuration, write it beside the work under `.han/pairing/`.
 
 Name the file for this run so a second run in the same repository does not overwrite the first. State the path to the
 person in Step 4's plan, in one clause, BECAUSE a record they cannot find is not a record.

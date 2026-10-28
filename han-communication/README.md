@@ -5,8 +5,9 @@ profile, and the standard for explaining technical work to a reader who will not
 agent that apply them, so every prose-producing plugin in the suite writes against one shared set of standards instead of
 its own copy. Reach for it whenever output has to read well for someone who did not write it.
 
-**Bundled.** Installed with the `han` meta-plugin. Depends on nothing: it is the foundational layer, and every plugin
-that produces prose output depends on it, so it comes along whenever you install one of them.
+**Bundled.** Installed with the `han` meta-plugin. Depends on `han-core` for the shared configuration loader. It is the
+foundational layer for prose: every plugin that produces prose output depends on it, so it comes along whenever you
+install one of them.
 
 ## Skills
 

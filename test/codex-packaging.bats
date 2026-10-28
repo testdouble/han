@@ -14,8 +14,8 @@
 # The older shell is the local one, so CI will not catch a bash 4+ feature:
 # keep to bash 3.2 (no mapfile, no declare -A, no ${x^^}, no globstar).
 # Grep one named file, never -r: BSD grep follows symlinks during a
-# recursive search and GNU grep does not, and this repo has thirteen
-# root-escaping symlinks at han-*/scripts/han-config-dir.sh.
+# recursive search and GNU grep does not, and this repo has carried
+# root-escaping symlinks before (han-*/scripts/han-config-dir.sh).
 #
 # The catalog greps match Prettier's byte formatting: one space after each
 # colon, one key per line. .pre-commit-config.yaml gives Prettier ownership

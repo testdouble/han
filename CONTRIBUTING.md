@@ -98,7 +98,7 @@ change goes before you scaffold anything. (For the user-facing version of this m
   writing-voice profile, and the explanation standard for talking to a reader who will not implement the work, plus the
   `readability-guidance` and `explanation-guidance` skills that surface them, the `edit-for-readability` skill, and the
   `readability-editor` agent, and the `Han Readability` and `Han Concise` output styles in
-  `han-communication/output-styles/`. It depends on nothing; the plugins that produce prose output depend on it. A component goes here only when it is part of a shared
+  `han-communication/output-styles/`. It depends on `han-core` for the shared configuration loader; the plugins that produce prose output depend on it. A component goes here only when it is part of a shared
   communication capability: how output reads, or how a run talks to a person.
 - **`han-core`** carries the shared specialist agent roster — **every agent in the suite except the
   `readability-editor`** (which lives in `han-communication`), **the `research-analyst`** (which lives in
@@ -141,7 +141,7 @@ change goes before you scaffold anything. (For the user-facing version of this m
   `domain-ownership-analyst`, `domain-visualizer`). A skill or agent goes here when it does strategic DDD analysis of
   an existing codebase. It is opt-in and depends on `han-communication` and `han-core`.
 - **`han-plugin-builder`** carries the contributor authoring guidance (the `guidance` skill and its reference set, plus
-  the interview-driven `skill-builder` and `agent-builder` skills). It is opt-in and depends on nothing. Edit it when
+  the interview-driven `skill-builder` and `agent-builder` skills). It is opt-in and depends on `han-core` for the shared configuration loader. Edit it when
   you change how skills, agents, or plugins are built; it is not where product-facing skills go.
 - **`han`** is the meta-plugin. It has no components of its own; it depends on `han-communication`, `han-core`,
   `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` so one install
@@ -179,10 +179,11 @@ Long-form docs always live under `docs/` regardless of which plugin the entity s
    - Frontmatter with `name`, `description`, `allowed-tools`. See
      [skill-description-frontmatter.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-description-frontmatter.md).
    - Body: numbered steps, `${CLAUDE_SKILL_DIR}` paths for script references, extracted references under `references/`.
-   - If the skill reads `.han/config.md`, copy the `personal config directory` probe and its matching
-     `Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")` grant from any existing skill. The probe must
-     run that script rather than name an environment variable, or the loader refuses it and the skill never runs.
-     See [context-injection-commands.md](./han-plugin-builder/skills/guidance/references/skill-building-guidance/context-injection-commands.md).
+   - Give its `## Project Context` block the one line every other skill carries, byte for byte: "Resolve configuration
+     with `han-core:load-han-config` if you have not already this run.", and list `Skill` in `allowed-tools`. Do not
+     copy a config probe or the resolver grant; only `han-core/skills/load-han-config/SKILL.md` carries those.
+     `han-core/scripts/load-han-config.bats` checks every shipped skill for the line and the grant, and names the one skill that
+     carries neither (`explanation-guidance`), so a new skill that must not read configuration is added there.
 3. Copy [the skill template](./docs/templates/skill-long-form-template.md) into `{plugin}/docs/skills/{name}.md` and
    fill it in. Every skill gets a long-form doc. If the skill runs inline in a calling skill's context and returns no
    artifact, follow the inline-guidance variant in the

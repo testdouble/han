@@ -87,7 +87,7 @@ It ships in a separate plugin you install once.
 
    > `/plugin install han-feedback@han`
 
-   It depends on no other Han plugin, so it installs on its own. You only do this once; after
+   It depends on `han-core` for the shared configuration loader, which installs alongside it. You only do this once; after
    that the skill is available in every session. See [Choosing a Han plugin](../choosing-a-han-plugin.md) for where it
    sits in the suite.
 

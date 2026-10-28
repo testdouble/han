@@ -15,8 +15,7 @@ allowed-tools:
   Read, Write, Edit, Glob, Grep, Skill, Bash(git *), Bash(find *), Bash(mkdir *), Bash(date *), Bash(npm *),
   Bash(npx *), Bash(pnpm *), Bash(yarn *), Bash(bun *), Bash(pytest *), Bash(python3 *), Bash(go *), Bash(cargo *),
   Bash(make *), Bash(bundle *), Bash(rake *), Bash(bash "${CLAUDE_SKILL_DIR}/scripts/undo-attempt.sh" *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/skills/refactor/scripts/detect-refactor-context.sh"),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Bash(bash "${CLAUDE_PLUGIN_ROOT}/skills/refactor/scripts/detect-refactor-context.sh")
 ---
 
 ## Project Context
@@ -27,13 +26,8 @@ allowed-tools:
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Constraints (read before anything else)
 
@@ -108,7 +102,7 @@ Grep that should return nothing when the goal is met, or a boundary test from th
 count. The plan in Step 6 and the finish in Step 10 both read it.
 
 **Resolve the output location** through the precedence chain in
-[config-rule.md](../../references/config-rule.md): a folder the person named wins; otherwise the `output-directory`
+the config rule `han-core:load-han-config` surfaced: a folder the person named wins; otherwise the `output-directory`
 setting with the run's own folder beneath it; otherwise a folder under the documentation root discovered above, or
 `docs/changes/` when none is found. Name the run's folder `restructure-{date}` from `date +%Y-%m-%d`, appending `-2`,
 `-3`, and so on until the name is unused. Call it `{folder}`.

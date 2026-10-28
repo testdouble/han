@@ -11,18 +11,12 @@ description: >
   not analyze code for automated test coverage gaps — use automated-test-planning. Does not write test code — use tdd. Does not
   review code quality — use code-review. Does not stress-test an existing plan — use iterative-plan-review.
 argument-hint: "[optional: files, a branch, a plan, a PR, or a description of what to manually test]"
-allowed-tools: Bash(git *), Read, Grep, Glob, Write, Agent, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Skill, Bash(git *), Read, Grep, Glob, Write, Agent
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 

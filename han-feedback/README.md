@@ -5,7 +5,7 @@ just used, so the maintainers hear what worked and what did not. Reach for it at
 report back on how the suite is working for you.
 
 **Opt-in.** Installed on its own, not bundled by the `han` meta-plugin. Install it with
-`/plugin install han-feedback@han`. Depends on no other Han plugin.
+`/plugin install han-feedback@han`. Depends on `han-core` for the shared configuration loader.
 
 ## Skills
 

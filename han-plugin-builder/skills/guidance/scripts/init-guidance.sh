@@ -47,7 +47,9 @@ RULE=".claude/rules/plugin-building-guidance.md"
 # "agent-building-guidelines" directory names, which diverge at "building". The
 # guidance command reference ("use guidance.") and the guidance docs path
 # (${CLAUDE_PLUGIN_ROOT}/skills/guidance/references/, only set when the plugin is
-# installed) are retargeted at the renamed, vendored guidance skill.
+# installed) are retargeted at the renamed, vendored guidance skill. The one-line
+# han-core:load-han-config instruction is dropped: a vendored copy runs with no
+# plugin installed, so it runs with no configuration, like the portable guidance skill.
 rewrite_skill() {
   file="$1"
   tmp="$(mktemp)"
@@ -61,6 +63,7 @@ rewrite_skill() {
     -e 's|skill-builder|plugin-skill-builder|g' \
     -e 's|agent-builder|plugin-agent-builder|g' \
     -e 's|use guidance\.|use plugin-guidance.|g' \
+    -e '/^Resolve configuration with `han-core:load-han-config` if you have not already this run\.$/d' \
     "$file" > "$tmp"
   mv "$tmp" "$file"
 }

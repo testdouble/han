@@ -13,19 +13,12 @@ argument-hint:
   "[size: small | medium | large] [target: file, directory, symbol, or PR reference — defaults to the current branch's
   changes] [confluence location: page URL or space + parent] [--mode draft|live (default draft)]"
 allowed-tools:
-  Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources,
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 # Code Overview to Confluence
 
@@ -77,7 +70,7 @@ the relevant conversation context. Do not summarize, trim, or reinterpret the us
 **except** add one explicit instruction: it must write the overview to an explicit scratch path this skill names (for
 example `${TMPDIR:-/tmp}/code-overview-<slug>.md`). Passing the path explicitly keeps the file where this skill expects
 it even when either `.han/config.md` configures an output directory, because explicit input outranks the config
-(see [../../references/config-rule.md](../../references/config-rule.md)). **Capture the exact scratch-file path it
+(see the config rule `han-core:load-han-config` surfaced). **Capture the exact scratch-file path it
 wrote.** That markdown file is the source content for Confluence. Proceed to Step 3 once it finishes.
 
 ## Step 3: Show the File for Review

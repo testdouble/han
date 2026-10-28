@@ -12,21 +12,15 @@ description: >
   architecture and stop at findings — use architectural-analysis.
 argument-hint: "[plan file or code path] [optional: findings file path] [optional: why you are asking]"
 allowed-tools:
-  Read, Write, Glob, Grep, Agent, Bash(find *), Bash(mkdir *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -73,7 +67,7 @@ Determine how the skill was reached and what it is looking at.
    recorded".
 5. **Output location.** For a plan subject, the report lands in that plan's `artifacts/` folder as
    `approach-reassessment-{n}.md`, with `{n}` continuing from any existing reassessment files there. For a code subject,
-   resolve the folder per [config-rule.md](../../references/config-rule.md): a folder the user named wins; otherwise the
+   resolve the folder per the config rule `han-core:load-han-config` surfaced: a folder the user named wins; otherwise the
    `output-directory` setting; otherwise a three-to-five-word kebab-case folder under the documentation root discovered
    from CLAUDE.md's `## Project Discovery` section, `project-discovery.md`, or a Glob fallback (`docs/plans/`, `docs/`).
    In hand-invoked mode on a code subject, confirm the folder name before writing.

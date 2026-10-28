@@ -5,7 +5,7 @@ resolving the team's real states, labels, Projects, and members before it create
 has been broken into work items and you track that work in Linear.
 
 **Opt-in.** Installed on its own, not bundled by the `han` meta-plugin. Install it with
-`/plugin install han-linear@han`. Depends on no other Han plugin and requires a configured Linear MCP server.
+`/plugin install han-linear@han`. Depends on `han-core` for the shared configuration loader and requires a configured Linear MCP server.
 
 ## Skills
 

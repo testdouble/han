@@ -1,0 +1,14 @@
+{
+  "plugins": ["han-core"],
+  "tests": [
+    {
+      "name": "Skill Call: /load-han-config reports the project file",
+      "type": "skill-call",
+      "model": "opus",
+      "skillFile": "han-core:load-han-config",
+      "promptFile": "skill-call-load-han-config.md",
+      "scaffold": "project-with-config",
+      "expect": [{ "skill-call": true }, { "result-contains": "docs/han-output" }, { "result-contains": "large" }]
+    }
+  ]
+}

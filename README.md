@@ -90,7 +90,8 @@ codex plugin add han-reporting@han
 ```
 
 Install `han-feedback`, `han-atlassian`, `han-linear`, `han-ddd`, or `han-plugin-builder` separately when you want those
-opt-in packages. Because Codex resolves no dependencies, install `han-communication` alongside `han-atlassian` (its wrapped
+opt-in packages. Because Codex resolves no dependencies, install `han-core` alongside any of them (every skill reads
+`.han/config.md` through its `load-han-config` skill), and `han-communication` alongside `han-atlassian` (its wrapped
 prose-producing skills source the shared readability standard from it).
 
 ## Documentation

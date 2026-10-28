@@ -42,7 +42,9 @@ decide _when_ and _how_ to use the skill. For what the skill does internally, re
 - **No dependency after vendoring.** Once `init` has run, the three skills and their guidance live in the repo. Anyone
   using the repo can run them and get the right guidance surfaced even if the `han-plugin-builder` plugin is never
   installed.
-- **Standalone and opt-in.** The plugin depends on nothing and is not bundled by the `han` meta-plugin. Install it on
+- **Opt-in, depends on `han-core`.** The plugin is not bundled by the `han` meta-plugin, and it depends on `han-core`
+  for the shared configuration loader. The vendored copies drop the loader line, so they run with no `.han/config.md`
+  applied; install `han-core` and run the plugin's own skills when you want the configuration honored. Install it on
   its own.
 
 ## When to use it

@@ -6,7 +6,7 @@ against that guidance. Reach for it when you are building your own skills, agent
 product features.
 
 **Opt-in.** Installed on its own, not bundled by the `han` meta-plugin. Install it with
-`/plugin install han-plugin-builder@han`. Depends on nothing, so it does not pull `han-core` along.
+`/plugin install han-plugin-builder@han`. Depends on `han-core` for the shared configuration loader, so installing it pulls `han-core` along.
 
 ## Skills
 

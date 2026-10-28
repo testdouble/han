@@ -136,18 +136,16 @@ This reflects the loader's current behavior. The exact allowlist can shift betwe
 command is not clearly a plain read-only form, prefer the simplest single-command version or move the logic into a
 script (next rule).
 
-### Rule: Keep every probe reading inside the project working directory
+### Rule: A probe that reads outside the project does so through a script, never in its own text
 
-A probe reads files in the directory the skill runs from. When a step needs the content of a file somewhere else, gather
-it during the run with the Read tool instead.
+A probe whose text names a file outside the working directory, a home directory, a configuration directory, or
+anywhere holding credentials, is the read most likely to be refused, and a refused probe takes the whole skill down
+before any step runs. Put the read in a script, run the script from the probe behind an exact grant, and guard the
+probe so a script that cannot run degrades to a sentinel instead of aborting. The loader then sees only the script
+command, and the script's own failure is caught by the guard.
 
-The reason is the no-prompt, no-fallback behavior from the rule above. A probe stakes the whole skill on a permission
-decision it cannot recover from, and a read reaching outside the project into a home directory, a configuration
-directory, or anywhere holding credentials is the read most likely to draw a refusal. A Read-tool call during the run
-carries no such risk to the skill: the step handles a read that returns nothing and carries on.
-
-Han shipped this mistake once. Forty skills read an optional personal config through a probe pointed at the Claude Code
-configuration directory, and the refusal that followed took whole skills down before they did any work:
+Han shipped the probe-text form once. Forty skills read an optional personal config through a probe pointed at the
+Claude Code configuration directory, and the refusal that followed took whole skills down before they did any work:
 
 ```
 Error: Shell command permission check failed for pattern
@@ -156,18 +154,17 @@ Permission for this action was denied by the Claude Code auto mode classifier.
 Reason: Blocked by classifier.
 ```
 
-Resolving a path in a probe stays fine, because `echo` opens no file. Reading through it does not.
-
-**Prefer (probe resolves the location, a step reads the file):**
+**Prefer (a guarded script reads the file, and the probe text names only the script):**
 
 ```
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
+!`bash "${CLAUDE_PLUGIN_ROOT}/scripts/load-han-config.sh" 2>/dev/null || echo "No configuration applies to this run."`
 ```
 
-That line reads an environment variable inside a script rather than in the probe text, which is the only measured way
-to reach one. See "Rule: Reach an environment variable through a script, not through probe text" below.
+That is how `han-core:load-han-config` reads both `.han/config.md` files today: the script resolves the personal
+directory from an environment variable, which probe text cannot name (see the next rule), reads the files, and prints
+them with the rule for applying them. The same shape serves any lookup many skills share.
 
-**Avoid (probe reads outside the project):**
+**Avoid (probe text reads outside the project):**
 
 ```
 !`cat "$HOME/.someconfig" 2>/dev/null || echo ""`
@@ -203,11 +200,11 @@ An `allowed-tools` grant does not help here. The refusal happens on the text, be
 To reach a variable, put it in a script and run the script from the probe:
 
 ```
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
+!`bash "${CLAUDE_PLUGIN_ROOT}/scripts/load-han-config.sh" 2>/dev/null || echo "No configuration applies to this run."`
 ```
 
 ```yaml
-allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/load-han-config.sh")
 ```
 
 Four things make that work, and leaving any of them out aborts the skill:

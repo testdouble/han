@@ -8,7 +8,7 @@ paths:
 ## Contents
 
 - Orchestration composition (supported, with care)
-- Data-fetch composition (avoid)
+- Forked data-fetch composition (avoid)
 - The `context: fork` field
 - Deciding which way to go
 
@@ -20,10 +20,11 @@ Two patterns hide under the word "composition," and they behave very differently
 
 - **Orchestration composition.** A thin calling skill hands the heavy work to a called skill that drives the rest of the
   output, and optionally chains into another skill afterward. **Supported. Use it with the discipline below.**
-- **Data-fetch composition.** A skill calls another skill just to retrieve a few values (config paths, a command, a
-  setting). **Avoid it. Do discovery inline instead.** The early-exit failure mode this caused is documented below and
-  has not been reliably fixed by any frontmatter or instruction tuning. One narrow, separately-tested exception
-  (surfacing a whole shared standard inline) is carved out at the end of that section.
+- **Forked data-fetch composition.** A skill calls another skill under `context: fork` only to retrieve a few values
+  (config paths, a command, a setting). **Avoid it. Do discovery inline instead.** The early-exit failure mode this
+  caused is documented below and has not been reliably fixed by any frontmatter or instruction tuning. One
+  separately-tested exception (an inline sub-skill that surfaces shared content) is carved out at the end of that
+  section.
 
 Knowing which one you are reaching for is the whole decision. The rest of this document is the guidance for each.
 
@@ -86,14 +87,16 @@ on implicit continuation. This is the single most common way an orchestration si
 
 ### Declare the Skill tool in `allowed-tools`
 
-A skill that invokes another skill must list `Skill` in its `allowed-tools` frontmatter (both Atlassian orchestrators
-do). Without it the Skill call is not permitted.
+A skill that invokes another skill lists `Skill` in its `allowed-tools` frontmatter, as every Han skill that invokes
+`han-core:load-han-config` does. `allowed-tools` pre-approves a tool rather than gating it, so a missing entry does not
+block the call, but in a permission mode that prompts it can put a prompt in front of the invocation. The grant is
+cheap; carry it.
 
-## Data-fetch composition (avoid)
+## Forked data-fetch composition (avoid)
 
-Data-fetch composition is calling a sub-skill only to retrieve a few structured values (a docs directory, a test
-command, a config setting) for the calling skill to use immediately. **Do not do this.** Discover the values inline
-instead.
+Forked data-fetch composition is calling a sub-skill under `context: fork` only to retrieve a few structured values (a
+docs directory, a test command, a config setting) for the calling skill to use immediately. **Do not do this.**
+Discover the values inline instead, or surface them through an inline sub-skill under the exception below.
 
 The failure mode is concrete and has been observed repeatedly. A forked data-fetch sub-skill (`context: fork`) returns
 its values, and then an `api_retry` event can fire and anchor the calling model on the sub-skill's output as if it were
@@ -115,14 +118,19 @@ This eliminates the forked sub-skill entirely, and with it the `api_retry` inter
 ### Duplicate small discovery logic rather than sharing it through a skill
 
 If two skills both need to find the docs directory, duplicate that handful of lines in each. A small amount of
-duplicated discovery logic is far more reliable than a shared data-fetch sub-skill. Reserve composition for
-orchestration, where a whole substantial workflow, not a few values, is what you would otherwise be duplicating.
+duplicated discovery logic is far more reliable than a shared forked sub-skill. Reserve composition for orchestration,
+where a whole substantial workflow, not a few values, is what you would otherwise be duplicating.
 
-### The one exception: surfacing a shared standard inline
+The duplication has a limit. When one discovery block is copied into many skills and has had to be re-swept, surface
+it through an inline sub-skill under the exception below. Han's `.han/config.md` block is the worked example: it was
+copied into every skill, swept four times in two months, and one sweep missed a skill and took it down. It is now
+surfaced by `han-core:load-han-config`, and each consumer carries one line.
+
+### The one exception: surfacing shared content inline
 
 There is a single shape that looks like data-fetch but is supported, because it was validated on its own rather than
-assumed: an **inline** sub-skill that surfaces a shared _standard or reference set_ into the caller's context and then
-hands control straight back for the caller to apply. The motivating case is a guidance skill that reads one canonical
+assumed: an **inline** sub-skill that surfaces shared content, a _standard or reference set_ or a _shared lookup's raw
+results_, into the caller's context and then hands control straight back for the caller to apply. The motivating case is a guidance skill that reads one canonical
 copy of a writing or review standard and surfaces it into whichever skill is about to produce output, so the standard
 lives in one place instead of being vendored into every plugin that needs it.
 
@@ -135,10 +143,11 @@ Three properties separate this from the data-fetch pattern you should avoid:
    a deliberately final-sounding closing line, and the caller resumed and finished every time with no early exit. The
    forked variant of the same skill was disqualified for a separate reason: the fork isolated the guidance so its
    content never reached the caller.
-2. **It surfaces a whole standard, not a few values.** Retrieving a docs directory or a test command is still
-   data-fetch; do that inline (above). This exception is for surfacing a substantial shared reference that would
-   otherwise be duplicated into every consumer, which is closer to orchestration's "duplicating a whole skill's worth of
-   work" test than to fetching a setting.
+2. **It surfaces content many consumers would otherwise duplicate, and leaves interpretation to the caller.** A whole
+   standard qualifies, and so does a shared lookup's raw result: `han-core:load-han-config` surfaces both
+   `.han/config.md` files as they are, and the caller applies the config rule to them. Fetching one value for one skill
+   is still inline discovery (above). The test is the same one orchestration uses: would every consumer otherwise carry
+   a copy of this?
 3. **The caller still owns and finishes its own workflow.** The sub-skill adds content to the context and returns; it
    does not produce the caller's deliverable. Keep an explicit "proceed to the next step" instruction after the
    invocation as cheap insurance, even though the spike completed without it.
@@ -146,7 +155,20 @@ Three properties separate this from the data-fetch pattern you should avoid:
 One honest limit on that evidence: the spike could not induce a real `api_retry`, which is the specific trigger of the
 forked failure. The worst-case run removed the mitigation `api_retry` is said to defeat and still held, so treat this
 exception as reliable under adversarial same-context testing, not as proof the failure can never occur. If you reach for
-it, keep the sub-skill inline, keep the continuation instruction, and use it only for a genuinely shared standard.
+it, keep the sub-skill inline, keep the continuation instruction, and use it only for genuinely shared content.
+
+The values case was then measured on its own. A trial ran a heavy consumer through a project-skill copy of
+`han-core:load-han-config` that surfaces `.han/config.md`, and then used every resolved setting: 99 same-context
+trials across 15 arms, 93 of which invoked the loader
+(inline, a worst-case loader ending on a final-sounding line with no caller-side guardrail, a chain of two inline
+sub-skills, a depth-two call, direct invocation, a caller without a `Skill` grant in a permission mode that does not
+prompt, and six configuration states), with zero early exits and every value applied as the config rule says. The record is under
+`docs/plans/gh-203-consolidate-config-loading/artifacts/trial/`. The loader was then reduced to a single probe whose
+script prints both files and the rule, and a second trial ran that shipped skill, installed from a local marketplace
+and reached by its cross-plugin name, through 48 trials in 10 arms (the same composition shapes plus five
+configuration states), again with zero early exits and every value applied; its record is under
+`docs/plans/gh-203-consolidate-config-loading/artifacts/trial2/`. The same limits apply to both: no `api_retry` was
+induced and one model was tested.
 
 ## The `context: fork` field
 
@@ -163,11 +185,11 @@ Ask what you would be duplicating if you did not compose:
 - **A whole user-facing workflow that owns an artifact** (a planning run, a documentation pass, a publish step):
   compose, using the orchestration discipline above. Duplicating an entire skill is worse than the cost of a careful
   Skill call.
-- **A few values** (paths, commands, settings): stay inline. Duplicate the small discovery logic. Do not reach for a
-  sub-skill.
-- **A whole shared standard or reference set** that every consumer would otherwise vendor a copy of: an inline sub-skill
-  may surface it into the caller's context, under the narrow exception above. Keep it inline (never `context: fork`) and
-  keep an explicit continuation instruction after the call.
+- **A few values one skill needs** (paths, commands, settings): stay inline. Duplicate the small discovery logic. Do
+  not reach for a sub-skill.
+- **A shared lookup or standard that every consumer would otherwise carry a copy of**: an inline sub-skill may surface
+  it into the caller's context, under the exception above. Keep it inline (never `context: fork`), keep an explicit
+  continuation instruction after the call, and leave interpretation of what it surfaces to the caller.
 
 Cross-references:
 

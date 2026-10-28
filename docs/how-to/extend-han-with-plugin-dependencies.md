@@ -162,9 +162,9 @@ The plugins are all listed in one `marketplace.json`, each with a relative `sour
 
 Notice the topology that falls out of this: `han` depends on `han-core`, `han-documentation`, and `han-github`;
 `han-documentation`, `han-github`, and `han-atlassian` all depend on `han-core`; `han-core` depends on nothing in this
-example. The graph is acyclic, with the base layer at the bottom. (In the full suite, `han-core` and the foundational
-`han-communication` plugin are two independent base layers — neither depends on the other, and `han-communication` owns
-the shared readability standard — and every prose-producing plugin declares a direct dependency on it. The real
+example. The graph is acyclic, with the base layer at the bottom. (In the full suite, `han-core` is the base layer every other plugin depends on, because its `load-han-config` skill
+is the one place a run reads `.han/config.md`; the foundational `han-communication` plugin sits on it, owns the shared
+readability standard, and every prose-producing plugin declares a direct dependency on it as well. The real
 `han-atlassian`
 also depends on `han-documentation`, `han-planning`, and `han-coding` because its wrappers run skills from each; the
 example trims that to the single edge that shows the shape.)

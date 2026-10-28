@@ -215,8 +215,9 @@ plus test, lint, and build commands; fall back to project-discovery.md; fall bac
 
 The skill reads config files directly using Read — no forked sub-skill, no `api_retry` interaction, no early-exit risk.
 
-This rule applies to data-fetch sub-skills that return structured values. Orchestration sub-skills (where the called
-skill drives the remaining output) are unaffected.
+This rule applies to forked data-fetch sub-skills. Orchestration sub-skills (where the called skill drives the
+remaining output) are unaffected, and so is an inline sub-skill that surfaces shared content under the exception in
+[Skill Composition](./skill-composition.md), the shape `han-core:load-han-config` uses for `.han/config.md`.
 
 ### Rule: Reference bundled resources clearly
 

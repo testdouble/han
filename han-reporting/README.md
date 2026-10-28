@@ -5,7 +5,7 @@ stakeholders. It converts a feature specification into a plain-language stakehol
 single self-contained HTML executive report. Reach for it when you need buy-in or feedback from people who will not read
 the spec.
 
-**Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication`.
+**Bundled.** Installed with the `han` meta-plugin. Depends on `han-communication` and `han-core`.
 
 **Getting started:** the skills chain. Run [`/stakeholder-summary`](docs/skills/stakeholder-summary.md) to produce the
 summary, then [`/html-summary`](docs/skills/html-summary.md) to turn that summary into a shareable HTML report.

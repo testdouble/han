@@ -365,20 +365,18 @@ the refusal aborted the whole skill instead of degrading.
 Note the error text differs from the two failure modes below and above: it names an auto mode classifier rather than
 `This command requires approval`. Search on either phrase lands here.
 
-**Fix:** Resolve the path in the probe, and read the file with the Read tool during the run.
+**Fix:** Move the read into a script, run the script from the probe behind an exact grant, and guard the probe.
 
-**Before (broken — probe reads outside the project):**
+**Before (broken — probe text reads outside the project):**
 
 ```markdown
 - personal config: !`cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.han/config.md" 2>/dev/null || echo ""`
 ```
 
-**After (correct — probe resolves the location only):**
+**After (correct — the probe names only the script, which reads the file):**
 
 ```markdown
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above.
+!`bash "${CLAUDE_PLUGIN_ROOT}/scripts/load-han-config.sh" 2>/dev/null || echo "No configuration applies to this run."`
 ```
 
 The probe runs a script because naming an environment variable in probe text is refused outright. See the next section.
@@ -407,11 +405,11 @@ Permission mode does not rescue it either. `default`, `plan`, `acceptEdits`, and
 **Fix:** Move the variable into a script and run the script from the probe, behind a grant naming that exact command.
 
 ```markdown
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
+!`bash "${CLAUDE_PLUGIN_ROOT}/scripts/load-han-config.sh" 2>/dev/null || echo "No configuration applies to this run."`
 ```
 
 ```yaml
-allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/load-han-config.sh")
 ```
 
 See [Context Injection Commands](./context-injection-commands.md) for the measured results table and the four
@@ -431,7 +429,7 @@ conditions that form has to meet.
 aborting:
 
 ```markdown
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
+!`bash "${CLAUDE_PLUGIN_ROOT}/scripts/load-han-config.sh" 2>/dev/null || echo "No configuration applies to this run."`
 ```
 
 Verify a script probe as an installed plugin rather than as a local skill under `.claude/skills/`. `${CLAUDE_PLUGIN_ROOT}`
@@ -470,16 +468,20 @@ See [Context Injection Commands](./context-injection-commands.md) for the full r
 **Symptom:** A skill calls another skill via the Skill tool. The sub-skill runs and produces output on screen, but the
 calling skill never picks up the results.
 
-### Cause 1: Data-fetch sub-skill (forked or inline)
+### Cause 1: Data-fetch sub-skill under `context: fork`
 
-The skill calls another skill only to retrieve a few values (a config path, a command, a setting). This is unreliable in
-both forms. Inline, the model has no structured return mechanism and must manually context-switch back to the parent
-workflow. Forked with `context: fork`, an `api_retry` event can anchor the model on the sub-skill's returned output and
-bypass every remaining step, the early-exit failure documented in [Skill Composition](./skill-composition.md).
+The skill calls another skill only to retrieve a few values (a config path, a command, a setting) and runs it with
+`context: fork`. An `api_retry` event can then anchor the model on the sub-skill's returned output and bypass every
+remaining step, the early-exit failure documented in [Skill Composition](./skill-composition.md). Inline, the sub-skill
+renders into the caller's context and returns no value to anchor on; the OI-3 spike ran 34 same-context invocations
+with zero early exits (commit 8c96157). That evidence covers surfacing a shared standard. A values-only inline sub-skill, a trial copy of
+`han-core:load-han-config`, then held across 93 loader invocations, and the shipped loader across 48 more, with zero early exits (see Skill
+Composition).
 
-**Fix:** Do not use a data-fetch sub-skill at all. Discover the values inline: detect config files via context
-injection, Read them directly in the skill's own steps, and fall back to conventional defaults. Duplicate the handful of
-discovery lines rather than sharing them through a sub-skill.
+**Fix:** Do not fork a data-fetch sub-skill. Discover the values inline: detect config files via context injection,
+Read them directly in the skill's own steps, and fall back to conventional defaults. Duplicate a handful of discovery
+lines rather than sharing them through a forked sub-skill. For content many skills would otherwise duplicate, see the
+inline exception in [Skill Composition](./skill-composition.md).
 
 ### Cause 2: Orchestration sub-skill, but the orchestrator lost its workflow
 
@@ -501,8 +503,9 @@ explicit instruction to proceed to the next step. Never rely on implicit continu
 6. **AskUserQuestion fails:** Remove it from `allowed-tools` — the bug causes silent failures when auto-approved
 7. **Context injection in prose:** Never use the literal bang-backtick pattern in SKILL.md body text — the loader parses
    raw text and tries to execute it
-8. **Sub-skill output lost:** Replace data-fetch sub-skills with inline discovery; for orchestration sub-skills, keep
-   the orchestrator thin and instruct it to proceed explicitly after the Skill call
+8. **Sub-skill output lost:** Replace forked data-fetch sub-skills with inline discovery, or with an inline sub-skill
+   under Skill Composition's exception; for orchestration sub-skills, keep the orchestrator thin and instruct it to
+   proceed explicitly after the Skill call
 
 Cross-references:
 

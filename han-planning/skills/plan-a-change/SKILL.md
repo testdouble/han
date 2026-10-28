@@ -12,21 +12,15 @@ description: >
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [what needs to change, optional: source findings path]"
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(git *), Bash(mkdir *)
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -98,7 +92,7 @@ place the skill stops before doing any work.
 ask the user to name one. "Restructure the codebase" is not a valid input.
 
 **Resolve the output location** through the precedence chain in
-[../../references/config-rule.md](../../references/config-rule.md):
+the config rule `han-core:load-han-config` surfaced:
 
 - A folder the user named wins.
 - Otherwise, the `output-directory` setting from the project or personal `.han/config.md`, with the run's own folder

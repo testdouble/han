@@ -30,7 +30,7 @@ The cap counts **chosen specialists**. One seat is filled on every team before a
 **Size override.** If `$size` is non-empty (the user passed `small`, `medium`, `large`, or `dynamic` as the first
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces
 signal-based classification even when a config sets a default band. If `$size` is empty and a `.han/config.md` supplies
-a band via `default-swarm-size` (per [../../../references/config-rule.md](../../../references/config-rule.md)), use that
+a band via `default-swarm-size` (per the config rule `han-core:load-han-config` surfaced), use that
 band and skip the classification. Both caps still scale to the chosen size.
 
 State the chosen size, the recommended team, and the reason in one short message before launching agents — for example
@@ -73,7 +73,7 @@ Select additional specialists up to the cap, based on what the area actually con
   rendered output a person reads.
 
 Extra agents named in a `.han/config.md` `## Extra Agents` list join this pool and compete under the same selection and
-caps, per [../../../references/config-rule.md](../../../references/config-rule.md). Count a selected extra agent against
+caps, per the config rule `han-core:load-han-config` surfaced. Count a selected extra agent against
 the cap, and skip an entry that does not resolve to a dispatchable agent with a one-line note.
 
 ## Domain-scoped briefs

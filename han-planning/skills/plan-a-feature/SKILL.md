@@ -11,21 +11,15 @@ description: >
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature description, optional: output folder path]"
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *), Bash(cp *)
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -303,7 +297,7 @@ This size drives the team-size cap in Step 6:
 
 **Size override.** A non-empty `$size` wins: a band value skips the signal-based classification above, while `dynamic`
 forces it even when a config sets a default band. When `$size` is empty and a config supplies `default-swarm-size` (per
-[config-rule.md](../../references/config-rule.md)), use that band and skip the classification. The team cap scales to
+the config rule `han-core:load-han-config` surfaced), use that band and skip the classification. The team cap scales to
 whichever size wins. State the chosen size, the recommended specialists, and the reason in one short message before
 launching agents, naming which of the two config files supplied a band. If the user disagrees, accept their override of
 the size, the specialists, or both.

@@ -99,8 +99,10 @@ defaults with Glob — but only use the default if the directory actually exists
 - language, framework
 - non-standard paths
 
-Skills discover config inline (context injection + Read) rather than calling a data-fetch sub-skill. This avoids the
-early-exit failure mode documented in `writing-effective-instructions.md`.
+Skills discover project values (CLAUDE.md, project-discovery.md, paths, commands) inline through context injection
+and Read. The one shared lookup, `.han/config.md`, is surfaced by the inline `han-core:load-han-config` skill under
+the exception in `skill-composition.md`; a forked data-fetch sub-skill stays out, for the early-exit failure documented
+in `writing-effective-instructions.md`.
 
 ---
 

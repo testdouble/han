@@ -33,9 +33,10 @@ description of what it does. The `han` meta-plugin is a convenience wrapper that
 - **[`han-communication`](../han-communication/README.md).** The foundational plugin beneath every other. Owns the
   canonical readability standard and the explanation standard for talking to someone who will not implement the work,
   plus the skills and agent that apply them and the `Han Readability` and `Han Concise` output styles that apply the
-  readability standard to a whole session. Bundled; depends on nothing.
+  readability standard to a whole session. Bundled; depends on `han-core`.
 - **[`han-core`](../han-core/README.md).** The shared foundation: the specialist agent roster the other plugins
-  dispatch, the project-discovery skill, the canonical rule files, and the `/pairing` working mode that builds any kind
+  dispatch, the `/load-han-config` skill every other skill invokes to read `.han/config.md` once per run, the
+  project-discovery skill, the canonical rule files, and the `/pairing` working mode that builds any kind
   of work in reviewable pieces. Bundled; depends on no other Han plugin.
 - **[`han-documentation`](../han-documentation/README.md).** The documentation layer: feature and system docs,
   architectural decision records, and runbooks. Bundled; depends on `han-communication` and `han-core`.
@@ -50,19 +51,19 @@ description of what it does. The `han` meta-plugin is a convenience wrapper that
   publishing work items as issues through the `gh` CLI. Bundled; depends on `han-communication`, `han-core`, and
   `han-coding`.
 - **[`han-reporting`](../han-reporting/README.md).** The reporting layer: turning a spec into a plain-language
-  stakeholder summary and a shareable HTML report. Bundled; depends on `han-communication`.
+  stakeholder summary and a shareable HTML report. Bundled; depends on `han-communication` and `han-core`.
 - **[`han-feedback`](../han-feedback/README.md).** The opt-in feedback layer: structured post-session feedback on the
-  Han skills you ran. Opt-in; depends on no other Han plugin.
+  Han skills you ran. Opt-in; depends on `han-core`.
 - **[`han-atlassian`](../han-atlassian/README.md).** The opt-in Atlassian layer: publishing Han artifacts to Confluence
   and creating work items in Jira. Opt-in; depends on `han-communication`, `han-core`, `han-documentation`,
   `han-planning`, and `han-coding`; requires an Atlassian MCP server.
 - **[`han-linear`](../han-linear/README.md).** The opt-in Linear layer: creating one Linear issue per work-item slice.
-  Opt-in; depends on no other Han plugin; requires a Linear MCP server.
+  Opt-in; depends on `han-core`; requires a Linear MCP server.
 - **[`han-ddd`](../han-ddd/README.md).** The opt-in Domain-Driven Design layer: discovering bounded context candidates
   and producing an evidence-backed domain and context map for an existing codebase. Opt-in; depends on
   `han-communication` and `han-core`.
 - **[`han-plugin-builder`](../han-plugin-builder/README.md).** The opt-in plugin-building layer: the authoring guidance
-  and two interview-driven builders for new skills and agents. Opt-in; depends on nothing.
+  and two interview-driven builders for new skills and agents. Opt-in; depends on `han-core`.
 - **[`han`](../han/README.md).** The meta-plugin with no components of its own. It bundles `han-communication`,
   `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`.
   Installing it is how you ask for the bundled suite in one command. It does not bundle `han-feedback`, `han-atlassian`,
@@ -79,9 +80,9 @@ their skills dispatch the shared specialist agents that live there, and on `han-
 produce prose and source the readability standard from it. When you install a plugin that declares a dependency, Claude
 Code resolves and installs the dependency for you automatically and tells you what it added. So installing any of them
 installs both alongside it, and you get the shared agent roster, project discovery, the pairing working mode, and the
-readability standard either way. (`han-reporting` is the exception: it depends on `han-communication` alone.)
+readability standard either way.
 
-That means **every layer install except `han-reporting` comes with the shared agents.** The real choice comes down to:
+That means **every layer install comes with the shared agents.** The real choice comes down to:
 
 - **A layer plus the foundations** (for example `han-documentation` or `han-coding`): that layer's skills, plus the
   shared agent roster, project discovery, and the pairing working mode from `han-core`, and the readability standard

@@ -57,6 +57,8 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
   specific feature works.
 - **Architectural assessment.** Use [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md) for coupling,
   data flow, and SOLID.
+- **Bringing the `.han/config.md` files into a run.** Use [`/load-han-config`](./load-han-config.md), which every
+  skill invokes for that; this skill only keeps the project file's pointer in AGENTS.md or CLAUDE.md honest.
 - **Investigating why a skill found or did not find a config value.** That is a discovery bug. Re-run this skill.
 
 ## How to invoke it
@@ -156,6 +158,7 @@ URL: https://research.google/pubs/why-google-stores-billions-of-lines-of-code-in
   discovery section to find the ADR directory.
 - [`/code-review`](../../../han-coding/docs/skills/code-review.md). Reads the discovery section for lint/build/test commands and for
   standards and ADR compliance checks.
+- [`/load-han-config`](./load-han-config.md). The sibling skill that brings both `.han/config.md` files into a run.
 - [`project-scanner`](../agents/project-scanner.md). The agent this skill dispatches.
 - [`SKILL.md` for /project-discovery](../../skills/project-discovery/SKILL.md). The internal process
   definition.

@@ -12,19 +12,12 @@ description: >
 argument-hint: "[feature-name or doc-path] [confluence location: page URL or space + parent]"
 allowed-tools:
   Read, Glob, Grep, Skill, Agent, Bash(date *), Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *),
-  mcp__claude_ai_Atlassian__getAccessibleAtlassianResources,
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 # Project Documentation to Confluence
 
@@ -65,7 +58,7 @@ as it would on its own — **except** add one explicit instruction: it must writ
 under `/tmp/` (for example `/tmp/<feature-slug>.md`) rather than into the project's docs directory. This keeps the
 working draft out of the repo until the user decides to publish it, and because the path is explicit input it outranks
 any `output-directory` the project or personal `.han/config.md` supplies (see
-[../../references/config-rule.md](../../references/config-rule.md)).
+the config rule `han-core:load-han-config` surfaced).
 
 Let `han-documentation:project-documentation` complete its full process (codebase exploration, writing the doc, content audit,
 information-architecture review, and verification). **Capture the exact `/tmp/` file path it wrote.** That markdown file

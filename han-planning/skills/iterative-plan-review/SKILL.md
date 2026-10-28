@@ -11,21 +11,15 @@ description: >
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [context or path to plan file]"
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Agent, Bash(find *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Review Approach
 
@@ -170,7 +164,7 @@ how much domain coverage a band actually buys.
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
 signal-based classification even when the project config sets a default band. If `$size` is empty and the project
 config supplies a band via `default-swarm-size` (per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md)), use that band and skip the signal-based
+the config rule `han-core:load-han-config` surfaced), use that band and skip the signal-based
 classification. State the chosen size and mode to the user in one line with the justification (e.g., "Medium: 4 files,
 one auth surface", "Medium: passed via `$size`", or "Medium: from the project `.han/config.md` `default-swarm-size`", naming whichever of the two files supplied it). If the user
 asked for team review on a plan that would otherwise be small, honor the request and treat it as medium-or-larger. If

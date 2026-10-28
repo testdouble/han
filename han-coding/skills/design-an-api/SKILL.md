@@ -14,8 +14,7 @@ arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [the goal or ticket this serves, and the interface to design]"
 allowed-tools:
-  Read, Write, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(mkdir *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Glob, Grep, Agent, Bash(git *), Bash(find *), Bash(mkdir *)
 ---
 
 ## Project Context
@@ -25,13 +24,8 @@ allowed-tools:
 - default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -111,7 +105,7 @@ and `{folder}/api-design.md`. Resolve `{folder}` in this order:
 
 1. If the user specified an output folder, use it.
 2. If the project or personal config sets an `output-directory`, place the run folder under it, per
-   [config-rule.md](../../references/config-rule.md).
+   the config rule `han-core:load-han-config` surfaced.
 3. Otherwise, choose a 2-to-4-word kebab-case folder named for the interface, under a documentation root surfaced via
    `CLAUDE.md`, `project-discovery.md`, or a Glob fallback (`docs/plans/`, `docs/`).
 
@@ -154,7 +148,7 @@ borderline, stay at the smaller band.
 **Apply the size override.** If `$size` is not `none provided`, use it: a band value is the band and skips the
 signal-based classification above, while `dynamic` forces the signal-based classification even when the project config
 sets a default band. If `$size` is `none provided` and the project config supplies a band via `default-swarm-size` (per
-[config-rule.md](../../references/config-rule.md)), use that band, skip the signal-based classification, and announce
+the config rule `han-core:load-han-config` surfaced), use that band, skip the signal-based classification, and announce
 the config as the source. In every case still select specialists by signal: a `large` band does not dispatch agents
 whose domain the contract never touches. A conversational override ("design this large") is equivalent to `$size`.
 
@@ -188,7 +182,7 @@ allows, keep the band's count, prefer the specialists covering the strongest sig
 the design document's summary so the user can re-run larger.
 
 Extra agents named in the project config's `## Extra Agents` list join the signal-selected pool and compete under the
-same signals and band caps, per [config-rule.md](../../references/config-rule.md): add one only when a signal in the
+same signals and band caps, per the config rule `han-core:load-han-config` surfaced: add one only when a signal in the
 interface matches its stated specialty, count it against the band's cap, and skip an entry that does not resolve to a
 dispatchable agent with a one-line note.
 

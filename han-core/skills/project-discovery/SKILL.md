@@ -5,10 +5,9 @@ description: >
   where things live — and writes a concise reference section directly into the project's AGENTS.md or CLAUDE.md for
   other skills, agents, and hooks to consume. Use when scanning, analyzing, or detecting the project's technology stack,
   build tools, or repository structure. Does not create or update project documentation — use project-documentation for
-  writing feature or system docs.
+  writing feature or system docs. Does not bring the `.han/config.md` files into a run — use load-han-config for that.
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Agent, Bash(git symbolic-ref *), Bash(find *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Edit, Glob, Grep, Agent, Bash(git symbolic-ref *), Bash(find *)
 ---
 
 ## Project Context
@@ -17,13 +16,8 @@ allowed-tools:
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - README: !`find . -maxdepth 1 -name "README*" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 # Project Discovery
 
@@ -109,8 +103,8 @@ file already covers the project's core attributes, and stop.
 
 Han skills read project-local overrides from the project's `.han/config.md` when a project carries one (see
 [../../references/config-rule.md](../../references/config-rule.md)). This step keeps the target file's pointer to that
-config accurate, using the same consent gate and deduplication discipline as Step 4. The Project Context probe above
-shows whether the file exists.
+config accurate, using the same consent gate and deduplication discipline as Step 4. The `project .han/config.md` value
+`han-core:load-han-config` surfaced shows whether the file exists.
 
 - **`.han/config.md` exists and the target file contains no reference to it:** use `AskUserQuestion` to offer adding a
   one-line pointer beside the `## Project Discovery` section, for example:

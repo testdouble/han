@@ -8,8 +8,7 @@ description: >
   not produce runbooks for operational scenarios — use runbook for that.
 argument-hint: "[standard-topic or document-path]"
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Agent, Bash(mkdir *), Bash(find *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Edit, Glob, Grep, Agent, Bash(mkdir *), Bash(find *)
 ---
 
 ## Project Context
@@ -18,13 +17,8 @@ allowed-tools:
 - AGENTS.md: !`find . -maxdepth 1 -name "AGENTS.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
 - Rules directory: !`find . -maxdepth 4 -type d -path "*/.claude/rules/coding-standards"`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Step 1: Determine Mode
 

@@ -10,21 +10,15 @@ arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [current state artifact, desired state artifact, optional: scope and modes]"
 allowed-tools:
-  Read, Write, Glob, Grep, Agent, Bash(find *), Bash(git *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Write, Glob, Grep, Agent, Bash(find *), Bash(git *)
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -197,7 +191,7 @@ from:
 
 Extra agents named in the project config's `## Extra Agents` list join this domain-specialist pool and compete under
 the same gap-driven selection and size caps, per
-[../../references/config-rule.md](../../references/config-rule.md): add one only when a gap touches its stated
+the config rule `han-core:load-han-config` surfaced: add one only when a gap touches its stated
 specialty, count it against the size cap, and skip an entry that does not resolve to a dispatchable agent with a
 one-line note.
 
@@ -217,7 +211,7 @@ example:
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
 signal-based classification even when the project config sets a default band. If `$size` is empty and the project
 config supplies a band via `default-swarm-size` (per the config rule in
-[../../references/config-rule.md](../../references/config-rule.md)), use that band, skip the signal-based
+the config rule `han-core:load-han-config` surfaced), use that band, skip the signal-based
 classification, and announce the config as the source. The swarm composition still scales to the chosen size. If the
 user named specific specialists, honor those. If the user requested a different size in conversation rather than via
 `$size`, accept the override.

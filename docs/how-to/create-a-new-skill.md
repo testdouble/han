@@ -133,7 +133,7 @@ look at what you have.
 - **YAGNI applies to the artifact.** Every step, reference file, tool permission, and frontmatter field has to earn its
   place against a real use case. Anything added "for completeness" or "for future flexibility" is cut during the review
   pass. See [YAGNI](../yagni.md) for the rule the discipline derives from.
-- **No agents are dispatched.** `han-plugin-builder` depends on nothing and ships no agents, so the review is done
+- **No agents are dispatched.** `han-plugin-builder` depends only on `han-core` and ships no agents, so the review is done
   inline by reading the guidance, not by a review team. Cost is dominated by the interview length and the just-in-time
   reads of the governing documents, not by a swarm.
 

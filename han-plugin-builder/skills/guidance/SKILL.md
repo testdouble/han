@@ -8,18 +8,12 @@ description: >
   dependency on this plugin) plus a path-scoped rule index, or `update` to refresh an already-vendored copy. Does not
   run an interview to build a new skill or agent from scratch — use skill-builder or agent-builder. Does not write
   feature code, review application code, or build non-plugin features.
-allowed-tools: Read, Glob, Grep, Bash(find *), Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Skill, Read, Glob, Grep, Bash(find *)
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 This skill has three modes. Pick the mode from how it was invoked, then follow only that mode's steps.
 

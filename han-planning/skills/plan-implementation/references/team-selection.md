@@ -29,7 +29,7 @@ specialist is chosen, so counting seats would make the medium band identical to 
 argument), use it: a band value is the size and skips the signal-based classification above, while `dynamic` forces the
 signal-based classification even when the project config sets a default band. If `$size` is empty and the project
 config supplies a band via `default-swarm-size` (per the config rule in
-[../../../references/config-rule.md](../../../references/config-rule.md)), use that band and skip the signal-based
+the config rule `han-core:load-han-config` surfaced), use that band and skip the signal-based
 classification. The specialist cap and round cap still scale to the chosen size. State the chosen size, the recommended team,
 and the reason for the size choice to the user in one short message before launching agents (e.g., "Medium: two
 subsystems, small auth surface", "Medium: passed via `$size`", or "Medium: from the project `.han/config.md`
@@ -77,7 +77,7 @@ specialist rather than discovering a gap late. Unless the user specified a team 
 
 Extra agents named in the project config's `## Extra Agents` list join this specialist pool and compete under the same
 what-the-feature-touches selection and specialist caps, per
-[../../../references/config-rule.md](../../../references/config-rule.md): select one only when the feature touches its
+the config rule `han-core:load-han-config` surfaced: select one only when the feature touches its
 stated specialty, count it against the specialist cap, and skip an entry that does not resolve to a dispatchable agent with
 a one-line note.
 

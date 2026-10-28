@@ -8,18 +8,8 @@ description: >
   in a turn, where readability-guidance governs the shape of a written deliverable. Runs in the caller's context and
   hands control straight back; it does not produce a deliverable of its own, rewrite anything, or judge the caller's
   work. Carries guidance only and adds no self-check step.
-allowed-tools: Read, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Read
 ---
-
-## Project Context
-
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
 
 # Explanation Guidance
 

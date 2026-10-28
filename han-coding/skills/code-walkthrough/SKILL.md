@@ -14,8 +14,7 @@ argument-hint:
   "[size: small | medium | large | dynamic] [target: a file, directory, symbol, PR reference, or plan — defaults to the
   current branch's changes]"
 allowed-tools:
-  Read, Glob, Grep, Agent, Bash(git *), Bash(gh *), Bash(find *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Glob, Grep, Agent, Bash(git *), Bash(gh *), Bash(find *)
 ---
 
 ## Project Context
@@ -27,13 +26,8 @@ allowed-tools:
 - repository root: !`git rev-parse --show-toplevel 2>/dev/null || pwd`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -130,7 +124,7 @@ exists, note that surrounding-code inference applies and pass that into the brie
 **Apply the size override.** If `$size` is not `none provided`, use it: a band value is the band and skips the
 signal-based classification, while `dynamic` forces the signal-based classification even when the project config sets a
 default band. If `$size` is `none provided` and the project config supplies a band via `default-swarm-size` (per
-[../../references/config-rule.md](../../references/config-rule.md)), use that band and name the config as the source in
+the config rule `han-core:load-han-config` surfaced), use that band and name the config as the source in
 Step 3's announcement. A conversational override ("walk me through it in detail") is equivalent.
 
 **Gather the input.** For a branch or pull request, capture the change set and its intent:

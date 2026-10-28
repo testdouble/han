@@ -1,50 +1,4 @@
-# Config Rule (`.han/config.md`)
-
-## Contents
-
-- The two files, the two probes, and the personal read
-- Schema
-- How a configured path resolves
-- Precedence
-- Extra agents joining the pool
-- Degradation and the one-line note
-
-Han reads two optional configuration files, and either one may be absent. A person may carry a personal
-`.han/config.md` inside their Claude Code configuration directory, and a consuming project may carry its own
-`.han/config.md`. The personal file supplies defaults that follow the person into every project; the project file
-adjusts them for that project. Each participating skill finds both through its `## Project Context` block; this rule
-defines how every skill interprets what that block yields, so one pair of files resolves identically across the whole
-suite. Every vendored copy of this file is byte-identical to the canonical `han-core/references/config-rule.md`.
-
-## The two files, the two probes, and the personal read
-
-The `## Project Context` block carries two probe lines and directs one Read-tool call. This rule refers to each by the
-label it injects under, or by the file it reads.
-
-- `personal config directory` (probe): the Claude Code configuration directory, resolved for this run. Named by the
-  `CLAUDE_CONFIG_DIR` environment variable when that variable is set, and `~/.claude` when it is not. This value is not
-  a setting. It is the folder a relative path in the personal file resolves against.
-- The personal `.han/config.md` (Read tool): the content of `.han/config.md` inside that directory, or nothing. The
-  skill reads this file itself as its first action rather than through a probe. A probe runs at skill load, where it
-  cannot prompt and cannot degrade, so a permission decision against it aborts the skill instead of falling back to
-  defaults. The personal file is the one lookup that reaches outside the project, so it is the one lookup a probe
-  cannot safely carry.
-- `project .han/config.md` (probe): the content of `.han/config.md` in the directory the skill is running from, or
-  nothing.
-
-The two directories can both exist on one machine and point at different places, so the variable wins whenever it is
-set. A personal file sitting in `~/.claude/.han/config.md` does not apply to a person who has pointed
-`CLAUDE_CONFIG_DIR` somewhere else.
-
-Neither lookup walks up the directory tree. The project file is found only in the directory the skill runs from, the
-same place the CLAUDE.md and project-discovery probes look. A config elsewhere in the repository does not apply. When
-neither lookup yields content, no config is present: behave exactly as the skill does without this rule, with no note.
-
-When both lookups resolve to the same file, because the skill is running inside the Claude Code configuration
-directory, read it once and treat it as the project configuration. Nothing is counted twice, and its `## Extra Agents`
-list is one list.
-
-## Schema
+### Schema
 
 Each file is markdown: optional YAML frontmatter for scalar settings, then named sections for list settings. Both files
 carry the same settings under the same names, so moving a setting from one file to the other changes nothing but the
@@ -75,13 +29,13 @@ file it sits in.
 - `## Code Review Types` and `## Code Review Type Agents` (section headings): list settings owned by the code-review
   skill, which defines their line format and how it uses them. Every other skill ignores both silently.
 
-## How a configured path resolves
+### How a configured path resolves
 
 `output-directory`, `writing-voice`, and each path listed under `## Code Review Types` name a path, and all resolve the same way.
 
 - **A relative path resolves against the folder holding the file that declared it.** A relative path in the project
   file resolves against the working directory. A relative path in the personal file resolves against the
-  `personal config directory` value the probe supplied. This is what lets one personal writing-voice profile, kept
+  personal config directory the loader names. This is what lets one personal writing-voice profile, kept
   beside the personal config, apply in every project.
 - **A full path is used as it stands**, including one that points outside the project.
 - **A leading `~` expands to the home directory before the value is used.** Resolve it in the run rather than leaving
@@ -92,7 +46,7 @@ file it sits in.
 No path is refused for pointing outside the project. A skill that writes deliverables to a configured
 `output-directory` outside the working directory does so without comment; the person who configured it chose that.
 
-## Precedence
+### Precedence
 
 Resolve each scalar setting through this fixed chain; the first source that supplies a usable value wins:
 
@@ -116,7 +70,7 @@ same key, the project file's line is used; when that line is unusable, the perso
 used. Lines with different keys are all kept. `## Code Review Type Agents` lines add together across both files, as
 `## Extra Agents` entries do.
 
-## Extra agents joining the pool
+### Extra agents joining the pool
 
 A skill that selects among candidate agents adds both files' extra agents to its candidate pool. They compete under the
 skill's own signal-based selection and size caps; a selected extra agent may take a slot a default specialist would
@@ -125,7 +79,7 @@ pool has no effect, whether the duplicate comes from the same file or the other 
 counted once against the caps. An entry that does not resolve to a dispatchable agent is skipped with the one-line note
 naming it. A skill may consider the list on only some of its runs; when it does, its own instructions say which.
 
-## Degradation and the one-line note
+### Degradation and the one-line note
 
 A bad config never fails a skill run, with two exceptions. A `writing-voice` value naming a file that does not exist
 asks the user which fallback to take, per its definition above. A review type the user invokes by name, whose
@@ -139,20 +93,17 @@ name, so a message that omits which one leaves the reader opening both.
 
 - Malformed frontmatter, or a file unreadable as text: ignore the unusable portion, resolve those settings from the
   rest of the precedence chain, and note what was ignored and which file held it.
-- The `personal config directory` probe reporting the home directory when `CLAUDE_CONFIG_DIR` names somewhere else:
-  the probe runs a resolver script, and its guard falls back to the home directory if that script is missing or fails.
-  Nothing detects this, and no note is shown, because the probe cannot tell a failed resolution from a person who never
-  set the variable. The personal file at the configured location stops applying until the script is restored.
+- The loader reporting that it did not run: its probe falls back to a one-line message when the script is missing or
+  fails, and the run then behaves as if no configuration exists, with no note.
 - A setting name the suite does not recognize: ignore it with a note; recognized settings in the same file still apply.
 - A recognized setting with a blank or unusable value: ignore it with a note and fall through the precedence chain.
 - A setting that does not apply to the running skill (it writes no markdown deliverable, or selects no agents): ignore
   it silently.
 - A file holding only prose the suite has no use for: behave as if the file were absent, with no note.
-- A personal configuration directory the run cannot reach: treat it as no personal configuration, with no note. A run
-  cannot tell that apart from a person who never wrote the file, and the second group is far larger.
-- A personal `.han/config.md` the Read tool cannot return, whether it is absent, unreachable, or refused: treat it as
-  no personal configuration, with no note, for the same reason. This covers the read failing to produce a file at all.
-  A file that reads but cannot be used is a different case and keeps the note its own bullet above describes.
+- A file the loader reports as not found, at either path: no configuration from that file, with no note. The loader
+  cannot tell a missing file from a directory it could not reach, and neither is distinguishable from a person who
+  never wrote the file, which is by far the commonest case. A file that loaded but cannot be used is a different case
+  and keeps the note its own bullet above describes.
 
 One problem gets one note. Two separate problems, one in each file, get two notes, because each names a different thing
 to go and fix. The note is one line naming what was ignored, which file it came from, and why, shown on each run where

@@ -13,19 +13,12 @@ argument-hint:
   "[size: small | medium | large] [feature description] [confluence location: page URL or space + parent] [--mode
   draft|live (default draft)]"
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Skill, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources,
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Read, Write, Edit, Glob, Grep, Skill, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 # Plan a Feature to Confluence
 
@@ -80,7 +73,7 @@ folder under `/tmp/` (for example `/tmp/<feature-slug>/`) rather than into the r
 prompt the user to choose or confirm an output location, because this skill owns that decision. This keeps the working
 plan out of the repo until the user decides to publish it, and because the path is explicit input it outranks any
 `output-directory` the project or personal `.han/config.md` supplies (see
-[../../references/config-rule.md](../../references/config-rule.md)).
+the config rule `han-core:load-han-config` surfaced).
 
 Let `han-planning:plan-a-feature` complete its full process. **Capture the exact `/tmp/` paths of every file it wrote:**
 

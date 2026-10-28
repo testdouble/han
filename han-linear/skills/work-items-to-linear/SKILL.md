@@ -13,22 +13,15 @@ argument-hint:
   "[path to work-items.md] --team team [--project Linear project] [--parent issue id] [--state name] [--label name
   (repeatable)] [--assignee name, email, or me]"
 allowed-tools:
-  Read, Write, Edit, Glob, Grep, Bash(find *), mcp__plugin_linear_linear__save_issue,
+  Skill, Read, Write, Edit, Glob, Grep, Bash(find *), mcp__plugin_linear_linear__save_issue,
   mcp__plugin_linear_linear__get_issue, mcp__plugin_linear_linear__list_teams,
   mcp__plugin_linear_linear__list_issue_statuses, mcp__plugin_linear_linear__list_issue_labels,
-  mcp__plugin_linear_linear__list_users, mcp__plugin_linear_linear__get_user, mcp__plugin_linear_linear__list_projects,
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  mcp__plugin_linear_linear__list_users, mcp__plugin_linear_linear__get_user, mcp__plugin_linear_linear__list_projects
 ---
 
 ## Project Context
 
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
-
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 # Work Items to Linear Issues
 

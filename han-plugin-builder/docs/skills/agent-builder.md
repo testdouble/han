@@ -36,7 +36,7 @@ decide _when_ and _how_ to use the skill. For what the skill does internally, re
   splitting it.
 - **Agents are self-contained.** Unlike a skill, an agent is a single flat `.md` file with no `references/` folder, no
   `scripts/`, and no context injection. Everything the agent needs is inlined. The skill enforces this throughout.
-- **Self-contained review.** `han-plugin-builder` depends on nothing and ships no agents, so the review is done inline
+- **Self-contained review.** `han-plugin-builder` depends only on `han-core` and ships no agents, so the review is done inline
   by reading the guidance, not by dispatching a review team.
 
 ## When to use it

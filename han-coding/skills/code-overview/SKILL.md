@@ -15,8 +15,7 @@ argument-hint:
   "[size: small | medium | large | dynamic] [target: file, directory, symbol, or PR reference — defaults to the current branch's
   changes]"
 allowed-tools:
-  Read, Glob, Grep, Agent, Write, Bash(git *), Bash(gh *), Bash(find *),
-  Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+  Skill, Read, Glob, Grep, Agent, Write, Bash(git *), Bash(gh *), Bash(find *)
 ---
 
 ## Project Context
@@ -25,13 +24,8 @@ allowed-tools:
 - gh installed: !`which gh 2>/dev/null || echo "not installed"`
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Operating Principles
 
@@ -150,7 +144,7 @@ signal is borderline.
 **Apply the size override.** If `$size` is not `none provided`, use it: a band value is the band and skips the
 signal-based classification, while `dynamic` forces the signal-based classification even when the project config sets
 a default band. If `$size` is `none provided` and the project config supplies a band via `default-swarm-size` (per the
-config rule in [../../references/config-rule.md](../../references/config-rule.md)), use that band, skip the
+config rule `han-core:load-han-config` surfaced), use that band, skip the
 signal-based classification, and name the config as the source in the announcement below. A conversational override
 ("give me a large overview") is equivalent.
 
@@ -314,7 +308,7 @@ The file is named `code-overview-{short-target-slug}.md` wherever it lands. Only
    beneath it. Honor it even when it points inside the repository, and say nothing about that, BECAUSE the person who
    configured a destination chose it, and this skill's own default is not a veto over their choice. Relative-path
    resolution, `~` expansion, and precedence between the personal and project files are governed by
-   [config-rule.md](../../references/config-rule.md); do not re-derive them here.
+   the config rule `han-core:load-han-config` surfaced; do not re-derive them here.
 2. **No configured value.** Write outside the repository — for example
    `${TMPDIR:-/tmp}/code-overview-{short-target-slug}.md` — BECAUSE an unconfigured overview is an orientation aid
    rather than documentation, and a default inside the repository would land it in a commit sooner or later.

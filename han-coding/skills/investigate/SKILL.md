@@ -10,20 +10,15 @@ description: >
   calls for — use plan-a-change. Does not map bounded contexts or domain boundaries — use ddd-analysis. Does not
   capture feedback on Han's own skills — use han-feedback for that.
 argument-hint: "[symptom or problem description, and optionally an output path]"
-allowed-tools: Read, Glob, Grep, Agent, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
+allowed-tools: Skill, Read, Glob, Grep, Agent
 ---
 
 ## Project Context
 
 - CLAUDE.md: !`find . -maxdepth 1 -name "CLAUDE.md" -type f`
 - project-discovery.md: !`find . -maxdepth 3 -name "project-discovery.md" -type f`
-- personal config directory: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh" 2>/dev/null || echo "$HOME/.claude"`
-- project .han/config.md: !`cat .han/config.md 2>/dev/null || echo ""`
 
-As your first action, use the Read tool on `.han/config.md` inside the `personal config directory` path above. A read
-that returns no file is no personal configuration: continue silently. When that file or the `project .han/config.md`
-probe supplies content, apply it per [config-rule.md](../../references/config-rule.md), which governs precedence
-between the two files, relative-path resolution, and what to do with a file that reads but cannot be used.
+Resolve configuration with `han-core:load-han-config` if you have not already this run.
 
 ## Investigation Approach
 
@@ -81,7 +76,7 @@ every applicable specialist in parallel with the `han-core:evidence-based-invest
    numbered findings keyed to file paths, line numbers, and schema or migration references."
 
 Extra agents named in the project config's `## Extra Agents` list join this conditional-specialist pool under the same
-symptom-driven selection, per [../../references/config-rule.md](../../references/config-rule.md): dispatch one only
+symptom-driven selection, per the config rule `han-core:load-han-config` surfaced: dispatch one only
 when the classified bug type matches its stated specialty, and skip an entry that does not resolve to a dispatchable
 agent with a one-line note.
 
