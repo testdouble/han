@@ -3,11 +3,11 @@
 Choose your adventure. What do you want to do?
 
 I want to
-* Plan a new feature
-* Investigate a bug
-* Review my code
-* Research alternatives
-* Teach Han (or Claude generally) about my app to optimize agent execution
+* [Plan a new feature](#i-want-to-plan-a-new-feature)
+* [Investigate a bug](#i-want-to-investigate-a-bug)
+* [Review my code](#i-want-to-review-my-code)
+* [Research alternatives](#i-want-to-research-alternative-ways-to-do-something)
+* [Teach Han (or Claude generally) about my app to optimize agent execution](#i-want-to-teach-han-or-other-claude-skills-about-my-app)
 
 ## I want to plan a new feature
 
