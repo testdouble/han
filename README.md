@@ -55,13 +55,13 @@ Installing `han@han` fetches the default bundle (`han-communication`, `han-core`
 
 | Plugin              | Description                                                                             |
 | ------------------- | --------------------------------------------------------------------------------------- |
-| **`han`**           | The default bundle                                                                          | Includes `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
+| **`han`**           | The default bundle                                                                      | Includes `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
 | `han-communication` | Han's readability standard and writing voice                                            |
 | `han-core`          | Han's agent roster, agent behavior rules, and skills for project discovery and pairing  |
 | `han-documentation` | Skills for generating project docs, architectural decision records (ADRs), and runbooks |
 | `han-research`      | A pre-planning agent and associated skills for research, gap analysis, and issue triage |
 | `han-planning`      | Skills for planning an implementation                                                   |
-| `han-coding`        | Coding skills                                                        |
+| `han-coding`        | Coding skills                                                                           |
 | `han-github`        | GitHub skills, such as reviewing a pull request                                         |
 | `han-reporting`     | Reporting skills, such as generating a stakeholder summary                              |
 
