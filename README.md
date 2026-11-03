@@ -6,7 +6,7 @@ Han is a suite of AI skills and agents for _solo_ 😉 or small teams of product
 
 ## Why use Han?
 
-Han empowers solo and small teams of engineers to be as productive as their larger competitors. 
+Han empowers solo and small teams of engineers to be as productive as their larger competitors.
 
 Han includes skills that specialize in:
 
@@ -20,14 +20,14 @@ Han then summarizes all the skills' findings into artifacts you can trust.
 
 Han's skills are designed to work together. For example:
 
-| Skill | Example |
-| - | - |
-| [Planning](https://github.com/testdouble/han/blob/main/docs/how-to/plan-a-feature.md) | `/plan-a-feature export the product inventory as a CSV file. It needs to apply the enabled filters. Write the plan to docs/features/product-export/.` <br><br>Han will generate `feature-specification.md`, `implementation-plan.md`, and/or  `work-items.md`, depending on which planning skill you use. |
-| [Debugging your code](https://github.com/testdouble/han/blob/main/docs/how-to/triage-and-investigate-a-bug.md) | `/investigate The server returns a "503 Status Unavailable" when exporting all the products.` |
-| [Updating a plan](https://github.com/testdouble/han/blob/main/docs/how-to/revise-a-plan.md) | Edit a plan document or ask Claude to do it:<br><br>`update feature_specification.md: Limit the CSV export to 100K rows.`<br><br>Then ask Han to check your plan.<br><br>`/iterative-plan-review feature_specification.md` |
-| [Understanding your code](https://github.com/testdouble/han/blob/main/docs/how-to/accelerate-understanding-of-unfamiliar-code.md) | If the CSV exporting code is located in `./src/export`:<br><br>`/code-overview ./src/export/`
-| [Reviewing your code](https://github.com/testdouble/han/blob/main/docs/how-to/run-an-effective-code-review.md) | `/code-review` |
-| [Researching alternatives](https://github.com/testdouble/han/blob/main/docs/how-to/research-a-decision.md) | `/research What are my CSV exporting library options?` |
+| Skill                                                                                                                             | Example                                                                                                                                                                                                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Planning](https://github.com/testdouble/han/blob/main/docs/how-to/plan-a-feature.md)                                             | `/plan-a-feature export the product inventory as a CSV file. It needs to apply the enabled filters. Write the plan to docs/features/product-export/.` <br><br>Han will generate `feature-specification.md`, `implementation-plan.md`, and/or `work-items.md`, depending on which planning skill you use. |
+| [Debugging your code](https://github.com/testdouble/han/blob/main/docs/how-to/triage-and-investigate-a-bug.md)                    | `/investigate The server returns a "503 Status Unavailable" when exporting all the products.`                                                                                                                                                                                                            |
+| [Updating a plan](https://github.com/testdouble/han/blob/main/docs/how-to/revise-a-plan.md)                                       | Edit a plan document or ask Claude to do it:<br><br>`update feature_specification.md: Limit the CSV export to 100K rows.`<br><br>Then ask Han to check your plan.<br><br>`/iterative-plan-review feature_specification.md`                                                                               |
+| [Understanding your code](https://github.com/testdouble/han/blob/main/docs/how-to/accelerate-understanding-of-unfamiliar-code.md) | If the CSV exporting code is located in `./src/export`:<br><br>`/code-overview ./src/export/`                                                                                                                                                                                                            |
+| [Reviewing your code](https://github.com/testdouble/han/blob/main/docs/how-to/run-an-effective-code-review.md)                    | `/code-review`                                                                                                                                                                                                                                                                                           |
+| [Researching alternatives](https://github.com/testdouble/han/blob/main/docs/how-to/research-a-decision.md)                        | `/research What are my CSV exporting library options?`                                                                                                                                                                                                                                                   |
 
 Han's skills cleanly hand off to each other via documents, supporting complicated workflows that move code from idea to deployment.
 
@@ -35,7 +35,7 @@ Read [Concepts](./docs/concepts.md) to learn more about Han's skill-and-agent mo
 
 ## Does it work for large teams?
 
-Han is purpose-built for solo and small teams of product engineers. It may also work for larger teams. Read 
+Han is purpose-built for solo and small teams of product engineers. It may also work for larger teams. Read
 [why Han focuses on small teams](./docs/why-solo-and-small-teams.md) to learn more.
 
 ## Installation
@@ -56,17 +56,17 @@ Han is a bundle of plugins.
 
 Installing `han@han` fetches the default bundle (`han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`). This is the right choice for most people.
 
-| Plugin | Description |
-| --- | --- |
-| **`han`**  | Default bundle | Includes `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
-| `han-communication` | Han's readability standard and writing voice |
-| `han-core` | Han's agent roster, agent behavior rules, and skills for project discovery and pairing |
+| Plugin              | Description                                                                             |
+| ------------------- | --------------------------------------------------------------------------------------- |
+| **`han`**           | Default bundle                                                                          | Includes `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
+| `han-communication` | Han's readability standard and writing voice                                            |
+| `han-core`          | Han's agent roster, agent behavior rules, and skills for project discovery and pairing  |
 | `han-documentation` | Skills for generating project docs, architectural decision records (ADRs), and runbooks |
-| `han-research` | A pre-planning agent and associated skills for research, gap analysis, and issue triage |
-| `han-planning` | Skills for planning an implementation |
-| `han-coding` | Coding skills for implementation |
-| `han-github` | GitHub skills, such as reviewing a pull request |
-| `han-reporting` | Reporting skills, such as generating a stakeholder summary |
+| `han-research`      | A pre-planning agent and associated skills for research, gap analysis, and issue triage |
+| `han-planning`      | Skills for planning an implementation                                                   |
+| `han-coding`        | Coding skills for implementation                                                        |
+| `han-github`        | GitHub skills, such as reviewing a pull request                                         |
+| `han-reporting`     | Reporting skills, such as generating a stakeholder summary                              |
 
 If you only want a single Han plugin, install `han-documentation@han` or `han-coding@han` instead. Each individual plugin includes `han-core`.
 
@@ -77,18 +77,18 @@ If you only want a single Han plugin, install `han-documentation@han` or `han-co
 
 You can also install optional Han plugins to integrate into services such as Atlassian and Linear.
 
-| Plugin | Description |
-| --- | --- |
-| `han-atlassian`| Atlassian skills, such as publishing docs and work items |
-| `han-linear` | A Linear skill for publishing work items. _Requires a Linear MCP server._ |
+| Plugin          | Description                                                               |
+| --------------- | ------------------------------------------------------------------------- |
+| `han-atlassian` | Atlassian skills, such as publishing docs and work items                  |
+| `han-linear`    | A Linear skill for publishing work items. _Requires a Linear MCP server._ |
 
 Other optional plugins include:
 
-| Plugin | Description |
-| --- | --- |
-| `han-ddd` | Domain-driven design (DDD) skills for bounded context discovery, evidence-backed domains, and context mapping |
-| `han-plugin-builder` | Skills for building your own skills, agents, and plugins |
-| `han-feedback` | A skill for capturing feedback on Han skills at the end of a session |
+| Plugin               | Description                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `han-ddd`            | Domain-driven design (DDD) skills for bounded context discovery, evidence-backed domains, and context mapping |
+| `han-plugin-builder` | Skills for building your own skills, agents, and plugins                                                      |
+| `han-feedback`       | A skill for capturing feedback on Han skills at the end of a session                                          |
 
 For help choosing the Han plugins that are right for you, see [Choosing a Han Plugin](./docs/choosing-a-han-plugin.md).
 

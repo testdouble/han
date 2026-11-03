@@ -1,192 +1,218 @@
 # Quickstart
 
-Choose your adventure. What do you want to do?
-
-I want to
-* [Plan a new feature](#i-want-to-plan-a-new-feature)
-* [Investigate a bug](#i-want-to-investigate-a-bug)
-* [Review my code](#i-want-to-review-my-code)
-* [Research alternatives](#i-want-to-research-alternative-ways-to-do-something)
-* [Teach Han (or Claude generally) about my app to optimize agent execution](#i-want-to-teach-han-or-other-claude-skills-about-my-app)
-
-## I want to plan a new feature
-
-You have a feature idea, but you need help fleshing it out.
-
-### What does my feature do?
-
-Start by [planning a feature](../han-planning/docs/skills/plan-a-feature.md)
-
-Optional side quest: [Generate a plan summary for a business stakeholder](../han-reporting/docs/skills/stakeholder-summary.md).
-
-### How should I build it?
-
-Start with [planning an implementation](../han-planning/docs/skills/plan-implementation.md).
-
-We recommend [building your feature test-first](../han-coding/docs/skills/tdd.md).
-
-Optional side quests:
-- If you want to break your implementation down into smaller steps, Han can [generate work items](../han-planning/docs/skills/plan-work-items.md).
-- If the implementation is large, Han can help you [plan a phased build](../han-planning/docs/skills/plan-a-phased-build.md), breaking your feature down into demoable slices.
-- If, during implementation, you realize you need to change your plan, try [an iterative plan review](../han-planning/docs/skills/iterative-plan-review.md).
-
-### Artifacts
-
-Han will generate a `feature-specification.md` and a `feature-implementation-plan.md`.
-
-If you had to change your plan, Han will document research findings and a decision log.
-
-If your feature required a phased build, Han will generate a `build-phase-outline.md`.
-
-Finally, if you built your features test-first, your code will have evolved behavior by behavior.
-
-## I want to investigate a bug
-
-Something in your code is broken or behaving oddly, and you want to know why.
-
-### I don't know what's wrong
-
-If you don't know what's wrong, start by [triaging the issue](https://github.com/testdouble/han/blob/main/han-research/docs/skills/issue-triage.md).
-
-Examples of vaguely defined bugs appropriate for triage:
-- The app is slow.
-- There's something wrong.
-
-Han will clarify the issue, classify it, assess its severity and reproducibility, and recommend next steps.
-
-Possible recommendations include:
-- Investigate: determine the cause of the error
-- Research: find the answer to an error-related question
-- Plan: add a missing feature
-
-### I don't want to fix it now
-
-You can copy the triage artifact into your issue tracker or ask Claude to do it for you.
-
-```
-Post the triage report as a GitHub issue in {owner/repo}.
-```
-
-### I know what's wrong, but I don't know how to fix it
-
-Once you know the specific error, ask Han to [investigate](https://github.com/testdouble/han/blob/main/han-coding/docs/skills/investigate.md).
-
-Examples of specific bugs appropriate for investigation:
-- The `/products` page is returning a status code 500.
-- The report generation worker is timing out.
-- The database is returning a null constraint violation.
-- The new product form intermittently fails to submit.
-
-In your investigation prompt, reference additional context such as:
-- Log files
-- Error messages
-- Stack traces
-- Object IDs
-- Timestamps or time ranges
-- HTTP responses
-- Screenshots
-
-For example:
-> ```/investigate Loading product with id 8f3a is returning a 500 error. The error started after a deploy on 2026-05-20. The stack trace is: {...}```
-
-If the bug is visible in a UI, you can use a browser automation MCP server to tell Han how to reproduce the error.
-
-> ```Use the browser integration to load /products, click on the product with id 8f3a, and capture the errors.```
-
-Han will generate an investigation report including:
-- Evidence
-- A root cause
-- A fix plan
-- A review of the plan
-
-If Han doesn't have enough evidence to determine a root cause, it'll ask for additional context. If you can fetch that data, pass it to Han and investigate again.
-
-### I know what's wrong and I can fix it
-
-Great! Follow the fix plan or ask Han to resolve the issue for you
-
-If the fix plan looks like a new feature, you can ask Han to update your plan.
-
-```
-/iterative-plan-review {path to the investigation report}
-```
-
-If the error is likely to return, ask Han to generate a plan for the next time it happens.
-
-```
-/runbook Write a runbook for the bugfix I just completed
-```
-
-### Artifacts
-
-- An investigation report identifying a root cause down to file names and line numbers.
-- A plan to fix the bug.
-- Optionally, a runbook for the next time the error recurs.
-
-## I want to review my code
-
-I want feedback on code that's already been written.
-
-### I want to review my current branch
-
-Use [the code review skill](../han-coding/docs/skills/code-review.md).
-
-### I want to review an open GitHub PR
-
-Use [the `/post-code-review-to-pr` skill](../han-github/docs/skills/post-code-review-to-pr.md). This does everything the code review skill does, plus posts the review as a pull request comment.
-
-### I want to review the architecture of an entire app module or subsystem
-
-Use  [the architectural analysis skill](../han-coding/docs/skills/architectural-analysis.md). Han will analyze coupling, data flow, and alignment with SOLID principles. 
-
-### I want to check if the code works, but I don't know how
-
-If you'd like to generate an automated test for the code, use [the automated test planning skill](../han-coding/docs/skills/automated-test-planning.md). Han will produce a test plan that you can later ask it to implement. 
-
-If you prefer to test by hand, use [the manual test planning skill](../han-coding/docs/skills/manual-test-planning.md). Han will create a plan-language plan including manual test steps and their expected outcomes. 
-
-### I want to know if a feature is missing
-
-Use [the gap analysis skill](../han-research/docs/skills/gap-analysis.md) to compare the current state of the code to the desired state. Han will generate a plain-language report of any feature gaps it uncovers.
-
-### Artifacts
-
-A code review document with findings labeled by filename, line number, and severity. 
-
-## I want to research alternative ways to do something
-
-I have a question. It's not yet a bug or a feature. I need options and a recommendation I can trust.
-
-Use [the research skill](../han-research/docs/skills/research.md). Han will generate a report with evidence-backed, adversarially validated options and a recommendation.
-
-If the question is actually a bug or feature, Han's research skill will route you down those paths instead.
-
-When you select an option, you can document your decision using [the architectural decision record skill](https://github.com/testdouble/han/blob/main/han-documentation/docs/skills/architectural-decision-record.md).
-
-If the decision involves creating or updating a plan or feature, you can use the [feature planning](https://github.com/testdouble/han/blob/main/han-planning/docs/skills/plan-a-feature.md) or [plan review](https://github.com/testdouble/han/blob/main/han-planning/docs/skills/iterative-plan-review.md) skills.
-
-### Artifacts
-
-A research report including options and a recommendation. All claims will be linked to verifiable sources, including results from the open web.
-
-## I want to teach Han or other Claude skills about my app
-
-Use [the project discovery skill](../han-core/docs/skills/project-discovery.md) to scan your codebase and generate a concise `### Project Discovery` section in your `AGENTS.md` or `CLAUDE.md` files.
-
-The generated text will include your app's:
-- programming languages 
-- frameworks
-- build commands
-- directory structure
-
-This isn't just useful for you. Han's skills reference this project summary for additional context.
-
-If you want to document how your app works, use [the  project documentation skill](../han-documentation/docs/skills/project-documentation.md). For example:
-
-> ```/project-documentation document the authentication system```
-
-If your app has an undocumented coding standard that you want to formalize, use [the coding standard skill](../han-coding/docs/skills/coding-standard.md).
-
-### Artifacts
-
-A "Project Discovery" section in your `AGENTS.md` or `CLAUDE.md`, along with documentation related to how your app works and how you and your team work with your app.
+Pick the path below that matches what you are trying to do right now. Each path is a short sequence, a few skills, that
+combine into a useful result. You can follow one path end to end, or jump off at any step.
+
+> See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [How-to guides](./how-to/README.md) ·
+> [Skills](./skills/README.md) · [Agents](./agents/README.md) · [Sizing](./sizing.md) · [YAGNI](./yagni.md)
+
+> **Have not installed Han yet?** Read [Choosing a Han plugin](./choosing-a-han-plugin.md) first to pick between the
+> full suite and core only, then come back here.
+
+The [how-to guides](./how-to/README.md) cover planning, bug triage, and research workflows in depth, with specific
+prompts, what to do between steps, and what to expect at each one. Read one when you want the full end-to-end recipe for
+a path. The quickstart points you at the right path; the how-to walks you through it.
+
+## Which path are you on?
+
+- **[Plan a new feature](#path-a--plan-a-new-feature).** You have an idea for a feature and need to figure out what it
+  should do, how to build it, and then build it test-first.
+- **[Investigate a bug or failure](#path-b--investigate-a-bug-or-failure).** Something is broken or behaving oddly and
+  you need a root cause.
+- **[Research your options](#path-e--research-your-options-before-you-commit).** Nothing is broken; you have a question
+  and want the options, prior art, and a recommendation before you commit.
+- **[Review code or architecture](#path-c--review-code-or-architecture).** You want a second set of eyes on a branch, a
+  PR, or an existing module.
+- **[Set up a project for everything else](#path-d--set-up-a-project-for-everything-else).** You want to document your
+  project, formalize standards, and give every other skill richer context.
+
+Not sure which? Start with the [Concepts](./concepts.md) page, then come back.
+
+---
+
+## Path A: Plan a new feature
+
+You have a feature idea and want a specification grounded in evidence, then a plan for how to build it.
+
+The full walkthrough, with prompts, decision points, and what to expect at each step, lives in
+**[How to plan a feature, end to end](./how-to/plan-a-feature.md)**. The skills in the loop, in order:
+
+[`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
+[`/stakeholder-summary`](../han-reporting/docs/skills/stakeholder-summary.md) _(optional)_ →
+[`/plan-a-phased-build`](../han-planning/docs/skills/plan-a-phased-build.md) _(optional)_ →
+[`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
+[`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md) _(optional)_ →
+[`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md) _(optional)_ → [`/tdd`](../han-coding/docs/skills/tdd.md)
+_(when you build it)_.
+
+**You are done when:** you have a `feature-specification.md` and a `feature-implementation-plan.md` in the same folder,
+each with a cross-referenced decision log and review findings. If the feature was large enough to phase, you also have a
+`build-phase-outline.md` that orders the work into demoable vertical slices. When you build it, the code lands behavior
+by behavior through `/tdd`, with tests leading.
+
+---
+
+## Path B: Investigate a bug or failure
+
+Something is broken. You want a root cause, not a guess.
+
+The full walkthrough, including how to bring in production logs and when to triage instead of investigating right away,
+lives in **[How to triage and investigate a bug](./how-to/triage-and-investigate-a-bug.md)**. The skills in the loop:
+
+[`/issue-triage`](../han-research/docs/skills/issue-triage.md) _(as needed)_ →
+[`/investigate`](../han-coding/docs/skills/investigate.md) →
+[`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md) _(optional)_.
+
+**You are done when:** you have a report that names the root cause with file-level evidence, and a fix plan that has
+survived adversarial review.
+
+---
+
+## Path C: Review code or architecture
+
+You want feedback on something that is already written.
+
+Start with the scope that matches:
+
+- **A branch or a few files** → **[`/code-review`](../han-coding/docs/skills/code-review.md).** Always dispatches
+  `junior-developer` and `adversarial-security-analyst`. Conditionally adds `test-engineer`, `edge-case-explorer`,
+  `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the
+  changed files trigger their domain. The roster scales with the [size](./sizing.md), defaulting to small. Runs quality
+  checks and produces a review with findings classified by severity.
+- **An open GitHub PR** → **[`/post-code-review-to-pr`](../han-github/docs/skills/post-code-review-to-pr.md).** Everything
+  `/code-review` does, plus a `junior-developer` clarity check against the drafted review body, plus posts the review as
+  comments on the PR.
+- **A whole module or subsystem** → **[`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md).**
+  Always dispatches a spine of `structural-analyst`, `behavioral-analyst`, `risk-analyst`, and `software-architect` to
+  examine coupling, data flow, risk, and SOLID alignment. Conditionally adds `concurrency-analyst`,
+  `adversarial-security-analyst`, `data-engineer`, `devops-engineer`, `codebase-explorer`, or `system-architect` when
+  the focus area's signals call for them. The roster scales with the [size](./sizing.md), defaulting to small. For
+  cross-service topology when `system-architect` is not auto-included, dispatch it separately.
+- **Tests you want to _plan_, not review** → **[`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md).** Dispatches
+  `test-engineer` and `edge-case-explorer`, plus `concurrency-analyst` or `adversarial-security-analyst` when the files
+  call for it. Produces a prioritized test plan.
+- **A test plan a person runs by hand** →
+  **[`/manual-test-planning`](../han-coding/docs/skills/manual-test-planning.md).** Produces a plain-language plan of
+  named tests with by-hand steps and expected outcomes, adversarially validated against the supplied context by
+  `adversarial-validator` before the file is written.
+- **An implementation against a spec, PRD, or design doc** → **[`/gap-analysis`](../han-research/docs/skills/gap-analysis.md).**
+  Compares two artifacts (current state vs. desired state) and produces a plain-language, stakeholder-readable report
+  indexed by stable `G-NNN` gap IDs. Dispatches `gap-analyzer` for the primary analysis, then runs a
+  validator-and-augmenter swarm by default, including `junior-developer`'s actor-perspective sweep across human users,
+  API callers, AI agents, and other actor types. Opt out with `no swarm` for the lightweight pass.
+- **A gap report or PRD that needs to be ordered into a phased build** →
+  **[`/plan-a-phased-build`](../han-planning/docs/skills/plan-a-phased-build.md).** Splits the source artifact into a numbered
+  sequence of vertical-slice build phases. Each phase is a thin end-to-end deliverable demoable to a real person, and
+  each one builds on the prior. Dispatches `information-architect` against the rendered outline.
+
+**You are done when:** you have a review artifact you trust, with findings tied to specific files, lines, and severity
+levels.
+
+---
+
+## Path D: Set up a project for everything else
+
+Every other path works better when the plugin has rich context about your project. If you have ten minutes before you
+need the real skill, spend it here.
+
+1. **[`/project-discovery`](../han-core/docs/skills/project-discovery.md).** Scans the repository and writes a concise
+   `## Project Discovery` section into your AGENTS.md or CLAUDE.md (languages, frameworks, build commands, where things
+   live). Other skills consume this automatically.
+2. **[`/project-documentation`](../han-documentation/docs/skills/project-documentation.md)** _(as needed)._ Document features, systems,
+   and components. `/code-review` and `/architectural-decision-record` read these docs as context.
+3. **[`/coding-standard`](../han-coding/docs/skills/coding-standard.md)** _(as needed)._ Formalize coding conventions, either
+   from existing patterns or from research. `/code-review` checks these automatically.
+4. **[`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md)** _(as needed)._ Record
+   architectural decisions.
+5. **[`.han/config.md`](./configuration.md)** _(as needed)._ Carry an optional config file to set a base directory for
+   Han's markdown outputs, a default swarm size for the sizing-aware skills, a writing-voice profile, and extra agents
+   for dispatching skills to consider. Put it in your Claude Code configuration directory for settings that follow you
+   everywhere, or at the project root for that project alone.
+
+**You are done when:** you have a `## Project Discovery` section in your AGENTS.md or CLAUDE.md and the docs and
+standards you need to give other skills useful context.
+
+---
+
+## Path E: Research your options before you commit
+
+You have a question, not a bug and not yet a feature. You want the options, the prior art, and a recommendation you can
+trust before you pick a direction.
+
+The full walkthrough, including how to capture the recommendation as an ADR so the team has a single canonical record,
+lives in **[How to research a decision and capture it](./how-to/research-a-decision.md)**. The skills in the loop:
+
+[`/research`](../han-research/docs/skills/research.md) →
+[`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md) →
+[`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) _(optional next step)_.
+
+**You are done when:** you have a research report whose recommendation survived an adversarial pass, with every claim
+tied to a source you can check yourself, and the decision captured as an ADR. If the request was really a bug, a spec, a
+standard, an artifact comparison, or an architecture assessment, `/research` routes you to the skill that owns it
+instead.
+
+---
+
+## Combining paths
+
+You can reference multiple skills in one prompt and Claude runs them in sequence, feeding each one's output into the
+next. A few that work:
+
+- _"Investigate why webhook deliveries are failing intermittently, then create a plan to fix it and iterate on it."_ →
+  [`/investigate`](../han-coding/docs/skills/investigate.md) →
+  [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).
+- _"Scan this repo, document the auth system, and create a coding standard for how we handle tokens."_ →
+  [`/project-discovery`](../han-core/docs/skills/project-discovery.md) →
+  [`/project-documentation`](../han-documentation/docs/skills/project-documentation.md) →
+  [`/coding-standard`](../han-coding/docs/skills/coding-standard.md).
+- _"Review my branch, then create an ADR for any architectural decisions in the diff."_ →
+  [`/code-review`](../han-coding/docs/skills/code-review.md) →
+  [`/architectural-decision-record`](../han-documentation/docs/skills/architectural-decision-record.md).
+- _"Plan the retry feature, then plan the implementation, then create a test plan for it."_ →
+  [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
+  [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
+  [`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md).
+- _"Spec the new onboarding flow, then write a stakeholder summary I can share with leadership before we build it."_ →
+  [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md) →
+  [`/stakeholder-summary`](../han-reporting/docs/skills/stakeholder-summary.md) →
+  [`/html-summary`](../han-reporting/docs/skills/html-summary.md) _(optional, for a self-contained HTML version to hand off)_.
+- _"Spec the discount engine, then build it test-first."_ → [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md)
+  → [`/tdd`](../han-coding/docs/skills/tdd.md) → [`/code-review`](../han-coding/docs/skills/code-review.md).
+- _"Research our options for background jobs, then spec the one you recommend."_ →
+  [`/research`](../han-research/docs/skills/research.md) → [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).
+- _"Compare the auth implementation to the auth spec, then plan how to close the gaps, finishing with splitting that
+  work up into task-sized units."_ → [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md) →
+  [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
+  [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md).
+- _"Compare the share v1 implementation to the share v2 spec, split the gaps into a phased rollout, then plan
+  implementation for the first phase, finally laying out individual tasks based on that plan."_ →
+  [`/gap-analysis`](../han-research/docs/skills/gap-analysis.md) →
+  [`/plan-a-phased-build`](../han-planning/docs/skills/plan-a-phased-build.md) →
+  [`/plan-implementation`](../han-planning/docs/skills/plan-implementation.md) →
+  [`/plan-work-items`](../han-planning/docs/skills/plan-work-items.md).
+
+## A note on sizing
+
+The sizing-aware skills (`/architectural-analysis`, `/automated-test-planning`, `/code-overview`, `/code-review`,
+`/code-walkthrough`, `/ddd-analysis`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`,
+`/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**, **medium**, or **large** before
+dispatching agents. They default to small, and scale the team and iteration depth to the chosen band. Pass the size as
+the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See
+[Sizing](./sizing.md) for the full model.
+
+## A note on YAGNI
+
+Every planning, review, and standards skill applies an evidence-based YAGNI rule before committing items to its
+artifact. Items without acceptable evidence move to a `## Deferred (YAGNI)` section with a named _reopen-when_ trigger.
+Never silently dropped. If a skill says "deferred (YAGNI)," see [YAGNI](./yagni.md) for the two gates, the
+acceptable-evidence list, and the override process.
+
+## Where to go next
+
+- Pick a skill from the [Skills Index](./skills/README.md).
+- Follow a how-to guide from the [How-to index](./how-to/README.md) when you want the full end-to-end recipe for one of
+  the paths above.
+- Skim the [Agents Index](./agents/README.md) to understand the specialists the skills dispatch.
+- Read [Concepts](./concepts.md) if the skill/agent split is still fuzzy.
+- Read [Sizing](./sizing.md) to understand how the swarming skills decide how many agents to dispatch.
+- Read [YAGNI](./yagni.md) to understand what survives a review and what gets deferred.
