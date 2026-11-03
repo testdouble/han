@@ -2,83 +2,107 @@
 
 <img src="images/han-banner.png" alt="Han: your agentic ally for solo product engineers">
 
-Han is a suite of AI skills and agents for solo (or small-team) product engineers. It combines evidence-based planning,
-test-driven implementation, full documentation maintenance, deep code review, and architectural analysis into a team of
-specialists you can dispatch from Claude Code.
+Han is a suite of AI skills and agents for _solo_ 😉 or small teams of product engineers.
 
-## What this plugin does
+## Why use Han?
 
-Han turns planning, implementation, review, and documentation work that would normally take a team into a set of
-deterministic skills you run from Claude Code.
+Han empowers solo and small teams of engineers to be as productive as their larger competitors. 
 
-Each skill dispatches specialist agents, such as project managers, adversarial reviewers, investigators, architectural
-analysts, and testing and security specialists, to do the judgment-heavy work. It then folds their findings into an
-artifact you can trust.
+Han includes skills that specialize in:
 
-The skills are designed to compose. You can plan a feature, then plan its implementation, then iterate on the plan, then
-build it test-first, then review the resulting code, then write the PR description. All through named skills that hand
-off to each other cleanly.
+- Project Management
+- Code Review
+- Code Spelunking
+- Testing
+- Security
 
-Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs through the whole plugin.
+Han then summarizes all the skills' findings into artifacts you can trust.
 
-## For Solo Product Engineers and Small Teams
+Han's skills are designed to work together. For example:
 
-Han is purpose-built for solo product engineers and small teams, instead of large teams or enterprise. This does not
-mean it can't work in larger teams, though. Read about why
-[Han's focus is solo product engineers and small teams](./docs/why-solo-and-small-teams.md) to understand Han's
-positioning and what it does not bring to the table.
+| Skill | Example |
+| - | - |
+| [Planning](https://github.com/testdouble/han/blob/main/docs/how-to/plan-a-feature.md) | `/plan-a-feature export the product inventory as a CSV file. It needs to apply the enabled filters. Write the plan to docs/features/product-export/.` <br><br>Han will generate `feature-specification.md`, `implementation-plan.md`, and/or  `work-items.md`, depending on which planning skill you use. |
+| [Debugging your code](https://github.com/testdouble/han/blob/main/docs/how-to/triage-and-investigate-a-bug.md) | `/investigate The server returns a "503 Status Unavailable" when exporting all the products.` |
+| [Updating a plan](https://github.com/testdouble/han/blob/main/docs/how-to/revise-a-plan.md) | Edit a plan document or ask Claude to do it:<br><br>`update feature_specification.md: Limit the CSV export to 100K rows.`<br><br>Then ask Han to check your plan.<br><br>`/iterative-plan-review feature_specification.md` |
+| [Understanding your code](https://github.com/testdouble/han/blob/main/docs/how-to/accelerate-understanding-of-unfamiliar-code.md) | If the CSV exporting code is located in `./src/export`:<br><br>`/code-overview ./src/export/`
+| [Reviewing your code](https://github.com/testdouble/han/blob/main/docs/how-to/run-an-effective-code-review.md) | `/code-review` |
+| [Researching alternatives](https://github.com/testdouble/han/blob/main/docs/how-to/research-a-decision.md) | `/research What are my CSV exporting library options?` |
+
+Han's skills cleanly hand off to each other via documents, supporting complicated workflows that move code from idea to deployment.
+
+Read [Concepts](./docs/concepts.md) to learn more about Han's skill-and-agent model.
+
+## Does it work for large teams?
+
+Han is purpose-built for solo and small teams of product engineers. It may also work for larger teams. Read 
+[why Han focuses on small teams](./docs/why-solo-and-small-teams.md) to learn more.
 
 ## Installation
 
 ### Claude Code
 
-Add the Test Double skills marketplace to Claude Code, then install the plugin:
+In your Terminal:
 
-```
+```sh
+# Add the Test Double/Han marketplace
 /plugin marketplace add testdouble/han
+
+# Install the plugin
 /plugin install han@han
 ```
 
-Han ships as multiple plugins:
+Han is a bundle of plugins.
 
-| Plugin               | Type    | What it brings                                                                                                                                                         |
-| -------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`han`**            | parent  | the parent plugin that brings in `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
-| `han-communication`  | bundled | the foundational plugin beneath every other: the shared readability standard and writing-voice profile, plus the skills and agent that apply them                      |
-| `han-core`           | bundled | the shared specialist agent roster, the project-discovery skill, the `/pairing` collaborative working mode, and the canonical rule files                               |
-| `han-documentation`  | bundled | documentation skills: project docs, architectural decision records, and runbooks                                                                                       |
-| `han-research`       | bundled | pre-planning knowledge-work skills: research, gap analysis, and issue triage, plus the research-analyst agent                                                          |
-| `han-planning`       | bundled | planning skills you reach for before implementation                                                                                                                    |
-| `han-coding`         | bundled | coding skills you reach for while working in code                                                                                                                      |
-| `han-github`         | bundled | GitHub-facing skills like posting a code review on a PR                                                                                                                |
-| `han-reporting`      | bundled | reporting skills like the stakeholder summary                                                                                                                          |
-| `han-feedback`       | opt-in  | skill for capturing post-session feedback on Han skill runs                                                                                                            |
-| `han-atlassian`      | opt-in  | skills for publishing docs and work items to Atlassian products                                                                                                        |
-| `han-linear`         | opt-in  | skill for publishing work items to Linear (requires a Linear MCP server)                                                                                               |
-| `han-ddd`            | opt-in  | strategic Domain-Driven Design analysis: bounded context discovery and an evidence-backed domain and context map                                                       |
-| `han-plugin-builder` | opt-in  | carries the guidance and skills for building your own skills, agents, and plugins                                                                                      |
+Installing `han@han` fetches the default bundle (`han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`). This is the right choice for most people.
 
-Installing `han@han` pulls in the bundled suite (the meta-plugin plus `han-communication`, `han-core`,
-`han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting`), and is the right
-choice for most people. If you want only one slice of Han, install a single layer such as `han-documentation@han` or
-`han-coding@han` instead (each brings the shared `han-core` agents along), and add other specific plugins as desired.
+| Plugin | Description |
+| --- | --- |
+| **`han`**  | Default bundle | Includes `han-communication`, `han-core`, `han-documentation`, `han-research`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` |
+| `han-communication` | Han's readability standard and writing voice |
+| `han-core` | Han's agent roster, agent behavior rules, and skills for project discovery and pairing |
+| `han-documentation` | Skills for generating project docs, architectural decision records (ADRs), and runbooks |
+| `han-research` | A pre-planning agent and associated skills for research, gap analysis, and issue triage |
+| `han-planning` | Skills for planning an implementation |
+| `han-coding` | Coding skills for implementation |
+| `han-github` | GitHub skills, such as reviewing a pull request |
+| `han-reporting` | Reporting skills, such as generating a stakeholder summary |
 
-For the full picture and a quick "which one do you need?" guide, see
-[Choosing a Han plugin](./docs/choosing-a-han-plugin.md).
+If you only want a single Han plugin, install `han-documentation@han` or `han-coding@han` instead. Each individual plugin includes `han-core`.
+
+```sh
+# Install only the Han coding plugin
+/plugin install han-coding@han
+```
+
+You can also install optional Han plugins to integrate into services such as Atlassian and Linear.
+
+| Plugin | Description |
+| --- | --- |
+| `han-atlassian`| Atlassian skills, such as publishing docs and work items |
+| `han-linear` | A Linear skill for publishing work items. _Requires a Linear MCP server._ |
+
+Other optional plugins include:
+
+| Plugin | Description |
+| --- | --- |
+| `han-ddd` | Domain-driven design (DDD) skills for bounded context discovery, evidence-backed domains, and context mapping |
+| `han-plugin-builder` | Skills for building your own skills, agents, and plugins |
+| `han-feedback` | A skill for capturing feedback on Han skills at the end of a session |
+
+For help choosing the Han plugins that are right for you, see [Choosing a Han Plugin](./docs/choosing-a-han-plugin.md).
 
 ### Codex
 
-Add this repo as a Codex marketplace:
-
-```
+```sh
+# Add Test Double/Han as a Codex marketplace
 codex plugin marketplace add testdouble/han
 ```
 
-Codex does not yet support meta-plugins like `han@han` (see openai/codex#23531,) and it resolves no dependencies, so
-install the Han packages directly — starting with the foundational `han-communication`, which the prose-producing
-packages depend on:
+Codex does not yet support "plugins of plugins" (aka. meta-plugins) (see openai/codex#23531). Instead, install each Han plugin directly, starting with `han-communication`:
 
-```
+```sh
+# Install Han's default plugin bundle
 codex plugin add han-communication@han
 codex plugin add han-core@han
 codex plugin add han-documentation@han
@@ -89,62 +113,55 @@ codex plugin add han-github@han
 codex plugin add han-reporting@han
 ```
 
-Install `han-feedback`, `han-atlassian`, `han-linear`, `han-ddd`, or `han-plugin-builder` separately when you want those
-opt-in packages. Because Codex resolves no dependencies, install `han-communication` alongside `han-atlassian` (its wrapped
-prose-producing skills source the shared readability standard from it).
+If you customize your Han bundle or install only optional plugins, such as `han-atlassian` or `han-linear`, always include `han-communication`. Han's communication skill sets the readability standard for all other skills' output.
 
-## Documentation
+```sh
+codex plugin add han-communication@han
+codex plugin add han-atlassian@han
+```
 
-- [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
-- [Plugin index](./docs/choosing-a-han-plugin.md). Every plugin with a one-line scent and a link to its README, the
-  full suite vs. a single layer, the layer dependencies on `han-core`, and a quick guide to which one to install.
-- [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
-- [Skills index](./docs/skills/README.md). Every skill, alphabetized, with a scent line and a link to its long-form doc.
-- [Agents index](./docs/agents/README.md). Every agent, alphabetized, with a scent line and a link to its long-form doc.
-- [Workflows](./docs/workflows.md). The map of which skills chain together, with flow diagrams for the branching chains.
-- [Configuration](./docs/configuration.md). The optional `.han/config.md` files, one personal and one per project, that
-  set an output base directory, a default swarm size, a writing-voice profile, and extra agents for Han skills.
-- [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills
-  dispatch.
-- [YAGNI](./docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture
-  skill applies.
-- [Evidence](./docs/evidence.md). What counts as evidence in Han, how to characterize how strong it is, and what to do
-  when no evidence exists at all.
-- [Readability](./docs/readability.md). The shared output standard every reader-facing skill applies as it writes, so
-  its human-facing deliverable leads with the main point and reads consistently across skills.
-- [Changelog](./CHANGELOG.md). What's new in each version of the plugin.
+## Learn More
+
+- [Concepts](./docs/concepts.md). What's the difference between a skill and an agent, and how do they combine? A good starting point.
+- [Plugin index](./docs/choosing-a-han-plugin.md). A description of every plugin, their dependencies, and a guide for choosing the right ones for you.
+- [Quickstart](./docs/quickstart.md). Recommended skills for some common scenarios.
+- [Skills index](./docs/skills/README.md). A description of every skill.
+- [Agents index](./docs/agents/README.md). A description of every agent.
+- [Workflows](./docs/workflows.md). A map of how the skills connect.
+- [Configuration](./docs/configuration.md). How to configure Han via `config.md`. For example: output directory, swarm size, writing voice, and connecting additional agents.
+- [Sizing](./docs/sizing.md). How Han decides how many agents to use (i.e., the swarm size).
+- [YAGNI](./docs/yagni.md). The "You Aren't Gonna Need It" rule used by every planning, review, and architecture skill.
+- [Evidence](./docs/evidence.md). Han's evidence standard: what counts, how strong it is, and what to do when it's absent.
+- [Readability](./docs/readability.md). Han's output readability standard.
+- [Changelog](./CHANGELOG.md). What's new in each version.
 
 ### How-To Guides
 
-- [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, revising a plan after the build
-  starts, accelerating your understanding of unfamiliar code, triaging and investigating a bug, running an effective
-  code review, and researching a decision. Pick one when you want the full walkthrough, not only the path.
-- [How to provide feedback on Han](./docs/how-to/provide-feedback.md). Send the maintainers structured feedback on a
-  skill or agent run.
-- [Extend Han via dependencies](./docs/how-to/extend-han-with-plugin-dependencies.md). Add your own custom skills on top
-  of Han.
-- [Build a plugin that depends on Han](./docs/how-to/build-a-plugin-that-depends-on-han.md). Ship a plugin that builds
-  on Han's skills and agents.
+- [How-to guides](./docs/how-to/README.md). A cookbook of recipes for planning, exploring, researching, and reviewing.
+- [Extending Han with new skills](./docs/how-to/extend-han-with-plugin-dependencies.md).
+- [Including Han in another plugin](./docs/how-to/build-a-plugin-that-depends-on-han.md).
 
 ### Contributing to Han
 
-- [Contributing](./CONTRIBUTING.md). Adding or editing skills, agents, and documentation.
-- [Create a new skill](./docs/how-to/create-a-new-skill.md). Build a new slash command from scratch with
-  `/skill-builder`.
-- [Create a new agent](./docs/how-to/create-a-new-agent.md). Build a new subagent from scratch with `/agent-builder`.
+- [How to provide feedback on Han](./docs/how-to/provide-feedback.md).
+- [How to contribute](./CONTRIBUTING.md): adding or editing skills, agents, and/or documentation.
+- [How to create a new skill](./docs/how-to/create-a-new-skill.md). Build a new slash command from scratch with `/skill-builder`.
+- [How to create a new agent](./docs/how-to/create-a-new-agent.md). Build a new subagent from scratch with `/agent-builder`.
 
 ## Maintenance and Support
 
-- **Maintenance horizon:** Indefinitely maintained, best-effort. No SLA.
-- **Project type:** Personal project, with some Test Double support
-- **How to report issues:** GitHub Issues, with expected best effort for response within 2 weeks.
+**Han has no SLA.**
+
+We will make our best effort to maintain it indefinitely.
+
+Did you find a bug? Report it as a GitHub Issue. We try to respond within two weeks.
 
 Han is an open source product of [Test Double](https://testdouble.com), and maintained by the following people:
 
 - [River Lynn Bailey](https://github.com/mxriverlynn): Creator, and primary maintainer
 - [Tamika Nomara](https://github.com/taminomara): Core contributor
 - [Aaron Frerichs](https://github.com/afrerich): Core contributor
-- [All contributors](https://github.com/testdouble/han/graphs/contributors): Misc and greatly appreciated!
+- [All contributors](https://github.com/testdouble/han/graphs/contributors): Greatly appreciated! 🙏
 
 ## LEGAL NOTICES
 
