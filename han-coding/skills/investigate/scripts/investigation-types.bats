@@ -36,6 +36,7 @@ frontmatter_value() { # key
 
 # Print each backticked token in a string, one per line.
 backticked() { # text
+  # shellcheck disable=SC2016 # the backticks are literal Markdown, not command substitution
   printf '%s\n' "$1" | grep -oE '`[a-z0-9-]+`' | tr -d '`'
 }
 
@@ -87,6 +88,7 @@ sorted_basenames() { # dir
       [ "$placeholders" = "{question}" ] || { echo "$f: dispatch placeholders are $placeholders"; return 1; }
     done <<<"$entries"
 
+    # shellcheck disable=SC2016 # the backticks are literal Markdown, not command substitution
     while read -r named; do
       [ -z "$named" ] && continue
       grep -qxF "## $named" "$TEMPLATES_DIR/$token.md" ||
