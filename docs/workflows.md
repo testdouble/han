@@ -29,6 +29,7 @@ flowchart TD
     review -.at the cap, not converged.-> reassess["/reassess-approach"]
     impl -.at the cap, not converged.-> reassess
     reassess -.re-specify.-> feature
+    reassess -.restructure.-> change["/plan-a-change"]
     review --> items["/plan-work-items"]
     impl --> items
     items --> gh["/work-items-to-issues (GitHub)"]

@@ -58,7 +58,7 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Final synthesis.** `plan-synthesizer` runs on `opus` for the final pass and produces the authoritative plan.
   During the iteration loop, the skill passes no model override: each specialist runs on its own frontmatter tier
   (synthesis-heavy agents like `junior-developer` on `opus`, structured-protocol specialists on `sonnet`). The synthesis
-  pass audits and corrects the artifacts, not just writes and populates them: the synthesizer reconciles them against
+  pass audits and corrects the artifacts, not only writes and populates them: the synthesizer reconciles them against
   each other and rewrites inconsistencies in place, such as a decision-log title copied from another entry, or a path
   one section assumes that another section's layout never places there.
 - **Planning altitude: intention over prescription.** The plan carries the intention and goals of the work, its touch
@@ -217,9 +217,13 @@ Four cross-referenced files in the same folder as the source specification, plus
   record, always present whether this run wrote it or inherited it from the upstream specification. It holds what the
   plan may draw from, what was stated as out of scope, and the visual material the run received. A `ui-designs/` folder
   sits beside it when you supply visual material.
-- **Two executed checks**, run before the skill summarizes. A completeness gate reads the boundary record against the
-  `ui-designs/` folder, and a contract-pinning check reads the finished plan for a phrase promising to author a form
-  later, an Open Item whose resolution restates its own question, and a referenced document that is absent or empty.
+- An **`artifacts/approach-reassessment-{n}.md`** report from [`/reassess-approach`](./reassess-approach.md), only when
+  a medium or large run reaches its round cap without converging. It is presented as the first open question before
+  synthesis.
+- **Three executed checks**, run before the skill summarizes. A completeness gate reads the boundary record against the
+  `ui-designs/` folder. A contract-pinning check reads the finished plan for a phrase promising to author a form later,
+  an Open Item whose resolution restates its own question, and a referenced document that is absent or empty. A
+  cross-reference check confirms the plan and its two companion files point at each other correctly.
   Each reports one of three outcomes: passed, failed with the offending lines named, or could not verify with the
   reason named. A check that did not pass is recorded in `artifacts/implementation-iteration-history.md` as well as the
   summary, so the next skill in the chain does not read the folder as fully verified.
@@ -304,8 +308,8 @@ How the size is chosen:
   escalation pass instead. At medium or large it invokes [`/reassess-approach`](./reassess-approach.md) with
   the specification and the iteration history, tags the result `approach` in the claim ledger, and puts it first among
   the questions it escalates to you: the options as named candidates, the recommendation marked, the consequence of
-  staying on the current approach leading. Synthesis waits for your answer. "Continue as is" sends the run on to
-  synthesis as before; a different approach sends it back to `/plan-a-feature` or on to `/plan-a-change`.
+  staying on the current approach leading. Synthesis waits for your answer. "Continue as is" sends the run on
+  through the final escalation pass to synthesis as before; a different approach sends it back to `/plan-a-feature` or on to `/plan-a-change`.
 
 How to override the size:
 

@@ -51,7 +51,7 @@ An `audit` item runs checks and confirms a result. Its `Expected paths` name the
 
 ### Spikes
 
-A `spike` records a finding. Route its build by the question: `han-coding:investigate` for a named symptom with a codebase root cause, `han-research:research` for an open-ended question (the default), a `general-purpose` agent for a quick single-read probe. It names the finding file in `Expected paths` (never `None`). Its review is a human soundness read (recorded, non-empty, answers the question), independent of the build's `AFK`/`HITL`.
+A `spike` records a finding. Route its build by the question: `han-coding:investigate` for a question the codebase can answer (its `bug` type for a named symptom with a codebase root cause, `how-it-works` for how the code behaves today, `available-options` for the ways a piece of work could be done here), `han-research:research` for an open-ended question (the default), a `general-purpose` agent for a quick single-read probe. It names the finding file in `Expected paths` (never `None`). Its review is a human soundness read (recorded, non-empty, answers the question), independent of the build's `AFK`/`HITL`.
 
 ### Non-han skills
 

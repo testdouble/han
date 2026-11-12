@@ -81,6 +81,9 @@ use the skill. For what the skill does internally, read the skill definition at
   diagnose something broken, explain how this code works, or compare the ways a change could be made within it.
 - **Specifying a feature.** Use [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) to turn a decision into a
   behavioral spec.
+- **Questioning whether a plan's or code's current approach is still right.** Use
+  [`/reassess-approach`](../../../han-planning/docs/skills/reassess-approach.md). It argues from the artifact and its
+  recorded findings, not from prior art.
 - **Creating or updating a coding standard.** Use [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md).
 - **Comparing two concrete artifacts for gaps.** Use [`/gap-analysis`](./gap-analysis.md).
 - **Assessing an existing module's architecture.** Use

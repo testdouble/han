@@ -87,7 +87,8 @@ restates what the current approach commits to and which findings it has absorbed
 Every option, including the two standing ones, carries the same fields: the findings it makes moot, the findings it
 leaves open, what it adds and removes in owned code paths or plan items, the recorded decisions or standards it would
 reopen, the evidence, and what to run next if it is chosen. A `Deferred (YAGNI)` list holds options considered and set
-aside, each with its reopening trigger.
+aside, each with its reopening trigger. The report closes with an Evidence section citing every file and line the
+options rely on, so you can check a claim without re-running the critic.
 
 When a loop invoked the skill, the recommendation also lands in that loop's own record: an `approach` finding in
 `review-findings.md` for `/iterative-plan-review`, or an `approach` tag in the claim ledger for `/plan-implementation`.

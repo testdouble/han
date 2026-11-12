@@ -157,6 +157,9 @@ in-channel summary:
   and the plan sections changed that pass (`Changed in plan:`). It also records the stability assessment made each
   iteration or round, and the next-step recommendation. This captures how the review progressed without bloating the
   plan.
+- An **`artifacts/approach-reassessment-{n}.md`** report from [`/reassess-approach`](./reassess-approach.md), only when a
+  team-mode run reaches its round cap without converging. It holds the structurally different options and a
+  recommendation, and the run closes on that decision.
 - **A cross-reference check over both companion files**, executed before the review is presented. It reports one of
   three outcomes: passed, failed with each dangling identifier and each blank required field named separately, or could
   not verify with the reason named. Identifiers inside fenced example blocks are ignored, so a format example never reads
@@ -259,7 +262,7 @@ How the size is chosen:
   room, and `evidence-based-investigator` joins whenever the plan contains codebase claims to verify. The size cap sets
   the upper bound on additional specialists chosen by signal.
 - **The cap counts chosen specialists, not seats.** The always-present agents are seated before any specialist is
-  chosen, so counting total seats would hide how much domain coverage a band actually buys. A medium team is the
+  chosen, so counting total seats would hide how much domain coverage a band buys. A medium team is the
   required roster plus one chosen specialist; a large team is the required roster plus two.
 - **Early stopping inside the cap.** The round cap is the upper bound, not a target. The skill stops earlier when
   stability assessment shows the next pass would only produce cosmetic changes.

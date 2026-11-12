@@ -76,6 +76,9 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **Planning the change the findings imply.** Use
   [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). This skill stops at findings on purpose; that
   one turns them into a buildable plan with the surface delta recorded.
+- **Deciding whether a plan's or code's approach is still the right one.** Use
+  [`/reassess-approach`](../../../han-planning/docs/skills/reassess-approach.md). That skill weighs structurally
+  different alternatives, including stopping; this one reports on the structure as it is.
 - **Carrying out a restructure.** Use [`/restructure`](./restructure.md), which runs this skill for its analysis and
   then carries the findings out unit by unit.
 - **Finding where domain boundaries sit.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md) to
