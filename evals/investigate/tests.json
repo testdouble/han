@@ -9,6 +9,7 @@
       "scaffold": "ruby-project",
       "expect": [
         { "result-contains": "Root Cause" },
+        { "result-contains": "**Investigation type:** bug" },
         { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
       ]
     },

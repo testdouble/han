@@ -147,7 +147,7 @@ The skill walks a five-step process:
    parallel alongside them based on how you described the symptom. After all complete, the skill compiles a unified
    numbered evidence list (E1, E2, E3, …), tagging specialist findings with their domain.
 2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan
-   file using the template at [`references/template.md`](../../skills/investigate/references/template.md).
+   file using the template at [`references/templates/bug.md`](../../skills/investigate/references/templates/bug.md).
 3. **Plan the fix.** The skill resolves project config (CLAUDE.md → project-discovery.md → docs/ Glob fallback), reads
    ADRs and coding standards relevant to the fix, and writes the Planned Fix section with file-level changes justified
    by specific evidence items.
