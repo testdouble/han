@@ -41,6 +41,18 @@ The confirmed area:
 
 Plan location confirmed: `docs/plans/investigate-types/`.
 
+### Added during the run
+
+Asked whether to add one line to the `code-overview` and `code-walkthrough` descriptions pointing single "how does X
+work" questions to `/investigate`, the operator chose:
+
+> Add the line (Recommended)
+
+This brings one more surface into the area:
+
+6. The `code-overview` and `code-walkthrough` descriptions and their long-form docs, each gaining one boundary
+   sentence that sends a single question about how the code behaves to `/investigate`.
+
 ## Direction of Travel
 
 The bug-only shape of `investigate` is being replaced by a typed shape whose first type, `bug`, carries today's
@@ -54,3 +66,4 @@ None received. This skill plans code structure; the visual-material convention d
 ## Record Provenance
 
 Established by `plan-a-change` on 2026-11-12. No prior record existed and no conflict was resolved.
+Amended on 2026-11-12 with the operator's answer above; it adds to the area and excludes nothing recorded earlier.
