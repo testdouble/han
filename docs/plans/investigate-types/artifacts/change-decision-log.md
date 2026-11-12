@@ -10,7 +10,9 @@ as numbered C-N findings.
 ## Trivial decisions
 
 - D-10: allowed-tools — `allowed-tools` adds `Write` (the skill writes a report, C-4), `Skill` (it invokes
-  `readability-guidance`; `restructure` is the han-coding precedent), and `AskUserQuestion` (the fit check). —
+  `readability-guidance`; `restructure` is the han-coding precedent), and nothing else. `AskUserQuestion` is called by the fit check but stays out of `allowed-tools`, per
+  `han-plugin-builder/skills/guidance/references/skill-building-guidance/allowed-tools-AskUserQuestion.md`: listing it
+  makes the question return empty answers without being shown. Corrected during implementation; the plan first listed it. —
   Referenced in plan: Output location and the stop, S-9.
 - D-15: Documentation — the long-form doc, README scent line, skills index, `docs/workflows.md`,
   `docs/how-to/research-a-decision.md`, and the Confluence wrapper's doc describe three types, per CLAUDE.md's "one

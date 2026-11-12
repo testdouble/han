@@ -4,8 +4,8 @@
 
 `/investigate` assumes every investigation is a bug, and many of the operator's investigations are not. In their words:
 "a lot of the investigation i do is not centered around bugs, but rather investigation into how the code works and what
-options are available for doing work." This is a constraint arriving: a new requirement the current structure cannot
-absorb, because the bug framing is written into most of its steps. The source is the operator's own request, recorded
+options are available for doing work." This is a new requirement that the current structure cannot absorb, because the bug
+framing is written into most of its steps. The source is the operator's own request, recorded
 word for word in `artifacts/scope-boundary.md`.
 
 ## What Changes, In One Paragraph
@@ -20,7 +20,7 @@ writes the same report sections it writes today.
 
 ## Current State
 
-The bug framing runs through most of `SKILL.md`. The shared parts (config, evidence rule, E-series, validator mechanics,
+The bug framing runs through most of `SKILL.md`. The shared parts (config, evidence rule, E-series (the numbered evidence items), validator mechanics,
 readability passes) are already type-agnostic, but nothing separates them from the bug-specific parts
 ([C-1](artifacts/current-state-findings.md#c-1-the-bug-framing-runs-through-every-step-of-skillmd-with-no-seam)). The
 skill's own description sends "how something works" and "options" to `research`, which claims both
@@ -311,7 +311,8 @@ The run ends by printing the type's `## Stop`, then one shared line built from t
 - **`available-options`:** `Report written to {path}. No code was changed. Reply with corrections to revise the report. To plan the recommended option, run /han-planning:plan-a-change (restructuring existing code) or /han-planning:plan-a-feature (new behavior) with this report; to weigh prior art beyond this codebase, run /han-research:research.`
 - **Shared line:** `Wrong kind of report? Re-run as /investigate {other token} <question>, where {other token} is one of: {every other token}.`
 
-`allowed-tools` adds `Write`, `Skill`, and `AskUserQuestion`
+`allowed-tools` adds `Write` and `Skill`. `AskUserQuestion` stays out of it, because listing it makes the question
+return empty answers without being shown
 ([D-10](artifacts/change-decision-log.md#d-10-allowed-tools)).
 
 ### The guarding test
@@ -480,9 +481,11 @@ has to be determined before dispatch.
 **Target state.** The `description` says `investigate` investigates this codebase in one of three types (backticked
 `bug`, `how-it-works`, `available-options`), named or detected, and does not research the open web or prior art (use
 `research`), write an orientation to a whole area (use `code-overview`), or pace someone through code (use
-`code-walkthrough`). The `argument-hint` is
+`code-walkthrough`).
+
+The `argument-hint` is
 `"[type: `bug` | `how-it-works` | `available-options`] [question or symptom] [optional report path ending in .md]"`,
-listing only the tokens shipped so far. `allowed-tools` adds `Write`, `Skill`, and `AskUserQuestion`.
+listing only the tokens shipped so far. `allowed-tools` adds `Write` and `Skill`; `AskUserQuestion` stays out of it.
 
 **Behavior.** Changing, as requested: the skill now triggers on how-it-works and options questions about the codebase.
 The added tools need no new approval from the operator.
@@ -610,11 +613,11 @@ Bats test carrying what structure can prove, and a trial run of each type after 
 
 ### Unit 1: Extract the `bug` type with no behavior change beyond the visible additions
 
-**What it does.** Moves the bug-specific content into `references/types/bug.md` and `references/templates/bug.md`,
-moves the shared sections into `references/evidence-and-validation.md`, removes `template.md`, adds the one-row table
-and the type-file contract, points Steps 2 to 6 at the type file, adds Step 1's parsing, announcement, and output
-resolution, adds `Write` and `Skill`, sets the `argument-hint` to list `bug`, and adds the Bats test. The long-form
-doc's template link moves with it, and the bug eval gains its announcement assertion.
+**What it does.** Moves the bug-specific content into `references/types/bug.md` and `references/templates/bug.md`.
+Moves the shared sections into `references/evidence-and-validation.md`, and removes `template.md`. Adds the one-row
+table and the type-file contract, and points Steps 2 to 6 at the type file. Adds Step 1's parsing, announcement, and
+output resolution. Adds `Write` and `Skill`, sets the `argument-hint` to list `bug`, and adds the Bats test. The
+long-form doc's template link moves with it, and the bug eval gains its announcement assertion.
 
 **Delta entries.** S-1 (bug), S-2, S-3 (parsing, announcement), S-4, S-5, S-6 (bug), S-7, S-8, S-9 (hint and tools),
 S-13, S-14 (bug assertion).
@@ -623,10 +626,10 @@ S-13, S-14 (bug assertion).
 
 ### Unit 2: Add `how-it-works`, type resolution, and the boundaries
 
-**What it does.** Adds the second type file and template, Step 1's detection, tie-break, fit check, and
-`AskUserQuestion`, adds `how-it-works` to the `argument-hint`, and changes the `investigate`, `research`,
-`code-overview`, and `code-walkthrough` descriptions together. Adds the `ruby-shop` scaffold, the how-it-works eval, and
-the prior-art eval.
+**What it does.** Adds the second type file and template, and Step 1's detection, tie-break, fit check, and
+the fit-check question. Adds `how-it-works` to the `argument-hint`. Changes the `investigate`, `research`, `code-overview`,
+and `code-walkthrough` descriptions together. Adds the `ruby-shop` scaffold, the how-it-works eval, and the prior-art
+eval.
 
 **Delta entries.** S-1, S-3 (resolution), S-6, S-9, S-10, S-11, S-14.
 
