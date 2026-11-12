@@ -12,9 +12,9 @@ and _how_ to dispatch the agent. For what the agent does internally, read the ag
 - **What it does.** Audits telemetry design for the cost, sampling, naming, and pipeline problems that leave a team
   unable to afford its telemetry or missing the request it needs when something breaks.
 - **When to dispatch it.** A change, plan, or module adds or alters instrumentation, metrics, spans, log schemas,
-  sampling rules, or a telemetry pipeline. Conditionally dispatched by `/architectural-analysis`, `/code-review`,
-  `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`, `/plan-a-feature`, and `/plan-implementation` when the
-  work touches telemetry design.
+  sampling rules, or a telemetry pipeline. Always dispatched by `/code-review`'s `observability` review type.
+  Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/iterative-plan-review`,
+  `/plan-a-change`, `/plan-a-feature`, and `/plan-implementation` when the work touches telemetry design.
 - **What you get back.** A telemetry design report keyed to `file_path:line_number`, naming the anti-pattern, the
   principle it violates, the failure it leads to, and the smallest change that fixes it today.
 
@@ -217,8 +217,8 @@ URL: https://sre.google/sre-book/monitoring-distributed-systems/
 - [`data-engineer`](./data-engineer.md). Schema and query design stay there.
 - [`/architectural-analysis`](../../../han-coding/docs/skills/architectural-analysis.md). Adds this agent to its roster
   when the module carries telemetry design.
-- [`/code-review`](../../../han-coding/docs/skills/code-review.md). Conditionally dispatches this agent when the change
-  adds or alters telemetry design.
+- [`/code-review`](../../../han-coding/docs/skills/code-review.md). Always dispatches this agent under its `observability`
+  review type, and adds it to other review runs when the change adds or alters telemetry design.
 - [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist
   when the gaps touch telemetry design.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Conditionally dispatches this

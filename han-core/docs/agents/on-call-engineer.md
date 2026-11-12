@@ -12,7 +12,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
 - **What it does.** Audits application source code for the named code-level resilience anti-patterns that wake on-call
   engineers at 3am.
 - **When to dispatch it.** A change is about to ship and you want a veteran on-call engineer to read the source for the
-  patterns that reliably cause 3am pages, before the page happens. Conditionally dispatched by
+  patterns that reliably cause 3am pages, before the page happens. Always dispatched by
+  `/code-review`'s `resilience` review type. Conditionally dispatched by
   `/architectural-analysis`, `/code-review`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`,
   `/plan-a-change`, `/plan-a-feature`, and `/plan-implementation` when the change touches application-source
   resilience surface (timeouts, retries, idempotency, backpressure, kill switches, failure-path observability).
