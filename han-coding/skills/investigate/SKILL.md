@@ -2,15 +2,15 @@
 name: investigate
 description: >
   Evidence-based investigation of a question about this codebase, run as one investigation type: `bug` finds the root
-  cause of a failure and plans the fix, and `how-it-works` explains how the code behaves today, with cited evidence.
-  Name a type first, or let the skill detect it from the question. Use when you need to debug, troubleshoot, diagnose,
-  or figure out why something is broken, or to understand how a flow, an integration, or an API call in this codebase
-  works. Does not review code for quality or style — use code-review. Does not assess architectural health — use
-  architectural-analysis. Does not plan the structural change a finding calls for — use plan-a-change. Does not map
-  bounded contexts — use ddd-analysis. Does not capture feedback on Han's own skills — use han-feedback. Does not
-  research the open web or prior art — use research. Does not write an orientation to a whole area — use code-overview,
-  or code-walkthrough to be paced through code step by step.
-argument-hint: "[type: `bug` | `how-it-works`] [question or symptom] [optional report path ending in .md]"
+  cause of a failure and plans the fix, `how-it-works` explains how the code behaves today, and `available-options`
+  compares the ways a piece of work could be done. Name a type first, or let the skill detect it from the question. Use
+  when you need to debug, troubleshoot, or figure out why something is broken, understand how a flow, an integration,
+  or an API call works, or weigh how to make a change. Does not review code for quality or style — use code-review.
+  Does not assess architectural health — use architectural-analysis. Does not plan the change a finding calls for — use
+  plan-a-change. Does not map bounded contexts — use ddd-analysis. Does not capture feedback on Han's own skills — use
+  han-feedback. Does not research the open web or prior art — use research. Does not write an orientation to a whole
+  area — use code-overview, or code-walkthrough to be paced through code step by step.
+argument-hint: "[type: `bug` | `available-options` | `how-it-works`] [question or symptom] [optional report path ending in .md]"
 allowed-tools:
   Read, Glob, Grep, Agent, Write, Skill, Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
 ---
@@ -53,12 +53,14 @@ An investigation type names the one kind of question a run answers. Each shipped
 type tokens. Row order is the tie-break order when a question reads as more than one type, and the last row is the type
 a question gets when it reads as none.
 
-| Token          | File                                                                   | Purpose                                                |
-| -------------- | ---------------------------------------------------------------------- | ------------------------------------------------------ |
-| `bug`          | [references/types/bug.md](./references/types/bug.md)                   | Find the root cause of a failure and plan the fix      |
-| `how-it-works` | [references/types/how-it-works.md](./references/types/how-it-works.md) | Explain how this codebase behaves, with cited evidence |
+| Token               | File                                                                             | Purpose                                                         |
+| ------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `bug`               | [references/types/bug.md](./references/types/bug.md)                             | Find the root cause of a failure and plan the fix               |
+| `available-options` | [references/types/available-options.md](./references/types/available-options.md) | Compare the ways a piece of work could be done in this codebase |
+| `how-it-works`      | [references/types/how-it-works.md](./references/types/how-it-works.md)           | Explain how this codebase behaves, with cited evidence          |
 
-Templates: [references/templates/bug.md](./references/templates/bug.md) and
+Templates: [references/templates/bug.md](./references/templates/bug.md),
+[references/templates/available-options.md](./references/templates/available-options.md), and
 [references/templates/how-it-works.md](./references/templates/how-it-works.md). Every template carries one line
 `<!-- shared: evidence-and-validation.md -->`; write the sections of
 [references/evidence-and-validation.md](./references/evidence-and-validation.md) in that line's place.
@@ -107,15 +109,17 @@ Types:
 - {token}: {Purpose}
 ```
 
-| Invocation                                                      | Type                                     | `$question`                                    | Out path                     |
-| --------------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- | ---------------------------- |
-| `/investigate bug checkout returns 500 after the coupon change` | `bug`, named                             | `checkout returns 500 after the coupon change` | none                         |
-| `/investigate bug: cart total off by one cent`                  | `bug`, named (colon stripped)            | `cart total off by one cent`                   | none                         |
-| `/investigate checkout fails docs/incidents/checkout.md`        | `bug`, detected                          | `checkout fails`                               | `docs/incidents/checkout.md` |
-| `/investigate why does the generator rewrite ./CHANGELOG.md`    | `bug`, detected                          | the whole string                               | none (the file exists)       |
-| `/investigate how does the retry queue pick a backoff`          | `how-it-works`, detected                 | the whole string                               | none                         |
-| `/investigate how-it-work retry queue`                          | not a token; detected                    | the whole string                               | none                         |
-| `/investigate how-it-works login throws 500 since Tuesday`      | named `how-it-works`; the fit check asks | `login throws 500 since Tuesday`               | none                         |
+| Invocation                                                                    | Type                                     | `$question`                                    | Out path                     |
+| ----------------------------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- | ---------------------------- |
+| `/investigate bug checkout returns 500 after the coupon change`               | `bug`, named                             | `checkout returns 500 after the coupon change` | none                         |
+| `/investigate bug: cart total off by one cent`                                | `bug`, named (colon stripped)            | `cart total off by one cent`                   | none                         |
+| `/investigate checkout fails docs/incidents/checkout.md`                      | `bug`, detected                          | `checkout fails`                               | `docs/incidents/checkout.md` |
+| `/investigate why does the generator rewrite ./CHANGELOG.md`                  | `bug`, detected                          | the whole string                               | none (the file exists)       |
+| `/investigate how does the retry queue pick a backoff`                        | `how-it-works`, detected                 | the whole string                               | none                         |
+| `/investigate how-it-work retry queue`                                        | not a token; detected                    | the whole string                               | none                         |
+| `/investigate how-it-works login throws 500 since Tuesday`                    | named `how-it-works`; the fit check asks | `login throws 500 since Tuesday`               | none                         |
+| `/investigate available-options add a fixed-amount coupon docs/inv/coupon.md` | `available-options`, named               | `add a fixed-amount coupon`                    | `docs/inv/coupon.md`         |
+| `/investigate how should we add rate limiting to the API`                     | `available-options`, detected            | the whole string                               | none                         |
 
 ### Resolve the type
 

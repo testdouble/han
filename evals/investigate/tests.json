@@ -26,6 +26,17 @@
       ]
     },
     {
+      "name": "Prompt: /investigate available-options",
+      "type": "skill-prompt",
+      "promptFile": "prompt-available-options.md",
+      "model": "opus",
+      "scaffold": "ruby-shop",
+      "expect": [
+        { "result-contains": "**Investigation type:** available-options" },
+        { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
+      ]
+    },
+    {
       "name": "Prompt: prior art goes to research",
       "type": "skill-prompt",
       "promptFile": "prompt-prior-art.md",
