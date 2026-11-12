@@ -92,7 +92,8 @@ Example prompts:
 Commits on your branch, in this order: the change-set start, the architectural analysis, the plan, one commit per unit,
 one commit per Mikado graph update, the updated layout docs, and the finished change log.
 
-The change-set folder (under your configured `output-directory`, or `docs/changes/restructure-{date}/` by default)
+The change-set folder (under your configured `output-directory`, or by default a `restructure-{date}/` folder under the project's
+documentation root, falling back to `docs/changes/`)
 holds:
 
 - **`change-log.md`.** Every step in order, with what changed, why, the decisions behind it, and the test counts

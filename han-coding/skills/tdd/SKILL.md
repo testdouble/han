@@ -263,7 +263,7 @@ Return to the top of Step 3 with the next item. Continue until the list is empty
 For any item that had an outer acceptance test (Step 2), run that test now. It should pass only because its inner
 behaviors are all implemented with real code (not mocks). If it is still red, the gap is a missing inner behavior: add
 the missing scenario to the test list and return to Step 3. The acceptance test going green is the signal the
-user-facing behavior is actually delivered.
+user-facing behavior is delivered.
 
 ## Step 5: Final Verification and Summary
 

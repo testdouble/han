@@ -104,7 +104,7 @@ settles.
 
 ## How to get the most out of it
 
-- **Say why, not just what.** The recorded reason is what the YAGNI gate tests every new abstraction against. A run with
+- **Say why as well as what.** The recorded reason is what the YAGNI gate tests every new abstraction against. A run with
   a sharp reason cuts proposals a run with a vague one waves through.
 - **Hand it a report if you have one.** Passing an `/architectural-analysis` report skips the discovery round entirely,
   which is the most expensive part of the run.

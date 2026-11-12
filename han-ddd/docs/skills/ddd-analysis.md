@@ -40,7 +40,7 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - The team suspects certain boundaries exist but has never mapped them explicitly.
 - You are onboarding onto a new system and want to understand its domain shape before reading the code in detail.
 - A previous architectural conversation mentioned "bounded contexts" or "DDD" and you want to know what the code
-  actually says.
+  says.
 - You want to find places where domain concepts cross what should be context seams.
 
 **Do not invoke for:**
@@ -55,7 +55,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   instead.
 - **Restructuring code along the boundaries the map finds.** Use
   [`/refactor`](../../../han-coding/docs/skills/refactor.md) to carry out a named refactoring against a named target;
-  this skill produces the map and changes no code.
+  this skill produces the map and changes no code. For an area-wide move along those boundaries, use
+  [`/restructure`](../../../han-coding/docs/skills/restructure.md).
 
 ## How to invoke it
 

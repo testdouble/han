@@ -165,7 +165,7 @@ to own:
 
 - `han-core:structural-analyst` — always. Module boundaries, coupling, dependency direction, duplication, abstractions.
 - `han-core:behavioral-analyst` — always. Data flow, error propagation, state, integration boundaries at runtime.
-- `han-core:concurrency-analyst` — only when the area actually contains concurrent access, async coordination, or shared
+- `han-core:concurrency-analyst` — only when the area contains concurrent access, async coordination, or shared
   mutable state.
 
 Brief each with the area from Step 1, the reason from Step 1, the boundary record's path, and a report-length target

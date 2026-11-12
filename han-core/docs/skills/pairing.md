@@ -55,7 +55,7 @@ use the skill. For what the skill does internally, read the skill definition at
 
 ## How to invoke it
 
-Run `/pairing` in Claude Code, or just say it in your own words.
+Run `/pairing` in Claude Code, or say it in your own words.
 
 Give it:
 

@@ -75,6 +75,8 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
 - **Planning the change the findings imply.** Use
   [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). This skill stops at findings on purpose; that
   one turns them into a buildable plan with the surface delta recorded.
+- **Carrying out a restructure.** Use [`/restructure`](./restructure.md), which runs this skill for its analysis and
+  then carries the findings out unit by unit.
 - **Finding where domain boundaries sit.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md) to
   discover bounded contexts, surface ubiquitous language and semantic collisions, and map where code boundaries diverge
   from domain boundaries. This skill assesses coupling, cohesion, and SOLID alignment inside a boundary you already
@@ -330,6 +332,8 @@ URL: https://www.domainlanguage.com/ddd/
   judges the structure that exists; that one designs the interface that comes next.
 - [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md). The downstream skill that consumes this
   report. Pass it the path and it skips its own discovery round.
+- [`/restructure`](./restructure.md). Runs this skill as its analysis step, then plans and carries out the
+  restructure unit by unit.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Stress-test the refactoring plan that implements
   the recommendations.
 - [`SKILL.md` for /architectural-analysis](../../skills/architectural-analysis/SKILL.md). The internal

@@ -74,7 +74,8 @@ the skill. For what the skill does internally, read the skill definition at
   cleans up only what the current red-green cycle touched; restructuring code that predates the cycle is its sibling's
   job. When the restructure spans several modules and the target structure is still open, plan it first with
   [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md); its change plan is a valid input here for
-  the units that build new behavior.
+  the units that build new behavior. To carry out a restructure across a whole area, use
+  [`/restructure`](./restructure.md), which runs this skill for each unit that builds new code.
 
 ## How to invoke it
 
@@ -84,7 +85,8 @@ Give it:
 
 1. **What to build.** A behavior, a feature, or a path to a specification or plan. A sharp version names the observable
    behavior ("the fee calculator rounds half-up to the cent"). A thin version ("build the fee thing") still works too,
-   because Step 2 turns it into a behavior list you review before any code is written.
+   because Step 2 turns it into a behavior list before any code is written. The skill waits for your review of that
+   list only when you ask up front to approve it.
 2. **Any context to respect.** A `feature-specification.md`, a linked issue, or a plan. The skill reads it as the source
    of behaviors for the test list.
 3. **Nothing about the test framework.** The skill resolves the test, lint, and build commands from your project itself

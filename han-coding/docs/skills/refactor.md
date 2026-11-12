@@ -59,7 +59,8 @@ use the skill. For what the skill does internally, read the skill definition at
   target structure should be.
 - **Restructuring a whole area.** Use [`/restructure`](./restructure.md) when the change spans many files or modules
   and you want it carried out unit by unit with a commit and a logged decision for each. It runs this skill for each
-  unit and uses the Mikado Method when a unit stops here because its scope spread.
+  unit and uses the Mikado Method when a unit stalls, such as when this skill stops for scope or after two failed
+  steps.
 - **Fixing a bug.** A fix changes behavior, which this skill never does. Use
   [`/investigate`](./investigate.md) and then drive the fix in with [`/tdd`](./tdd.md).
 - **Mapping domain boundaries before restructuring along them.** Use
@@ -233,6 +234,8 @@ URL: https://arxiv.org/abs/2411.04444
   deferral format.
 - [`/tdd`](./tdd.md). The sibling execution skill. Its refactor step owns cleanup inside a red-green cycle; this skill
   owns restructuring outside one. Preparatory refactoring here, then drive the behavior change there.
+- [`/restructure`](./restructure.md). Carries out a whole area unit by unit, calling this skill as the executor for each
+  behavior-preserving unit and using the Mikado Method when a unit stalls.
 - [`/code-review`](./code-review.md) and
   [`/architectural-analysis`](./architectural-analysis.md). Where the strongest input comes from: their
   findings are this skill's work orders.
