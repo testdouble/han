@@ -98,7 +98,8 @@ Each step carries four parts:
    change, so before and after are both visible; a plain fenced excerpt for existing code.
 4. **A one-line handoff** naming what the next step covers, then the turn ends.
 
-The walk closes with the off-flow changed files (each by full path, one line each on why it changed), a three-or-four
+The walk closes with the off-flow changed files when it covered a change set that has any (each by full path, one line
+each on why it changed), a three-or-four
 sentence recap carrying no file paths or symbol names, and one line pointing at whichever sibling skill fits what you
 said you wanted the understanding for.
 

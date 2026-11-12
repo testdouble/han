@@ -243,6 +243,9 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
+- [`/investigate-to-confluence`](../../../han-atlassian/docs/skills/investigate-to-confluence.md). Runs this skill as
+  any of its investigation types and publishes the report to a Confluence page after you confirm. Requires the opt-in
+  `han-atlassian` plugin.
 - [`/issue-triage`](../../../han-research/docs/skills/issue-triage.md). Run before investigation when the incoming report is too vague to
   trace; triage produces the sharp problem statement investigation needs.
 - [`/research`](../../../han-research/docs/skills/research.md). The open-web sibling. Use it when the answer lives

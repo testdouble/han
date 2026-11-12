@@ -94,7 +94,7 @@ Example prompts:
 
 ## What you get back
 
-A single Markdown overview file. It lands under the `output-directory` in your `.han/config.md` when you have set one,
+A single Markdown overview file, `code-overview-{short-target-slug}.md`. It lands under the `output-directory` in your `.han/config.md` when you have set one,
 and outside the repository (for example under your system temp directory) when you have not. A configured directory
 inside the repository is honored without comment, because you chose it. When the resolved destination cannot be written,
 the run falls back to the outside-the-repository default and tells you which destination it could not use, rather than

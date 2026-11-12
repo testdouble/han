@@ -94,7 +94,7 @@ A full review plus GitHub integration:
   as `work-ticket`'s Ticket Resolution) is everything between the report's `<!-- type-section:start -->` and
   `<!-- type-section:end -->` markers; it crosses whole and uncut, whatever its heading, and is absent when the report
   has no markers. See the `/code-review` documentation for the detailed shape.
-- **An offer to post to GitHub.** `AskUserQuestion` with "Yes, post to GitHub" / "No, just the local review."
+- **An offer to post to GitHub.** `AskUserQuestion` with "Yes, post the review to GitHub" / "No, just the local review."
 - **When accepted.** The skill gathers PR metadata (`owner/repo`, `pr_number`, `head_sha`, author login, current user
   login) and runs a `junior-developer` clarity pass on the draft review body. That pass flags unclear wording,
   misaligned severity, accusatory tone, and broken location references. The skill applies the edits, writes the final
