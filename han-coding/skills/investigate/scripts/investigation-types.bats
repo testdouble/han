@@ -136,3 +136,9 @@ sorted_basenames() { # dir
     grep -qF "\`## $section\`" "$SKILL" || { echo "SKILL.md never names \`## $section\`"; return 1; }
   done
 }
+
+@test "research does not claim questions about how something works" {
+  research="$REPO_ROOT/han-research/skills/research/SKILL.md"
+  description="$(awk '/^---$/{n++; next} n==1' "$research" | awk '/^description:/{on=1; next} on && /^  /{print; next} {on=0}' | tr '\n' ' ')"
+  [[ "$description" != *"how something works"* ]] || { echo "research's description still claims how something works"; return 1; }
+}

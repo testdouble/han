@@ -1,14 +1,15 @@
 ---
 name: "research"
 description:
-  "Researches an open-ended question — options, possible solutions, prior art, trade-offs, or how something works — and
-  produces a durable, evidence-backed, adversarially-validated report that recommends an option without committing the
-  team to any artifact. Use when you want to research approaches, weigh options, survey prior art or the state of the
-  art, or understand how something works before committing to a direction. Does not diagnose a bug, failure, or root
-  cause — use investigate. Does not specify a feature — use plan-a-feature. Does not create or update a coding standard
-  — use coding-standard. Does not compare two concrete artifacts for gaps — use gap-analysis. Does not assess an
-  existing module's architecture — use architectural-analysis. Does not capture feedback on Han's own skills — use
-  han-feedback."
+  "Researches an open-ended question across the open web and the material you provide — options, possible solutions,
+  prior art, trade-offs, or how an outside technology works — and produces a durable, evidence-backed,
+  adversarially-validated report that recommends an option without committing the team to any artifact. Use when you
+  want to research approaches, weigh options, survey prior art or the state of the art, or understand an outside
+  technology before committing to a direction. Does not answer a question the codebase alone can answer, such as how it
+  works, why it is broken, or how a change could be made within it — use investigate. Does not specify a feature — use
+  plan-a-feature. Does not create or update a coding standard — use coding-standard. Does not compare two concrete
+  artifacts for gaps — use gap-analysis. Does not assess an existing module's architecture — use
+  architectural-analysis. Does not capture feedback on Han's own skills — use han-feedback."
 arguments: size
 argument-hint:
   '[size: small | medium | large | dynamic] [the open-ended question to research] [optional output path] [optional: "evidence
@@ -112,10 +113,11 @@ decision or unknown they need resolved before dispatching anything. Do not guess
 
 Before sizing or dispatching, classify what the user actually asked for:
 
-- **Out of scope.** If the request is a bug to diagnose, a feature to specify, a coding standard to set, two concrete
-  artifacts to compare, or an existing module's architecture to assess, name the correct sibling skill (`investigate`,
-  `plan-a-feature`, `coding-standard`, `gap-analysis`, `architectural-analysis`), explain in one sentence why it fits
-  better, and stop. Produce no research report.
+- **Out of scope.** If the request is a bug to diagnose, a question the codebase alone can answer (how it works, or how
+  a change could be made within it), a feature to specify, a coding standard to set, two concrete artifacts to compare,
+  or an existing module's architecture to assess, name the correct sibling skill (`investigate`, `plan-a-feature`,
+  `coding-standard`, `gap-analysis`, `architectural-analysis`), explain in one sentence why it fits better, and stop.
+  Produce no research report.
 - **Hybrid.** If the request contains an answerable open-ended research question _and_ asks for a sibling's output
   ("research caching options and write the standard for the one I pick"), run the research portion to a full report,
   then name the sibling for the rest. Do not produce the sibling's artifact. If nothing research-shaped remains once the

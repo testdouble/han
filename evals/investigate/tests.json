@@ -1,5 +1,5 @@
 {
-  "plugins": ["han-communication", "han-core", "han-coding"],
+  "plugins": ["han-communication", "han-core", "han-coding", "han-research"],
   "tests": [
     {
       "name": "Prompt: /investigate",
@@ -12,6 +12,25 @@
         { "result-contains": "**Investigation type:** bug" },
         { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
       ]
+    },
+    {
+      "name": "Prompt: /investigate how-it-works",
+      "type": "skill-prompt",
+      "promptFile": "prompt-how-it-works.md",
+      "model": "opus",
+      "scaffold": "ruby-shop",
+      "expect": [
+        { "result-contains": "**Investigation type:** how-it-works" },
+        { "result-does-not-contain": "Planned Fix" },
+        { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: prior art goes to research",
+      "type": "skill-prompt",
+      "promptFile": "prompt-prior-art.md",
+      "model": "sonnet",
+      "expect": [{ "skill-call": { "skill": "han-coding:investigate", "expected": false } }]
     },
     {
       "name": "Prompt: no op",

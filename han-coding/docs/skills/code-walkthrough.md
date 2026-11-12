@@ -52,6 +52,8 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Judging whether the code is any good.** Use [`/code-review`](./code-review.md) instead (or
   [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md) to post a review to GitHub).
 - **Diagnosing a bug or root-causing a failure.** Use [`/investigate`](./investigate.md) instead.
+- **Answering one question about how the code behaves.** Use [`/investigate how-it-works`](./investigate.md) for a
+  written answer with cited evidence. This skill paces you through the code in conversation.
 - **Assessing architecture, coupling, or structural risk.** Use [`/architectural-analysis`](./architectural-analysis.md)
   instead.
 
