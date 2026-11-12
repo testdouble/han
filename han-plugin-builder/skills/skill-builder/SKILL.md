@@ -75,7 +75,7 @@ Map from decision to governing document (read just-in-time):
 ## Step 1: Capture the Request and Confirm It Is a Skill
 
 Read the user's argument and the conversation to extract what the skill should do. If the request is too thin to start
-(for example, just "build a skill"), ask the user for one or two sentences on what the skill should accomplish and what
+(for example, "build a skill"), ask the user for one or two sentences on what the skill should accomplish and what
 triggers it — nothing else yet.
 
 **Confirm the entity type before anything else.** Read
@@ -189,7 +189,7 @@ Cover at minimum:
    `optional-git-repositories.md`) — the skill discovers project specifics dynamically rather than hardcoding them, and
    degrades gracefully when a tool or git is absent, where relevant.
 8. **Dispatch** (`agent-dispatch-namespacing.md`) — if the skill dispatches agents, every dispatch uses the qualified
-   `defining-plugin:agent-name`, and the agents actually exist in an installed plugin.
+   `defining-plugin:agent-name`, and the agents exist in an installed plugin.
 9. **Tests** (`success-criteria-and-testing.md`) — each use case maps to a triggering and functional test the user can
    run.
 10. **Model-specific leftovers** (`per-model-authoring.md`) — no "think step by step" or "think carefully" line; no

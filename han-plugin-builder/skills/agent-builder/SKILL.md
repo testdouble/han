@@ -69,7 +69,7 @@ Map from decision to governing document (read just-in-time):
 ## Step 1: Capture the Request and Confirm It Is an Agent
 
 Read the user's argument and the conversation to extract what the agent should do. If the request is too thin to start
-(for example, just "build an agent"), ask the user for one or two sentences on the agent's domain and what it produces —
+(for example, "build an agent"), ask the user for one or two sentences on the agent's domain and what it produces —
 nothing else yet.
 
 **Confirm the entity type before anything else.** Read
@@ -88,7 +88,7 @@ once an agent — with one role — is the right entity.
 Locate the target plugin and learn its conventions before asking the user anything beyond the framing. Use Glob, Grep,
 and `find` to gather:
 
-- The target plugin directory and its `.claude-plugin/plugin.json`. Confirm the plugin actually ships agents (an
+- The target plugin directory and its `.claude-plugin/plugin.json`. Confirm the plugin ships agents (an
   `agents/` directory) or is the right home for the first one. If the user has not said which plugin, infer candidates
   and confirm in Step 4.
 - Sibling agents in that plugin (`{plugin}/agents/*.md`) — their descriptions, role identities, model tiers, domain
