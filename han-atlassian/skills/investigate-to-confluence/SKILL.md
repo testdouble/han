@@ -1,16 +1,17 @@
 ---
 name: investigate-to-confluence
 description: >
-  Runs an evidence-based investigation of a bug, failure, or unexpected behavior with investigate and publishes the
-  resulting investigation report to a user-specified Confluence location. Use when the user wants something debugged,
-  diagnosed, or root-caused AND the findings posted to a Confluence space or page. Requires a configured Atlassian MCP
-  server. Does not investigate to a local file only — use investigate. Does not publish an arbitrary existing markdown
-  file — use markdown-to-confluence. Does not document an already-understood feature to Confluence — use
+  Runs an evidence-based investigation of a question about this codebase with investigate, as any of its investigation
+  types (a bug to root-cause, how the code works, or the options for a piece of work), and publishes the resulting
+  report to a user-specified Confluence location. Use when the user wants something debugged, explained, or weighed AND
+  the findings posted to a Confluence space or page. Requires a configured Atlassian MCP server. Does not investigate to
+  a local file only — use investigate. Does not publish an arbitrary existing markdown file — use
+  markdown-to-confluence. Does not document an already-understood feature to Confluence — use
   project-documentation-to-confluence. Does not plan or specify a new feature to Confluence — use
   plan-a-feature-to-confluence. Does not publish to Jira — use work-items-to-jira.
 argument-hint:
-  "[symptom or question to investigate] [confluence location: page URL or space + parent] [--mode draft|live (default
-  draft)]"
+  "[optional investigation type] [symptom or question to investigate] [confluence location: page URL or space + parent]
+  [--mode draft|live (default draft)]"
 allowed-tools:
   Read, Glob, Grep, Skill, Agent, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources,
   Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/han-config-dir.sh")
@@ -34,8 +35,8 @@ orchestrator: the investigation work belongs to `han-coding:investigate`, and th
 `han-atlassian:markdown-to-confluence`. This skill only validates its inputs, runs the investigation to a temporary
 file, gets the user's review and publish choice, and hands the file to the publisher.
 
-`han-coding:investigate` produces a **single** report file (the investigation plan: problem statement, evidence summary,
-root cause analysis, planned fix, validation results, and summary). It does not produce companion artifacts, so this
+`han-coding:investigate` produces a **single** report file whose sections follow the investigation type it ran as (`bug`,
+`how-it-works`, or `available-options`). It does not produce companion artifacts, so this
 skill publishes that one file as a single Confluence page — the single-page sibling of
 `han-atlassian:project-documentation-to-confluence`, not the parent-plus-children tree of
 `han-atlassian:plan-a-feature-to-confluence`.
@@ -54,8 +55,8 @@ Confirm the skill has everything it needs before spending effort on an investiga
    can re-run it once it is connected. Do not fall back to a local-only run; for a local-only investigation, point them
    at `han-coding:investigate`. This preflight runs first so a missing server fails before any investigation work
    begins.
-2. **A symptom or question to investigate.** Confirm the request names a bug, failure, error, integration, or unexpected
-   behavior to investigate. This — together with any relevant conversation context — is forwarded to
+2. **A symptom or question to investigate.** Confirm the request names something to investigate in this codebase: a bug
+   or failure, how some part of the code works, or the options for a piece of work. This — together with any relevant conversation context — is forwarded to
    `han-coding:investigate` verbatim in Step 2. If the request is too thin to start, let `han-coding:investigate` run
    its own investigation rather than pre-empting it here.
 3. **A Confluence destination.** Confirm the request provides a target location: a **Confluence page URL** (to update
@@ -68,17 +69,19 @@ Confirm the skill has everything it needs before spending effort on an investiga
 
 Invoke the `han-coding:investigate` skill with the **Skill** tool, **forwarding all provided context** verbatim: the
 symptom or question, any known reproduction steps or error messages, any suspected entry points, and the relevant
-conversation context. Do not summarize, trim, or reinterpret the user's context; pass it through so
-`han-coding:investigate` runs exactly as it would on its own (parallel investigators, conditional specialist analysts,
-adversarial validation, and the final report) — **except** add two explicit instructions:
+conversation context. When the user named an investigation type, put that type first in the argument. Do not
+summarize, trim, or reinterpret the user's context; pass it through so `han-coding:investigate` runs exactly as it would
+on its own (type resolution, parallel agents, adversarial validation, and the final report) — **except** add two
+explicit instructions:
 
-- It must write the resulting investigation report to a file under `/tmp/` (for example `/tmp/<symptom-slug>.md`) rather
-  than into the project's docs or plans directory. This keeps the working report out of the repo until the user decides
+- It must write the resulting investigation report to a file under `/tmp/` rather than into the project's docs or plans
+  directory. Pass the path as the argument's final token, for example `/tmp/investigate-<question-slug>.md`, choosing a
+  path where no file exists yet, so `han-coding:investigate` reads it as the report path. This keeps the working report out of the repo until the user decides
   to publish it, and because the path is explicit input it outranks any `output-directory` the project or personal
   `.han/config.md` supplies (see [../../references/config-rule.md](../../references/config-rule.md)).
-- It must **stop after producing the report**. `han-coding:investigate` normally ends by presenting the plan for
-  approval and can trigger the fix's implementation on approval; this skill wants the report only, so instruct it not to
-  implement the fix or change any code — this skill publishes findings, it does not ship them.
+- It must **stop after producing the report**. A `bug` investigation normally ends by offering to implement the Planned
+  Fix on approval; this skill wants the report only, so instruct it not to implement anything or change any code. This
+  skill publishes findings, it does not ship them.
 
 Let `han-coding:investigate` complete its full investigation process. **Capture the exact `/tmp/` file path it wrote.**
 That markdown file is the source content for Confluence. Proceed to Step 3 once it finishes.
@@ -123,7 +126,7 @@ page's URL and whether it went live or was saved as a draft. If publishing fails
 1. **Inputs validated:** the Atlassian server was reachable, a symptom or question to investigate was present, and a
    Confluence location was provided — or the skill stopped before doing any work.
 2. **Report produced to /tmp:** `han-coding:investigate` ran with the full forwarded context, wrote the investigation
-   report to a `/tmp/` file whose path was captured, and did not implement the fix or change any code.
+   report to a `/tmp/` file whose path was captured, and did not implement anything or change any code.
 3. **User reviewed:** the `/tmp/` path was shown to the user before any publish.
 4. **Explicit choice obtained:** the user chose draft, live, or local-only.
 5. **Publish delegated and reported:** when the user chose to publish, `han-atlassian:markdown-to-confluence` created or

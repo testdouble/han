@@ -51,8 +51,9 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   skills and agents you used, and optionally post it as a GitHub issue to testdouble/han.
 - [`/html-summary`](../../han-reporting/docs/skills/html-summary.md) — Convert a `stakeholder-summary.md` into a single
   self-contained HTML executive report; produces the file only, does not publish it.
-- [`/investigate`](../../han-coding/docs/skills/investigate.md) — Run an evidence-based investigation of a bug, failure,
-  or unexpected behavior, with adversarial validation of the proposed fix.
+- [`/investigate`](../../han-coding/docs/skills/investigate.md) — Run an evidence-based investigation of a question about
+  this codebase as one of three types (a bug to root-cause, how the code works, or the options for a piece of work),
+  with adversarial validation of the findings.
 - [`/investigate-to-confluence`](../../han-atlassian/docs/skills/investigate-to-confluence.md) — Run `/investigate`
   (changing no code), show the report for review, then publish it as one Confluence page after confirmation.
 - [`/issue-triage`](../../han-research/docs/skills/issue-triage.md) — Classify a vague issue or bug report, identify missing

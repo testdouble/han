@@ -1,5 +1,5 @@
 {
-  "plugins": ["han-communication", "han-core", "han-coding"],
+  "plugins": ["han-communication", "han-core", "han-coding", "han-research"],
   "tests": [
     {
       "name": "Prompt: /investigate",
@@ -9,8 +9,39 @@
       "scaffold": "ruby-project",
       "expect": [
         { "result-contains": "Root Cause" },
+        { "result-contains": "**Investigation type:** bug" },
         { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
       ]
+    },
+    {
+      "name": "Prompt: /investigate how-it-works",
+      "type": "skill-prompt",
+      "promptFile": "prompt-how-it-works.md",
+      "model": "opus",
+      "scaffold": "ruby-shop",
+      "expect": [
+        { "result-contains": "**Investigation type:** how-it-works" },
+        { "result-does-not-contain": "Planned Fix" },
+        { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: /investigate available-options",
+      "type": "skill-prompt",
+      "promptFile": "prompt-available-options.md",
+      "model": "opus",
+      "scaffold": "ruby-shop",
+      "expect": [
+        { "result-contains": "**Investigation type:** available-options" },
+        { "skill-call": { "skill": "han-coding:investigate", "expected": true } }
+      ]
+    },
+    {
+      "name": "Prompt: prior art goes to research",
+      "type": "skill-prompt",
+      "promptFile": "prompt-prior-art.md",
+      "model": "sonnet",
+      "expect": [{ "skill-call": { "skill": "han-coding:investigate", "expected": false } }]
     },
     {
       "name": "Prompt: no op",

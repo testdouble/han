@@ -8,8 +8,9 @@ so the team keeps a single canonical record of what was decided and why.
 
 ## Before you begin
 
-- You have a real decision to make, not a bug to diagnose and not a feature to specify. `/investigate` is the right tool
-  when something is broken; `/plan-a-feature` is the right tool when the decision has already been made and you are
+- You have a real decision to make that needs the open web or prior art, not a bug to diagnose and not a feature to
+  specify. `/investigate` is the right tool when the answer lives in this codebase (something broken, how the code
+  works, or how a change could be made within it); `/plan-a-feature` is the right tool when the decision has already been made and you are
   scoping behavior.
 - You have a question han can frame as a single decision. If the question is too thin, `/research` will ask you to
   sharpen it before dispatching anything. (Phase 1 step 1 below shows what a sharper framing looks like.)

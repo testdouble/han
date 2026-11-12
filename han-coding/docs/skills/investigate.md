@@ -9,29 +9,44 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 ## TL;DR
 
-- **What it does.** Evidence-based investigation of a bug, failure, or unexpected behavior, followed by adversarial
-  validation of the proposed fix.
-- **When to use it.** Something is broken and you want a root cause backed by file-level evidence, not a guess.
-- **What you get back.** An investigation report with symptoms, numbered evidence (E1, E2, …), root cause analysis, fix
-  plan, and validation findings (V1, V2, …).
+- **What it does.** Runs an evidence-based investigation of a question about this codebase as one of three types (a bug
+  to root-cause, how the code works, or the options for a piece of work), with adversarial validation of the findings.
+- **When to use it.** You want an answer backed by file-level evidence, not a guess: why something is broken, how
+  something works, or which way a change should go.
+- **What you get back.** A report whose sections follow the type, with numbered evidence (E1, E2, …) and validation
+  findings (V1, V2, …). A bug report carries a root cause and a planned fix; a how-it-works report carries an answer and
+  a walkthrough; an available-options report carries options, a comparison, and a recommendation.
 
 ## Key concepts
 
-- **Trace backward from symptoms.** Don't guess. Follow the code. The skill works from the observed failure outward to
-  the data flow, the error path, and the recent changes that might have broken it.
-- **Parallel evidence gathering with specialists.** At least two `evidence-based-investigator` agents run in parallel,
-  each from a different angle: one on the error path, one on the data flow. When the symptom matches, specialist
-  analysts dispatch in parallel alongside the investigators. `concurrency-analyst` for intermittent / race / timeout
-  bugs. `behavioral-analyst` for data-flow and error-propagation bugs. `data-engineer` for schema, query, migration, and
-  isolation bugs. Specialists find root causes generalists miss.
-- **Evidence is numbered.** Every finding gets an ID (E1, E2, E3…) so the root-cause analysis and fix plan can reference
-  specific evidence explicitly (_"the handler passes an unvalidated ID (E1) to the service layer, which assumes non-nil
-  (E3)"_).
-- **Adversarial validation before ship.** After the fix is planned, `adversarial-validator` agents try to falsify the
-  evidence, break the fix, and challenge the assumptions. Counter-evidence becomes validation findings (V1, V2, …) that
-  reshape the plan.
-- **Coding-standards aware.** The fix plan is written against the project's standards, ADRs, and inferred patterns. Not
-  against generic best practice.
+- **One run, one investigation type.** Every run answers one kind of question:
+
+  | Type                | What it answers                                                 | What you get                                                   |
+  | ------------------- | --------------------------------------------------------------- | -------------------------------------------------------------- |
+  | `bug`               | Find the root cause of a failure and plan the fix               | Problem statement, root cause, planned fix, coding standards   |
+  | `available-options` | Compare the ways a piece of work could be done in this codebase | Goal and constraints, current state, options, comparison, pick |
+  | `how-it-works`      | Explain how this codebase behaves, with cited evidence          | The question, a one-sentence answer, a walkthrough, key parts  |
+
+- **Name a type, or let the skill pick.** Put the type first (`/investigate how-it-works …`) to choose it. Leave it out
+  and the skill reads your question and picks one. A failure outranks everything; an options question outranks a
+  how-it-works one; a question that reads as none of them runs as `how-it-works`.
+- **A type that does not fit gets one question.** When you name a type and your question clearly reads as a different
+  one (`/investigate how-it-works login throws 500 since Tuesday`), the skill asks once which to use, and suggests the
+  better fit. Anything short of a clear mismatch keeps your choice.
+- **You see what it decided before any work starts.** Every run opens with a short block naming the type, why it was
+  chosen, the question as the skill read it, where the report will be written, and the other types you could re-run as.
+- **Parallel evidence gathering with specialists.** Each type dispatches its own agents in parallel. A bug run sends two
+  or more `evidence-based-investigator` agents, each from a different angle, plus `concurrency-analyst`,
+  `behavioral-analyst`, or `data-engineer` when the symptom matches. A how-it-works run sends `codebase-explorer` and
+  `behavioral-analyst`. An options run sends `codebase-explorer` and `structural-analyst`. Specialists join either when
+  the question calls for them.
+- **Evidence is numbered.** Every finding gets an ID (E1, E2, E3…) so the analysis can cite specific evidence (_"the
+  handler passes an unvalidated ID (E1) to the service layer, which assumes non-nil (E3)"_).
+- **Adversarial validation before you act.** `adversarial-validator` agents try to falsify the evidence and break the
+  conclusion: the fix for a bug, the completeness of the explanation for how-it-works, the recommendation for options.
+  Counter-evidence becomes validation findings (V1, V2, …) that reshape the report.
+- **This codebase, not the open web.** The skill reads your repository and any material you paste in. For prior art,
+  outside libraries, or the state of the art, use `/research`.
 
 ## When to use it
 
@@ -39,124 +54,152 @@ to use the skill. For what the skill does internally, read the skill definition 
 
 - A bug, failure, or unexpected behavior needs a root cause backed by code-level evidence.
 - An integration or API call is misbehaving and you want a trace from symptoms to data flow to recent changes.
-- You suspect a regression and want the investigation to consider git history alongside the code.
-- You want the proposed fix adversarially validated, not only designed, before writing any code.
-- You want a durable report that names the exact file, function, and line where the problem originates, plus the
-  evidence that proves it.
+- You need an accurate account of how a flow, a lifecycle, or an integration in this codebase works before you change it.
+- You are weighing how to make a change and want the options this codebase supports, compared against its constraints.
+- You want the conclusion adversarially validated, not only drafted, before writing any code.
 
 **Do not invoke for:**
 
 - **Code review.** Use [`/code-review`](./code-review.md) for a correctness, testing, and compliance audit of a branch.
-- **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling,
-  data flow, concurrency, and SOLID assessment of a module.
+- **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow,
+  concurrency, and SOLID assessment of a module.
 - **Test planning.** Use [`/automated-test-planning`](./automated-test-planning.md) when the gap is coverage, not a bug.
-- **Plan review.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) for multi-pass review of an
-  existing plan.
-- **Open-ended research.** Use [`/research`](../../../han-research/docs/skills/research.md) when nothing is broken and you want options, prior
-  art, or how something works before committing to a direction.
-- **Planning the structural change a root cause calls for.** Use
-  [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md) when this skill's report shows the defect is a
-  responsibility in the wrong place rather than a one-line fix. Its report is a valid input there.
+- **Plan review.** Use [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md) for
+  multi-pass review of an existing plan.
+- **The open web and prior art.** Use [`/research`](../../../han-research/docs/skills/research.md) when the answer lives
+  outside this codebase: outside libraries, prior art, or how an outside technology works.
+- **An orientation to a whole area.** Use [`/code-overview`](./code-overview.md) for a written overview of a file,
+  directory, or PR, or [`/code-walkthrough`](./code-walkthrough.md) to be paced through code one step at a time.
+  `/investigate how-it-works` answers one question with cited, validated evidence.
+- **Planning the change a finding calls for.** Use [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md)
+  when the report shows a responsibility in the wrong place rather than a one-line fix, or when you have picked an
+  option to restructure toward. Its report is a valid input there.
 - **Mapping bounded contexts or domain boundaries.** Use [`/ddd-analysis`](../../../han-ddd/docs/skills/ddd-analysis.md)
-  when the question is where the domain's boundaries sit, not why a specific thing is broken.
-- **Feedback on Han's own skills.** Use [`/han-feedback`](../../../han-feedback/docs/skills/han-feedback.md) to capture post-session
-  feedback on the Han skills you ran.
+  when the question is where the domain's boundaries sit.
+- **Feedback on Han's own skills.** Use [`/han-feedback`](../../../han-feedback/docs/skills/han-feedback.md) to capture
+  post-session feedback on the Han skills you ran.
 
 ## How to invoke it
 
-Run `/investigate` in Claude Code with a description of the problem.
+Run `/investigate` in Claude Code with an optional type, your question, and an optional report path:
+
+```
+/investigate [bug | available-options | how-it-works] <question or symptom> [report path ending in .md]
+```
 
 Give it:
 
-1. **The symptom.** What you observed: the error message, the unexpected value, the failed deploy, the intermittent
-   timeout. A concrete observation collapses the initial search space.
-2. **The reproduction context, if known.** Environment, branch, specific user account, specific data, specific time. The
-   skill does not need a full reproduction (it can investigate from a single observation), but the more context you
-   give, the faster the angles converge.
-3. **An output path, optional.** The skill writes the investigation plan to a file. Name a path to control where it
-   lands; otherwise the skill proposes one and writes the plan there.
+1. **The type, optional.** The first word, when it is one of the three tokens. A trailing colon is fine (`bug:`).
+2. **The question or symptom.** For a bug, what you observed: the error message, the unexpected value, the failed
+   deploy. For how-it-works, what you want explained. For options, the work you want to do. Concrete wording collapses
+   the search space.
+3. **A report path, optional.** A final word ending in `.md` that does not name an existing file is where the report is
+   written. A final `.md` that already exists is read as part of your question, and the skill never writes over it.
+   Otherwise the report goes to your configured `output-directory`, or to `investigations/` under the project's
+   documentation root, named after your question.
 
 Example prompts:
 
-- `/investigate`. _"Why are webhook deliveries failing intermittently in production?"_
-- `/investigate`. _"Users are seeing stale data after updating their profile. The update returns 200 but the next page
+- `/investigate`. _"Why are webhook deliveries failing intermittently in production?"_ Runs as `bug`.
+- `/investigate bug`. _"Users see stale data after updating their profile. The update returns 200 but the next page
   load shows the old value."_
-- `/investigate`. _"The background job queue is backing up during peak hours. Jobs enqueued at 9am don't run until
-  9:30am."_
-- `/investigate docs/incidents/2026-04-23.md`. Investigate and write the report into the incident folder.
+- `/investigate how-it-works`. _"How does the retry queue pick a backoff?"_
+- `/investigate`. _"What happens when a payment webhook arrives for an order that was already refunded?"_ Runs as
+  `how-it-works`.
+- `/investigate available-options`. _"Add rate limiting to the public API."_
+- `/investigate`. _"How should we add a fixed-amount coupon alongside the percentage discounts?"_ Runs as
+  `available-options`.
+- `/investigate the import job drops rows docs/incidents/2026-04-23.md`. Investigate and write the report to that path.
 
 ## What you get back
 
-An investigation plan file, plus an in-channel summary. The plan leads with the bottom line and keeps the supporting
-detail near the end, so it reads conclusion-first. Sections appear only when the investigation produced meaningful
-content for them; one that would be empty is omitted, and the rest keep the order below. So a given report covers some
-or all of, in order:
+A report file, plus an in-channel summary. Every report leads with the bottom line and keeps the supporting detail near
+the end. Sections appear only when the investigation produced meaningful content for them, and the rest keep the order
+below. Every report names its type on the line under its title.
 
-- **Summary.** One sentence each for root cause, fix, why correct, validation outcome, remaining risks. Up top so a
-  reader gets the verdict before the backing detail.
+**A `bug` report** carries:
+
+- **Summary.** One sentence each for root cause, fix, why correct, validation outcome, and remaining risks.
 - **Problem Statement.** Symptoms, expected behavior, conditions under which it occurs, impact.
-- **Root Cause Analysis.** One to three sentences summarizing the root cause, followed by a detailed analysis that
-  references evidence items by number.
-- **Planned Fix.** Per-file changes: full path, what will be modified, which evidence items justify the change, which
-  standards apply, and implementation specifics (new function signatures, changed logic, updated tests).
-- **Evidence Summary.** A numbered list (E1, E2, E3, …) consolidated from the parallel `evidence-based-investigator`
-  agents. Duplicates merged; conflicts resolved with explicit citations.
-- **Validation Findings.** Numbered `V1, V2, …` entries from `adversarial-validator`. Each records the challenge
-  attempted, whether counter-evidence was found, and what changed in response. Followed by **Adjustments Made** (what
-  changed after validation, cross-referenced to the `V#` that drove it) and the **Confidence Assessment and Remaining
-  Risks** that close the validator's judgment.
-- **Coding Standards Reference.** For each standard that applies, what it says, where it was found (path, ADR number, or
-  _"inferred from surrounding code"_), and which files the fix will touch. This keeps the fix consistent with how the
-  project already works.
+- **Root Cause Analysis.** One to three sentences on the root cause, then a detailed analysis citing evidence items.
+- **Planned Fix.** Per-file changes: full path, what changes, which evidence justifies it, which standards apply, and
+  implementation specifics.
+- **Evidence Summary and Validation Results.** The shared sections, below.
+- **Coding Standards Reference.** Each standard the fix was written against, and where it was found.
 
-The plan is presented for approval before any code is written. Approve to trigger implementation; push back with
-feedback to revise.
+**A `how-it-works` report** carries:
+
+- **Summary.** The answer, the entry points, the validation outcome, and the paths the evidence did not reach.
+- **Question.** What was asked, and what the answer covers and leaves out.
+- **Answer.** A one-sentence answer, then a numbered walkthrough of the flow citing evidence items.
+- **Key Components.** A table of each part the walkthrough depends on, its file, and its role.
+- **Evidence Summary and Validation Results.**
+
+**An `available-options` report** carries:
+
+- **Summary.** The recommendation, the options considered, the deciding factor, the validation outcome, and remaining
+  risks.
+- **Goal and Constraints.** The work, and the constraints any option must meet.
+- **Current State.** What the code does today where the work would land.
+- **Options.** Two or more genuinely different ways to do the work, each with how it works, its change surface, how it
+  fits existing patterns, and its costs and risks.
+- **Comparison.** The options against the constraints.
+- **Recommendation.** The pick, why, and what would change the call.
+- **Evidence Summary and Validation Results.**
+- **Coding Standards Reference.** The standards that bear on the options.
+
+**Every report shares** an **Evidence Summary** (E1, E2, …, consolidated from every agent, duplicates merged) and
+**Validation Results** (V1, V2, … from `adversarial-validator`, each recording the challenge, the result, and its
+impact), followed by **Adjustments Made** and the **Confidence Assessment**.
+
+The run ends by saying where the report is and what to do next. After a bug report, reply "approve" to have the session
+implement the Planned Fix, or reply with corrections. After the other two, the skill points you at `/plan-a-change` or
+`/plan-a-feature` for the next step, and at `/research` when options need prior art.
 
 ## How to get the most out of it
 
-- **Name the symptom concretely.** _"Stale data after update"_ beats _"profile issue."_ The more specific the
-  observation, the sharper the investigator agents' angles.
-- **Drop in any evidence you already have.** Error messages, stack traces, log excerpts, recent deploy notes, the commit
-  you suspect. Paste them. The skill's agents read the codebase, but they cannot see your production logs unless you
-  bring them in.
-- **Let the validator push back.** The adversarial validation step is not ceremony. It frequently reshapes the root
-  cause analysis. Treat validation findings as first-class input.
-- **Pair with `/iterative-plan-review`** if the fix plan needs further stress-testing before implementation, especially
-  when the fix touches cross-cutting concerns.
-- **Re-run after the fix.** Once the fix has shipped, re-run against the incident context with _"did this fix hold?"_
-  framing. Validation findings from the new run confirm or falsify the hypothesis under production conditions.
-- **For the full end-to-end bug-handling workflow**, including when to triage instead of investigating now and how to
-  bring in production logs and browser integrations, see
+- **Name the symptom or the question concretely.** _"Stale data after update"_ beats _"profile issue."_ _"How does the
+  retry queue pick a backoff"_ beats _"explain the queue."_
+- **Name the type when you know it.** Detection is good at the common shapes, but a question that mentions a failure in
+  passing reads as a bug. If the opening block shows the wrong type, re-run with the type first.
+- **Drop in any evidence you already have.** Error messages, stack traces, log excerpts, recent deploy notes, vendor
+  docs. Paste them. The agents read the codebase, but they cannot see your production logs or the web unless you bring
+  them in.
+- **Let the validator push back.** The adversarial validation step frequently reshapes the conclusion. Treat validation
+  findings as first-class input.
+- **Pair with `/iterative-plan-review`** if a bug's fix plan needs further stress-testing before implementation.
+- **Re-run after the fix.** Once a fix has shipped, re-run against the incident context with _"did this fix hold?"_
+  framing.
+- **For the full end-to-end bug-handling workflow**, see
   [How to triage and investigate a bug](../../../docs/how-to/triage-and-investigate-a-bug.md).
 
 ## Cost and latency
 
-The skill dispatches at least two `evidence-based-investigator` agents in parallel, plus zero to three specialist
-analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) depending on bug classification.
-`adversarial-validator` agents then run the validation pass, followed by one `han-communication:readability-editor`
-rewrite of the write-up. Agents run on their default models. For a medium-complexity bug, expect one investigation
-round, one validation round, and one readability pass, roughly five to eight sub-agent dispatches. The skill is built
-for per-bug cadence, not tight-loop iteration. Fix the bug and move on.
+Each type dispatches two to five agents in parallel for evidence, then `adversarial-validator` agents for validation,
+then one `han-communication:readability-editor` rewrite. A bug run sends at least two `evidence-based-investigator`
+agents plus zero to three specialists. A how-it-works or options run sends two agents plus zero to three specialists.
+Agents run on their default models. Expect one evidence round, one validation round, and one readability pass, roughly
+five to eight sub-agent dispatches. The skill is built for per-question cadence, not tight-loop iteration.
 
 ## In more detail
 
-The skill walks a five-step process:
+The skill walks a six-step process. The type file under `references/types/` drives every step that differs by type.
 
-1. **Research and investigation.** At least two `evidence-based-investigator` agents run in parallel, each from a
-   different angle. Specialist analysts (`concurrency-analyst`, `behavioral-analyst`, `data-engineer`) dispatch in
-   parallel alongside them based on how you described the symptom. After all complete, the skill compiles a unified
-   numbered evidence list (E1, E2, E3, …), tagging specialist findings with their domain.
-2. **Document root cause.** The skill writes Problem Statement, Evidence Summary, and Root Cause Analysis into the plan
-   file using the template at [`references/template.md`](../../skills/investigate/references/template.md).
-3. **Plan the fix.** The skill resolves project config (CLAUDE.md → project-discovery.md → docs/ Glob fallback), reads
-   ADRs and coding standards relevant to the fix, and writes the Planned Fix section with file-level changes justified
-   by specific evidence items.
-4. **Adversarial validation.** `adversarial-validator` agents receive the full evidence summary, root cause analysis,
-   and planned fix. They challenge evidence, challenge the fix, and challenge assumptions. Counter-evidence becomes `V#`
-   findings that reshape the plan.
-5. **Summary and user review.** The skill writes the Summary section at the top of the report. It then dispatches
-   `readability-editor` to rewrite the write-up for the engineer who will implement the fix, preserving every fact and
-   `file:line` reference. Finally it runs a readability self-check over the prose and presents the plan for approval.
+1. **Resolve the type, the question, and the report path.** The skill parses a leading type token and a trailing report
+   path, detects or checks the type, asks once on a clear mismatch, resolves where the report goes, and prints the
+   opening block.
+2. **Gather evidence.** The type's agents run in parallel. Extra agents from `.han/config.md` join when their specialty
+   matches. The skill compiles one numbered evidence list (E1, E2, E3, …), tagging specialist findings with their domain.
+3. **Analyze and write the report.** The skill runs the type's analysis steps into the type's template under
+   `references/templates/`, for example [`references/templates/bug.md`](../../skills/investigate/references/templates/bug.md).
+   The evidence and validation sections every type shares live in
+   [`references/evidence-and-validation.md`](../../skills/investigate/references/evidence-and-validation.md).
+4. **Adversarial validation.** `adversarial-validator` agents receive the full evidence and the type's conclusion. They
+   challenge the evidence, the conclusion, and the assumptions. Counter-evidence becomes `V#` findings that reshape the
+   report.
+5. **Summary and readability.** The skill writes the Summary, then dispatches `readability-editor` to rewrite the
+   write-up for the type's reader, preserving every fact and `file:line` reference, and runs a readability self-check.
+6. **Present the report.** The skill prints the type's closing line and how to re-run as another type.
 
 ## Sources
 
@@ -166,7 +209,7 @@ review.
 ### Toyota Production System: The Five Whys
 
 Root-cause analysis via repeated "why" questioning, popularized at Toyota and adopted widely across software and
-operations. The skill applies it to the evidence chain: every root-cause claim must trace back to at least one `E#`
+operations. The `bug` type applies it to the evidence chain: every root-cause claim must trace back to at least one `E#`
 evidence item and survive the adversarial-validator's counter-evidence search.
 
 URL: https://www.toyota-industries.com/company/history/toyoda_precepts/
@@ -174,23 +217,23 @@ URL: https://www.toyota-industries.com/company/history/toyoda_precepts/
 ### John Allspaw: Blameless Post-Mortems and the Art of Learning from Incidents
 
 Allspaw's work at Etsy on blameless post-mortems reframed incident analysis around understanding cause, not assigning
-blame. The skill's evidence summary, root-cause analysis, and validation sections follow this posture: findings cite
-code and behavior, not people or teams.
+blame. The skill's evidence summary, analysis, and validation sections follow this posture: findings cite code and
+behavior, not people or teams.
 
 URL: https://www.etsy.com/codeascraft/blameless-postmortems
 
 ### Klein: Pre-Mortem (The Power of Intuition)
 
 Gary Klein's pre-mortem technique (imagining the plan has already failed and asking why, before it ships) maps directly
-to the skill's adversarial-validator step. The validator assumes the fix will fail and hunts for why. The resulting
-counter-evidence reshapes the plan before it becomes production code.
+to the skill's adversarial-validator step. The validator assumes the conclusion is wrong and hunts for why. The resulting
+counter-evidence reshapes the report before anyone acts on it.
 
 URL: https://hbr.org/2007/09/performing-a-project-premortem
 
 ### The Pragmatic Programmer (Hunt and Thomas): Bisecting and Rubber Duck Debugging
 
-The Pragmatic Programmer formalized rubber-duck debugging and evidence-bisection as core debugging disciplines. The
-skill's parallel-angle investigation (error path vs. data flow vs. recent changes) is evidence-bisection applied at the
+The Pragmatic Programmer formalized rubber-duck debugging and evidence-bisection as core debugging disciplines. The bug
+type's parallel-angle investigation (error path vs. data flow vs. recent changes) is evidence-bisection applied at the
 agent level.
 
 URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/
@@ -202,27 +245,35 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
 - [`/issue-triage`](../../../han-research/docs/skills/issue-triage.md). Run before investigation when the incoming report is too vague to
   trace; triage produces the sharp problem statement investigation needs.
-- [`/research`](../../../han-research/docs/skills/research.md). The question-shaped sibling. Use it when nothing is broken and you want
-  options, prior art, or how something works before committing.
-- [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md). The agent the skill dispatches
-  in parallel for multi-angle evidence gathering.
-- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). The agent that challenges evidence and fix
-  after the plan is drafted.
-- [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after validation to rewrite
-  the write-up for the engineer who will implement the fix, preserving every fact and `file:line` reference. Separate
-  from the accuracy validation pass.
+- [`/research`](../../../han-research/docs/skills/research.md). The open-web sibling. Use it when the answer lives
+  outside this codebase: prior art, outside libraries, or how an outside technology works.
+- [`evidence-based-investigator`](../../../han-core/docs/agents/evidence-based-investigator.md). The agent a bug run
+  dispatches in parallel for multi-angle evidence gathering.
+- [`codebase-explorer`](../../../han-core/docs/agents/codebase-explorer.md). The agent how-it-works and options runs
+  dispatch to find entry points, core logic, and precedent.
+- [`adversarial-validator`](../../../han-core/docs/agents/adversarial-validator.md). The agent that challenges the
+  evidence and the conclusion after the report is drafted.
+- [`readability-editor`](../../../han-communication/docs/agents/readability-editor.md). Dispatched after validation to
+  rewrite the write-up for the type's reader, preserving every fact and `file:line` reference. Separate from the
+  accuracy validation pass.
 - [Evidence](../../../docs/evidence.md). The canonical evidence rule the skill applies to every finding. Codebase findings stand
-  on their citation; web-source context is subject to the corroboration gate when it drives the proposed fix;
-  no-evidence states are labeled rather than guessed at.
+  on their citation; pasted web context is subject to the corroboration gate when it drives a conclusion; no-evidence
+  states are labeled rather than guessed at.
 - [`concurrency-analyst`](../../../han-core/docs/agents/concurrency-analyst.md),
   [`behavioral-analyst`](../../../han-core/docs/agents/behavioral-analyst.md),
-  [`data-engineer`](../../../han-core/docs/agents/data-engineer.md). Specialist analysts dispatched alongside the investigators
-  when the symptom classification calls for them.
-- [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Pair when the fix plan needs further
+  [`structural-analyst`](../../../han-core/docs/agents/structural-analyst.md),
+  [`data-engineer`](../../../han-core/docs/agents/data-engineer.md). Specialist analysts dispatched when the question
+  calls for them.
+- [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Pair when a bug's fix plan needs further
   stress-testing before implementation.
+- [`/plan-a-change`](../../../han-planning/docs/skills/plan-a-change.md) and
+  [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). The next step after a how-it-works or
+  options report, when you are ready to plan the change.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
-- [`/code-walkthrough`](./code-walkthrough.md). The learning-shaped sibling. Use it when nothing is broken and you want
-  to be paced through how a change works, rather than to diagnose why it fails.
+- [`/code-overview`](./code-overview.md). The orientation sibling. Use it for a written overview of a whole target
+  rather than an answer to one question.
+- [`/code-walkthrough`](./code-walkthrough.md). The learning-shaped sibling. Use it when you want to be paced through
+  how a change works in conversation.
 - [`/runbook`](../../../han-documentation/docs/skills/runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate
   captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
 - [`SKILL.md` for /investigate](../../skills/investigate/SKILL.md). The internal process definition.

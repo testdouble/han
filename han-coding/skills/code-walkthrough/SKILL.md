@@ -8,7 +8,8 @@ description: >
   around code or a branch step by step, or to learn how a change works before reviewing or extending it. Stops after
   every step and waits, so the learner sets the pace. Paces through code that already exists and builds nothing — to
   build new work while being paced through it, use pairing. Does not produce a written overview to read alone — use
-  code-overview. Does not review code quality — use code-review. Does not diagnose bugs — use investigate.
+  code-overview. Does not review code quality — use code-review. Does not diagnose bugs or answer a single question
+  about how the code behaves — use investigate.
 arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [target: a file, directory, symbol, PR reference, or plan — defaults to the
