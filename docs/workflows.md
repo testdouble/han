@@ -112,6 +112,8 @@ flowchart TD
     restructure -.runs.-> tdd
     tdd --> prdesc["/update-pr-description"]
     investigate["/investigate"] --> iterate["/iterative-plan-review"]
+    investigate --> change
+    investigate --> feature
     ddd["/ddd-analysis"] --> arch
     ddd --> feature["/plan-a-feature"]
     pairing["/pairing"] -.drives.-> refactor
@@ -149,6 +151,10 @@ flowchart TD
 - **[`/investigate`](../han-coding/docs/skills/investigate.md) →
   [`/iterative-plan-review`](../han-planning/docs/skills/iterative-plan-review.md).** Root-cause the bug, then stress-test
   the proposed fix.
+- **[`/investigate how-it-works` or `available-options`](../han-coding/docs/skills/investigate.md) →
+  [`/plan-a-change`](../han-planning/docs/skills/plan-a-change.md) or
+  [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).** Learn how the code works, or pick among the ways
+  a change could be made, then plan the restructure or specify the new behavior.
 - **[`/ddd-analysis`](../han-ddd/docs/skills/ddd-analysis.md) →
   [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md) or
   [`/plan-a-feature`](../han-planning/docs/skills/plan-a-feature.md).** Map the domain and context boundaries of the whole

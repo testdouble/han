@@ -28,8 +28,9 @@ it, dispatching specialist agents to cover each dimension in parallel. Reach for
 - [`/automated-test-planning`](docs/skills/automated-test-planning.md) — Produce a prioritized test plan for a branch or directory.
 - [`/manual-test-planning`](docs/skills/manual-test-planning.md) — Produce a plain-language manual test plan from
   supplied context: named tests with by-hand steps and expected outcomes for a person to run.
-- [`/investigate`](docs/skills/investigate.md) — Run an evidence-based investigation of a bug, failure, or unexpected
-  behavior, with adversarial validation of the proposed fix.
+- [`/investigate`](docs/skills/investigate.md) — Run an evidence-based investigation of a question about this codebase as
+  one of three types (a bug to root-cause, how the code works, or the options for a piece of work), with adversarial
+  validation of the findings.
 - [`/coding-standard`](docs/skills/coding-standard.md) — Create and update coding standards from existing patterns or
   evidence-based research.
 

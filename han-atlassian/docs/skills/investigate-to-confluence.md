@@ -9,11 +9,11 @@ helps you decide _when_ and _how_ to use the skill. For what the skill does inte
 
 ## TL;DR
 
-- **What it does.** Runs the core [`/investigate`](../../../han-coding/docs/skills/investigate.md) skill to root-cause a bug or unexpected
-  behavior, and writes the investigation report to a temporary file. Shows you the file to review. After you confirm,
+- **What it does.** Runs the core [`/investigate`](../../../han-coding/docs/skills/investigate.md) skill as any of its investigation types (a bug
+  to root-cause, how some part of the code works, or the options for a piece of work), and writes the investigation report to a temporary file. Shows you the file to review. After you confirm,
   publishes it to a Confluence location you specify by handing the file to
   [`/markdown-to-confluence`](./markdown-to-confluence.md).
-- **When to use it.** You want something diagnosed _and_ the findings posted to a specific Confluence space or page, not
+- **When to use it.** You want something diagnosed, explained, or weighed _and_ the findings posted to a specific Confluence space or page, not
   only to a local file.
 - **What you get back.** A working-draft markdown report under `/tmp/` that you can review, plus a created or updated
   Confluence page at the location you named (if you choose to publish). No code is changed.
@@ -25,14 +25,14 @@ helps you decide _when_ and _how_ to use the skill. For what the skill does inte
   work, the location resolution, and the create-or-update call all belong to
   [`/markdown-to-confluence`](./markdown-to-confluence.md). This skill only validates its inputs, runs the investigation
   to a temporary file, lets you review it, takes your publish choice, and hands the file to the publisher.
-- **One report, one page.** `/investigate` produces a single report file (problem statement, evidence summary, root
-  cause, planned fix, validation, and summary), with no companion artifacts. So this skill publishes one Confluence
+- **One report, one page.** `/investigate` produces a single report file whose sections follow the investigation type
+  it ran as, with no companion artifacts. So this skill publishes one Confluence
   page. It is the single-page sibling of
   [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md), not the parent-plus-children tree
   of [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md).
-- **It publishes findings, it does not ship them.** `/investigate` on its own ends by presenting the plan for approval
-  and can trigger the fix's implementation. This wrapper instructs it to stop at the report and change no code, because
-  the point is to publish the diagnosis, not to apply it.
+- **It publishes findings, it does not ship them.** A `bug` investigation on its own ends by offering to implement the
+  Planned Fix. This wrapper instructs it to stop at the report and change no code, because the point is to publish the
+  findings, not to apply them.
 - **The Atlassian MCP server is required.** The skill checks the server is connected before it runs any investigation,
   so a missing server fails fast. If the server is missing or not authenticated, the skill stops and points you at
   `/investigate` for a local-only run. It never silently falls back to local.
@@ -55,6 +55,8 @@ helps you decide _when_ and _how_ to use the skill. For what the skill does inte
 - A bug or production incident has been investigated and the root-cause writeup needs to live in Confluence, where your
   team reads it, not only in the repo.
 - You want a diagnosis shared with stakeholders or on-call for review before anyone fixes the underlying problem.
+- You want an explanation of how part of the codebase works, or a comparison of the options for a piece of work,
+  published where your team will read it.
 - You already know the exact Confluence space or page where the report belongs and want it investigated and published in
   one pass.
 
@@ -102,8 +104,9 @@ Example prompts:
 Two artifacts:
 
 - **The working draft.** A markdown investigation report under `/tmp/` that
-  [`/investigate`](../../../han-coding/docs/skills/investigate.md) writes: problem statement, evidence summary, root cause analysis,
-  planned fix, validation results, and a leading summary. This file is the source content for Confluence and the thing
+  [`/investigate`](../../../han-coding/docs/skills/investigate.md) writes, with the sections of the investigation type it
+  ran as: for a bug, the problem statement, root cause analysis, planned fix, evidence, validation, and a leading
+  summary. This file is the source content for Confluence and the thing
   you review before publishing. It lives in `/tmp/`, not your repo, so it does not get committed unless you move it
   there yourself. No code is changed.
 - **The Confluence page.** A page created at, or updated in place at, the location you named, either as an unpublished
@@ -148,7 +151,7 @@ The skill walks a short, deterministic five-step process:
    page tree here; it only confirms a location exists.
 2. **Produce the investigation report to a temporary file.** Invoke `/investigate` with all your context forwarded
    verbatim, plus two added instructions: write the result to a `/tmp/` file rather than the repo, and stop at the
-   report without implementing the fix. Capture that path.
+   report without implementing anything. Capture that path.
 3. **Show the file for review.** Tell you the exact `/tmp/` path so you can open and read the report before deciding
    anything.
 4. **Confirm the publish choice.** Ask how to publish: save as a draft (the recommended default), publish live, or keep

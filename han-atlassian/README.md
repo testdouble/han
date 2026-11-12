@@ -15,8 +15,8 @@ and `han-coding` (its wrapper skills run skills from each), and requires a confi
 - [`/project-documentation-to-confluence`](docs/skills/project-documentation-to-confluence.md) — Run
   `/project-documentation` to write feature documentation, show it for review, then publish it to a user-specified
   Confluence location after confirmation.
-- [`/investigate-to-confluence`](docs/skills/investigate-to-confluence.md) — Run `/investigate` to root-cause a bug
-  (changing no code), show the report for review, then publish it as one Confluence page after confirmation.
+- [`/investigate-to-confluence`](docs/skills/investigate-to-confluence.md) — Run `/investigate` on a bug, on how the
+  code works, or on the options for a piece of work (changing no code), show the report for review, then publish it as one Confluence page after confirmation.
 - [`/code-overview-to-confluence`](docs/skills/code-overview-to-confluence.md) — Run `/code-overview` to produce a
   progressive-disclosure overview (changing no code), show it for review, then publish it as one Confluence page after
   confirmation.
