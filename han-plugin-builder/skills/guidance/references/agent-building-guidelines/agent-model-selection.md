@@ -31,11 +31,16 @@ The `model` field in agent frontmatter controls which AI model the agent uses.
 | `opus`    | Most capable model. Deep reasoning and judgment. |
 | `sonnet`  | Balanced capability and speed.                   |
 | `haiku`   | Fastest model. Low-latency, lightweight tasks.   |
+| `fable`   | Anthropic's Fable tier, above `opus`.            |
 | `inherit` | Uses the same model as the user's main session.  |
 
-**Default behavior:** If `model` is omitted, the agent defaults to `inherit`. A full model ID (for example
-`claude-opus-5`) is also accepted in place of an alias. Prefer the alias: it keeps tracking the current model in that
-tier, where a pinned ID goes stale as new models ship.
+**Default behavior:** If `model` is omitted, Claude Code falls through the resolution order below: an operator's
+`CLAUDE_CODE_SUBAGENT_MODEL` applies first, then the main conversation's model. That is close to `inherit`, but not the
+same, so set the field explicitly. A full model ID (for example `claude-opus-5-5`) is also accepted in place of an
+alias. Prefer the alias: on the Anthropic API it tracks the newest model in that tier, where a pinned ID goes stale as
+new models ship. On some other providers an alias resolves to an earlier model (for example, `sonnet` on Amazon Bedrock
+was still Sonnet 4.5 as of 2026-10-15), so an alias names a tier, not a version. The current mapping by provider is in
+[Claude Code's model configuration docs](https://code.claude.com/docs/en/model-config).
 
 **Syntax example:**
 
@@ -50,13 +55,16 @@ model: sonnet
 
 **Resolution order.** When an agent runs, Claude Code resolves the model from the first source that is set:
 
-1. The `CLAUDE_CODE_SUBAGENT_MODEL` environment variable.
-2. The model chosen at dispatch time (Claude's own decision when it delegates).
-3. The agent definition's `model` frontmatter (the value this doc is about).
-4. The main conversation's model (the `inherit` default).
+1. The model chosen at dispatch time (Claude's own decision when it delegates).
+2. The agent definition's `model` frontmatter (the value this doc is about), where `inherit` selects the main
+   conversation's model.
+3. The `CLAUDE_CODE_SUBAGENT_MODEL` environment variable.
+4. The main conversation's model.
 
-The frontmatter `model` is the level you control as an agent author, but an operator's env var or a dispatch-time choice
-can override it.
+The frontmatter `model` is the level you control as an agent author. A dispatch-time choice can override it. The
+environment variable is only a default beneath it, unless the operator also sets `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1`,
+which runs every subagent on the environment variable's model and ignores the frontmatter. This order applies from
+Claude Code v2.1.251; before that the environment variable came first. `_FORCE` needs v2.1.257 or later.
 
 **Scope: this rule governs agent definition files only, not skill dispatch.** "Always set model explicitly" applies to
 the `model:` frontmatter of an agent definition (`**/agents/**/*.md`). It does NOT mean a skill should pass a `model`
@@ -110,6 +118,12 @@ Use `haiku`. Signs that an agent fits haiku:
 - Simple, repetitive operations at high volume
 - Tasks where latency matters more than depth
 
+Anthropic describes Haiku 5.5 as built for classification, routing, extraction, and subagent work, which matches this
+tier. Two of its habits shape the agent body. With a long prompt at `low` effort it sometimes stops early and hands the
+task back, so keep a haiku agent's prompt short. At `low` and `medium` effort it sometimes reports a code change done
+without checking it, so an agent that edits code should say to run a real check before reporting done. See
+[Per-Model Authoring Guidance](../per-model-authoring.md#early-stops-and-scope-on-sonnet-55-and-haiku-55).
+
 ### Summary Decision Table
 
 | Task Characteristic                                      | Model     |
@@ -149,11 +163,15 @@ sonnet; open-ended synthesis agents weighing competing factors over unbounded in
 
 | Agent             | Model     | Rationale                                                |
 | ----------------- | --------- | -------------------------------------------------------- |
-| Explore           | `haiku`   | Fast, read-only codebase searches. Speed over depth.     |
+| Explore           | `inherit` | Read-only codebase searches on the main session's model. |
 | Plan              | `inherit` | Research for planning matches user's session model.      |
 | General-purpose   | `inherit` | Generic delegation. User's model choice carries through. |
 | statusline-setup  | `sonnet`  | Focused configuration task with a clear procedure.       |
 | claude-code-guide | `haiku`   | Fast Q&A lookups against Claude Code documentation.      |
+
+Built-in agents' models change between Claude Code releases. Explore ran on `haiku` until recently, and now runs on the
+main conversation's model, or on the Opus alias when that model is Fable. Check the
+[sub-agents docs](https://code.claude.com/docs/en/sub-agents) for the current table rather than relying on this one.
 
 These examples reinforce the decision criteria: opus for synthesis and judgment, sonnet for structured procedures, haiku
 for fast lookups, inherit for generic tasks.
@@ -176,5 +194,6 @@ for fast lookups, inherit for generic tasks.
 
 - [Claude Code Sub-agents Documentation](https://code.claude.com/docs/en/sub-agents). Documents the `model` field, valid
   values, defaults, and built-in agent configurations.
+- [Claude Code Model Configuration](https://code.claude.com/docs/en/model-config). Alias resolution by provider.
 - [Choosing the Right Model](https://platform.claude.com/docs/en/about-claude/models/choosing-a-model). Model comparison
   covering capabilities, speed, and selection criteria.

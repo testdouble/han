@@ -62,6 +62,13 @@ Select additional specialists up to the cap, based on what the area actually con
 - `han-core:structural-analyst` or `han-core:behavioral-analyst` — only when the review needs a dimension the Step 2
   round did not cover, such as an adjacent module the discovery brief excluded.
 - `han-core:devops-engineer` — the change alters deployment shape, rollout, observability, or a build boundary.
+- `han-core:observability-engineer` — the change moves or alters telemetry design: metric instruments or labels, span
+  attributes, log schemas, OpenTelemetry SDK setup (samplers, exporters, resource attributes), telemetry pipeline
+  configuration (OpenTelemetry Collector, Prometheus scrape or relabel rules, a log shipper), or telemetry volume and
+  cost. It owns naming and semantic conventions, label cardinality, sampling design, pipeline configuration, and signal
+  choice. SLO definitions, alert rules, and dashboards stay with `han-core:devops-engineer`; source-line debuggability,
+  correlation-ID propagation, and PII in individual log statements stay with `han-core:on-call-engineer`. Brief it not
+  to recommend tail sampling, a Collector tier, or retention tiers for volume the project does not have.
 - `han-core:user-experience-designer` — the change moves a user-facing surface: a CLI, an interactive prompt, or a
   rendered output a person reads.
 
@@ -82,6 +89,7 @@ Pass each specialist only what its domain needs, plus the pointers below. Do not
 | `han-core:data-engineer`                | Delta entries touching a schema, persisted format, or data-access path            |
 | `han-core:concurrency-analyst`          | Delta entries touching shared state, async coordination, or ordering              |
 | `han-core:devops-engineer`              | Change Units, Risks, and any delta entry changing a build or deploy boundary      |
+| `han-core:observability-engineer`       | Delta entries moving instrumentation, telemetry SDK setup, or pipeline config     |
 | `han-core:user-experience-designer`     | Delta entries changing a CLI, prompt, or rendered output, plus Behavior Changes   |
 | `han-core:junior-developer`             | Why This Change, What Changes In One Paragraph, and the first line of every entry |
 

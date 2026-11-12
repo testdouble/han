@@ -37,7 +37,7 @@ earlier ones, and that delegation pays off on genuinely independent, sizeable tr
 time on small ones. Left unstated, that eagerness pushes a skill up the cascade below without any of the measurement
 the cascade asks for.
 
-So a skill that dispatches agents should state its delegation policy rather than rely on the default. Three rules,
+So a skill that dispatches agents should state its delegation policy rather than rely on the default. Four rules,
 which hold regardless of the model:
 
 - **Do not delegate work the skill can finish in a handful of tool calls.** The dispatch overhead exceeds the work.
@@ -46,6 +46,11 @@ which hold regardless of the model:
   evaluates the output from a genuinely different perspective. That pattern still earns its cost; a self-check does
   not.
 - **Prefer one agent to several.** If a single agent can complete the track, dispatch one and keep spawn counts low.
+- **When you fan out, check each subagent's evidence before accepting its finding.** A skill that gives each unit of
+  work its own subagent (one per service in an audit, one per module in a migration) reads the evidence each subagent
+  cites against its source before folding the finding into the result, then produces one consolidated result. This is
+  not the self-check the second rule forbids. Checking the evidence a subagent cites is allowed; dispatching another
+  agent to redo the skill's own reasoning is not.
 
 Where the policy needs to be deterministic rather than advisory, cap the count in the skill body instead of describing
 when delegation is appropriate.
@@ -143,6 +148,9 @@ When designing a skill that dispatches agents:
 5. **Match team composition to the task.** Not every invocation needs every agent. If a skill dispatches a security
    reviewer, accessibility reviewer, and performance reviewer, but the current change only affects API endpoints, skip
    the accessibility reviewer for that run.
+6. **Do not finish while a background dispatch is still running.** A dispatch launched with `run_in_background: true`
+   returns before its work is done. Wait for its result and check it before the skill treats its run as complete. This
+   item rests on a single source, Anthropic's Opus 5.5 prompting page.
 
 ## Summary Checklist
 
@@ -154,6 +162,8 @@ When designing a skill that dispatches agents:
 6. Cap teams at 5 agents. Beyond this, coordination costs exceed benefits.
 7. Apply the 45% threshold: optimize existing agents before adding new ones.
 8. Dispatch independent agents in parallel. Avoid long sequential chains.
+9. When fanning out, check each subagent's cited evidence before accepting its finding.
+10. Wait for every background dispatch before treating the run as complete.
 
 ## Sources
 
@@ -168,6 +178,10 @@ When designing a skill that dispatches agents:
 - [Prompting Claude Opus 5 (Anthropic)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5).
   Source for readier default delegation, the rule against delegating self-verification, and the advice to prefer one
   agent over several and keep spawn counts low.
+- [Getting the most out of Opus 5.5 in Claude and Claude Code (Anthropic blog, Addy Osmani, 2026-09-22)](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/).
+  Source for fanning work out to one subagent per unit and checking each one's evidence before accepting it.
+- [Prompting Claude Opus 5.5 (Anthropic)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5).
+  Source for not treating a task as done while a background subagent is still running.
 
 Cross-references:
 

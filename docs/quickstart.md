@@ -74,11 +74,12 @@ You want feedback on something that is already written.
 
 Start with the scope that matches:
 
-- **A branch or a few files** → **[`/code-review`](../han-coding/docs/skills/code-review.md).** Always dispatches
-  `junior-developer` and `adversarial-security-analyst`. Conditionally adds `test-engineer`, `edge-case-explorer`,
-  `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`, or `devops-engineer` when the
-  changed files trigger their domain. The roster scales with the [size](./sizing.md), defaulting to small. Runs quality
-  checks and produces a review with findings classified by severity.
+- **A branch or a few files** → **[`/code-review`](../han-coding/docs/skills/code-review.md).** With no review type,
+  always dispatches `junior-developer` and `adversarial-security-analyst`, and adds `test-engineer`,
+  `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`, `data-engineer`,
+  `devops-engineer`, `on-call-engineer`, or `observability-engineer` when the changed files trigger their domain. Name a
+  review type (`/code-review testing`, `/code-review work-ticket docs/tickets/my-ticket.md`) to run only that concern's
+  specialists. Runs quality checks and produces a review with findings classified by severity.
 - **An open GitHub PR** → **[`/post-code-review-to-pr`](../han-github/docs/skills/post-code-review-to-pr.md).** Everything
   `/code-review` does, plus a `junior-developer` clarity check against the drafted review body, plus posts the review as
   comments on the PR.
@@ -193,12 +194,12 @@ next. A few that work:
 
 ## A note on sizing
 
-The sizing-aware skills (`/architectural-analysis`, `/automated-test-planning`, `/code-overview`, `/code-review`,
-`/code-walkthrough`, `/ddd-analysis`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`,
+The sizing-aware skills (`/architectural-analysis`, `/automated-test-planning`, `/code-overview`, `/code-walkthrough`, `/ddd-analysis`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`,
 `/plan-a-feature`, `/plan-implementation`, `/research`) classify the work as **small**, **medium**, or **large** before
 dispatching agents. They default to small, and scale the team and iteration depth to the chosen band. Pass the size as
-the first positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`). See
-[Sizing](./sizing.md) for the full model.
+the first positional argument to override (`/research medium`, `/plan-a-feature large "describe the feature"`). See
+[Sizing](./sizing.md) for the full model. `/code-review` is not sizing-aware: it picks its focus from a named review
+type instead.
 
 ## A note on YAGNI
 

@@ -78,6 +78,9 @@ and _how_ to use the skill. For what the skill does internally, read the skill d
   or `/post-code-review-to-pr` to post the review to a GitHub PR. This skill reviews plans, not code diffs.
 - **Bug investigation.** Use `/investigate` for evidence-based root-cause work on a bug or failure. This skill iterates
   on a plan that might come out of an investigation, not on the investigation itself.
+- **Questioning whether the plan's approach is still the right one.** Use [`/reassess-approach`](./reassess-approach.md)
+  to get structurally different alternatives, including stopping, from a fresh context. This skill hands off to it on
+  its own when a team-mode run reaches its round cap without converging.
 - **Architectural analysis of existing code.** Use `/architectural-analysis` to assess coupling, cohesion, data flow,
   concurrency, and SOLID alignment of an already-built module. This skill iterates on a forward-looking plan, not on
   retrospective architectural assessment.
@@ -102,7 +105,7 @@ Give it:
    claims to verify. If you already know which additional specialists should be in the team (for example, _"include
    `adversarial-security-analyst` and `data-engineer`"_), name them. The skill otherwise picks one chosen specialist at
    medium, or two at large, from the roster: `user-experience-designer`, `adversarial-security-analyst`,
-   `devops-engineer`, `on-call-engineer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`,
+   `devops-engineer`, `on-call-engineer`, `observability-engineer`, `structural-analyst`, `behavioral-analyst`, `concurrency-analyst`,
    `software-architect`, `system-architect`, `risk-analyst`, `test-engineer`, `edge-case-explorer`, `data-engineer`,
    `gap-analyzer`, `content-auditor`, `codebase-explorer`.
 4. **Specific sections or concerns to emphasize, optional.** If you want the review to focus on a particular section of
@@ -146,12 +149,17 @@ in-channel summary:
   in lightweight mode, or the specialist name in team mode), the category, the finding text, and the evidence
   considered. It also records the resolution, what resolved it (`Resolved by:` evidence / user input / deferred), the
   `R#` round it was raised in (`Raised in round:`), and the plan sections that changed in response (`Changed in plan:`).
+  An `approach` finding from the hand-off at the cap also carries `Alternatives:`, the path of the reassessment report
+  that holds its options.
   This is where the review's full record lives. The plan file references entries by ID rather than inlining them.
 - An **`artifacts/review-iteration-history.md`** companion file. One `R#` entry per iteration (lightweight) or round
   (team). Each entry records the mode, the specialists engaged, the `F#` findings raised that pass (`Findings raised:`),
   and the plan sections changed that pass (`Changed in plan:`). It also records the stability assessment made each
   iteration or round, and the next-step recommendation. This captures how the review progressed without bloating the
   plan.
+- An **`artifacts/approach-reassessment-{n}.md`** report from [`/reassess-approach`](./reassess-approach.md), only when a
+  team-mode run reaches its round cap without converging. It holds the structurally different options and a
+  recommendation, and the run closes on that decision.
 - **A cross-reference check over both companion files**, executed before the review is presented. It reports one of
   three outcomes: passed, failed with each dangling identifier and each blank required field named separately, or could
   not verify with the reason named. Identifiers inside fenced example blocks are ignored, so a format example never reads
@@ -254,10 +262,18 @@ How the size is chosen:
   room, and `evidence-based-investigator` joins whenever the plan contains codebase claims to verify. The size cap sets
   the upper bound on additional specialists chosen by signal.
 - **The cap counts chosen specialists, not seats.** The always-present agents are seated before any specialist is
-  chosen, so counting total seats would hide how much domain coverage a band actually buys. A medium team is the
+  chosen, so counting total seats would hide how much domain coverage a band buys. A medium team is the
   required roster plus one chosen specialist; a large team is the required roster plus two.
 - **Early stopping inside the cap.** The round cap is the upper bound, not a target. The skill stops earlier when
   stability assessment shows the next pass would only produce cosmetic changes.
+- **A hand-off when a team-mode run reaches its cap without converging.** When the last of two or three rounds still
+  produced more than two new findings or any major one, the plan has stopped converging on its current approach rather
+  than on its details. Lightweight mode never hands off, because one pass cannot show that; it ends with a one-line
+  pointer to the skill instead. In team mode the skill invokes [`/reassess-approach`](./reassess-approach.md) with the plan and its findings file, records the
+  result as a major `approach` finding, and closes the run with one question: the options as named candidates, the
+  recommendation marked, and the consequence of staying on the current approach leading. "Continue as is" is a
+  complete answer, and the next invocation then runs as it does today. To redirect before the cap, drive the loop with
+  [`/pairing`](../../../han-core/docs/skills/pairing.md).
 
 How to override the size:
 
@@ -444,6 +460,8 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
 - [`/plan-implementation`](./plan-implementation.md). The upstream skill for producing a committable implementation
   plan. This skill is the natural next step when the team wants the implementation plan stress-tested across multiple
   review passes.
+- [`/reassess-approach`](./reassess-approach.md). The skill this one invokes when a team-mode run reaches its round cap
+  without converging, to put the plan's approach itself in front of you as a choice.
 - [`junior-developer`](../../../han-core/docs/agents/junior-developer.md). The generalist stress-tester the skill always
   includes in team mode.
 - [`software-architect`](../../../han-core/docs/agents/software-architect.md). Engaged in team mode when the plan contains

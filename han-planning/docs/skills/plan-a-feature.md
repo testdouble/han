@@ -74,6 +74,8 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Turning a completed specification into an implementation plan.** Use `/plan-implementation` after this skill
   produces `feature-specification.md`.
 - **Investigating a bug or failure.** Use `/investigate` for evidence-based root-cause work.
+- **Designing the contract for one interface.** Use [`/design-an-api`](../../../han-coding/docs/skills/design-an-api.md).
+  This skill settles what the feature does; that one settles the interface shape.
 - **Analyzing existing architecture.** Use `/architectural-analysis` for assessing coupling, cohesion, data flow,
   concurrency, and SOLID alignment of an already-built module.
 - **Planning a restructure of code that already exists.** Use [`/plan-a-change`](./plan-a-change.md) when the
@@ -130,7 +132,7 @@ A crisper initial prompt reduces the interview length significantly.
 
 ## What you get back
 
-Up to four cross-referenced files on disk in the same folder, plus an in-channel summary:
+Up to five cross-referenced files on disk in the same folder, plus an in-channel summary:
 
 - A **`feature-specification.md`** file at `{folder}/feature-specification.md`. The primary behavioral spec, structured
   as: Outcome, Actors and Triggers, Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes, User
@@ -278,7 +280,7 @@ The skill's default posture is to _explore before asking_. If a question can be 
 project docs, coding standards, ADRs, or existing feature specs, the skill resolves it without troubling you. That
 source set extends to a read-only tool already available to the session (for example, a connected schema or data-source
 tool), when one is permitted to the skill. It queries that source the same way it reads the filesystem ones, strictly
-read-only. The path is gated on the tool actually being available: if none is, the skill falls back to asking you,
+read-only. The path is gated on the tool being available: if none is, the skill falls back to asking you,
 exactly as before. When a question genuinely requires user judgment, the skill surfaces it with a recommended answer,
 rationale grounded in evidence, and alternatives considered. You accept, amend, or redirect.
 
@@ -288,9 +290,9 @@ admissible only as **evidence** for behavioral decisions, never as the decision 
 
 Once a draft is in place, the skill dispatches three to five specialist sub-agents in parallel to stress-test the spec,
 always including `junior-developer` as generalist stress-tester. It then runs `plan-synthesizer` to
-reconcile their input and apply corrections. The output is three cross-referenced files: `feature-specification.md` at
+reconcile their input and apply corrections. The output is up to five cross-referenced files: `feature-specification.md` at
 the folder root (the canonical behavioral artifact that `/plan-implementation` turns into an implementation plan), plus
-`artifacts/decision-log.md` and `artifacts/team-findings.md` in a sibling `artifacts/` subfolder. This keeps the primary
+`artifacts/decision-log.md`, `artifacts/team-findings.md`, and `artifacts/scope-boundary.md` in a sibling `artifacts/` subfolder. This keeps the primary
 spec focused on behavior, while decision history and review findings sit alongside it, cross-referenced by `D#` / `F#`
 ID. After the final specification content exists, the skill dispatches `readability-editor` to rewrite the spec's prose
 for the stakeholder or reviewer who reads it, preserving every fact and every `D#` / `T#` cross-reference identifier.
@@ -445,12 +447,14 @@ https://projectmanagementcompass.substack.com/p/building-decision-logs-that-prot
   [`adversarial-security-analyst`](../../../han-core/docs/agents/adversarial-security-analyst.md),
   [`devops-engineer`](../../../han-core/docs/agents/devops-engineer.md),
   [`on-call-engineer`](../../../han-core/docs/agents/on-call-engineer.md),
+  [`observability-engineer`](../../../han-core/docs/agents/observability-engineer.md),
   [`edge-case-explorer`](../../../han-core/docs/agents/edge-case-explorer.md),
   [`test-engineer`](../../../han-core/docs/agents/test-engineer.md), [`gap-analyzer`](../../../han-core/docs/agents/gap-analyzer.md),
   [`risk-analyst`](../../../han-core/docs/agents/risk-analyst.md). The signal-selected specialists the skill dispatches in the
   spec-review round when the spec touches their domain. `on-call-engineer` is engaged for resilience commitments the
   spec must make (idempotency on retried operations, timeout and deadline behavior, graceful-degradation paths,
-  kill-switch availability, named failure-mode coverage).
+  kill-switch availability, named failure-mode coverage). `observability-engineer` is engaged when the spec commits to
+  telemetry: new metrics, tracing, log schemas, sampling, or a telemetry pipeline.
 - [skill-decomposition.md](../../../han-plugin-builder/skills/guidance/references/skill-building-guidance/skill-decomposition.md).
   Why this skill owns the "build the spec" slice and hands off to sibling skills for implementation planning, iteration,
   and review instead of doing everything itself.

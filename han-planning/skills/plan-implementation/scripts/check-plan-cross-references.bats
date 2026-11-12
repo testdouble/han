@@ -85,6 +85,18 @@ valid_trio() {
   [[ "$output" == *"missing-plan-section: D-1 field=Referenced in plan section=cut for scope"* ]]
 }
 
+@test "a four-level decision heading is read like a three-level one" {
+  valid_trio
+  log_with \
+    "#### D-1: Rollout" \
+    "" \
+    "- **Decision:** Ship it." \
+    "- **Referenced in plan:** Outcome, Cut for Scope"
+  run bash "$SRC" "$PLAN" "$LOG" "$HISTORY"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"missing-plan-section: D-1 field=Referenced in plan section=cut for scope"* ]]
+}
+
 @test "a Changed in plan section that is not a plan heading fails" {
   valid_trio
   history_with \

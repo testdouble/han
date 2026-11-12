@@ -6,7 +6,7 @@ stay on `opus` no matter how tightly the prompt is written.
 
 ## The mechanism
 
-A well-specified skill or agent definition shifts work from inference-time compute (model tier, thinking budget) to
+A well-specified skill or agent definition shifts work from inference-time compute (model tier, thinking depth) to
 prompt-time design. On the tasks the prompt was built for, this lets a smaller model and lower effort match a larger
 model and higher effort. **It does not raise the model's capability ceiling. It stops the model from wasting capability
 on disambiguation and planning.**
@@ -27,13 +27,13 @@ systematic-decomposition paper (arXiv 2510.07772) reports 10–40 percentage-poi
 decomposition is applied. The _same_ model performs dramatically better when the task is pre-shaped for it. A
 specialized skill or agent definition is doing this work upfront.
 
-**3. Anthropic's own design implies the same thing.** Claude's adaptive thinking _"dynamically decides when and how much
-to think… at lower effort levels, it may skip thinking for simpler problems."_ A highly specialized prompt makes the
-problem _appear simpler_ to the model. Fewer branches to consider, narrower output space, pre-resolved ambiguity. Which
-is precisely what reduces the value of extended thinking.
+**3. Anthropic's own design implies the same thing.** With adaptive thinking, _"Claude determines whether and how much to
+think on each request, and at lower effort settings it may skip thinking entirely on easy inputs."_ A highly specialized
+prompt makes the problem _appear simpler_ to the model. Fewer branches to consider, narrower output space, pre-resolved
+ambiguity. Which is precisely what reduces the value of thinking.
 
-**4. Few-shot/structured demonstrations substitute for raw reasoning.** Anthropic's chain-of-thought guidance notes that
-demonstrating the reasoning pattern in the prompt causes Claude to _"mimic that approach… often to great effect."_
+**4. Few-shot/structured demonstrations substitute for raw reasoning.** Anthropic's prompting guidance notes that worked
+examples in the prompt _"shape how Claude approaches similar problems in its own thinking blocks."_
 Embedding the reasoning pattern in a skill or agent definition is a permanent few-shot. It shifts work from
 inference-time compute to prompt design.
 
@@ -78,15 +78,17 @@ The pattern that falls out, by agent archetype:
 - [How task decomposition and smaller LLMs can make AI more affordable (Amazon Science)](https://www.amazon.science/blog/how-task-decomposition-and-smaller-llms-can-make-ai-more-affordable)
 - [An approach for systematic decomposition of complex LLM tasks (arXiv 2510.07772)](https://arxiv.org/abs/2510.07772)
 - [Decomposed Prompting (DecomP)](https://learnprompting.org/docs/advanced/decomposition/decomp)
-- [Building with extended thinking (Claude Docs)](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
-- [Let Claude think: chain of thought prompting (Anthropic)](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought)
-- [How Smaller Language Models Outperform LLMs (Deepgram)](https://deepgram.com/learn/the-underdog-revolution-how-smaller-language-models-outperform-llms)
+- [Migrating to adaptive thinking (Claude Docs)](https://platform.claude.com/docs/en/build-with-claude/extended-thinking#migrating-to-adaptive-thinking)
+- [Prompting best practices: leverage thinking (Claude Docs)](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#leverage-thinking-and-interleaved-thinking-capabilities)
+- [How Smaller Language Models Outperform LLMs (Deepgram, archived 2025-09-28)](https://web.archive.org/web/20250928210050/https://deepgram.com/learn/the-underdog-revolution-how-smaller-language-models-outperform-llms).
+  The original page now returns 404.
 
 ## Cross-References
 
 - [Per-Model Authoring Guidance](./per-model-authoring.md). This document is about which model _tier_ to run (opus,
   sonnet, haiku) and at what effort. Its counterpart is about how to _write the instructions_ for a given model. Read
-  that one when the question is how to phrase instructions for Sonnet 5, Opus 5, or Fable 5, not which tier to run.
+  that one when the question is how to phrase instructions for a given Sonnet, Haiku, Opus, or Fable model, not which tier to
+  run.
 - [Agent Model Selection](./agent-building-guidelines/agent-model-selection.md). Decision criteria for the `model`
   frontmatter field on agents.
 - [Agent Domain Focus](./agent-building-guidelines/agent-domain-focus.md). How vocabulary routing, persona length, and

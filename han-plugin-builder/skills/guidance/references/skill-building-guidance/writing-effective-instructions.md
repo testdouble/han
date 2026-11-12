@@ -9,6 +9,7 @@ paths:
 
 - The Rules
 - Rule: Be specific and actionable
+- Rule: Spell out what breaks when missed, and leave out what the model gets right unprompted
 - Rule: Write constraints with embedded reasoning
 - Rule: Include error handling in instructions
 - Rule: Prefer inline discovery over forked data-fetch sub-skills
@@ -77,6 +78,39 @@ For each changed file in the diff:
 2. Check against `references/review-checklist.md`
 3. Classify each finding by severity: critical, warning, or suggestion
 4. Include the file path and line number for each finding
+```
+
+### Rule: Spell out what breaks when missed, and leave out what the model gets right unprompted
+
+Specificity has a limit. A skill packed with blanket rules ("never write multi-line comments", "always add a
+docstring") pins the model to one answer where the right answer depends on the code in front of it, and rules from
+different layers start to conflict. Anthropic removed most rules of that kind from Claude Code's own system prompt for
+the Claude 5 generation of models, with no measurable loss on its coding evaluations, and replaced them with guidance
+the model applies to its surroundings.
+
+Spend specificity where a miss breaks something: a file format another tool parses, a command whose flags must be
+exact, a convention the project enforces, an action that cannot be undone. For routine details the model already gets
+right unprompted, leave the instruction out, or state the goal and the reason instead of a rule.
+
+This rule governs how much detail each instruction carries, not whether a step is fixed. A skill's steps still form a
+flowchart ([Entity Taxonomy](../plugin-entity-taxonomy.md#skills-process-engine)); only the prose inside a step gets
+lighter. For the same advice framed around an unknown target model, see
+[Per-Model Authoring](../per-model-authoring.md#what-model-agnostic-means-when-you-do-not-know-the-target).
+
+**Before (blanket rules):**
+
+```markdown
+## Step 4: Write the Fix
+
+Never write comments longer than one line. Always use early returns. Never create helper functions.
+```
+
+**After (the goal the rules were standing in for):**
+
+```markdown
+## Step 4: Write the Fix
+
+Write code that reads like the surrounding code: match its comment density, naming, and idiom.
 ```
 
 ### Rule: Write constraints with embedded reasoning
@@ -504,6 +538,7 @@ If validation fails, the script prints which checks failed. Fix each issue befor
     where one instruction ends and the next begins, restructure it
 11. When a step drives several varying items, give each its resolved, self-contained inputs — don't make the model join
     a matrix against a separate list
+12. Spend specificity where a miss breaks something; leave out rules for details the model gets right unprompted
 
 Cross-references:
 

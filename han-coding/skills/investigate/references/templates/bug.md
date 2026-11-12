@@ -1,5 +1,7 @@
 # Investigation: {Issue Title}
 
+**Investigation type:** bug: Find the root cause of a failure and plan the fix
+
 <!-- Section rule: include a section only when this investigation produced meaningful content for it. Omit any section (its heading and body) that would otherwise be empty or "N/A", and keep the sections that remain in the order shown below. Sections marked CONDITIONAL are the ones most often omitted, but the rule applies to every section. -->
 
 <!-- Readability: write prose regions against the shared readability standard the skill sources via han-communication:readability-guidance. Lead with the main point (the root cause / the answer) first, give each heading a descriptive name, keep one idea per paragraph with the first sentence carrying it, number sequential steps and bullet non-sequential items, and disclose detail progressively. This does not touch code fences, file:line citations, or diagram bodies. -->
@@ -63,74 +65,7 @@
 
 <!-- Add more file entries as needed -->
 
-## Evidence Summary
-
-<!-- List every piece of evidence gathered during investigation. -->
-<!-- Number each item sequentially (E1, E2, E3, ...) so they can be referenced throughout the document. -->
-<!-- Every item must include a concrete source — no unsupported claims. -->
-
-### E1: {Brief description of finding}
-
-- **Source:** `path/to/file.ext:line_number` <!-- or git commit, log output, test result -->
-- **Finding:**
-  ```
-  <!-- Relevant code snippet, error message, or log output -->
-  ```
-- **Relevance:** <!-- How this evidence connects to the problem -->
-
-### E2: {Brief description of finding}
-
-- **Source:** `path/to/file.ext:line_number`
-- **Finding:**
-  ```
-  <!-- Relevant code snippet, error message, or log output -->
-  ```
-- **Relevance:** <!-- How this evidence connects to the problem -->
-
-### E3: {Brief description of finding}
-
-- **Source:** `path/to/file.ext:line_number`
-- **Finding:**
-  ```
-  <!-- Relevant code snippet, error message, or log output -->
-  ```
-- **Relevance:** <!-- How this evidence connects to the problem -->
-
-<!-- Add more evidence items as needed (E4, E5, ...) -->
-
-## Validation Results
-
-<!-- Document how the fix was stress-tested by adversarial validation and the resulting confidence. -->
-
-### Counter-Evidence Investigated
-
-<!-- Number each validation finding (V1, V2, ...) so they can be referenced in the Summary. -->
-
-#### V1: {Hypothesis tested}
-
-- **Hypothesis:** <!-- What was assumed to be wrong or what could fail -->
-- **Investigation:** <!-- What was checked — file paths, code searched, tests run -->
-- **Result:** Confirmed / Refuted / Partially Refuted <!-- Did the original analysis hold up? -->
-- **Impact:** <!-- If refuted: what changed in the plan. If confirmed: why this supports the original analysis. -->
-
-#### V2: {Hypothesis tested}
-
-- **Hypothesis:** <!-- What was assumed to be wrong or what could fail -->
-- **Investigation:** <!-- What was checked -->
-- **Result:** Confirmed / Refuted / Partially Refuted
-- **Impact:** <!-- Effect on the plan -->
-
-<!-- Add more validation findings as needed (V3, V4, ...) -->
-
-### Adjustments Made
-
-<!-- CONDITIONAL: Include only if validation findings caused changes to the plan. -->
-<!-- List what changed and which validation finding (V1, V2, ...) triggered each change. -->
-
-### Confidence Assessment
-
-- **Confidence:** High / Medium / Low
-- **Remaining Risks:** <!-- Known risks, areas not fully validated, or assumptions that could not be verified -->
+<!-- shared: evidence-and-validation.md -->
 
 ## Coding Standards Reference
 

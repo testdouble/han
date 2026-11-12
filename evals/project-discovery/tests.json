@@ -29,9 +29,7 @@
       "skillFile": "han-core:project-discovery",
       "promptFile": "skill-call-project-discovery.md",
       "scaffold": "polyglot-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: no project-discovery",
@@ -39,9 +37,7 @@
       "model": "sonnet",
       "skillFile": "han-core:project-discovery",
       "promptFile": "skill-call-no-project-discovery.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     }
   ]
 }

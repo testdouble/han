@@ -5,8 +5,9 @@ description: >
   facilitated team conversation. Use when the user wants to plan how to implement, build, deliver, or ship a
   feature that has already been specified. Does not specify what the feature should do — use plan-a-feature first. Does
   not design the contract for an interface — use design-an-api. Does not refine or stress-test an already-written plan —
-  use iterative-plan-review. Runs its resolution rounds to completion and holds its questions until after they finish;
-  to review each round as it lands, use pairing.
+  use iterative-plan-review. Does not propose a different approach when the rounds stop converging — at its round cap it
+  hands that question to reassess-approach. Runs its resolution rounds to completion and holds its questions until after
+  they finish; to review each round as it lands, use pairing.
 arguments: size
 argument-hint: "[size: small | medium | large | dynamic] [feature specification path, optional: additional context]"
 allowed-tools:
@@ -368,13 +369,27 @@ For each iteration:
    - The deterministic next-step recommendation is **"blocked pending user input"** and all blocking Open Questions have
      been escalated to the user with recommendations still awaiting answers.
    - The most recent round produced ≤ 2 new findings AND zero major findings (security, T#-contradiction, missing
-     coordination, unhandled failure mode, or any finding tagged `spec-level`).
+     coordination, unhandled failure mode, or any finding tagged `spec-level` or `approach`).
 
    Otherwise, continue with another iteration.
 
 The round cap from Step 3 sets the upper bound: small = 1 round, medium = 2 rounds, large = 3 rounds. Never exceed the
-size cap. If the team is still iterating at the cap, surface the remaining Open Questions to the user with
-recommendations and a note that the team has reached a facilitation plateau.
+size cap.
+
+**Hand off at the cap (medium and large only).** If the team is still iterating at a cap of two or more rounds, the
+plan has stopped converging on its current approach. At the small cap of one round, do not invoke the hand-off: say in
+the Step 7 escalation that the round did not converge and that `/reassess-approach` is available by hand, BECAUSE one
+round cannot tell a plan stuck on its approach from a plan that needed a round of work. At medium or large, invoke
+`han-planning:reassess-approach` with the specification or plan path,
+`{folder}/artifacts/implementation-iteration-history.md`, the output folder `{folder}/artifacts/`, and a one-line reason
+naming the cap and what the last round produced. Tag its recommendation `approach` in the claim ledger. Then surface the
+remaining Open Questions to the user with recommendations, and present the reassessment as the first of them per
+[../../references/operator-escalation-rule.md](../../references/operator-escalation-rule.md): the consequence of staying
+on the current approach leads, the options are the named candidates, and the report's recommendation is marked. Do not
+proceed to synthesis until the person answers, BECAUSE a plan synthesized on an approach they have not confirmed is the
+work this hand-off exists to avoid. "Continue as is" is a complete answer and sends the run on to Step 7 as it does
+today; an accepted alternative sends it where the report says (`plan-a-feature` to re-specify, `plan-a-change` to
+restructure) instead of into synthesis.
 
 ## Step 7: Final User Escalation Pass
 

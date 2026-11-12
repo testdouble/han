@@ -40,14 +40,14 @@ doc and that page disagree, the official page wins; re-verify before relying on 
 
 ## Execution and model
 
-| Field     | Required | What it does                                                                                                                                                      |
-| --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`   | No       | Overrides the model for this skill's turn only; not saved to session settings.                                                                                    |
-| `effort`  | No       | `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session's effort level for this skill.                                                                  |
-| `context` | No       | Set to `fork` to run the skill in an isolated subagent context. See the caveat in [Skill Composition](./skill-composition.md) about forked data-fetch sub-skills. |
-| `agent`   | No       | When `context: fork` is set, names which subagent type runs the skill (`Explore`, `Plan`, `general-purpose`, or a custom subagent).                               |
-| `hooks`   | No       | Lifecycle hooks scoped to this skill's run.                                                                                                                       |
-| `shell`   | No       | `bash` (default) or `powershell` for inline command blocks.                                                                                                       |
+| Field     | Required | What it does                                                                                                                                                                                                                                                                                                                     |
+| --------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `model`   | No       | Overrides the model for this skill's turn only; not saved to session settings.                                                                                                                                                                                                                                                   |
+| `effort`  | No       | `low`, `medium`, `high`, `xhigh`, or `max`. Overrides the session's effort level for this skill. The same level means more thinking on some models than others; see [Per-Model Authoring](../per-model-authoring.md#other-settings-the-model-differences-affect-thinking-mode-effort-and-subagent-eagerness) before pinning one. |
+| `context` | No       | Set to `fork` to run the skill in an isolated subagent context. See the caveat in [Skill Composition](./skill-composition.md) about forked data-fetch sub-skills.                                                                                                                                                                |
+| `agent`   | No       | When `context: fork` is set, names which subagent type runs the skill (`Explore`, `Plan`, `general-purpose`, or a custom subagent).                                                                                                                                                                                              |
+| `hooks`   | No       | Lifecycle hooks scoped to this skill's run. A hook here lasts only while the skill runs, which suits a guardrail you want only then, such as blocking destructive shell commands. See the [hooks reference](https://code.claude.com/docs/en/hooks) for the schema.                                                               |
+| `shell`   | No       | `bash` (default) or `powershell` for inline command blocks.                                                                                                                                                                                                                                                                      |
 
 ## Portability (open-standard fields)
 

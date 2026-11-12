@@ -80,5 +80,9 @@ require interactive user input — they are mode toggles called by the agent. No
 3. `AskUserQuestion` will still work — it just won't be auto-approved
 4. This is a workaround for Claude Code bug #29547; revisit when the fix ships
 
-Cross-reference: [Context Injection Commands](./context-injection-commands.md) for related `allowed-tools` formatting
-guidance (separate `Bash()` entries).
+Cross-references:
+
+- [Context Injection Commands](./context-injection-commands.md) for related `allowed-tools` formatting guidance
+  (separate `Bash()` entries).
+- [Keeping a skill's state across updates](../claude-marketplace-and-plugin-configuration/plugin-json-options.md#keeping-a-skills-state-across-updates)
+  for asking a first-run question once and saving the answer.

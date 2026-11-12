@@ -68,6 +68,8 @@ to use the skill. For what the skill does internally, read the skill definition 
 - **Assessing architecture, coupling, or structural risk.** Use [`/architectural-analysis`](./architectural-analysis.md)
   instead.
 - **Diagnosing a bug or root-causing a failure.** Use [`/investigate`](./investigate.md) instead.
+- **Answering one question about how the code behaves.** Use [`/investigate how-it-works`](./investigate.md), which
+  answers a single question with cited, adversarially validated evidence. This skill orients you to a whole target.
 - **Being paced through the code one step at a time.** Use [`/code-walkthrough`](./code-walkthrough.md) instead. It
   produces a conversation you drive, not a document you read alone.
 
@@ -92,7 +94,7 @@ Example prompts:
 
 ## What you get back
 
-A single Markdown overview file. It lands under the `output-directory` in your `.han/config.md` when you have set one,
+A single Markdown overview file, `code-overview-{short-target-slug}.md`. It lands under the `output-directory` in your `.han/config.md` when you have set one,
 and outside the repository (for example under your system temp directory) when you have not. A configured directory
 inside the repository is honored without comment, because you chose it. When the resolved destination cannot be written,
 the run falls back to the outside-the-repository default and tells you which destination it could not use, rather than

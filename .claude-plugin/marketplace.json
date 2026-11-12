@@ -11,7 +11,7 @@
       "name": "han",
       "source": "./han",
       "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han-communication, han-core, han-documentation, han-research, han-planning, han-coding, han-github, and han-reporting so installing it pulls them all in. Does not bundle the opt-in han-feedback, han-atlassian, or han-plugin-builder plugins.",
-      "version": "5.5.0"
+      "version": "6.0.0"
     },
     {
       "name": "han-communication",
@@ -40,7 +40,7 @@
     {
       "name": "han-planning",
       "source": "./han-planning",
-      "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, and iterative-plan-review, plus the discussion-facilitator agent. Depends on han-communication and han-core; bundled by the han meta-plugin.",
+      "description": "Planning skills for the Han suite: specifying, planning, sequencing, breaking down, and stress-testing work before implementation. Home of plan-a-feature, plan-a-change, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review, and reassess-approach, plus the discussion-facilitator agent. Depends on han-communication and han-core; bundled by the han meta-plugin.",
       "version": "2.3.0"
     },
     {

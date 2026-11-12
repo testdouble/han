@@ -43,6 +43,7 @@ Map from decision to governing document (read just-in-time):
 | Which frontmatter fields are valid (and which plugins ignore)   | `agent-building-guidelines/agent-external-files.md`                                                                 |
 | Degraded environments (no git, missing tools)                   | `agent-building-guidelines/graceful-degradation.md`                                                                 |
 | Whether this agent is justified at all; how it gets dispatched  | `agent-building-guidelines/multi-agent-economics.md`, `skill-building-guidance/agent-dispatch-namespacing.md`       |
+| Instructions for a named target model                           | `per-model-authoring.md`                                                                                            |
 | New plugin needed (plugin.json, marketplace.json)               | `claude-marketplace-and-plugin-configuration/` and `templates/`                                                     |
 
 ## Operating Principles
@@ -68,7 +69,7 @@ Map from decision to governing document (read just-in-time):
 ## Step 1: Capture the Request and Confirm It Is an Agent
 
 Read the user's argument and the conversation to extract what the agent should do. If the request is too thin to start
-(for example, just "build an agent"), ask the user for one or two sentences on the agent's domain and what it produces —
+(for example, "build an agent"), ask the user for one or two sentences on the agent's domain and what it produces —
 nothing else yet.
 
 **Confirm the entity type before anything else.** Read
@@ -87,7 +88,7 @@ once an agent — with one role — is the right entity.
 Locate the target plugin and learn its conventions before asking the user anything beyond the framing. Use Glob, Grep,
 and `find` to gather:
 
-- The target plugin directory and its `.claude-plugin/plugin.json`. Confirm the plugin actually ships agents (an
+- The target plugin directory and its `.claude-plugin/plugin.json`. Confirm the plugin ships agents (an
   `agents/` directory) or is the right home for the first one. If the user has not said which plugin, infer candidates
   and confirm in Step 4.
 - Sibling agents in that plugin (`{plugin}/agents/*.md`) — their descriptions, role identities, model tiers, domain
@@ -179,9 +180,16 @@ Cover at minimum:
    since dispatch flows from skills to agents; it carries the `Agent` tool only when its own protocol dispatches
    sub-agents. The `tools` allowlist is the minimum the work needs, each tool present only if the body uses it.
 8. **Graceful degradation** (`agent-building-guidelines/graceful-degradation.md`) — every tool-dependent step checks
-   availability inline and notes the limitation when the tool is absent.
+   availability inline and notes the limitation when the tool is absent, and a research or analysis agent marks each
+   claim it could not confirm and names where it looked.
 9. **Economic justification** (`multi-agent-economics.md`) — the agent clears the bar for existing: a single
    well-prompted agent or an instruction improvement to an existing agent would not do the job as well.
+10. **Model-specific leftovers** (`per-model-authoring.md`) — no "think step by step" or "think carefully" line; no
+    instruction to reproduce the model's reasoning in its reply, and no output format with a `reasoning`, `thinking`,
+    or `trace` field, a scratchpad section, or a running reasoning log; no pinned `effort` without a reason stated in
+    the body; and no vague limiting phrase in a review step. A limit passes when it names a bar the reader could check and
+    asks for evidence on each item. "List only problems you'd block the merge for. For each one, give the file and
+    line, why it's wrong, and how to show it fails." passes; "Only report high-severity issues." does not.
 
 Apply the YAGNI discipline throughout: vocabulary terms, anti-patterns, tools, and frontmatter fields must each earn
 their place against the agent's actual job. Cut anything added "for completeness."

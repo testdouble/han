@@ -54,6 +54,28 @@ changed in the last 30 days.
 
 This helps the calling skill and user understand why certain analysis was omitted without treating it as a failure.
 
+### Rule: Mark a claim you could not confirm, and say where you looked
+
+A research or analysis agent can have every tool it needs and still fail to establish a claim: the search turned up
+nothing, or the evidence it found is partial. Without this rule, that gap disappears into the report, and the calling
+skill treats an unconfirmed claim the same as a confirmed one.
+
+For any finding the agent could not confirm, mark it as unconfirmed on the finding itself and name where the agent
+looked. This is the same "note the limitation" move as the rule above, triggered by missing evidence rather than a
+missing tool.
+
+**Pattern:**
+
+> _"Mark anything you couldn't confirm, and say where you looked."_
+
+**Noting it** means a line on the finding such as:
+
+> _"Unconfirmed: no caller of `retryPayment` found in `services/` or `jobs/`. Searched for the symbol name and the
+> `payments.retry` event."_
+
+"I couldn't find this" is worth reading, and asking for it makes it easy to find. The pattern comes from Anthropic's
+[Opus 5.5 guidance](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/).
+
 ---
 
 ## Summary Checklist
@@ -61,6 +83,7 @@ This helps the calling skill and user understand why certain analysis was omitte
 1. Check tool availability inline before tool-dependent steps. Do not assume tools are present.
 2. Use the pattern _"If X is not available, skip this step and note this limitation."_
 3. Include an explicit note in agent output when a step is skipped due to tool absence.
+4. For a research or analysis agent, mark each claim it could not confirm and name where it looked.
 
 ---
 

@@ -42,9 +42,7 @@
       "skillFile": "han-coding:code-review",
       "promptFile": "skill-call-code-review.md",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: don't include the word 'review'",
@@ -53,9 +51,7 @@
       "skillFile": "han-coding:code-review",
       "model": "opus",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: movie review",
@@ -64,9 +60,7 @@
       "skillFile": "han-coding:code-review",
       "promptFile": "skill-call-movie-review.md",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: book review",
@@ -75,9 +69,7 @@
       "skillFile": "han-coding:code-review",
       "promptFile": "skill-call-book-review.md",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: review changes in branch",
@@ -86,9 +78,7 @@
       "skillFile": "han-coding:code-review",
       "model": "opus",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     }
   ]
 }

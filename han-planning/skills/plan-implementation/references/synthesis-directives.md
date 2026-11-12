@@ -49,7 +49,8 @@ into a file that exists, and a synthesis that terminates mid-write leaves the pr
    they have real content and omitted entirely otherwise, never as an empty stub: `Security Posture` (threat surface or
    `han-core:adversarial-security-analyst` contributed), `Operational Readiness` (operational surface or
    `han-core:devops-engineer` contributed), `On-Call Resilience Posture` (resilience surface or
-   `han-core:on-call-engineer` contributed), `Risks and Assumptions` (at least one real entry), `Cut for Scope` (at least one
+   `han-core:on-call-engineer` contributed), `Telemetry Design` (telemetry-design surface or
+   `han-core:observability-engineer` contributed), `Risks and Assumptions` (at least one real entry), `Cut for Scope` (at least one
    entry cut by the scope gate per Step 7.5's ledger), `Deferred (YAGNI)` (at
    least one item deferred per Step 7.5's ledger), and `Specialist Handoffs for Implementation` (at least one planned
    handoff). Omitting a lazy section records the judgment that the surface is genuinely absent, not a skipped concern —

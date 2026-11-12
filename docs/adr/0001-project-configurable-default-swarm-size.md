@@ -77,3 +77,6 @@ visible.
 - Feature specification: [docs/plans/config-default-swarm-size/](../plans/config-default-swarm-size/feature-specification.md)
 - Interpretation contract: [han-core/references/config-rule.md](../../han-core/references/config-rule.md)
 - Operator guide: [docs/configuration.md](../configuration.md) · [docs/sizing.md](../sizing.md)
+- Later change: `/code-review` no longer has size bands and no longer reads `default-swarm-size`. It moved to named
+  review types, which choose a review's focus instead of its depth. The decision above still holds for the remaining
+  sizing-aware skills.

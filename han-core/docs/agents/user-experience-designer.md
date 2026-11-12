@@ -14,7 +14,8 @@ and _how_ to dispatch the agent. For what the agent does internally, read the ag
 - **When to dispatch it.** A UI surface needs a principled usability review independent of code correctness: before
   ship, after a recurring usability complaint, or during a structural redesign. Conditionally dispatched by
   `/gap-analysis`, `/iterative-plan-review`, `/plan-a-change`, `/plan-a-feature`, and `/plan-implementation` when the
-  spec or plan touches user-facing flows, UI, interaction, or accessibility.
+  spec or plan touches user-facing flows, UI, interaction, or accessibility, and always dispatched by `/code-review` on
+  a `ux` review.
 - **What you get back.** A UX findings report with every finding tied to a specific UI location, a named UX principle,
   and a user-impact statement.
 
@@ -238,6 +239,7 @@ URL: https://www.nngroup.com/articles/personas-jobs-be-done/
 - [Agents Index](../../../docs/agents/README.md). All agents, grouped by role.
 - [`information-architect`](./information-architect.md). Sibling agent for documentation / content-structure IA.
   Dispatch in parallel when a surface blends an interactive UI with a content-heavy docs surface.
+- [`/code-review`](../../../han-coding/docs/skills/code-review.md). Always dispatches this agent on a `ux` review.
 - [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the gaps
   touch a user-facing surface.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Conditionally dispatches this agent in

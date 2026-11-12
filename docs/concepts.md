@@ -90,15 +90,15 @@ A few concrete pairings from the han plugin:
   with a production surface brings in `devops-engineer`. A user-visible flow brings in `user-experience-designer`.
 - **`/code-review` always dispatches `junior-developer` and `adversarial-security-analyst`, plus the rest of the roster
   conditionally** (`test-engineer`, `edge-case-explorer`, `structural-analyst`, `behavioral-analyst`,
-  `concurrency-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`) based on what the changed files touch.
-  The roster scales with the [size](./sizing.md): a small change runs the minimum roster; a large change runs the full
-  conditional roster. Each agent reviews the branch changes from its own lens, and the skill classifies their findings
+  `concurrency-analyst`, `data-engineer`, `devops-engineer`, `on-call-engineer`, `observability-engineer`) based on what
+  the changed files touch. That is the default run. Naming a review type, such as `testing` or `work-ticket`, runs only
+  the specialists that type names. Each agent reviews the branch changes from its own lens, and the skill classifies their findings
   into the review output.
 - **`/architectural-analysis` always dispatches a spine of `structural-analyst`, `behavioral-analyst`, `risk-analyst`,
   and `software-architect`, plus the rest of the roster by signal** (`concurrency-analyst` when concurrency primitives
   are present; `adversarial-security-analyst`, `data-engineer`, `devops-engineer` when the focus area touches auth/PII,
   data contracts, or operational surface; `on-call-engineer` when application source in the focus area shows on-call
-  resilience signal; `codebase-explorer` for large unfamiliar areas; `system-architect` at large size when a
+  resilience signal; `observability-engineer` when the focus area carries telemetry design; `codebase-explorer` for large unfamiliar areas; `system-architect` at large size when a
   cross-service or bounded-context seam is present). The roster scales with the [size](./sizing.md): small runs the
   spine plus concurrency; large runs every signalled specialist. The discovery analysts run first, `risk-analyst` scores
   their findings, and the architects synthesize. When `system-architect` is not dispatched, cross-service and
@@ -132,10 +132,10 @@ escalate.
   signals require it.
 - **Auto-classified, with a `$size` override.** Skills read signals (file count, subsystems touched, security/data/infra
   surface) and announce the chosen size with a one-line justification. Pass `small`, `medium`, or `large` as the first
-  positional argument to override (`/code-review medium`, `/plan-a-feature large "describe the feature"`).
+  positional argument to override (`/research medium`, `/plan-a-feature large "describe the feature"`).
 - **Sizing-aware skills.** [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
   [`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md),
-  [`/code-overview`](../han-coding/docs/skills/code-overview.md), [`/code-review`](../han-coding/docs/skills/code-review.md),
+  [`/code-overview`](../han-coding/docs/skills/code-overview.md),
   [`/code-walkthrough`](../han-coding/docs/skills/code-walkthrough.md),
   [`/ddd-analysis`](../han-ddd/docs/skills/ddd-analysis.md),
   [`/design-an-api`](../han-coding/docs/skills/design-an-api.md),
@@ -155,11 +155,11 @@ a strictly simpler version that satisfies the same evidence?_). Items without ev
 `## Deferred (YAGNI)` section in the artifact with a named _reopen-when_ trigger. Never silently dropped.
 
 YAGNI applies to the planning skills (`/plan-a-feature`, `/plan-a-change`, `/plan-implementation`,
-`/plan-a-phased-build`, `/iterative-plan-review`). It applies to review and standards (`/code-review` advisory-only, `/coding-standard`,
+`/plan-a-phased-build`, `/iterative-plan-review`, `/reassess-approach`). It applies to review and standards (`/code-review` advisory-only, `/coding-standard`,
 `/automated-test-planning`, `/architectural-decision-record`). It also applies to several agents
 (`discussion-facilitator`, `plan-synthesizer`,
 `junior-developer`, `software-architect`, `system-architect`, `test-engineer`, `edge-case-explorer`, `data-engineer`,
-`devops-engineer`, `on-call-engineer`).
+`devops-engineer`, `on-call-engineer`, `observability-engineer`).
 
 Read the full [YAGNI](./yagni.md) reference for the gates, the acceptable-evidence list, the named anti-patterns, and
 the per-skill / per-agent application table.
@@ -175,7 +175,8 @@ labeling). The vocabulary of trust classes (codebase, web, provided) and the cor
 and agent reads at runtime.
 
 Evidence applies to the research and investigation skills (`/research`, `/investigate`, `/gap-analysis`) and the
-planning and review skills (`/plan-a-feature`, `/plan-a-change`, `/plan-implementation`, `/iterative-plan-review`). It also applies to the
+planning and review skills (`/plan-a-feature`, `/plan-a-change`, `/plan-implementation`, `/iterative-plan-review`,
+`/reassess-approach`). It also applies to the
 conventions skills (`/coding-standard`, `/architectural-decision-record`), the operational skills (`/runbook`), and the
 agents that review artifacts (`discussion-facilitator`, `junior-developer`, `evidence-based-investigator`,
 `gap-analyzer`).
@@ -200,7 +201,7 @@ Readability applies to the reader-facing skills (`/research`, `/gap-analysis`, `
 `/issue-triage`, `/runbook`, `/architectural-decision-record`, `/code-overview`, `/investigate`, `/code-review`,
 `/architectural-analysis`, `/stakeholder-summary`, `/html-summary`, `/update-pr-description`, `/plan-a-feature`,
 `/plan-a-change`, `/plan-implementation`, `/plan-a-phased-build`, `/plan-work-items`, `/iterative-plan-review`,
-`/coding-standard`, and
+`/reassess-approach`, `/coding-standard`, and
 `/automated-test-planning`). A structured specification, plan, phased build, work-item list, coding standard, or test plan counts
 when a human reads it end to end. Skills whose output is code, or a structured artifact consumed only by downstream
 skills as machine input, are out of scope.
@@ -242,8 +243,8 @@ plugins dispatch, the project-discovery skill, the `/pairing` collaborative work
 `/runbook`). `han-research` adds the pre-planning knowledge-work skills (`/research`, `/gap-analysis`, and
 `/issue-triage`) plus the research-analyst agent. `han-planning` adds the planning skills you reach for before
 implementation (`/plan-a-feature`, `/plan-a-change`, `/plan-implementation`, `/plan-a-phased-build`,
-`/plan-work-items`, and `/iterative-plan-review`). `han-coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`,
-`/design-an-api`, `/code-review`, `/code-overview`, `/code-walkthrough`, `/architectural-analysis`,
+`/plan-work-items`, `/iterative-plan-review`, and `/reassess-approach`). `han-coding` adds the coding skills you reach for while working in code (`/tdd`, `/refactor`,
+`/restructure`, `/design-an-api`, `/code-review`, `/code-overview`, `/code-walkthrough`, `/architectural-analysis`,
 `/automated-test-planning`, `/manual-test-planning`, `/investigate`, and `/coding-standard`). `han-github` adds the GitHub skills, and `han-reporting` adds the reporting
 skills. All of these except `han-reporting` depend on `han-core`, so installing any of them brings the shared agents
 along; `han-reporting` depends only on `han-communication`.

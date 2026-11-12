@@ -13,7 +13,9 @@ to dispatch the agent. For what the agent does internally, read the agent defini
   what's missing, incomplete, conflicting, or assumed. Classifies every finding into the four-category taxonomy: Missing
   / Partial / Divergent / Implicit.
 - **When to dispatch it.** You want a structured comparison of an implementation against a spec, PRD, or design doc,
-  with evidence pairs from both inputs. Always dispatched by `/gap-analysis` for the primary analysis.
+  with evidence pairs from both inputs. Always dispatched by `/gap-analysis` for the primary analysis, and by
+  `/code-review`'s `work-ticket` review type. Also dispatched by `/plan-a-feature` and `/iterative-plan-review` when a
+  source spec exists to compare against.
 - **What you get back.** A structured `gap-analysis-source.md` with `GAP-NNN` entries. Each entry has a category, a
   `Feature/Behavior` label, and `Current State` / `Desired State` descriptions, each carrying a citation from its input.
 
@@ -145,6 +147,8 @@ URL: https://standards.ieee.org/ieee/829/3787/
   against a PRD or reference spec.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent to compare the
   plan under review against its source spec or PRD.
+- [`/code-review`](../../../han-coding/docs/skills/code-review.md). Its `work-ticket` review type always dispatches this
+  agent to compare the change against the named ticket and return a requirement-by-requirement map.
 - [Evidence](../../../docs/evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes for evidence
   pairs, the corroboration gate for single-source web claims, and the no-evidence label for silent desired-state
   evidence.

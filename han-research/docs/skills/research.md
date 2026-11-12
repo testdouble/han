@@ -21,9 +21,10 @@ use the skill. For what the skill does internally, read the skill definition at
 
 ## Key concepts
 
-- **Question-shaped, not symptom-shaped.** `/investigate` starts from something broken and ends at a fix. `/research`
-  starts from a question and ends at a recommended option among trade-offs. Nothing is "diagnosed" and no fix is
-  planned.
+- **The open web, not this codebase.** `/investigate` answers a question the codebase alone can answer: why it is
+  broken, how it works, or how a change could be made within it. `/research` answers a question that needs the open web,
+  prior art, or material you provide, and ends at a recommended option among trade-offs. Nothing is "diagnosed" and no
+  fix is planned.
 - **Output-agnostic.** The report is the only thing produced. `/research` never writes a feature spec, a coding
   standard, a gap report, an architecture assessment, or code. If your question is really one of those, it routes you to
   the skill that owns it.
@@ -71,15 +72,18 @@ use the skill. For what the skill does internally, read the skill definition at
 - You want the options for a decision and their trade-offs before you commit ("should we use an event bus or polling
   here").
 - You want the prior art or state of the art on a topic, drawn from outside the codebase.
-- You want to understand how something works before you build against it.
+- You want to understand how an outside technology works before you build against it.
 - You want a recommendation that has been adversarially validated, not a first-pass opinion.
 
 **Do not invoke for:**
 
-- **A bug, failure, or root cause.** Use [`/investigate`](../../../han-coding/docs/skills/investigate.md) for evidence-based diagnosis of
-  something broken.
+- **A question the codebase alone can answer.** Use [`/investigate`](../../../han-coding/docs/skills/investigate.md) to
+  diagnose something broken, explain how this code works, or compare the ways a change could be made within it.
 - **Specifying a feature.** Use [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md) to turn a decision into a
   behavioral spec.
+- **Questioning whether a plan's or code's current approach is still right.** Use
+  [`/reassess-approach`](../../../han-planning/docs/skills/reassess-approach.md). It argues from the artifact and its
+  recorded findings, not from prior art.
 - **Creating or updating a coding standard.** Use [`/coding-standard`](../../../han-coding/docs/skills/coding-standard.md).
 - **Comparing two concrete artifacts for gaps.** Use [`/gap-analysis`](./gap-analysis.md).
 - **Assessing an existing module's architecture.** Use
@@ -193,8 +197,8 @@ cadence: research the question, get the recommendation, move on. It is not a tig
 
 ## In more detail
 
-`/research` is the question-shaped sibling of `/investigate`. It reuses the same proven spine (gather sourced evidence,
-number it, synthesize, then adversarially validate before presenting), but every bug-specific stage is gone. There is no
+`/research` is the open-web sibling of `/investigate`. It reuses the same proven spine (gather sourced evidence, number
+it, synthesize, then adversarially validate before presenting), but every bug-specific stage is gone. There is no
 symptom to classify, no root cause, no fix. In their place: a request classifier (out-of-scope redirect, hybrid handoff,
 compound-question split), an options-landscape synthesis, and a recommendation. That recommendation must survive an
 adversarial pass chartered to attack not only the logic but the trustworthiness of the sources themselves.
@@ -235,8 +239,8 @@ URL: https://hbr.org/2007/09/performing-a-project-premortem
 - [Plugin README](../../README.md). The plugin's front door: its skills, agents, and how they fit together.
 - [Repo root README](../../../README.md). The Han suite landing page. Start here if you arrived from outside the docs tree.
 - [Skills Index](../../../docs/skills/README.md). All skills, grouped by purpose.
-- [`/investigate`](../../../han-coding/docs/skills/investigate.md). The symptom-shaped sibling. Use it when something is broken; use
-  `/research` when you have a question.
+- [`/investigate`](../../../han-coding/docs/skills/investigate.md). The codebase-shaped sibling. Use it when the answer
+  lives in this codebase; use `/research` when it lives on the open web or in prior art.
 - [`/plan-a-feature`](../../../han-planning/docs/skills/plan-a-feature.md). Pair downstream: turn a recommended option into a behavioral
   spec.
 - [`research-analyst`](../agents/research-analyst.md). The agent the skill dispatches for the web /

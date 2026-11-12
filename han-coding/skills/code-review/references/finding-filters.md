@@ -1,7 +1,7 @@
 # Finding Filters: the reachability gate and the independent validation pass
 
 Two of Step 7's sub-steps filter the collected finding list. Both are specified here, and every reference to Step 7.2 or
-Step 7.4 elsewhere in the skill points to this file. They run in the order below, with Step 7.3's size-aware rubric
+Step 7.4 elsewhere in the skill points to this file. They run in the order below, with Step 7.3's rubric pass
 between them.
 
 Neither pass is a finding source. Both only demote or drop, so Step 9's verification rule against findings from
@@ -29,7 +29,7 @@ entirely. Apply the demotion exactly once per finding regardless of how many phr
 likelihood in that finding's plain-language explanation ([finding-content.md](./finding-content.md)). Discarding it here
 is what makes a reader ask whether a finding can happen at all, on a question this gate already answered.
 
-This gate is the merged form of the reachability and "directly introduced" filters; the size-aware rubric in Step 7.3 is
+This gate is the merged form of the reachability and "directly introduced" filters; the rubric pass in Step 7.3 is
 the single later pass and does not re-demote on these phrases. The phrase list is the only signal the gate uses; do not
 infer reachability from other text. The gate is a cheap, deterministic first pass and is brittle to paraphrase by
 design: a finding that hedges its own reachability without using one of the literal phrases (for example, "unlikely in
@@ -37,7 +37,8 @@ practice", "would need an unusual sequence") slips through here. That paraphrase
 independent validation in Step 7.4, not by expanding this list.
 
 Security findings (SEC-series) are exempt from this gate because the security agent's evidence standard already requires
-a demonstrated exploit path or CVE reference before any finding is raised.
+a demonstrated exploit path or CVE reference before any finding is raised. Ticket-gap findings (GAP-series) are exempt
+too, because a gap measures the change against a ticket requirement rather than claiming a failure is reachable.
 
 ## Step 7.4: Validate the finding list (independent adversarial pass)
 
@@ -59,7 +60,7 @@ findings are out of scope here: they are advisory and are never validated, demot
    finding text, so it does not anchor on what the producing agents concluded.
 2. **The complete corrective finding list**, with each finding's task ID, current severity, `file_path:line_number`, the
    finding's claim, and the producing agent's rationale **verbatim**.
-3. **The `{size}` from Step 3.1 and the calibration directive from Step 3.3**, so it judges severity on the same scale
+3. **The calibration directive from Step 3.3**, so it judges severity on the same scale
    the rest of the review used.
 
 Pass this brief verbatim:

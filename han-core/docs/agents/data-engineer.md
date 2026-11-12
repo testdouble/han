@@ -12,7 +12,7 @@ to dispatch the agent. For what the agent does internally, read the agent defini
 - **What it does.** Audits a schema, migration, query, pipeline, or data-access layer against eleven data-engineering
   protocols.
 - **When to dispatch it.** A schema change, migration, or data-access layer needs a principled review before it ships.
-  Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/design-an-api`, `/gap-analysis`,
+  Always dispatched by `/code-review`'s `data` review type. Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/design-an-api`, `/gap-analysis`,
   `/investigate`, `/iterative-plan-review`, `/plan-a-change`, and `/plan-implementation` when the change or focus area
   touches data.
 - **What you get back.** A data-engineering findings report with location, principle, and data-level impact per finding,
@@ -80,6 +80,8 @@ improvements, so the agent does not become a bottleneck teams route around.
   exploit paths.
 - Production-readiness review of the runtime (observability, rollout, scale, cost at the service level). Use
   `devops-engineer`. The data-engineer cross-references operational concerns but does not duplicate.
+- Telemetry design (metric label cardinality, sampling, telemetry naming, Collector pipelines). Use
+  [`observability-engineer`](./observability-engineer.md).
 - File-level code review for correctness, style, or maintainability. Use `/code-review`.
 - Architectural SOLID / coupling / cohesion review at the module level. Use `/architectural-analysis`.
 - Bug triage or root-cause investigation (_"why did this write vanish?"_). Use `/investigate` or

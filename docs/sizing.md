@@ -3,7 +3,7 @@
 Sizing is one of the two foundational mechanics of the han plugin. Every skill that dispatches a swarm of specialist
 agents first classifies the work as **small**, **medium**, or **large**. That classification decides how many agents to
 dispatch, which agents to dispatch, how many rounds to iterate, and how aggressively to calibrate findings. The
-sizing-aware skills are `/architectural-analysis`, `/automated-test-planning`, `/code-overview`, `/code-review`,
+sizing-aware skills are `/architectural-analysis`, `/automated-test-planning`, `/code-overview`,
 `/code-walkthrough`, `/ddd-analysis`, `/design-an-api`, `/gap-analysis`, `/iterative-plan-review`,
 `/plan-a-change`,
 `/plan-a-feature`, `/plan-implementation`, and `/research`.
@@ -21,8 +21,8 @@ sizing-aware skills are `/architectural-analysis`, `/automated-test-planning`, `
 - **Auto-classified.** When you do not pass `$size`, the skill reads concrete signals: file count, subsystems touched,
   security/data/infra surface, and cross-cutting concerns. It announces the chosen size with a one-line justification
   before dispatching agents.
-- **Always overridable.** Pass the size as the first positional argument when invoking the skill (`/code-review medium`,
-  `/plan-a-feature small "describe the feature"`, and so on). The skill honors the override and still scales the team
+- **Always overridable.** Pass the size as the first positional argument when invoking the skill (`/plan-a-feature small "describe the feature"`,
+  `/research large`, and so on). The skill honors the override and still scales the team
   and round caps to the chosen size.
 - **Configurable default.** You can set a standing default band with the `default-swarm-size` setting in
   [`.han/config.md`](./configuration.md), personally or per project. A configured band is forced exactly like a passed size argument; an explicit
@@ -48,7 +48,7 @@ and tells you up front what was chosen and why.
 
 ## The three bands
 
-The exact cutoffs vary per skill (a "medium" code review is not a "medium" feature plan), but the bands carry the same
+The exact cutoffs vary per skill (a "medium" gap analysis is not a "medium" feature plan), but the bands carry the same
 meaning across the plugin:
 
 | Band       | Meaning                                                                                                               | Typical signals                                                                                     | Team / swarm posture                                                                                                                       |
@@ -84,8 +84,6 @@ auto-classifies as above.
 Pass the size as the first positional argument when invoking the skill:
 
 ```
-/code-review medium
-/code-review large "focus on the new auth endpoints"
 /gap-analysis large
 /iterative-plan-review small docs/plans/refactor-cache.md
 /plan-a-feature medium "describe the feature here"
@@ -113,7 +111,6 @@ When the size is overridden with `$size`:
 | [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md)   | Signal-selected roster + finding calibration          | Single module, no cross-cutting signal (spine + concurrency, 3–4 agents)                 | One cross-cutting concern (spine + 1–2 specialists, 4–6 agents)                                   | Multi-subsystem or cross-service seam (spine + all signalled specialists + system-architect, 6–9 agents) |
 | [`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md) | Agent roster + output form                            | A question naming specific tests, or 1–3 files (focused: 1 agent, prose answer)          | 4–10 files or one cross-cutting concern (full: 2–4 agents, full template)                         | More than 10 files or multiple subsystems (full: 2–4 agents, full template)                              |
 | [`/code-overview`](../han-coding/docs/skills/code-overview.md)                     | Exploration roster (codebase-explorer only)           | Single file, symbol, or small change set (1 explorer)                                    | A directory/module or moderate change set (2–3 explorers)                                         | Multiple subsystems or a large change set (3–5 explorers)                                                |
-| [`/code-review`](../han-coding/docs/skills/code-review.md)                         | Agent roster + finding calibration                    | 1–3 files, single subsystem                                                              | 3–10 files, one cross-cutting concern                                                             | More than 10 files, multiple subsystems                                                                  |
 | [`/code-walkthrough`](../han-coding/docs/skills/code-walkthrough.md)               | Exploration roster + itinerary length                 | One file, symbol, or a change across a few files (1 explorer, 3–5 steps)                 | A directory/module or a change across one or two subsystems (2–3 explorers, 5–8 steps)            | Several subsystems, or a change spanning many files across them (3–5 explorers, 8–12 steps)              |
 | [`/ddd-analysis`](../han-ddd/docs/skills/ddd-analysis.md)                          | Discovery-agent calibration depth                     | Surface scan: highest-frequency terms, top-level module boundaries, primary entry points | Full analysis: every dimension for language, capability, and ownership, full structural pass      | Exhaustive pass: emphasis on cross-module collision detection, workflow discovery, contestation          |
 | [`/design-an-api`](../han-coding/docs/skills/design-an-api.md)                     | Signal-selected roster on a fixed four-agent spine    | One interface, contained consumers, no cross-cutting signal (spine only, 4 agents)       | Consumer-spread signal, or one cross-cutting signal (spine + up to 2 specialists, up to 6 agents) | Two or more cross-cutting signals, or a system-seam signal (spine + up to 4 specialists, up to 8 agents) |
@@ -154,7 +151,7 @@ Read each skill's **Sizing** section for the full per-skill rules.
 - The **Sizing** section in each sizing-aware skill's long-form doc:
   [`/architectural-analysis`](../han-coding/docs/skills/architectural-analysis.md),
   [`/automated-test-planning`](../han-coding/docs/skills/automated-test-planning.md),
-  [`/code-overview`](../han-coding/docs/skills/code-overview.md), [`/code-review`](../han-coding/docs/skills/code-review.md),
+  [`/code-overview`](../han-coding/docs/skills/code-overview.md),
   [`/code-walkthrough`](../han-coding/docs/skills/code-walkthrough.md),
   [`/ddd-analysis`](../han-ddd/docs/skills/ddd-analysis.md),
   [`/design-an-api`](../han-coding/docs/skills/design-an-api.md),

@@ -29,7 +29,7 @@ files stay in sync.
 ## R1: {Short round title — e.g., "Parallel specialist review"}
 
 - **Specialists engaged:**
-  <!-- e.g., test-engineer, adversarial-security-analyst, devops-engineer, on-call-engineer, junior-developer -->
+  <!-- e.g., test-engineer, adversarial-security-analyst, devops-engineer, on-call-engineer, observability-engineer, junior-developer -->
 - **New input provided:**
   <!-- For re-engagement rounds: what new context, resolved questions, or user answers were handed back to the specialists. For R1, typically "initial feature specification and discovery notes." -->
 - **Claim ledger:**

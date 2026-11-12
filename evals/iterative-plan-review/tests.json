@@ -8,9 +8,7 @@
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-iterative-plan-review.md",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: iterate for correctness",
@@ -19,9 +17,7 @@
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-iterate-for-correctness.md",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: prompt with /iterative-plan-review",
@@ -30,9 +26,7 @@
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "prompt-iterative-plan-review.md",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: no iterative-plan-review",
@@ -41,9 +35,7 @@
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-no-iterative-plan-review.md",
       "scaffold": "ruby-project",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: validate the current plan",
@@ -51,9 +43,7 @@
       "model": "opus",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-validate-current-plan.md",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: iterate the plan",
@@ -61,9 +51,7 @@
       "model": "opus",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-iterate-the-plan.md",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: check plan for correctness and consistency",
@@ -71,9 +59,7 @@
       "model": "opus",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-check-plan-correctness.md",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: verify this will work as expected",
@@ -81,9 +67,7 @@
       "model": "opus",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-verify-will-work.md",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: follow plan and implement changes",
@@ -91,9 +75,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-follow-plan-implement.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: create a new plan for auth",
@@ -101,9 +83,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-create-new-plan.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: review the code changes",
@@ -111,9 +91,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-review-code-changes.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: verify the test suite passes",
@@ -121,9 +99,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-verify-test-suite.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: write a test plan for auth module",
@@ -131,9 +107,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-test-plan-auth.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: investigate login 500 errors",
@@ -141,9 +115,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-investigate-login-500.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: document the payment system",
@@ -151,9 +123,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-document-payment-system.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Call: post a PR review to GitHub",
@@ -161,9 +131,7 @@
       "model": "sonnet",
       "skillFile": "han-planning:iterative-plan-review",
       "promptFile": "skill-call-post-pr-review.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     },
     {
       "name": "Skill Prompt: iterative-plan-review on ruby-security-app code-review plan",

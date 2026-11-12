@@ -244,9 +244,15 @@ Launch `han-core:plan-synthesizer` (`subagent_type: "han-core:plan-synthesizer"`
   deliver what it does ask for. A short work item does not enumerate its own necessities, and that silence is not
   exclusion. A recorded deprecation in the direction-of-travel answer is treated the same way a stated exclusion is.
 - A directive to draft vertical slices: each work item is a narrow but complete path through the appropriate layers
-  (schema, API, UI, tests), demoable or verifiable on its own. Classify each work item as **HITL** (requires human
-  interaction: an architectural decision, a design review) or **AFK** (can be implemented and merged without a sync).
-  Prefer AFK over HITL. Prefer many thin work items over few thick ones.
+  (schema, API, UI, tests), demoable or verifiable on its own. Prefer many thin work items over few thick ones.
+- A directive to select, for each work item, its **Type**, **Suggested implementation**, and **Suggested review** using
+  [references/deliverable-skill-catalog.md](./references/deliverable-skill-catalog.md).
+- A directive to derive each work item's **Expected paths** (the repo-root-relative files the item is expected to create
+  or modify) from the plan's named touch points and, where the plan does not name files, the codebase exploration from
+  Step 3 (naming the intended path for a file the item creates). Expected paths is a best-effort declaration the
+  operator confirms: when the plan gives no file-level detail for an item, flag that item's paths as low-confidence in
+  the breakdown rather than inventing a precise set. Follow
+  [references/work-item-template.md](./references/work-item-template.md).
 - A directive on drafting order and altitude: draft each work item summary-first, then its acceptance criteria, then
   only the work-to-be-done bullets those criteria need. Write the criteria before the detail so the detail is forced to
   serve them; the criteria still render at the bottom of the finished work item per the template. The summary is three
@@ -254,11 +260,11 @@ Launch `han-core:plan-synthesizer` (`subagent_type: "han-core:plan-synthesizer"`
   bullets with technical detail nested beneath — intention, goals, and touch points, never a prescribed edit list — per
   the Rules above. Criteria are outcomes of the work item only: no standard operating procedure, no unexplained
   prohibitions.
-- A directive on unverified assumptions: do not mark a work item HITL only because the plan calls an assumption
-  unverified. First check two things. (a) Can you settle it by reading the code? Do that, and move on if it holds. (b)
-  If the assumption turns out wrong, does something break, or does it fall back to a safe default? Mark it HITL only
-  when you cannot settle it from code **and** getting it wrong causes real breakage. Otherwise it is AFK. Reserve HITL
-  for genuine architectural or design calls.
+- A directive on unverified assumptions: do not set a work item's **Requires pre-work decisions** to `yes` only because
+  the plan calls an assumption unverified. First check two things. (a) Can you settle it by reading the code? Do that,
+  and move on if it holds. (b) If the assumption turns out wrong, does something break, or does it fall back to a safe
+  default? Require a pre-work decision only when you cannot settle it from code **and** getting it wrong causes real
+  breakage. Reserve it for genuine architectural or design calls.
 - A directive to return the proposed breakdown as a numbered list, plus a separate list of anything cut for scope with the
   reason for each. Do not write any files.
 
@@ -280,13 +286,15 @@ Work item title format: `<W-N> — <short descriptive name>` (em-dash separator)
 Print a numbered list for visibility. For each work item show:
 
 - **Title**: `<W-N> — <short descriptive name>`
-- **Type**: HITL or AFK
+- **Suggested implementation** and **Suggested review**
 - **Depends on**: other work items in this file that must complete first, or `None`
 - **Plan reference**: the decisions or work units from the parent plan this work item satisfies (e.g.,
   `D-3, D-7, Work Unit 2`)
 - **Reference artifacts**: contract sections, design frame IDs, ADRs, and other references from Step 4
 - **Design references**: when `ui-designs/` exists and the work item is UI-bearing, the filenames that will be referenced
 - **Justification**: what this work item descends from
+- **Flags**: any low-confidence classification, non-han skill suggestion, not-installed note, skill override mismatch,
+  or skill override-resolution note
 
 Then, when anything was cut, print the cut list under its own heading: what each cut item would have done, in plain
 language, and why it was cut. The user cannot reverse a cut they never saw.
@@ -307,8 +315,9 @@ shared-artifacts preamble, and the `## Cut for Scope` section when anything was 
 
 Before writing, run the standardized readability self-check (the shared standard is in your context from
 `han-communication:readability-guidance`) over the work-item prose regions only — never inside code fences, tables, the
-W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (Depends on, inline plan references,
-Justification, References, Design references), which must survive unchanged so they still resolve. Confirm each criterion
+W-N identifiers, the acceptance-criteria checkboxes, or the structured fields (Type, Depends on, inline plan
+references, Justification, References, Design references, Requires pre-work decisions, Suggested implementation,
+Suggested review, Expected paths), which must survive unchanged so they still resolve. Confirm each criterion
 and fix any failure before writing:
 
 Run the readability rule's standardized self-check, which is already in your context from the `readability-guidance`
@@ -339,9 +348,16 @@ keep it to a line.
 When the file is complete, give the user a short in-channel summary:
 
 - The file path, plus the boundary record's path.
-- The count of work items by type (HITL / AFK).
+- A count of how many items run unattended (both `Suggested implementation` and `Suggested review` are `AFK`, with no
+  required pre-work decision) versus how many pause for a human, naming which items will pause so the user knows where
+  they are needed.
+- An install recommendation for any item whose best-fit skill is not installed.
 - The cut list, when anything was cut: what each entry would have done and why. Any of it can be reinstated, and their
   saying so is a valid justification the reinstated item records.
 - The escalation register, when this run took the single stop: what was asked, what came back, and where the answer
   landed. This skill has no escalation step, so the register attaches to the stop rather than standing on its own.
-- The next concrete action (typically "review the breakdown, then start the first AFK work item").
+- The next concrete action. When an `implement-work-items` skill is available, offer driving the set with it: it routes
+  each item by its recorded markers, running an unattended item in sub-agents and pausing in-session for one that needs
+  a human (a pre-work decision, a foreground `HITL` or bare `none` build, or a `HITL` or `none` review), and aborts only
+  on a named skill it cannot resolve. Otherwise the default is "review the breakdown, then start the first item with its
+  `Suggested implementation`" (for example `/tdd`).

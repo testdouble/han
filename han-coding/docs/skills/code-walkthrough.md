@@ -52,6 +52,8 @@ _how_ to use the skill. For what the skill does internally, read the skill defin
 - **Judging whether the code is any good.** Use [`/code-review`](./code-review.md) instead (or
   [`/post-code-review-to-pr`](../../../han-github/docs/skills/post-code-review-to-pr.md) to post a review to GitHub).
 - **Diagnosing a bug or root-causing a failure.** Use [`/investigate`](./investigate.md) instead.
+- **Answering one question about how the code behaves.** Use [`/investigate how-it-works`](./investigate.md) for a
+  written answer with cited evidence. This skill paces you through the code in conversation.
 - **Assessing architecture, coupling, or structural risk.** Use [`/architectural-analysis`](./architectural-analysis.md)
   instead.
 
@@ -96,7 +98,8 @@ Each step carries four parts:
    change, so before and after are both visible; a plain fenced excerpt for existing code.
 4. **A one-line handoff** naming what the next step covers, then the turn ends.
 
-The walk closes with the off-flow changed files (each by full path, one line each on why it changed), a three-or-four
+The walk closes with the off-flow changed files when it covered a change set that has any (each by full path, one line
+each on why it changed), a three-or-four
 sentence recap carrying no file paths or symbol names, and one line pointing at whichever sibling skill fits what you
 said you wanted the understanding for.
 

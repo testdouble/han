@@ -1,0 +1,1 @@
+We have been through six review rounds on the regex parser in lib/ingest/parser.rb and the edge cases keep coming. Step back and question whether this approach is still the right one before we spend another round on it.

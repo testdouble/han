@@ -54,6 +54,13 @@ specialist rather than discovering a gap late. Unless the user specified a team 
   blocking-I/O patterns, bulkhead boundaries, correlation-id propagation, kill-switch wiring,
   observability-of-the-failure-path at the application source line. Hard boundary against `han-core:devops-engineer`:
   infrastructure, IaC, pipelines, and observability platform configuration stay there.
+- `han-core:observability-engineer` — telemetry design the plan introduces: metric instruments or labels, span
+  attributes, log schemas, OpenTelemetry SDK setup (samplers, exporters, resource attributes), telemetry pipeline
+  configuration (OpenTelemetry Collector, Prometheus scrape or relabel rules, a log shipper), or telemetry volume and
+  cost. Owns naming and semantic conventions, metric label cardinality and telemetry cost, sampling design, telemetry
+  pipeline configuration, and signal choice. Hard boundaries: SLO definitions, alert rules, and dashboards stay with
+  `han-core:devops-engineer`; source-line debuggability, correlation-ID propagation, and PII in individual log
+  statements stay with `han-core:on-call-engineer`.
 - `han-core:structural-analyst` — module boundaries, coupling, where the implementation fits in the system.
 - `han-core:behavioral-analyst` — runtime behavior, data flow, error propagation, state transitions.
 - `han-core:concurrency-analyst` — concurrent access, race conditions, async coordination, ordering.
@@ -87,6 +94,7 @@ Pass each selected specialist only the sections relevant to its domain, plus the
 | `han-core:adversarial-security-analyst`                     | Outcome, Coordinations, Edge Cases, sections touching auth/PII/secrets/supply-chain                                                                                                                       |
 | `han-core:devops-engineer`                                  | Outcome, Coordinations, Out of Scope, Open Items                                                                                                                                                          |
 | `han-core:on-call-engineer`                                 | Sections naming outbound calls, retry behavior, queue or buffer handling, async work, error handling on failure paths, schema migrations, idempotency, kill switches, and observability of new code paths |
+| `han-core:observability-engineer`                           | Sections naming metric instruments or labels, span attributes, log schemas, telemetry SDK setup, telemetry pipeline configuration, or telemetry volume and cost                                           |
 | `han-core:structural-analyst`                               | Sections naming module boundaries, coupling, dependency direction                                                                                                                                         |
 | `han-core:behavioral-analyst`                               | Sections describing runtime behavior, data flow, error propagation, state                                                                                                                                 |
 | `han-core:concurrency-analyst`                              | Sections touching concurrent access, race conditions, async coordination                                                                                                                                  |
@@ -144,8 +152,10 @@ Give each agent:
   Recommendations failing the evidence test are returned as **`Category: YAGNI candidate`** findings with the reopening
   trigger named. Recommendations whose upstream concern is satisfied by a strictly simpler implementation should propose
   the simpler implementation. The agents most prone to over-engineering — `han-core:software-architect`,
-  `han-core:system-architect`, `han-core:devops-engineer`, `han-core:data-engineer`, `han-core:on-call-engineer` —
-  already encode this rule in their definitions; honor it.
+  `han-core:system-architect`, `han-core:devops-engineer`, `han-core:data-engineer`, `han-core:on-call-engineer`,
+  `han-core:observability-engineer` — already encode this rule in their definitions; honor it. For
+  `han-core:observability-engineer`, that means no tail sampling, Collector tier, or retention tiers for volume the
+  project does not have.
 - A directive to treat any `T#` entries in `feature-technical-notes.md` as **committed mechanics the plan must honor** —
   not open questions to re-debate. If the specialist disagrees with a `T#` note, they choose one of three verdicts, and the
   third is what keeps a scope objection out of the escalation path:

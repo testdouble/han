@@ -20,8 +20,8 @@
 **YAGNI** (apply [../../../references/yagni-rule.md](../../../references/yagni-rule.md); these become `YAGNI-###` items
 in the separate YAGNI section, never CRIT/WARN/SUGG)
 
-Apply YAGNI in two passes for every change in the diff. Severity calibration is governed by SKILL.md Step 3.3 (the
-authoritative home), but YAGNI findings are advisory regardless of size and run at every change size.
+Apply YAGNI in two passes for every change in the diff. Severity calibration is governed by the Step 3.3 calibration
+directive (the authoritative home), but YAGNI findings are advisory and run on every review.
 
 1. **Pass 1, evidence test.** For each new abstraction, configuration knob, defensive guard, observability hook,
    runbook, SLO, index, audit column, feature flag, or speculative addition, ask whether the diff contains evidence of

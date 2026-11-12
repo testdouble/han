@@ -29,9 +29,7 @@
       "skillFile": "han-documentation:architectural-decision-record",
       "promptFile": "skill-call-architectural-decision-record.md",
       "scaffold": "node-project",
-      "expect": [
-        { "skill-call": true }
-      ]
+      "expect": [{ "skill-call": true }]
     },
     {
       "name": "Skill Call: no architectural-decision-record",
@@ -39,9 +37,7 @@
       "model": "sonnet",
       "skillFile": "han-documentation:architectural-decision-record",
       "promptFile": "skill-call-no-architectural-decision-record.md",
-      "expect": [
-        { "skill-call": false }
-      ]
+      "expect": [{ "skill-call": false }]
     }
   ]
 }

@@ -14,8 +14,8 @@ _how_ to dispatch the agent. For what the agent does internally, read the agent 
   Identifies content that must be restored.
 - **When to dispatch it.** A document was rewritten, migrated, or consolidated and you need to verify nothing was
   silently dropped. Dispatched by `/project-documentation` when updating an existing doc, by `/gap-analysis` as a swarm
-  specialist when the desired state is documentation, and by `/iterative-plan-review` team mode when the plan under
-  review is documentation.
+  specialist when the desired state is documentation, by `/iterative-plan-review` team mode when the plan under
+  review is documentation, and by `/code-review` on a `docs` review when the change modifies an existing doc.
 - **What you get back.** Numbered `A#` audit items, each with the fact, its source, the classification, and evidence.
   Evidence might be where the fact appears in the new doc, what codebase check confirmed a removal, or why the fact must
   be restored. It also includes an Audit Summary with counts.
@@ -125,6 +125,8 @@ URL: https://standards.ieee.org/ieee/1063/2554/
 - [`information-architect`](./information-architect.md). Sibling agent for IA structure of the new doc.
 - [`/project-documentation`](../../../han-documentation/docs/skills/project-documentation.md). Always dispatches this agent in update
   mode.
+- [`/code-review`](../../../han-coding/docs/skills/code-review.md). Dispatches this agent on a `docs` review when the change modifies
+  an existing doc, handing it the doc's prior version from git.
 - [`/gap-analysis`](../../../han-research/docs/skills/gap-analysis.md). Dispatches this agent as a swarm specialist when the desired
   state is documentation.
 - [`/iterative-plan-review`](../../../han-planning/docs/skills/iterative-plan-review.md). Dispatches this agent in team mode

@@ -140,6 +140,29 @@ Available for substitution in skill/agent content, hook commands, monitor comman
 
 Both are also exported as environment variables to hook processes and MCP/LSP server subprocesses.
 
+### Keeping a skill's state across updates
+
+A skill shipped in a plugin sometimes needs to remember something between runs. Two uses come up most:
+
+- **First-run setup.** The skill needs a value from the user once, such as which channel to post to. Read a saved
+  answer from `${CLAUDE_PLUGIN_DATA}` first. When none exists, ask with `AskUserQuestion` (kept out of `allowed-tools`;
+  see [allowed-tools: AskUserQuestion](../skill-building-guidance/allowed-tools-AskUserQuestion.md)) and save the
+  answer there.
+- **Run memory.** The skill reads its own history, such as the last report it posted, to say what changed since. Keep
+  an append-only log or a JSON file in `${CLAUDE_PLUGIN_DATA}` and read it at the start of the next run.
+
+Write this state to `${CLAUDE_PLUGIN_DATA}`, never to the skill's own directory. The skill directory sits under
+`${CLAUDE_PLUGIN_ROOT}`, which is replaced when the plugin updates, so anything saved there is lost.
+
+Three cases call for something else:
+
+- **A value known at install time** belongs in [`userConfig`](#userconfig), which prompts for it when the plugin is
+  enabled.
+- **A file the user is expected to edit by hand** belongs where the user edits it, such as the project or their own
+  configuration directory, not in a data directory they never open.
+- **A skill checked into a repository's `.claude/skills/`**, including one vendored by `guidance init`, has no plugin
+  and so no `${CLAUDE_PLUGIN_DATA}`. It keeps its state in the repository or asks each run.
+
 ## Complete Example
 
 ```json

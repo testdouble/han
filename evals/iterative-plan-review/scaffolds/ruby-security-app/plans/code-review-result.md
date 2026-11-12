@@ -2,56 +2,56 @@
 
 ## 📋 Review Summary
 
-| Task ID | Category | File | Description |
-|---------|----------|------|-------------|
-| CRIT-001 | [Testing: Coverage Gap] | app/models/user.rb:5-17 | No test pins the SQL injection behavior in `User.find_by_name` |
-| CRIT-002 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:19 | No test characterizes the plaintext password comparison |
-| CRIT-003 | [Testing: Coverage Gap] | app/models/user.rb:20-33 | No test asserts the parameterized `find_by_user_id` is not injectable |
-| CRIT-004 | [Testing: Edge Case] | app/models/user.rb:6 | SQL injection via `params[:name]` flowing into interpolated SQL |
-| CRIT-005 | [Testing: Edge Case] | app/controllers/sessions_controller.rb:19 | Plaintext password comparison against plaintext DB column |
-| CRIT-006 | [Testing: Edge Case] | app/models/user.rb:6-7 | `find_by_name` has no `LIMIT 1`; injection or index drop enables wrong-user auth |
-| CRIT-007 | [Testing: Edge Case] | app/controllers/sessions_controller.rb:24-25 | Session fixation — no `reset_session` before assigning `session[:user_id]` |
-| CRIT-008 | [Testing: Edge Case] | app/controllers/users_controller.rb:17-22 | Unauthenticated PII/role disclosure via `GET /users?name=` |
-| CRIT-009 | [Security] | app/models/user.rb:6 | → see SEC-001 for full exploit path |
-| CRIT-010 | [Security] | config/database.yml:5-9 | → see SEC-002 for full exploit path |
-| CRIT-011 | [Security] | db/migrate/001_create_users.rb:6 | → see SEC-003 for full exploit path |
-| CRIT-012 | [Security] | app/controllers/sessions_controller.rb:14-22 | → see SEC-004 for full exploit path |
-| CRIT-013 | [Security] | app/controllers/application_controller.rb:2-4 | → see SEC-005 for full exploit path |
-| CRIT-014 | [Security] | app/controllers/users_controller.rb:17-22 | → see SEC-006 for full exploit path |
-| CRIT-015 | [Security] | config/routes.rb:2 | → see SEC-007 for full exploit path |
-| WARN-001 | [Code Maintainability] | app/models/user.rb:10-16, 26-32 | Row-to-User mapping duplicated across `find_by_name` and `find_by_user_id` |
-| WARN-002 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:4-28 | No happy-path login test |
-| WARN-003 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:8-11 | No test for blank username/password 400 branch |
-| WARN-004 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:13-17 | No test for user-not-found 401 branch |
-| WARN-005 | [Testing: Coverage Gap] | app/controllers/users_controller.rb:17-22 | No test pins the JSON response shape for `users#show` |
-| WARN-006 | [Testing: Coverage Gap] | app/controllers/users_controller.rb:6-9 | No test for blank `name` 400 branch |
-| WARN-007 | [Testing: Coverage Gap] | app/controllers/users_controller.rb:11-15 | No test for user-not-found 404 branch |
-| WARN-008 | [Testing: Coverage Gap] | app/models/user.rb:5-17 | No happy-path test for `find_by_name` field population |
-| WARN-009 | [Testing: Coverage Gap] | app/models/user.rb:20-33 | No happy-path test for `find_by_user_id` field population |
-| WARN-010 | [Testing: Coverage Gap] | app/controllers/application_controller.rb:2-4 | No test characterizes the `rescue_from StandardError` message leak |
-| WARN-011 | [Testing: Edge Case] | app/controllers/sessions_controller.rb:5-6 | Array/Hash param types bypass `blank?` and reach SQL interpolation |
-| WARN-012 | [Testing: Edge Case] | app/models/user.rb:6 | Legitimate apostrophe in `name` (e.g. "O'Brien") breaks SQL query |
-| WARN-013 | [Testing: Edge Case] | app/models/user.rb:6 | Unicode normalization / case sensitivity mismatches on `name` |
-| WARN-014 | [Testing: Edge Case] | app/controllers/sessions_controller.rb:5-6 | No length cap on username/password; multi-MB inputs reach DB |
-| WARN-015 | [Testing: Edge Case] | app/controllers/sessions_controller.rb:8 | `blank?` distinguishes "missing field" vs "wrong password" error shapes |
-| WARN-016 | [Testing: Edge Case] | app/models/user.rb:7 | DB connection failures propagate to `rescue_from` and leak messages |
-| WARN-017 | [Testing: Edge Case] | app/controllers/application_controller.rb:2-4 | Exception messages rendered to client as JSON error body |
-| WARN-018 | [Testing: Edge Case] | app/controllers/sessions_controller.rb:24 | No CSRF protection (`ActionController::API` skips CSRF) on cookie-backed login |
-| SUGG-001 | [Code Organization] | Gemfile | No `Gemfile.lock` committed; dependency resolution is non-reproducible |
-| SUGG-002 | [API Design] | config/routes.rb | No logout/session destroy route |
-| SUGG-003 | [Testing] | Gemfile | No test framework or `test` group declared |
-| SUGG-004 | [Testing: Coverage Gap] | app/models/user.rb:8 | No test for `find_by_name` returning nil on no match |
-| SUGG-005 | [Testing: Coverage Gap] | app/models/user.rb:24 | No test for `find_by_user_id` returning nil on unknown id |
-| SUGG-006 | [Testing: Edge Case] | app/controllers/users_controller.rb:5 | Sentinel strings like "null"/"undefined" pass `blank?` and hit the DB literally |
-| SUGG-007 | [Testing: Edge Case] | app/models/user.rb:15 | No CHECK constraint on `role`; DB drift can introduce unexpected roles into `session[:role]` |
-| SUGG-008 | [Testing: Edge Case] | app/controllers/sessions_controller.rb:8 | Whitespace-only passwords are blocked at the controller regardless of what is stored |
-| SEC-001 | [OWASP: A03 Injection] | app/models/user.rb:6-7 | SQL injection via string-interpolated `name` |
-| SEC-002 | [OWASP: A02/A07] | config/database.yml:5-9 | Hardcoded production DB credentials committed to repo |
-| SEC-003 | [OWASP: A02] | db/migrate/001_create_users.rb:6 | Plaintext password storage (no bcrypt / `has_secure_password`) |
-| SEC-004 | [OWASP: A07] | app/controllers/sessions_controller.rb:14-22 | Non-constant-time password compare + username enumeration |
-| SEC-005 | [OWASP: A05] | app/controllers/application_controller.rb:2-4 | Raw exception message leaked via rescue handler |
-| SEC-006 | [OWASP: A02/A01] | app/controllers/users_controller.rb:17-22 | Sensitive fields (email, role) returned unauthenticated |
-| SEC-007 | [OWASP: A01] | config/routes.rb:2 | Broken access control — no authentication on `/users` |
+| Task ID  | Category                | File                                          | Description                                                                                  |
+| -------- | ----------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| CRIT-001 | [Testing: Coverage Gap] | app/models/user.rb:5-17                       | No test pins the SQL injection behavior in `User.find_by_name`                               |
+| CRIT-002 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:19     | No test characterizes the plaintext password comparison                                      |
+| CRIT-003 | [Testing: Coverage Gap] | app/models/user.rb:20-33                      | No test asserts the parameterized `find_by_user_id` is not injectable                        |
+| CRIT-004 | [Testing: Edge Case]    | app/models/user.rb:6                          | SQL injection via `params[:name]` flowing into interpolated SQL                              |
+| CRIT-005 | [Testing: Edge Case]    | app/controllers/sessions_controller.rb:19     | Plaintext password comparison against plaintext DB column                                    |
+| CRIT-006 | [Testing: Edge Case]    | app/models/user.rb:6-7                        | `find_by_name` has no `LIMIT 1`; injection or index drop enables wrong-user auth             |
+| CRIT-007 | [Testing: Edge Case]    | app/controllers/sessions_controller.rb:24-25  | Session fixation — no `reset_session` before assigning `session[:user_id]`                   |
+| CRIT-008 | [Testing: Edge Case]    | app/controllers/users_controller.rb:17-22     | Unauthenticated PII/role disclosure via `GET /users?name=`                                   |
+| CRIT-009 | [Security]              | app/models/user.rb:6                          | → see SEC-001 for full exploit path                                                          |
+| CRIT-010 | [Security]              | config/database.yml:5-9                       | → see SEC-002 for full exploit path                                                          |
+| CRIT-011 | [Security]              | db/migrate/001_create_users.rb:6              | → see SEC-003 for full exploit path                                                          |
+| CRIT-012 | [Security]              | app/controllers/sessions_controller.rb:14-22  | → see SEC-004 for full exploit path                                                          |
+| CRIT-013 | [Security]              | app/controllers/application_controller.rb:2-4 | → see SEC-005 for full exploit path                                                          |
+| CRIT-014 | [Security]              | app/controllers/users_controller.rb:17-22     | → see SEC-006 for full exploit path                                                          |
+| CRIT-015 | [Security]              | config/routes.rb:2                            | → see SEC-007 for full exploit path                                                          |
+| WARN-001 | [Code Maintainability]  | app/models/user.rb:10-16, 26-32               | Row-to-User mapping duplicated across `find_by_name` and `find_by_user_id`                   |
+| WARN-002 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:4-28   | No happy-path login test                                                                     |
+| WARN-003 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:8-11   | No test for blank username/password 400 branch                                               |
+| WARN-004 | [Testing: Coverage Gap] | app/controllers/sessions_controller.rb:13-17  | No test for user-not-found 401 branch                                                        |
+| WARN-005 | [Testing: Coverage Gap] | app/controllers/users_controller.rb:17-22     | No test pins the JSON response shape for `users#show`                                        |
+| WARN-006 | [Testing: Coverage Gap] | app/controllers/users_controller.rb:6-9       | No test for blank `name` 400 branch                                                          |
+| WARN-007 | [Testing: Coverage Gap] | app/controllers/users_controller.rb:11-15     | No test for user-not-found 404 branch                                                        |
+| WARN-008 | [Testing: Coverage Gap] | app/models/user.rb:5-17                       | No happy-path test for `find_by_name` field population                                       |
+| WARN-009 | [Testing: Coverage Gap] | app/models/user.rb:20-33                      | No happy-path test for `find_by_user_id` field population                                    |
+| WARN-010 | [Testing: Coverage Gap] | app/controllers/application_controller.rb:2-4 | No test characterizes the `rescue_from StandardError` message leak                           |
+| WARN-011 | [Testing: Edge Case]    | app/controllers/sessions_controller.rb:5-6    | Array/Hash param types bypass `blank?` and reach SQL interpolation                           |
+| WARN-012 | [Testing: Edge Case]    | app/models/user.rb:6                          | Legitimate apostrophe in `name` (e.g. "O'Brien") breaks SQL query                            |
+| WARN-013 | [Testing: Edge Case]    | app/models/user.rb:6                          | Unicode normalization / case sensitivity mismatches on `name`                                |
+| WARN-014 | [Testing: Edge Case]    | app/controllers/sessions_controller.rb:5-6    | No length cap on username/password; multi-MB inputs reach DB                                 |
+| WARN-015 | [Testing: Edge Case]    | app/controllers/sessions_controller.rb:8      | `blank?` distinguishes "missing field" vs "wrong password" error shapes                      |
+| WARN-016 | [Testing: Edge Case]    | app/models/user.rb:7                          | DB connection failures propagate to `rescue_from` and leak messages                          |
+| WARN-017 | [Testing: Edge Case]    | app/controllers/application_controller.rb:2-4 | Exception messages rendered to client as JSON error body                                     |
+| WARN-018 | [Testing: Edge Case]    | app/controllers/sessions_controller.rb:24     | No CSRF protection (`ActionController::API` skips CSRF) on cookie-backed login               |
+| SUGG-001 | [Code Organization]     | Gemfile                                       | No `Gemfile.lock` committed; dependency resolution is non-reproducible                       |
+| SUGG-002 | [API Design]            | config/routes.rb                              | No logout/session destroy route                                                              |
+| SUGG-003 | [Testing]               | Gemfile                                       | No test framework or `test` group declared                                                   |
+| SUGG-004 | [Testing: Coverage Gap] | app/models/user.rb:8                          | No test for `find_by_name` returning nil on no match                                         |
+| SUGG-005 | [Testing: Coverage Gap] | app/models/user.rb:24                         | No test for `find_by_user_id` returning nil on unknown id                                    |
+| SUGG-006 | [Testing: Edge Case]    | app/controllers/users_controller.rb:5         | Sentinel strings like "null"/"undefined" pass `blank?` and hit the DB literally              |
+| SUGG-007 | [Testing: Edge Case]    | app/models/user.rb:15                         | No CHECK constraint on `role`; DB drift can introduce unexpected roles into `session[:role]` |
+| SUGG-008 | [Testing: Edge Case]    | app/controllers/sessions_controller.rb:8      | Whitespace-only passwords are blocked at the controller regardless of what is stored         |
+| SEC-001  | [OWASP: A03 Injection]  | app/models/user.rb:6-7                        | SQL injection via string-interpolated `name`                                                 |
+| SEC-002  | [OWASP: A02/A07]        | config/database.yml:5-9                       | Hardcoded production DB credentials committed to repo                                        |
+| SEC-003  | [OWASP: A02]            | db/migrate/001_create_users.rb:6              | Plaintext password storage (no bcrypt / `has_secure_password`)                               |
+| SEC-004  | [OWASP: A07]            | app/controllers/sessions_controller.rb:14-22  | Non-constant-time password compare + username enumeration                                    |
+| SEC-005  | [OWASP: A05]            | app/controllers/application_controller.rb:2-4 | Raw exception message leaked via rescue handler                                              |
+| SEC-006  | [OWASP: A02/A01]        | app/controllers/users_controller.rb:17-22     | Sensitive fields (email, role) returned unauthenticated                                      |
+| SEC-007  | [OWASP: A01]            | config/routes.rb:2                            | Broken access control — no authentication on `/users`                                        |
 
 > **Note:** An additional 7 testing edge-case findings (EC17, EC18, EC19, EC20, EC21, EC22, EC23 from the edge-case explorer) were omitted to stay within the 30-item testing finding cap. Another code review is recommended after addressing the current items.
 
@@ -206,6 +206,7 @@ A whitespace-only password is blocked at the controller by `blank?`. Users whose
 ## 🔐 Security Vulnerabilities
 
 **SEC-001: SQL Injection in `User.find_by_name`**
+
 - **OWASP:** A03 — Injection
 - **Location:** `app/models/user.rb:6-7`
 - **Evidence:**
@@ -217,6 +218,7 @@ A whitespace-only password is blocked at the controller by `blank?`. Users whose
 - **Severity:** Critical
 
 **SEC-002: Hardcoded Database Credentials**
+
 - **OWASP:** A02 — Cryptographic Failures / A07 — Authentication Failures
 - **Location:** `config/database.yml:5-9`
 - **Evidence:**
@@ -230,6 +232,7 @@ A whitespace-only password is blocked at the controller by `blank?`. Users whose
 - **Severity:** Critical
 
 **SEC-003: Plaintext Password Storage**
+
 - **OWASP:** A02 — Cryptographic Failures
 - **Location:** `db/migrate/001_create_users.rb:6` and `app/models/user.rb:14`
 - **Evidence:** Schema defines `t.string :password, null: false` and the model reads `user.password = result["password"]` then compares `user.password != password` in `sessions_controller.rb:19`.
@@ -237,6 +240,7 @@ A whitespace-only password is blocked at the controller by `blank?`. Users whose
 - **Severity:** Critical
 
 **SEC-004: Non-Constant-Time Password Comparison and Username Enumeration**
+
 - **OWASP:** A07 — Identification and Authentication Failures
 - **Location:** `app/controllers/sessions_controller.rb:14-22`
 - **Evidence:**
@@ -251,6 +255,7 @@ A whitespace-only password is blocked at the controller by `blank?`. Users whose
 - **Severity:** High
 
 **SEC-005: Stack Trace / Internal Detail Leakage via Rescue Handler**
+
 - **OWASP:** A05 — Security Misconfiguration
 - **Location:** `app/controllers/application_controller.rb:2-4`
 - **Evidence:**
@@ -263,6 +268,7 @@ A whitespace-only password is blocked at the controller by `blank?`. Users whose
 - **Severity:** High
 
 **SEC-006: Sensitive Data Exposure in API Response**
+
 - **OWASP:** A02 — Cryptographic Failures / A01 — Broken Access Control
 - **Location:** `app/controllers/users_controller.rb:17-22`
 - **Evidence:**
@@ -274,6 +280,7 @@ A whitespace-only password is blocked at the controller by `blank?`. Users whose
 - **Severity:** High
 
 **SEC-007: Broken Access Control — No Authentication on Sensitive Endpoints**
+
 - **OWASP:** A01 — Broken Access Control
 - **Location:** `config/routes.rb:2` and `app/controllers/application_controller.rb` (no `before_action`)
 - **Evidence:** `ApplicationController < ActionController::API` contains no authentication filter; `UsersController` has no `before_action`; `/users` is reachable without a session.

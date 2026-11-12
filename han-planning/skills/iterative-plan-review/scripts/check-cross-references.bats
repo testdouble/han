@@ -132,6 +132,25 @@ count() {
   [ "$(count "$output" empty-field)" -eq 1 ]
 }
 
+@test "a four-level entry heading is read like a three-level one" {
+  findings_with \
+    "#### F1: Something" \
+    "" \
+    "- **Raised in round:** R1" \
+    "- **Changed in plan:** Outcome" \
+    ""
+  history_with \
+    "#### R1: First round" \
+    "" \
+    "- **Findings raised:** F1" \
+    "- **Changed in plan:** Outcome" \
+    ""
+
+  run "$SRC" "$FINDINGS" "$HISTORY"
+  [ "$status" -eq 0 ]
+  [ "$(get "$output" result)" = "passed" ]
+}
+
 @test "an identifier inside a fenced example block is ignored" {
   findings_with \
     "### F1: Something" \

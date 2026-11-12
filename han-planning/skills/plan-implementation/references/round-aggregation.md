@@ -30,10 +30,12 @@ cited entry and reading which field each figure came from.
   behavior.
 - `T#-contradiction` — the specialist recommends a mechanic that conflicts with a committed `T#` note. Load-bearing by
   construction.
+- `approach` — the recommendation `han-planning:reassess-approach` returns at the round cap, naming the plan's approach
+  as the open question with the alternatives considered. Never resolved inside the loop; it goes to the user.
 
 Use simple text rules: a finding that names a spec section and says "the spec is silent" / "not specified" / "undefined
-behavior" is `spec-level`. A finding that names a `T#` ID and proposes a different mechanic is `T#-contradiction`.
-Everything else is `plan-level`.
+behavior" is `spec-level`. A finding that names a `T#` ID and proposes a different mechanic is `T#-contradiction`. A
+finding that arrives from the cap hand-off is `approach`. Everything else is `plan-level`.
 
 **Compute the spec-maturity gate.** The gate trips when either condition holds:
 

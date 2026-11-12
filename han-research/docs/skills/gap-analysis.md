@@ -200,8 +200,9 @@ Section 3 augments the report. It never changes the meaning of Sections 1 and 2.
   gaps touch. Override the recommendation only when you have a specific reason (for example, the analysis touches auth
   even though only two gaps were found: promote to medium and include `adversarial-security-analyst`).
 - **Name specialists you know you want.** If gaps cluster in a single domain (auth, data, UX, deployment, resilience,
-  architecture), naming the matching specialist (`adversarial-security-analyst`, `data-engineer`,
-  `user-experience-designer`, `devops-engineer`, `on-call-engineer`, `software-architect`, `system-architect`) ensures
+  telemetry, architecture), naming the matching specialist (`adversarial-security-analyst`, `data-engineer`,
+  `user-experience-designer`, `devops-engineer`, `on-call-engineer`, `observability-engineer`, `software-architect`,
+  `system-architect`) ensures
   they are included regardless of what the heuristic would have picked. The three required swarm roles
   (`adversarial-validator`, `junior-developer`, plus `evidence-based-investigator` when the current state is concrete)
   are always there.
@@ -251,8 +252,8 @@ How the size is chosen:
 
 - **Default to small.** Unless the gap count or domain signals push the analysis higher, the skill stays at small.
 - **Domain-driven specialist selection.** Augmenters are drawn from `adversarial-security-analyst`, `data-engineer`,
-  `user-experience-designer`, `devops-engineer`, `on-call-engineer`, `system-architect`, `software-architect`,
-  `content-auditor`, `codebase-explorer` based on which domains the gaps touch.
+  `user-experience-designer`, `devops-engineer`, `on-call-engineer`, `observability-engineer`, `system-architect`,
+  `software-architect`, `content-auditor`, `codebase-explorer` based on which domains the gaps touch.
 - **The swarm runs by default at every size.** The lightweight (`no swarm`) path is an explicit opt-out.
 
 How to override the size:
@@ -277,8 +278,8 @@ first-pass scoping where confidence signals are not yet needed.
   agents). At medium, 5–7 (analyzer + 4–6 swarm agents). At large, 7–9 (analyzer + 6–8 swarm agents). The swarm runs in
   a single parallel round; `plan-synthesizer` runs after at medium and large to consolidate Section 4 content, then
   `han-communication:readability-editor` rewrites the consolidated report for readability, preserving every fact and
-  `G-NNN` gap ID. The conditional second round (Step 5.5) fires when the swarm produces ≥ 3 new gaps or contradictions
-  on ≥ 20% of original gaps. When it fires, add one more `gap-analyzer` dispatch, never more.
+  `G-NNN` gap ID. The conditional second round (Step 5.5) fires when the swarm returns ≥ 3 `proposed_new_gap` entries
+  or contradictions on ≥ 20% of the analyzer's original gaps. When it fires, add one more `gap-analyzer` dispatch, never more.
 - **Lightweight mode (`no swarm`).** A single `gap-analyzer` dispatch plus the skill's in-process rendering of Sections
   1 and 2. No additional sub-agents. Every gap shipped at `Medium` confidence. Lowest-cost configuration.
 - **Technical details mode (Section 3 added).** No additional sub-agents. Section 3 is rendered by the skill from the

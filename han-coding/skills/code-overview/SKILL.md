@@ -2,14 +2,14 @@
 name: "code-overview"
 description: >
   Produces a human-readable, progressive-disclosure overview of unfamiliar code or a pull request's changes — why it
-  exists (the real problem it solves or goal it serves for the business or a user), and from there what it does, how it
+  exists (the problem it solves or goal it serves for a business or a user), and from there what it does, how it
   flows, and where to start — so you can get up to speed before working on or reviewing it. Use when you want to
   understand, get oriented in, make sense of, explain, or get up to speed on a chunk of code, a file, a directory, a
-  symbol, or a PR's changes. Writes the overview to a scratch file and changes no code. Does not review code quality or
+  symbol, or a PR's changes. Writes to a scratch file and changes no code. Does not review code quality or
   raise findings — use code-review for auditing changes or post-code-review-to-pr for posting them. Does not produce
   durable feature or system documentation — use project-documentation. Does not assess architecture or structural risk —
-  use architectural-analysis. Does not diagnose bugs or root-cause failures — use investigate. Does not pace a person
-  through the code one step at a time in conversation — use code-walkthrough.
+  use architectural-analysis. Does not diagnose bugs or answer a single question about how the code behaves — use
+  investigate. Does not pace a person through the code one step at a time in conversation — use code-walkthrough.
 arguments: size
 argument-hint:
   "[size: small | medium | large | dynamic] [target: file, directory, symbol, or PR reference — defaults to the current branch's

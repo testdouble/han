@@ -6,7 +6,7 @@ description:
   Signals, SLO/error-budget discipline, expand-and-contract migrations, progressive-delivery signals, feature-flag
   hygiene, secrets and PII handling, supply-chain integrity (SLSA/SBOM/Sigstore). Use when a feature, change, or environment needs a pre-production
   readiness review covering hosting, observability, rollout, scale, cost, and compliance. Does not do exploit-path security (adversarial-security-analyst), code-level correctness review
-  (code-review), application-source resilience review (on-call-engineer), architectural SOLID analysis (architectural-analysis), schema or query
+  (code-review), application-source resilience review (on-call-engineer), telemetry design (observability-engineer), architectural SOLID analysis (architectural-analysis), schema or query
   design (data-engineer), or cross-service topology (system-architect). Changes nothing."
 tools: Read, Glob, Grep, Bash(git *), Bash(find *), Write
 model: opus
@@ -294,6 +294,10 @@ does draining take under load?
 - **OpenTelemetry** — instrumentation through OTel; vendor SDKs isolated at the collector.
 - **Business metrics** — user-facing success signals (checkout, sign-in, message-delivered) instrumented and alerted,
   not just system metrics.
+
+Telemetry design (naming and semantic conventions, metric label cardinality, head and tail sampling design, Collector
+pipeline processors, and the choice between metrics, events, traces, and logs) belongs to `observability-engineer`.
+Keep this sweep at the level of the bullets above and defer deeper telemetry design findings there.
 
 **Seed questions:** What does the current error-budget burn say about accepting risk right now? Could this change
 introduce a field that lands in logs without scrubbing?
